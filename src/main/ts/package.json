@@ -1,0 +1,42 @@
+{
+  "name": "asyncapi-core",
+  "version": "${project.version}",
+  "description": "A library to read and write AsyncAPI documents.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EricWittmann/asyncapi-core"
+  },
+  "main": "bundles/asyncapi.umd.js",
+  "module": "index.js",
+  "typings": "index.d.ts",
+  "typescript": {
+    "definition": "index.d.ts"
+  },
+  "scripts": {
+    "test": "karma start karma-headless.js",
+    "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && rollup -c rollup.config.js"
+  },
+  "dependencies": {
+    "core-js": "2.6.5"
+  },
+  "devDependencies": {
+    "@types/diff": "4.0.2",
+    "@types/jasmine": "3.3.12",
+    "cpx": "1.5.0",
+    "diff": "4.0.1",
+    "jasmine-core": "3.4.0",
+    "karma": "4.0.1",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-cli": "2.0.0",
+    "karma-jasmine": "2.0.1",
+    "karma-read-json": "1.1.0",
+    "karma-summary-reporter": "1.6.0",
+    "karma-typescript": "4.0.0",
+    "mkdirp": "0.5.1",
+    "rimraf": "2.6.3",
+    "rollup": "0.68.2",
+    "rollup-plugin-commonjs": "8.4.1",
+    "typescript": "3.4.3"
+  }
+}
