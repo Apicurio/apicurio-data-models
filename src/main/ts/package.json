@@ -26,7 +26,7 @@
     "cpx": "1.5.0",
     "diff": "4.0.1",
     "jasmine-core": "3.4.0",
-    "karma": "4.0.1",
+    "karma": "4.1.0",
     "karma-chrome-launcher": "2.2.0",
     "karma-cli": "2.0.0",
     "karma-jasmine": "2.0.1",
