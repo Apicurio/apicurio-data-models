@@ -25,6 +25,7 @@ import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
@@ -39,6 +40,11 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author eric.wittmann@gmail.com
  */
 public class Library {
+    
+    public static NodePath createNodePath(Node node) {
+        // TODO implement this
+        return null;
+    }
 
     public static void visitNode(Node node, IVisitor visitor) {
         node.accept(visitor);

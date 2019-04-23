@@ -1,0 +1,7 @@
+[
+	{ "name": "Root Path", "path": "/", "segments": [] },
+	{ "name": "Info", "path": "/info", "segments": [ "info" ] },
+	{ "name": "Path Segments", "path": "/foo/bar/baz", "segments": [ "foo", "bar", "baz" ] },
+	{ "name": "Path and Index Segments", "path": "/foo/bar[10]/baz[/zippy]/crash", "segments": [ "foo", "bar", "10", "baz", "/zippy", "crash" ] },
+	{ "name": "Multiple Index Segments", "path": "/foo/bar[10][baz]/res1[10][3][6]", "segments": [ "foo", "bar", "10", "baz", "res1", "10", "3", "6" ] }
+]

@@ -22,6 +22,6 @@ import org.junit.runner.RunWith;
  * @author eric.wittmann@gmail.com
  */
 @RunWith(IoTestRunner.class)
-public class AaiFullInputOutputTest {
+public class IoTest {
 
 }
