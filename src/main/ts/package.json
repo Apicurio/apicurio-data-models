@@ -37,6 +37,6 @@
     "rimraf": "2.6.3",
     "rollup": "0.68.2",
     "rollup-plugin-commonjs": "8.4.1",
-    "typescript": "3.4.3"
+    "typescript": "3.4.4"
   }
 }
