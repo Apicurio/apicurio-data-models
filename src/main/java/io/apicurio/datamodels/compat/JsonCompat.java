@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.compat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -26,21 +27,38 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
 
 /**
+ * Compatibility class used to perform actions on JSON data.  That data is handled natively in 
+ * the TS/JS version of this class.  But when in Java we use Jackson.  There is a JsonCompat.ts file
+ * that replaces this one *after* Java->TS transpilation.
  * @author eric.wittmann@gmail.com
  */
 public class JsonCompat {
 
     private static final JsonNodeFactory factory = JsonNodeFactory.instance;
+    private static final ObjectMapper mapper = new ObjectMapper();
     
     /*
      * Util methods
      */
+    
+    public static JsonNode clone(Object json) {
+        try {
+            JsonNode obj = (JsonNode) json;
+            TokenBuffer tb = new TokenBuffer(mapper, false);
+            mapper.writeTree(tb, obj);
+            return mapper.readTree(tb.asParser());
+        } catch (IOException e) {
+            throw new RuntimeException("Error cloning JSON node.", e);
+        }
+    }
 
     public static ObjectNode objectNode() {
         return factory.objectNode();
@@ -49,6 +67,97 @@ public class JsonCompat {
     public static ArrayNode arrayNode() {
         return factory.arrayNode();
     }
+    
+    /*
+     * Getters
+     */
+    
+    public static List<String> keys(Object json) {
+        List<String> rval = new ArrayList<>();
+        if (json != null) {
+            ObjectNode node = (ObjectNode) json;
+            Iterator<String> fieldNames = node.fieldNames();
+            while (fieldNames.hasNext()) {
+                String fieldName = fieldNames.next();
+                rval.add(fieldName);
+            }
+        }
+        return rval;
+    }
+    
+    public static Object getProperty(Object json, String propertyName) {
+        JsonNode node = (JsonNode) json;
+        JsonNode pnode = node.get(propertyName);
+        if (pnode == null) {
+            return null;
+        }
+        if (pnode.isNull()) {
+            return null;
+        }
+        return pnode;
+    }
+    public static Object consumeProperty(Object json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        JsonNode pnode = node.remove(propertyName);
+        if (pnode == null) {
+            return null;
+        }
+        if (pnode.isNull()) {
+            return null;
+        }
+        return pnode;
+    }
+
+    public static Object getPropertyObject(Object json, String propertyName) {
+        return JsonCompat.parseObject(JsonCompat.getProperty(json, propertyName));
+    }
+    public static Object consumePropertyObject(Object json, String propertyName) {
+        return JsonCompat.parseObject(JsonCompat.consumeProperty(json, propertyName));
+    }
+
+    public static String getPropertyString(Object json, String propertyName) {
+        JsonNode propertyNode = (JsonNode) JsonCompat.getProperty(json, propertyName);
+        if (propertyNode == null) {
+            return null;
+        } else {
+            return propertyNode.asText();
+        }
+    }
+    public static String consumePropertyString(Object json, String propertyName) {
+        JsonNode propertyNode = (JsonNode) JsonCompat.consumeProperty(json, propertyName);
+        if (propertyNode == null) {
+            return null;
+        } else {
+            return propertyNode.asText();
+        }
+    }    
+    
+    /*
+     * Setters
+     */
+    
+    public static void setProperty(Object json, String propertyName, Object propertyValue) {
+        ObjectNode node = (ObjectNode) json;
+        if (propertyValue instanceof JsonNode) {
+            JsonNode value = (JsonNode) propertyValue;
+            node.set(propertyName, value);
+        } else {
+            writeObject(node, propertyName, propertyValue);
+        }
+    }
+    
+    public static void setPropertyString(Object json, String propertyName, String propertyValue) {
+        if (propertyValue != null) {
+            ObjectNode node = (ObjectNode) json;
+            TextNode textNode = factory.textNode(propertyValue);
+            node.set(propertyName, textNode);
+        }
+    }
+
+    
+    /*
+     * Internal only (not required by the TS layer)
+     */
 
     /**
      * Parses the given property value, which could be any type of thing, into an object
@@ -57,7 +166,7 @@ public class JsonCompat {
      * a Map (when the input is a JS Object).
      * @param node
      */
-    public static Object parseObject(Object json) {
+    private static Object parseObject(Object json) {
         JsonNode node = (JsonNode) json;
         if (node == null) {
             return null;
@@ -111,68 +220,8 @@ public class JsonCompat {
         return json;
     }
 
-    
-    /*
-     * Getters
-     */
-    
-    public static List<String> keys(Object json) {
-        List<String> rval = new ArrayList<>();
-        if (json != null) {
-            ObjectNode node = (ObjectNode) json;
-            Iterator<String> fieldNames = node.fieldNames();
-            while (fieldNames.hasNext()) {
-                String fieldName = fieldNames.next();
-                rval.add(fieldName);
-            }
-        }
-        return rval;
-    }
-    
-    public static Object property(Object json, String propertyName) {
-        JsonNode node = (JsonNode) json;
-        return node.get(propertyName);
-    }
-    
-    public static String propertyString(Object json, String propertyName) {
-        JsonNode propertyNode = (JsonNode) JsonCompat.property(json, propertyName);
-        if (propertyNode == null) {
-            return null;
-        } else {
-            return propertyNode.asText();
-        }
-    }
-    
-    
-    /*
-     * Setters
-     */
-    
-    public static void setProperty(Object json, String propertyName, Object propertyValue) {
-        ObjectNode node = (ObjectNode) json;
-        if (propertyValue instanceof JsonNode) {
-            JsonNode value = (JsonNode) propertyValue;
-            node.set(propertyName, value);
-        } else {
-            _writeObject(node, propertyName, propertyValue);
-        }
-    }
-    
-    public static void setPropertyString(Object json, String propertyName, String propertyValue) {
-        if (propertyValue != null) {
-            ObjectNode node = (ObjectNode) json;
-            TextNode textNode = factory.textNode(propertyValue);
-            node.set(propertyName, textNode);
-        }
-    }
-
-    
-    /*
-     * Internal only (not required by the TS layer)
-     */
-
     @SuppressWarnings("unchecked")
-    private static void _writeObject(ObjectNode node, String key, Object value) {
+    private static void writeObject(ObjectNode node, String key, Object value) {
         if (value == null) {
             return;
         }
@@ -198,14 +247,14 @@ public class JsonCompat {
             ArrayNode array = node.putArray(key);
             List<Object> values = (List<Object>) value;
             for (Object valueItem : values) {
-                _addObject(array, valueItem);
+                addObject(array, valueItem);
             }
         } else if (value instanceof Map) {
             ObjectNode objNode = node.putObject(key);
             Map<String, Object> values = (Map<String, Object>) value;
             for (Entry<String, Object> entry : values.entrySet()) {
                 String propertyName = entry.getKey();
-                _writeObject(objNode, propertyName, entry.getValue());
+                writeObject(objNode, propertyName, entry.getValue());
             }
         } else {
             node.put(key, (String) null);
@@ -218,7 +267,7 @@ public class JsonCompat {
      * @param value
      */
     @SuppressWarnings("unchecked")
-    private static void _addObject(ArrayNode node, Object value) {
+    private static void addObject(ArrayNode node, Object value) {
         if (value instanceof String) {
             node.add((String) value);
         } else if (value instanceof JsonNode) {
@@ -241,14 +290,14 @@ public class JsonCompat {
             ArrayNode array = node.addArray();
             List<Object> values = (List<Object>) value;
             for (Object valueItem : values) {
-                _addObject(array, valueItem);
+                addObject(array, valueItem);
             }
         } else if (value instanceof Map) {
             ObjectNode objNode = node.addObject();
             Map<String, Object> values = (Map<String, Object>) value;
             for (Entry<String, Object> entry : values.entrySet()) {
                 String propertyName = entry.getKey();
-                _writeObject(objNode, propertyName, entry.getValue());
+                writeObject(objNode, propertyName, entry.getValue());
             }
         } else {
             node.add((String) null);

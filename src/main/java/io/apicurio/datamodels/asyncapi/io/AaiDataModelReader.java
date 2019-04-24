@@ -33,9 +33,9 @@ public class AaiDataModelReader extends DataModelReader<AaiDocument> {
      */
     @Override
     public void readDocument(Object json, AaiDocument node) {
-        String asyncapi = JsonCompat.propertyString(json, Constants.PROP_ASYNCAPI);
-        String id = JsonCompat.propertyString(json, Constants.PROP_ID);
-        Object info = JsonCompat.property(json, Constants.PROP_INFO);
+        String asyncapi = JsonCompat.consumePropertyString(json, Constants.PROP_ASYNCAPI);
+        String id = JsonCompat.consumePropertyString(json, Constants.PROP_ID);
+        Object info = JsonCompat.consumeProperty(json, Constants.PROP_INFO);
         
         node.asyncapi = asyncapi;
         node.id = id;
@@ -44,6 +44,7 @@ public class AaiDataModelReader extends DataModelReader<AaiDocument> {
             this.readInfo(info, node.info);
         }
         this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
     }
 
     /**
@@ -52,14 +53,15 @@ public class AaiDataModelReader extends DataModelReader<AaiDocument> {
      * @param node
      */
     public void readInfo(Object json, AaiInfo node) {
-        String title = JsonCompat.propertyString(json, Constants.PROP_TITLE);
-        String version = JsonCompat.propertyString(json, Constants.PROP_VERSION);
-        String description = JsonCompat.propertyString(json, Constants.PROP_DESCRIPTION);
+        String title = JsonCompat.consumePropertyString(json, Constants.PROP_TITLE);
+        String version = JsonCompat.consumePropertyString(json, Constants.PROP_VERSION);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         
         node.title = title;
         node.version = version;
         node.description = description;
 
         this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
     }
 }

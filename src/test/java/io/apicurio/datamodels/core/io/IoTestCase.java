@@ -23,6 +23,7 @@ public class IoTestCase {
 
     private String name;
     private String test;
+    private int extraProperties;
     
     /**
      * Constructor.
@@ -56,6 +57,20 @@ public class IoTestCase {
      */
     public void setTest(String test) {
         this.test = test;
+    }
+
+    /**
+     * @return the extraProperties
+     */
+    public int getExtraProperties() {
+        return extraProperties;
+    }
+
+    /**
+     * @param extraProperties the extraProperties to set
+     */
+    public void setExtraProperties(int extraProperties) {
+        this.extraProperties = extraProperties;
     }
 
 }

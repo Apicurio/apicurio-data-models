@@ -25,6 +25,7 @@ import {Library} from "../src/io/apicurio/datamodels/Library";
 export interface TestSpec {
     name: string;
     test: string;
+    extraProperties?: number;
 }
 
 /**
@@ -44,6 +45,8 @@ describe("Full I/O", () => {
             
             // Parse/read the document
             let document: Document = Library.readDocument(json);
+            
+            // TODO:  Make sure the correct # of extra properties were read
 
             // Serialize/write the document
             let jsObj: any = Library.writeNode(document);

@@ -62,6 +62,13 @@ public abstract class DataModelWriter implements IVisitor {
             this._result = json;
         }
     }
+    
+    protected void writeExtraProperties(Object json, Node node) {
+        node.getExtraPropertyNames().forEach(pname -> {
+            Object value = node.getExtraProperty(pname);
+            JsonCompat.setProperty(json, pname, value);
+        });
+    }
 
     protected Object lookup(int modelId) {
         Object rval = this._modelIdToJS.get(modelId);

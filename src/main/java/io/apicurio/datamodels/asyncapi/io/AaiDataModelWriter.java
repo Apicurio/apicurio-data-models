@@ -37,6 +37,7 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
         AaiDocument doc = (AaiDocument) node;
         JsonCompat.setPropertyString(json, Constants.PROP_ASYNCAPI, doc.asyncapi);
         JsonCompat.setPropertyString(json, Constants.PROP_ID, doc.id);
+        writeExtraProperties(json, node);
     }
     
     /**
@@ -45,13 +46,14 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
     @Override
     public void visitInfo(AaiInfo node) {
         Object parent = this.lookupParentJson(node);
-        Object info = JsonCompat.objectNode();
-        JsonCompat.setPropertyString(info, Constants.PROP_TITLE, node.title);
-        JsonCompat.setPropertyString(info, Constants.PROP_VERSION, node.version);
-        JsonCompat.setPropertyString(info, Constants.PROP_DESCRIPTION, node.description);
-        JsonCompat.setProperty(parent, Constants.PROP_INFO, info);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_TITLE, node.title);
+        JsonCompat.setPropertyString(json, Constants.PROP_VERSION, node.version);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setProperty(parent, Constants.PROP_INFO, json);
+        writeExtraProperties(json, node);
 
-        this.updateIndex(node, info);
+        this.updateIndex(node, json);
     }
 
 }

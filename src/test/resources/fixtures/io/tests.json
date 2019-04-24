@@ -1,5 +1,6 @@
 [
 	{ "name": "Simplest", "test": "asyncapi/2.0/simple/simplest.json" },
 	{ "name": "Simple Info", "test": "asyncapi/2.0/simple/simple-info.json" },
+	{ "name": "Simple Info With Extra Properties", "test": "asyncapi/2.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
 	{ "name": "Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" }
 ]

@@ -23,6 +23,9 @@ import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
+ * A compatibility layer containing methods used when performing validation.  Any code that must
+ * be different in Java vs. TS/JS *and* related to validation should go in here.  There is a 
+ * ValidationCompat.ts file that contains the TS/JS specific implementation of this class.
  * @author eric.wittmann@gmail.com
  */
 public class ValidationCompat {

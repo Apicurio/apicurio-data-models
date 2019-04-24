@@ -37,6 +37,7 @@ public abstract class Node implements IVisitable {
     public Node _parent;
     protected int _modelId = __modelIdCounter++;
     protected Map<String, Object> _attributes;
+    protected Map<String, Object> _extraProperties;
     protected Map<String, ValidationProblem> _validationProblems = new HashMap<>();
 
     /**
@@ -162,5 +163,43 @@ public abstract class Node implements IVisitable {
 	public void clearValidationProblems() {
 	    this._validationProblems.clear();
 	}
+
+    /**
+     * Adds an extra property to the data model.  This is called when the reader encounters a property
+     * that is unexpected based on the expected schema.
+     * @param key
+     * @param value
+     */
+    public void addExtraProperty(String key, Object value) {
+        if (this._extraProperties == null) {
+            this._extraProperties = new HashMap<>();
+        }
+        this._extraProperties.put(key, value);
+    }
+    
+    public Object removeExtraProperty(String name) {
+        if (this._extraProperties != null && this._extraProperties.containsKey(name)) {
+            return this._extraProperties.remove(name);
+        }
+        return null;
+    }
+
+    public boolean hasExtraProperties() {
+        return this._extraProperties != null && !this._extraProperties.isEmpty();
+    }
+
+    public List<String> getExtraPropertyNames() {
+        if (this.hasExtraProperties()) {
+            return new ArrayList<String>(this._extraProperties.keySet());
+        }
+        return Collections.emptyList();
+    }
+
+    public Object getExtraProperty(String name) {
+        if (this.hasExtraProperties()) {
+            return this._extraProperties.get(name);
+        }
+        return null;
+    }
 
 }

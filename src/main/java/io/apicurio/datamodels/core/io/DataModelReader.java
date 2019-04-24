@@ -19,10 +19,12 @@ package io.apicurio.datamodels.core.io;
 import java.util.List;
 
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Extension;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * Base class for all data model readers.  Provides some common reading capabilities.
@@ -36,9 +38,25 @@ public abstract class DataModelReader<T extends Document> {
             if (key.startsWith(Constants.EXTENSION_PREFIX)) {
                 Extension extension = node.createExtension();
                 extension.name = key;
-                extension.value = JsonCompat.property(json, key);
+                extension.value = JsonCompat.consumePropertyObject(json, key);
                 node.addExtension(key, extension);
             }
+        }
+    }
+
+    /**
+     * Reads all remaining properties.  Anything left is an "extra" (or unexpected) property.  These
+     * are not extension properties - they are actually properties that SHOULD NOT have existed on
+     * the node.  (all extension properties must start with "x-" and are consumed by "readExtensions".
+     * @param jsData
+     * @param model
+     */
+    protected void readExtraProperties(Object json, Node node) {
+        List<String> keys = JsonCompat.keys(json);
+        for (String key : keys) {
+            Object value = JsonCompat.consumePropertyObject(json, key);
+            node.addExtraProperty(key, value);
+            LoggerCompat.warn("Found unexpected data model property: ", key);
         }
     }
 

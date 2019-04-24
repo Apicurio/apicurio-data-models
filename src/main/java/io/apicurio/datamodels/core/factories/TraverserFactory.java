@@ -37,6 +37,9 @@ public class TraverserFactory {
      * @param direction
      */
     public static ITraverser create(Document doc, IVisitor visitor, TraverserDirection direction) {
+        if (direction == null) {
+            direction = TraverserDirection.down;
+        }
         switch (doc.getDocumentType()) {
             case asyncapi2:
                 return direction == TraverserDirection.down ? new AaiTraverser((IAaiVisitor) visitor) : new AaiReverseTraverser((IAaiVisitor) visitor);

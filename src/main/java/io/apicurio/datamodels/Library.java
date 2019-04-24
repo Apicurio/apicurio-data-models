@@ -76,10 +76,12 @@ public class Library {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Document readDocument(Object json) {
-        DocumentType type = discoverDocumentType(json);
+        // Clone the input because the reader is destructive to the source data.
+        Object clonedJson = JsonCompat.clone(json);
+        DocumentType type = discoverDocumentType(clonedJson);
         DataModelReader reader = VisitorFactory.createDataModelReader(type);
         Document document = DocumentFactory.create(type);
-        reader.readDocument(json, document);
+        reader.readDocument(clonedJson, document);
         return document;
     }
     
@@ -90,8 +92,8 @@ public class Library {
     }
     
     public static DocumentType discoverDocumentType(Object json) {
-        String asyncapi = JsonCompat.propertyString(json, Constants.PROP_ASYNCAPI);
-        String openapi = JsonCompat.propertyString(json, Constants.PROP_OPENAPI);
+        String asyncapi = JsonCompat.getPropertyString(json, Constants.PROP_ASYNCAPI);
+        String openapi = JsonCompat.getPropertyString(json, Constants.PROP_OPENAPI);
         if (asyncapi != null && asyncapi.startsWith("2.")) {
             return DocumentType.asyncapi2;
         }

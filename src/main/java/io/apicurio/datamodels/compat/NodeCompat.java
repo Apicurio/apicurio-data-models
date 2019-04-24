@@ -21,6 +21,9 @@ import java.lang.reflect.Field;
 import io.apicurio.datamodels.core.models.Node;
 
 /**
+ * A compatibility layer containing methods used to interact with data model nodes.  Anything that
+ * needs to be handled differently (with respect to data model nodes) in Java vs. TS/JS should be done 
+ * here.  There is a NodeCompat.ts file that contains the TS/JS specific implementation of this class.
  * @author eric.wittmann@gmail.com
  */
 public class NodeCompat {

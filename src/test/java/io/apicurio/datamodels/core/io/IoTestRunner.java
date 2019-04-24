@@ -37,7 +37,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.core.io.ExtraPropertyDetectionVisitors.IExtraPropertyDetectionVisitor;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -72,6 +74,9 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 IoTestCase testCase = new IoTestCase();
                 testCase.setName(testNode.get("name").asText());
                 testCase.setTest(testNode.get("test").asText());
+                if (testNode.has("extraProperties")) {
+                    testCase.setExtraProperties(testNode.get("extraProperties").asInt());
+                }
                 allTests.add(testCase);
             });
             
@@ -119,6 +124,13 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 // Parse into a data model
                 Document doc = Library.readDocument(originalParsed);
                 Assert.assertNotNull(doc);
+                
+                // Make sure we read the appropriate number of "extra" properties
+                IExtraPropertyDetectionVisitor epv = ExtraPropertyDetectionVisitors.create(doc);
+                Library.visitTree(doc, epv, TraverserDirection.down);
+                int actualExtraProps = epv.getExtraPropertyCount();
+                int expectedExtraProps = child.getExtraProperties();
+                Assert.assertEquals(expectedExtraProps, actualExtraProps);
                 
                 // Write the data model back to JSON
                 Object roundTripJs = Library.writeNode(doc);

@@ -1,6 +1,10 @@
 
 export class JsonCompat {
     
+    public static clone(json: any): any {
+        return JSON.parse(JSON.stringify(json));
+    }
+    
     public static objectNode(): any {
         return {};
     }
@@ -16,20 +20,31 @@ export class JsonCompat {
         return Object.keys(json);
     }
 
-    public static property(json: any, propertyName: string): any {
-        if (json[propertyName]) {
-            return json[propertyName];
+    public static getProperty(json: any, propertyName: string): any {
+        let rval: any = json[propertyName];
+        if (rval === undefined) {
+            rval = null;
         }
-        return null;
+        return rval;
+    }
+    public static consumeProperty(json: any, propertyName: string): any {
+        let rval: any = JsonCompat.getProperty(json, propertyName);
+        delete json[propertyName];
+        return rval;
     }
     
-    public static propertyString(json: any, propertyName: string): string {
-        let value: any = JsonCompat.property(json, propertyName);
-        if (value == null) {
-            return null;
-        } else {
-            return value;
-        }
+    public static getPropertyObject(json: any, propertyName: string): any {
+        return JsonCompat.getProperty(json, propertyName);
+    }
+    public static consumePropertyObject(json: any, propertyName: string): any {
+        return JsonCompat.consumeProperty(json, propertyName);
+    }
+
+    public static getPropertyString(json: any, propertyName: string): string {
+        return JsonCompat.getProperty(json, propertyName);
+    }
+    public static consumePropertyString(json: any, propertyName: string): string {
+        return JsonCompat.consumeProperty(json, propertyName);
     }
 
     public static setProperty(json: any, propertyName: string, propertyValue: any): void {

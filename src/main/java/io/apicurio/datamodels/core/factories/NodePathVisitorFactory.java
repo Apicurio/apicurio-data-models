@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.util;
+package io.apicurio.datamodels.core.factories;
 
-import io.apicurio.datamodels.core.factories.NodePathVisitorFactory;
-import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.asyncapi.visitors.AaiNodePathVisitor;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
-import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class NodePathUtil {
+public class NodePathVisitorFactory {
 
-    public static NodePath createNodePath(Node node) {
-        NodePathVisitor visitor = NodePathVisitorFactory.createNodePathVisitor(node.ownerDocument());
-        VisitorUtil.visitTree(node, visitor, TraverserDirection.up);
-        return visitor.getPath();
+    public static NodePathVisitor createNodePathVisitor(Document doc) {
+        switch (doc.getDocumentType()) {
+            case asyncapi2:
+                return new AaiNodePathVisitor();
+            case openapi2:
+            case openapi3:
+            default:
+                throw new RuntimeException("Failed to create a node path visitor for type: " + doc.getDocumentType());
+        }
     }
+
 }
