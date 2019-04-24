@@ -35,7 +35,7 @@
     "karma-typescript": "4.0.0",
     "mkdirp": "0.5.1",
     "rimraf": "2.6.3",
-    "rollup": "0.68.2",
+    "rollup": "1.10.1",
     "rollup-plugin-commonjs": "8.4.1",
     "typescript": "3.4.4"
   }
