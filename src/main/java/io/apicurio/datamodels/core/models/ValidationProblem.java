@@ -26,7 +26,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 public class ValidationProblem implements IVisitable {
 
     public String errorCode;
-    public Object nodePath;
+    public NodePath nodePath;
     public String property;
     public String message;
     public ValidationProblemSeverity severity;
@@ -39,7 +39,7 @@ public class ValidationProblem implements IVisitable {
      * @param message
      * @param severity
      */
-    public ValidationProblem(String errorCode, Object nodePath, String property, String message, ValidationProblemSeverity severity) {
+    public ValidationProblem(String errorCode, NodePath nodePath, String property, String message, ValidationProblemSeverity severity) {
         this.errorCode = errorCode;
         this.nodePath = nodePath;
         this.property = property;

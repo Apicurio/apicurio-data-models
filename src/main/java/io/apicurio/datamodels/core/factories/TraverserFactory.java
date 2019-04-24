@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.core.factories;
 
+import io.apicurio.datamodels.asyncapi.visitors.AaiReverseTraverser;
 import io.apicurio.datamodels.asyncapi.visitors.AaiTraverser;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.ITraverser;
 import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
  * Creates a traverser for a particular data model.
@@ -28,10 +30,16 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class TraverserFactory {
     
-    public static ITraverser create(Document doc, IVisitor visitor) {
+    /**
+     * Create the appropriate traverser for the given document/data model.
+     * @param doc
+     * @param visitor
+     * @param direction
+     */
+    public static ITraverser create(Document doc, IVisitor visitor, TraverserDirection direction) {
         switch (doc.getDocumentType()) {
             case asyncapi2:
-                return new AaiTraverser((IAaiVisitor) visitor);
+                return direction == TraverserDirection.down ? new AaiTraverser((IAaiVisitor) visitor) : new AaiReverseTraverser((IAaiVisitor) visitor);
             case openapi2:
                 return null;
             case openapi3:

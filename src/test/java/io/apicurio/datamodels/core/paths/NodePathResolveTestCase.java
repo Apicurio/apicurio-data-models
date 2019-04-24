@@ -16,22 +16,19 @@
 
 package io.apicurio.datamodels.core.paths;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author eric.wittmann@gmail.com
  */
-public class NodePathTestCase {
+public class NodePathResolveTestCase {
 
     private String name;
+    private String test;
     private String path;
-    private List<String> segments = new ArrayList<>();
     
     /**
      * Constructor.
      */
-    public NodePathTestCase() {
+    public NodePathResolveTestCase() {
     }
 
     /**
@@ -63,17 +60,17 @@ public class NodePathTestCase {
     }
 
     /**
-     * @return the segments
+     * @return the test
      */
-    public List<String> getSegments() {
-        return segments;
+    public String getTest() {
+        return test;
     }
 
     /**
-     * @param segments the segments to set
+     * @param test the test to set
      */
-    public void setSegments(List<String> segments) {
-        this.segments = segments;
+    public void setTest(String test) {
+        this.test = test;
     }
 
 }

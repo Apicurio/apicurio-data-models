@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.io;
+package io.apicurio.datamodels.core.paths;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,14 +38,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class IoTestRunner extends ParentRunner<IoTestCase> {
+public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestCase> {
 
     private Class<?> testClass;
-    private List<IoTestCase> children;
+    private List<NodePathResolveTestCase> children;
     private ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -53,25 +55,26 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      * @param testClass
      * @throws InitializationError
      */
-    public IoTestRunner(Class<?> testClass) throws InitializationError {
+    public NodePathResolveTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         this.testClass = testClass;
         this.children = loadTests();
     }
 
-    private List<IoTestCase> loadTests() throws InitializationError {
+    private List<NodePathResolveTestCase> loadTests() throws InitializationError {
         try {
-            List<IoTestCase> allTests = new LinkedList<>();
+            List<NodePathResolveTestCase> allTests = new LinkedList<>();
             
-            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/io/tests.json");
+            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/resolve-tests.json");
             String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
             JsonNode tree = mapper.readTree(testsJsonSrc);
             ArrayNode tests = (ArrayNode) tree;
             tests.forEach( test -> {
                 ObjectNode testNode = (ObjectNode) test;
-                IoTestCase testCase = new IoTestCase();
+                NodePathResolveTestCase testCase = new NodePathResolveTestCase();
                 testCase.setName(testNode.get("name").asText());
                 testCase.setTest(testNode.get("test").asText());
+                testCase.setPath(testNode.get("path").asText());
                 allTests.add(testCase);
             });
             
@@ -85,7 +88,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      * @see org.junit.runners.ParentRunner#getChildren()
      */
     @Override
-    protected List<IoTestCase> getChildren() {
+    protected List<NodePathResolveTestCase> getChildren() {
         return children;
     }
 
@@ -93,7 +96,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      * @see org.junit.runners.ParentRunner#describeChild(java.lang.Object)
      */
     @Override
-    protected Description describeChild(IoTestCase child) {
+    protected Description describeChild(NodePathResolveTestCase child) {
         return Description.createTestDescription(this.testClass, child.getName());
     }
 
@@ -101,15 +104,15 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      * @see org.junit.runners.ParentRunner#runChild(java.lang.Object, org.junit.runner.notification.RunNotifier)
      */
     @Override
-    protected void runChild(IoTestCase child, RunNotifier notifier) {
+    protected void runChild(NodePathResolveTestCase child, RunNotifier notifier) {
         Description description = this.describeChild(child);
         Statement statement = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                String testCP = "fixtures/io/" + child.getTest();
+                String testCP = "fixtures/paths/" + child.getTest();
                 URL testUrl = Thread.currentThread().getContextClassLoader().getResource(testCP);
                 Assert.assertNotNull(testUrl);
-
+                
                 // Read the test source
                 String original = loadResource(testUrl);
                 Assert.assertNotNull(original);
@@ -119,15 +122,28 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 // Parse into a data model
                 Document doc = Library.readDocument(originalParsed);
                 Assert.assertNotNull(doc);
+
+                // Parse the test path
+                NodePath np = new NodePath(child.getPath());
                 
-                // Write the data model back to JSON
-                Object roundTripJs = Library.writeNode(doc);
-                Assert.assertNotNull(roundTripJs);
+                // Resolve the path to a node in the source
+                Node resolvedNode = np.resolve(doc, null);
+                Assert.assertNotNull(resolvedNode);
                 
-                // Stringify the round trip object
-                String roundTrip = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(roundTripJs);
-                Assert.assertNotNull(roundTrip);
-                assertJsonEquals(original, roundTrip);
+                // Compare source path to node path (test generating a node path from a node)
+                NodePath createdPath = Library.createNodePath(resolvedNode);
+                String expectedPath = child.getPath();
+                String actualPath = createdPath.toString();
+                Assert.assertEquals(expectedPath, actualPath);
+                
+                // Verify that the resolved node is what we expected it to be
+                Object actualObj = Library.writeNode(resolvedNode);
+                String actual = mapper.writeValueAsString(actualObj);
+                String expectedCP = "fixtures/paths/" + child.getTest() + ".expected.json";
+                URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
+                Assert.assertNotNull(testUrl);
+                String expected = loadResource(expectedUrl);
+                assertJsonEquals(expected, actual);
             }
         };
         runLeaf(statement, description, notifier);

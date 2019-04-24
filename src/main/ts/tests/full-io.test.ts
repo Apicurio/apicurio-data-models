@@ -28,24 +28,6 @@ export interface TestSpec {
 }
 
 /**
- * This function recursively sorts all objects by property name.  This is so that it is
- * easier to compare two objects.
- * @param original
- * @return {any}
- */
-function sortObj(original: any): any {
-    let sorted: any = {};
-    Object.keys(original).sort().forEach(function(key) {
-        let val: any = original[key];
-        if (typeof val === 'object') {
-            val = sortObj(val);
-        }
-        sorted[key] = val;
-    });
-    return sorted;
-}
-
-/**
  * Full I/O Tests for the AsyncAPI library.
  */
 describe("Full I/O", () => {

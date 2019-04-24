@@ -1,0 +1,4 @@
+[
+	{ "name": "Root Path", "test": "asyncapi/2.0/root.json", "path": "/" },
+	{ "name": "Info", "test": "asyncapi/2.0/info.json", "path": "/info" }
+]

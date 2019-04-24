@@ -39,10 +39,10 @@ import io.apicurio.datamodels.core.models.NodePath;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class NodePathTestRunner extends ParentRunner<NodePathTestCase> {
+public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
 
     private Class<?> testClass;
-    private List<NodePathTestCase> children;
+    private List<NodePathIoTestCase> children;
     private ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -50,31 +50,31 @@ public class NodePathTestRunner extends ParentRunner<NodePathTestCase> {
      * @param testClass
      * @throws InitializationError
      */
-    public NodePathTestRunner(Class<?> testClass) throws InitializationError {
+    public NodePathIoTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         this.testClass = testClass;
         this.children = loadTests();
     }
 
-    private List<NodePathTestCase> loadTests() throws InitializationError {
+    private List<NodePathIoTestCase> loadTests() throws InitializationError {
         try {
-            List<NodePathTestCase> allTests = new LinkedList<>();
+            List<NodePathIoTestCase> allTests = new LinkedList<>();
             
-            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/tests.json");
+            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/io-tests.json");
             String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
             JsonNode tree = mapper.readTree(testsJsonSrc);
             ArrayNode tests = (ArrayNode) tree;
             tests.forEach( test -> {
                 ObjectNode testNode = (ObjectNode) test;
-                NodePathTestCase fit = new NodePathTestCase();
-                fit.setName(testNode.get("name").asText());
-                fit.setPath(testNode.get("path").asText());
+                NodePathIoTestCase testCase = new NodePathIoTestCase();
+                testCase.setName(testNode.get("name").asText());
+                testCase.setPath(testNode.get("path").asText());
                 ArrayNode segs = (ArrayNode) testNode.get("segments");
                 Assert.assertNotNull(segs);
                 segs.forEach(s -> {
-                    fit.getSegments().add(s.asText());
+                    testCase.getSegments().add(s.asText());
                 });
-                allTests.add(fit);
+                allTests.add(testCase);
             });
             
             return allTests;
@@ -87,7 +87,7 @@ public class NodePathTestRunner extends ParentRunner<NodePathTestCase> {
      * @see org.junit.runners.ParentRunner#getChildren()
      */
     @Override
-    protected List<NodePathTestCase> getChildren() {
+    protected List<NodePathIoTestCase> getChildren() {
         return children;
     }
 
@@ -95,7 +95,7 @@ public class NodePathTestRunner extends ParentRunner<NodePathTestCase> {
      * @see org.junit.runners.ParentRunner#describeChild(java.lang.Object)
      */
     @Override
-    protected Description describeChild(NodePathTestCase child) {
+    protected Description describeChild(NodePathIoTestCase child) {
         return Description.createTestDescription(this.testClass, child.getName());
     }
 
@@ -103,7 +103,7 @@ public class NodePathTestRunner extends ParentRunner<NodePathTestCase> {
      * @see org.junit.runners.ParentRunner#runChild(java.lang.Object, org.junit.runner.notification.RunNotifier)
      */
     @Override
-    protected void runChild(NodePathTestCase child, RunNotifier notifier) {
+    protected void runChild(NodePathIoTestCase child, RunNotifier notifier) {
         Description description = this.describeChild(child);
         Statement statement = new Statement() {
             @Override

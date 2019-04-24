@@ -148,7 +148,7 @@ public abstract class Node implements IVisitable {
 	 * @param message
 	 * @param severity
 	 */
-    public ValidationProblem addValidationProblem(String errorCode, Object nodePath, String property,
+    public ValidationProblem addValidationProblem(String errorCode, NodePath nodePath, String property,
             String message, ValidationProblemSeverity severity) {
         ValidationProblem problem = new ValidationProblem(errorCode, nodePath, property, message, severity);
         this._validationProblems.put(errorCode, problem);

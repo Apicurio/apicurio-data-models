@@ -33,7 +33,7 @@ export interface TestSpec {
  */
 describe("Node Paths", () => {
 
-    let TESTS: TestSpec[] = readJSON("tests/fixtures/paths/tests.json");
+    let TESTS: TestSpec[] = readJSON("tests/fixtures/paths/io-tests.json");
 
     // All tests in the list above.
     TESTS.forEach( spec => {

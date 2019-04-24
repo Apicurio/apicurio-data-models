@@ -48,6 +48,7 @@ function formatProblems(problems: ValidationProblem[]): string {
         return p1.errorCode.localeCompare(p2.errorCode);
     }).forEach(problem => {
         rval += (
+            "[" + problem.nodePath.toString() + "]::" +
             problem.errorCode + "::" +
             formatSeverity(problem.severity) + "::" +
             problem.property + "::" +

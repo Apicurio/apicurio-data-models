@@ -21,8 +21,10 @@ import java.util.List;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
+import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.visitors.CompositeVisitor;
 
 /**
@@ -72,8 +74,7 @@ public class ValidationVisitor extends CompositeVisitor implements IValidationPr
             return;
         }
         
-        // TODO create the node path here so it can be reported
-        Object path = new Object();
+        NodePath path = NodePathUtil.createNodePath(node);
         ValidationProblem problem = node.addValidationProblem(ruleInfo.code, path, property, message, severity);
         
         // Include in the list of problems tracked by the validator.

@@ -71,10 +71,10 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
             ArrayNode tests = (ArrayNode) tree;
             tests.forEach( test -> {
                 ObjectNode testNode = (ObjectNode) test;
-                ValidationTestCase fit = new ValidationTestCase();
-                fit.setName(testNode.get("name").asText());
-                fit.setTest(testNode.get("test").asText());
-                allTests.add(fit);
+                ValidationTestCase testCase = new ValidationTestCase();
+                testCase.setName(testNode.get("name").asText());
+                testCase.setTest(testNode.get("test").asText());
+                allTests.add(testCase);
             });
             
             return allTests;
@@ -158,6 +158,9 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
             }
         });
         problems.forEach(problem -> {
+            builder.append("[");
+            builder.append(problem.nodePath.toString());
+            builder.append("]::");
             builder.append(problem.errorCode);
             builder.append("::");
             builder.append(problem.severity);

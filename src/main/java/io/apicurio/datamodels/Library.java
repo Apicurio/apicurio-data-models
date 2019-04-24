@@ -20,6 +20,8 @@ import java.util.List;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.factories.DocumentFactory;
+import io.apicurio.datamodels.core.factories.VisitorFactory;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
@@ -27,12 +29,14 @@ import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.util.NodePathUtil;
+import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
-import io.apicurio.datamodels.core.visitors.ITraverser;
 import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -42,17 +46,15 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 public class Library {
     
     public static NodePath createNodePath(Node node) {
-        // TODO implement this
-        return null;
+        return NodePathUtil.createNodePath(node);
     }
 
     public static void visitNode(Node node, IVisitor visitor) {
-        node.accept(visitor);
+        VisitorUtil.visitNode(node, visitor);
     }
     
-    public static void visitTree(Node node, IVisitor visitor) {
-        ITraverser traverser = TraverserFactory.create(node.ownerDocument(), visitor);
-        traverser.traverse(node);
+    public static void visitTree(Node node, IVisitor visitor, TraverserDirection direction) {
+        VisitorUtil.visitTree(node, visitor, direction);
     }
 
     public static List<ValidationProblem> validate(Node node, IValidationSeverityRegistry severityRegistry) {
@@ -62,12 +64,12 @@ public class Library {
         
         // Clear/reset any problems that may have been found before.
         ValidationProblemsResetVisitor resetter = VisitorFactory.createValidationProblemsResetVisitor(node.ownerDocument());
-        visitTree(node, resetter);
+        visitTree(node, resetter, TraverserDirection.down);
         
         // Validate the data model.
         ValidationVisitor validator = VisitorFactory.createValidationVisitor(node.ownerDocument());
         validator.setSeverityRegistry(severityRegistry);
-        visitTree(node, validator);
+        visitTree(node, validator, TraverserDirection.down);
         
         return validator.getValidationProblems();
     }
@@ -83,7 +85,7 @@ public class Library {
     
     public static Object writeNode(Node node) {
         DataModelWriter writer = VisitorFactory.createDataModelWriter(node.ownerDocument());
-        visitTree(node, writer);
+        visitTree(node, writer, TraverserDirection.down);
         return writer.getResult();
     }
     

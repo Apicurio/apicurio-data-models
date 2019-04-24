@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.core.models.Document;
