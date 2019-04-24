@@ -1,4 +1,4 @@
 [
-	{ "name": "Simple (Valid)", "test": "2.0/simple/valid-simple.json" },
-	{ "name": "Invalid Info", "test": "2.0/simple/info.json" }
+	{ "name": "Simple (Valid)", "test": "asyncapi/2.0/simple/valid-simple.json" },
+	{ "name": "Invalid Info", "test": "asyncapi/2.0/simple/info.json" }
 ]

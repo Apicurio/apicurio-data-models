@@ -1,5 +1,5 @@
 [
-	{ "name": "Simplest", "test": "2.0/simple/simplest.json" },
-	{ "name": "Simple Info", "test": "2.0/simple/simple-info.json" },
-	{ "name": "Simple Info With Extensions", "test": "2.0/simple/simple-info-extensions.json" }
+	{ "name": "Simplest", "test": "asyncapi/2.0/simple/simplest.json" },
+	{ "name": "Simple Info", "test": "asyncapi/2.0/simple/simple-info.json" },
+	{ "name": "Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" }
 ]
