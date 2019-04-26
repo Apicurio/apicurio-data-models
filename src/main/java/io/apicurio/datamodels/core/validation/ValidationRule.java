@@ -19,14 +19,14 @@ package io.apicurio.datamodels.core.validation;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Base class for all validation rule implementations.
  * @author eric.wittmann@gmail.com
  */
-public abstract class ValidationRule implements IVisitor {
+public abstract class ValidationRule extends AllNodeVisitor implements IVisitor {
 
     private IValidationProblemReporter reporter;
     private ValidationRuleMetaData ruleInfo;
@@ -92,14 +92,6 @@ public abstract class ValidationRule implements IVisitor {
         if (condition) {
             this.report(node, property, messageParams);
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
-     */
-    @Override
-    public void visitValidationProblem(ValidationProblem problem) {
-        // Probably never want to visit/handle a validation problem when visiting for the purpose of validation.
     }
 
 }

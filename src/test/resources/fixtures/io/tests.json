@@ -1,6 +1,26 @@
 [
-	{ "name": "Simplest", "test": "asyncapi/2.0/simple/simplest.json" },
-	{ "name": "Simple Info", "test": "asyncapi/2.0/simple/simple-info.json" },
-	{ "name": "Simple Info With Extra Properties", "test": "asyncapi/2.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
-	{ "name": "Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" }
+	{ "name": "[AAI 2] Simplest", "test": "asyncapi/2.0/simple/simplest.json" },
+	{ "name": "[AAI 2] Simple Info", "test": "asyncapi/2.0/simple/simple-info.json" },
+	{ "name": "[AAI 2] Simple Info With Extra Properties", "test": "asyncapi/2.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
+	{ "name": "[AAI 2] Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" },
+    { "name": "[AAI 2] Complete Info", "test": "asyncapi/2.0/complete/complete-info.json" },
+    
+    { "name": "[OAI 2] Simple External Docs", "test": "openapi/2.0/simple/simple-externalDocs.json" },
+    { "name": "[OAI 2] Simple Info + Extensions", "test": "openapi/2.0/simple/simple-info-extensions.json" },
+    { "name": "[OAI 2] Simple Info", "test": "openapi/2.0/simple/simple-info.json" },
+    { "name": "[OAI 2] Simple Security", "test": "openapi/2.0/simple/simple-security.json" },
+    { "name": "[OAI 2] Simple Tags", "test": "openapi/2.0/simple/simple-tags.json" },
+    { "name": "[OAI 2] Simplest", "test": "openapi/2.0/simple/simplest.json" },
+    { "name": "[OAI 2] Extra Properties", "test": "openapi/2.0/extra-properties/extra-properties.json", "extraProperties": 3 },
+    
+    { "name": "[OAI 3] Simple External Docs", "test": "openapi/3.0/simple/simple-externalDocs.json" },
+    { "name": "[OAI 3] Simple Info + Extensions", "test": "openapi/3.0/simple/simple-info-extensions.json" },
+    { "name": "[OAI 3] Simple Info", "test": "openapi/3.0/simple/simple-info.json" },
+    { "name": "[OAI 3] Simple Security", "test": "openapi/3.0/simple/simple-security.json" },
+    { "name": "[OAI 3] Simple Servers", "test": "openapi/3.0/simple/simple-servers.json" },
+    { "name": "[OAI 3] Simple Tags", "test": "openapi/3.0/simple/simple-tags.json" },
+    { "name": "[OAI 3] Simplest", "test": "openapi/3.0/simple/simplest.json" },
+    { "name": "[OAI 3] Extra Properties", "test": "openapi/3.0/extra-properties/extra-properties.json", "extraProperties": 3 }
+    
+    
 ]

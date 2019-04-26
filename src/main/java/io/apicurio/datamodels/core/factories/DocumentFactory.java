@@ -19,6 +19,8 @@ package io.apicurio.datamodels.core.factories;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 
 /**
  * Factory used to create documents.
@@ -28,12 +30,20 @@ public class DocumentFactory {
     
     public static final Document create(DocumentType type) {
         switch (type) {
-            case asyncapi2:
+            case asyncapi2: {
                 AaiDocument doc = new AaiDocument();
                 doc.asyncapi = "2.0.0";
                 return doc;
-            case openapi2:
-            case openapi3:
+            }
+            case openapi2: {
+                Oas20Document doc = new Oas20Document();
+                return doc;
+            }
+            case openapi3: {
+                Oas30Document doc = new Oas30Document();
+                doc.openapi = "3.0.2";
+                return doc;
+            }
             default:
                 throw new RuntimeException("Failed to create a Document for type: " + type);
             

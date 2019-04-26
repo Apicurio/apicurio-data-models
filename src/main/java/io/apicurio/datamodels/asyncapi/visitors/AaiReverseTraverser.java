@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.core.visitors.ReverseTraverser;
 
 /**
@@ -31,15 +30,6 @@ public class AaiReverseTraverser extends ReverseTraverser implements IAaiVisitor
      */
     public AaiReverseTraverser(IAaiVisitor visitor) {
         super(visitor);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
-     */
-    @Override
-    public void visitInfo(AaiInfo node) {
-        node.accept(this.visitor);
-        this.traverse(node.parent());
     }
 
 }

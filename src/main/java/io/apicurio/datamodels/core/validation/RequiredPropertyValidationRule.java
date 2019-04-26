@@ -26,7 +26,7 @@ import io.apicurio.datamodels.core.models.Node;
  * requires a particular property be present on a data model node.
  * @author eric.wittmann@gmail.com
  */
-public abstract class RequiredPropertyValidationRule extends ValidationRule {
+public class RequiredPropertyValidationRule extends ValidationRule {
 
     /**
      * Constructor.

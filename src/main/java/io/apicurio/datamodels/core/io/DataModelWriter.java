@@ -17,13 +17,23 @@
 package io.apicurio.datamodels.core.io;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -52,7 +62,7 @@ public abstract class DataModelWriter implements IVisitor {
      * Gets the result of the writing.
      */
     public Object getResult() {
-        return this._result;
+        return JsonCompat.removeNullProperties(this._result);
     }
 
     protected void updateIndex(Node node, Object json) {
@@ -113,6 +123,154 @@ public abstract class DataModelWriter implements IVisitor {
     public void visitExtension(Extension node) {
         Object parent = this.lookupParentJson(node);
         JsonCompat.setProperty(parent, node.name, node.value);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     */
+    @Override
+    public void visitInfo(Info node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_TITLE, node.title);
+        JsonCompat.setPropertyString(json, Constants.PROP_VERSION, node.version);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyString(json, Constants.PROP_TERMS_OF_SERVICE, node.termsOfService);
+        JsonCompat.setPropertyNull(json, Constants.PROP_CONTACT);
+        JsonCompat.setPropertyNull(json, Constants.PROP_LICENSE);
+        writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, Constants.PROP_INFO, json);
+
+        this.updateIndex(node, json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     */
+    @Override
+    public void visitContact(Contact node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
+        JsonCompat.setPropertyString(json, Constants.PROP_URL, node.url);
+        JsonCompat.setPropertyString(json, Constants.PROP_EMAIL, node.email);
+        writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, Constants.PROP_CONTACT, json);
+
+        this.updateIndex(node, json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     */
+    @Override
+    public void visitLicense(License node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
+        JsonCompat.setPropertyString(json, Constants.PROP_URL, node.url);
+        writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, Constants.PROP_LICENSE, json);
+
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     */
+    @Override
+    public void visitTag(Tag node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
+        writeExtraProperties(json, node);
+        
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_TAGS, json);
+
+        this.updateIndex(node, json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     */
+    @Override
+    public void visitSecurityRequirement(SecurityRequirement node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        node.getSecurityRequirementNames().forEach(name -> {
+            List<String> scopes = node.getScopes(name);
+            JsonCompat.setPropertyStringArray(json, name, scopes);
+        });
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_SECURITY, json);
+        this.updateIndex(node, json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeServer(json, node);
+        writeExtraProperties(json, node);
+
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_SERVERS, json);
+        
+        this.updateIndex(node, json);
+    }
+    protected void writeServer(Object json, Server node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_URL, node.url);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_VARIABLES);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeServerVariable(json, node);
+        writeExtraProperties(json, node);
+        
+        // Set the variable as a property on the parent's "variables" child object
+        Object variables = JsonCompat.getProperty(parent, Constants.PROP_VARIABLES);
+        if (variables == null) {
+            variables = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_VARIABLES, variables);
+        }
+        JsonCompat.setProperty(variables, node.getName(), json);
+
+        this.updateIndex(node, json);
+    }
+    protected void writeServerVariable(Object json, ServerVariable node) {
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_ENUM, node.enum_);
+        JsonCompat.setPropertyString(json, Constants.PROP_DEFAULT, node.default_);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_VARIABLES);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void visitExternalDocumentation(ExternalDocumentation node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyString(json, Constants.PROP_URL, node.url);
+        writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, Constants.PROP_EXTERNAL_DOCS, json);
+
+        this.updateIndex(node, json);
     }
 
     /**

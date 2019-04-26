@@ -68,6 +68,31 @@ public class JsonCompat {
         return factory.arrayNode();
     }
     
+    public static boolean isPropertyDefined(Object json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        return node.has(propertyName) && !node.get(propertyName).isNull();
+    }
+    
+    public static Object removeNullProperties(Object json) {
+        JsonNode node = (JsonNode) json;
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            array.forEach(item -> {
+                JsonCompat.removeNullProperties(item);
+            });
+        } else if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            JsonCompat.keys(object).forEach(propertyName -> {
+                if (!JsonCompat.isPropertyDefined(json, propertyName)) {
+                    JsonCompat.consumeProperty(json, propertyName);
+                } else {
+                    JsonCompat.removeNullProperties(JsonCompat.getProperty(json, propertyName));
+                }
+            });
+        }
+        return json;
+    }
+    
     /*
      * Getters
      */
@@ -115,6 +140,33 @@ public class JsonCompat {
         return JsonCompat.parseObject(JsonCompat.consumeProperty(json, propertyName));
     }
 
+    public static List<Object> getPropertyArray(Object json, String propertyName) {
+        if (!JsonCompat.isPropertyDefined(json, propertyName)) {
+            return null;
+        }
+        Object value = JsonCompat.getProperty(json, propertyName);
+        JsonNode node = (JsonNode) value;
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<Object> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                rval.add(item);
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<Object> consumePropertyArray(Object json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        if (node.has(propertyName)) {
+            List<Object> rval = JsonCompat.getPropertyArray(json, propertyName);
+            node.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
+
     public static String getPropertyString(Object json, String propertyName) {
         JsonNode propertyNode = (JsonNode) JsonCompat.getProperty(json, propertyName);
         if (propertyNode == null) {
@@ -130,30 +182,99 @@ public class JsonCompat {
         } else {
             return propertyNode.asText();
         }
-    }    
+    }
+    
+    public static List<String> getPropertyStringArray(Object json, String propertyName) {
+        if (!JsonCompat.isPropertyDefined(json, propertyName)) {
+            return null;
+        }
+        Object value = JsonCompat.getProperty(json, propertyName);
+        JsonNode node = (JsonNode) value;
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<String> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                if (item.isNull()) {
+                    rval.add(null);
+                } else {
+                    rval.add(item.asText());
+                }
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<String> consumePropertyStringArray(Object json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        if (node.has(propertyName)) {
+            List<String> rval = JsonCompat.getPropertyStringArray(json, propertyName);
+            node.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
+
     
     /*
      * Setters
      */
+    
+    public static void setPropertyNull(Object json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        node.set(propertyName, factory.nullNode());
+    }
     
     public static void setProperty(Object json, String propertyName, Object propertyValue) {
         ObjectNode node = (ObjectNode) json;
         if (propertyValue instanceof JsonNode) {
             JsonNode value = (JsonNode) propertyValue;
             node.set(propertyName, value);
+        } else if (propertyValue == null) {
+            node.set(propertyName, factory.nullNode());
         } else {
             writeObject(node, propertyName, propertyValue);
         }
     }
     
     public static void setPropertyString(Object json, String propertyName, String propertyValue) {
+        ObjectNode node = (ObjectNode) json;
         if (propertyValue != null) {
-            ObjectNode node = (ObjectNode) json;
             TextNode textNode = factory.textNode(propertyValue);
             node.set(propertyName, textNode);
+        } else {
+            node.set(propertyName, factory.nullNode());
         }
     }
 
+    public static void setPropertyStringArray(Object json, String propertyName, List<String> propertyValue) {
+        ObjectNode node = (ObjectNode) json;
+        if (propertyValue != null) {
+            ArrayNode arrayNode = JsonCompat.arrayNode();
+            propertyValue.forEach(value -> {
+                arrayNode.add(value);
+            });
+            node.set(propertyName, arrayNode);
+        } else {
+            node.set(propertyName, factory.nullNode());
+        }
+    }
+    
+    public static void appendToArrayProperty(Object json, String arrayPropertyName, Object propertyValue) {
+        ObjectNode node = (ObjectNode) json;
+        ArrayNode array;
+        if (JsonCompat.isPropertyDefined(json, arrayPropertyName)) {
+            array = (ArrayNode) node.get(arrayPropertyName);
+        } else {
+            array = JsonCompat.arrayNode();
+            node.set(arrayPropertyName, array);
+        }
+        if (propertyValue instanceof JsonNode) {
+            array.add((JsonNode) propertyValue);
+        } else {
+            array.add(String.valueOf(propertyValue));
+        }
+    }
     
     /*
      * Internal only (not required by the TS layer)
@@ -303,4 +424,5 @@ public class JsonCompat {
             node.add((String) null);
         }
     }
+
 }

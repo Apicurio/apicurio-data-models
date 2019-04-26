@@ -43,9 +43,9 @@ public class ValidationVisitor extends CompositeVisitor implements IValidationPr
         super(new ArrayList<>());
         ValidationRuleSet ruleSet = ValidationRuleSet.instance;
         List<ValidationRule> rulesFor = ruleSet.getRulesFor(document);
-        for (ValidationRule rule : rulesFor) {
+        rulesFor.forEach(rule -> {
             rule.setReporter(this);
-        }
+        });
         this.addVisitors(rulesFor);
     }
     

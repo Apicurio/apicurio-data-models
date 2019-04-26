@@ -16,6 +16,12 @@
 
 package io.apicurio.datamodels.core.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -25,9 +31,11 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author eric.wittmann@gmail.com
  */
 public abstract class Document extends ExtensibleNode {
-    
-    public abstract DocumentType getDocumentType();
-    
+
+    public Info info;
+    public List<Tag> tags;
+    public ExternalDocumentation externalDocs;
+
     /**
      * Constructor.
      */
@@ -36,9 +44,63 @@ public abstract class Document extends ExtensibleNode {
         this._parent = null;
     }
 
+    /**
+     * Called to get the type of document.
+     */
+    public abstract DocumentType getDocumentType();
+
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
     @Override
     public void accept(IVisitor visitor) {
         visitor.visitDocument(this);
+    }
+    
+    /**
+     * Creates an Info node.
+     */
+    public abstract Info createInfo();
+
+
+    /**
+     * Creates a Tag node.
+     */
+    public abstract Tag createTag();
+
+    /**
+     * Adds a tag.
+     * @param name
+     * @param description
+     */
+    public Tag addTag(String name, String description) {
+        Tag tag = this.createTag();
+        tag.name = name;
+        tag.description = description;
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        this.tags.add(tag);
+        return tag;
+    }
+
+    /**
+     * Creates an External Documentation node.
+     * @return {OasExternalDocumentation}
+     */
+    public abstract ExternalDocumentation createExternalDocumentation();
+
+    /**
+     * Sets the external documentation information.
+     * @param description
+     * @param url
+     */
+    public ExternalDocumentation setExternalDocumentation(String description, String url) {
+        ExternalDocumentation ed = this.createExternalDocumentation();
+        ed.description = description;
+        ed.url = url;
+        this.externalDocs = ed;
+        return ed;
     }
 
 }

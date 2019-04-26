@@ -16,8 +16,13 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * Models an AsyncAPI root document.
@@ -27,22 +32,14 @@ public class AaiDocument extends Document {
 	
 	public String asyncapi;
 	public String id;
-	public AaiInfo info;
-	
+    public List<AaiServer> servers;
+    // TODO channels
+    // TODO components
+
 	/**
      * Constructor.
      */
     public AaiDocument() {
-    }
-
-	/**
-	 * Creates an {@link AaiInfo} child node.
-	 */
-    public AaiInfo createInfo() {
-        AaiInfo info = new AaiInfo();
-        info._parent = this;
-        info._ownerDocument = this;
-        return info;
     }
 
     /**
@@ -51,6 +48,66 @@ public class AaiDocument extends Document {
     @Override
     public DocumentType getDocumentType() {
         return DocumentType.asyncapi2;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.Document#createInfo()
+     */
+    @Override
+    public AaiInfo createInfo() {
+        AaiInfo info = new AaiInfo();
+        info._parent = this;
+        info._ownerDocument = this;
+        return info;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.Document#createTag()
+     */
+    @Override
+    public Tag createTag() {
+        Tag tag = new AaiTag();
+        tag._ownerDocument = this.ownerDocument();
+        tag._parent = this;
+        return tag;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.Document#createExternalDocumentation()
+     */
+    @Override
+    public ExternalDocumentation createExternalDocumentation() {
+        ExternalDocumentation ed = new AaiExternalDocumentation();
+        ed._ownerDocument = this.ownerDocument();
+        ed._parent = this;
+        return ed;
+    }
+
+    /**
+     * Creates an OAS 3.0 Server object.
+     * @return {AaiServer}
+     */
+    public AaiServer createServer() {
+        AaiServer rval = new AaiServer();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a server.
+     * @param url
+     * @param description
+     */
+    public AaiServer addServer(String url, String description) {
+        AaiServer server = this.createServer();
+        server.url = url;
+        server.description = description;
+        if (this.servers == null) {
+            this.servers = new ArrayList<>();
+        }
+        this.servers.add(server);
+        return server;
     }
 
 }

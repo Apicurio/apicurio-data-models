@@ -34,8 +34,8 @@ public abstract class ExtensibleNode extends Node {
      */
     public Extension createExtension() {
         Extension extension = new Extension();
-        extension._parent = this;
         extension._ownerDocument = this.ownerDocument();
+        extension._parent = this;
         return extension;
     }
     

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.compat;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import io.apicurio.datamodels.core.models.Node;
 
@@ -41,6 +42,29 @@ public class NodeCompat {
                 | IllegalAccessException e) {
             return null;
         }
+    }
+
+    /**
+     * Figures out the index of the given child by interrogating the parent node's list of 
+     * children at the given property name.  For example, this could be called to find the
+     * index of a Tag child entity of a Document entity using "tags" as the property name.
+     * @param child
+     * @param parent
+     * @param propertyName
+     */
+    public static int indexOf(Node child, Node parent, String propertyName) {
+        try {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            List<? extends Node> array = (List) NodeCompat.property(parent, propertyName);
+            for (int idx = 0; idx < array.size(); idx++) {
+                Node node = array.get(idx);
+                if (node == child) {
+                    return idx;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return -1;
     }
     
 }

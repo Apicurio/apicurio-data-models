@@ -113,7 +113,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
             public void evaluate() throws Throwable {
                 String testCP = "fixtures/io/" + child.getTest();
                 URL testUrl = Thread.currentThread().getContextClassLoader().getResource(testCP);
-                Assert.assertNotNull(testUrl);
+                Assert.assertNotNull("Test file not found on classpath: " + testCP, testUrl);
 
                 // Read the test source
                 String original = loadResource(testUrl);
@@ -123,14 +123,14 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 
                 // Parse into a data model
                 Document doc = Library.readDocument(originalParsed);
-                Assert.assertNotNull(doc);
+                Assert.assertNotNull("Document was null.", doc);
                 
                 // Make sure we read the appropriate number of "extra" properties
                 IExtraPropertyDetectionVisitor epv = ExtraPropertyDetectionVisitors.create(doc);
                 Library.visitTree(doc, epv, TraverserDirection.down);
                 int actualExtraProps = epv.getExtraPropertyCount();
                 int expectedExtraProps = child.getExtraProperties();
-                Assert.assertEquals(expectedExtraProps, actualExtraProps);
+                Assert.assertEquals("Wrong number of extra properties found.", expectedExtraProps, actualExtraProps);
                 
                 // Write the data model back to JSON
                 Object roundTripJs = Library.writeNode(doc);

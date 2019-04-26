@@ -18,9 +18,9 @@ package io.apicurio.datamodels.asyncapi.validation.rules;
 
 import java.util.Collections;
 
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.asyncapi.validation.AaiRequiredPropertyValidationRule;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
@@ -37,11 +37,10 @@ public class AaiMissingApiVersionRule extends AaiRequiredPropertyValidationRule 
     }
     
     /**
-     * @see io.apicurio.asyncapi.core.visitors.AaiVisitorAdapter#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
+     * @see io.apicurio.datamodels.core.visitors.AllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
      */
     @Override
-    public void visitInfo(AaiInfo node) {
+    public void visitInfo(Info node) {
         this.requireProperty(node, Constants.PROP_VERSION, Collections.emptyMap());
     }
-
 }

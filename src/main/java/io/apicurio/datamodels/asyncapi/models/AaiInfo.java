@@ -16,25 +16,36 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.models.ExtensibleNode;
-import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
 
 /**
  * Models an AsyncAPI 'Info' node.
  * @author eric.wittmann@gmail.com
  */
-public class AaiInfo extends ExtensibleNode {
-	
-	public String title;
-	public String version;
-	public String description;
+public class AaiInfo extends Info {
+
     /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     * @see io.apicurio.datamodels.core.models.common.Info#createContact()
      */
     @Override
-    public void accept(IVisitor visitor) {
-        ((IAaiVisitor) visitor).visitInfo(this);
+    public Contact createContact() {
+        Contact contact = new AaiContact();
+        contact._ownerDocument = this.ownerDocument();
+        contact._parent = this;
+        return contact;
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.Info#createLicense()
+     */
+    @Override
+    public License createLicense() {
+        License license = new AaiLicense();
+        license._ownerDocument = this.ownerDocument();
+        license._parent = this;
+        return license;
+    }
+	
 }

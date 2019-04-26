@@ -23,13 +23,21 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.IVisitable;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * A simple visitor that delegates to a list of *other* visitors.  Basically converts
  * a list of visitors to a single visitor.
  * @author eric.wittmann@gmail.com
  */
-public abstract class CompositeVisitor implements IVisitor {
+public class CompositeVisitor implements IVisitor {
     
     private List<IVisitor> visitors = new ArrayList<>();
 
@@ -62,9 +70,9 @@ public abstract class CompositeVisitor implements IVisitor {
      * @param node
      */
     protected void acceptAll(IVisitable node) {
-        for (IVisitor visitor : this.visitors) {
+        this.visitors.forEach(visitor -> {
             node.accept(visitor);
-        }
+        });
     }
 
     /**
@@ -80,6 +88,70 @@ public abstract class CompositeVisitor implements IVisitor {
      */
     @Override
     public void visitExtension(Extension node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     */
+    @Override
+    public void visitInfo(Info node) {
+        this.acceptAll(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     */
+    @Override
+    public void visitContact(Contact node) {
+        this.acceptAll(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     */
+    @Override
+    public void visitLicense(License node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     */
+    @Override
+    public void visitTag(Tag node) {
+        this.acceptAll(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     */
+    @Override
+    public void visitSecurityRequirement(SecurityRequirement node) {
+        this.acceptAll(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        this.acceptAll(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void visitExternalDocumentation(ExternalDocumentation node) {
         this.acceptAll(node);
     }
 

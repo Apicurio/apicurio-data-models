@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.asyncapi.validation;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 
@@ -33,14 +32,6 @@ public class AaiValidationVisitor extends ValidationVisitor implements IAaiVisit
      */
     public AaiValidationVisitor(AaiDocument document) {
         super(document);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
-     */
-    @Override
-    public void visitInfo(AaiInfo node) {
-        this.acceptAll(node);
     }
 
 }

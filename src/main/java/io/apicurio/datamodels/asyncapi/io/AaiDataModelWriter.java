@@ -17,12 +17,15 @@
 package io.apicurio.datamodels.asyncapi.io;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -37,23 +40,37 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
         AaiDocument doc = (AaiDocument) node;
         JsonCompat.setPropertyString(json, Constants.PROP_ASYNCAPI, doc.asyncapi);
         JsonCompat.setPropertyString(json, Constants.PROP_ID, doc.id);
+        JsonCompat.setPropertyNull(json, Constants.PROP_INFO);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SERVERS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_CHANNELS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_COMPONENTS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_TAGS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
+        
         writeExtraProperties(json, node);
     }
     
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeServer(java.lang.Object, io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
-    public void visitInfo(AaiInfo node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.objectNode();
-        JsonCompat.setPropertyString(json, Constants.PROP_TITLE, node.title);
-        JsonCompat.setPropertyString(json, Constants.PROP_VERSION, node.version);
-        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
-        JsonCompat.setProperty(parent, Constants.PROP_INFO, json);
-        writeExtraProperties(json, node);
-
-        this.updateIndex(node, json);
+    protected void writeServer(Object json, Server node) {
+        super.writeServer(json, node);
+        AaiServer server = (AaiServer) node;
+        JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL, server.protocol);
+        JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL_VERSION, server.protocolVersion);
+        JsonCompat.setPropertyString(json, Constants.PROP_BASE_CHANNEL, server.baseChannel);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeServerVariable(java.lang.Object, io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    protected void writeServerVariable(Object json, ServerVariable node) {
+        super.writeServerVariable(json, node);
+        AaiServerVariable serverVar = (AaiServerVariable) node;
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_EXAMPLES, serverVar.examples);
     }
 
 }

@@ -1,0 +1,839 @@
+{
+  "basePath": "/frapi",
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "definitions": {
+    "clusterListResponse": {
+      "properties": {
+        "clusterResults": {
+          "description": "List of clusters being processed",
+          "items": {
+            "$ref": "#/definitions/clusterResultResponse"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "clusterPoint": {
+      "properties": {
+        "bottom_right": {
+          "$ref": "#/definitions/point2D",
+          "description": "Bottom right corner of the bounding box"
+        },
+        "cluster_number": {
+          "type": "integer"
+        },
+        "frame": {
+          "type": "integer"
+        },
+        "top_left": {
+          "$ref": "#/definitions/point2D",
+          "description": "Top left corner of the bounding box"
+        }
+      }
+    },
+    "clusterProcess": {
+      "properties": {
+        "numFaces": {
+          "type": "integer"
+        },
+        "numPeople": {
+          "type": "integer"
+        },
+        "videoUrl": {
+          "type": "string"
+        },
+        "webHook": {
+          "properties": {
+            "postImages": {
+              "type": "boolean"
+            },
+            "postUrl": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "clusterProcessResponse": {
+      "properties": {
+        "clusterId": {
+          "type": "string"
+        },
+        "videoUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "clusterResponse": {
+      "properties": {
+        "clusteringError": {
+          "description": "Only exists if an error occurred",
+          "type": "string"
+        },
+        "result": {
+          "description": "List of detection in each cluster",
+          "items": {
+            "$ref": "#/definitions/clusterPoint"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "clusterResultResponse": {
+      "properties": {
+        "clusterId": {
+          "type": "string"
+        },
+        "clusteringError": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "boolean"
+        },
+        "videoUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "deletePersonResponse": {
+      "properties": {
+        "nDeleted": {
+          "description": "Number of points removed",
+          "type": "integer"
+        }
+      }
+    },
+    "deleteTrainPerson": {
+      "properties": {
+        "label": {
+          "description": "Label (e.g. person's name)",
+          "type": "string"
+        }
+      }
+    },
+    "deleteTrainPoint": {
+      "properties": {
+        "trainId": {
+          "description": "The unique ID returned in training",
+          "type": "string"
+        }
+      }
+    },
+    "faceDetection": {
+      "properties": {
+        "bottom_right": {
+          "$ref": "#/definitions/point2D",
+          "description": "Bottom right corner of the bounding box"
+        },
+        "top_left": {
+          "$ref": "#/definitions/point2D",
+          "description": "Top left corner of the bounding box"
+        }
+      }
+    },
+    "faceDetectionLandmarks": {
+      "properties": {
+        "bottom_right": {
+          "$ref": "#/definitions/point2D",
+          "description": "Bottom right corner of the bounding box"
+        },
+        "landmarks": {
+          "description": "List of face landmarks",
+          "items": {
+            "$ref": "#/definitions/point2D"
+          },
+          "type": "array"
+        },
+        "top_left": {
+          "$ref": "#/definitions/point2D",
+          "description": "Top left corner of the bounding box"
+        }
+      }
+    },
+    "faceRecognition": {
+      "properties": {
+        "bottom_right": {
+          "$ref": "#/definitions/point2D",
+          "description": "Bottom right corner of the bounding box"
+        },
+        "recognition": {
+          "$ref": "recognition"
+        },
+        "top_left": {
+          "$ref": "#/definitions/point2D",
+          "description": "Top left corner of the bounding box"
+        }
+      }
+    },
+    "facesList": {
+      "properties": {
+        "faces": {
+          "description": "List of detected faces",
+          "items": {
+            "$ref": "#/definitions/faceDetection"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "imageBin": {
+      "properties": {
+        "image": {
+          "description": "The raw format image to be used",
+          "format": "binary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "image"
+      ]
+    },
+    "imageUrl": {
+      "properties": {
+        "imageUrl": {
+          "description": "Url of the image to be used",
+          "type": "string"
+        }
+      },
+      "required": [
+        "imageUrl"
+      ]
+    },
+    "infoPeopleResponse": {
+      "properties": {
+        "people": {
+          "description": "List of people already in the database",
+          "items": {
+            "$ref": "#/definitions/infoPersonResponse"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "infoPersonResponse": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "trainPoints": {
+          "description": "List of points already trainned for person",
+          "items": {
+            "$ref": "#/definitions/trainPoint"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "infoQuotaResponse": {
+      "properties": {
+        "available": {
+          "$ref": "quota",
+          "description": "The amount available in the subscription"
+        },
+        "used": {
+          "$ref": "quota",
+          "description": "Amount used in the current cycle (month)"
+        }
+      }
+    },
+    "landmarksList": {
+      "properties": {
+        "faces": {
+          "description": "List of detected faces",
+          "items": {
+            "$ref": "#/definitions/faceDetectionLandmarks"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "point2D": {
+      "properties": {
+        "x": {
+          "format": "double",
+          "type": "number"
+        },
+        "y": {
+          "format": "double",
+          "type": "number"
+        }
+      }
+    },
+    "quota": {
+      "properties": {
+        "calls": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "people": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "points": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    },
+    "recognition": {
+      "properties": {
+        "confidence": {
+          "description": "The recognition method confidence for the related result",
+          "format": "double",
+          "type": "number"
+        },
+        "predictedLabel": {
+          "type": "string"
+        }
+      }
+    },
+    "recognizePersonResponse": {
+      "properties": {
+        "people": {
+          "description": "List of detected faces with associated labels",
+          "items": {
+            "$ref": "#/definitions/faceRecognition"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "trainImageUrl": {
+      "properties": {
+        "imageUrl": {
+          "description": "Url of the image to be used",
+          "type": "string"
+        },
+        "label": {
+          "description": "Label that will be associated with the face (e.g. person's name)",
+          "type": "string"
+        }
+      }
+    },
+    "trainPersonResponse": {
+      "properties": {
+        "personSamples": {
+          "description": "Number of samples associated with the label after this training",
+          "type": "integer"
+        },
+        "selectedFace": {
+          "$ref": "#/definitions/faceDetection",
+          "description": "The largest face detected in the image"
+        },
+        "trainId": {
+          "description": "unique ID related to the trainned point",
+          "type": "string"
+        }
+      }
+    },
+    "trainPoint": {
+      "properties": {
+        "dateIncluded": {
+          "description": "Date and time which the point was included",
+          "format": "date-time",
+          "type": "string"
+        },
+        "trainId": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "properties": {
+        "api_key": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "last_reset_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "subscription": {
+          "type": "string"
+        },
+        "subscription_date": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "userCreate": {
+      "properties": {
+        "accessKey": {
+          "description": "The acessKey that allows the creation of an user",
+          "type": "string"
+        },
+        "email": {
+          "description": "The e-mail address of the user",
+          "type": "string"
+        },
+        "subscription": {
+          "description": "Subscription plan name for the user",
+          "type": "string"
+        }
+      }
+    },
+    "userList": {
+      "properties": {
+        "users": {
+          "description": "List of database users",
+          "items": {
+            "$ref": "#/definitions/user"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "verification": {
+      "properties": {
+        "imageUrl": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "verificationPersonResponse": {
+      "properties": {
+        "verification": {
+          "properties": {
+            "confidence": {
+              "description": "Confidence of the provided answer, ranging from 0 to 100",
+              "format": "double",
+              "type": "number"
+            },
+            "same_person": {
+              "description": "Indicates if it is the person",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "host": "api.meerkat.com.br",
+  "info": {
+    "title": "meerkat frAPI",
+    "version": "2.4.3.5"
+  },
+  "paths": {
+    "/detect/face": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected",
+            "schema": {
+              "$ref": "#/definitions/facesList"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects faces of the image passed in the URL parameter.",
+        "tags": [
+          "detect"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/imageUrl"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected",
+            "schema": {
+              "$ref": "#/definitions/facesList"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects faces of the image passed in as an URL or uploaded in form-data.",
+        "tags": [
+          "detect"
+        ]
+      }
+    },
+    "/detect/landmarks": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces with landmarks",
+            "schema": {
+              "$ref": "#/definitions/landmarksList"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects faces and returns the landmark points of these faces.",
+        "tags": [
+          "detect"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/imageUrl"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces with landmarks",
+            "schema": {
+              "$ref": "#/definitions/landmarksList"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects faces and returns the landmark points of these faces.",
+        "tags": [
+          "detect"
+        ]
+      }
+    },
+    "/info/people": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "The list of people and the corresponding points",
+            "schema": {
+              "$ref": "#/definitions/infoPeopleResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "Returns the list of people and associated points",
+        "tags": [
+          "info"
+        ]
+      }
+    },
+    "/info/quota": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "The available and used quota of the user",
+            "schema": {
+              "$ref": "#/definitions/infoQuotaResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "Returns information about the quota used and available",
+        "tags": [
+          "info"
+        ]
+      }
+    },
+    "/recognize/people": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected and recognized",
+            "schema": {
+              "$ref": "#/definitions/recognizePersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects all the faces and return the recognition (labels) of them.",
+        "tags": [
+          "recognize"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/imageUrl"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected and recognized",
+            "schema": {
+              "$ref": "#/definitions/recognizePersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects all the faces and return the recognition (labels) of them.",
+        "tags": [
+          "recognize"
+        ]
+      }
+    },
+    "/train/person": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/deleteTrainPerson"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Correctly removed person",
+            "schema": {
+              "$ref": "#/definitions/deletePersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "Removes the person and associated training points from the database.",
+        "tags": [
+          "train"
+        ]
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "description": "Url of the image to be used",
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "description": "Label that will be associated with the face (e.g. person's name)",
+            "in": "query",
+            "name": "label",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected",
+            "schema": {
+              "$ref": "#/definitions/trainPersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects the largest face in the image and stores it the database (train).",
+        "tags": [
+          "train"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/trainImageUrl"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file"
+          },
+          {
+            "description": "Label that will be associated with the face (e.g. person's name)",
+            "in": "formData",
+            "name": "label",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the faces detected",
+            "schema": {
+              "$ref": "#/definitions/trainPersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This detects the largest face in the image and stores it the database (train).",
+        "tags": [
+          "train"
+        ]
+      }
+    },
+    "/train/point": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/deleteTrainPoint"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Correctly removed training sample"
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "Removes the person and associated training points from the database.",
+        "tags": [
+          "train"
+        ]
+      }
+    },
+    "/verify/person": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "label",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification successfully performed.",
+            "schema": {
+              "$ref": "#/definitions/verificationPersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This verify if the person on the picture is the same as the one trained with the given label.",
+        "tags": [
+          "verify"
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/verification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification successfully performed.",
+            "schema": {
+              "$ref": "#/definitions/verificationPersonResponse"
+            }
+          },
+          "401": {
+            "description": "No APIKey present or unauthorized"
+          }
+        },
+        "summary": "This verify if the person on the picture is the same as the one trained with the given label.",
+        "tags": [
+          "verify"
+        ]
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "api_key": {
+      "in": "header",
+      "name": "apiKey",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}

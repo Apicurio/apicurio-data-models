@@ -16,10 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.validation;
 
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.validation.RequiredPropertyValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
@@ -35,27 +32,6 @@ public class AaiRequiredPropertyValidationRule extends RequiredPropertyValidatio
      */
     public AaiRequiredPropertyValidationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
-     */
-    @Override
-    public void visitDocument(Document node) {
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
-     */
-    @Override
-    public void visitExtension(Extension node) {
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
-     */
-    @Override
-    public void visitInfo(AaiInfo node) {
     }
 
 }

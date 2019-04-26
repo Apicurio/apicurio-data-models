@@ -19,6 +19,8 @@ package io.apicurio.datamodels.core.factories;
 import io.apicurio.datamodels.asyncapi.visitors.AaiNodePathVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
+import io.apicurio.datamodels.openapi.v2.visitors.Oas20NodePathVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.Oas30NodePathVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -30,7 +32,9 @@ public class NodePathVisitorFactory {
             case asyncapi2:
                 return new AaiNodePathVisitor();
             case openapi2:
+                return new Oas20NodePathVisitor();
             case openapi3:
+                return new Oas30NodePathVisitor();
             default:
                 throw new RuntimeException("Failed to create a node path visitor for type: " + doc.getDocumentType());
         }

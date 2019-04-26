@@ -1,0 +1,89 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "0.1.0",
+    "title" : "Subnet Information API"
+  },
+  "host" : "subnet.api.hairmare.ch",
+  "paths" : {
+    "/subnet/{ip}/{prefix-length}" : {
+      "get" : {
+        "summary" : "Get subnet information.",
+        "description" : "Gets `SubnetInfo` objects containing all available\ninformation on a given subnet.\n",
+        "operationId" : "subnetInfo",
+        "parameters" : [ {
+          "name" : "ip",
+          "in" : "path",
+          "description" : "IP address",
+          "required" : true,
+          "type" : "string",
+          "format": "ip-address"
+        }, {
+          "name" : "prefix-length",
+          "in" : "path",
+          "description" : "Routing prefix",
+          "required" : true,
+          "type" : "number"
+        }],
+        "responses" : {
+          "200" : {
+            "description" : "Subnet information",
+            "schema" : {
+              "$ref" : "#/definitions/subnet_info_response_200"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "subnet_info_response_200" : {
+      "properties" : {
+        "prefixLength" : {
+          "type" : "number"
+        },
+        "firstHost" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "firstIP" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "lastHost" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "netmask" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "lastIP" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "IP" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "hostsCount" : {
+          "type" : "number"
+        },
+        "CIDR" : {
+          "type" : "string"
+        },
+        "blockSize" : {
+          "type" : "number"
+        },
+        "network" : {
+          "type" : "string",
+          "format" : "ip-address"
+        },
+        "wildcard" : {
+          "type" : "string",
+          "format" : "ip-address"
+        }
+      }
+    }
+  }
+}

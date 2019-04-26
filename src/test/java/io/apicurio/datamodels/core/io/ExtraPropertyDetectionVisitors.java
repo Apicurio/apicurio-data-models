@@ -20,6 +20,8 @@ import io.apicurio.datamodels.asyncapi.visitors.AaiAllNodeVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.v2.visitors.Oas20AllNodeVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.Oas30AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -31,7 +33,9 @@ public class ExtraPropertyDetectionVisitors {
             case asyncapi2:
                 return new AaiExtraPropertyDetectionVisitor();
             case openapi2:
+                return new Oas20ExtraPropertyDetectionVisitor();
             case openapi3:
+                return new Oas30ExtraPropertyDetectionVisitor();
             default:
                 throw new RuntimeException("Unimplemented extra property detection visitor for data model type: " + doc.getDocumentType());
         }
@@ -42,6 +46,50 @@ public class ExtraPropertyDetectionVisitors {
     }
 
     private static class AaiExtraPropertyDetectionVisitor extends AaiAllNodeVisitor implements IExtraPropertyDetectionVisitor {
+
+        public int extraPropertyCount = 0;
+        
+        /**
+         * @see io.apicurio.datamodels.core.io.ExtraPropertyDetectionVisitors.IExtraPropertyDetectionVisitor#getExtraPropertyCount()
+         */
+        @Override
+        public int getExtraPropertyCount() {
+            return extraPropertyCount;
+        }
+
+        /**
+         * @see io.apicurio.datamodels.core.visitors.AllNodeVisitor#visitNode(io.apicurio.datamodels.core.models.Node)
+         */
+        @Override
+        protected void visitNode(Node node) {
+            extraPropertyCount += node.getExtraPropertyNames().size();
+        }
+        
+    }
+
+    private static class Oas20ExtraPropertyDetectionVisitor extends Oas20AllNodeVisitor implements IExtraPropertyDetectionVisitor {
+
+        public int extraPropertyCount = 0;
+        
+        /**
+         * @see io.apicurio.datamodels.core.io.ExtraPropertyDetectionVisitors.IExtraPropertyDetectionVisitor#getExtraPropertyCount()
+         */
+        @Override
+        public int getExtraPropertyCount() {
+            return extraPropertyCount;
+        }
+
+        /**
+         * @see io.apicurio.datamodels.core.visitors.AllNodeVisitor#visitNode(io.apicurio.datamodels.core.models.Node)
+         */
+        @Override
+        protected void visitNode(Node node) {
+            extraPropertyCount += node.getExtraPropertyNames().size();
+        }
+        
+    }
+
+    private static class Oas30ExtraPropertyDetectionVisitor extends Oas30AllNodeVisitor implements IExtraPropertyDetectionVisitor {
 
         public int extraPropertyCount = 0;
         

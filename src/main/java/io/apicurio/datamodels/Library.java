@@ -94,6 +94,7 @@ public class Library {
     public static DocumentType discoverDocumentType(Object json) {
         String asyncapi = JsonCompat.getPropertyString(json, Constants.PROP_ASYNCAPI);
         String openapi = JsonCompat.getPropertyString(json, Constants.PROP_OPENAPI);
+        String swagger = JsonCompat.getPropertyString(json, Constants.PROP_SWAGGER);
         if (asyncapi != null && asyncapi.startsWith("2.")) {
             return DocumentType.asyncapi2;
         }
@@ -103,6 +104,11 @@ public class Library {
             }
             if (openapi.startsWith("3.0")) {
                 return DocumentType.openapi3;
+            }
+        }
+        if (swagger != null) {
+            if (swagger.startsWith("2.")) {
+                return DocumentType.openapi2;
             }
         }
         

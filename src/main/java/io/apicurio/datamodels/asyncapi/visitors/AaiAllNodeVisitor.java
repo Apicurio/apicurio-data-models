@@ -16,20 +16,11 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
-     */
-    @Override
-    public void visitInfo(AaiInfo node) {
-        this.visitNode(node);
-    }
 
 }

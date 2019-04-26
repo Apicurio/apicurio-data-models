@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -24,7 +23,5 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author eric.wittmann@gmail.com
  */
 public interface IAaiVisitor extends IVisitor {
-
-	void visitInfo(AaiInfo node);
 
 }

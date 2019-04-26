@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "EmailCollection": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Email"
+        },
+        "x-is-restful-resource": false
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

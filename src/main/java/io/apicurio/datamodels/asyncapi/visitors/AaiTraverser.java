@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.asyncapi.visitors;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.Traverser;
 
@@ -40,18 +39,8 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
      */
     @Override
     protected void doVisitDocument(Document node) {
-        AaiDocument doc = (AaiDocument) node;
-        this.traverseIfNotNull(doc.info);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitInfo(io.apicurio.datamodels.asyncapi.models.AaiInfo)
-     */
-    @Override
-    public void visitInfo(AaiInfo node) {
-        node.accept(this.visitor);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
+        AaiDocument aaiNode = (AaiDocument) node;
+        this.traverseCollection(aaiNode.servers);
     }
 
 }

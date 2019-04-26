@@ -1,0 +1,31 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Example Schema": {
+      "title": "Example Schema",
+      "type": "object",
+      "minProperties": 2,
+      "maxProperties": 3,
+      "readOnly": false,
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "age": {
+          "description": "Age in years",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName"
+      ]
+    }
+  }
+}

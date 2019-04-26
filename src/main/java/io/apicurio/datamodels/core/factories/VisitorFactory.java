@@ -27,6 +27,14 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
+import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelReader;
+import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelWriter;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v2.validation.Oas20ValidationVisitor;
+import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelReader;
+import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelWriter;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+import io.apicurio.datamodels.openapi.v3.validation.Oas30ValidationVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -49,7 +57,9 @@ public class VisitorFactory {
             case asyncapi2:
                 return new AaiValidationVisitor((AaiDocument) doc);
             case openapi2:
+                return new Oas20ValidationVisitor((Oas20Document) doc);
             case openapi3:
+                return new Oas30ValidationVisitor((Oas30Document) doc);
             default:
                 throw new RuntimeException("Failed to create a validation visitor for type: " + doc.getDocumentType());
         }
@@ -60,7 +70,9 @@ public class VisitorFactory {
             case asyncapi2:
                 return new AaiDataModelReader();
             case openapi2:
+                return new Oas20DataModelReader();
             case openapi3:
+                return new Oas30DataModelReader();
             default:
                 throw new RuntimeException("Failed to create a data model reader for type: " + type);
         }
@@ -71,7 +83,9 @@ public class VisitorFactory {
             case asyncapi2:
                 return new AaiDataModelWriter();
             case openapi2:
+                return new Oas20DataModelWriter();
             case openapi3:
+                return new Oas30DataModelWriter();
             default:
                 throw new RuntimeException("Failed to create a validation visitor for type: " + doc.getDocumentType());
         }

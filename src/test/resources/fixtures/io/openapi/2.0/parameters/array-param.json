@@ -1,0 +1,51 @@
+{
+  "swagger": "2.0",
+  "parameters": {
+    "arrayParam-number": {
+      "name": "arrayp-1",
+      "in": "formData",
+      "description": "an array of stuff",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "number",
+        "collectionFormat": "csv",
+        "maximum": 100,
+        "exclusiveMaximum": true,
+        "minimum": 1,
+        "exclusiveMinimum": false,
+        "multipleOf": 5,
+        "minItems": 1,
+        "maxItems": 20
+      }
+    },
+    "arrayParam-string": {
+      "name": "arrayp-2",
+      "in": "formData",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "collectionFormat": "csv",
+        "default": ["foo"],
+        "maxLength": 256,
+        "minLength": 1,
+        "pattern": "[a-z]+",
+        "uniqueItems": true
+      }
+    },
+    "arrayParam-enum": {
+      "name": "arrayp-3",
+      "in": "formData",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "collectionFormat": "csv",
+        "enum": [
+          "value1", "value2", "value3"
+        ]
+      }
+    }
+  }
+}

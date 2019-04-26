@@ -19,6 +19,14 @@ package io.apicurio.datamodels.core.visitors;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * Base class for all data model visitor adapters.
@@ -45,6 +53,62 @@ public class VisitorAdapter implements IVisitor {
      */
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     */
+    @Override
+    public void visitInfo(Info node) {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     */
+    @Override
+    public void visitContact(Contact node) {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     */
+    @Override
+    public void visitLicense(License node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     */
+    @Override
+    public void visitTag(Tag node) {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     */
+    @Override
+    public void visitSecurityRequirement(SecurityRequirement node) {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void visitExternalDocumentation(ExternalDocumentation node) {
     }
 
 }

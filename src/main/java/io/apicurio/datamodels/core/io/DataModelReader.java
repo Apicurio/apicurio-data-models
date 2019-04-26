@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.io;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.compat.JsonCompat;
@@ -25,6 +26,14 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * Base class for all data model readers.  Provides some common reading capabilities.
@@ -32,16 +41,26 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public abstract class DataModelReader<T extends Document> {
     
+    /**
+     * Constructor.
+     */
+    public DataModelReader() {
+    }
+
+    /**
+     * Reads the extension properties from the input and stores them in the extensible node.
+     * @param json
+     * @param node
+     */
     protected void readExtensions(Object json, ExtensibleNode node) {
-        List<String> keys = JsonCompat.keys(json);
-        for (String key : keys) {
+        JsonCompat.keys(json).forEach(key -> {
             if (key.startsWith(Constants.EXTENSION_PREFIX)) {
                 Extension extension = node.createExtension();
                 extension.name = key;
                 extension.value = JsonCompat.consumePropertyObject(json, key);
                 node.addExtension(key, extension);
             }
-        }
+        });
     }
 
     /**
@@ -52,14 +71,205 @@ public abstract class DataModelReader<T extends Document> {
      * @param model
      */
     protected void readExtraProperties(Object json, Node node) {
-        List<String> keys = JsonCompat.keys(json);
-        for (String key : keys) {
+        JsonCompat.keys(json).forEach(key -> {
             Object value = JsonCompat.consumePropertyObject(json, key);
             node.addExtraProperty(key, value);
             LoggerCompat.warn("Found unexpected data model property: ", key);
-        }
+        });
     }
 
-    public abstract void readDocument(Object json, T node);
+    /**
+     * Reads the root document.
+     * @param json
+     * @param node
+     */
+    public void readDocument(Object json, T node) {
+        Object info = JsonCompat.consumeProperty(json, Constants.PROP_INFO);
+        List<Object> tags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
+        Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
+        
+        if (info != null) {
+            node.info = node.createInfo();
+            this.readInfo(info, node.info);
+        }
+        
+        if (tags != null) {
+            List<Tag> tagModels = new ArrayList<>();
+            for (Object tag : tags) {
+                Tag tagModel = node.createTag();
+                this.readTag(tag, tagModel);
+                tagModels.add(tagModel);
+            }
+            node.tags = tagModels;
+        }
+        
+        if (externalDocs != null) {
+            node.externalDocs = node.createExternalDocumentation();
+            this.readExternalDocumentation(externalDocs, node.externalDocs);
+        }
+        this.readExtensions(json, node);
+    }
     
+    /**
+     * Reads an info object into a data model instance (info node).
+     * @param json
+     * @param node
+     */
+    public void readInfo(Object json, Info node) {
+        String title = JsonCompat.consumePropertyString(json, Constants.PROP_TITLE);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        String termsOfService = JsonCompat.consumePropertyString(json, Constants.PROP_TERMS_OF_SERVICE);
+        Object contact = JsonCompat.consumeProperty(json, Constants.PROP_CONTACT);
+        Object license = JsonCompat.consumeProperty(json, Constants.PROP_LICENSE);
+        String version = JsonCompat.consumePropertyString(json, Constants.PROP_VERSION);
+        
+        node.title = title;
+        node.description = description;
+        node.termsOfService = termsOfService;
+        node.version = version;
+        
+        if (contact != null) {
+            node.contact = node.createContact();
+            this.readContact(contact, node.contact);
+        }
+        
+        if (license != null) {
+            node.license = node.createLicense();
+            this.readLicense(license, node.license);
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a contact object info into the data model.
+     * @param json
+     * @param node
+     */
+    public void readContact(Object json, Contact node) {
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String url = JsonCompat.consumePropertyString(json, Constants.PROP_URL);
+        String email = JsonCompat.consumePropertyString(json, Constants.PROP_EMAIL);
+
+        node.name = name;
+        node.url = url;
+        node.email = email;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a license object info into the data model.
+     * @param json
+     * @param node
+     */
+    public void readLicense(Object json, License node) {
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String url = JsonCompat.consumePropertyString(json, Constants.PROP_URL);
+
+        node.name = name;
+        node.url = url;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads an tag object into a data model instance (tag node).
+     * @param json
+     * @param node
+     */
+    public void readTag(Object json, Tag node) {
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
+        
+        node.name = name;
+        node.description = description;
+        
+        if (externalDocs != null) {
+            ExternalDocumentation externalDocsModel = node.createExternalDocumentation();
+            this.readExternalDocumentation(externalDocs, externalDocsModel);
+            node.externalDocs = externalDocsModel;
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a server model.
+     * @param json
+     * @param node
+     */
+    public void readServer(Object json, Server node) {
+        String url = JsonCompat.consumePropertyString(json, Constants.PROP_URL);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object variables = JsonCompat.consumeProperty(json, Constants.PROP_VARIABLES);
+        
+        node.url = url;
+        node.description = description;
+        
+        if (variables != null) {
+            JsonCompat.keys(variables).forEach(key -> {
+                Object serverVariable = JsonCompat.consumeProperty(variables, key);
+                ServerVariable serverVariableModel = node.createServerVariable(key);
+                this.readServerVariable(serverVariable, serverVariableModel);
+                node.addServerVariable(key, serverVariableModel);
+            });
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a server variable into the data model.
+     * @param json
+     * @param node
+     */
+    public void readServerVariable(Object json, ServerVariable node) {
+        List<String> enum_ = JsonCompat.consumePropertyStringArray(json, Constants.PROP_ENUM);
+        String default_ = JsonCompat.consumePropertyString(json, Constants.PROP_DEFAULT);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        
+        node.enum_ = enum_;
+        node.default_ = default_;
+        node.description = description;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a security requirement.
+     * @param json
+     * @param node
+     */
+    public void readSecurityRequirement(Object json, SecurityRequirement node) {
+        JsonCompat.keys(json).forEach(key -> {
+            List<String> scopes = JsonCompat.consumePropertyStringArray(json, key);
+            node.addSecurityRequirementItem(key, scopes);
+        });
+    }
+    
+    /**
+     * Reads an external documentation into the data model.
+     * @param json
+     * @param node
+     */
+    public void readExternalDocumentation(Object json, ExternalDocumentation node) {
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        String url = JsonCompat.consumePropertyString(json, Constants.PROP_URL);
+
+        node.description = description;
+        node.url = url;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+
 }

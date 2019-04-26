@@ -1,0 +1,44 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ],
+        "responses": {
+          "200": {
+            "description": "A simple string response",
+            "schema": {
+              "$ref": "#/definitions/String"
+            },
+            "examples": {
+              "application/json": {
+                "name": "Puma",
+                "type": "Dog",
+                "color": "Black",
+                "gender": "Female",
+                "breed": "Mixed"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    }
+  }
+}

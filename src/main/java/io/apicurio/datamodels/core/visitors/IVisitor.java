@@ -19,6 +19,14 @@ package io.apicurio.datamodels.core.visitors;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * A basic visitor interface used to visit data model instances.
@@ -27,7 +35,15 @@ import io.apicurio.datamodels.core.models.ValidationProblem;
 public interface IVisitor {
 
     void visitDocument(Document node);
+    void visitInfo(Info node);
+    void visitContact(Contact node);
+    void visitLicense(License node);
+    void visitTag(Tag node);
+    void visitExternalDocumentation(ExternalDocumentation node);
     void visitExtension(Extension node);
+    void visitServer(Server node);
+    void visitSecurityRequirement(SecurityRequirement node);
+    void visitServerVariable(ServerVariable node);
     void visitValidationProblem(ValidationProblem problem);
 
 }

@@ -24,6 +24,14 @@ import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.IVisitable;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.Contact;
+import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
  * A base class for all traversers.  All domain specific traversers should extend this and then
@@ -48,9 +56,9 @@ public class Traverser implements ITraverser, IVisitor {
      */
     protected void traverseCollection(Collection<? extends IVisitable> items) {
         if (items != null) {
-            for (IVisitable node : items) {
+            items.forEach(node -> {
                 this.traverseIfNotNull(node);
-            }
+            });
         }
     }
 
@@ -93,9 +101,15 @@ public class Traverser implements ITraverser, IVisitor {
      * @see io.apicurio.asyncapi.core.visitors.INodeVisitor#visitDocument(io.apicurio.datamodels.asyncapi.models.Document)
      */
 	@Override
-	public void visitDocument(Document node) {
+	public final void visitDocument(Document node) {
 		node.accept(this.visitor);
+		
+		this.traverseIfNotNull(node.info);
+		this.traverseCollection(node.tags);
+		this.traverseIfNotNull(node.externalDocs);
+		
 		this.doVisitDocument(node);
+		
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
 	}
@@ -122,6 +136,89 @@ public class Traverser implements ITraverser, IVisitor {
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
         problem.accept(this.visitor);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     */
+    @Override
+    public void visitInfo(Info node) {
+        node.accept(this.visitor);
+        this.traverseIfNotNull(node.contact);
+        this.traverseIfNotNull(node.license);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     */
+    @Override
+    public void visitContact(Contact node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     */
+    @Override
+    public void visitLicense(License node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     */
+    @Override
+    public void visitTag(Tag node) {
+        node.accept(this.visitor);
+        this.traverseIfNotNull(node.externalDocs);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     */
+    @Override
+    public void visitSecurityRequirement(SecurityRequirement node) {
+        node.accept(this.visitor);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        node.accept(this.visitor);
+        this.traverseCollection(node.getServerVariables());
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void visitExternalDocumentation(ExternalDocumentation node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
 }
