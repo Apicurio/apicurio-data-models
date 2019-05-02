@@ -19,7 +19,21 @@
  */
 
 import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
+import {Node} from "../src/io/apicurio/datamodels/core/models/Node";
 import {Library} from "../src/io/apicurio/datamodels/Library";
+import {CombinedAllNodeVisitor} from "../src/io/apicurio/datamodels/combined/visitors/CombinedAllNodeVisitor";
+import {TraverserDirection} from "../src/io/apicurio/datamodels/core/visitors/TraverserDirection";
+
+
+class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
+    
+    public extraPropertyCount: number = 0;
+    
+    visitNode(node: Node): void {
+        this.extraPropertyCount += node.getExtraPropertyNames().length;
+    }
+
+}
 
 
 export interface TestSpec {
@@ -46,7 +60,12 @@ describe("Full I/O", () => {
             // Parse/read the document
             let document: Document = Library.readDocument(json);
             
-            // TODO:  Make sure the correct # of extra properties were read
+            // Make sure the correct # of extra properties were read
+            let extraPropVis: ExtraPropertyDetectionVisitor = new ExtraPropertyDetectionVisitor();
+            Library.visitTree(document, extraPropVis, TraverserDirection.down);
+            let actualExtraProps: number = extraPropVis.extraPropertyCount;
+            let expectedExtraProps: number = spec.extraProperties ? spec.extraProperties : 0;
+            expect(actualExtraProps).toEqual(expectedExtraProps);
 
             // Serialize/write the document
             let jsObj: any = Library.writeNode(document);

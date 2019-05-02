@@ -37,7 +37,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.core.io.ExtraPropertyDetectionVisitors.IExtraPropertyDetectionVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
@@ -128,7 +127,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 Assert.assertNotNull("Document was null.", doc);
                 
                 // Make sure we read the appropriate number of "extra" properties
-                IExtraPropertyDetectionVisitor epv = ExtraPropertyDetectionVisitors.create(doc);
+                ExtraPropertyDetectionVisitor epv = new ExtraPropertyDetectionVisitor();
                 Library.visitTree(doc, epv, TraverserDirection.down);
                 int actualExtraProps = epv.getExtraPropertyCount();
                 int expectedExtraProps = child.getExtraProperties();
