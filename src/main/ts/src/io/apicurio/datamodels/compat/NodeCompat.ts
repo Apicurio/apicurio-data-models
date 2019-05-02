@@ -17,7 +17,10 @@
 
 export class NodeCompat {
 
-    public static property(node: any, propertyName: string): any {
+    public static getProperty(node: any, propertyName: string): any {
+        if (propertyName == "default" || propertyName == "enum") {
+            propertyName += "_";
+        }
         let rval: any = node[propertyName];
         if (rval === undefined) {
             rval = null;
@@ -36,6 +39,18 @@ export class NodeCompat {
             }
         }
         return -1;
+    }
+    
+    public static equals(value1: string, value2: string): boolean {
+        return value1 == value2;
+    }
+
+    public static isNode(object: any): boolean {
+        return object !== null && object !== undefined && !Array.isArray(object) && object["_ownerDocument"];
+    }
+
+    public static isList(object: any): boolean {
+        return object !== null && object !== undefined && Array.isArray(object);
     }
 
 }

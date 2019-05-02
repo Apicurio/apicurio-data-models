@@ -18,7 +18,7 @@ package io.apicurio.datamodels.core.models.common;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public abstract class SecurityRequirement extends Node {
     
-    private Map<String, List<String>> _items = new HashMap<>();
+    private Map<String, List<String>> _items = new LinkedHashMap<>();
     
     /**
      * Constructor.

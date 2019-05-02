@@ -49,6 +49,7 @@ public class Constants {
     public static final String PROP_PASSWORD = "password";
     public static final String PROP_IMPLICIT = "implicit";
     public static final String PROP_OPEN_ID_CONNECT_URL = "openIdConnectUrl";
+    public static final String PROP_FLOW = "flow";
     public static final String PROP_FLOWS = "flows";
     public static final String PROP_BEARER_FORMAT = "bearerFormat";
     public static final String PROP_SCHEME = "scheme";
@@ -87,6 +88,7 @@ public class Constants {
     public static final String PROP_ITEMS = "items";
     public static final String PROP_TYPE = "type";
     public static final String PROP_REQUIRED = "required";
+    public static final String PROP_COLLECTION_FORMAT = "collectionFormat";
     public static final String PROP_MIN_PROPERTIES = "minProperties";
     public static final String PROP_MAX_PROPERTIES = "maxProperties";
     public static final String PROP_UNIQUE_ITEMS = "uniqueItems";

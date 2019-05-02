@@ -130,14 +130,15 @@ public class NodePath {
             node.accept(visitor);
         }
         
+        Object oNode = node;
         for (NodePathSegment segment : this.segments) {
-            node = segment.resolve(node);
-            if (visitor != null && node != null && node instanceof IVisitable) {
-                node.accept(visitor);
+            oNode = segment.resolve(oNode);
+            if (visitor != null && oNode != null && oNode instanceof IVisitable) {
+                ((IVisitable) oNode).accept(visitor);
             }
         }
 
-        return node;
+        return (Node) oNode;
     }
 
     /**
@@ -148,7 +149,7 @@ public class NodePath {
      * @param node
      */
     public boolean contains(Node node) {
-        Node tnode = node.ownerDocument();
+        Object tnode = node.ownerDocument();
         // Of course the root document is always a match.
         if (tnode == node) {
             return true;
@@ -227,16 +228,22 @@ public class NodePath {
          * @param from
          */
         @SuppressWarnings("rawtypes")
-        public Node resolve(Node from) {
+        public Object resolve(Object from) {
             if (from == null) {
                 return null;
             }
-            Node childNode = null;
+            Object childNode = null; // Type is:  Node || List
             if (this.isIndex() && from instanceof IIndexedNode) {
                 childNode = ((IIndexedNode) from).getItem(this.getValue());
+            } else if (this.getValue().indexOf("x-") == 0) {
+                Node fromNode = (Node) from;
+                if (fromNode.isExtensible()) {
+                    childNode = ((ExtensibleNode) from).getExtension(this.getValue());
+                } else {
+                    childNode = null;
+                }
             } else {
-                // TODO handle the array case
-                childNode = (Node) NodeCompat.property(from, this.getValue());
+                childNode = NodeCompat.getProperty(from, this.getValue());
             }
             return childNode;
         }

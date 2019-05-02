@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.visitors.OasAllNodeVisitor;
 
 /**
@@ -27,6 +28,15 @@ public class Oas30AllNodeVisitor extends OasAllNodeVisitor implements IOas30Visi
      * Constructor.
      */
     public Oas30AllNodeVisitor() {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas30ParameterDefinition node) {
+        visitNode(node);
+        
     }
 
 }

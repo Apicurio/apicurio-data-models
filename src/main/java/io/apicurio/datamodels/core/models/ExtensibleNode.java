@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.core.models;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -28,6 +28,14 @@ import java.util.Map;
 public abstract class ExtensibleNode extends Node {
 
     protected Map<String, Extension> _extensions;
+   
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#isExtensible()
+     */
+    @Override
+    public boolean isExtensible() {
+        return true;
+    }
 
     /**
      * Called to create an extension child.
@@ -46,7 +54,7 @@ public abstract class ExtensibleNode extends Node {
      */
     public void addExtension(String name, Extension extension) {
         if (this._extensions == null) {
-            this._extensions = new HashMap<>();
+            this._extensions = new LinkedHashMap<>();
         }
         this._extensions.put(name, extension);
     }

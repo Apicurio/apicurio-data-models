@@ -30,7 +30,10 @@ import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
@@ -256,6 +259,26 @@ public abstract class DataModelReader<T extends Document> {
     }
     
     /**
+     * Reads a security scheme.
+     * @param json
+     * @param node
+     */
+    public void readSecurityScheme(Object json, SecurityScheme node) {
+        String type = JsonCompat.consumePropertyString(json, Constants.PROP_TYPE);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String in = JsonCompat.consumePropertyString(json, Constants.PROP_IN);
+        
+        node.type = type;
+        node.description = description;
+        node.name = name;
+        node.in = in;
+        
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+    
+    /**
      * Reads an external documentation into the data model.
      * @param json
      * @param node
@@ -271,5 +294,36 @@ public abstract class DataModelReader<T extends Document> {
         this.readExtraProperties(json, node);
     }
 
+    /**
+     * Reads a schema.
+     * @param json
+     * @param node
+     */
+    public void readSchema(Object json, Schema node) {
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a single parameter.
+     * @param json
+     * @param node
+     */
+    public void readParameter(Object json, Parameter node) {
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
+
+        node.name = name;
+        node.description = description;
+        
+        if (schema != null) {
+            node.schema = node.createSchema();
+            this.readSchema(schema, node.schema);
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
 
 }

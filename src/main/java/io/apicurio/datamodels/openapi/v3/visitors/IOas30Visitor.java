@@ -16,11 +16,15 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
+ * The OpenAPI 3.0.x version of the visitor interface.
  * @author eric.wittmann@gmail.com
  */
 public interface IOas30Visitor extends IOasVisitor {
+
+    public void visitParameterDefinition(Oas30ParameterDefinition node);
 
 }

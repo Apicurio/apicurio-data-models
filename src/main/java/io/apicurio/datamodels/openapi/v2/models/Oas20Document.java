@@ -38,10 +38,10 @@ public class Oas20Document extends OasDocument {
     public List<String> schemes;
     public List<String> consumes;
     public List<String> produces;
-//    public definitions: Oas20Definitions;
-//    public parameters: Oas20ParametersDefinitions;
+    public Oas20Definitions definitions;
+    public Oas20ParameterDefinitions parameters;
 //    public responses: Oas20ResponsesDefinitions;
-//    public securityDefinitions: Oas20SecurityDefinitions;
+    public Oas20SecurityDefinitions securityDefinitions;
 
     /**
      * @see io.apicurio.datamodels.core.models.Document#getDocumentType()
@@ -56,8 +56,20 @@ public class Oas20Document extends OasDocument {
      */
     @Override
     public OasPaths createPaths() {
-        // TODO Auto-generated method stub
-        return null;
+        OasPaths rval = new Oas20Paths();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates an OAS 2.0 Definitions object.
+     */
+    public Oas20Definitions createDefinitions() {
+        Oas20Definitions rval = new Oas20Definitions();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
     }
     
     /**
@@ -102,6 +114,26 @@ public class Oas20Document extends OasDocument {
         ed._ownerDocument = this.ownerDocument();
         ed._parent = this;
         return ed;
+    }
+
+    /**
+     * Creates a security definitions.
+     */
+    public Oas20SecurityDefinitions createSecurityDefinitions() {
+        Oas20SecurityDefinitions sd = new Oas20SecurityDefinitions();
+        sd._ownerDocument = this.ownerDocument();
+        sd._parent = this;
+        return sd;
+    }
+
+    /**
+     * Creates the parameter definitions model.
+     */
+    public Oas20ParameterDefinitions createParameterDefinitions() {
+        Oas20ParameterDefinitions rval = new Oas20ParameterDefinitions();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
     }
 
 }

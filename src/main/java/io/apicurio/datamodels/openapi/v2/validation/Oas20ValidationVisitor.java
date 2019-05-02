@@ -16,7 +16,13 @@
 
 package io.apicurio.datamodels.openapi.v2.validation;
 
+import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
+import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 import io.apicurio.datamodels.openapi.validation.OasValidationVisitor;
 
@@ -31,6 +37,54 @@ public class Oas20ValidationVisitor extends OasValidationVisitor implements IOas
      */
     public Oas20ValidationVisitor(Oas20Document document) {
         super(document);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas20ParameterDefinition node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitItems(io.apicurio.datamodels.openapi.v2.models.Oas20Items)
+     */
+    @Override
+    public void visitItems(Oas20Items node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitScopes(io.apicurio.datamodels.openapi.v2.models.Oas20Scopes)
+     */
+    @Override
+    public void visitScopes(Oas20Scopes node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitSecurityDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions)
+     */
+    @Override
+    public void visitSecurityDefinitions(Oas20SecurityDefinitions node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20Definitions)
+     */
+    @Override
+    public void visitDefinitions(Oas20Definitions node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions)
+     */
+    @Override
+    public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
+        this.acceptAll(node);
     }
 
 }

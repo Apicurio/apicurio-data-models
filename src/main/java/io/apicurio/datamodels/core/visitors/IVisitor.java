@@ -21,9 +21,14 @@ import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
@@ -45,5 +50,10 @@ public interface IVisitor {
     void visitSecurityRequirement(SecurityRequirement node);
     void visitServerVariable(ServerVariable node);
     void visitValidationProblem(ValidationProblem problem);
+    void visitSchema(Schema node);
+    void visitSchemaDefinition(ISchemaDefinition node);
+    void visitParameter(Parameter node);
+    void visitOperation(Operation node);
+    void visitSecurityScheme(SecurityScheme node);
 
 }

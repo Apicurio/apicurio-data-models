@@ -253,7 +253,7 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-                    <!-- Build+package the library -->
+                    <!-- Test the library -->
                     <execution>
                         <id>ng test</id>
                         <goals>

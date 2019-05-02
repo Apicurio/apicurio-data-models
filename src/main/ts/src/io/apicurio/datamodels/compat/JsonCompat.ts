@@ -40,6 +40,25 @@ export class JsonCompat {
         return object;
     }
     
+    public static isBoolean(json: any): boolean {
+        return typeof json === "boolean";
+    }
+    
+    public static toBoolean(json: any): boolean {
+        return <boolean>json;
+    }
+    
+    public static isArray(json: any): boolean {
+        if (!json) {
+            return false;
+        }
+        return Array.isArray(json);
+    }
+
+    public static toList(json: any): any[] {
+        return <any[]> json;
+    }
+    
     /****** Getters ******/
 
     public static keys(json: any): string[] {
@@ -80,6 +99,20 @@ export class JsonCompat {
         return JsonCompat.consumeProperty(json, propertyName);
     }
 
+    public static getPropertyBoolean(json: any, propertyName: string): boolean {
+        return JsonCompat.getProperty(json, propertyName);
+    }
+    public static consumePropertyBoolean(json: any, propertyName: string): boolean {
+        return JsonCompat.consumeProperty(json, propertyName);
+    }
+
+    public static getPropertyNumber(json: any, propertyName: string): number {
+        return JsonCompat.getProperty(json, propertyName);
+    }
+    public static consumePropertyNumber(json: any, propertyName: string): number {
+        return JsonCompat.consumeProperty(json, propertyName);
+    }
+
     public static getPropertyStringArray(json: any, propertyName: string): string[] {
         return JsonCompat.getProperty(json, propertyName);
     }
@@ -98,6 +131,14 @@ export class JsonCompat {
     }
     
     public static setPropertyString(json: any, propertyName: string, propertyValue: string): void {
+        JsonCompat.setProperty(json, propertyName, propertyValue);
+    }
+
+    public static setPropertyBoolean(json: any, propertyName: string, propertyValue: boolean): void {
+        JsonCompat.setProperty(json, propertyName, propertyValue);
+    }
+
+    public static setPropertyNumber(json: any, propertyName: string, propertyValue: number): void {
         JsonCompat.setProperty(json, propertyName, propertyValue);
     }
 

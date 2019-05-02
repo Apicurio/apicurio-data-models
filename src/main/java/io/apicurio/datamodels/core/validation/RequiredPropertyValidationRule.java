@@ -43,7 +43,7 @@ public class RequiredPropertyValidationRule extends ValidationRule {
      * @param messageProperties
      */
     protected void requireProperty(Node node, String propertyName, Map<String, Object> messageProperties) {
-        Object propertyValue = NodeCompat.property(node, propertyName);
+        Object propertyValue = NodeCompat.getProperty(node, propertyName);
         if (propertyValue == null) {
             this.report(node, propertyName, messageProperties);
         }

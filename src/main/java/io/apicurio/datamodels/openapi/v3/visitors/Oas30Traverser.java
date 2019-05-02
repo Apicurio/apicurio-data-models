@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.v3.visitors;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.visitors.OasTraverser;
 
 /**
@@ -41,6 +42,15 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
         Oas30Document doc = (Oas30Document) node;
         super.doVisitDocument(doc);
         this.traverseCollection(doc.servers);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas30ParameterDefinition node) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -22,9 +22,14 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
@@ -52,6 +57,14 @@ public class ReverseTraverser implements IVisitor, ITraverser {
     @Override
     public void traverse(Node node) {
         node.accept(this);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
+     */
+    @Override
+    public void visitValidationProblem(ValidationProblem problem) {
+        // Validation problems are not traversed
     }
 
     /**
@@ -144,11 +157,48 @@ public class ReverseTraverser implements IVisitor, ITraverser {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
      */
     @Override
-    public void visitValidationProblem(ValidationProblem problem) {
-        // Validation problems are not traversed
+    public void visitSchema(Schema node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
+     */
+    @Override
+    public void visitParameter(Parameter node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    public void visitOperation(Operation node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     */
+    @Override
+    public void visitSecurityScheme(SecurityScheme node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     */
+    @Override
+    public void visitSchemaDefinition(ISchemaDefinition node) {
+        node.accept(this.visitor);
+        this.traverse(((Node) node).parent());
     }
 
 }

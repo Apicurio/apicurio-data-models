@@ -62,7 +62,6 @@ public abstract class Document extends ExtensibleNode {
      */
     public abstract Info createInfo();
 
-
     /**
      * Creates a Tag node.
      */

@@ -16,16 +16,28 @@
 
 package io.apicurio.datamodels.openapi.visitors;
 
+import java.util.List;
+
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.Traverser;
+import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.models.OasPaths;
+import io.apicurio.datamodels.openapi.models.OasResponse;
+import io.apicurio.datamodels.openapi.models.OasResponses;
+import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.openapi.models.OasXML;
 
 /**
  * An OpenAPI data model traverser.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasTraverser extends Traverser implements IOasVisitor {
+public class OasTraverser extends Traverser implements IOasVisitor {
 
     /**
      * Constructor.
@@ -43,6 +55,106 @@ public abstract class OasTraverser extends Traverser implements IOasVisitor {
         OasDocument doc = (OasDocument) node;
         super.doVisitDocument(node);
         this.traverseCollection(doc.security);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPaths(io.apicurio.datamodels.openapi.models.OasPaths)
+     */
+    @Override
+    public void visitPaths(OasPaths node) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPathItem(io.apicurio.datamodels.openapi.models.OasPathItem)
+     */
+    @Override
+    public void visitPathItem(OasPathItem node) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponse(io.apicurio.datamodels.openapi.models.OasResponse)
+     */
+    @Override
+    public void visitResponse(OasResponse node) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponses(io.apicurio.datamodels.openapi.models.OasResponses)
+     */
+    @Override
+    public void visitResponses(OasResponses node) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitXML(io.apicurio.datamodels.openapi.models.OasXML)
+     */
+    @Override
+    public void visitXML(OasXML node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
+     */
+    @Override
+    public void visitAllOfSchema(OasSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
+     */
+    @Override
+    public void visitItemsSchema(OasSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
+     */
+    @Override
+    public void visitAdditionalPropertiesSchema(OasSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.openapi.models.IOasPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IOasPropertySchema node) {
+        this.visitSchema((Schema) node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.Traverser#traverseSchema(io.apicurio.datamodels.core.models.common.Schema)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void traverseSchema(Schema node) {
+        super.traverseSchema(node);
+        OasSchema schema = (OasSchema) node;
+        if (NodeCompat.isList(schema.items)) {
+            this.traverseCollection((List<Node>) schema.items);
+        } else {
+            this.traverseIfNotNull((Node) schema.items);
+        }
+        this.traverseCollection(schema.allOf);
+        this.traverseCollection(schema.getProperties());
+        if (NodeCompat.isNode(schema.additionalProperties)) {
+            this.traverseIfNotNull((Node) schema.additionalProperties);
+        }
+        this.traverseIfNotNull(schema.xml);
+        this.traverseIfNotNull(schema.externalDocs);
     }
 
 }

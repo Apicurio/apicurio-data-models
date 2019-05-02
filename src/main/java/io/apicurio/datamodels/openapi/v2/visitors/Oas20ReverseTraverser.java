@@ -16,6 +16,12 @@
 
 package io.apicurio.datamodels.openapi.v2.visitors;
 
+import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
+import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.visitors.OasReverseTraverser;
 
 /**
@@ -29,6 +35,60 @@ public class Oas20ReverseTraverser extends OasReverseTraverser implements IOas20
      */
     public Oas20ReverseTraverser(IOas20Visitor visitor) {
         super(visitor);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas20ParameterDefinition node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitItems(io.apicurio.datamodels.openapi.v2.models.Oas20Items)
+     */
+    @Override
+    public void visitItems(Oas20Items node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitScopes(io.apicurio.datamodels.openapi.v2.models.Oas20Scopes)
+     */
+    @Override
+    public void visitScopes(Oas20Scopes node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitSecurityDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions)
+     */
+    @Override
+    public void visitSecurityDefinitions(Oas20SecurityDefinitions node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20Definitions)
+     */
+    @Override
+    public void visitDefinitions(Oas20Definitions node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions)
+     */
+    @Override
+    public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
     }
 
 }

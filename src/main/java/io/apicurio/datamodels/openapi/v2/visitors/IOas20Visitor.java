@@ -16,11 +16,25 @@
 
 package io.apicurio.datamodels.openapi.v2.visitors;
 
+import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
+import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
+ * The OpenAPI 2.0 version of the visitor interface.
  * @author eric.wittmann@gmail.com
  */
 public interface IOas20Visitor extends IOasVisitor {
+
+    public void visitParameterDefinition(Oas20ParameterDefinition node);
+    public void visitItems(Oas20Items node);
+    public void visitScopes(Oas20Scopes node);
+    public void visitSecurityDefinitions(Oas20SecurityDefinitions node);
+    public void visitDefinitions(Oas20Definitions node);
+    public void visitParameterDefinitions(Oas20ParameterDefinitions node);
 
 }

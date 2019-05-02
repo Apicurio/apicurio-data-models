@@ -17,11 +17,28 @@
 package io.apicurio.datamodels.openapi.visitors;
 
 import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.models.OasPaths;
+import io.apicurio.datamodels.openapi.models.OasResponse;
+import io.apicurio.datamodels.openapi.models.OasResponses;
+import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.openapi.models.OasXML;
 
 /**
  * The common/shared OpenAPI visitor interface.  All OpenAPI visitors must implement this.
  * @author eric.wittmann@gmail.com
  */
 public interface IOasVisitor extends IVisitor {
+
+    public void visitPaths(OasPaths node);
+    public void visitPathItem(OasPathItem node);
+    public void visitResponse(OasResponse node);
+    public void visitResponses(OasResponses node);
+    public void visitXML(OasXML node);
+    public void visitAllOfSchema(OasSchema node);
+    public void visitItemsSchema(OasSchema node);
+    public void visitAdditionalPropertiesSchema(OasSchema node);
+    public void visitPropertySchema(IOasPropertySchema node);
 
 }

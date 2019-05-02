@@ -39,6 +39,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.io.ExtraPropertyDetectionVisitors.IExtraPropertyDetectionVisitor;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
@@ -140,9 +142,39 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 String roundTrip = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(roundTripJs);
                 Assert.assertNotNull(roundTrip);
                 assertJsonEquals(original, roundTrip);
+                
+                // Now test that we can create a Node Path to **every** node in the document!!
+                List<Node> allNodes = getAllNodes(doc);
+                allNodes.forEach(node -> {
+                    try {
+                        NodePath nodePath = Library.createNodePath(node);
+                        Assert.assertNotNull(nodePath);
+                        String path = nodePath.toString();
+                        Assert.assertNotNull(nodePath);
+                        nodePath = new NodePath(path);
+                        Node resolvedNode = nodePath.resolve(doc, null);
+                        Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
+                        Assert.assertTrue("Path failed to resolve to the proper node: " + path, node == resolvedNode);
+                        String resolvedPath = Library.createNodePath(node).toString();
+                        Assert.assertEquals(path, resolvedPath);
+                    } catch (Throwable t) {
+                        System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
+                        throw t;
+                    }
+                });
             }
         };
         runLeaf(statement, description, notifier);
+    }
+
+    /**
+     * Returns all nodes in the document.
+     * @param doc
+     */
+    protected List<Node> getAllNodes(Document doc) {
+        IoTestAllNodeFinder finder = new IoTestAllNodeFinder();
+        Library.visitTree(doc, finder, TraverserDirection.down);
+        return finder.allNodes;
     }
 
     /**

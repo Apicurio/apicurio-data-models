@@ -28,18 +28,24 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
+ * Base class for all data model writers.
  * @author eric.wittmann@gmail.com
  */
-public abstract class DataModelWriter implements IVisitor {
+public class DataModelWriter implements IVisitor {
 
     private Object _result;
     private Map<Integer, Object> _modelIdToJS;
@@ -114,7 +120,9 @@ public abstract class DataModelWriter implements IVisitor {
      * @param node
      * @param json
      */
-    protected abstract void writeDocument(Document node, Object json);
+    protected void writeDocument(Document node, Object json) {
+        // Subclasses should implement this.
+    }
 
     /**
      * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitExtension(io.apicurio.asyncapi.core.models.AaiExtension)
@@ -272,6 +280,72 @@ public abstract class DataModelWriter implements IVisitor {
 
         this.updateIndex(node, json);
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    public void visitOperation(Operation node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeOperation(json, node);
+        writeExtraProperties(json, node);
+        
+        JsonCompat.setProperty(parent, node.getType(), json);
+
+        this.updateIndex(node, json);
+    }
+    protected void writeOperation(Object json, Operation node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_OPERATION_ID, node.operationId);
+        JsonCompat.setPropertyString(json, Constants.PROP_SUMMARY, node.summary);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
+     */
+    @Override
+    public void visitParameter(Parameter node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeParameter(json, node);
+        writeExtraProperties(json, node);
+        
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_PARAMETERS, json);
+        
+        this.updateIndex(node, json);
+    }
+    protected void writeParameter(Object json, Parameter node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SCHEMA);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
+     */
+    @Override
+    public void visitSchema(Schema node) {
+        this.doVisitSchema(node, Constants.PROP_SCHEMA, false);
+    }
+    protected void doVisitSchema(Schema node, String parentPropertyName, boolean isCollection) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeSchema(json, node);
+        writeExtraProperties(json, node);
+        
+        if (isCollection) {
+            JsonCompat.appendToArrayProperty(parent, parentPropertyName, json);
+        } else {
+            JsonCompat.setProperty(parent, parentPropertyName, json);
+        }
+
+        this.updateIndex(node, json);
+    }
+    protected void writeSchema(Object json, Schema node) {
+        // Subclasses should implement this.
+    }
 
     /**
      * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitValidationProblem(io.apicurio.asyncapi.core.validation.AaiValidationProblem)
@@ -279,6 +353,43 @@ public abstract class DataModelWriter implements IVisitor {
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
         // Validation problems are not written out, obviously.
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     */
+    @Override
+    public void visitSecurityScheme(SecurityScheme node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeSecurityScheme(json, node);
+        writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, node.getSchemeName(), json);
+
+        this.updateIndex(node, json);
+    }
+    protected void writeSecurityScheme(Object json, SecurityScheme node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_TYPE, node.type);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
+        JsonCompat.setPropertyString(json, Constants.PROP_IN, node.in);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     */
+    @Override
+    public void visitSchemaDefinition(ISchemaDefinition node) {
+        Schema schema = (Schema) node;
+        Object parent = this.lookupParentJson(schema);
+        Object json = JsonCompat.objectNode();
+        writeSchema(json, schema);
+        writeExtraProperties(json, schema);
+
+        JsonCompat.setProperty(parent, node.getName(), json);
+
+        this.updateIndex(schema, json);
     }
 
 }

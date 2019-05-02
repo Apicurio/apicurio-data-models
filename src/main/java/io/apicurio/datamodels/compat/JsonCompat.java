@@ -29,9 +29,11 @@ import java.util.Map.Entry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.databind.node.ValueNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 
 /**
@@ -92,7 +94,45 @@ public class JsonCompat {
         }
         return json;
     }
+
+    public static boolean isBoolean(Object json) {
+        if (json == null) {
+            return false;
+        }
+        JsonNode node = (JsonNode) json;
+        return node.isBoolean();
+    }
+
+    public static Boolean toBoolean(Object json) {
+        if (json == null) {
+            return null;
+        }
+        JsonNode node = (JsonNode) json;
+        if (node.isBoolean()) {
+            return ((BooleanNode) json).asBoolean();
+        }
+        return null;
+    }
+
+    public static boolean isArray(Object json) {
+        if (json == null) {
+            return false;
+        }
+        JsonNode node = (JsonNode) json;
+        return node.isArray();
+    }
     
+    public static List<Object> toList(Object json) {
+        List<Object> rval = new ArrayList<>();
+        if (json != null) {
+            ArrayNode array = (ArrayNode) json;
+            for (int idx = 0; idx < array.size(); idx++) {
+                rval.add(array.get(idx));
+            }
+        }
+        return rval;
+    }
+
     /*
      * Getters
      */
@@ -183,6 +223,48 @@ public class JsonCompat {
             return propertyNode.asText();
         }
     }
+
+    public static Boolean getPropertyBoolean(Object json, String propertyName) {
+        JsonNode propertyNode = (JsonNode) JsonCompat.getProperty(json, propertyName);
+        if (propertyNode == null) {
+            return null;
+        } else {
+            return propertyNode.asBoolean();
+        }
+    }
+    public static Boolean consumePropertyBoolean(Object json, String propertyName) {
+        JsonNode propertyNode = (JsonNode) JsonCompat.consumeProperty(json, propertyName);
+        if (propertyNode == null) {
+            return null;
+        } else {
+            return propertyNode.asBoolean();
+        }
+    }
+
+    public static Number getPropertyNumber(Object json, String propertyName) {
+        JsonNode propertyNode = (JsonNode) JsonCompat.getProperty(json, propertyName);
+        if (propertyNode == null) {
+            return null;
+        } else {
+            if (propertyNode.isInt()) {
+                return propertyNode.asInt();
+            }
+            if (propertyNode.isLong()) {
+                return propertyNode.asLong();
+            }
+            if (propertyNode.isDouble() || propertyNode.isFloat()) {
+                return propertyNode.asDouble();
+            }
+            return null;
+        }
+    }
+    public static Number consumePropertyNumber(Object json, String propertyName) {
+        Number rval = JsonCompat.getPropertyNumber(json, propertyName);
+        if (rval != null) {
+            JsonCompat.consumeProperty(json, propertyName);
+        }
+        return rval;
+    }
     
     public static List<String> getPropertyStringArray(Object json, String propertyName) {
         if (!JsonCompat.isPropertyDefined(json, propertyName)) {
@@ -242,6 +324,35 @@ public class JsonCompat {
         if (propertyValue != null) {
             TextNode textNode = factory.textNode(propertyValue);
             node.set(propertyName, textNode);
+        } else {
+            node.set(propertyName, factory.nullNode());
+        }
+    }
+
+    public static void setPropertyBoolean(Object json, String propertyName, Boolean propertyValue) {
+        ObjectNode node = (ObjectNode) json;
+        if (propertyValue != null) {
+            BooleanNode booleanNode = factory.booleanNode(propertyValue);
+            node.set(propertyName, booleanNode);
+        } else {
+            node.set(propertyName, factory.nullNode());
+        }
+    }
+
+    public static void setPropertyNumber(Object json, String propertyName, Number propertyValue) {
+        ObjectNode node = (ObjectNode) json;
+        if (propertyValue != null) {
+            ValueNode numericNode = null;
+            if (propertyValue instanceof Integer) {
+                numericNode = factory.numberNode((Integer) propertyValue);
+            }
+            if (propertyValue instanceof Long) {
+                numericNode = factory.numberNode((Long) propertyValue);
+            }
+            if (propertyValue instanceof Double) {
+                numericNode = factory.numberNode((Double) propertyValue);
+            }
+            node.set(propertyName, numericNode);
         } else {
             node.set(propertyName, factory.nullNode());
         }

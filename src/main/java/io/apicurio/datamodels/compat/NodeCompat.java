@@ -18,7 +18,9 @@ package io.apicurio.datamodels.compat;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
 
 /**
@@ -30,18 +32,36 @@ import io.apicurio.datamodels.core.models.Node;
 public class NodeCompat {
     
     /**
-     * Returns the value for a given node property.
+     * Returns the value for a given node property.  Also supports List and Map as the input "node".
      * @param node
      * @param propertyName
      */
-    public static Object property(Node node, String propertyName) {
-        try {
-            Field field = node.getClass().getField(propertyName);
-            return field.get(node);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-                | IllegalAccessException e) {
-            return null;
+    public static Object getProperty(Object node, String propertyName) {
+        if (Constants.PROP_DEFAULT.equals(propertyName) || Constants.PROP_ENUM.equals(propertyName)) {
+            propertyName = propertyName + "_";
         }
+        
+        if (node instanceof Node) {
+            try {
+                Field field = node.getClass().getField(propertyName);
+                return field.get(node);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+                    | IllegalAccessException e) {
+                return null;
+            }
+        }
+        if (node instanceof List) {
+            int idx = Integer.parseInt(propertyName);
+            List<?> list = (List<?>) node;
+            return list.get(idx);
+        }
+        if (node instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, ?> map = (Map<String, ?>) node;
+            return map.get(propertyName);
+        }
+        
+        return null;
     }
 
     /**
@@ -55,7 +75,7 @@ public class NodeCompat {
     public static int indexOf(Node child, Node parent, String propertyName) {
         try {
             @SuppressWarnings({ "rawtypes", "unchecked" })
-            List<? extends Node> array = (List) NodeCompat.property(parent, propertyName);
+            List<? extends Node> array = (List) NodeCompat.getProperty(parent, propertyName);
             for (int idx = 0; idx < array.size(); idx++) {
                 Node node = array.get(idx);
                 if (node == child) {
@@ -65,6 +85,34 @@ public class NodeCompat {
         } catch (Exception e) {
         }
         return -1;
+    }
+
+    /**
+     * Tests two strings for equality.
+     * @param value1
+     * @param value2
+     */
+    public static boolean equals(String value1, String value2) {
+        if (value1 == value2) {
+            return true;
+        }
+        return value1 != null && value1.equals(value2);
+    }
+
+    /**
+     * Return true if the given object is a Node.
+     * @param object
+     */
+    public static boolean isNode(Object object) {
+        return object != null && object instanceof Node;
+    }
+
+    /**
+     * Returns true if the given object is a list.
+     * @param object
+     */
+    public static boolean isList(Object object) {
+        return object != null && object instanceof List;
     }
     
 }

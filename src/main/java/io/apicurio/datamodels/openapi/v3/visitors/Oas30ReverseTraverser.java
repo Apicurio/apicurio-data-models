@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.visitors.OasReverseTraverser;
 
 /**
@@ -29,6 +30,15 @@ public class Oas30ReverseTraverser extends OasReverseTraverser implements IOas30
      */
     public Oas30ReverseTraverser(IOas30Visitor visitor) {
         super(visitor);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas30ParameterDefinition node) {
+        node.accept(this.visitor);
+        this.traverse(node.parent());
     }
 
 }

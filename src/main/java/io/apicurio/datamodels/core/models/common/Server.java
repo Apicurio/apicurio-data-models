@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.core.models.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public abstract class Server extends ExtensibleNode {
      */
     public void addServerVariable(String name, ServerVariable serverVariable) {
         if (this.variables == null) {
-            this.variables = new HashMap<>();
+            this.variables = new LinkedHashMap<>();
         }
         this.variables.put(name, serverVariable);
     }

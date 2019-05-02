@@ -21,6 +21,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.io.OasDataModelWriter;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
@@ -44,6 +45,15 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
         JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
         
         writeExtraProperties(json, node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas30ParameterDefinition node) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

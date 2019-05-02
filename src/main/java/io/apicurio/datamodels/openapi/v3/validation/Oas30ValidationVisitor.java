@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.openapi.v3.validation;
 
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 import io.apicurio.datamodels.openapi.validation.OasValidationVisitor;
 
@@ -31,6 +32,14 @@ public class Oas30ValidationVisitor extends OasValidationVisitor implements IOas
      */
     public Oas30ValidationVisitor(Oas30Document document) {
         super(document);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(Oas30ParameterDefinition node) {
+        this.acceptAll(node);
     }
 
 }
