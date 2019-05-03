@@ -35,6 +35,8 @@ import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -42,9 +44,12 @@ import io.apicurio.datamodels.openapi.models.OasResponses;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
@@ -62,7 +67,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      */
     protected void visitNode(Node node) {
         // Does nothing - subclasses should override this.  The class is not abstract because we 
-        // want the compiler to yell at us when methods are added to IAaiNodeVisitor and not
+        // want the compiler to yell at us when methods are added to the visitor interfaces and not
         // implemented here.
     }
 
@@ -347,6 +352,51 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
+        this.visitNode(node);
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        this.visitNode(node);
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
+        this.visitNode((Node) node);
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     */
+    @Override
+    public void visitExample(Oas20Example node) {
+        this.visitNode(node);
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitHeaders(io.apicurio.datamodels.openapi.v2.models.Oas20Headers)
+     */
+    @Override
+    public void visitHeaders(Oas20Headers node) {
+        this.visitNode(node);
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitResponseDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions)
+     */
+    @Override
+    public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
         this.visitNode(node);
         
     }

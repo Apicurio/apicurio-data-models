@@ -14,31 +14,32 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.v3.visitors;
+package io.apicurio.datamodels.openapi.v2.models;
 
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
-import io.apicurio.datamodels.openapi.visitors.OasReverseTraverser;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
+ * Models an OpenAPI 2.0 response definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30ReverseTraverser extends OasReverseTraverser implements IOas30Visitor {
+public class Oas20ResponseDefinition extends Oas20Response {
 
     /**
      * Constructor.
-     * @param visitor
+     * @param name
      */
-    public Oas30ReverseTraverser(IOas30Visitor visitor) {
-        super(visitor);
+    public Oas20ResponseDefinition(String name) {
+        super(name);
     }
-
+    
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     * @see io.apicurio.datamodels.core.models.common.Parameter#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-        node.accept(this.visitor);
-        this.traverse(node.parent());
+    public void accept(IVisitor visitor) {
+        IOasVisitor viz = (IOasVisitor) visitor;
+        viz.visitResponseDefinition(this);
     }
 
 }

@@ -22,12 +22,19 @@ import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.openapi.io.OasDataModelReader;
+import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Schema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
@@ -74,12 +81,16 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
             this.readParameterDefinitions(parameters, node.parameters);
         }
         
+        if (responses != null) {
+            node.responses = node.createResponseDefinitions();
+            this.readResponseDefinitions(responses, node.responses);
+        }
+        
         if (securityDefinitions != null) {
             node.securityDefinitions = node.createSecurityDefinitions();
             this.readSecurityDefinitions(securityDefinitions, node.securityDefinitions);
         }
         
-        // TODO read all this shit!
         this.readExtraProperties(json, node);
     }
 
@@ -114,6 +125,21 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
     }
 
     /**
+     * Reads the response definitions.
+     * @param json
+     * @param node
+     */
+    public void readResponseDefinitions(Object json, Oas20ResponseDefinitions node) {
+        List<String> names = JsonCompat.keys(json);
+        for (String name: names) {
+            Object definition = JsonCompat.consumeProperty(json, name);
+            Oas20ResponseDefinition definitionModel = node.createResponse(name);
+            this.readResponseDefinition(definition, definitionModel);
+            node.addResponse(name, definitionModel);
+        }
+    }
+
+    /**
      * Reads a single parameter definition.
      * @param json
      * @param node
@@ -121,7 +147,118 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
     public void readParameterDefinition(Object json, Oas20ParameterDefinition node) {
         this.readParameter(json, node);
     }
+
+    /**
+     * Reads a single response definition.
+     * @param json
+     * @param node
+     */
+    public void readResponseDefinition(Object json, Oas20ResponseDefinition node) {
+        this.readResponse(json, node);
+    }
     
+    /**
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readResponse(java.lang.Object, io.apicurio.datamodels.openapi.models.OasResponse)
+     */
+    @Override
+    public void readResponse(Object json, OasResponse node) {
+        Oas20Response response = (Oas20Response) node;
+        Object headers = JsonCompat.consumeProperty(json, Constants.PROP_HEADERS);
+        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
+        Object example = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLE);
+        
+        if (headers != null) {
+            response.headers = response.createHeaders();
+            this.readHeaders(headers, response.headers);
+        }
+        
+        if (schema != null) {
+            response.schema = response.createSchema();
+            this.readSchema(schema, response.schema);
+        }
+        
+        if (example != null) {
+            response.example = response.createExample();
+            this.readExample(example, response.example);
+        }
+        
+        super.readResponse(json, node);
+    }
+
+    /**
+     * Reads the headers.
+     * @param json
+     * @param node
+     */
+    public void readHeaders(Object json, Oas20Headers node) {
+        List<String> names = JsonCompat.keys(json);
+        for (String name: names) {
+            Object definition = JsonCompat.consumeProperty(json, name);
+            Oas20Header definitionModel = node.createHeader(name);
+            this.readHeader(definition, definitionModel);
+            node.addHeader(name, definitionModel);
+        }
+    }
+    
+    /**
+     * Reads a single header.
+     * @param json
+     * @param node
+     */
+    public void readHeader(Object json, Oas20Header node) {
+        String type = JsonCompat.consumePropertyString(json, Constants.PROP_TYPE);
+        String format = JsonCompat.consumePropertyString(json, Constants.PROP_FORMAT);
+        Object items = JsonCompat.consumeProperty(json, Constants.PROP_ITEMS);
+        String collectionFormat = JsonCompat.consumePropertyString(json, Constants.PROP_COLLECTION_FORMAT);
+        Object default_ = JsonCompat.consumePropertyObject(json, Constants.PROP_DEFAULT);
+        Number maximum = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAXIMUM);
+        Boolean exclusiveMaximum = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXCLUSIVE_MAXIMUM);
+        Number minimum = JsonCompat.consumePropertyNumber(json, Constants.PROP_MINIMUM);
+        Boolean exclusiveMinimum = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXCLUSIVE_MINIMUM);
+        Number maxLength = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAX_LENGTH);
+        Number minLength = JsonCompat.consumePropertyNumber(json, Constants.PROP_MIN_LENGTH);
+        String pattern = JsonCompat.consumePropertyString(json, Constants.PROP_PATTERN);
+        Number maxItems = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAX_ITEMS);
+        Number minItems = JsonCompat.consumePropertyNumber(json, Constants.PROP_MIN_ITEMS);
+        Boolean uniqueItems = JsonCompat.consumePropertyBoolean(json, Constants.PROP_UNIQUE_ITEMS);
+        List<String> enum_ = JsonCompat.consumePropertyStringArray(json, Constants.PROP_ENUM);
+        Number multipleOf = JsonCompat.consumePropertyNumber(json, Constants.PROP_MULTIPLE_OF);
+        
+        node.type = type;
+        node.format = format;
+        node.collectionFormat = collectionFormat;
+        node.default_ = default_;
+        node.maximum = maximum;
+        node.exclusiveMaximum = exclusiveMaximum;
+        node.minimum = minimum;
+        node.exclusiveMinimum = exclusiveMinimum;
+        node.maxLength = maxLength;
+        node.minLength = minLength;
+        node.pattern = pattern;
+        node.maxItems = maxItems;
+        node.minItems = minItems;
+        node.uniqueItems = uniqueItems;
+        node.enum_ = enum_;
+        node.multipleOf = multipleOf;
+
+        if (items != null) {
+            node.items = node.createItems();
+            this.readItems(items, node.items);
+        }
+
+        super.readHeader(json, node);
+    }
+
+    /**
+     * Reads an example.
+     * @param json
+     * @param node
+     */
+    public void readExample(Object json, Oas20Example node) {
+        // TODO Auto-generated method stub
+        
+    }
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readParameter(java.lang.Object, io.apicurio.datamodels.core.models.common.Parameter)
      */
@@ -176,7 +313,7 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
      * @param json
      * @param node
      */
-    private void readItems(Object json, Oas20Items node) {
+    public void readItems(Object json, Oas20Items node) {
         String type = JsonCompat.consumePropertyString(json, Constants.PROP_TYPE);
         String format = JsonCompat.consumePropertyString(json, Constants.PROP_FORMAT);
         Object items = JsonCompat.consumeProperty(json, Constants.PROP_ITEMS);

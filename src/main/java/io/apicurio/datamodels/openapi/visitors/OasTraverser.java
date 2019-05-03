@@ -25,7 +25,9 @@ import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.Traverser;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -62,8 +64,10 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      */
     @Override
     public void visitPaths(OasPaths node) {
-        // TODO Auto-generated method stub
-        
+        node.accept(this.visitor);
+        this.traverseIndexedNode(node);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
     /**
@@ -80,8 +84,12 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      */
     @Override
     public void visitResponse(OasResponse node) {
-        // TODO Auto-generated method stub
-        
+        node.accept(this.visitor);
+        this.traverseResponse(node);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    protected void traverseResponse(OasResponse node) {
     }
 
     /**
@@ -89,8 +97,10 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      */
     @Override
     public void visitResponses(OasResponses node) {
-        // TODO Auto-generated method stub
-        
+        node.accept(this.visitor);
+        this.traverseIndexedNode(node);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
     /**
@@ -155,6 +165,27 @@ public class OasTraverser extends Traverser implements IOasVisitor {
         }
         this.traverseIfNotNull(schema.xml);
         this.traverseIfNotNull(schema.externalDocs);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        node.accept(this.visitor);
+        traverseHeader(node);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    protected void traverseHeader(OasHeader node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
+        this.visitResponse((OasResponse) node);
     }
 
 }

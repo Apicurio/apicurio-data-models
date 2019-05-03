@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.v3.models;
+package io.apicurio.datamodels.openapi.models;
 
-import io.apicurio.datamodels.openapi.models.OasResponse;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 
 /**
- * Models an OpenAPI 3.0.x response.
+ * A header definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Response extends OasResponse {
-
-    /**
-     * Constructor.
-     * @param statusCode
-     */
-    public Oas30Response(String statusCode) {
-        super(statusCode);
-    }
-
-    /**
-     * Gets the status code.
-     * @return {string}
-     */
-    public String getStatusCode() {
-        return this.getName();
-    }
+public interface IHeaderDefinition extends IDefinition {
 
 }

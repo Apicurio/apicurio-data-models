@@ -40,7 +40,7 @@ public class Oas20Document extends OasDocument {
     public List<String> produces;
     public Oas20Definitions definitions;
     public Oas20ParameterDefinitions parameters;
-//    public responses: Oas20ResponsesDefinitions;
+    public Oas20ResponseDefinitions responses;
     public Oas20SecurityDefinitions securityDefinitions;
 
     /**
@@ -131,6 +131,16 @@ public class Oas20Document extends OasDocument {
      */
     public Oas20ParameterDefinitions createParameterDefinitions() {
         Oas20ParameterDefinitions rval = new Oas20ParameterDefinitions();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates the parameter definitions model.
+     */
+    public Oas20ResponseDefinitions createResponseDefinitions() {
+        Oas20ResponseDefinitions rval = new Oas20ResponseDefinitions();
         rval._ownerDocument = this;
         rval._parent = this;
         return rval;

@@ -23,6 +23,8 @@ import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -84,7 +86,14 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
      */
     @Override
     public void visitResponse(OasResponse node) {
-        // TODO Auto-generated method stub
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeResponse(json, node);
+        this.writeExtraProperties(json, node);
+
+        JsonCompat.setProperty(parent, node.getName(), json);
+        
+        this.updateIndex(node, json);
     }
 
     /**
@@ -225,6 +234,51 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         JsonCompat.setPropertyString(json, Constants.PROP_IN, param.in);
         JsonCompat.setPropertyBoolean(json, Constants.PROP_REQUIRED, param.required);
         JsonCompat.setPropertyBoolean(json, Constants.PROP_ALLOW_EMPTY_VALUE, param.allowEmptyValue);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeHeader(json, node);
+        this.writeExtraProperties(json, node);
+
+        addResponseToParent(parent, json, node);
+        
+        this.updateIndex(node, json);
+    }
+    protected void writeHeader(Object json, OasHeader node) {
+        JsonCompat.setProperty(json, Constants.PROP_DESCRIPTION, node.description);
+    }
+    private void addResponseToParent(Object parent, Object json, OasHeader node) {
+        JsonCompat.setProperty(parent, node.getName(), json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
+        OasResponse response = (OasResponse) node;
+        
+        Object parent = this.lookupParentJson(response);
+        Object json = JsonCompat.objectNode();
+        writeResponse(json, response);
+        this.writeExtraProperties(json, response);
+
+        addResponseDefinitionToParent(parent, json, node);
+        
+        this.updateIndex(response, json);
+    }
+    protected void writeResponse(Object json, OasResponse response) {
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, response.$ref);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, response.description);
+    }
+    protected void addResponseDefinitionToParent(Object parent, Object json, IOasResponseDefinition node) {
+        JsonCompat.setProperty(parent, node.getName(), json);
     }
 
 }

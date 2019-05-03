@@ -18,7 +18,9 @@ package io.apicurio.datamodels.openapi.validation;
 
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -110,6 +112,22 @@ public class OasValidationVisitor extends ValidationVisitor implements IOasVisit
      */
     @Override
     public void visitPropertySchema(IOasPropertySchema node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
         this.acceptAll(node);
     }
 

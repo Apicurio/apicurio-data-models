@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.asyncapi.visitors;
+package io.apicurio.datamodels.openapi.models;
 
-import io.apicurio.datamodels.core.visitors.ReverseTraverser;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 
 /**
- * A reverse traverse for the AsyncAPI data model.
+ * An OpenAPI response definition.
  * @author eric.wittmann@gmail.com
  */
-public class AaiReverseTraverser extends ReverseTraverser implements IAaiVisitor {
-
-    /**
-     * Constructor.
-     * @param visitor
-     */
-    public AaiReverseTraverser(IAaiVisitor visitor) {
-        super(visitor);
-    }
+public interface IOasResponseDefinition extends IDefinition {
 
 }

@@ -19,12 +19,19 @@ package io.apicurio.datamodels.openapi.v2.visitors;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
@@ -54,6 +61,7 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
         Oas20Document doc = (Oas20Document) node;
         this.traverseIfNotNull(doc.definitions);
         this.traverseIfNotNull(doc.parameters);
+        this.traverseIfNotNull(doc.responses);
         this.traverseIfNotNull(doc.securityDefinitions);
     }
 
@@ -137,6 +145,57 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
         node.accept(this.visitor);
         this.traverseIndexedNode(node);
         this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#traverseHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    protected void traverseHeader(OasHeader node) {
+        Oas20Header header = (Oas20Header) node;
+        this.traverseIfNotNull(header.items);
+        super.traverseHeader(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     */
+    @Override
+    public void visitExample(Oas20Example node) {
+        node.accept(this.visitor);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitHeaders(io.apicurio.datamodels.openapi.v2.models.Oas20Headers)
+     */
+    @Override
+    public void visitHeaders(Oas20Headers node) {
+        node.accept(this.visitor);
+        this.traverseIndexedNode(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitResponseDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions)
+     */
+    @Override
+    public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
+        node.accept(this.visitor);
+        this.traverseIndexedNode(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#traverseResponse(io.apicurio.datamodels.openapi.models.OasResponse)
+     */
+    @Override
+    protected void traverseResponse(OasResponse node) {
+        Oas20Response response = (Oas20Response) node;
+        this.traverseIfNotNull(response.headers);
+        this.traverseIfNotNull(response.schema);
+        this.traverseIfNotNull(response.example);
+        super.traverseResponse(node);
     }
 
 }

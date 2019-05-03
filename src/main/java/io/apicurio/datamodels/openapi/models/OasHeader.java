@@ -21,30 +21,20 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
- * Models an OpenAPI 
+ * Models an OpenAPI header.
  * @author eric.wittmann@gmail.com
  */
-public class OasResponse extends ExtensibleNode implements IOasResponseDefinition {
+public class OasHeader extends ExtensibleNode implements IHeaderDefinition {
     
     private String _name;
-    public String $ref;
     public String description;
     
     /**
      * Constructor.
      * @param name
      */
-    public OasResponse(String name) {
+    public OasHeader(String name) {
         this._name = name;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        IOasVisitor viz = (IOasVisitor) visitor;
-        viz.visitResponse(this);
     }
 
     /**
@@ -54,5 +44,14 @@ public class OasResponse extends ExtensibleNode implements IOasResponseDefinitio
     public String getName() {
         return this._name;
     }
-    
+
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IOasVisitor viz = (IOasVisitor) visitor;
+        viz.visitHeader(this);
+    }
+
 }

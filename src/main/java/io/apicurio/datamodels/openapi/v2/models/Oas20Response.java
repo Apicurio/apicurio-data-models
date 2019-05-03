@@ -24,22 +24,46 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  */
 public class Oas20Response extends OasResponse {
 
-    private String _statusCode;
-    
+    public Oas20Headers headers;
+    public Oas20Schema schema;
+    public Oas20Example example;
+
     /**
      * Constructor.
-     * @param statusCode
+     * @param name
      */
-    public Oas20Response(String statusCode) {
-        this._statusCode = statusCode;
+    public Oas20Response(String name) {
+        super(name);
     }
 
     /**
-     * Gets the status code.
-     * @return {string}
+     * Creates an OAS 2.0 schema object.
      */
-    public String getStatusCode() {
-        return this._statusCode;
+    public Oas20Schema createSchema() {
+        Oas20Schema rval = new Oas20Schema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates an OAS 2.0 headers object.
+     */
+    public Oas20Headers createHeaders() {
+        Oas20Headers rval = new Oas20Headers();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates an OAS 2.0 schema object.
+     */
+    public Oas20Example createExample() {
+        Oas20Example rval = new Oas20Example();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
 }

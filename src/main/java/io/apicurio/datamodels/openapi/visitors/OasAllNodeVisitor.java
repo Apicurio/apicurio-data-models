@@ -19,6 +19,8 @@ package io.apicurio.datamodels.openapi.visitors;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -100,6 +102,22 @@ public class OasAllNodeVisitor extends AllNodeVisitor implements IOasVisitor {
      */
     @Override
     public void visitPropertySchema(IOasPropertySchema node) {
+        visitNode((Node) node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        visitNode((Node) node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
         visitNode((Node) node);
     }
 

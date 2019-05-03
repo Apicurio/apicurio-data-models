@@ -20,6 +20,8 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -113,7 +115,7 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
     public void visitAdditionalPropertiesSchema(OasSchema node) {
         this.path.prependSegment(Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.openapi.models.IOasPropertySchema)
      */
@@ -121,6 +123,22 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
     public void visitPropertySchema(IOasPropertySchema node) {
         this.path.prependSegment(node.getPropertyName(), true);
         this.path.prependSegment(Constants.PROP_PROPERTIES, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    public void visitHeader(OasHeader node) {
+        this.path.prependSegment(node.getName(), true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     */
+    @Override
+    public void visitResponseDefinition(IOasResponseDefinition node) {
+        this.path.prependSegment(node.getName(), true);
     }
 
 }

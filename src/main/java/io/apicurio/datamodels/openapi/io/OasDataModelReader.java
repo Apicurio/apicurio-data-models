@@ -24,7 +24,9 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasParameter;
+import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
 import io.apicurio.datamodels.openapi.models.OasXML;
@@ -218,4 +220,28 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
         super.readParameter(json, node);
     }
 
+    /**
+     * Reads a single response.
+     * @param json
+     * @param node
+     */
+    public void readResponse(Object json, OasResponse node) {
+        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+
+        node.$ref = $ref;
+        node.description = description;
+        
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a single header.
+     * @param json
+     * @param node
+     */
+    public void readHeader(Object json, OasHeader node) {
+        node.description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+    }
 }

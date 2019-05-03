@@ -16,18 +16,16 @@
 
 package io.apicurio.datamodels.core.factories;
 
-import io.apicurio.datamodels.asyncapi.visitors.AaiReverseTraverser;
 import io.apicurio.datamodels.asyncapi.visitors.AaiTraverser;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.combined.visitors.CombinedReverseTraverser;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.ITraverser;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
-import io.apicurio.datamodels.openapi.v2.visitors.Oas20ReverseTraverser;
 import io.apicurio.datamodels.openapi.v2.visitors.Oas20Traverser;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
-import io.apicurio.datamodels.openapi.v3.visitors.Oas30ReverseTraverser;
 import io.apicurio.datamodels.openapi.v3.visitors.Oas30Traverser;
 
 /**
@@ -48,11 +46,11 @@ public class TraverserFactory {
         }
         switch (doc.getDocumentType()) {
             case asyncapi2:
-                return direction == TraverserDirection.down ? new AaiTraverser((IAaiVisitor) visitor) : new AaiReverseTraverser((IAaiVisitor) visitor);
+                return direction == TraverserDirection.down ? new AaiTraverser((IAaiVisitor) visitor) : new CombinedReverseTraverser((IAaiVisitor) visitor);
             case openapi2:
-                return direction == TraverserDirection.down ? new Oas20Traverser((IOas20Visitor) visitor) : new Oas20ReverseTraverser((IOas20Visitor) visitor);
+                return direction == TraverserDirection.down ? new Oas20Traverser((IOas20Visitor) visitor) : new CombinedReverseTraverser((IOas20Visitor) visitor);
             case openapi3:
-                return direction == TraverserDirection.down ? new Oas30Traverser((IOas30Visitor) visitor) : new Oas30ReverseTraverser((IOas30Visitor) visitor);
+                return direction == TraverserDirection.down ? new Oas30Traverser((IOas30Visitor) visitor) : new CombinedReverseTraverser((IOas30Visitor) visitor);
             default:
                 throw new RuntimeException("Failed to create a traverser for document type: " + doc.getDocumentType());
         }

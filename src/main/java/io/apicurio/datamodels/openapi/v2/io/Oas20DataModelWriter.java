@@ -23,12 +23,17 @@ import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.openapi.io.OasDataModelWriter;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Schema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
@@ -221,5 +226,68 @@ public class Oas20DataModelWriter extends OasDataModelWriter implements IOas20Vi
         JsonCompat.setPropertyNumber(json, Constants.PROP_MULTIPLE_OF, param.multipleOf);
     }
 
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     */
+    @Override
+    public void visitExample(Oas20Example node) {
+        // TODO Auto-generated method stub
+        
+    }
 
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitHeaders(io.apicurio.datamodels.openapi.v2.models.Oas20Headers)
+     */
+    @Override
+    public void visitHeaders(Oas20Headers node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        if (node.getHeaderNames().size() > 0) {
+            JsonCompat.setProperty(parent, Constants.PROP_HEADERS, json);
+
+            this.updateIndex(node, json);
+        }        
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#writeHeader(java.lang.Object, io.apicurio.datamodels.openapi.models.OasHeader)
+     */
+    @Override
+    protected void writeHeader(Object json, OasHeader node) {
+        super.writeHeader(json, node);
+        
+        Oas20Header header = (Oas20Header) node;
+        JsonCompat.setPropertyString(json, Constants.PROP_TYPE, header.type);
+        JsonCompat.setPropertyString(json, Constants.PROP_FORMAT, header.format);
+        JsonCompat.setPropertyNull(json, Constants.PROP_ITEMS);
+        JsonCompat.setPropertyString(json, Constants.PROP_COLLECTION_FORMAT, header.collectionFormat);
+        JsonCompat.setProperty(json, Constants.PROP_DEFAULT, header.default_);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAXIMUM, header.maximum);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_EXCLUSIVE_MAXIMUM, header.exclusiveMaximum);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MINIMUM, header.minimum);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_EXCLUSIVE_MINIMUM, header.exclusiveMinimum);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAX_LENGTH, header.maxLength);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MIN_LENGTH, header.minLength);
+        JsonCompat.setPropertyString(json, Constants.PROP_PATTERN, header.pattern);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAX_ITEMS, header.maxItems);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MIN_ITEMS, header.minItems);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_UNIQUE_ITEMS, header.uniqueItems);
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_ENUM, header.enum_);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MULTIPLE_OF, header.multipleOf);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitResponseDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions)
+     */
+    @Override
+    public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        if (node.getResponseNames().size() > 0) {
+            JsonCompat.setProperty(parent, Constants.PROP_RESPONSES, json);
+
+            this.updateIndex(node, json);
+        }
+    }
+    
 }

@@ -18,9 +18,12 @@ package io.apicurio.datamodels.openapi.v2.visitors;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor;
@@ -81,8 +84,31 @@ public class Oas20NodePathVisitor extends OasNodePathVisitor implements IOas20Vi
      */
     @Override
     public void visitParameterDefinition(Oas20ParameterDefinition node) {
-        // TODO implement this!
         this.path.prependSegment(node.getName(), true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     */
+    @Override
+    public void visitExample(Oas20Example node) {
+        this.path.prependSegment(Constants.PROP_EXAMPLES, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitHeaders(io.apicurio.datamodels.openapi.v2.models.Oas20Headers)
+     */
+    @Override
+    public void visitHeaders(Oas20Headers node) {
+        this.path.prependSegment(Constants.PROP_HEADERS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitResponseDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions)
+     */
+    @Override
+    public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
+        this.path.prependSegment(Constants.PROP_RESPONSES, false);
     }
 
 }
