@@ -117,13 +117,7 @@ public class Traverser implements ITraverser, IVisitor {
 	@Override
 	public final void visitDocument(Document node) {
 		node.accept(this.visitor);
-		
-		this.traverseIfNotNull(node.info);
-		this.traverseCollection(node.tags);
-		this.traverseIfNotNull(node.externalDocs);
-		
-		this.doVisitDocument(node);
-		
+		this.traverseDocument(node);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
 	}
@@ -132,7 +126,10 @@ public class Traverser implements ITraverser, IVisitor {
 	 * Subclasses can override this to provide version-specific traversal of the root document.
      * @param node
      */
-    protected void doVisitDocument(Document node) {
+    protected void traverseDocument(Document node) {
+        this.traverseIfNotNull(node.info);
+        this.traverseCollection(node.tags);
+        this.traverseIfNotNull(node.externalDocs);
     }
 
     /**
@@ -268,10 +265,12 @@ public class Traverser implements ITraverser, IVisitor {
     @Override
     public void visitOperation(Operation node) {
         node.accept(this.visitor);
-        // TODO implement traversing an operation
-        this.traverseIfNotNull(node.externalDocs);
+        traverseOperation(node);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
+    }
+    protected void traverseOperation(Operation node) {
+        this.traverseIfNotNull(node.externalDocs);
     }
 
     /**

@@ -127,6 +127,13 @@ public abstract class OasResponses extends ExtensibleNode implements IIndexedNod
      * @return {OasResponse}
      */
     public abstract OasResponse createResponse(String statusCode);
+    
+    /**
+     * Creates a default OAS response.
+     */
+    public OasResponse createDefaultResponse() {
+        return this.createResponse(null);
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.IIndexedNode#getItem(java.lang.String)

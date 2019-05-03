@@ -30,12 +30,6 @@
                 "breed": "Mixed"
               }
             }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
           }
         }
       }

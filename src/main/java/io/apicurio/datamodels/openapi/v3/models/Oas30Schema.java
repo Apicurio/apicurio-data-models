@@ -17,8 +17,11 @@
 package io.apicurio.datamodels.openapi.v3.models;
 
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
+import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
  * Models an OpenAPI 3.0.x schema.
@@ -31,8 +34,10 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public ExternalDocumentation createExternalDocumentation() {
-        // TODO Auto-generated method stub
-        return null;
+        ExternalDocumentation rval = new Oas30ExternalDocumentation();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
     /**
@@ -40,8 +45,10 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public OasXML createXML() {
-        // TODO Auto-generated method stub
-        return null;
+        OasXML rval = new Oas30XML();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
     /**
@@ -49,8 +56,10 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public OasSchema createAllOfSchema() {
-        // TODO Auto-generated method stub
-        return null;
+        Oas30AllOfSchema rval = new Oas30AllOfSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
     /**
@@ -58,8 +67,10 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public OasSchema createItemsSchema() {
-        // TODO Auto-generated method stub
-        return null;
+        Oas30ItemsSchema rval = new Oas30ItemsSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
     /**
@@ -67,8 +78,10 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public OasSchema createAdditionalPropertiesSchema() {
-        // TODO Auto-generated method stub
-        return null;
+        Oas30AdditionalPropertiesSchema rval = new Oas30AdditionalPropertiesSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
 
     /**
@@ -76,8 +89,80 @@ public class Oas30Schema extends OasSchema {
      */
     @Override
     public OasSchema createPropertySchema(String propertyName) {
-        // TODO Auto-generated method stub
-        return null;
+        Oas30PropertySchema rval = new Oas30PropertySchema(propertyName);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    
+    public class Oas30AdditionalPropertiesSchema extends Oas30Schema {
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOasVisitor viz = (IOasVisitor) visitor;
+            viz.visitAdditionalPropertiesSchema(this);
+        }
+
+    }
+
+    public class Oas30ItemsSchema extends Oas30Schema {
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOasVisitor viz = (IOasVisitor) visitor;
+            viz.visitItemsSchema(this);
+        }
+
+    }
+
+    public class Oas30AllOfSchema extends Oas30Schema {
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOasVisitor viz = (IOasVisitor) visitor;
+            viz.visitAllOfSchema(this);
+        }
+
+    }
+
+    public class Oas30PropertySchema extends Oas30Schema implements IOasPropertySchema {
+        
+        private String _propertyName;
+        
+        /**
+         * Constructor.
+         * @param propertyName
+         */
+        public Oas30PropertySchema(String propertyName) {
+            this._propertyName = propertyName;
+        }
+        
+        /**
+         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#getPropertyName()
+         */
+        @Override
+        public String getPropertyName() {
+            return this._propertyName;
+        }
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOasVisitor viz = (IOasVisitor) visitor;
+            viz.visitPropertySchema((IOasPropertySchema) this);
+        }
+
     }
 
 }

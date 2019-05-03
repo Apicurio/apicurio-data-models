@@ -317,6 +317,7 @@ public class DataModelWriter implements IVisitor {
         this.updateIndex(node, json);
     }
     protected void writeParameter(Object json, Parameter node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
         JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
         JsonCompat.setPropertyNull(json, Constants.PROP_SCHEMA);
@@ -344,7 +345,7 @@ public class DataModelWriter implements IVisitor {
         this.updateIndex(node, json);
     }
     protected void writeSchema(Object json, Schema node) {
-        // Subclasses should implement this.
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
     }
 
     /**

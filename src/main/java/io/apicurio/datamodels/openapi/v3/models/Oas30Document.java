@@ -49,8 +49,10 @@ public class Oas30Document extends OasDocument {
      */
     @Override
     public OasPaths createPaths() {
-        // TODO Auto-generated method stub
-        return null;
+        OasPaths rval = new Oas30Paths();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
     }
     
     /**

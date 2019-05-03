@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.openapi.v2.models;
 
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -27,6 +29,10 @@ import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
  * @author eric.wittmann@gmail.com
  */
 public class Oas20Operation extends OasOperation {
+
+    public List<String> consumes;
+    public List<String> produces;
+    public List<String> schemes;
 
     /**
      * Constructor.

@@ -35,10 +35,11 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.Traverser#doVisitDocument(io.apicurio.datamodels.core.models.Document)
+     * @see io.apicurio.datamodels.core.visitors.Traverser#traverseDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    protected void doVisitDocument(Document node) {
+    protected void traverseDocument(Document node) {
+        super.traverseDocument(node);
         AaiDocument aaiNode = (AaiDocument) node;
         this.traverseCollection(aaiNode.servers);
     }

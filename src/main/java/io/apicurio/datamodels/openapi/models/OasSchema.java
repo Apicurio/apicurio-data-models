@@ -31,7 +31,6 @@ import io.apicurio.datamodels.core.models.common.Schema;
  */
 public abstract class OasSchema extends Schema {
 
-    public String $ref;
     public String format;
     public String title;
     public String description;

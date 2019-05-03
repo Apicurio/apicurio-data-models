@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.models.common;
+package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.core.models.ExtensibleNode;
-import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.models.OasXML;
 
 /**
- * Models a parameter.
+ * Models an OpenAPI 3.0.x XML.
  * @author eric.wittmann@gmail.com
  */
-public abstract class Parameter extends ExtensibleNode {
-    
-    public String $ref;
-    public String name;
-    public String description;
-    public Schema schema;
-    
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visitParameter(this);
-    }
-    
-    public abstract Schema createSchema();
+public class Oas30XML extends OasXML {
 
 }

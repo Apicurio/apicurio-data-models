@@ -52,11 +52,11 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#doVisitDocument(io.apicurio.datamodels.core.models.Document)
+     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#traverseDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    protected void doVisitDocument(Document node) {
-        super.doVisitDocument(node);
+    protected void traverseDocument(Document node) {
+        super.traverseDocument(node);
         
         Oas20Document doc = (Oas20Document) node;
         this.traverseIfNotNull(doc.definitions);
@@ -194,7 +194,7 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
         Oas20Response response = (Oas20Response) node;
         this.traverseIfNotNull(response.headers);
         this.traverseIfNotNull(response.schema);
-        this.traverseIfNotNull(response.example);
+        this.traverseIfNotNull(response.examples);
         super.traverseResponse(node);
     }
 

@@ -25,6 +25,8 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Schema extends ExtensibleNode {
     
+    public String $ref;
+
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */

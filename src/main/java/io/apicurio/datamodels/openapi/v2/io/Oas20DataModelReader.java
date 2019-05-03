@@ -20,7 +20,9 @@ import java.util.List;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.io.OasDataModelReader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
@@ -29,6 +31,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Operation;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -93,7 +96,7 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
         
         this.readExtraProperties(json, node);
     }
-
+    
     /**
      * Reads the definitions.
      * @param json
@@ -165,7 +168,7 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
         Oas20Response response = (Oas20Response) node;
         Object headers = JsonCompat.consumeProperty(json, Constants.PROP_HEADERS);
         Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
-        Object example = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLE);
+        Object examples = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLES);
         
         if (headers != null) {
             response.headers = response.createHeaders();
@@ -177,9 +180,9 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
             this.readSchema(schema, response.schema);
         }
         
-        if (example != null) {
-            response.example = response.createExample();
-            this.readExample(example, response.example);
+        if (examples != null) {
+            response.examples = response.createExample();
+            this.readExample(examples, response.examples);
         }
         
         super.readResponse(json, node);
@@ -255,8 +258,11 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
      * @param node
      */
     public void readExample(Object json, Oas20Example node) {
-        // TODO Auto-generated method stub
-        
+        List<String> contentTypes = JsonCompat.keys(json);
+        contentTypes.forEach(ct -> {
+            Object example = JsonCompat.consumePropertyObject(json, ct);
+            node.addExample(ct, example);
+        });
     }
 
     /**
@@ -359,14 +365,15 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
     }
 
     /**
-     * Reads a schema.
-     * @param json
-     * @param node
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readSchema(java.lang.Object, io.apicurio.datamodels.core.models.common.Schema)
      */
-    public void readSchema(Object json, Oas20Schema node) {
+    @Override
+    public void readSchema(Object json, Schema node) {
+        Oas20Schema schema = (Oas20Schema) node;
+        
         String discriminator = JsonCompat.consumePropertyString(json, Constants.PROP_DISCRIMINATOR);
         
-        node.discriminator = discriminator;
+        schema.discriminator = discriminator;
         
         super.readSchema(json, node);
     }
@@ -423,5 +430,23 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
             node.addScope(scopeName, scopeDescription);
         }
         this.readExtensions(json, node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readOperation(java.lang.Object, io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    public void readOperation(Object json, Operation node) {
+        Oas20Operation operation = (Oas20Operation) node;
+        
+        List<String> consumes = JsonCompat.consumePropertyStringArray(json, Constants.PROP_CONSUMES);
+        List<String> produces = JsonCompat.consumePropertyStringArray(json, Constants.PROP_PRODUCES);
+        List<String> schemes = JsonCompat.consumePropertyStringArray(json, Constants.PROP_SCHEMES);
+        
+        operation.consumes = consumes;
+        operation.produces = produces;
+        operation.schemes = schemes;
+        
+        super.readOperation(json, node);
     }
 }

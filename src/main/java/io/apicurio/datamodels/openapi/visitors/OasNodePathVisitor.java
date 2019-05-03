@@ -53,7 +53,7 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
      */
     @Override
     public void visitPathItem(OasPathItem node) {
-        this.path.prependSegment(node.getPath(), false);
+        this.path.prependSegment(node.getPath(), true);
     }
 
     /**
@@ -69,7 +69,11 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
      */
     @Override
     public void visitResponse(OasResponse node) {
-        throw new RuntimeException("Subclasses MUST implement visitResponse().");
+        if (node.getName() == null) {
+            this.path.prependSegment(Constants.PROP_DEFAULT, false);
+        } else {
+            this.path.prependSegment(node.getName(), true);
+        }
     }
 
     /**

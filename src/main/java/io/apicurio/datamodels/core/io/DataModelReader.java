@@ -30,6 +30,7 @@ import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
@@ -300,6 +301,9 @@ public abstract class DataModelReader<T extends Document> {
      * @param node
      */
     public void readSchema(Object json, Schema node) {
+        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
+        node.$ref = $ref;
+
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
@@ -310,10 +314,12 @@ public abstract class DataModelReader<T extends Document> {
      * @param node
      */
     public void readParameter(Object json, Parameter node) {
+        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
 
+        node.$ref = $ref;
         node.name = name;
         node.description = description;
         
@@ -322,6 +328,30 @@ public abstract class DataModelReader<T extends Document> {
             this.readSchema(schema, node.schema);
         }
 
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+    
+    /**
+     * Reads a single operation.
+     * @param json
+     * @param node
+     */
+    public void readOperation(Object json, Operation node) {
+        String operationId = JsonCompat.consumePropertyString(json, Constants.PROP_OPERATION_ID);
+        String summary = JsonCompat.consumePropertyString(json, Constants.PROP_SUMMARY);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
+        
+        node.operationId = operationId;
+        node.summary = summary;
+        node.description = description;
+
+        if (externalDocs != null) {
+            node.externalDocs = node.createExternalDocumentation();
+            this.readExternalDocumentation(externalDocs, node.externalDocs);
+        }
+        
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }

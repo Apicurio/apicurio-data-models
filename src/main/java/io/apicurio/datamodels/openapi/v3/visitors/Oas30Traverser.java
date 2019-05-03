@@ -35,12 +35,12 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#doVisitDocument(io.apicurio.datamodels.core.models.Document)
+     * @see io.apicurio.datamodels.openapi.visitors.OasTraverser#traverseDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    protected void doVisitDocument(Document node) {
+    protected void traverseDocument(Document node) {
         Oas30Document doc = (Oas30Document) node;
-        super.doVisitDocument(doc);
+        super.traverseDocument(doc);
         this.traverseCollection(doc.servers);
     }
 

@@ -36,6 +36,11 @@ public class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
     @Override
     protected void visitNode(Node node) {
         extraPropertyCount += node.getExtraPropertyNames().size();
+        if (node.getExtraPropertyNames().size() > 0) {
+            // This can be a good place to set a breakpoint, hence the pointless code below.
+            Boolean v = Boolean.TRUE;
+            v = v || Boolean.TRUE;
+        }
     }
         
 }

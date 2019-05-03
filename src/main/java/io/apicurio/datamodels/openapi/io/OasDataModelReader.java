@@ -22,11 +22,17 @@ import java.util.List;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
+import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
+import io.apicurio.datamodels.openapi.models.OasResponses;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
 import io.apicurio.datamodels.openapi.models.OasXML;
@@ -48,7 +54,8 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
         List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
         
         if (paths != null) {
-            // TODO read paths
+            node.paths = node.createPaths();
+            this.readPaths(paths, node.paths);
         }
         
         if (security != null) {
@@ -61,12 +68,157 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
     }
 
     /**
-     * Reads a schema.
+     * Read the paths.
      * @param json
      * @param node
      */
-    public void readSchema(Object json, OasSchema node) {
+    public void readPaths(Object json, OasPaths node) {
+        List<String> pathNames = JsonCompat.keys(json);
+        for (String pathName : pathNames) {
+            if (pathName.indexOf("x-") == 0) {
+                continue;
+            }
+            Object pathItem = JsonCompat.consumeProperty(json, pathName);
+            OasPathItem pathItemModel = node.createPathItem(pathName);
+            this.readPathItem(pathItem, pathItemModel);
+            node.addPathItem(pathName, pathItemModel);
+        }
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a path item.
+     * @param json
+     * @param node
+     */
+    public void readPathItem(Object json, OasPathItem node) {
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
+        Object get = JsonCompat.consumeProperty(json, Constants.PROP_GET);
+        Object put = JsonCompat.consumeProperty(json, Constants.PROP_PUT);
+        Object post = JsonCompat.consumeProperty(json, Constants.PROP_POST);
+        Object delete = JsonCompat.consumeProperty(json, Constants.PROP_DELETE);
+        Object options = JsonCompat.consumeProperty(json, Constants.PROP_OPTIONS);
+        Object head = JsonCompat.consumeProperty(json, Constants.PROP_HEAD);
+        Object patch = JsonCompat.consumeProperty(json, Constants.PROP_PATCH);
+        List<Object> parameters = JsonCompat.consumePropertyArray(json, Constants.PROP_PARAMETERS);
+        
+        node.$ref = $ref;
+        
+        if (get != null) {
+            node.get = node.createOperation(Constants.PROP_GET);
+            this.readOperation(get, node.get);
+        }
+        if (put != null) {
+            node.put = node.createOperation(Constants.PROP_PUT);
+            this.readOperation(put, node.put);
+        }
+        if (post != null) {
+            node.post = node.createOperation(Constants.PROP_POST);
+            this.readOperation(post, node.post);
+        }
+        if (delete != null) {
+            node.delete = node.createOperation(Constants.PROP_DELETE);
+            this.readOperation(delete, node.delete);
+        }
+        if (options != null) {
+            node.options = node.createOperation(Constants.PROP_OPTIONS);
+            this.readOperation(options, node.options);
+        }
+        if (head != null) {
+            node.head = node.createOperation(Constants.PROP_HEAD);
+            this.readOperation(head, node.head);
+        }
+        if (patch != null) {
+            node.patch = node.createOperation(Constants.PROP_PATCH);
+            this.readOperation(patch, node.patch);
+        }
+        if (parameters != null) {
+            parameters.forEach(parameter -> {
+                OasParameter parameterModel = node.createParameter();
+                this.readParameter(parameter, parameterModel);
+                node.addParameter(parameterModel);
+            });
+        }
+    }
+
+    /**
+     * Reads a single operation.
+     * @param json
+     * @param node
+     */
+    public void readOperation(Object json, Operation node) {
+        OasOperation operation = (OasOperation) node;
+
+        List<String> tags = JsonCompat.consumePropertyStringArray(json, Constants.PROP_TAGS);
+        List<Object> parameters = JsonCompat.consumePropertyArray(json, Constants.PROP_PARAMETERS);
+        Object responses = JsonCompat.consumeProperty(json, Constants.PROP_RESPONSES);
+        Boolean deprecated = JsonCompat.consumePropertyBoolean(json, Constants.PROP_DEPRECATED);
+        List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
+        
+        operation.tags = tags;
+        operation.deprecated = deprecated;
+        
+        if (parameters != null) {
+            parameters.forEach(parameter -> {
+                OasParameter parameterModel = operation.createParameter();
+                this.readParameter(parameter, parameterModel);
+                operation.addParameter(parameterModel);
+            });
+        }
+        
+        if (responses != null) {
+            operation.responses = operation.createResponses();
+            this.readResponses(responses, operation.responses);
+        }
+        
+        if (security != null) {
+            security.forEach(requirement -> {
+                OasSecurityRequirement requirementModel = operation.createSecurityRequirement();
+                this.readSecurityRequirement(requirement, requirementModel);
+                operation.addSecurityRequirement(requirementModel);
+            });
+        }
+        
+        super.readOperation(json, node);
+    }
+
+    /**
+     * Reads the responses.
+     * @param json
+     * @param node
+     */
+    public void readResponses(Object json, OasResponses node) {
+        Object default_ = JsonCompat.consumeProperty(json, Constants.PROP_DEFAULT);
+        
+        if (default_ != null) {
+            node.default_ = node.createDefaultResponse();
+            this.readResponse(default_, node.default_);
+        }
+
+        List<String> responseCodes = JsonCompat.keys(json);
+        responseCodes.forEach(code -> {
+            if (code.indexOf("x-") == 0) {
+                // Skip this one!
+            } else {
+                Object response = JsonCompat.consumeProperty(json, code);
+                OasResponse responseModel = node.createResponse(code);
+                this.readResponse(response, responseModel);
+                node.addResponse(code, responseModel);
+            }
+        });
+        
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.io.DataModelReader#readSchema(java.lang.Object, io.apicurio.datamodels.core.models.common.Schema)
+     */
+    @Override
+    public void readSchema(Object json, Schema node) {
+        OasSchema schema = (OasSchema) node;
+        
         String format = JsonCompat.consumePropertyString(json, Constants.PROP_FORMAT);
         String title = JsonCompat.consumePropertyString(json, Constants.PROP_TITLE);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
@@ -98,87 +250,86 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
         Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
         Object example = JsonCompat.consumePropertyObject(json, Constants.PROP_EXAMPLE);
         
-        node.$ref = $ref;
-        node.format = format;
-        node.title = title;
-        node.description = description;
-        node.default_ = default_;
-        node.multipleOf = multipleOf;
-        node.maximum = maximum;
-        node.exclusiveMaximum = exclusiveMaximum;
-        node.minimum = minimum;
-        node.exclusiveMinimum = exclusiveMinimum;
-        node.maxLength = maxLength;
-        node.minLength = minLength;
-        node.pattern = pattern;
-        node.maxItems = maxItems;
-        node.minItems = minItems;
-        node.uniqueItems = uniqueItems;
-        node.maxProperties = maxProperties;
-        node.minProperties = minProperties;
-        node.required = required;
-        node.enum_ = enum_;
-        node.type = type;
-        node.readOnly = readOnly;
-        node.example = example;
+        schema.format = format;
+        schema.title = title;
+        schema.description = description;
+        schema.default_ = default_;
+        schema.multipleOf = multipleOf;
+        schema.maximum = maximum;
+        schema.exclusiveMaximum = exclusiveMaximum;
+        schema.minimum = minimum;
+        schema.exclusiveMinimum = exclusiveMinimum;
+        schema.maxLength = maxLength;
+        schema.minLength = minLength;
+        schema.pattern = pattern;
+        schema.maxItems = maxItems;
+        schema.minItems = minItems;
+        schema.uniqueItems = uniqueItems;
+        schema.maxProperties = maxProperties;
+        schema.minProperties = minProperties;
+        schema.required = required;
+        schema.enum_ = enum_;
+        schema.type = type;
+        schema.readOnly = readOnly;
+        schema.example = example;
         
         if (items != null) {
             if (JsonCompat.isArray(items)) {
                 List<OasSchema> schemaModels = new ArrayList<>();
                 List<Object> itemList = JsonCompat.toList(items);
                 for (Object item : itemList) {
-                    OasSchema itemsSchemaModel = node.createItemsSchema();
+                    OasSchema itemsSchemaModel = schema.createItemsSchema();
                     this.readSchema(item, itemsSchemaModel);
                     schemaModels.add(itemsSchemaModel);
                 }
-                node.items = schemaModels;
+                schema.items = schemaModels;
             } else {
-                node.items = node.createItemsSchema();
-                this.readSchema(items, (OasSchema) node.items);
+                schema.items = schema.createItemsSchema();
+                this.readSchema(items, (OasSchema) schema.items);
             }
         }
         
         if (allOf != null) {
             List<OasSchema> schemaModels = new ArrayList<>();
             for (Object allOfSchema : allOf) {
-                OasSchema allOfSchemaModel = node.createAllOfSchema();
+                OasSchema allOfSchemaModel = schema.createAllOfSchema();
                 this.readSchema(allOfSchema, allOfSchemaModel);
                 schemaModels.add(allOfSchemaModel);
             }
-            node.allOf = schemaModels;
+            schema.allOf = schemaModels;
         }
         
         if (properties != null) {
             List<String> propertyNames = JsonCompat.keys(properties);
             for (String propertyName : propertyNames) {
                 Object propertySchema = JsonCompat.consumeProperty(properties, propertyName);
-                OasSchema propertySchemaModel = node.createPropertySchema(propertyName);
+                OasSchema propertySchemaModel = schema.createPropertySchema(propertyName);
                 this.readSchema(propertySchema, propertySchemaModel);
-                node.addProperty(propertyName, propertySchemaModel);
+                schema.addProperty(propertyName, propertySchemaModel);
             }
         }
         
         if (additionalProperties != null) {
             if (JsonCompat.isBoolean(additionalProperties)) {
-                node.additionalProperties = JsonCompat.toBoolean(additionalProperties);
+                schema.additionalProperties = JsonCompat.toBoolean(additionalProperties);
             } else {
-                OasSchema additionalPropertiesModel = node.createAdditionalPropertiesSchema();
+                OasSchema additionalPropertiesModel = schema.createAdditionalPropertiesSchema();
                 this.readSchema(additionalProperties, additionalPropertiesModel);
-                node.additionalProperties = additionalPropertiesModel;
+                schema.additionalProperties = additionalPropertiesModel;
             }
         }
         
         if (xml != null) {
-            node.xml = node.createXML();
-            this.readXML(xml, node.xml);
+            schema.xml = schema.createXML();
+            this.readXML(xml, schema.xml);
         }
         
         if (externalDocs != null) {
-            node.externalDocs = node.createExternalDocumentation();
-            this.readExternalDocumentation(externalDocs, node.externalDocs);
+            schema.externalDocs = schema.createExternalDocumentation();
+            this.readExternalDocumentation(externalDocs, schema.externalDocs);
         }
 
-        super.readSchema(json, node);
+        super.readSchema(json, schema);
     }
 
     /**

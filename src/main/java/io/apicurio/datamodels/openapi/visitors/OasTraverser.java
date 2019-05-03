@@ -21,6 +21,7 @@ import java.util.List;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.Traverser;
@@ -28,6 +29,7 @@ import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -50,12 +52,13 @@ public class OasTraverser extends Traverser implements IOasVisitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.Traverser#doVisitDocument(io.apicurio.datamodels.core.models.Document)
+     * @see io.apicurio.datamodels.core.visitors.Traverser#traverseDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    protected void doVisitDocument(Document node) {
+    protected void traverseDocument(Document node) {
         OasDocument doc = (OasDocument) node;
-        super.doVisitDocument(node);
+        super.traverseDocument(node);
+        this.traverseIfNotNull(doc.paths);
         this.traverseCollection(doc.security);
     }
 
@@ -75,8 +78,17 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      */
     @Override
     public void visitPathItem(OasPathItem node) {
-        // TODO Auto-generated method stub
-        
+        node.accept(this.visitor);
+        this.traverseIfNotNull(node.get);
+        this.traverseIfNotNull(node.put);
+        this.traverseIfNotNull(node.post);
+        this.traverseIfNotNull(node.delete);
+        this.traverseIfNotNull(node.options);
+        this.traverseIfNotNull(node.head);
+        this.traverseIfNotNull(node.patch);
+        this.traverseCollection(node.parameters);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
     /**
@@ -186,6 +198,20 @@ public class OasTraverser extends Traverser implements IOasVisitor {
     @Override
     public void visitResponseDefinition(IOasResponseDefinition node) {
         this.visitResponse((OasResponse) node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.Traverser#traverseOperation(io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    protected void traverseOperation(Operation node) {
+        OasOperation operation = (OasOperation) node;
+        
+        this.traverseCollection(operation.parameters);
+        this.traverseIfNotNull(operation.responses);
+        this.traverseCollection(operation.security);
+        
+        super.traverseOperation(node);
     }
 
 }

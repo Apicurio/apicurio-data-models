@@ -20,11 +20,13 @@ import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelWriter;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -67,10 +69,9 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         JsonCompat.setProperty(parent, node.getPath(), json);
         
         this.updateIndex(node, json);
-        
     }
     protected void writePathItem(Object json, OasPathItem node) {
-        JsonCompat.setPropertyString(json, Constants.PROP_REF, node.$ref);
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setPropertyNull(json, Constants.PROP_GET);
         JsonCompat.setPropertyNull(json, Constants.PROP_PUT);
         JsonCompat.setPropertyNull(json, Constants.PROP_POST);
@@ -91,7 +92,11 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         writeResponse(json, node);
         this.writeExtraProperties(json, node);
 
-        JsonCompat.setProperty(parent, node.getName(), json);
+        String responseCode = node.getName();
+        if (responseCode == null) {
+            responseCode = Constants.PROP_DEFAULT;
+        }
+        JsonCompat.setProperty(parent, responseCode, json);
         
         this.updateIndex(node, json);
     }
@@ -221,6 +226,22 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         JsonCompat.setProperty(json, Constants.PROP_EXAMPLE, schema.example);
         
         super.writeSchema(json, schema);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeOperation(java.lang.Object, io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    protected void writeOperation(Object json, Operation node) {
+        OasOperation operation = (OasOperation) node;
+        
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_TAGS, operation.tags);
+        JsonCompat.setPropertyNull(json, Constants.PROP_PARAMETERS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_RESPONSES);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_DEPRECATED, operation.deprecated);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY);
+        
+        super.writeOperation(json, node);
     }
     
     /**

@@ -16,9 +16,12 @@
 
 package io.apicurio.datamodels.openapi.v2.io;
 
+import java.util.List;
+
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -30,6 +33,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Operation;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -186,6 +190,20 @@ public class Oas20DataModelWriter extends OasDataModelWriter implements IOas20Vi
     }
 
     /**
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#writeOperation(java.lang.Object, io.apicurio.datamodels.core.models.common.Operation)
+     */
+    @Override
+    protected void writeOperation(Object json, Operation node) {
+        Oas20Operation operation = (Oas20Operation) node;
+        
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_CONSUMES, operation.consumes);
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_PRODUCES, operation.produces);
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_SCHEMES, operation.schemes);
+
+        super.writeOperation(json, node);
+    }
+    
+    /**
      * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinitions(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions)
      */
     @Override
@@ -231,8 +249,18 @@ public class Oas20DataModelWriter extends OasDataModelWriter implements IOas20Vi
      */
     @Override
     public void visitExample(Oas20Example node) {
-        // TODO Auto-generated method stub
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
         
+        List<String> contentTypes = node.getExampleContentTypes();
+        contentTypes.forEach(ct -> {
+            Object example = node.getExample(ct);
+            JsonCompat.setProperty(json, ct, example);
+        });
+
+        JsonCompat.setProperty(parent, Constants.PROP_EXAMPLES, json);
+
+        this.updateIndex(node, json);
     }
 
     /**

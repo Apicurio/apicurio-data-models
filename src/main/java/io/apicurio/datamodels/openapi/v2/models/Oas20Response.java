@@ -26,7 +26,7 @@ public class Oas20Response extends OasResponse {
 
     public Oas20Headers headers;
     public Oas20Schema schema;
-    public Oas20Example example;
+    public Oas20Example examples;
 
     /**
      * Constructor.
