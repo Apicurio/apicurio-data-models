@@ -1,6 +1,3 @@
-///<reference path="../node_modules/@types/jasmine/index.d.ts"/>
-///<reference path="@types/karma-read-json/index.d.ts"/>
-
 /**
  * @license
  * Copyright 2019 JBoss Inc
@@ -20,33 +17,25 @@
 
 import {Library} from "../src/io/apicurio/datamodels/Library";
 import {NodePath} from "../src/io/apicurio/datamodels/core/models/NodePath";
+import {readJSON} from "./util/tutils";
 
 
-export interface TestSpec {
+interface TestSpec {
     name: string;
     path: string;
     segments: string[];
 }
 
-/**
- * Full I/O Tests for the AsyncAPI library.
- */
-describe("Node Paths", () => {
 
-    let TESTS: TestSpec[] = readJSON("tests/fixtures/paths/io-tests.json");
-
-    // All tests in the list above.
-    TESTS.forEach( spec => {
-        it(spec.name, () => {
-            let nodePath: NodePath = new NodePath(spec.path);
-            let actual: string = nodePath.toString();
-            let expected: string = spec.path;
-            expect(expected).toEqual(actual);
-            let actualSegments: string[] = nodePath.toSegments();
-            let expectedSegments: string[] = spec.segments;
-            expect(expectedSegments).toEqual(actualSegments);
-        });
+let allTests: TestSpec[] = readJSON("tests/fixtures/paths/io-tests.json");
+allTests.forEach(spec => {
+    test(spec.name, () => {
+        let nodePath: NodePath = new NodePath(spec.path);
+        let actual: string = nodePath.toString();
+        let expected: string = spec.path;
+        expect(actual).toEqual(expected);
+        let actualSegments: string[] = nodePath.toSegments();
+        let expectedSegments: string[] = spec.segments;
+        expect(actualSegments).toEqual(expectedSegments);
     });
-
 });
-
