@@ -17,6 +17,7 @@
 
 import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
 import {Node} from "../src/io/apicurio/datamodels/core/models/Node";
+import {NodePath} from "../src/io/apicurio/datamodels/core/models/NodePath";
 import {Library} from "../src/io/apicurio/datamodels/Library";
 import {CombinedAllNodeVisitor} from "../src/io/apicurio/datamodels/combined/visitors/CombinedAllNodeVisitor";
 import {TraverserDirection} from "../src/io/apicurio/datamodels/core/visitors/TraverserDirection";
@@ -29,6 +30,16 @@ class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
     
     visitNode(node: Node): void {
         this.extraPropertyCount += node.getExtraPropertyNames().length;
+    }
+
+}
+
+class AllNodeFinder extends CombinedAllNodeVisitor {
+    
+    allNodes: Node[] = [];
+    
+    visitNode(node: Node): void {
+        this.allNodes.push(node);
     }
 
 }
@@ -64,5 +75,19 @@ allTests.forEach(spec => {
 
         // Compare what we started with vs. what we now have
         expect(jsObj).toEqual(json);
+        
+        // Now make sure we can create node paths from **every** node in the doc
+        let nodeFinder: AllNodeFinder = new AllNodeFinder();
+        Library.visitTree(document, nodeFinder, TraverserDirection.down);
+        nodeFinder.allNodes.forEach(node => {
+            let nodePath: NodePath = Library.createNodePath(node);
+            expect(nodePath).not.toBeNull();
+            let path: string = nodePath.toString();
+            expect(path).not.toBeNull();
+            nodePath = new NodePath(path);
+            let resolvedNode: Node = nodePath.resolve(document, null);
+            expect(resolvedNode).not.toBeNull();
+            expect(resolvedNode).toBe(node);
+        });
     });
 });
