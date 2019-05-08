@@ -20,10 +20,13 @@ import java.util.List;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.openapi.io.OasDataModelReader;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -48,13 +51,15 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
  * A data model reader for the OpenAPI 2.0 data model.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
+public class Oas20DataModelReader extends OasDataModelReader {
     
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    public void readDocument(Object json, Oas20Document node) {
+    public void readDocument(Object json, Document node) {
+        Oas20Document doc = (Oas20Document) node;
+        
         JsonCompat.consumePropertyString(json, Constants.PROP_SWAGGER);
         String host = JsonCompat.consumePropertyString(json, Constants.PROP_HOST);
         String basePath = JsonCompat.consumePropertyString(json, Constants.PROP_BASE_PATH);
@@ -66,33 +71,33 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
         Object responses = JsonCompat.consumeProperty(json, Constants.PROP_RESPONSES);
         Object securityDefinitions = JsonCompat.consumeProperty(json, Constants.PROP_SECURITY_DEFINITIONS);
         
-        node.host = host;
-        node.basePath = basePath;
-        node.schemes = schemes;
-        node.consumes = consumes;
-        node.produces = produces;
+        doc.host = host;
+        doc.basePath = basePath;
+        doc.schemes = schemes;
+        doc.consumes = consumes;
+        doc.produces = produces;
         
         if (definitions != null) {
-            node.definitions = node.createDefinitions();
-            this.readDefinitions(definitions, node.definitions);
+            doc.definitions = doc.createDefinitions();
+            this.readDefinitions(definitions, doc.definitions);
         }
         
         if (parameters != null) {
-            node.parameters = node.createParameterDefinitions();
-            this.readParameterDefinitions(parameters, node.parameters);
+            doc.parameters = doc.createParameterDefinitions();
+            this.readParameterDefinitions(parameters, doc.parameters);
         }
         
         if (responses != null) {
-            node.responses = node.createResponseDefinitions();
-            this.readResponseDefinitions(responses, node.responses);
+            doc.responses = doc.createResponseDefinitions();
+            this.readResponseDefinitions(responses, doc.responses);
         }
         
         if (securityDefinitions != null) {
-            node.securityDefinitions = node.createSecurityDefinitions();
-            this.readSecurityDefinitions(securityDefinitions, node.securityDefinitions);
+            doc.securityDefinitions = doc.createSecurityDefinitions();
+            this.readSecurityDefinitions(securityDefinitions, doc.securityDefinitions);
         }
         
-        super.readDocument(json, node);
+        super.readDocument(json, doc);
     }
     
     /**
@@ -206,7 +211,9 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
      * @param json
      * @param node
      */
-    public void readHeader(Object json, Oas20Header node) {
+    public void readHeader(Object json, OasHeader node) {
+        Oas20Header header = (Oas20Header) node;
+        
         String type = JsonCompat.consumePropertyString(json, Constants.PROP_TYPE);
         String format = JsonCompat.consumePropertyString(json, Constants.PROP_FORMAT);
         Object items = JsonCompat.consumeProperty(json, Constants.PROP_ITEMS);
@@ -225,29 +232,29 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
         List<String> enum_ = JsonCompat.consumePropertyStringArray(json, Constants.PROP_ENUM);
         Number multipleOf = JsonCompat.consumePropertyNumber(json, Constants.PROP_MULTIPLE_OF);
         
-        node.type = type;
-        node.format = format;
-        node.collectionFormat = collectionFormat;
-        node.default_ = default_;
-        node.maximum = maximum;
-        node.exclusiveMaximum = exclusiveMaximum;
-        node.minimum = minimum;
-        node.exclusiveMinimum = exclusiveMinimum;
-        node.maxLength = maxLength;
-        node.minLength = minLength;
-        node.pattern = pattern;
-        node.maxItems = maxItems;
-        node.minItems = minItems;
-        node.uniqueItems = uniqueItems;
-        node.enum_ = enum_;
-        node.multipleOf = multipleOf;
+        header.type = type;
+        header.format = format;
+        header.collectionFormat = collectionFormat;
+        header.default_ = default_;
+        header.maximum = maximum;
+        header.exclusiveMaximum = exclusiveMaximum;
+        header.minimum = minimum;
+        header.exclusiveMinimum = exclusiveMinimum;
+        header.maxLength = maxLength;
+        header.minLength = minLength;
+        header.pattern = pattern;
+        header.maxItems = maxItems;
+        header.minItems = minItems;
+        header.uniqueItems = uniqueItems;
+        header.enum_ = enum_;
+        header.multipleOf = multipleOf;
 
         if (items != null) {
-            node.items = node.createItems();
-            this.readItems(items, node.items);
+            header.items = header.createItems();
+            this.readItems(items, header.items);
         }
 
-        super.readHeader(json, node);
+        super.readHeader(json, header);
     }
 
     /**
@@ -392,27 +399,27 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
     }
 
     /**
-     * Reads a security scheme.
-     * @param json
-     * @param node
+     * @see io.apicurio.datamodels.core.io.DataModelReader#readSecurityScheme(java.lang.Object, io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
-    public void readSecurityScheme(Object json, Oas20SecurityScheme node) {
+    public void readSecurityScheme(Object json, SecurityScheme node) {
+        Oas20SecurityScheme scheme = (Oas20SecurityScheme) node;
+        
         String flow = JsonCompat.consumePropertyString(json, Constants.PROP_FLOW);
         String authorizationUrl = JsonCompat.consumePropertyString(json, Constants.PROP_AUTHORIZATION_URL);
         String tokenUrl = JsonCompat.consumePropertyString(json, Constants.PROP_TOKEN_URL);
         Object scopes = JsonCompat.consumeProperty(json, Constants.PROP_SCOPES);
 
-        node.flow = flow;
-        node.authorizationUrl = authorizationUrl;
-        node.tokenUrl = tokenUrl;
+        scheme.flow = flow;
+        scheme.authorizationUrl = authorizationUrl;
+        scheme.tokenUrl = tokenUrl;
         
         if (scopes != null) {
-            Oas20Scopes scopesModel = node.createScopes();
+            Oas20Scopes scopesModel = scheme.createScopes();
             this.readScopes(scopes, scopesModel);
-            node.scopes = scopesModel;
+            scheme.scopes = scopesModel;
         }
         
-        super.readSecurityScheme(json, node);
+        super.readSecurityScheme(json, scheme);
     }
 
     /**

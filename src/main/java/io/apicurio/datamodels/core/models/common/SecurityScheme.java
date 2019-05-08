@@ -23,7 +23,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * Models a Security Scheme.
  * @author eric.wittmann@gmail.com
  */
-public abstract class SecurityScheme extends ExtensibleNode {
+public abstract class SecurityScheme extends ExtensibleNode implements ISecuritySchemaDefinition {
     
     public String _schemeName;
     public String type;
@@ -44,6 +44,14 @@ public abstract class SecurityScheme extends ExtensibleNode {
      */
     public String getSchemeName() {
         return this._schemeName;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     */
+    @Override
+    public String getName() {
+        return this.getSchemeName();
     }
     
     /**

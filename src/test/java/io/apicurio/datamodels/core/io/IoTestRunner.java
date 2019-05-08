@@ -17,6 +17,8 @@
 package io.apicurio.datamodels.core.io;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,10 +39,19 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
+import io.apicurio.datamodels.openapi.models.OasOperation;
+import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Schema.Oas20PropertySchema;
+import io.apicurio.datamodels.openapi.v3.models.IOas30Expression;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30PropertySchema;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -144,7 +155,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 
                 // Now test that we can create a Node Path to **every** node in the document!!
                 List<Node> allNodes = getAllNodes(doc);
-                allNodes.forEach(node -> {
+                for (Node node : allNodes) {
                     try {
                         NodePath nodePath = Library.createNodePath(node);
                         Assert.assertNotNull(nodePath);
@@ -158,7 +169,35 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                         System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
                         throw t;
                     }
-                });
+                }
+                
+                // Now do a partial read/write test?  This isn't great because there's not a great way to
+                // assert the results.  But at least it runs everything through the reader dispatchers.
+                for (Node node : allNodes) {
+                    if (node instanceof Extension || node instanceof IOas30Expression) {
+                        continue;
+                    }
+                    // TODO :: check the extra-property counts when doing partial i/o testing
+                    try {
+                        Object partialNodeJson = Library.writeNode(node);
+                        String partialNodeJsonStr = JsonCompat.stringify(partialNodeJson);
+                        
+                        Node clonedNode = cloneNode(node);
+                        // Skip any node that we can't clone.
+                        if (clonedNode == null) {
+                            continue;
+                        }
+                        Library.readNode(partialNodeJson, clonedNode);
+                        
+                        Object finalJson = Library.writeNode(clonedNode);
+                        String finalJsonStr = JsonCompat.stringify(finalJson);
+                        
+                        assertJsonEquals(partialNodeJsonStr, finalJsonStr);
+                    } catch (Throwable t) {
+                        System.err.println("Failure/error testing partial I/O for node: " + Library.createNodePath(node).toString());
+                        throw t;
+                    }
+                }
             }
         };
         runLeaf(statement, description, notifier);
@@ -191,6 +230,48 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      */
     static void assertJsonEquals(String expected, String actual) throws JSONException {
         JSONAssert.assertEquals(expected, actual, true);
+    }
+    
+    static Node cloneNode(Node node) {
+        Constructor<? extends Node> constructor;
+        Node clonedNode = null;
+        try {
+            if (node instanceof IDefinition) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((IDefinition) node).getName());
+            } else if (node instanceof OasPathItem) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((OasPathItem) node).getPath());
+            } else if (node instanceof OasOperation) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((OasOperation) node).getMethod());
+            } else if (node instanceof Oas20PropertySchema) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((Oas20PropertySchema) node).getPropertyName());
+            } else if (node instanceof Oas30PropertySchema) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((Oas30PropertySchema) node).getPropertyName());
+            } else if (node instanceof ServerVariable) {
+                constructor = node.getClass().getConstructor(String.class);
+                clonedNode = constructor.newInstance(((ServerVariable) node).getName());
+            } else {
+                constructor = node.getClass().getConstructor();
+                clonedNode = constructor.newInstance();
+            }
+        } catch (SecurityException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            System.err.println("Skipping partial I/O for: " + node.getClass().getSimpleName());
+        }
+        if (clonedNode != null) {
+            clonedNode._parent = node._parent;
+            clonedNode._ownerDocument = node.ownerDocument();
+            if (clonedNode instanceof Document) {
+                clonedNode._ownerDocument = (Document) clonedNode;
+            }
+        }
+        return clonedNode;
     }
 
 }

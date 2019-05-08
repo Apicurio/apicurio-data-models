@@ -197,7 +197,7 @@ public class Oas30Schema extends OasSchema {
      * Schema subclasses.
      * ************************************************************************ */
     
-    public class Oas30AdditionalPropertiesSchema extends Oas30Schema {
+    public static class Oas30AdditionalPropertiesSchema extends Oas30Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -210,7 +210,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public class Oas30ItemsSchema extends Oas30Schema {
+    public static class Oas30ItemsSchema extends Oas30Schema {
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
          */
@@ -222,7 +222,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public class Oas30AllOfSchema extends Oas30Schema {
+    public static class Oas30AllOfSchema extends Oas30Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -236,7 +236,7 @@ public class Oas30Schema extends OasSchema {
     }
 
 
-    public class Oas30NotSchema extends Oas30Schema {
+    public static class Oas30NotSchema extends Oas30Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -249,7 +249,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public class Oas30OneOfSchema extends Oas30Schema {
+    public static class Oas30OneOfSchema extends Oas30Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -262,7 +262,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public class Oas30AnyOfSchema extends Oas30Schema {
+    public static class Oas30AnyOfSchema extends Oas30Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -275,7 +275,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public class Oas30PropertySchema extends Oas30Schema implements IOasPropertySchema {
+    public static class Oas30PropertySchema extends Oas30Schema implements IOasPropertySchema {
         
         private String _propertyName;
         

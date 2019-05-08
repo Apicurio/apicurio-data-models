@@ -23,6 +23,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
 import io.apicurio.datamodels.core.factories.VisitorFactory;
 import io.apicurio.datamodels.core.io.DataModelReader;
+import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
@@ -37,6 +38,7 @@ import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -45,18 +47,42 @@ import io.apicurio.datamodels.core.visitors.TraverserDirection;
  */
 public class Library {
     
+    /**
+     * Called to create a node path for a given data model node.
+     * @param node
+     */
     public static NodePath createNodePath(Node node) {
         return NodePathUtil.createNodePath(node);
     }
 
+    /**
+     * Convenience method for visiting a single data model nodel.
+     * @param node
+     * @param visitor
+     */
     public static void visitNode(Node node, IVisitor visitor) {
         VisitorUtil.visitNode(node, visitor);
     }
     
+    /**
+     * Convenience method for visiting a data model tree.  Supports traversing the data model either
+     * up or down the tree.
+     * @param node
+     * @param visitor
+     * @param direction
+     */
     public static void visitTree(Node node, IVisitor visitor, TraverserDirection direction) {
         VisitorUtil.visitTree(node, visitor, direction);
     }
 
+    /**
+     * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
+     * of validation problems found during validation is returned.  In addition, validation problems will be
+     * reported on the individual nodes themselves.  Validation problem severity is determined by checking
+     * with the included severity registry.  If the severity registry is null, a default registry is used.
+     * @param node
+     * @param severityRegistry
+     */
     public static List<ValidationProblem> validate(Node node, IValidationSeverityRegistry severityRegistry) {
         if (severityRegistry == null) {
             severityRegistry = new DefaultSeverityRegistry();
@@ -74,7 +100,12 @@ public class Library {
         return validator.getValidationProblems();
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    /**
+     * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
+     * read as a data model {@link Document} and returned.
+     * @param json
+     * @return
+     */
     public static Document readDocument(Object json) {
         // Clone the input because the reader is destructive to the source data.
         Object clonedJson = JsonCompat.clone(json);
@@ -85,12 +116,63 @@ public class Library {
         return document;
     }
     
+    /**
+     * Reads an entire document from a JSON formatted string.  This will parse the given string into
+     * JSON data and then call Library.readDocument.
+     * @param jsonString
+     */
+    public static Document readDocumentFromJSONString(String jsonString) {
+        Object json = JsonCompat.parseJSON(jsonString);
+        return readDocument(json);
+    }
+    
+    /**
+     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node 
+     * type and an empty instance of the property node class.  For example, you could read just an
+     * Operation by passing the JSON data for the operation along with an instance of e.g. 
+     * {@link Oas30Operation} and this will read the data and store it in the instance.
+     * @param json
+     * @param node
+     */
+    public static void readNode(Object json, Node node) {
+        DocumentType type = node.ownerDocument().getDocumentType();
+        DataModelReader reader = VisitorFactory.createDataModelReader(type);
+        DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, json, reader);
+        Library.visitNode(node, dispatcher);
+    }
+    
+    /**
+     * Called to serialize a given data model node to a JSON object.
+     * @param node
+     */
     public static Object writeNode(Node node) {
         DataModelWriter writer = VisitorFactory.createDataModelWriter(node.ownerDocument());
         visitTree(node, writer, TraverserDirection.down);
         return writer.getResult();
     }
     
+    /**
+     * Called to serialize a given data model to a JSON formatted string.
+     * @param document
+     */
+    public static String writeDocumentToJSONString(Document document) {
+        Object json = Library.writeNode(document);
+        return JsonCompat.stringify(json);
+    }
+
+    /**
+     * Called to discover what type of document the given JSON data represents.  This method
+     * interrogates the following appropriate top level properties:
+     * 
+     * - asyncapi
+     * - openapi
+     * - swagger
+     * 
+     * Based on which property is defined, and the value of that property, the correct document
+     * type is determined and returned.
+     * 
+     * @param json
+     */
     public static DocumentType discoverDocumentType(Object json) {
         String asyncapi = JsonCompat.getPropertyString(json, Constants.PROP_ASYNCAPI);
         String openapi = JsonCompat.getPropertyString(json, Constants.PROP_OPENAPI);

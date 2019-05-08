@@ -3,6 +3,15 @@ export class JsonCompat {
     
     /****** Utility ******/
     
+
+    public static stringify(json: any): string {
+        return JSON.stringify(json);
+    }
+    
+    public static parseJSON(jsonString: string): any {
+        return JSON.parse(jsonString);
+    }
+        
     public static clone(json: any): any {
         return JSON.parse(JSON.stringify(json));
     }

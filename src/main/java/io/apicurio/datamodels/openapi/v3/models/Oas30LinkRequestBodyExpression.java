@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models a link request body expression.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30LinkRequestBodyExpression extends Node {
+public class Oas30LinkRequestBodyExpression extends Node implements IOas30Expression {
 
     private String _value;
     
@@ -46,8 +46,9 @@ public class Oas30LinkRequestBodyExpression extends Node {
     }
     
     /**
-     * Gets the expression value.
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30Expression#getValue()
      */
+    @Override
     public String getValue() {
         return this._value;
     }

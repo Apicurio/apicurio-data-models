@@ -45,7 +45,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * Base class for all data model readers.  Provides some common reading capabilities.
  * @author eric.wittmann@gmail.com
  */
-public abstract class DataModelReader<T extends Document> {
+public abstract class DataModelReader {
     
     /**
      * Constructor.
@@ -89,7 +89,7 @@ public abstract class DataModelReader<T extends Document> {
      * @param json
      * @param node
      */
-    public void readDocument(Object json, T node) {
+    public void readDocument(Object json, Document node) {
         Object info = JsonCompat.consumeProperty(json, Constants.PROP_INFO);
         List<Object> tags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
         Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);

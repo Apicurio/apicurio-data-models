@@ -22,9 +22,11 @@ import java.util.List;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.openapi.io.OasDataModelReader;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -62,35 +64,37 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Server;
  * A data model reader for the OpenAPI 2.0 data model.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30DataModelReader extends OasDataModelReader<Oas30Document> {
+public class Oas30DataModelReader extends OasDataModelReader {
     
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    public void readDocument(Object json, Oas30Document node) {
+    public void readDocument(Object json, Document node) {
+        Oas30Document doc = (Oas30Document) node;
+        
         String openapi = JsonCompat.consumePropertyString(json, Constants.PROP_OPENAPI);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
         Object components = JsonCompat.consumeProperty(json, Constants.PROP_COMPONENTS);
         
-        node.openapi = openapi;
+        doc.openapi = openapi;
 
         if (servers != null) {
             List<Oas30Server> serverModels = new ArrayList<>();
             servers.forEach(server -> {
-                Oas30Server serverModel = node.createServer();
+                Oas30Server serverModel = doc.createServer();
                 this.readServer(server, serverModel);
                 serverModels.add(serverModel);
             });
-            node.servers = serverModels;
+            doc.servers = serverModels;
         }
         
         if (components != null) {
-            node.components = node.createComponents();
-            this.readComponents(components, node.components);
+            doc.components = doc.createComponents();
+            this.readComponents(components, doc.components);
         }
 
-        super.readDocument(json, node);
+        super.readDocument(json, doc);
     }
 
     /**
@@ -192,28 +196,28 @@ public class Oas30DataModelReader extends OasDataModelReader<Oas30Document> {
     }
 
     /**
-     * Reads an OAS 3.0 Security Scheme object from the given JS data.
-     * @param securityScheme
-     * @param node
+     * @see io.apicurio.datamodels.core.io.DataModelReader#readSecurityScheme(java.lang.Object, io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
-    public void readSecurityScheme(Object json, Oas30SecurityScheme node) {
+    public void readSecurityScheme(Object json, SecurityScheme node) {
+        Oas30SecurityScheme oasNode = (Oas30SecurityScheme) node;
+        
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         String scheme = JsonCompat.consumePropertyString(json, Constants.PROP_SCHEME);
         String bearerFormat = JsonCompat.consumePropertyString(json, Constants.PROP_BEARER_FORMAT);
         Object flows = JsonCompat.consumeProperty(json, Constants.PROP_FLOWS);
         String openIdConnectUrl = JsonCompat.consumePropertyString(json, Constants.PROP_OPEN_ID_CONNECT_URL);
         
-        node.$ref = $ref;
-        node.scheme = scheme;
-        node.bearerFormat = bearerFormat;
-        node.openIdConnectUrl = openIdConnectUrl;
+        oasNode.$ref = $ref;
+        oasNode.scheme = scheme;
+        oasNode.bearerFormat = bearerFormat;
+        oasNode.openIdConnectUrl = openIdConnectUrl;
         
         if (flows != null) {
-            node.flows = node.createOAuthFlows();
-            this.readOAuthFlows(flows, node.flows);
+            oasNode.flows = oasNode.createOAuthFlows();
+            this.readOAuthFlows(flows, oasNode.flows);
         }
 
-        super.readSecurityScheme(json, node);
+        super.readSecurityScheme(json, oasNode);
     }
 
     /**

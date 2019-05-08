@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models an OpenAPI link parameter expression.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30LinkParameterExpression extends Node {
+public class Oas30LinkParameterExpression extends Node implements IOas30Expression {
 
     private String _name;
     private String _value;
@@ -57,8 +57,9 @@ public class Oas30LinkParameterExpression extends Node {
     }
 
     /**
-     * Get the expression value.
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30Expression#getValue()
      */
+    @Override
     public String getValue() {
         return this._value;
     }

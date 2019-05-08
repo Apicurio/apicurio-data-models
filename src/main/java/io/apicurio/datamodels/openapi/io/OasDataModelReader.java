@@ -22,6 +22,7 @@ import java.util.List;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -41,30 +42,32 @@ import io.apicurio.datamodels.openapi.models.OasXML;
  * A data model reader for the OpenAPI data model.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasDataModelReader<T extends OasDocument> extends DataModelReader<T> {
+public abstract class OasDataModelReader extends DataModelReader {
     
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    public void readDocument(Object json, T node) {
+    public void readDocument(Object json, Document node) {
+        OasDocument doc = (OasDocument) node;
+        
         Object paths = JsonCompat.consumeProperty(json, Constants.PROP_PATHS);
         List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
         
         if (paths != null) {
-            node.paths = node.createPaths();
-            this.readPaths(paths, node.paths);
+            doc.paths = doc.createPaths();
+            this.readPaths(paths, doc.paths);
         }
         
         if (security != null) {
             security.forEach(sec -> {
-                OasSecurityRequirement secModel = node.createSecurityRequirement();
+                OasSecurityRequirement secModel = doc.createSecurityRequirement();
                 this.readSecurityRequirement(sec, secModel);
-                node.addSecurityRequirement(secModel);
+                doc.addSecurityRequirement(secModel);
             });
         }
 
-        super.readDocument(json, node);
+        super.readDocument(json, doc);
     }
 
     /**

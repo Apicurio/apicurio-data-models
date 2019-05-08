@@ -96,7 +96,13 @@ public class Oas20Schema extends OasSchema {
         return rval;
     }
 
-    public class Oas20AdditionalPropertiesSchema extends Oas20Schema {
+    
+    /* ************************************************************************
+     * Schema subclasses.
+     * ************************************************************************ */
+
+    
+    public static class Oas20AdditionalPropertiesSchema extends Oas20Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -109,7 +115,7 @@ public class Oas20Schema extends OasSchema {
 
     }
 
-    public class Oas20ItemsSchema extends Oas20Schema {
+    public static class Oas20ItemsSchema extends Oas20Schema {
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
          */
@@ -121,7 +127,7 @@ public class Oas20Schema extends OasSchema {
 
     }
 
-    public class Oas20AllOfSchema extends Oas20Schema {
+    public static class Oas20AllOfSchema extends Oas20Schema {
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -134,7 +140,7 @@ public class Oas20Schema extends OasSchema {
 
     }
 
-    public class Oas20PropertySchema extends Oas20Schema implements IOasPropertySchema {
+    public static class Oas20PropertySchema extends Oas20Schema implements IOasPropertySchema {
         
         private String _propertyName;
         

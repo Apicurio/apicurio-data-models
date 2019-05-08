@@ -17,16 +17,20 @@
 package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.io.AaiDataModelReader;
+import io.apicurio.datamodels.asyncapi.io.AaiDataModelReaderDispatcher;
 import io.apicurio.datamodels.asyncapi.io.AaiDataModelWriter;
 import io.apicurio.datamodels.core.io.DataModelReader;
+import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelReader;
+import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelReaderDispatcher;
 import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelWriter;
 import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelReader;
+import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelReaderDispatcher;
 import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelWriter;
 
 /**
@@ -42,7 +46,7 @@ public class VisitorFactory {
         return new ValidationVisitor(doc);
     }
     
-    public static final DataModelReader<?> createDataModelReader(DocumentType type) {
+    public static final DataModelReader createDataModelReader(DocumentType type) {
         switch (type) {
             case asyncapi2:
                 return new AaiDataModelReader();
@@ -65,6 +69,20 @@ public class VisitorFactory {
                 return new Oas30DataModelWriter();
             default:
                 throw new RuntimeException("Failed to create a validation visitor for type: " + doc.getDocumentType());
+        }
+    }
+
+    public static DataModelReaderDispatcher createDataModelReaderDispatcher(DocumentType type, Object json,
+            DataModelReader reader) {
+        switch (type) {
+            case asyncapi2:
+                return new AaiDataModelReaderDispatcher(json, (AaiDataModelReader) reader);
+            case openapi2:
+                return new Oas20DataModelReaderDispatcher(json, (Oas20DataModelReader) reader);
+            case openapi3:
+                return new Oas30DataModelReaderDispatcher(json, (Oas30DataModelReader) reader);
+            default:
+                throw new RuntimeException("Failed to create a data model reader dispatcher for type: " + type);
         }
     }
 

@@ -26,6 +26,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 
@@ -33,31 +34,32 @@ import io.apicurio.datamodels.core.models.common.ServerVariable;
  * A data model reader for the AsyncAPI data model.
  * @author eric.wittmann@gmail.com
  */
-public class AaiDataModelReader extends DataModelReader<AaiDocument> {
+public class AaiDataModelReader extends DataModelReader {
 
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    public void readDocument(Object json, AaiDocument node) {
+    public void readDocument(Object json, Document node) {
+        AaiDocument doc = (AaiDocument) node;
         String asyncapi = JsonCompat.consumePropertyString(json, Constants.PROP_ASYNCAPI);
         String id = JsonCompat.consumePropertyString(json, Constants.PROP_ID);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
 
-        node.asyncapi = asyncapi;
-        node.id = id;
+        doc.asyncapi = asyncapi;
+        doc.id = id;
         
         if (servers != null) {
             List<AaiServer> serverModels = new ArrayList<>();
             servers.forEach(server -> {
-                AaiServer serverModel = node.createServer();
+                AaiServer serverModel = doc.createServer();
                 this.readServer(server, serverModel);
                 serverModels.add(serverModel);
             });
-            node.servers = serverModels;
+            doc.servers = serverModels;
         }
 
-        super.readDocument(json, node);
+        super.readDocument(json, doc);
     }
     
     /**

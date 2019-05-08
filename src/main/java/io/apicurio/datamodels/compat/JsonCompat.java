@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -50,6 +51,22 @@ public class JsonCompat {
     /*
      * Util methods
      */
+    
+    public static String stringify(Object json) {
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static Object parseJSON(String jsonString) {
+        try {
+            return mapper.readTree(jsonString);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
     public static JsonNode clone(Object json) {
         try {
