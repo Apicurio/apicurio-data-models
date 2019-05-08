@@ -22,6 +22,7 @@ import java.util.List;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
@@ -29,7 +30,7 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  * Models an OpenAPI path item.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasPathItem extends ExtensibleNode implements IOasParameterParent {
+public abstract class OasPathItem extends ExtensibleNode implements IOasParameterParent, IReferenceNode {
 
     private String _path;
     public String $ref;

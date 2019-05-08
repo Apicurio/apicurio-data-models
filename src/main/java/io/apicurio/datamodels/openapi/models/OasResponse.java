@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.openapi.models;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
@@ -24,7 +25,7 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  * Models an OpenAPI 
  * @author eric.wittmann@gmail.com
  */
-public class OasResponse extends ExtensibleNode implements IOasResponseDefinition {
+public class OasResponse extends ExtensibleNode implements IOasResponseDefinition, IReferenceNode {
     
     private String _name;
     public String $ref;

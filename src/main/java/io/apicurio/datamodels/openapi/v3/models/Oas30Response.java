@@ -16,6 +16,11 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.apicurio.datamodels.openapi.models.OasResponse;
 
 /**
@@ -23,6 +28,10 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  * @author eric.wittmann@gmail.com
  */
 public class Oas30Response extends OasResponse {
+
+    public Map<String, Oas30Header> headers = new LinkedHashMap<>();
+    public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
+    public Map<String, Oas30Link> links = new LinkedHashMap<>();
 
     /**
      * Constructor.
@@ -34,10 +43,144 @@ public class Oas30Response extends OasResponse {
 
     /**
      * Gets the status code.
-     * @return {string}
      */
     public String getStatusCode() {
         return this.getName();
+    }
+
+    /**
+     * Creates a header.
+     * @param name
+     */
+    public Oas30Header createHeader(String name) {
+        Oas30Header rval = new Oas30Header(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a header.
+     * @param name
+     * @param header
+     */
+    public void addHeader(String name, Oas30Header header) {
+        this.headers.put(name, header);
+    }
+
+    /**
+     * Gets a single header by name.
+     * @param name
+     */
+    public Oas30Header getHeader(String name) {
+        return this.headers.get(name);
+    }
+
+    /**
+     * Removes a single header and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30Header removeHeader(String name) {
+        return this.headers.remove(name);
+    }
+
+    /**
+     * Gets a list of all headers.
+     */
+    public List<Oas30Header> getHeaders() {
+        List<Oas30Header> rval = new ArrayList<>();
+        rval.addAll(this.headers.values());
+        return rval;
+    }
+
+    /**
+     * Creates a media type.
+     * @param name
+     */
+    public Oas30MediaType createMediaType(String name) {
+        Oas30MediaType rval = new Oas30MediaType(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a media type.
+     * @param name
+     * @param mediaType
+     */
+    public void addMediaType(String name, Oas30MediaType mediaType) {
+        this.content.put(name, mediaType);
+    }
+
+    /**
+     * Gets a single media type by name.
+     * @param name
+     */
+    public Oas30MediaType getMediaType(String name) {
+        return this.content.get(name);
+    }
+
+    /**
+     * Removes a single media type and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30MediaType removeMediaType(String name) {
+        return this.content.remove(name);
+    }
+
+    /**
+     * Gets a list of all media types.
+     */
+    public List<Oas30MediaType> getMediaTypes() {
+        List<Oas30MediaType> rval = new ArrayList<>();
+        rval.addAll(this.content.values());
+        return rval;
+    }
+
+    /**
+     * Creates a link.
+     * @param name
+     */
+    public Oas30Link createLink(String name) {
+        Oas30Link rval = new Oas30Link(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a link.
+     * @param name
+     * @param link
+     */
+    public void addLink(String name, Oas30Link link) {
+        this.links.put(name, link);
+    }
+
+    /**
+     * Gets a single link by name.
+     * @param name
+     */
+    public Oas30Link getLink(String name) {
+        return this.links.get(name);
+    }
+
+    /**
+     * Removes a single link and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30Link removeLink(String name) {
+        return this.links.remove(name);
+    }
+
+    /**
+     * Gets a list of all links.
+     */
+    public List<Oas30Link> getLinks() {
+        List<Oas30Link> rval = new ArrayList<>();
+        rval.addAll(this.links.values());
+        return rval;
     }
 
 }

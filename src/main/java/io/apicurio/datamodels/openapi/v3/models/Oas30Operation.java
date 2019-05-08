@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
 public class Oas30Operation extends OasOperation {
 
     public Oas30RequestBody requestBody;
-    public Map<String, Oas30Callback> callbacks;
+    public Map<String, Oas30Callback> callbacks = new LinkedHashMap<>();
     public List<Oas30Server> servers;
     
     /**
@@ -85,6 +87,82 @@ public class Oas30Operation extends OasOperation {
         requirement._ownerDocument = this.ownerDocument();
         requirement._parent = this;
         return requirement;
+    }
+
+    /**
+     * Creates a callback.
+     * @param name
+     */
+    public Oas30Callback createCallback(String name) {
+        Oas30Callback rval = new Oas30Callback(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a callback.
+     * @param name
+     * @param callback
+     */
+    public void addCallback(String name, Oas30Callback callback) {
+        this.callbacks.put(name, callback);
+    }
+
+    /**
+     * Gets a single callback by name.
+     * @param name
+     */
+    public Oas30Callback getCallback(String name) {
+        return this.callbacks.get(name);
+    }
+
+    /**
+     * Removes a single callback and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30Callback removeCallback(String name) {
+        return this.callbacks.remove(name);
+    }
+
+    /**
+     * Gets a list of all callbacks.
+     */
+    public List<Oas30Callback> getCallbacks() {
+        List<Oas30Callback> rval = new ArrayList<>();
+        rval.addAll(this.callbacks.values());
+        return rval;
+    }
+
+    /**
+     * Creates a child RequestBody model.
+     */
+    public Oas30RequestBody createRequestBody() {
+        Oas30RequestBody rval = new Oas30RequestBody();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates an OAS 3.0 Server object.
+     */
+    public Oas30Server createServer() {
+        Oas30Server rval = new Oas30Server();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a server.
+     * @param serverModel
+     */
+    public void addServer(Oas30Server serverModel) {
+        if (this.servers == null) {
+            this.servers = new ArrayList<>();
+        }
+        this.servers.add(serverModel);
     }
 
 }

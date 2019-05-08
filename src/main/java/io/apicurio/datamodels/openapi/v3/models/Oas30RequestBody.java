@@ -16,9 +16,85 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
+
 /**
+ * Models an OpenAPI 3.0.x Request Body.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30RequestBody {
+public class Oas30RequestBody extends ExtensibleNode implements IReferenceNode {
+
+    public String $ref;
+    public String description;
+    public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
+    public Boolean required;
+    
+    /**
+     * Constructor.
+     */
+    public Oas30RequestBody() {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IOas30Visitor viz = (IOas30Visitor) visitor;
+        viz.visitRequestBody(this);
+    }
+
+    /**
+     * Creates a media type.
+     * @param name
+     */
+    public Oas30MediaType createMediaType(String name) {
+        Oas30MediaType rval = new Oas30MediaType(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a media type.
+     * @param name
+     * @param mediaType
+     */
+    public void addMediaType(String name, Oas30MediaType mediaType) {
+        this.content.put(name, mediaType);
+    }
+
+    /**
+     * Gets a single media type by name.
+     * @param name
+     */
+    public Oas30MediaType getMediaType(String name) {
+        return this.content.get(name);
+    }
+
+    /**
+     * Removes a single media type and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30MediaType removeMediaType(String name) {
+        return this.content.remove(name);
+    }
+
+    /**
+     * Gets a list of all media types.
+     */
+    public List<Oas30MediaType> getMediaTypes() {
+        List<Oas30MediaType> rval = new ArrayList<>();
+        rval.addAll(this.content.values());
+        return rval;
+    }
 
 }

@@ -46,7 +46,6 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
     /**
      * Returns a single path item by name.
      * @param name
-     * @return {OasPathItem}
      */
     public OasPathItem getPathItem(String name) {
         return this._pathItems.get(name);

@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.asyncapi.validation;
+package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
- * A validation problem reset visitor for AsyncAPI data models.
+ * Models an OpenAPI 3.0.x password OAuth flow.
  * @author eric.wittmann@gmail.com
  */
-public class AaiValidationProblemsResetVisitor extends ValidationProblemsResetVisitor implements IAaiVisitor {
+public class Oas30PasswordOAuthFlow extends PasswordOAuthFlow {
+
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IOas30Visitor viz = (IOas30Visitor) visitor;
+        viz.visitPasswordOAuthFlow(this);
+    }
 
 }

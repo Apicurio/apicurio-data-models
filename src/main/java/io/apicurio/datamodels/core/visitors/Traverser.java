@@ -30,6 +30,8 @@ import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.OAuthFlow;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -279,10 +281,13 @@ public class Traverser implements ITraverser, IVisitor {
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         node.accept(this.visitor);
+        this.traverseSecurityScheme(node);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }
-    
+    protected void traverseSecurityScheme(SecurityScheme node) {
+    }
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
      */
@@ -290,6 +295,30 @@ public class Traverser implements ITraverser, IVisitor {
     public void visitSchemaDefinition(ISchemaDefinition node) {
         Schema schema = (Schema) node;
         this.visitSchema(schema);
+    }
+    
+    /**
+     * Traverse an OAuth flow.
+     * @param node
+     */
+    protected void traverseOAuthFlow(OAuthFlow node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * Traverses an oauth flows node.
+     * @param node
+     */
+    protected void traverseOAuthFlows(OAuthFlows node) {
+        node.accept(this.visitor);
+        this.traverseIfNotNull(node.implicit);
+        this.traverseIfNotNull(node.password);
+        this.traverseIfNotNull(node.clientCredentials);
+        this.traverseIfNotNull(node.authorizationCode);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
 }

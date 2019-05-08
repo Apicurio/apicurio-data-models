@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.v3.validation;
+package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
+import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
-import io.apicurio.datamodels.openapi.validation.OasValidationVisitor;
 
 /**
+ * Models an OpenAPI 3.0.x header definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30ValidationVisitor extends OasValidationVisitor implements IOas30Visitor {
+public class Oas30HeaderDefinition extends Oas30Header {
 
     /**
      * Constructor.
-     * @param document
+     * @param name
      */
-    public Oas30ValidationVisitor(Oas30Document document) {
-        super(document);
+    public Oas30HeaderDefinition(String name) {
+        super(name);
     }
-
+    
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     * @see io.apicurio.datamodels.openapi.models.OasHeader#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-        this.acceptAll(node);
+    public void accept(IVisitor visitor) {
+        IOas30Visitor viz = (IOas30Visitor) visitor;
+        viz.visitHeaderDefinition(this);
     }
 
 }

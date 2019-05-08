@@ -12,22 +12,7 @@
                 "parameters": {
                   "username": "$response.body#/username"
                 },
-                "requestBody": {
-                  "description": "The request body.",
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/User"
-                      }
-                    },
-                    "application/xml": {
-                      "schema": {
-                        "$ref": "#/components/schemas/User"
-                      }
-                    }
-                  },
-                  "required": true
-                },
+                "requestBody": "$response.body#/id",
                 "description": "The link1 description.",
                 "server": {
                   "url": "https://development.gigantic-server.com/v1",

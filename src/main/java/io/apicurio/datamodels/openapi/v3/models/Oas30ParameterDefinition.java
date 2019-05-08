@@ -16,14 +16,33 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
- * Models an OpenAPI 2.0 parameter definition.
+ * Models an OpenAPI 3.0.x parameter definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30ParameterDefinition extends Oas30Parameter {
+public class Oas30ParameterDefinition extends Oas30Parameter implements IParameterDefinition {
+    
+    private String _name;
+
+    /**
+     * Constructor.
+     * @param name
+     */
+    public Oas30ParameterDefinition(String name) {
+        this._name = name;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     */
+    @Override
+    public String getName() {
+        return this._name;
+    }
     
     /**
      * @see io.apicurio.datamodels.core.models.common.Parameter#accept(io.apicurio.datamodels.core.visitors.IVisitor)

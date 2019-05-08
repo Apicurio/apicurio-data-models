@@ -79,6 +79,15 @@ public class OasTraverser extends Traverser implements IOasVisitor {
     @Override
     public void visitPathItem(OasPathItem node) {
         node.accept(this.visitor);
+        traversePathItem(node);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+
+    /**
+     * Traverses a path item.
+     */
+    protected void traversePathItem(OasPathItem node) {
         this.traverseIfNotNull(node.get);
         this.traverseIfNotNull(node.put);
         this.traverseIfNotNull(node.post);
@@ -87,8 +96,6 @@ public class OasTraverser extends Traverser implements IOasVisitor {
         this.traverseIfNotNull(node.head);
         this.traverseIfNotNull(node.patch);
         this.traverseCollection(node.parameters);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
     }
 
     /**

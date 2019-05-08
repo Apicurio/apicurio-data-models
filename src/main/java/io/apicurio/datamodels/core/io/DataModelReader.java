@@ -30,6 +30,8 @@ import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.OAuthFlow;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -112,6 +114,7 @@ public abstract class DataModelReader<T extends Document> {
             this.readExternalDocumentation(externalDocs, node.externalDocs);
         }
         this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
     }
     
     /**
@@ -356,4 +359,62 @@ public abstract class DataModelReader<T extends Document> {
         this.readExtraProperties(json, node);
     }
 
+    /**
+     * Reads an OAS 3.0 OAuth Flows object from the given JS data.
+     * @param flows
+     * @param flowsModel
+     */
+    public void readOAuthFlows(Object json, OAuthFlows node) {
+        Object implicit = JsonCompat.consumeProperty(json, Constants.PROP_IMPLICIT);
+        Object password = JsonCompat.consumeProperty(json, Constants.PROP_PASSWORD);
+        Object clientCredentials = JsonCompat.consumeProperty(json, Constants.PROP_CLIENT_CREDENTIALS);
+        Object authorizationCode = JsonCompat.consumeProperty(json, Constants.PROP_AUTHORIZATION_CODE);
+        
+        if (implicit != null) {
+            node.implicit = node.createImplicitOAuthFlow();
+            this.readOAuthFlow(implicit, node.implicit);
+        }
+        if (password != null) {
+            node.password = node.createPasswordOAuthFlow();
+            this.readOAuthFlow(password, node.password);
+        }
+        if (clientCredentials != null) {
+            node.clientCredentials = node.createClientCredentialsOAuthFlow();
+            this.readOAuthFlow(clientCredentials, node.clientCredentials);
+        }
+        if (authorizationCode != null) {
+            node.authorizationCode = node.createAuthorizationCodeOAuthFlow();
+            this.readOAuthFlow(authorizationCode, node.authorizationCode);
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads an OAS 3.0 OAuth Flow object from the given JS data.
+     * @param flow
+     * @param flowModel
+     */
+    public void readOAuthFlow(Object json, OAuthFlow node) {
+        String authorizationUrl = JsonCompat.consumePropertyString(json, Constants.PROP_AUTHORIZATION_URL);
+        String tokenUrl = JsonCompat.consumePropertyString(json, Constants.PROP_TOKEN_URL);
+        String refreshUrl = JsonCompat.consumePropertyString(json, Constants.PROP_REFRESH_URL);
+        Object scopes = JsonCompat.consumeProperty(json, Constants.PROP_SCOPES);
+        
+        node.authorizationUrl = authorizationUrl;
+        node.tokenUrl = tokenUrl;
+        node.refreshUrl = refreshUrl;
+        
+        if (scopes != null) {
+            JsonCompat.keys(scopes).forEach( scope -> {
+                String description = JsonCompat.consumePropertyString(scopes, scope);
+                node.addScope(scope, description);
+            });
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+    
 }

@@ -55,7 +55,6 @@ public abstract class Operation extends ExtensibleNode {
 
     /**
      * Creates an External Documentation node.
-     * @return {OasExternalDocumentation}
      */
     public abstract ExternalDocumentation createExternalDocumentation();
 

@@ -16,7 +16,9 @@
 
 package io.apicurio.datamodels.core.models.common;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
@@ -37,5 +39,31 @@ public abstract class OAuthFlow extends ExtensibleNode {
      */
     public OAuthFlow() {
     }
-    
+
+    /**
+     * Adds a scope.
+     * @param scope
+     * @param description
+     */
+    public void addScope(String scope, String description) {
+        this.scopes.put(scope, description);
+    }
+
+    /**
+     * Removes a scope.
+     * @param scope
+     */
+    public void removeScope(String scope) {
+        this.scopes.remove(scope);
+    }
+
+    /**
+     * Gets the list of scopes.
+     */
+    public List<String> getScopes() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.scopes.keySet());
+        return rval;
+    }
+
 }

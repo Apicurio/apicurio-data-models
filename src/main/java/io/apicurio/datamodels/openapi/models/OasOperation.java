@@ -75,7 +75,6 @@ public abstract class OasOperation extends Operation {
      * properties that uniquely identify a parameter).  Returns null if no parameter is found.
      * @param in
      * @param name
-     * @return {OasParameterBase}
      */
     public OasParameter getParameter(String in, String name) {
         OasParameter rval = null;

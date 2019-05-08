@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -26,6 +29,11 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  */
 public class Oas30PathItem extends OasPathItem {
     
+    public String summary;
+    public String description;
+    public Oas30Operation trace;
+    public List<Oas30Server> servers;
+
     /**
      * Constructor.
      * @param path
@@ -53,6 +61,38 @@ public class Oas30PathItem extends OasPathItem {
         OasParameter rval = new Oas30Parameter();
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates an OAS 3.0 Server object.
+     */
+    public Oas30Server createServer() {
+        Oas30Server rval = new Oas30Server();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a server.
+     * @param server
+     */
+    public void addServer(Oas30Server server) {
+        if (this.servers == null) {
+            this.servers = new ArrayList<>();
+        }
+        this.servers.add(server);
+    }
+    
+    /**
+     * Gets the servers.
+     */
+    public List<Oas30Server> getServers() {
+        List<Oas30Server> rval = new ArrayList<>();
+        if (this.servers != null) {
+            rval.addAll(this.servers);
+        }
         return rval;
     }
 

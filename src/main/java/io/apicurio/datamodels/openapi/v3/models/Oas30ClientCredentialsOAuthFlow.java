@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.asyncapi.validation;
+package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.validation.RequiredPropertyValidationRule;
-import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
- * Base class for all required property AsyncAPI validation rules.
+ * Models an OpenAPI 3.0.x client credentials OAuth flow.
  * @author eric.wittmann@gmail.com
  */
-public class AaiRequiredPropertyValidationRule extends RequiredPropertyValidationRule implements IAaiVisitor {
+public class Oas30ClientCredentialsOAuthFlow extends ClientCredentialsOAuthFlow {
 
     /**
-     * Constructor.
-     * @param ruleInfo
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
-    public AaiRequiredPropertyValidationRule(ValidationRuleMetaData ruleInfo) {
-        super(ruleInfo);
+    @Override
+    public void accept(IVisitor visitor) {
+        IOas30Visitor viz = (IOas30Visitor) visitor;
+        viz.visitClientCredentialsOAuthFlow(this);
     }
 
 }

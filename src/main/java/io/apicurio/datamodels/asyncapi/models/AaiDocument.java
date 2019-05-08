@@ -85,7 +85,6 @@ public class AaiDocument extends Document {
 
     /**
      * Creates an OAS 3.0 Server object.
-     * @return {AaiServer}
      */
     public AaiServer createServer() {
         AaiServer rval = new AaiServer();

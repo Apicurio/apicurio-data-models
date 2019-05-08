@@ -16,11 +16,13 @@
 
 package io.apicurio.datamodels.core.models.common;
 
+import io.apicurio.datamodels.core.models.IReferenceNode;
+
 /**
  * Implements the slightly more modern approach to a security scheme.
  * @author eric.wittmann@gmail.com
  */
-public abstract class ModernSecurityScheme extends SecurityScheme {
+public abstract class ModernSecurityScheme extends SecurityScheme implements IReferenceNode {
 
     public String $ref;
     public String scheme;

@@ -18,9 +18,6 @@ package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.io.AaiDataModelReader;
 import io.apicurio.datamodels.asyncapi.io.AaiDataModelWriter;
-import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.validation.AaiValidationProblemsResetVisitor;
-import io.apicurio.datamodels.asyncapi.validation.AaiValidationVisitor;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
@@ -29,12 +26,8 @@ import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelReader;
 import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelWriter;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.validation.Oas20ValidationVisitor;
 import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelReader;
 import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelWriter;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.validation.Oas30ValidationVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -42,27 +35,11 @@ import io.apicurio.datamodels.openapi.v3.validation.Oas30ValidationVisitor;
 public class VisitorFactory {
     
     public static final ValidationProblemsResetVisitor createValidationProblemsResetVisitor(Document doc) {
-        switch (doc.getDocumentType()) {
-            case asyncapi2:
-                return new AaiValidationProblemsResetVisitor();
-            case openapi2:
-            case openapi3:
-            default:
-                throw new RuntimeException("Failed to create a reset validation problems visitor for type: " + doc.getDocumentType());
-        }
+        return new ValidationProblemsResetVisitor();
     }
     
     public static final ValidationVisitor createValidationVisitor(Document doc) {
-        switch (doc.getDocumentType()) {
-            case asyncapi2:
-                return new AaiValidationVisitor((AaiDocument) doc);
-            case openapi2:
-                return new Oas20ValidationVisitor((Oas20Document) doc);
-            case openapi3:
-                return new Oas30ValidationVisitor((Oas30Document) doc);
-            default:
-                throw new RuntimeException("Failed to create a validation visitor for type: " + doc.getDocumentType());
-        }
+        return new ValidationVisitor(doc);
     }
     
     public static final DataModelReader<?> createDataModelReader(DocumentType type) {

@@ -17,8 +17,9 @@
 package io.apicurio.datamodels.core.models.common;
 
 /**
+ * Modles an implicit OAuth flow.
  * @author eric.wittmann@gmail.com
  */
-public class ImplicitOAuthFlow {
+public abstract class ImplicitOAuthFlow extends OAuthFlow {
 
 }

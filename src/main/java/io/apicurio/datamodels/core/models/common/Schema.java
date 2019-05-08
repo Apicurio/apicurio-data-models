@@ -17,13 +17,14 @@
 package io.apicurio.datamodels.core.models.common;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models a schema.
  * @author eric.wittmann@gmail.com
  */
-public class Schema extends ExtensibleNode {
+public class Schema extends ExtensibleNode implements IReferenceNode {
     
     public String $ref;
 

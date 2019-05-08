@@ -40,8 +40,6 @@ public class AaiDataModelReader extends DataModelReader<AaiDocument> {
      */
     @Override
     public void readDocument(Object json, AaiDocument node) {
-        super.readDocument(json, node);
-        
         String asyncapi = JsonCompat.consumePropertyString(json, Constants.PROP_ASYNCAPI);
         String id = JsonCompat.consumePropertyString(json, Constants.PROP_ID);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
@@ -59,7 +57,7 @@ public class AaiDataModelReader extends DataModelReader<AaiDocument> {
             node.servers = serverModels;
         }
 
-        this.readExtraProperties(json, node);
+        super.readDocument(json, node);
     }
     
     /**

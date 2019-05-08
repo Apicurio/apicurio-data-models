@@ -78,7 +78,6 @@ public class Oas20Headers extends Node implements IIndexedNode<Oas20Header> {
 
     /**
      * Returns all the header names.
-     * @return {string[]}
      */
     public List<String> getHeaderNames() {
         List<String> rval = new ArrayList<>();

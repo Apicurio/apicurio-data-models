@@ -48,8 +48,6 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
      */
     @Override
     public void readDocument(Object json, T node) {
-        super.readDocument(json, node);
-        
         Object paths = JsonCompat.consumeProperty(json, Constants.PROP_PATHS);
         List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
         
@@ -65,6 +63,8 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
                 node.addSecurityRequirement(secModel);
             });
         }
+
+        super.readDocument(json, node);
     }
 
     /**
@@ -140,6 +140,8 @@ public abstract class OasDataModelReader<T extends OasDocument> extends DataMode
                 node.addParameter(parameterModel);
             });
         }
+        
+        this.readExtensions(json, node);
     }
 
     /**

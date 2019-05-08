@@ -16,11 +16,15 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
+import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
@@ -28,6 +32,27 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  * @author eric.wittmann@gmail.com
  */
 public class Oas30Schema extends OasSchema {
+
+    public List<OasSchema> oneOf;
+    public List<OasSchema> anyOf;
+    public OasSchema not;
+
+    public Oas30Discriminator discriminator;
+
+    public Boolean nullable;
+    public Boolean writeOnly;
+    public Boolean deprecated;
+
+    /**
+     * Creates a child Discriminator model.
+     * @return {Oas30Discriminator}
+     */
+    public Oas30Discriminator createDiscriminator() {
+        Oas30Discriminator rval = new Oas30Discriminator();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
 
     /**
      * @see io.apicurio.datamodels.openapi.models.OasSchema#createExternalDocumentation()
@@ -95,6 +120,82 @@ public class Oas30Schema extends OasSchema {
         return rval;
     }
 
+    /**
+     * Creates a child schema model.
+     */
+    public Oas30OneOfSchema createOneOfSchema() {
+        Oas30OneOfSchema rval = new Oas30OneOfSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates a child schema model.
+     */
+    public Oas30AnyOfSchema createAnyOfSchema() {
+        Oas30AnyOfSchema rval = new Oas30AnyOfSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Creates a child schema model.
+     */
+    public Oas30NotSchema createNotSchema() {
+        Oas30NotSchema rval = new Oas30NotSchema();
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+    
+    /**
+     * Adds a OneOf schema.
+     * @param schema
+     */
+    public void addOneOfSchema(Oas30OneOfSchema schema) {
+        if (this.oneOf == null) {
+            this.oneOf = new ArrayList<>();
+        }
+        this.oneOf.add(schema);
+    }
+    
+    /**
+     * Adds an AnyOf schema.
+     * @param schema
+     */
+    public void addAnyOfSchema(Oas30AnyOfSchema schema) {
+        if (this.anyOf == null) {
+            this.anyOf = new ArrayList<>();
+        }
+        this.anyOf.add(schema);
+    }
+    
+    /**
+     * Removes a oneOf schema.
+     * @param schema
+     */
+    public void removeOneOfSchema(Oas30OneOfSchema schema) {
+        if (this.oneOf != null) {
+            this.oneOf.remove(schema);
+        }
+    }
+    
+    /**
+     * Removes a anyOf schema.
+     * @param schema
+     */
+    public void removeAnyOfSchema(Oas30AnyOfSchema schema) {
+        if (this.anyOf != null) {
+            this.anyOf.remove(schema);
+        }
+    }
+    
+    
+    /* ************************************************************************
+     * Schema subclasses.
+     * ************************************************************************ */
     
     public class Oas30AdditionalPropertiesSchema extends Oas30Schema {
 
@@ -130,6 +231,46 @@ public class Oas30Schema extends OasSchema {
         public void accept(IVisitor visitor) {
             IOasVisitor viz = (IOasVisitor) visitor;
             viz.visitAllOfSchema(this);
+        }
+
+    }
+
+
+    public class Oas30NotSchema extends Oas30Schema {
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOas30Visitor viz = (IOas30Visitor) visitor;
+            viz.visitNotSchema(this);
+        }
+
+    }
+
+    public class Oas30OneOfSchema extends Oas30Schema {
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOas30Visitor viz = (IOas30Visitor) visitor;
+            viz.visitOneOfSchema(this);
+        }
+
+    }
+
+    public class Oas30AnyOfSchema extends Oas30Schema {
+
+        /**
+         * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+         */
+        @Override
+        public void accept(IVisitor visitor) {
+            IOas30Visitor viz = (IOas30Visitor) visitor;
+            viz.visitAnyOfSchema(this);
         }
 
     }

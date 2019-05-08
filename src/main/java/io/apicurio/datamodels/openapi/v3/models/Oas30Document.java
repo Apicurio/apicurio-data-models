@@ -35,7 +35,8 @@ public class Oas30Document extends OasDocument {
 
     public String openapi;
     public List<Oas30Server> servers;
-    
+    public Oas30Components components;
+
     /**
      * @see io.apicurio.datamodels.core.models.Document#getDocumentType()
      */
@@ -101,7 +102,6 @@ public class Oas30Document extends OasDocument {
 
     /**
      * Creates an OAS 3.0 Server object.
-     * @return {Oas30Server}
      */
     public Oas30Server createServer() {
         Oas30Server rval = new Oas30Server();
@@ -124,6 +124,16 @@ public class Oas30Document extends OasDocument {
         }
         this.servers.add(server);
         return server;
+    }
+
+    /**
+     * Creates an OAS 3.0 Components object.
+     */
+    public Oas30Components createComponents() {
+        Oas30Components rval = new Oas30Components();
+        rval._ownerDocument = this;
+        rval._parent = this;
+        return rval;
     }
 
 }

@@ -17,8 +17,9 @@
 package io.apicurio.datamodels.core.models.common;
 
 /**
+ * Models a client credentials OAuth flow.
  * @author eric.wittmann@gmail.com
  */
-public class ClientCredentialsOAuthFlow {
+public abstract class ClientCredentialsOAuthFlow extends OAuthFlow {
 
 }

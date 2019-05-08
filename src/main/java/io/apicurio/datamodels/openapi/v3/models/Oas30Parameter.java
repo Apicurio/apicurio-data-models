@@ -16,6 +16,12 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 
@@ -23,7 +29,16 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
  * Models an OpenAPI 3.0.x parameter.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Parameter extends OasParameter {
+public class Oas30Parameter extends OasParameter implements IReferenceNode {
+
+    public String $ref;
+    public Boolean deprecated;
+    public String style; // matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject
+    public Boolean explode;
+    public Boolean allowReserved;
+    public Object example;
+    public Map<String, Oas30Example> examples = new LinkedHashMap<>();
+    public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
 
     /**
      * @see io.apicurio.datamodels.core.models.common.Parameter#createSchema()
@@ -34,6 +49,94 @@ public class Oas30Parameter extends OasParameter {
         schema._ownerDocument = this.ownerDocument();
         schema._parent = this;
         return schema;
+    }
+
+    /**
+     * Creates a child Example model.
+     */
+    public Oas30Example createExample(String name) {
+        Oas30Example rval = new Oas30Example(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds the Example to the map of examples.
+     * @param example
+     */
+    public void addExample(Oas30Example example) {
+        this.examples.put(example.getName(), example);
+    }
+
+    /**
+     * Removes an Example and returns it.
+     * @param name
+     */
+    public Oas30Example removeExample(String name) {
+        return this.examples.remove(name);
+    }
+
+    /**
+     * Gets a single example by name.
+     * @param name
+     */
+    public Oas30Example getExample(String name) {
+        return this.examples.get(name);
+    }
+
+    /**
+     * Gets all examples.
+     */
+    public List<Oas30Example> getExamples() {
+        List<Oas30Example> rval = new ArrayList<>();
+        rval.addAll(this.examples.values());
+        return rval;
+    }
+
+    /**
+     * Creates a media type.
+     * @param name
+     */
+    public Oas30MediaType createMediaType(String name) {
+        Oas30MediaType rval = new Oas30MediaType(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a media type.
+     * @param name
+     * @param mediaType
+     */
+    public void addMediaType(String name, Oas30MediaType mediaType) {
+        this.content.put(name, mediaType);
+    }
+
+    /**
+     * Gets a single media type by name.
+     * @param name
+     */
+    public Oas30MediaType getMediaType(String name) {
+        return this.content.get(name);
+    }
+
+    /**
+     * Removes a single media type and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public Oas30MediaType removeMediaType(String name) {
+        return this.content.remove(name);
+    }
+
+    /**
+     * Gets a list of all media types.
+     */
+    public List<Oas30MediaType> getMediaTypes() {
+        List<Oas30MediaType> rval = new ArrayList<>();
+        rval.addAll(this.content.values());
+        return rval;
     }
 
 }

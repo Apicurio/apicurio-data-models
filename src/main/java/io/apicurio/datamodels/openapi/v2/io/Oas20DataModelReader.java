@@ -55,8 +55,6 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
      */
     @Override
     public void readDocument(Object json, Oas20Document node) {
-        super.readDocument(json, node);
-
         JsonCompat.consumePropertyString(json, Constants.PROP_SWAGGER);
         String host = JsonCompat.consumePropertyString(json, Constants.PROP_HOST);
         String basePath = JsonCompat.consumePropertyString(json, Constants.PROP_BASE_PATH);
@@ -94,7 +92,7 @@ public class Oas20DataModelReader extends OasDataModelReader<Oas20Document> {
             this.readSecurityDefinitions(securityDefinitions, node.securityDefinitions);
         }
         
-        this.readExtraProperties(json, node);
+        super.readDocument(json, node);
     }
     
     /**

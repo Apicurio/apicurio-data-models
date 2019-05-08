@@ -63,7 +63,6 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
     /**
      * Returns a single security scheme by name.
      * @param name
-     * @return {Oas20SecurityScheme}
      */
     public Oas20SecurityScheme getSecurityScheme(String name) {
         if (this.items != null) {
@@ -109,7 +108,6 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
     /**
      * Creates a child security scheme object and adds it to the list.
      * @param name
-     * @return {Oas20SecurityScheme}
      */
     public Oas20SecurityScheme createSecurityScheme(String name) {
         Oas20SecurityScheme rval = new Oas20SecurityScheme(name);

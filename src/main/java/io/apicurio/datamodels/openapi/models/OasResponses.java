@@ -124,7 +124,6 @@ public abstract class OasResponses extends ExtensibleNode implements IIndexedNod
     /**
      * Creates an OAS Response object.
      * @param statusCode
-     * @return {OasResponse}
      */
     public abstract OasResponse createResponse(String statusCode);
     

@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.asyncapi.validation;
+package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.validation.ValidationVisitor;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 
 /**
- * A validation visitor for AsyncAPI data models.
+ * An Encoding definition.
  * @author eric.wittmann@gmail.com
  */
-public class AaiValidationVisitor extends ValidationVisitor implements IAaiVisitor {
-
-    /**
-     * Constructor.
-     * @param document
-     */
-    public AaiValidationVisitor(AaiDocument document) {
-        super(document);
-    }
+public interface IOas30EncodingDefinition extends IDefinition {
 
 }

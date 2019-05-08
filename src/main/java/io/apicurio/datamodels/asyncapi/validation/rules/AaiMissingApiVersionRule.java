@@ -18,15 +18,15 @@ package io.apicurio.datamodels.asyncapi.validation.rules;
 
 import java.util.Collections;
 
-import io.apicurio.datamodels.asyncapi.validation.AaiRequiredPropertyValidationRule;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.validation.RequiredPropertyValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class AaiMissingApiVersionRule extends AaiRequiredPropertyValidationRule {
+public class AaiMissingApiVersionRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

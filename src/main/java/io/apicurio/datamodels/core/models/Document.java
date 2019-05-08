@@ -85,7 +85,6 @@ public abstract class Document extends ExtensibleNode {
 
     /**
      * Creates an External Documentation node.
-     * @return {OasExternalDocumentation}
      */
     public abstract ExternalDocumentation createExternalDocumentation();
 

@@ -19,18 +19,19 @@ package io.apicurio.datamodels.core.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.combined.visitors.CombinedCompositeVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
 import io.apicurio.datamodels.core.util.NodePathUtil;
-import io.apicurio.datamodels.core.visitors.CompositeVisitor;
 
 /**
+ * Base class for all validation visitors.
  * @author eric.wittmann@gmail.com
  */
-public class ValidationVisitor extends CompositeVisitor implements IValidationProblemReporter {
+public class ValidationVisitor extends CombinedCompositeVisitor implements IValidationProblemReporter {
     
     private List<ValidationProblem> problems = new ArrayList<>();
     private IValidationSeverityRegistry severityRegistry;

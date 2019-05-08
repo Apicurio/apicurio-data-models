@@ -17,13 +17,14 @@
 package io.apicurio.datamodels.core.models.common;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models a parameter.
  * @author eric.wittmann@gmail.com
  */
-public abstract class Parameter extends ExtensibleNode {
+public abstract class Parameter extends ExtensibleNode implements IReferenceNode {
     
     public String $ref;
     public String name;

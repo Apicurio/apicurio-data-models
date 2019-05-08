@@ -17,8 +17,9 @@
 package io.apicurio.datamodels.core.models.common;
 
 /**
+ * Models a password OAuth flow.
  * @author eric.wittmann@gmail.com
  */
-public class PasswordOAuthFlow {
+public abstract class PasswordOAuthFlow extends OAuthFlow {
 
 }

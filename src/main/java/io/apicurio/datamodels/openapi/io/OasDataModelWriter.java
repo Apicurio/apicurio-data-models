@@ -267,14 +267,14 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         writeHeader(json, node);
         this.writeExtraProperties(json, node);
 
-        addResponseToParent(parent, json, node);
+        addHeaderToParent(parent, json, node);
         
         this.updateIndex(node, json);
     }
     protected void writeHeader(Object json, OasHeader node) {
         JsonCompat.setProperty(json, Constants.PROP_DESCRIPTION, node.description);
     }
-    private void addResponseToParent(Object parent, Object json, OasHeader node) {
+    protected void addHeaderToParent(Object parent, Object json, OasHeader node) {
         JsonCompat.setProperty(parent, node.getName(), json);
     }
 
@@ -294,9 +294,9 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         
         this.updateIndex(response, json);
     }
-    protected void writeResponse(Object json, OasResponse response) {
-        JsonCompat.setPropertyString(json, Constants.PROP_$REF, response.$ref);
-        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, response.description);
+    protected void writeResponse(Object json, OasResponse node) {
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
     }
     protected void addResponseDefinitionToParent(Object parent, Object json, IOasResponseDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);

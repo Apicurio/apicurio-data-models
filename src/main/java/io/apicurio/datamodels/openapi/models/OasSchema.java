@@ -105,7 +105,6 @@ public abstract class OasSchema extends Schema {
 
     /**
      * Gets a list of all the properties.
-     * @return {OasPropertySchema[]}
      */
     public List<OasSchema> getProperties() {
         List<OasSchema> rval = new ArrayList<>();
@@ -178,4 +177,25 @@ public abstract class OasSchema extends Schema {
         return this.additionalProperties != null && !NodeCompat.isNode(this.additionalProperties);
     }
 
+    /**
+     * Adds an AllOf schema.
+     * @param schema
+     */
+    public void addAllOfSchema(OasSchema schema) {
+        if (this.allOf == null) {
+            this.allOf = new ArrayList<>();
+        }
+        this.allOf.add(schema);
+    }
+    
+    /**
+     * Removes a allOf schema.
+     * @param schema
+     */
+    public void removeAllOfSchema(OasSchema schema) {
+        if (this.allOf != null) {
+            this.allOf.remove(schema);
+        }
+    }
+    
 }

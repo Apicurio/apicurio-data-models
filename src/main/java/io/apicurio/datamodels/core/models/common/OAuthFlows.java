@@ -37,25 +37,21 @@ public abstract class OAuthFlows extends ExtensibleNode {
 
     /**
      * Creates an OAuth Flow object.
-     * @return {ImplicitOAuthFlow}
      */
     public abstract ImplicitOAuthFlow createImplicitOAuthFlow();
 
     /**
      * Creates an OAuth Flow object.
-     * @return {PasswordOAuthFlow}
      */
     public abstract PasswordOAuthFlow createPasswordOAuthFlow();
 
     /**
      * Creates an OAuth Flow object.
-     * @return {ClientCredentialsOAuthFlow}
      */
     public abstract ClientCredentialsOAuthFlow createClientCredentialsOAuthFlow();
 
     /**
      * Creates an OAuth Flow object.
-     * @return {AuthorizationCodeOAuthFlow}
      */
     public abstract AuthorizationCodeOAuthFlow createAuthorizationCodeOAuthFlow();
 

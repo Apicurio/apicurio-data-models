@@ -99,7 +99,6 @@ public class DataModelWriter implements IVisitor {
     /**
      * Lookup a JS object using the model ID of the node's parent.
      * @param node
-     * @return {any}
      */
     protected Object lookupParentJson(Node node) {
         return this.lookup(node.parent().modelId());
@@ -365,8 +364,8 @@ public class DataModelWriter implements IVisitor {
         Object json = JsonCompat.objectNode();
         writeSecurityScheme(json, node);
         writeExtraProperties(json, node);
-
-        JsonCompat.setProperty(parent, node.getSchemeName(), json);
+        
+        this.addSecuritySchemeToParent(parent, json, node);
 
         this.updateIndex(node, json);
     }
@@ -376,7 +375,10 @@ public class DataModelWriter implements IVisitor {
         JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
         JsonCompat.setPropertyString(json, Constants.PROP_IN, node.in);
     }
-    
+    protected void addSecuritySchemeToParent(Object parent, Object json, SecurityScheme node) {
+        JsonCompat.setProperty(parent, node.getSchemeName(), json);
+    }
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
      */
@@ -387,10 +389,13 @@ public class DataModelWriter implements IVisitor {
         Object json = JsonCompat.objectNode();
         writeSchema(json, schema);
         writeExtraProperties(json, schema);
-
-        JsonCompat.setProperty(parent, node.getName(), json);
+        
+        addSchemaDefinitionToParent(parent, json, node);
 
         this.updateIndex(schema, json);
+    }
+    protected void addSchemaDefinitionToParent(Object parent, Object json, ISchemaDefinition node) {
+        JsonCompat.setProperty(parent, node.getName(), json);
     }
 
 }
