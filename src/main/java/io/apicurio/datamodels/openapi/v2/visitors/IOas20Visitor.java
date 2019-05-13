@@ -20,7 +20,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
@@ -33,7 +32,6 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  */
 public interface IOas20Visitor extends IOasVisitor {
 
-    public void visitParameterDefinition(Oas20ParameterDefinition node);
     public void visitItems(Oas20Items node);
     public void visitScopes(Oas20Scopes node);
     public void visitSecurityDefinitions(Oas20SecurityDefinitions node);

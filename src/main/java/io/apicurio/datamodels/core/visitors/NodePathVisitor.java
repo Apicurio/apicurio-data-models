@@ -24,6 +24,7 @@ import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -200,6 +201,14 @@ public class NodePathVisitor implements IVisitor {
      */
     @Override
     public void visitSchemaDefinition(ISchemaDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(IParameterDefinition node) {
         this.path.prependSegment(node.getName(), true);
     }
 

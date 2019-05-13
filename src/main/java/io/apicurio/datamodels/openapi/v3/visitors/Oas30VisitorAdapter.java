@@ -35,7 +35,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkRequestBodyExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
@@ -49,13 +48,6 @@ import io.apicurio.datamodels.openapi.visitors.OasVisitorAdapter;
  * @author eric.wittmann@gmail.com
  */
 public class Oas30VisitorAdapter extends OasVisitorAdapter implements IOas30Visitor {
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-    }
 
     /**
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.openapi.v3.models.Oas30Components)

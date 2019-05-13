@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.compat;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -88,15 +89,33 @@ public class NodeCompat {
     }
 
     /**
-     * Tests two strings for equality.
+     * Tests two objects for equality.
      * @param value1
      * @param value2
      */
-    public static boolean equals(String value1, String value2) {
+    public static boolean equals(Object value1, Object value2) {
         if (value1 == value2) {
             return true;
         }
         return value1 != null && value1.equals(value2);
+    }
+    
+    /**
+     * Joins a list of strings into a single string with a given delimiter.
+     * @param delim
+     * @param values
+     */
+    public static String join(String delim, List<String> values) {
+        return String.join(delim, values);
+    }
+
+    /**
+     * Joins a list of strings into a single string with a given delimiter.
+     * @param delim
+     * @param values
+     */
+    public static String joinArray(String delim, String[] values) {
+        return join(delim, Arrays.asList(values));
     }
 
     /**
@@ -113,6 +132,22 @@ public class NodeCompat {
      */
     public static boolean isList(Object object) {
         return object != null && object instanceof List;
+    }
+    
+    /**
+     * Turns a list into an array.
+     * @param list
+     */
+    public static String[] asArray(List<String> list) {
+        return list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * Returns true if the given value is null or undefined.
+     * @param value
+     */
+    public static boolean isNullOrUndefined(Object value) {
+        return value == null;
     }
     
 }

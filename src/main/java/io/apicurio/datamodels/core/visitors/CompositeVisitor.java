@@ -25,6 +25,7 @@ import io.apicurio.datamodels.core.models.IVisitable;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -205,6 +206,14 @@ public class CompositeVisitor implements IVisitor {
      */
     @Override
     public void visitSchemaDefinition(ISchemaDefinition node) {
+        this.acceptAll(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(IParameterDefinition node) {
         this.acceptAll(node);
     }
 

@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.v3.io;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -52,7 +53,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
@@ -152,7 +152,6 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     @Override
     protected void writeParameter(Object json, Parameter node) {
         Oas30Parameter parameter = (Oas30Parameter) node;
-        JsonCompat.setPropertyString(json, Constants.PROP_$REF, parameter.$ref);
         JsonCompat.setPropertyBoolean(json, Constants.PROP_DEPRECATED, parameter.deprecated);
         JsonCompat.setPropertyString(json, Constants.PROP_STYLE, parameter.style);
         JsonCompat.setPropertyBoolean(json, Constants.PROP_EXPLODE, parameter.explode);
@@ -204,25 +203,18 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
         JsonCompat.setPropertyString(json, Constants.PROP_OPEN_ID_CONNECT_URL, schema.openIdConnectUrl);
         super.writeSecurityScheme(json, node);
     }
-    
+
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#addParameterDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IParameterDefinition)
      */
     @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.objectNode();
-        this.writeParameter(json, node);
-        this.writeExtraProperties(json, node);
-
+    protected void addParameterDefinitionToParent(Object parent, Object json, IParameterDefinition node) {
         Object parameters = JsonCompat.getProperty(parent, Constants.PROP_PARAMETERS);
         if (parameters == null) {
             parameters = JsonCompat.objectNode();
             JsonCompat.setProperty(parent, Constants.PROP_PARAMETERS, parameters);
         }
         JsonCompat.setProperty(parameters, node.getName(), json);
-
-        this.updateIndex(node, json);        
     }
 
     /**

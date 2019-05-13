@@ -49,21 +49,28 @@ export function formatSeverity(severity: ValidationProblemSeverity): string {
     }
 }
 
-export function formatProblems(problems: ValidationProblem[]): string {
-    let rval: string = "";
-    problems.sort((p1, p2) => {
-        return p1.errorCode.localeCompare(p2.errorCode);
-    }).forEach(problem => {
-        rval += (
-            "[" + problem.nodePath.toString() + "]::" +
-            problem.errorCode + "::" +
-            formatSeverity(problem.severity) + "::" +
-            problem.property + "::" +
-            problem.message + "\n"
-        );
-    });
-    return rval;
+
+export function readSeverity(severity: string): ValidationProblemSeverity {
+    if (severity == "ignore") {
+        return ValidationProblemSeverity.ignore;
+    } else if (severity == "low") {
+        return ValidationProblemSeverity.low;
+    } else if (severity == "medium") {
+        return ValidationProblemSeverity.medium;
+    } else if (severity == "high") {
+        return ValidationProblemSeverity.high;
+    }
 }
+
+
+export function formatProblems(problems: ValidationProblem[]): string[] {
+    let es: string[] = [];
+    problems.forEach(problem => {
+        es.push(`[${problem.errorCode}] |${formatSeverity(problem.severity)}| {${problem.nodePath.toString()}->${problem.property}} :: ${problem.message}`);
+    });
+    return es;
+}
+
 
 export function normalize(value: string): string {
     return value.trim().replace("\r\n", "\n");

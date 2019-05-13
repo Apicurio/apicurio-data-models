@@ -1,0 +1,18 @@
+{
+  "swagger": "2.0",
+  "info":{
+    "description":"This is a sample server Petstore server via JSON.",
+    "version":"1.0.0",
+    "title":"Swagger Petstore (JSON)",
+    "termsOfService":"http://helloreverb.com/terms/",
+    "contact":{
+      "email":"invalid_email"
+    },
+    "license":{
+      "name":"Apache 2.0",
+      "url":"invalid_url"
+    }
+  },
+  "paths": {
+  }
+}

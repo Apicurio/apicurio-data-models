@@ -27,6 +27,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -259,6 +260,14 @@ public class Traverser implements ITraverser, IVisitor {
     }
     protected void traverseParameter(Parameter node) {
         this.traverseIfNotNull(node.schema);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(IParameterDefinition node) {
+        this.visitParameter((Parameter) node);
     }
 
     /**

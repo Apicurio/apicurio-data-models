@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.validation;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +39,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -74,6 +74,9 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
                 ValidationTestCase testCase = new ValidationTestCase();
                 testCase.setName(testNode.get("name").asText());
                 testCase.setTest(testNode.get("test").asText());
+                if (testNode.has("severity")) {
+                    testCase.setSeverity(testNode.get("severity").asText());
+                }
                 allTests.add(testCase);
             });
             
@@ -122,7 +125,17 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
                 Document doc = Library.readDocument(originalParsed);
                 
                 // Validate the document
-                List<ValidationProblem> problems = Library.validate(doc, null);
+                IValidationSeverityRegistry severityRegistry = null;
+                if (child.getSeverity() != null) {
+                    final ValidationProblemSeverity severity = ValidationProblemSeverity.valueOf(child.getSeverity());
+                    severityRegistry = new IValidationSeverityRegistry() {
+                        @Override
+                        public ValidationProblemSeverity lookupSeverity(ValidationRuleMetaData rule) {
+                            return severity;
+                        }
+                    };
+                }
+                List<ValidationProblem> problems = Library.validate(doc, severityRegistry);
                 
                 // Now compare with expected
                 String actual = formatProblems(problems);
@@ -150,26 +163,25 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
      */
     protected String formatProblems(List<ValidationProblem> problems) {
         StringBuilder builder = new StringBuilder();
-        problems.sort(new Comparator<ValidationProblem>() {
-            @Override
-            public int compare(ValidationProblem o1, ValidationProblem o2) {
-                int rval = o1.errorCode.compareTo(o2.errorCode);
-                return rval;
-            }
-        });
+//        problems.sort(new Comparator<ValidationProblem>() {
+//            @Override
+//            public int compare(ValidationProblem o1, ValidationProblem o2) {
+//                int rval = o1.errorCode.compareTo(o2.errorCode);
+//                return rval;
+//            }
+//        });
         problems.forEach(problem -> {
             builder.append("[");
-            builder.append(problem.nodePath.toString());
-            builder.append("]::");
             builder.append(problem.errorCode);
-            builder.append("::");
+            builder.append("] |");
             builder.append(problem.severity);
-            builder.append("::");
+            builder.append("| {");
+            builder.append(problem.nodePath.toString());
+            builder.append("->");
             builder.append(problem.property);
-            builder.append("::");
+            builder.append("} :: ");
             builder.append(problem.message);
             builder.append("\n");
-            // TODO include the node path in this!
         });
         return builder.toString();
     }

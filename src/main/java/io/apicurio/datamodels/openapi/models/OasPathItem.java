@@ -52,6 +52,14 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     }
     
     /**
+     * @see io.apicurio.datamodels.openapi.models.IOasParameterParent#getParameters()
+     */
+    @Override
+    public List<OasParameter> getParameters() {
+        return parameters;
+    }
+    
+    /**
      * Gets the path string.
      */
     public String getPath() {

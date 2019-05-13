@@ -22,6 +22,7 @@ import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -46,7 +47,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
@@ -71,7 +71,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkRequestBodyExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
@@ -309,22 +308,12 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
         
         
     }
-
+    
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
      */
     @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-        
-        
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas20ParameterDefinition node) {
-        
+    public void visitParameterDefinition(IParameterDefinition node) {
         
     }
 

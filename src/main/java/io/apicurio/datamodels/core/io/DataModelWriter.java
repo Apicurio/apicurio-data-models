@@ -28,6 +28,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -395,6 +396,26 @@ public class DataModelWriter implements IVisitor {
         this.updateIndex(schema, json);
     }
     protected void addSchemaDefinitionToParent(Object parent, Object json, ISchemaDefinition node) {
+        JsonCompat.setProperty(parent, node.getName(), json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(IParameterDefinition node) {
+        Parameter pdef = (Parameter) node;
+        
+        Object parent = this.lookupParentJson(pdef);
+        Object json = JsonCompat.objectNode();
+        this.writeParameter(json, pdef);
+        this.writeExtraProperties(json, pdef);
+
+        addParameterDefinitionToParent(parent, json, node);
+
+        this.updateIndex(pdef, json);        
+    }
+    protected void addParameterDefinitionToParent(Object parent, Object json, IParameterDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);
     }
 

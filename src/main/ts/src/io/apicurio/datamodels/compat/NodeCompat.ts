@@ -45,12 +45,28 @@ export class NodeCompat {
         return value1 == value2;
     }
 
+    public static join(delim: string, values: string[]): string {
+        return values.join(delim);
+    }
+
+    public static joinArray(delim: string, values: string[]): string {
+        return NodeCompat.join(delim, values);
+    }
+
     public static isNode(object: any): boolean {
         return object !== null && object !== undefined && !Array.isArray(object) && object["_ownerDocument"];
     }
 
     public static isList(object: any): boolean {
         return object !== null && object !== undefined && Array.isArray(object);
+    }
+    
+    public static asArray(list: string[]): string[] {
+        return list;
+    }
+    
+    public static isNullOrUndefined(value: any): boolean {
+        return value === null || value === undefined;
     }
 
 }

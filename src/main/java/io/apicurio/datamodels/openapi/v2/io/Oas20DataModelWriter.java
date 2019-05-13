@@ -35,7 +35,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Operation;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Schema;
@@ -72,21 +71,6 @@ public class Oas20DataModelWriter extends OasDataModelWriter implements IOas20Vi
         JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
         
         writeExtraProperties(json, node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas20ParameterDefinition node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.objectNode();
-        this.writeParameter(json, node);
-        this.writeExtraProperties(json, node);
-
-        JsonCompat.setProperty(parent, node.getName(), json);
-
-        this.updateIndex(node, json);        
     }
 
     /**

@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.core.validation;
 
+import io.apicurio.datamodels.core.models.DocumentType;
+
 /**
  * @author eric.wittmann@gmail.com
  */
@@ -25,7 +27,7 @@ public class ValidationRuleMetaData {
     public String name;
     public String type;
     public String entity;
-    public String[] versions;
+    public DocumentType[] versions;
     public boolean specMandated;
     public String messageTemplate;
     public Class<?> ruleClass;
@@ -47,7 +49,7 @@ public class ValidationRuleMetaData {
      * @param messageTemplate
      * @param ruleClass
      */
-    public ValidationRuleMetaData(String code, String name, String type, String entity, String[] versions,
+    public ValidationRuleMetaData(String code, String name, String type, String entity, DocumentType[] versions,
             boolean specMandated, String messageTemplate, Class<?> ruleClass) {
         this.code = code;
         this.name = name;
@@ -57,6 +59,18 @@ public class ValidationRuleMetaData {
         this.specMandated = specMandated;
         this.messageTemplate = messageTemplate;
         this.ruleClass = ruleClass;
+    }
+
+    /**
+     * Returns true if this rule applies to documents of the given type.
+     */
+    public boolean appliesTo(DocumentType type) {
+        for (DocumentType version : this.versions) {
+            if (type == version) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }

@@ -1,0 +1,70 @@
+{
+    "swagger":"2.0",
+    "info":{
+        "description":"This is a sample server Petstore server via JSON.",
+        "version":"1.0.0",
+        "title":"Swagger Petstore (JSON)"
+    },
+    "paths":{
+        "/pathstest25": {
+            "get": {
+                "description": "pathstest25 - non parameterized paths that vary only in trailing slash (/pathstest25) - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        },
+        "/pathstest25/": {
+            "get": {
+                "description": "pathstest25 - non parameterized paths that vary only in trailing slash (/pathstest25/) - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        },
+        "/pathstest26/{var}": {
+            "get": {
+                "description": "pathstest26 - parameterized paths that vary only in trailing slash (/pathstest26/{var}) - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        },
+        "/pathstest26/{var}/": {
+            "get": {
+                "description": "pathstest26 - parameterized paths that vary only in trailing slash (/pathstest26/{var}/) - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        },
+        "/pathstest27/{var1}": {
+            "get": {
+                "description": "pathstest27 - parameterized paths that vary only in formal parameter names (/pathstest27/{var1}) - See: OAS 3 - Path Template Matching - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        },
+        "/pathstest27/{var2}/": {
+            "get": {
+                "description": "pathstest27 - parameterized paths that vary only in formal parameter names (/pathstest27/{var2}) - See: OAS 3 - Path Template Matching - invalid",
+                "responses": {
+                    "default": {
+                        "description": "..."
+                    }
+                }
+            }
+        }
+    }
+}

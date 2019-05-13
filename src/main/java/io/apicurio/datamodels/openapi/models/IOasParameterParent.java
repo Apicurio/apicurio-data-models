@@ -16,9 +16,16 @@
 
 package io.apicurio.datamodels.openapi.models;
 
+import java.util.List;
+
 /**
  * @author eric.wittmann@gmail.com
  */
 public interface IOasParameterParent {
+    
+    /**
+     * Gets the parameters.
+     */
+    public List<OasParameter> getParameters();
 
 }

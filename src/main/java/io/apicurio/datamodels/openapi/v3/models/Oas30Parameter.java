@@ -31,7 +31,6 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
  */
 public class Oas30Parameter extends OasParameter implements IReferenceNode {
 
-    public String $ref;
     public Boolean deprecated;
     public String style; // matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject
     public Boolean explode;

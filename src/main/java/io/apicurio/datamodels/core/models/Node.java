@@ -180,7 +180,7 @@ public abstract class Node implements IVisitable {
      */
     public void addExtraProperty(String key, Object value) {
         if (this._extraProperties == null) {
-            this._extraProperties = new HashMap<>();
+            this._extraProperties = new LinkedHashMap<>();
         }
         this._extraProperties.put(key, value);
     }
@@ -193,7 +193,7 @@ public abstract class Node implements IVisitable {
     }
 
     public boolean hasExtraProperties() {
-        return this._extraProperties != null && !this._extraProperties.isEmpty();
+        return this._extraProperties != null && this._extraProperties.size() > 0;
     }
 
     public List<String> getExtraPropertyNames() {

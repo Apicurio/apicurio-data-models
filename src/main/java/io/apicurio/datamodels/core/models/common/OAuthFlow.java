@@ -32,7 +32,7 @@ public abstract class OAuthFlow extends ExtensibleNode {
     public String authorizationUrl;
     public String tokenUrl;
     public String refreshUrl;
-    public Map<String, String> scopes = new LinkedHashMap<>();
+    public Map<String, String> scopes;
 
     /**
      * Constructor.
@@ -46,6 +46,9 @@ public abstract class OAuthFlow extends ExtensibleNode {
      * @param description
      */
     public void addScope(String scope, String description) {
+        if (this.scopes == null) {
+            this.scopes = new LinkedHashMap<>();
+        }
         this.scopes.put(scope, description);
     }
 
@@ -54,7 +57,9 @@ public abstract class OAuthFlow extends ExtensibleNode {
      * @param scope
      */
     public void removeScope(String scope) {
-        this.scopes.remove(scope);
+        if (this.scopes != null) {
+            this.scopes.remove(scope);
+        }
     }
 
     /**
@@ -62,7 +67,9 @@ public abstract class OAuthFlow extends ExtensibleNode {
      */
     public List<String> getScopes() {
         List<String> rval = new ArrayList<>();
-        rval.addAll(this.scopes.keySet());
+        if (this.scopes != null) {
+            rval.addAll(this.scopes.keySet());
+        }
         return rval;
     }
 

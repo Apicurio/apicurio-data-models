@@ -1,0 +1,15 @@
+[CALL-001] |medium| {/paths[/call-001]/get/callbacks[myRefCallback]->$ref} :: Callback Reference must refer to a valid Callback Definition.
+[EX-003] |medium| {/paths[/ex-003]/put/requestBody/content[application/json]/examples[bar]->$ref} :: Example Reference must refer to a valid Example Definition.
+[HEAD-012] |medium| {/paths[/head-005]/get/responses[200]/headers[X-Rate-Limit-Reset]->$ref} :: Header Reference must refer to a valid Header Definition.
+[LINK-003] |medium| {/paths[/link-003]/get/responses[200]/links[MissingLink]->operationRef} :: Link "Operation Reference" must refer to a valid Operation Definition.
+[LINK-005] |medium| {/paths[/link-005]/get/responses[200]/links[MissingLink]->$ref} :: Link Reference must refer to a valid Link Definition.
+[PAR-018] |medium| {/paths[/par-018]/parameters[1]->$ref} :: Parameter Reference must refer to a valid Parameter Definition.
+[RB-003] |medium| {/paths[/rb-003]/post/requestBody->$ref} :: Request Body Reference must refer to a valid Request Body Definition.
+[RES-002] |medium| {/paths[/res-002]/get/responses[200]->$ref} :: Response Reference must refer to a valid Response Definition.
+[SCH-001] |medium| {/paths[/sch-001]/parameters[0]/schema->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SCH-001] |medium| {/paths[/ref-loop]/parameters[0]/schema->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SCH-001] |medium| {/paths[/missing-indirect-ref]/parameters[0]/schema->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SCH-001] |medium| {/components/schemas[SchemaRef1]->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SCH-001] |medium| {/components/schemas[SchemaRef2]->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SCH-001] |medium| {/components/schemas[MissingIndirectSchemaRef]->$ref} :: Schema Reference must refer to a valid Schema Definition.
+[SS-018] |medium| {/components/securitySchemes[BASIC]->$ref} :: Security Scheme Reference must refer to a valid Security Scheme Definition.

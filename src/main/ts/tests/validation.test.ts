@@ -19,17 +19,30 @@ import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
 import {Library} from "../src/io/apicurio/datamodels/Library";
 import {ValidationProblem} from "../src/io/apicurio/datamodels/core/models/ValidationProblem";
 import {ValidationProblemSeverity} from "../src/io/apicurio/datamodels/core/models/ValidationProblemSeverity";
+import {IValidationSeverityRegistry} from "../src/io/apicurio/datamodels/core/validation/IValidationSeverityRegistry";
 import {readJSON} from "./util/tutils";
 import {readTXT} from "./util/tutils";
 import {normalize} from "./util/tutils";
 import {formatProblems} from "./util/tutils";
+import {readSeverity} from "./util/tutils";
 
 
 interface TestSpec {
     name: string;
     test: string;
+    severity?: string;
 }
 
+
+class CustomSeverityRegistry implements IValidationSeverityRegistry {
+
+    constructor(private severity: ValidationProblemSeverity) {}
+
+    public lookupSeverity(): ValidationProblemSeverity {
+        return this.severity;
+    }
+
+}
 
 let allTests: TestSpec[] = readJSON("tests/fixtures/validation/tests.json");
 allTests.forEach(spec => {
@@ -43,14 +56,22 @@ allTests.forEach(spec => {
         let document: Document = Library.readDocument(json);
 
         // Validate the document
-        let problems: ValidationProblem[] = Library.validate(document, null);
+        let severityRegistry: IValidationSeverityRegistry = null;
+        if (spec.severity) {
+            severityRegistry = new CustomSeverityRegistry(readSeverity(spec.severity));
+        }
+        let problems: ValidationProblem[] = Library.validate(document, severityRegistry);
         
-        // Sort and format the list of problems into a string for comparison with the expected value
-        let actual: string = normalize(formatProblems(problems));
+        // Format the list of problems into a string for comparison with the expected value
+        let actual: string[] = formatProblems(problems);
 
         // Load the expected result and compare with actual
-        let expected: string = normalize(readTXT(testPath + ".expected"));
-        expect(expected).not.toBeNull();
+        let expectedStr: string = readTXT(testPath + ".expected");
+        expect(expectedStr).not.toBeNull();
+        let expected: string[] = [];
+        if (expectedStr) {
+            expected = expectedStr.split(/\r?\n/);
+        }
         expect(actual).toEqual(expected);
     });
 });

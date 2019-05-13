@@ -20,7 +20,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
@@ -36,14 +35,6 @@ public class Oas20AllNodeVisitor extends OasAllNodeVisitor implements IOas20Visi
      * Constructor.
      */
     public Oas20AllNodeVisitor() {
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas20ParameterDefinition node) {
-        visitNode(node);
     }
 
     /**

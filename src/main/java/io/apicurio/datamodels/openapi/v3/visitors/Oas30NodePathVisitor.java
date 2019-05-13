@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.v3.visitors;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
@@ -41,7 +42,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkRequestBodyExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
@@ -71,6 +71,15 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     }
     
     /**
+     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     */
+    @Override
+    public void visitParameterDefinition(IParameterDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_PARAMETERS, false);
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
     @Override
@@ -86,15 +95,6 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     public void visitResponseDefinition(IOasResponseDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_RESPONSES, false);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas30ParameterDefinition node) {
-        this.path.prependSegment(node.getName(), true);
-        this.path.prependSegment(Constants.PROP_PARAMETERS, false);
     }
 
     /**

@@ -28,7 +28,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
@@ -65,14 +64,6 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
         this.traverseIfNotNull(doc.securityDefinitions);
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitParameterDefinition(io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(Oas20ParameterDefinition node) {
-        this.visitParameter(node);
-    }
-    
     /**
      * @see io.apicurio.datamodels.core.visitors.Traverser#traverseParameter(io.apicurio.datamodels.core.models.common.Parameter)
      */

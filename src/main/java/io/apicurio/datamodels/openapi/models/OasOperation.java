@@ -26,7 +26,7 @@ import io.apicurio.datamodels.core.models.common.Operation;
  * Models an OpenAPI operation.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasOperation extends Operation {
+public abstract class OasOperation extends Operation implements IOasParameterParent {
 
     public List<String> tags;
     public List<OasParameter> parameters;
@@ -40,6 +40,14 @@ public abstract class OasOperation extends Operation {
      */
     public OasOperation(String method) {
         super(method);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.models.IOasParameterParent#getParameters()
+     */
+    @Override
+    public List<OasParameter> getParameters() {
+        return parameters;
     }
     
     /**

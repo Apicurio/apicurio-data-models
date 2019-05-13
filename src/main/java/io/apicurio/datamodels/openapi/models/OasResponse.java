@@ -38,6 +38,13 @@ public class OasResponse extends ExtensibleNode implements IOasResponseDefinitio
     public OasResponse(String name) {
         this._name = name;
     }
+    
+    /**
+     * Gets the response status code.
+     */
+    public String getStatusCode() {
+        return this.getName();
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
