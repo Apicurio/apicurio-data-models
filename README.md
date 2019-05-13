@@ -67,7 +67,7 @@ One of the design goals of this library is to simultaneously support multiple ve
 specification.  At the time of this writing, there are two versions of the OpenAPI specification:
 
 * [OpenAPI Version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
-* [OpenAPI Version 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
+* [OpenAPI Version 3.0.2](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 
 Both of these versions are supported by the library.  As new versions of the specification are 
 released, the library will be updated to include support for them.
