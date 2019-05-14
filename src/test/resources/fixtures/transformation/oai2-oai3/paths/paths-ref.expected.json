@@ -1,0 +1,8 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/pets": {
+      "$ref": "#/paths/foo"
+    }
+  }
+}

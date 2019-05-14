@@ -1,0 +1,45 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/pets": {
+      "post": {
+        "summary": "Create Pet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description":"Updated name of the pet"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description":"Updated status of the pet"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description":"Updated name of the pet"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description":"Updated status of the pet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

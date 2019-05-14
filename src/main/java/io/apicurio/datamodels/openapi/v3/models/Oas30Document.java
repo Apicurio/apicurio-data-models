@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.v3.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Info;
@@ -36,6 +37,13 @@ public class Oas30Document extends OasDocument {
     public String openapi;
     public List<Oas30Server> servers;
     public Oas30Components components;
+    
+    /**
+     * Constructor.
+     */
+    public Oas30Document() {
+        this.openapi = Constants.OPEN_API_30_DEFAULT_VERSION;
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.Document#getDocumentType()

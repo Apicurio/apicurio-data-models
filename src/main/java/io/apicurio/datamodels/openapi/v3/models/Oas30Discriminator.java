@@ -30,7 +30,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 public class Oas30Discriminator extends ExtensibleNode {
 
     public String propertyName;
-    public Map<String, String> mapping = new LinkedHashMap<>();
+    public Map<String, String> mapping;
     
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -46,6 +46,9 @@ public class Oas30Discriminator extends ExtensibleNode {
      * @param key
      */
     public String getMapping(String key) {
+        if (this.mapping == null) {
+            return null;
+        }
         return this.mapping.get(key);
     }
 
@@ -55,6 +58,9 @@ public class Oas30Discriminator extends ExtensibleNode {
      * @param value
      */
     public void addMapping(String key, String value) {
+        if (this.mapping == null) {
+            this.mapping = new LinkedHashMap<>();
+        }
         this.mapping.put(key, value);
     }
 

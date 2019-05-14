@@ -30,8 +30,6 @@ import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -110,27 +108,11 @@ public class DataModelReaderDispatcher implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
-    @Override
-    public void visitServer(Server node) {
-        this.reader.readServer(this.json, node);
-    }
-
-    /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
      */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         this.reader.readSecurityRequirement(this.json, node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
-    @Override
-    public void visitServerVariable(ServerVariable node) {
-        this.reader.readServerVariable(this.json, node);
     }
 
     /**

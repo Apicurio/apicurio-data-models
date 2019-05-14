@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.openapi.v3.io;
 
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.io.OasDataModelReaderDispatcher;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
@@ -286,6 +288,22 @@ public class Oas30DataModelReaderDispatcher extends OasDataModelReaderDispatcher
     public void visitAnyOfSchema(Oas30AnyOfSchema node) {
         this.oas30Reader().readSchema(this.json, node);
         
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        this.reader.readServer(this.json, node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        this.reader.readServerVariable(this.json, node);
     }
 
 }

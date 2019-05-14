@@ -1,0 +1,21 @@
+{
+  "swagger" : "2.0",
+  "definitions" : {
+    "Person": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "externalDocs" : {
+        "description": "Find more info here",
+        "url": "https://swagger.io"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/path/{id}": {
+      "get": {
+        "summary": "Find pets by ID",
+        "description": "Returns pets based on ID",
+        "operationId": "getPetsById"
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of pet to use",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/SearchParam"
+        }
+      ]
+    }
+  },
+  "components": {
+    "parameters": {
+      "SearchParam": {
+        "name": "search",
+        "in": "query",
+        "description": "search criteria",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

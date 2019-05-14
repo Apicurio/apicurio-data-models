@@ -19,8 +19,10 @@ package io.apicurio.datamodels.asyncapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models an AsyncAPI server.
@@ -32,6 +34,21 @@ public class AaiServer extends Server {
     public String protocolVersion;
     public String baseChannel;
     public List<AaiSecurityRequirement> security;
+
+    /**
+     * Constructor.
+     */
+    public AaiServer() {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IAaiVisitor viz = (IAaiVisitor) visitor;
+        viz.visitServer(this);
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.common.Server#createServerVariable(java.lang.String)

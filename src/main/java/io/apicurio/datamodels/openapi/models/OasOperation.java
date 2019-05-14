@@ -20,19 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.compat.NodeCompat;
+import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 
 /**
  * Models an OpenAPI operation.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasOperation extends Operation implements IOasParameterParent {
+public abstract class OasOperation extends Operation implements IOasParameterParent, ISecurityRequirementParent {
 
     public List<String> tags;
     public List<OasParameter> parameters;
     public OasResponses responses;
     public Boolean deprecated;
-    public List<OasSecurityRequirement> security;
+    public List<SecurityRequirement> security;
     
     /**
      * Constructor.
@@ -114,15 +116,16 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
     public abstract OasResponses createResponses();
 
     /**
-     * Creates an OAS Security Requirement object.
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#createSecurityRequirement()
      */
+    @Override
     public abstract OasSecurityRequirement createSecurityRequirement();
 
     /**
-     * Adds a security requirement child.
-     * @param securityRequirement
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#addSecurityRequirement(io.apicurio.datamodels.openapi.models.OasSecurityRequirement)
      */
-    public OasSecurityRequirement addSecurityRequirement(OasSecurityRequirement securityRequirement) {
+    @Override
+    public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement) {
         if (this.security == null) {
             this.security = new ArrayList<>();
         }

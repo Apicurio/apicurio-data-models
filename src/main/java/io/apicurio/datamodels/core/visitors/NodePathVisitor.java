@@ -33,8 +33,6 @@ import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
@@ -117,27 +115,6 @@ public class NodePathVisitor implements IVisitor {
             this.path.prependSegment(String.valueOf(idx), true);
             this.path.prependSegment(Constants.PROP_TAGS, false);
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
-    @Override
-    public void visitServer(Server node) {
-        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
-        if (idx != -1) {
-            this.path.prependSegment(String.valueOf(idx), true);
-            this.path.prependSegment(Constants.PROP_SERVERS, false);
-        }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
-    @Override
-    public void visitServerVariable(ServerVariable node) {
-        this.path.prependSegment(node.getName(), true);
-        this.path.prependSegment(Constants.PROP_VARIABLES, false);
     }
     
     /**

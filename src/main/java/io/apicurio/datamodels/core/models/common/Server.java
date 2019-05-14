@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
-import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -32,14 +31,6 @@ public abstract class Server extends ExtensibleNode {
     public String url;
     public String description;
     public Map<String, ServerVariable> variables;
-    
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visitServer(this);
-    }
 
     /**
      * Creates a server variable.

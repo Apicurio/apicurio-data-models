@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules;
+package io.apicurio.datamodels.core.visitors;
 
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.compat.NodeCompat;

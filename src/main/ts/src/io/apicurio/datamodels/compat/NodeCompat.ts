@@ -64,7 +64,15 @@ export class NodeCompat {
     public static asArray(list: string[]): string[] {
         return list;
     }
-    
+
+    public static asList(...items: string[]): string[] {
+        return items;
+    }
+
+    public static copyList(list: string[]): string[] {
+        return list.slice(0);
+    }
+
     public static isNullOrUndefined(value: any): boolean {
         return value === null || value === undefined;
     }

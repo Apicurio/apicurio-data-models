@@ -18,6 +18,8 @@ package io.apicurio.datamodels.asyncapi.io;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 
 /**
  * Async API implementation of a data model reader dispatcher.
@@ -32,6 +34,22 @@ public class AaiDataModelReaderDispatcher extends DataModelReaderDispatcher impl
      */
     public AaiDataModelReaderDispatcher(Object json, AaiDataModelReader reader) {
         super(json, reader);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        this.reader.readServer(this.json, node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        this.reader.readServerVariable(this.json, node);
     }
 
 }

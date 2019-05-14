@@ -23,13 +23,14 @@ import java.util.Map;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
 import io.apicurio.datamodels.core.models.common.Schema;
 
 /**
  * Models an OpenAPI schema.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasSchema extends Schema {
+public abstract class OasSchema extends Schema implements IExternalDocumentationParent {
 
     public String format;
     public String title;
@@ -66,6 +67,14 @@ public abstract class OasSchema extends Schema {
      * Creates a child external documentation model.
      */
     public abstract ExternalDocumentation createExternalDocumentation();
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExternalDocumentationParent#setExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void setExternalDocumentation(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
 
     /**
      * Creates a child XML model.

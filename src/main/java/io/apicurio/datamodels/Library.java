@@ -18,6 +18,7 @@ package io.apicurio.datamodels;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
@@ -38,6 +39,8 @@ import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 
 /**
@@ -46,6 +49,23 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
  * @author eric.wittmann@gmail.com
  */
 public class Library {
+    
+    /**
+     * Creates a new, empty document of the given type.
+     * @param type
+     */
+    public static Document createDocument(DocumentType type) {
+        switch (type) {
+            case asyncapi2:
+                return new AaiDocument();
+            case openapi2:
+                return new Oas20Document();
+            case openapi3:
+                return new Oas30Document();
+            default:
+                throw new RuntimeException("Unknown document type: " + type);
+        }
+    }
     
     /**
      * Called to create a node path for a given data model node.

@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.2",
+  "components": {
+    "parameters": {
+      "QueryParam": {
+        "name": "limit",
+        "in": "query",
+        "description": "max records to return",
+        "required": true,
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "requestBodies": {
+      "BodyParam": {
+        "description": "a re-usable request body parameter",
+        "content": {
+          "*/*": {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

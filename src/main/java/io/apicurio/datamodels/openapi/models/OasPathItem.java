@@ -133,4 +133,26 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
         return null;
     }
 
+    /**
+     * Sets the given operation on this path item.
+     * @param operation
+     */
+    public void setOperation(OasOperation operation) {
+        if (NodeCompat.equals("get", operation.getMethod())) {
+            get = operation;
+        } else if (NodeCompat.equals("put", operation.getMethod())) {
+            put = operation;
+        } else if (NodeCompat.equals("post", operation.getMethod())) {
+            post = operation;
+        } else if (NodeCompat.equals("delete", operation.getMethod())) {
+            delete = operation;
+        } else if (NodeCompat.equals("head", operation.getMethod())) {
+            head = operation;
+        } else if (NodeCompat.equals("patch", operation.getMethod())) {
+            patch = operation;
+        } else if (NodeCompat.equals("options", operation.getMethod())) {
+            options = operation;
+        }
+    }
+
 }

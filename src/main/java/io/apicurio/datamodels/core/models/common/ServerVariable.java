@@ -19,13 +19,12 @@ package io.apicurio.datamodels.core.models.common;
 import java.util.List;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
-import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models a server variable.
  * @author eric.wittmann@gmail.com
  */
-public class ServerVariable extends ExtensibleNode {
+public abstract class ServerVariable extends ExtensibleNode {
     
     public final String _name;
     public List<String> enum_;
@@ -44,14 +43,6 @@ public class ServerVariable extends ExtensibleNode {
      */
     public String getName() {
         return this._name;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visitServerVariable(this);
     }
 
 }

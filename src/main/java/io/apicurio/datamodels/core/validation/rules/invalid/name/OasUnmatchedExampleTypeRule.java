@@ -24,7 +24,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.core.validation.rules.OperationFinder;
+import io.apicurio.datamodels.core.visitors.OperationFinder;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Example;

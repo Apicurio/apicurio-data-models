@@ -1,0 +1,8 @@
+{
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "http://petstore.swagger.io/v2"
+    }
+  ]
+}

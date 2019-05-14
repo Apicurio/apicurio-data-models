@@ -38,8 +38,6 @@ import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
@@ -204,27 +202,6 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseValidationProblems(node);
     }
     
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
-    @Override
-    public void visitServer(Server node) {
-        node.accept(this.visitor);
-        this.traverseCollection(node.getServerVariables());
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
-    @Override
-    public void visitServerVariable(ServerVariable node) {
-        node.accept(this.visitor);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
-    }
-
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
      */

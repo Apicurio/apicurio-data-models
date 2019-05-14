@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.2",
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "Entity not found."
+      },
+      "IllegalInput": {
+        "description": "Illegal input for operation."
+      },
+      "GeneralError": {
+        "description": "General Error",
+        "content": {
+          "*/*": {
+            "schema": {
+              "$ref": "#/components/schemas/GeneralError"
+            }
+          }
+        }
+      }
+    }
+  }
+}

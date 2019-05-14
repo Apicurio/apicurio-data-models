@@ -1,0 +1,36 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "responses": {
+          "200": {
+            "description": "a pet to be returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "x-foo": "bar",
+          "x-hello": "world"
+        }
+      }
+    }
+  }
+}

@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
@@ -277,6 +279,22 @@ public class Oas30AllNodeVisitor extends OasAllNodeVisitor implements IOas30Visi
     public void visitAnyOfSchema(Oas30AnyOfSchema node) {
         visitNode(node);
         
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        visitNode(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        visitNode(node);
     }
 
 }

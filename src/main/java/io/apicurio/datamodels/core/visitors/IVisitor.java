@@ -30,8 +30,6 @@ import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
@@ -46,8 +44,6 @@ public interface IVisitor {
     public void visitLicense(License node);
     public void visitTag(Tag node);
     public void visitExternalDocumentation(ExternalDocumentation node);
-    public void visitServer(Server node);
-    public void visitServerVariable(ServerVariable node);
     public void visitValidationProblem(ValidationProblem problem);
     public void visitSchema(Schema node);
     public void visitSchemaDefinition(ISchemaDefinition node);

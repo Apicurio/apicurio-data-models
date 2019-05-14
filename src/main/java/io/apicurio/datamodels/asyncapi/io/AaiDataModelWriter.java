@@ -50,12 +50,27 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
         writeExtraProperties(json, node);
     }
     
+    
+
     /**
-     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeServer(java.lang.Object, io.apicurio.datamodels.core.models.common.Server)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
+    public void visitServer(Server node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeServer(json, node);
+        writeExtraProperties(json, node);
+
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_SERVERS, json);
+        
+        this.updateIndex(node, json);
+    }
     protected void writeServer(Object json, Server node) {
-        super.writeServer(json, node);
+        JsonCompat.setPropertyString(json, Constants.PROP_URL, node.url);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_VARIABLES);
+        
         AaiServer server = (AaiServer) node;
         JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL, server.protocol);
         JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL_VERSION, server.protocolVersion);
@@ -64,11 +79,31 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeServerVariable(java.lang.Object, io.apicurio.datamodels.core.models.common.ServerVariable)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
      */
     @Override
+    public void visitServerVariable(ServerVariable node) {
+        Object parent = this.lookupParentJson(node);
+        Object json = JsonCompat.objectNode();
+        writeServerVariable(json, node);
+        writeExtraProperties(json, node);
+        
+        // Set the variable as a property on the parent's "variables" child object
+        Object variables = JsonCompat.getProperty(parent, Constants.PROP_VARIABLES);
+        if (variables == null) {
+            variables = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_VARIABLES, variables);
+        }
+        JsonCompat.setProperty(variables, node.getName(), json);
+
+        this.updateIndex(node, json);
+    }
     protected void writeServerVariable(Object json, ServerVariable node) {
-        super.writeServerVariable(json, node);
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_ENUM, node.enum_);
+        JsonCompat.setPropertyString(json, Constants.PROP_DEFAULT, node.default_);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_VARIABLES);
+
         AaiServerVariable serverVar = (AaiServerVariable) node;
         JsonCompat.setPropertyStringArray(json, Constants.PROP_EXAMPLES, serverVar.examples);
     }

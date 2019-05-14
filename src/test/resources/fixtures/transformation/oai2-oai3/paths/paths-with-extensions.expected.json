@@ -1,0 +1,19 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets"
+      }
+    },
+    "x-not-a-path" : "extension-value",
+    "x-some-number" : 42,
+    "x-some-boolean" : true,
+    "x-some-object" : {
+      "foo": "bar"
+    },
+    "x-some-array" : [ "foo", "bar" ]
+  }
+}

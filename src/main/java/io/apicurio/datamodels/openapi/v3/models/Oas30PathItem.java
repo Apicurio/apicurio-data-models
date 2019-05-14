@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.v3.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -95,6 +96,17 @@ public class Oas30PathItem extends OasPathItem {
         }
         return rval;
     }
-
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.models.OasPathItem#setOperation(io.apicurio.datamodels.openapi.models.OasOperation)
+     */
+    @Override
+    public void setOperation(OasOperation operation) {
+        if (NodeCompat.equals("trace", operation.getMethod())) {
+            trace = (Oas30Operation) operation;
+        } else {
+            super.setOperation(operation);
+        }
+    }
 
 }

@@ -21,6 +21,8 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
@@ -325,4 +327,25 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
         }
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
+            this.path.prependSegment(Constants.PROP_SERVERS, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_VARIABLES, false);
+    }
+    
 }

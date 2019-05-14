@@ -1,0 +1,68 @@
+{
+  "openapi": "3.0.2",
+  "components": {
+    "securitySchemes": {
+      "basic_auth": {
+        "type": "basic"
+      },
+      "api_key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api_key"
+      },
+      "oauth2_implicit": {
+        "type": "oauth2",
+        "description": "OAuth2 with implicit flow",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://swagger.io/api/oauth/dialog",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "oauth2_accessCode": {
+        "type": "oauth2",
+        "description": "OAuth2 with access code flow",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://example.org/api/oauth/accessCode/auth",
+            "tokenUrl": "http://example.org/api/oauth/accessCode/token",
+            "scopes": {
+              "write:access": "modify access",
+              "read:access": "read access"
+            }
+          }
+        }
+      },
+      "oauth2_password": {
+        "type": "oauth2",
+        "description": "OAuth2 with password flow",
+        "flows": {
+          "password": {
+            "tokenUrl": "http://example.org/api/oauth/password/token",
+            "scopes": {
+              "admin:password": "admin access",
+              "read:password": "read access"
+            }
+          }
+        }
+      },
+      "oauth2_application": {
+        "type": "oauth2",
+        "description": "OAuth2 with application flow",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "http://example.org/api/oauth/application/token",
+            "scopes": {
+              "write:app": "modify access",
+              "read:app": "read access"
+            }
+          }
+        }
+      }
+    }
+  }
+}

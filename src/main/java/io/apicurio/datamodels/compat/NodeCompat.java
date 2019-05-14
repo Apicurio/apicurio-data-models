@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.compat;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +141,24 @@ public class NodeCompat {
      */
     public static String[] asArray(List<String> list) {
         return list.toArray(new String[list.size()]);
+    }
+    
+    /**
+     * Creates a list from a bunch of argument items.
+     * @param items
+     */
+    public static List<String> asList(String ...items) {
+        return Arrays.asList(items);
+    }
+    
+    /**
+     * Makes a copy of a list.
+     * @param list
+     */
+    public static List<String> copyList(List<String> list) {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(list);
+        return rval;
     }
 
     /**

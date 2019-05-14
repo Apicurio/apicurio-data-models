@@ -1,0 +1,15 @@
+{
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "{scheme}://petstore.swagger.io/v2",
+      "variables": {
+        "scheme": {
+          "enum": [ "http", "https" ],
+          "default": "http",
+          "description": "The supported protocol schemes."
+        }
+      }
+    }
+  ]
+}

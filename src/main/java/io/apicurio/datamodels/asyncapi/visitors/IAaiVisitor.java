@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -23,5 +25,8 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author eric.wittmann@gmail.com
  */
 public interface IAaiVisitor extends IVisitor {
+
+    public void visitServer(Server node);
+    public void visitServerVariable(ServerVariable node);
 
 }

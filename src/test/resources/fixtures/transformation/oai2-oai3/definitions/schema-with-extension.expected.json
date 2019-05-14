@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.2",
+  "components": {
+    "schemas": {
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "x-my-extension": true,
+        "x-int-extension": 17
+      }
+    }
+  }
+}

@@ -18,6 +18,8 @@ package io.apicurio.datamodels.asyncapi.visitors;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.Traverser;
 
 /**
@@ -42,6 +44,27 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         super.traverseDocument(node);
         AaiDocument aaiNode = (AaiDocument) node;
         this.traverseCollection(aaiNode.servers);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        node.accept(this.visitor);
+        this.traverseCollection(node.getServerVariables());
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
 }

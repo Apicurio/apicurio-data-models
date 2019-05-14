@@ -16,11 +16,29 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        visitNode(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        visitNode(node);
+    }
 
 }

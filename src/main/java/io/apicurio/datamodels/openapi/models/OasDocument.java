@@ -21,15 +21,17 @@ import java.util.List;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 
 /**
  * Models an OpenAPI document.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasDocument extends Document {
+public abstract class OasDocument extends Document implements ISecurityRequirementParent {
 
     public OasPaths paths;
-    public List<OasSecurityRequirement> security;
+    public List<SecurityRequirement> security;
 
     /**
      * Creates an OAS Paths object.
@@ -37,15 +39,13 @@ public abstract class OasDocument extends Document {
     public abstract OasPaths createPaths();
 
     /**
-     * Creates an OAS Security Requirement object.
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#createSecurityRequirement()
      */
+    @Override
     public abstract OasSecurityRequirement createSecurityRequirement();
 
-    /**
-     * Adds a security requirement child.
-     * @param securityRequirement
-     */
-    public OasSecurityRequirement addSecurityRequirement(OasSecurityRequirement securityRequirement) {
+    @Override
+    public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement) {
         if (this.security == null) {
             this.security = new ArrayList<>();
         }

@@ -1,0 +1,15 @@
+{
+  "openapi": "3.0.2",
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "externalDocs": {
+          "description": "Some external docs",
+          "url": "http://example.org/docs"
+        }
+      }
+    }
+  }
+}

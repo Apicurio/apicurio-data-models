@@ -18,6 +18,8 @@ package io.apicurio.datamodels.openapi.v3.models;
 
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -28,6 +30,15 @@ public class Oas30Server extends Server {
      * Constructor.
      */
     public Oas30Server() {
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IOas30Visitor viz = (IOas30Visitor) visitor;
+        viz.visitServer(this);
     }
 
     /**

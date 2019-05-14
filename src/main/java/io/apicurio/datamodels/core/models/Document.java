@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -30,7 +31,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * represents the root node of the data model.
  * @author eric.wittmann@gmail.com
  */
-public abstract class Document extends ExtensibleNode {
+public abstract class Document extends ExtensibleNode implements IExternalDocumentationParent {
 
     public Info info;
     public List<Tag> tags;
@@ -87,7 +88,15 @@ public abstract class Document extends ExtensibleNode {
      * Creates an External Documentation node.
      */
     public abstract ExternalDocumentation createExternalDocumentation();
-
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExternalDocumentationParent#setExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void setExternalDocumentation(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
+    
     /**
      * Sets the external documentation information.
      * @param description

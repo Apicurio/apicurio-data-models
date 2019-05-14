@@ -1,0 +1,45 @@
+{
+  "openapi" : "3.0.2",
+  "paths" : {
+    "/widgets/{id}": {
+      "put": {
+        "operationId": "updateWidget",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Widget"
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "Widget": {
+        "description": "the body of the POST operation",
+        "content": {
+          "*/*": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

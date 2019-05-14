@@ -21,6 +21,10 @@ package io.apicurio.datamodels.core;
  */
 public class Constants {
     
+    public static final String OPEN_API_20_DEFAULT_VERSION = "2.0";
+    public static final String OPEN_API_30_DEFAULT_VERSION = "3.0.2";
+    public static final String ASYNC_API_20_DEFAULT_VERSION = "2.0.0";
+
     public static final String EXTENSION_PREFIX = "x-";
 
     public static final String PROP_ASYNCAPI = "asyncapi";

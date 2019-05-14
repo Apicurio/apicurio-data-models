@@ -22,6 +22,8 @@ import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -398,6 +400,27 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
         super.traverseSecurityScheme(node);
         ModernSecurityScheme scheme = (ModernSecurityScheme) node;
         this.traverseIfNotNull(scheme.flows);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        node.accept(this.visitor);
+        this.traverseCollection(node.getServerVariables());
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        node.accept(this.visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 
 }

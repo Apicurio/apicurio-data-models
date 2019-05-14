@@ -1,0 +1,37 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "post": {
+        "summary": "Create Pet",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters" : [
+          {
+            "name":"name",
+            "in":"formData",
+            "description":"Updated name of the pet",
+            "required":false,
+            "type":"string"
+          },
+          {
+            "$ref": "#/parameters/status"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "status": {
+      "name":"status",
+      "in":"formData",
+      "description":"Updated status of the pet",
+      "required":false,
+      "type":"string"
+    }
+  }
+}

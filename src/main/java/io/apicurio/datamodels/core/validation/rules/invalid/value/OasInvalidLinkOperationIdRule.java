@@ -19,7 +19,7 @@ package io.apicurio.datamodels.core.validation.rules.invalid.value;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.core.validation.rules.OperationFinder;
+import io.apicurio.datamodels.core.visitors.OperationFinder;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Link;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkDefinition;

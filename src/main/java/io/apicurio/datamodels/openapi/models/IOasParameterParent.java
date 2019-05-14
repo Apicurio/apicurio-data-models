@@ -28,4 +28,22 @@ public interface IOasParameterParent {
      */
     public List<OasParameter> getParameters();
 
+    /**
+     * Adds a parameter.
+     * @param parameter
+     */
+    public OasParameter addParameter(OasParameter parameter);
+    
+    /**
+     * Creates a parameter.
+     */
+    public OasParameter createParameter();
+
+    /**
+     * Gets a single parameter by its unique combination of "in" and "name".
+     * @param _in
+     * @param name
+     */
+    public OasParameter getParameter(String _in, String name);
+
 }

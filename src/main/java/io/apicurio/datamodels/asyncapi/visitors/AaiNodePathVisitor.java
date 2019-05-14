@@ -16,6 +16,10 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.compat.NodeCompat;
+import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 
 /**
@@ -30,4 +34,25 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     public AaiNodePathVisitor() {
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void visitServer(Server node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
+            this.path.prependSegment(Constants.PROP_SERVERS, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     */
+    @Override
+    public void visitServerVariable(ServerVariable node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_VARIABLES, false);
+    }
+    
 }

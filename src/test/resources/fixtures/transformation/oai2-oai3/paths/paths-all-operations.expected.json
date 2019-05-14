@@ -1,0 +1,42 @@
+{
+  "openapi": "3.0.2",
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "Pets GET",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets"
+      },
+      "put": {
+        "summary": "Update Pet",
+        "description": "Updates a pet",
+        "operationId": "updatePets"
+      },
+      "post": {
+        "summary": "New Pet",
+        "description": "Create a new pet",
+        "operationId": "newPet"
+      },
+      "delete": {
+        "summary": "Delete a Pet",
+        "description": "Deletes a pet",
+        "operationId": "deletePet"
+      },
+      "options": {
+        "summary": "Pet Options",
+        "description": "Gets pet options",
+        "operationId": "petOptions"
+      },
+      "head": {
+        "summary": "Pet Head",
+        "description": "Pet head",
+        "operationId": "headPets"
+      },
+      "patch": {
+        "summary": "Pet Patch",
+        "description": "Patches a pet",
+        "operationId": "patchPets"
+      }
+    }
+  }
+}

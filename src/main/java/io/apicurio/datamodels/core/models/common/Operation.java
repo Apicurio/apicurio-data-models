@@ -22,7 +22,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 /**
  * @author eric.wittmann@gmail.com
  */
-public abstract class Operation extends ExtensibleNode {
+public abstract class Operation extends ExtensibleNode implements IExternalDocumentationParent {
     
     private String _type;
     public String operationId;
@@ -57,6 +57,14 @@ public abstract class Operation extends ExtensibleNode {
      * Creates an External Documentation node.
      */
     public abstract ExternalDocumentation createExternalDocumentation();
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExternalDocumentationParent#setExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     */
+    @Override
+    public void setExternalDocumentation(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
+    }
 
     /**
      * Sets the external documentation information.

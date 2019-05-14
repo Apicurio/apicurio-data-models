@@ -23,7 +23,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.core.validation.rules.ConsumesProducesFinder;
+import io.apicurio.datamodels.core.visitors.ConsumesProducesFinder;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 
