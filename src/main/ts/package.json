@@ -1,13 +1,13 @@
 {
-  "name": "asyncapi-core",
+  "name": "apicurio-data-models",
   "version": "${project.version}",
   "description": "A library to read and write AsyncAPI documents.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/EricWittmann/asyncapi-core"
+    "url": "https://github.com/Apicurio/apicurio-data-models"
   },
-  "main": "bundles/asyncapi.umd.js",
+  "main": "bundles/apicurio-data-models.umd.js",
   "module": "index.js",
   "typings": "index.d.ts",
   "typescript": {
