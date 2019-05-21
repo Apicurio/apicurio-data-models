@@ -16,13 +16,13 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
+import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.IVisitable;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
@@ -79,45 +79,54 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A composite visitor base class useful for any data model type.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class CombinedCompositeVisitor implements IOas20Visitor, IOas30Visitor, IAaiVisitor {
-    
+public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
+
     private List<IVisitor> visitors = new ArrayList<>();
 
     /**
      * Constructor.
+     *
      * @param visitors
      */
     public CombinedCompositeVisitor(List<IVisitor> visitors) {
         this.visitors = visitors;
     }
-    
+
     /**
      * Adds a visitor.
+     *
      * @param visitor
      */
     public void addVisitor(IVisitor visitor) {
         this.visitors.add(visitor);
     }
-    
+
     /**
      * Adds multiple visitors.
+     *
      * @param visitors
      */
     public void addVisitors(List<? extends IVisitor> visitors) {
         this.visitors.addAll(visitors);
     }
-    
+
     /**
      * Make the node accept all of the visitors.
+     *
      * @param node
      */
     protected void acceptAll(IVisitable node) {
@@ -567,7 +576,7 @@ public class CombinedCompositeVisitor implements IOas20Visitor, IOas30Visitor, I
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(Oas30NotSchema)
      */
     @Override
     public void visitNotSchema(Oas30NotSchema node) {
@@ -576,7 +585,7 @@ public class CombinedCompositeVisitor implements IOas20Visitor, IOas30Visitor, I
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(Oas30OneOfSchema)
      */
     @Override
     public void visitOneOfSchema(Oas30OneOfSchema node) {
@@ -585,7 +594,7 @@ public class CombinedCompositeVisitor implements IOas20Visitor, IOas30Visitor, I
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(Oas30AnyOfSchema)
      */
     @Override
     public void visitAnyOfSchema(Oas30AnyOfSchema node) {
@@ -672,4 +681,19 @@ public class CombinedCompositeVisitor implements IOas20Visitor, IOas30Visitor, I
         
     }
 
+//    @Override
+//    public void visitAaiServer(AaiServer node) {
+//        this.acceptAll(node);
+//    }
+//
+//    @Override
+//    public void visitAaiServerVariable(AaiServerVariable node) {
+//        this.acceptAll(node);
+//    }
+
+    protected void visitNode(Node node) {
+        // Does nothing - subclasses should override this.  The class is not abstract because we
+        // want the compiler to yell at us when methods are added to the visitor interfaces and not
+        // implemented here.
+    }
 }

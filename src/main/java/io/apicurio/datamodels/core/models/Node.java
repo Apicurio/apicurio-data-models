@@ -38,7 +38,13 @@ public abstract class Node implements IVisitable {
     public Node _parent;
     protected int _modelId = __modelIdCounter++;
     protected Map<String, Object> _attributes;
-    protected Map<String, Object> _extraProperties;
+
+	/**
+	 * Properties that are present in the source document,
+	 * but are not defined in the specification for this node,
+	 * so they can't be read directly into the data model fields.
+	 */
+	protected Map<String, Object> _extraProperties;
     protected Map<String, ValidationProblem> _validationProblems = new LinkedHashMap<>();
 
     /**

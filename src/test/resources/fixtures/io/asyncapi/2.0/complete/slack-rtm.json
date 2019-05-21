@@ -1,0 +1,1423 @@
+{
+    "info": {
+        "version": "1.0.0", 
+        "title": "Slack Real Time Messaging API"
+    }, 
+    "channels": {
+        "/": {
+            "subscribe": {
+                "message": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/messages/hello"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/connectionError"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/accountsChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/botAdded"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/botChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelArchive"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelCreated"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelDeleted"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelHistoryChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelJoined"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelLeft"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelMarked"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelRename"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/channelUnarchive"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/commandsChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/dndUpdated"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/dndUpdatedUser"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/emailDomainChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/emojiRemoved"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/emojiAdded"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileChange"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileCommentAdded"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileCommentDeleted"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileCommentEdited"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileCreated"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileDeleted"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/filePublic"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileShared"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/fileUnshared"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/goodbye"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupArchive"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupClose"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupHistoryChanged"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupJoined"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupLeft"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupMarked"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupOpen"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupRename"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/groupUnarchive"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/imClose"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/imCreated"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/imMarked"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/imOpen"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/manualPresenceChange"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/memberJoinedChannel"
+                        }, 
+                        {
+                            "$ref": "#/components/messages/message"
+                        }
+                    ]
+                }
+            }, 
+            "publish": {
+                "message": {
+                    "$ref": "#/components/messages/outgoingMessage"
+                }
+            }
+        }
+    }, 
+    "components": {
+        "securitySchemes": {
+            "token": {
+                "type": "httpApiKey", 
+                "name": "token", 
+                "in": "query"
+            }
+        }, 
+        "messages": {
+            "dndUpdatedUser": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "dnd_updated_user"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "dnd_status": {
+                            "type": "object", 
+                            "properties": {
+                                "dnd_enabled": {
+                                    "type": "boolean"
+                                }, 
+                                "next_dnd_end_ts": {
+                                    "type": "number"
+                                }, 
+                                "next_dnd_start_ts": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "Do not Disturb settings changed for a member."
+            }, 
+            "connectionError": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "error"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "error": {
+                            "type": "object", 
+                            "properties": {
+                                "msg": {
+                                    "type": "string"
+                                }, 
+                                "code": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "Event received when a connection error happens."
+            }, 
+            "channelUnarchive": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_unarchive"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A channel was unarchived."
+            }, 
+            "channelHistoryChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "channel_history_changed"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "latest": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "Bulk updates were made to a channel's history."
+            }, 
+            "channelCreated": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_created"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "creator": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A channel was created."
+            }, 
+            "emojiRemoved": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "subtype": {
+                            "enum": [
+                                "remove"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "emoji_changed"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "names": {
+                            "items": {
+                                "type": "string"
+                            }, 
+                            "type": "array"
+                        }
+                    }
+                }, 
+                "summary": "A custom emoji has been removed."
+            }, 
+            "channelRename": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_rename"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A channel was renamed."
+            }, 
+            "message": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "edited": {
+                            "type": "object", 
+                            "properties": {
+                                "user": {
+                                    "type": "string"
+                                }, 
+                                "ts": {
+                                    "type": "string"
+                                }
+                            }
+                        }, 
+                        "attachments": {
+                            "items": {
+                                "$ref": "#/components/schemas/attachment"
+                            }, 
+                            "type": "array"
+                        }, 
+                        "text": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "message"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A message was sent to a channel."
+            }, 
+            "imCreated": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "im_created"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "creator": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A DM was created."
+            }, 
+            "imClose": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "im_close"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You closed a DM."
+            }, 
+            "accountsChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "accounts_changed"
+                            ], 
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "The list of accounts a user is signed into has changed."
+            }, 
+            "fileUnshared": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file_unshared"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file was unshared."
+            }, 
+            "channelDeleted": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_deleted"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A channel was deleted."
+            }, 
+            "fileShared": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file_shared"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file was shared."
+            }, 
+            "emojiAdded": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "subtype": {
+                            "enum": [
+                                "add"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "emoji_changed"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "name": {
+                            "type": "string"
+                        }, 
+                        "value": {
+                            "type": "string", 
+                            "format": "uri"
+                        }
+                    }
+                }, 
+                "summary": "A custom emoji has been added."
+            }, 
+            "fileChange": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file_change"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file was changed."
+            }, 
+            "channelArchive": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_archive"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A channel was archived."
+            }, 
+            "commandsChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "commands_changed"
+                            ], 
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A slash command has been added or changed."
+            }, 
+            "imMarked": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "im_marked"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A direct message read marker was updated."
+            }, 
+            "botChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "bot_added"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "bot": {
+                            "type": "object", 
+                            "properties": {
+                                "app_id": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "icons": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }, 
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A bot user was changed."
+            }, 
+            "channelLeft": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_left"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You left a channel."
+            }, 
+            "fileCommentDeleted": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "comment": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "file_comment_deleted"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file comment was deleted."
+            }, 
+            "filePublic": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file_public"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file was made public."
+            }, 
+            "dndUpdated": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "dnd_updated"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "dnd_status": {
+                            "type": "object", 
+                            "properties": {
+                                "snooze_endtime": {
+                                    "type": "number"
+                                }, 
+                                "snooze_enabled": {
+                                    "type": "boolean"
+                                }, 
+                                "dnd_enabled": {
+                                    "type": "boolean"
+                                }, 
+                                "next_dnd_end_ts": {
+                                    "type": "number"
+                                }, 
+                                "next_dnd_start_ts": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "Do not Disturb settings changed for the current user."
+            }, 
+            "goodbye": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "goodbye"
+                            ], 
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "The server intends to close the connection soon."
+            }, 
+            "groupRename": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_rename"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A private channel was renamed."
+            }, 
+            "groupOpen": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_open"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You opened a private channel."
+            }, 
+            "emailDomainChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "email_domain_changed"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "email_domain": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "The workspace email domain has changed."
+            }, 
+            "outgoingMessage": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "text": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "message"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "id": {
+                            "type": "number"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A message was sent to a channel."
+            }, 
+            "channelJoined": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_joined"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "creator": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "You joined a channel."
+            }, 
+            "groupArchive": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_archive"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A private channel was archived."
+            }, 
+            "channelMarked": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "channel_marked"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "Your channel read marker was updated."
+            }, 
+            "groupClose": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_close"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You closed a private channel."
+            }, 
+            "fileCommentEdited": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "comment": {}, 
+                        "type": {
+                            "enum": [
+                                "file_comment_edited"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file comment was edited."
+            }, 
+            "fileCommentAdded": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "comment": {}, 
+                        "type": {
+                            "enum": [
+                                "file_comment_added"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file comment was added."
+            }, 
+            "groupLeft": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_left"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You left a private channel."
+            }, 
+            "manualPresenceChange": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "manual_presence_change"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "presence": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You manually updated your presence."
+            }, 
+            "memberLeftChannel": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "channel_type": {
+                            "enum": [
+                                "C", 
+                                "G"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "member_left_channel"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }, 
+                        "team": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A user left a public or private channel."
+            }, 
+            "groupJoined": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_joined"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "object", 
+                            "properties": {
+                                "creator": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "created": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "You joined a private channel."
+            }, 
+            "fileDeleted": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "file_deleted"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A file was deleted."
+            }, 
+            "hello": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "hello"
+                            ], 
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "First event received upon connection."
+            }, 
+            "groupUnarchive": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_unarchive"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A private channel was unarchived."
+            }, 
+            "groupHistoryChanged": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "event_ts": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "group_history_changed"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "latest": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "Bulk updates were made to a private channel's history."
+            }, 
+            "groupMarked": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "group_marked"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "ts": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A private channel read marker was updated."
+            }, 
+            "botAdded": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "bot_added"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "bot": {
+                            "type": "object", 
+                            "properties": {
+                                "app_id": {
+                                    "type": "string"
+                                }, 
+                                "id": {
+                                    "type": "string"
+                                }, 
+                                "name": {
+                                    "type": "string"
+                                }, 
+                                "icons": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }, 
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A bot user was added."
+            }, 
+            "imOpen": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "im_open"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "You opened a DM."
+            }, 
+            "memberJoinedChannel": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "channel_type": {
+                            "enum": [
+                                "C", 
+                                "G"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "user": {
+                            "type": "string"
+                        }, 
+                        "team": {
+                            "type": "string"
+                        }, 
+                        "inviter": {
+                            "type": "string"
+                        }, 
+                        "type": {
+                            "enum": [
+                                "member_joined_channel"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "channel": {
+                            "type": "string"
+                        }
+                    }
+                }, 
+                "summary": "A user joined a public or private channel."
+            }, 
+            "fileCreated": {
+                "payload": {
+                    "type": "object", 
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "file_created"
+                            ], 
+                            "type": "string"
+                        }, 
+                        "file_id": {
+                            "type": "string"
+                        }, 
+                        "file": {
+                            "type": "object", 
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }, 
+                "summary": "A file was created."
+            }
+        }, 
+        "schemas": {
+            "attachment": {
+                "type": "object", 
+                "properties": {
+                    "pretext": {
+                        "type": "string"
+                    }, 
+                    "footer": {
+                        "type": "string"
+                    }, 
+                    "color": {
+                        "type": "string"
+                    }, 
+                    "text": {
+                        "type": "string"
+                    }, 
+                    "author_link": {
+                        "type": "string", 
+                        "format": "uri"
+                    }, 
+                    "ts": {
+                        "type": "number"
+                    }, 
+                    "author_name": {
+                        "type": "string"
+                    }, 
+                    "title_link": {
+                        "type": "string", 
+                        "format": "uri"
+                    }, 
+                    "image_url": {
+                        "type": "string", 
+                        "format": "uri"
+                    }, 
+                    "author_icon": {
+                        "type": "string", 
+                        "format": "uri"
+                    }, 
+                    "fields": {
+                        "items": {
+                            "type": "object", 
+                            "properties": {
+                                "short": {
+                                    "type": "boolean"
+                                }, 
+                                "value": {
+                                    "type": "string"
+                                }, 
+                                "title": {
+                                    "type": "string"
+                                }
+                            }
+                        }, 
+                        "type": "array"
+                    }, 
+                    "title": {
+                        "type": "string"
+                    }, 
+                    "fallback": {
+                        "type": "string"
+                    }, 
+                    "thumb_url": {
+                        "type": "string", 
+                        "format": "uri"
+                    }, 
+                    "footer_icon": {
+                        "type": "string", 
+                        "format": "uri"
+                    }
+                }
+            }
+        }
+    }, 
+    "asyncapi": "2.0.0",
+    "id": "urn:com:slack:rtm:api", 
+    "servers": [
+        {
+            "url": "https://slack.com/api/rtm.connect", 
+            "security": [
+                {
+                    "token": []
+                }
+            ], 
+            "protocol": "https", 
+            "protocolVersion": "1.1"
+        }
+    ]
+}

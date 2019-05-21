@@ -16,36 +16,13 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.Info;
-import io.apicurio.datamodels.core.models.common.License;
 
 /**
  * Models an AsyncAPI 'Info' node.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class AaiInfo extends Info {
+public abstract class AaiInfo extends Info {
 
-    /**
-     * @see io.apicurio.datamodels.core.models.common.Info#createContact()
-     */
-    @Override
-    public Contact createContact() {
-        Contact contact = new AaiContact();
-        contact._ownerDocument = this.ownerDocument();
-        contact._parent = this;
-        return contact;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.models.common.Info#createLicense()
-     */
-    @Override
-    public License createLicense() {
-        License license = new AaiLicense();
-        license._ownerDocument = this.ownerDocument();
-        license._parent = this;
-        return license;
-    }
-	
 }

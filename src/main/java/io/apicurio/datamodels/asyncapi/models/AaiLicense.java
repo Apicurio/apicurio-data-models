@@ -21,12 +21,12 @@ import io.apicurio.datamodels.core.models.common.License;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class AaiLicense extends License {
+public abstract class AaiLicense extends License {
 
     /**
      * Constructor.
      */
     public AaiLicense() {
     }
-    
+
 }

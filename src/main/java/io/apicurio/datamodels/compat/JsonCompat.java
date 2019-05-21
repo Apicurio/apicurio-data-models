@@ -456,6 +456,24 @@ public class JsonCompat {
             array.add(String.valueOf(propertyValue));
         }
     }
+
+    public static void appendToArray(Object jsonArray, Object propertyValue) {
+        ArrayNode array = (ArrayNode) jsonArray;
+        if (propertyValue instanceof JsonNode) {
+            array.add((JsonNode) propertyValue);
+        } else {
+            array.add(String.valueOf(propertyValue));
+        }
+    }
+
+    public static void setToArrayIndex(Object jsonArray, int index, Object propertyValue) {
+        ArrayNode array = (ArrayNode) jsonArray;
+        if (propertyValue instanceof JsonNode) {
+            array.set(index, (JsonNode) propertyValue);
+        } else {
+            array.set(index, factory.textNode(String.valueOf(propertyValue)));
+        }
+    }
     
     /*
      * Internal only (not required by the TS layer)

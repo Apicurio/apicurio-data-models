@@ -19,8 +19,8 @@ package io.apicurio.datamodels.asyncapi.models;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 
 /**
- * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiSecurityRequirement extends SecurityRequirement {
+public abstract class AaiSecurityRequirement extends SecurityRequirement {
 
 }

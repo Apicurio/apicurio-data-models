@@ -16,63 +16,24 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
-import io.apicurio.datamodels.core.models.common.Operation;
-import io.apicurio.datamodels.core.models.common.Tag;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiOperation extends Operation {
+public abstract class AaiOperation extends AaiOperationBase {
 
-    public List<Tag> tags;
-    
-    /**
-     * Constructor.
-     * @param type
-     */
-    public AaiOperation(String type) {
-        super(type);
+
+    public AaiOperationTraitItems traits;
+
+    public AaiMessage message;
+
+    public AaiOperation(Node parent) {
+        super(parent);
     }
 
-    /**
-     * Creates a Tag node.
-     */
-    public AaiTag createTag() {
-        AaiTag tag = new AaiTag();
-        tag._ownerDocument = this.ownerDocument();
-        tag._parent = this;
-        return tag;
+    public AaiOperation(Node parent, String opType) {
+        super(parent, opType);
     }
-
-    /**
-     * Adds a tag.
-     * @param name
-     * @param description
-     */
-    public Tag addTag(String name, String description) {
-        Tag tag = this.createTag();
-        tag.name = name;
-        tag.description = description;
-        if (this.tags == null) {
-            this.tags = new ArrayList<>();
-        }
-        this.tags.add(tag);
-        return tag;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.core.models.common.Operation#createExternalDocumentation()
-     */
-    @Override
-    public ExternalDocumentation createExternalDocumentation() {
-        AaiExternalDocumentation externalDocs = new AaiExternalDocumentation();
-        externalDocs._ownerDocument = this.ownerDocument();
-        externalDocs._parent = this;
-        return this.externalDocs;
-    }
-
 }

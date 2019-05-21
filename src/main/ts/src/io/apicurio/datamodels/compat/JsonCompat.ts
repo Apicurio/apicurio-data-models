@@ -200,4 +200,11 @@ export class JsonCompat {
         }
     }
 
+    public static appendToArray(jsonArray: any, propertyValue: any): void {
+        jsonArray.push(propertyValue);
+    }
+
+    public static setToArrayIndex(jsonArray: any, index: number, propertyValue: any): void {
+        jsonArray[index] = propertyValue;
+    }
 }

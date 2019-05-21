@@ -16,34 +16,24 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import java.util.List;
-
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
-import io.apicurio.datamodels.core.visitors.IVisitor;
+
+import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiServerVariable extends ServerVariable {
-    
+public abstract class AaiServerVariable extends ServerVariable {
+
     public List<String> examples;
-    
+
     /**
      * Constructor.
+     *
      * @param name
      */
     public AaiServerVariable(String name) {
         super(name);
     }
-
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        IAaiVisitor viz = (IAaiVisitor) visitor;
-        viz.visitServerVariable(this);
-    }
-
 }

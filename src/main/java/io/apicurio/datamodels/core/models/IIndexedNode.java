@@ -19,12 +19,16 @@ package io.apicurio.datamodels.core.models;
 import java.util.List;
 
 /**
- * Nodes that support indexed children must implement this interface.  Examples include:
+ * This interface must be implemented by nodes that represent a `Map[string, T]` data type
+ * in the specification, and therefore can't be modeled as a node containing
+ * a known collection of named fields.
+ *
+ * Examples include:
  *
  * Oas20Paths
  * Oas20Definitions
  * Oas20Reponses
- * 
+ *
  * @author eric.wittmann@gmail.com
  */
 public interface IIndexedNode<T extends Node> {

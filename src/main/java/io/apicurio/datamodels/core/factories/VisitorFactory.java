@@ -16,9 +16,9 @@
 
 package io.apicurio.datamodels.core.factories;
 
-import io.apicurio.datamodels.asyncapi.io.AaiDataModelReader;
-import io.apicurio.datamodels.asyncapi.io.AaiDataModelReaderDispatcher;
-import io.apicurio.datamodels.asyncapi.io.AaiDataModelWriter;
+import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReader;
+import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReaderDispatcher;
+import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelWriter;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.io.DataModelWriter;
@@ -37,19 +37,19 @@ import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelWriter;
  * @author eric.wittmann@gmail.com
  */
 public class VisitorFactory {
-    
+
     public static final ValidationProblemsResetVisitor createValidationProblemsResetVisitor(Document doc) {
         return new ValidationProblemsResetVisitor();
     }
-    
+
     public static final ValidationVisitor createValidationVisitor(Document doc) {
         return new ValidationVisitor(doc);
     }
-    
+
     public static final DataModelReader createDataModelReader(DocumentType type) {
         switch (type) {
             case asyncapi2:
-                return new AaiDataModelReader();
+                return new Aai20DataModelReader();
             case openapi2:
                 return new Oas20DataModelReader();
             case openapi3:
@@ -62,7 +62,7 @@ public class VisitorFactory {
     public static DataModelWriter createDataModelWriter(Document doc) {
         switch (doc.getDocumentType()) {
             case asyncapi2:
-                return new AaiDataModelWriter();
+                return new Aai20DataModelWriter();
             case openapi2:
                 return new Oas20DataModelWriter();
             case openapi3:
@@ -73,10 +73,10 @@ public class VisitorFactory {
     }
 
     public static DataModelReaderDispatcher createDataModelReaderDispatcher(DocumentType type, Object json,
-            DataModelReader reader) {
+                                                                            DataModelReader reader) {
         switch (type) {
             case asyncapi2:
-                return new AaiDataModelReaderDispatcher(json, (AaiDataModelReader) reader);
+                return new Aai20DataModelReaderDispatcher(json, (Aai20DataModelReader) reader);
             case openapi2:
                 return new Oas20DataModelReaderDispatcher(json, (Oas20DataModelReader) reader);
             case openapi3:

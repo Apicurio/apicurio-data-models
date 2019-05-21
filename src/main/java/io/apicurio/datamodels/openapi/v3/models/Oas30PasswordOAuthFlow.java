@@ -22,6 +22,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
  * Models an OpenAPI 3.0.x password OAuth flow.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class Oas30PasswordOAuthFlow extends PasswordOAuthFlow {

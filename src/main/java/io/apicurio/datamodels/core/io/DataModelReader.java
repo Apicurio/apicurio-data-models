@@ -19,6 +19,7 @@ package io.apicurio.datamodels.core.io;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -316,6 +317,26 @@ public abstract class DataModelReader {
      * @param json
      * @param node
      */
+    public void readAaiParameter(Object json, AaiParameter node) {
+        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
+        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
+
+        node.$ref = $ref;
+        node.name = name;
+        node.description = description;
+        node.schema = schema;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a single parameter.
+     * @param json
+     * @param node
+     */
     public void readParameter(Object json, Parameter node) {
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
@@ -325,7 +346,7 @@ public abstract class DataModelReader {
         node.$ref = $ref;
         node.name = name;
         node.description = description;
-        
+
         if (schema != null) {
             node.schema = node.createSchema();
             this.readSchema(schema, node.schema);

@@ -16,97 +16,61 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
-import io.apicurio.datamodels.core.models.common.Tag;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Models an AsyncAPI root document.
+ *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiDocument extends Document {
-	
-	public String asyncapi;
-	public String id;
+public abstract class AaiDocument extends Document {
+
+    /**
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#A2SVersionString">AsyncAPI 2.0.0 spec</a>
+     */
+    public String asyncapi;
+
+    /**
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#A2SIdString">AsyncAPI 2.0.0 spec</a>
+     */
+    public String id;
+
+    /**
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#channelsObject">AsyncAPI 2.0.0 spec</a>
+     */
+    public Map<String, AaiChannelItem> channels = new LinkedHashMap<>();
+
+    /**
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#serverObject">AsyncAPI 2.0.0 spec</a>
+     */
     public List<AaiServer> servers;
-    // TODO channels
-    // TODO components
-
-	/**
-     * Constructor.
-     */
-    public AaiDocument() {
-    }
 
     /**
-     * @see io.apicurio.datamodels.core.models.Document#getDocumentType()
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#componentsObject">AsyncAPI 2.0.0 spec</a>
      */
-    @Override
-    public DocumentType getDocumentType() {
-        return DocumentType.asyncapi2;
-    }
+    public AaiComponents components;
+
+    public String defaultContentType;
+
+    public abstract AaiServer createServer();
+
+    public abstract AaiServer createServer(String url, String description);
 
     /**
-     * @see io.apicurio.datamodels.core.models.Document#createInfo()
+     * Adds a server and returns it.
      */
-    @Override
-    public AaiInfo createInfo() {
-        AaiInfo info = new AaiInfo();
-        info._parent = this;
-        info._ownerDocument = this;
-        return info;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.models.Document#createTag()
-     */
-    @Override
-    public Tag createTag() {
-        Tag tag = new AaiTag();
-        tag._ownerDocument = this.ownerDocument();
-        tag._parent = this;
-        return tag;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.core.models.Document#createExternalDocumentation()
-     */
-    @Override
-    public ExternalDocumentation createExternalDocumentation() {
-        ExternalDocumentation ed = new AaiExternalDocumentation();
-        ed._ownerDocument = this.ownerDocument();
-        ed._parent = this;
-        return ed;
-    }
+    public abstract AaiServer addServer(AaiServer server);
 
-    /**
-     * Creates an OAS 3.0 Server object.
-     */
-    public AaiServer createServer() {
-        AaiServer rval = new AaiServer();
-        rval._ownerDocument = this;
-        rval._parent = this;
-        return rval;
-    }
+    public abstract List<AaiChannelItem> getChannels();
 
-    /**
-     * Adds a server.
-     * @param url
-     * @param description
-     */
-    public AaiServer addServer(String url, String description) {
-        AaiServer server = this.createServer();
-        server.url = url;
-        server.description = description;
-        if (this.servers == null) {
-            this.servers = new ArrayList<>();
-        }
-        this.servers.add(server);
-        return server;
-    }
+    public abstract AaiChannelItem createChannelItem(String name);
 
+    public abstract void addChannelItem(AaiChannelItem item);
+
+    public abstract AaiComponents createComponents();
 }

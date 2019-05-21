@@ -21,12 +21,12 @@ import io.apicurio.datamodels.core.models.common.Contact;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class AaiContact extends Contact {
+public abstract class AaiContact extends Contact {
 
     /**
      * Constructor.
      */
     public AaiContact() {
     }
-    
+
 }

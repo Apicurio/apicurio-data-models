@@ -16,20 +16,19 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.common.Server;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
-import io.apicurio.datamodels.core.visitors.IVisitor;
-
 /**
  * Models an AsyncAPI server.
+ *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiServer extends Server {
-    
+public abstract class AaiServer extends Server {
+
     public String protocol;
     public String protocolVersion;
     public String baseChannel;
@@ -40,39 +39,14 @@ public class AaiServer extends Server {
      */
     public AaiServer() {
     }
-    
-    /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
-     */
-    @Override
-    public void accept(IVisitor visitor) {
-        IAaiVisitor viz = (IAaiVisitor) visitor;
-        viz.visitServer(this);
-    }
 
-    /**
-     * @see io.apicurio.datamodels.core.models.common.Server#createServerVariable(java.lang.String)
-     */
-    @Override
-    public ServerVariable createServerVariable(String name) {
-        AaiServerVariable variable = new AaiServerVariable(name);
-        variable._ownerDocument = this.ownerDocument();
-        variable._parent = this;
-        return variable;
-    }
-    
-    /**
-     * Creates a security requirement.
-     */
-    public AaiSecurityRequirement createSecurityRequirement() {
-        AaiSecurityRequirement requirement = new AaiSecurityRequirement();
-        requirement._ownerDocument = this.ownerDocument();
-        requirement._parent = this;
-        return requirement;
-    }
+
+    public abstract AaiSecurityRequirement createSecurityRequirement();
+
 
     /**
      * Adds a security requirement child.
+     *
      * @param securityRequirement
      */
     public AaiSecurityRequirement addSecurityRequirement(AaiSecurityRequirement securityRequirement) {
@@ -82,5 +56,4 @@ public class AaiServer extends Server {
         this.security.add(securityRequirement);
         return securityRequirement;
     }
-
 }

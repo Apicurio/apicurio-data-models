@@ -1,0 +1,113 @@
+{
+    "info": {
+        "version": "1.0.0", 
+        "description": "A cut of the Streetlights API to test application header changes supporting", 
+        "license": {
+            "url": "https://www.apache.org/licenses/LICENSE-2.0", 
+            "name": "Apache 2.0"
+        }, 
+        "title": "Application Headers example"
+    }, 
+    "channels": {
+        "event/{streetlightId}/lighting/measured": {
+            "subscribe": {
+                "message": {
+                    "$ref": "#/components/messages/lightMeasured"
+                }, 
+                "summary": "Receive information about environmental lighting conditions of a particular streetlight.", 
+                "operationId": "receiveLightMeasurement"
+            }, 
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/streetlightId"
+                }
+            ]
+        }
+    }, 
+    "components": {
+        "messages": {
+            "lightMeasured": {
+                "headers": {
+                    "applicationInstanceId": {
+                        "$ref": "#/components/schemas/applicationInstanceId"
+                    }, 
+                    "MQMD": {
+                        "type": "object", 
+                        "properties": {
+                            "CorrelId": {
+                                "minLength": 24, 
+                                "maxLength": 24, 
+                                "type": "string", 
+                                "format": "binary"
+                            }
+                        }
+                    }
+                }, 
+                "contentType": "application/json", 
+                "name": "lightMeasured", 
+                "title": "Light measured", 
+                "payload": {
+                    "$ref": "#/components/schemas/lightMeasuredPayload"
+                }, 
+                "correlationId": {
+                    "location": "$message.header#/MQMD/CorrelId"
+                }, 
+                "summary": "Inform about environmental lighting conditions for a particular streetlight."
+            }
+        }, 
+        "parameters": {
+            "streetlightId": {
+                "description": "The ID of the streetlight.", 
+                "name": "streetlightId", 
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }, 
+        "schemas": {
+            "applicationInstanceId": {
+                "type": "string", 
+                "description": "Unique identifier for a given instance of the publishing application"
+            }, 
+            "lightMeasuredPayload": {
+                "type": "object", 
+                "properties": {
+                    "lumens": {
+                        "minimum": 0, 
+                        "type": "integer", 
+                        "description": "Light intensity measured in lumens."
+                    }, 
+                    "sentAt": {
+                        "$ref": "#/components/schemas/sentAt"
+                    }
+                }
+            }, 
+            "sentAt": {
+                "type": "string", 
+                "description": "Date and time when the message was sent.", 
+                "format": "date-time"
+            }
+        }
+    }, 
+    "defaultContentType": "application/json", 
+    "asyncapi": "2.0.0",
+    "id": "urn:com:smartylighting:streetlights:server", 
+    "servers": [
+        {
+            "url": "api.streetlights.smartylighting.com:{port}", 
+            "variables": {
+                "port": {
+                    "default": "1883", 
+                    "enum": [
+                        "1883", 
+                        "8883"
+                    ], 
+                    "description": "Secure connection (TLS) is available through port 8883."
+                }
+            }, 
+            "protocol": "mqtt", 
+            "description": "Test broker", 
+            "baseChannel": "smartylighting/streetlights/1/0"
+        }
+    ]
+}

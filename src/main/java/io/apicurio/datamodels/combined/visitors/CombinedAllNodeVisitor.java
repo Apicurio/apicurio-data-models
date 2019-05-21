@@ -16,19 +16,40 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiComponents;
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
+import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
+import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -85,7 +106,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * to visit every node in all data models.  This would work for OpenAPI 2, 3 and AsyncAPI data models.
  * @author eric.wittmann@gmail.com
  */
-public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAaiVisitor {
+public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
 
     /**
      * Visit a node.  This is a common method called for every node type.
@@ -640,5 +661,111 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
         this.visitNode(node);
         
     }
-    
+
+    /* === AsyncAPI === */
+
+    @Override
+    public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitChannelItem(AaiChannelItem node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitComponents(AaiComponents node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitCorrelationId(AaiCorrelationId node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitHeaderItem(AaiHeaderItem node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitMessage(AaiMessage node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTraitItems(AaiMessageTraitItems node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTrait(AaiMessageTrait node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitOAuthFlows(OAuthFlows node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTraitItems(AaiOperationTraitItems node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTrait(AaiOperationTrait node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitProtocolInfo(AaiProtocolInfo node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitServer(AaiServer node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitServerVariable(AaiServerVariable node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitTraitItem(AaiTraitItem node) {
+        this.visitNode(node);
+    }
+
+    @Override
+    public void visitAaiParameter(AaiParameter node) {
+        this.visitNode(node);
+    }
 }
