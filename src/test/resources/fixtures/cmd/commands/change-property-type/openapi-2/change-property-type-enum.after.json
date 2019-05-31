@@ -1,0 +1,27 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Person": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "enum": [
+            "option1", "option2", "option3", "option4"
+          ]
+        }
+      },
+      "required": [
+        "id", "name"
+      ],
+      "example": {
+        "name": "Puma",
+        "id": 1
+      }
+    }
+  }
+}

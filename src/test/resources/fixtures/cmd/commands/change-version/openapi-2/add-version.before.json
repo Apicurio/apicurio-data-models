@@ -1,0 +1,27 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.swagger.io/support",
+      "email": "support@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "example.org",
+  "basePath" : "/example-api",
+  "schemes" : [
+    "http", "https"
+  ],
+  "consumes" : [
+    "application/json",
+    "application/xml"
+  ],
+  "produces" : [
+    "application/json"
+  ]
+}

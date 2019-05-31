@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "DC API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/leaguers": {
+      "summary": "Path used to manage the list of Leaguers.",
+      "description": "The REST endpoint/path used to list and create zero or more `Leaguer` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+      "get": {
+        "summary": "List All Leaguers",
+        "description": "Gets a list of all `Leaguer` entities.",
+        "operationId": "getLeaguers",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns an array of `Leaguer` entities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Leaguer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a Leaguer",
+        "description": "Creates a new instance of a `Leaguer`.",
+        "operationId": "createLeaguer",
+        "requestBody": {
+          "description": "A new `Leaguer` to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Leaguer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response."
+          }
+        }
+      }
+    },
+    "/leaguers/{leaguerId}": {
+      "summary": "Path used to manage a single Leaguer.",
+      "description": "The REST endpoint/path used to get, update, and delete single instances of an `Leaguer`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+      "get": {
+        "summary": "Get a Leaguer",
+        "description": "Gets the details of a single instance of a `Leaguer`.",
+        "operationId": "getLeaguer",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns a single `Leaguer`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Leaguer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Leaguer",
+        "description": "Updates an existing `Leaguer`.",
+        "operationId": "updateLeaguer",
+        "requestBody": {
+          "description": "Updated `Leaguer` information.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Leaguer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Leaguer",
+        "description": "Deletes an existing `Leaguer`.",
+        "operationId": "deleteLeaguer",
+        "responses": {
+          "204": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "leaguerId",
+          "in": "path",
+          "description": "A unique identifier for a `Leaguer`.",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "Leaguer": {
+        "title": "Root Type for Leaguer",
+        "description": "The root of the Leaguer type's schema.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "disposition": {
+            "type": "string"
+          }
+        },
+        "example": "{\n    \"name\": \"Batman\",\n    \"disposition\": \"Sour\"\n}"
+      }
+    }
+  }
+}

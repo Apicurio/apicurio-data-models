@@ -1,0 +1,6 @@
+{
+  "__type": "ChangePropertyCommand_30",
+  "_nodePath" : "/paths[/]/get",
+  "_property" : "operationId",
+  "_newValue" : "updatedOperationId"
+}

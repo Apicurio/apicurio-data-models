@@ -1,0 +1,15 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {}
+          }
+        }
+      }
+    }
+  }
+}

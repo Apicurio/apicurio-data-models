@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.paths;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -31,10 +30,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
@@ -63,21 +59,8 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
 
     private List<NodePathResolveTestCase> loadTests() throws InitializationError {
         try {
-            List<NodePathResolveTestCase> allTests = new LinkedList<>();
-            
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/resolve-tests.json");
-            String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
-            JsonNode tree = mapper.readTree(testsJsonSrc);
-            ArrayNode tests = (ArrayNode) tree;
-            tests.forEach( test -> {
-                ObjectNode testNode = (ObjectNode) test;
-                NodePathResolveTestCase testCase = new NodePathResolveTestCase();
-                testCase.setName(testNode.get("name").asText());
-                testCase.setTest(testNode.get("test").asText());
-                testCase.setPath(testNode.get("path").asText());
-                allTests.add(testCase);
-            });
-            
+            List<NodePathResolveTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePathResolveTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);

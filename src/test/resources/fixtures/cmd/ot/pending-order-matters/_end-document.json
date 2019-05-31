@@ -1,0 +1,34 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Order Matters Test API",
+    "description": "A simple API using OpenAPI 3.0.0.",
+    "contact": {
+      "name": "Example Org",
+      "url": "http://www.example.org",
+      "email": "contact@example.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "version": "1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Updated GET Summary",
+        "operationId": "NewOp",
+        "description": "New operation description",
+        "deprecated": false,
+        "tags": [ "tag1", "tag2" ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "foo",
+      "description": "The Foo tag."
+    }
+  ]
+}

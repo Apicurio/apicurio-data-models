@@ -1,0 +1,16 @@
+{
+  "__type": "ReplaceOperationCommand_30",
+  "_nodePath": "/paths[/]/get",
+  "_new": {
+    "tags": [
+      "tag1",
+      "tag2"
+    ],
+    "summary": "New Operation Summary",
+    "description": "New operation description",
+    "operationId": "NewOp",
+    "deprecated": false
+  },
+  "_method": "get",
+  "_path": "/"
+}

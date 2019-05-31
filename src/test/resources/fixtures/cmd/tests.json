@@ -1,0 +1,9 @@
+[
+    { "name": "[OpenAPI 2] {Change Description} - Add Description", "test": "commands/change-description/openapi-2/add-description" },
+    { "name": "[OpenAPI 2] {Change Description} - Change Description", "test": "commands/change-description/openapi-2/change-description" },
+    { "name": "[OpenAPI 3] {Change Description} - Add Description", "test": "commands/change-description/openapi-3/add-description" },
+    { "name": "[OpenAPI 3] {Change Description} - Change Description", "test": "commands/change-description/openapi-3/change-description" },
+
+    { "name": "[OT] {In Sequence} - Forward", "test": "ot/in-sequence/in-sequence" },
+    { "name": "[OT] {In Sequence} - Reverse", "test": "ot/in-sequence/in-sequence", "commands": ".reverse.json" }
+]
