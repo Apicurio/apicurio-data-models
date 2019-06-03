@@ -36,7 +36,7 @@ public class ChangeDescriptionCommand extends AbstractCommand implements IComman
     private String _newDescription;
 
     private String _oldDescription;
-    private boolean _nullInfo;
+    private Boolean _nullInfo;
     
     /**
      * Constructor.
@@ -68,7 +68,7 @@ public class ChangeDescriptionCommand extends AbstractCommand implements IComman
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeDescriptionCommand] Reverting.");
-        if (this._nullInfo) {
+        if (this._nullInfo == Boolean.TRUE) {
             document.info = null;
         } else {
             document.info.description = this._oldDescription;
@@ -82,6 +82,8 @@ public class ChangeDescriptionCommand extends AbstractCommand implements IComman
     public Object marshall() {
         Object to = super.marshall();
         JsonCompat.setPropertyString(to, "_newDescription", this._newDescription);
+        JsonCompat.setPropertyString(to, "_oldDescription", this._oldDescription);
+        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
         return to;
     }
     
@@ -92,6 +94,8 @@ public class ChangeDescriptionCommand extends AbstractCommand implements IComman
     public void unmarshall(Object from) {
         super.unmarshall(from);
         this._newDescription = JsonCompat.getPropertyString(from, "_newDescription");
+        this._oldDescription = JsonCompat.getPropertyString(from, "_oldDescription");
+        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }

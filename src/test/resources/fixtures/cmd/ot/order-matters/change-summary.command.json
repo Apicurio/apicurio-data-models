@@ -1,6 +1,0 @@
-{
-  "__type": "ChangePropertyCommand_30",
-  "_nodePath" : "/paths[/]/get",
-  "_property" : "summary",
-  "_newValue" : "Updated GET Summary"
-}

@@ -36,7 +36,7 @@ public class ChangeTitleCommand extends AbstractCommand implements ICommand {
     private String _newTitle;
 
     private String _oldTitle;
-    private boolean _nullInfo;
+    private Boolean _nullInfo;
     
     /**
      * Constructor.
@@ -68,7 +68,7 @@ public class ChangeTitleCommand extends AbstractCommand implements ICommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeTitleCommand] Reverting.");
-        if (this._nullInfo) {
+        if (this._nullInfo == Boolean.TRUE) {
             document.info = null;
         } else {
             document.info.title = this._oldTitle;
@@ -82,6 +82,8 @@ public class ChangeTitleCommand extends AbstractCommand implements ICommand {
     public Object marshall() {
         Object to = super.marshall();
         JsonCompat.setPropertyString(to, "_newTitle", this._newTitle);
+        JsonCompat.setPropertyString(to, "_oldTitle", this._oldTitle);
+        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
         return to;
     }
     
@@ -92,6 +94,8 @@ public class ChangeTitleCommand extends AbstractCommand implements ICommand {
     public void unmarshall(Object from) {
         super.unmarshall(from);
         this._newTitle = JsonCompat.getPropertyString(from, "_newTitle");
+        this._oldTitle = JsonCompat.getPropertyString(from, "_oldTitle");
+        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }

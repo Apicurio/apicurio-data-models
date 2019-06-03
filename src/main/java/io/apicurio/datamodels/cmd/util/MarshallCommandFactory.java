@@ -18,6 +18,7 @@ package io.apicurio.datamodels.cmd.util;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
+import io.apicurio.datamodels.cmd.commands.ChangePropertyCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
 
@@ -35,6 +36,10 @@ public class MarshallCommandFactory {
      */
     public static ICommand create(String cmdType) {
         switch (cmdType) {
+            case "ChangePropertyCommand_20": 
+            case "ChangePropertyCommand_30":
+            case "ChangePropertyCommand":
+            { return ChangePropertyCommand.create(null, null, null); }
             case "ChangeDescriptionCommand_20": 
             case "ChangeDescriptionCommand_30":
             case "ChangeDescriptionCommand":

@@ -41,6 +41,7 @@ import io.apicurio.datamodels.cmd.ot.OtEngine;
 import io.apicurio.datamodels.cmd.util.MarshallUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 
 /**
@@ -137,33 +138,67 @@ public class CommandTestRunner extends ParentRunner<CommandTestCase> {
                 Assert.assertNotNull(document);
                 
                 // Load all the commands to apply.
-                List<OtCommand> commands = new ArrayList<>();
+                List<TestDirective> directives = new ArrayList<>();
                 ArrayNode allCommands = (ArrayNode) commandsJs;
                 for (int cidx = 0; cidx < allCommands.size(); cidx++) {
-                    JsonNode commandNode = allCommands.get(cidx);
-                    ICommand cmd = MarshallUtils.unmarshallCommand(commandNode);
-                    OtCommand otc = new OtCommand();
-                    otc.author = "user";
-                    otc.command = cmd;
-                    otc.contentVersion = cidx;
-                    otc.local = false;
-                    otc.reverted = false;
-                    if (commandNode.has("__contentVersion")) {
-                        otc.contentVersion = commandNode.get("__contentVersion").asLong();
+                    JsonNode directiveNode = allCommands.get(cidx);
+                    String type = JsonCompat.getPropertyString(directiveNode, Constants.PROP___TYPE);
+                    if ("_FINALIZE_".equals(type)) {
+                        TestDirectiveFinalize directive = new TestDirectiveFinalize();
+                        directive.contentVersion = directiveNode.get("__contentVersion").asLong();
+                        directive.pendingVersion = directiveNode.get("__pendingVersion").asLong();
+                    } else if ("_UNDO_".equals(type)) {
+                        TestDirectiveUndoRedo directive = new TestDirectiveUndoRedo();
+                        directive.dtype = TestDirectiveType.undo;
+                        directive.contentVersion = directiveNode.get("__contentVersion").asLong();
+                    } else if ("_REDO_".equals(type)) {
+                        TestDirectiveUndoRedo directive = new TestDirectiveUndoRedo();
+                        directive.dtype = TestDirectiveType.redo;
+                        directive.contentVersion = directiveNode.get("__contentVersion").asLong();
+                    } else {
+                        TestDirectiveCommand directive = new TestDirectiveCommand();
+                        directive.contentVersion = cidx;
+                        
+                        directive.command = MarshallUtils.unmarshallCommand(directiveNode);
+                        if (directiveNode.has("__contentVersion")) {
+                            directive.contentVersion = directiveNode.get("__contentVersion").asLong();
+                        }
+                        if (directiveNode.has("__pending")) {
+                            directive.pending = directiveNode.get("__pending").asBoolean();
+                        }
+                        directives.add(directive);
+                        
+                        // Make sure we can marshall/unmarshall the command
+                        Object marshalledCommand = MarshallUtils.marshallCommand(directive.command);
+                        String mcs = JsonCompat.stringify(marshalledCommand);
+                        ICommand unmarshalledCommand = MarshallUtils.unmarshallCommand(JsonCompat.parseJSON(mcs));
+                        Assert.assertEquals("Failed to marshall/unmarshall command: " + directive.command.getClass(), 
+                                directive.command.getClass(), unmarshalledCommand.getClass());
                     }
-                    commands.add(otc);
-                    
-                    // Make sure we can marshall/unmarshall the command
-                    Object marshalledCommand = MarshallUtils.marshallCommand(cmd);
-                    String mcs = JsonCompat.stringify(marshalledCommand);
-                    ICommand unmarshalledCommand = MarshallUtils.unmarshallCommand(JsonCompat.parseJSON(mcs));
-                    Assert.assertEquals("Failed to marshall/unmarshall command: " + cmd.getClass(), cmd.getClass(), unmarshalledCommand.getClass());
                 }
                 
                 // Apply all the commands to the Document (modifying the document).
                 OtEngine engine = new OtEngine(document);
-                commands.forEach(cmd -> {
-                    engine.executeCommand(cmd, false);
+                directives.forEach(directive -> {
+                    if (directive.dtype == TestDirectiveType.command) {
+                        TestDirectiveCommand dcmd = (TestDirectiveCommand) directive;
+                        OtCommand cmd = new OtCommand();
+                        cmd.author = "user";
+                        cmd.command = dcmd.command;
+                        cmd.contentVersion = dcmd.contentVersion;
+                        cmd.local = false;
+                        cmd.reverted = false;
+                        engine.executeCommand(cmd, dcmd.pending);
+                    } else if (directive.dtype == TestDirectiveType.finalize) {
+                        TestDirectiveFinalize dcmd = (TestDirectiveFinalize) directive;
+                        engine.finalizeCommand(dcmd.pendingVersion, dcmd.contentVersion);
+                    } else if (directive.dtype == TestDirectiveType.undo) {
+                        TestDirectiveUndoRedo dcmd = (TestDirectiveUndoRedo) directive;
+                        engine.undo(dcmd.contentVersion);
+                    } else if (directive.dtype == TestDirectiveType.redo) {
+                        TestDirectiveUndoRedo dcmd = (TestDirectiveUndoRedo) directive;
+                        engine.redo(dcmd.contentVersion);
+                    }
                 });
 
                 // Check that the resulting (modified) document is what we expected.
@@ -195,5 +230,30 @@ public class CommandTestRunner extends ParentRunner<CommandTestCase> {
     static void assertJsonEquals(String expected, String actual) throws JSONException {
         JSONAssert.assertEquals(expected, actual, true);
     }
-
+    
+    private static enum TestDirectiveType {
+        command, finalize, undo, redo
+    }
+    
+    private abstract static class TestDirective {
+        public TestDirectiveType dtype;
+    }
+    private static class TestDirectiveCommand extends TestDirective {
+        public ICommand command;
+        public boolean pending;
+        public long contentVersion;
+        public TestDirectiveCommand() {
+            this.dtype = TestDirectiveType.command;
+        }
+    }
+    private static class TestDirectiveFinalize extends TestDirective {
+        public long pendingVersion;
+        public long contentVersion;
+        public TestDirectiveFinalize() {
+            this.dtype = TestDirectiveType.finalize;
+        }
+    }
+    private static class TestDirectiveUndoRedo extends TestDirective {
+        public long contentVersion;
+    }
 }

@@ -36,7 +36,7 @@ public class ChangeVersionCommand extends AbstractCommand implements ICommand {
     private String _newVersion;
 
     private String _oldVersion;
-    private boolean _nullInfo;
+    private Boolean _nullInfo;
     
     /**
      * Constructor.
@@ -68,7 +68,7 @@ public class ChangeVersionCommand extends AbstractCommand implements ICommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeVersionCommand] Reverting.");
-        if (this._nullInfo) {
+        if (this._nullInfo == Boolean.TRUE) {
             document.info = null;
         } else {
             document.info.version = this._oldVersion;
@@ -82,6 +82,8 @@ public class ChangeVersionCommand extends AbstractCommand implements ICommand {
     public Object marshall() {
         Object to = super.marshall();
         JsonCompat.setPropertyString(to, "_newVersion", this._newVersion);
+        JsonCompat.setPropertyString(to, "_oldVersion", this._oldVersion);
+        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
         return to;
     }
     
@@ -92,6 +94,8 @@ public class ChangeVersionCommand extends AbstractCommand implements ICommand {
     public void unmarshall(Object from) {
         super.unmarshall(from);
         this._newVersion = JsonCompat.getPropertyString(from, "_newVersion");
+        this._oldVersion = JsonCompat.getPropertyString(from, "_oldVersion");
+        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }
