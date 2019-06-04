@@ -85,7 +85,7 @@ allTests.forEach(spec => {
             let path: string = nodePath.toString();
             expect(path).not.toBeNull();
             nodePath = new NodePath(path);
-            let resolvedNode: Node = nodePath.resolve(document, null);
+            let resolvedNode: Node = nodePath.resolve(document);
             expect(resolvedNode).not.toBeNull();
             expect(resolvedNode).toBe(node);
         });

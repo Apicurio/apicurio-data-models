@@ -18,7 +18,6 @@ package io.apicurio.datamodels.cmd.util;
 
 import java.util.List;
 
-import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
@@ -27,30 +26,12 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.NodePath;
 
 /**
+ * 
+ * TODO deprecated , remove
  * @author eric.wittmann@gmail.com
  */
+@Deprecated
 public class MarshallUtils {
-
-    /**
-     * Marshalls the given command into a JS object and returns it.
-     */
-    public static Object marshallCommand(ICommand command) {
-        return command.marshall();
-    }
-
-    /**
-     * Unmarshalls the given JS object into a command and returns it.
-     * @param object
-     */
-    public static ICommand unmarshallCommand(Object from) {
-        String cmdType = JsonCompat.getPropertyString(from, Constants.PROP___TYPE);
-        ICommand cmd = MarshallCommandFactory.create(cmdType);
-        if (cmd == null) {
-            throw new RuntimeException("No unmarshalling factory found for command type: " + cmdType);
-        }
-        cmd.unmarshall(from);
-        return cmd;
-    }
 
     /**
      * Marshalls the given node path into a JS string.

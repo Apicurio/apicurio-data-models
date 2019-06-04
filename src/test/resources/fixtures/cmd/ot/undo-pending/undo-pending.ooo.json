@@ -6,20 +6,10 @@
         "_newTitle": "In Sequence Test API"
     },
     {
-        "__type": "_FINALIZE_",
-        "__pendingVersion": 1,
-        "__contentVersion": 11
-    },
-    {
         "__type": "ChangeDescriptionCommand_30",
         "__contentVersion": 2,
         "__pending": true,
         "_newDescription": "__DESCRIPTION CHANGED (IN SEQUENCE)__"
-    },
-    {
-        "__type": "_FINALIZE_",
-        "__pendingVersion": 2,
-        "__contentVersion": 12
     },
     {
         "__type": "ChangeVersionCommand_30",
@@ -32,7 +22,17 @@
     },
     {
         "__type": "_FINALIZE_",
+        "__pendingVersion": 2,
+        "__contentVersion": 12
+    },
+    {
+        "__type": "_FINALIZE_",
         "__pendingVersion": 3,
         "__contentVersion": 13
+    },
+    {
+        "__type": "_FINALIZE_",
+        "__pendingVersion": 1,
+        "__contentVersion": 11
     }
 ]

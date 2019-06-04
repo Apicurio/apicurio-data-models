@@ -16,15 +16,13 @@
 
 package io.apicurio.datamodels.cmd;
 
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
-import io.apicurio.datamodels.core.Constants;
 
 /**
  * A base class for all command implementations.
  * @author eric.wittmann@gmail.com
  */
-public abstract class AbstractCommand {
+public abstract class AbstractCommand implements ICommand {
     
     /**
      * Constructor.
@@ -41,27 +39,11 @@ public abstract class AbstractCommand {
     }
 
     /**
-     * Returns the type of the command (i.e. the command's class name).
+     * @see io.apicurio.datamodels.cmd.ICommand#type()
      */
-    protected final String type() {
+    @Override
+    public final String type() {
         return this.getClass().getSimpleName();
-    }
-
-    /**
-     * Marshall the command into a JS object.
-     */
-    public Object marshall() {
-        String cmdType = this.type();
-        Object to = JsonCompat.objectNode();
-        JsonCompat.setPropertyString(to, Constants.PROP___TYPE, cmdType);
-        return to;
-    }
-
-    /**
-     * Unmarshall the JS object.
-     * @param obj
-     */
-    public void unmarshall(Object from) {
     }
 
 }

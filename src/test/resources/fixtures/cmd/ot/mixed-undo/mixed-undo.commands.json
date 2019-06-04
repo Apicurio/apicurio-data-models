@@ -1,2 +1,57 @@
 [
+    {
+        "__type": "ChangeTitleCommand_30",
+        "__contentVersion": 1,
+        "__pending": true,
+        "_newTitle": "Test API (Local)"
+    },
+    {
+        "__type": "ChangeTitleCommand_30",
+        "__contentVersion": 10,
+        "_newTitle": "Test API (Remote)"
+    },
+    {
+        "__type": "_FINALIZE_",
+        "__pendingVersion": 1,
+        "__contentVersion": 11
+    },
+    {
+        "__type": "ChangeDescriptionCommand_30",
+        "__contentVersion": 12,
+        "_newDescription": "__DESCRIPTION CHANGED (REMOTE)__"
+    },
+    {
+        "__type": "ChangeDescriptionCommand_30",
+        "__contentVersion": 2,
+        "__pending": true,
+        "_newDescription": "__DESCRIPTION CHANGED (LOCAL)__"
+    },
+    {
+        "__type": "_FINALIZE_",
+        "__pendingVersion": 2,
+        "__contentVersion": 13
+    },
+    {
+        "__type": "ChangeVersionCommand_30",
+        "__contentVersion": 14,
+        "_newVersion": "1.0-remote"
+    },
+    {
+        "__type": "ChangeVersionCommand_30",
+        "__contentVersion": 3,
+        "__pending": true,
+        "_newVersion": "1.0-local"
+    },
+    {
+        "__type": "_FINALIZE_",
+        "__pendingVersion": 3,
+        "__contentVersion": 15
+    },
+    {
+        "__type": "_UNDO_LAST_"
+    },
+    {
+        "__type": "_UNDO_",
+        "__contentVersion": 12
+    }
 ]

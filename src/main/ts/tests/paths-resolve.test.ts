@@ -45,7 +45,7 @@ allTests.forEach(spec => {
         let np: NodePath = new NodePath(spec.path);
 
         // Resolve the path to a node in the source
-        let resolvedNode: Node = np.resolve(document, null);
+        let resolvedNode: Node = np.resolve(document);
         expect(resolvedNode).not.toBeNull();
 
         // Compare source path to node path (test generating a node path from a node)

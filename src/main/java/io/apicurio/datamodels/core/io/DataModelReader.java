@@ -80,7 +80,7 @@ public abstract class DataModelReader {
         JsonCompat.keys(json).forEach(key -> {
             Object value = JsonCompat.consumePropertyObject(json, key);
             node.addExtraProperty(key, value);
-            LoggerCompat.warn("Found unexpected data model property: ", key);
+            LoggerCompat.warn("Found unexpected data model property: %s", key);
         });
     }
 

@@ -17,9 +17,7 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 
@@ -27,16 +25,22 @@ import io.apicurio.datamodels.core.models.Document;
  * A command used to modify the title of a document.
  * @author eric.wittmann@gmail.com
  */
-public class ChangeTitleCommand extends AbstractCommand implements ICommand {
+public class ChangeTitleCommand extends AbstractCommand {
     
     public static final ChangeTitleCommand create(String newTitle) {
         return new ChangeTitleCommand(newTitle);
     }
 
-    private String _newTitle;
+    public String _newTitle;
 
-    private String _oldTitle;
-    private Boolean _nullInfo;
+    public String _oldTitle;
+    public Boolean _nullInfo;
+    
+    /**
+     * Constructor.
+     */
+    ChangeTitleCommand() {
+    }
     
     /**
      * Constructor.
@@ -73,29 +77,6 @@ public class ChangeTitleCommand extends AbstractCommand implements ICommand {
         } else {
             document.info.title = this._oldTitle;
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#marshall()
-     */
-    @Override
-    public Object marshall() {
-        Object to = super.marshall();
-        JsonCompat.setPropertyString(to, "_newTitle", this._newTitle);
-        JsonCompat.setPropertyString(to, "_oldTitle", this._oldTitle);
-        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
-        return to;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#unmarshall(java.lang.Object)
-     */
-    @Override
-    public void unmarshall(Object from) {
-        super.unmarshall(from);
-        this._newTitle = JsonCompat.getPropertyString(from, "_newTitle");
-        this._oldTitle = JsonCompat.getPropertyString(from, "_oldTitle");
-        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }

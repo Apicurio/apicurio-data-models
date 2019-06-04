@@ -21,6 +21,7 @@ import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
 import io.apicurio.datamodels.cmd.commands.ChangePropertyCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
+import io.apicurio.datamodels.cmd.commands.ReplaceOperationCommand;
 
 /**
  * This factory is used to create an instance of {@link ICommand} given a "type" that was previously
@@ -28,7 +29,7 @@ import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
  * The type of command is typically its short classname, but not always.
  * @author eric.wittmann@gmail.com
  */
-public class MarshallCommandFactory {
+public class CommandFactory {
 
     /**
      * Called to create a command of a given type.
@@ -52,6 +53,11 @@ public class MarshallCommandFactory {
             case "ChangeVersionCommand_30":
             case "ChangeVersionCommand":
             { return ChangeVersionCommand.create(null); }
+
+            case "ReplaceOperationCommand_20": 
+            case "ReplaceOperationCommand_30":
+            case "ReplaceOperationCommand":
+            { return ReplaceOperationCommand.create(null, null); }
         }
         return null;
     }

@@ -35,16 +35,10 @@ public interface ICommand {
      * @param document
      */
     public void undo(Document document);
-
+    
     /**
-     * Marshall the command into a JS object.
+     * Returns the type of the command (i.e. the command's class name).
      */
-    public Object marshall();
-
-    /**
-     * Unmarshall the JS object.
-     * @param from
-     */
-    public void unmarshall(Object from);
+    public String type();
 
 }

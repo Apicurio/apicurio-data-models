@@ -17,9 +17,7 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 
@@ -27,16 +25,22 @@ import io.apicurio.datamodels.core.models.Document;
  * A command used to modify the version of a document.
  * @author eric.wittmann@gmail.com
  */
-public class ChangeVersionCommand extends AbstractCommand implements ICommand {
+public class ChangeVersionCommand extends AbstractCommand {
     
     public static final ChangeVersionCommand create(String newVersion) {
         return new ChangeVersionCommand(newVersion);
     }
 
-    private String _newVersion;
+    public String _newVersion;
 
-    private String _oldVersion;
-    private Boolean _nullInfo;
+    public String _oldVersion;
+    public Boolean _nullInfo;
+    
+    /**
+     * Constructor.
+     */
+    ChangeVersionCommand() {
+    }
     
     /**
      * Constructor.
@@ -73,29 +77,6 @@ public class ChangeVersionCommand extends AbstractCommand implements ICommand {
         } else {
             document.info.version = this._oldVersion;
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#marshall()
-     */
-    @Override
-    public Object marshall() {
-        Object to = super.marshall();
-        JsonCompat.setPropertyString(to, "_newVersion", this._newVersion);
-        JsonCompat.setPropertyString(to, "_oldVersion", this._oldVersion);
-        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
-        return to;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#unmarshall(java.lang.Object)
-     */
-    @Override
-    public void unmarshall(Object from) {
-        super.unmarshall(from);
-        this._newVersion = JsonCompat.getPropertyString(from, "_newVersion");
-        this._oldVersion = JsonCompat.getPropertyString(from, "_oldVersion");
-        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }

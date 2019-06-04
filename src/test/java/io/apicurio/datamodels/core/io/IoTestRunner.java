@@ -143,7 +143,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                         String path = nodePath.toString();
                         Assert.assertNotNull(nodePath);
                         nodePath = new NodePath(path);
-                        Node resolvedNode = nodePath.resolve(doc, null);
+                        Node resolvedNode = nodePath.resolve(doc);
                         Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
                         Assert.assertTrue("Path failed to resolve to the proper node: " + path, node == resolvedNode);
                     } catch (Throwable t) {

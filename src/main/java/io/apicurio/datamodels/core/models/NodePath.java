@@ -124,7 +124,16 @@ public class NodePath {
      * @param document the document to resolve the path relative to
      * @param visitor an optional visitor to invoke for each node in the path (can be null)
      */
-    public Node resolve(Document document, IVisitor visitor) {
+    public Node resolve(Document document) {
+        return this.resolveWithVisitor(document, null);
+    }
+
+    /**
+     * Resolves a path to its target node while also visiting all nodes along the way.
+     * @param document
+     * @param visitor
+     */
+    public Node resolveWithVisitor(Document document, IVisitor visitor) {
         Node node = document;
         if (visitor != null) {
             node.accept(visitor);

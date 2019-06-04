@@ -17,9 +17,7 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 
@@ -27,16 +25,22 @@ import io.apicurio.datamodels.core.models.Document;
  * A command used to modify the description of a document.
  * @author eric.wittmann@gmail.com
  */
-public class ChangeDescriptionCommand extends AbstractCommand implements ICommand {
+public class ChangeDescriptionCommand extends AbstractCommand {
     
     public static final ChangeDescriptionCommand create(String newDescription) {
         return new ChangeDescriptionCommand(newDescription);
     }
 
-    private String _newDescription;
+    public String _newDescription;
 
-    private String _oldDescription;
-    private Boolean _nullInfo;
+    public String _oldDescription;
+    public Boolean _nullInfo;
+    
+    /**
+     * Constructor.
+     */
+    ChangeDescriptionCommand() {
+    }
     
     /**
      * Constructor.
@@ -73,29 +77,6 @@ public class ChangeDescriptionCommand extends AbstractCommand implements IComman
         } else {
             document.info.description = this._oldDescription;
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#marshall()
-     */
-    @Override
-    public Object marshall() {
-        Object to = super.marshall();
-        JsonCompat.setPropertyString(to, "_newDescription", this._newDescription);
-        JsonCompat.setPropertyString(to, "_oldDescription", this._oldDescription);
-        JsonCompat.setPropertyBoolean(to, "_nullInfo", this._nullInfo);
-        return to;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.AbstractCommand#unmarshall(java.lang.Object)
-     */
-    @Override
-    public void unmarshall(Object from) {
-        super.unmarshall(from);
-        this._newDescription = JsonCompat.getPropertyString(from, "_newDescription");
-        this._oldDescription = JsonCompat.getPropertyString(from, "_oldDescription");
-        this._nullInfo = JsonCompat.getPropertyBoolean(from, "_nullInfo");
     }
 
 }

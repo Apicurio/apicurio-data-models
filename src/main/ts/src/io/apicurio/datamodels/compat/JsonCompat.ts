@@ -179,4 +179,5 @@ export class JsonCompat {
             array.push(propertyValue);
         }
     }
+
 }

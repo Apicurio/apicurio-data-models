@@ -110,7 +110,7 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
                 NodePath np = new NodePath(child.getPath());
                 
                 // Resolve the path to a node in the source
-                Node resolvedNode = np.resolve(doc, null);
+                Node resolvedNode = np.resolve(doc);
                 Assert.assertNotNull(resolvedNode);
                 
                 // Compare source path to node path (test generating a node path from a node)
