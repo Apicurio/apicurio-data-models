@@ -155,9 +155,10 @@ public class Library {
      * @param node
      */
     public static void readNode(Object json, Node node) {
+        Object clonedJson = JsonCompat.clone(json);
         DocumentType type = node.ownerDocument().getDocumentType();
         DataModelReader reader = VisitorFactory.createDataModelReader(type);
-        DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, json, reader);
+        DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, clonedJson, reader);
         Library.visitNode(node, dispatcher);
     }
     

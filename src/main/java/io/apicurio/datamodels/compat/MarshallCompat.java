@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
@@ -68,13 +67,15 @@ public class MarshallCompat {
      * @param from
      */
     public static ICommand unmarshallCommand(Object from) {
-        String type = JsonCompat.getPropertyString(from, Constants.PROP___TYPE);
+        String type = JsonCompat.consumePropertyString(from, Constants.PROP___TYPE);
         if (type == null) {
             throw new RuntimeException("Missing __type from source data.");
         }
-        ((ObjectNode) from).remove(Constants.PROP___TYPE);
+        
         try {
-            return mapper.treeToValue((TreeNode) from, CommandFactory.create(type).getClass());
+            Class<? extends ICommand> cmdClass = CommandFactory.create(type).getClass();
+            ICommand cmd = mapper.treeToValue((TreeNode) from, cmdClass);
+            return cmd;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error unmarshalling command: " + type, e);
         } catch (NullPointerException e) {
