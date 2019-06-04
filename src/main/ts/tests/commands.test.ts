@@ -18,6 +18,7 @@
 import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
 import {ICommand} from "../src/io/apicurio/datamodels/cmd/ICommand";
 import {MarshallUtils} from "../src/io/apicurio/datamodels/cmd/util/MarshallUtils";
+import {MarshallCompat} from "../src/io/apicurio/datamodels/compat/MarshallCompat";
 import {OtCommand} from "../src/io/apicurio/datamodels/cmd/ot/OtCommand";
 import {OtEngine} from "../src/io/apicurio/datamodels/cmd/ot/OtEngine";
 import {Library} from "../src/io/apicurio/datamodels/Library";
@@ -28,6 +29,34 @@ interface TestSpec {
     name: string;
     test: string;
     commands?: string;
+}
+
+
+enum TestDirectiveType {
+    command, finalize, undo, redo, undoLast, redoLast
+}
+class TestDirective {
+    public dtype: TestDirectiveType;
+}
+class TestDirectiveCommand extends TestDirective {
+    public command: ICommand;
+    public pending: boolean;
+    public contentVersion: number;
+    constructor() {
+        super();
+        this.dtype = TestDirectiveType.command;
+    }
+}
+class TestDirectiveFinalize extends TestDirective {
+    public pendingVersion: number;
+    public contentVersion: number;
+    constructor() {
+        super();
+        this.dtype = TestDirectiveType.finalize;
+    }
+}
+class TestDirectiveUndoRedo extends TestDirective {
+    public contentVersion: number;
 }
 
 
@@ -56,27 +85,86 @@ allTests.forEach(spec => {
         let document: Document = Library.readDocument(beforeJs);
         expect(document).not.toBeNull();
 
-        // Load all of the commands
-        let commands: OtCommand[] = [];
+        // Load all the commands to apply.
+        let directives: TestDirective[] = [];
         let cjs: any[] = commandsJs;
         cjs.forEach((cnode, cidx) => {
-            let cmd: ICommand = MarshallUtils.unmarshallCommand(cnode);
-            let otc: OtCommand = new OtCommand();
-            otc.author = "user";
-            otc.command = cmd;
-            otc.contentVersion = cidx;
-            otc.local = false;
-            otc.reverted = false;
-            if (cnode["__contentVersion"]) {
-                otc.contentVersion = cnode["__contentVersion"];
+            let directiveNode: any = cnode;
+            let type: string = directiveNode["__type"];
+            if ("_FINALIZE_" == type) {
+                let directive: TestDirectiveFinalize = new TestDirectiveFinalize();
+                directive.contentVersion = directiveNode["__contentVersion"];
+                directive.pendingVersion = directiveNode["__pendingVersion"];
+                directives.push(directive);
+            } else if ("_UNDO_" == type) {
+                let directive: TestDirectiveUndoRedo = new TestDirectiveUndoRedo();
+                directive.dtype = TestDirectiveType.undo;
+                directive.contentVersion = directiveNode["__contentVersion"];
+                directives.push(directive);
+            } else if ("_REDO_" == type) {
+                let directive: TestDirectiveUndoRedo = new TestDirectiveUndoRedo();
+                directive.dtype = TestDirectiveType.redo;
+                directive.contentVersion = directiveNode["__contentVersion"];
+                directives.push(directive);
+            } else if ("_UNDO_LAST_" == type) {
+                let directive: TestDirectiveUndoRedo = new TestDirectiveUndoRedo();
+                directive.dtype = TestDirectiveType.undoLast;
+                directives.push(directive);
+            } else if ("_REDO_LAST_" == type) {
+                let directive: TestDirectiveUndoRedo = new TestDirectiveUndoRedo();
+                directive.dtype = TestDirectiveType.redoLast;
+                directives.push(directive);
+            } else {
+                let directive: TestDirectiveCommand = new TestDirectiveCommand();
+                directive.contentVersion = cidx;
+
+                if (directiveNode["__contentVersion"]) {
+                    directive.contentVersion = directiveNode["__contentVersion"];
+                }
+                if (directiveNode["__pending"]) {
+                    directive.pending = directiveNode["__pending"];
+                }
+
+                directive.command = MarshallCompat.unmarshallCommand(directiveNode);
+                directives.push(directive);
+
+                // Make sure we can marshall/unmarshall the command
+                let marshalledCommand: any = MarshallCompat.marshallCommand(directive.command);
+                let mcs: string = JSON.stringify(marshalledCommand);
+                let unmarshalledCommand: ICommand = MarshallCompat.unmarshallCommand(JSON.parse(mcs));
+                
+                // Actually use the one that's been marshalled/unmarshalled.
+                directive.command = unmarshalledCommand;
             }
-            commands.push(otc);
         });
 
         // Apply all the commands to the Document (modifying the document).
         let engine: OtEngine = new OtEngine(document);
-        commands.forEach(cmd => {
-            engine.executeCommand(cmd, false);
+        directives.forEach(directive => {
+            if (directive.dtype == TestDirectiveType.command) {
+                let dcmd: TestDirectiveCommand = <TestDirectiveCommand>directive;
+                let cmd: OtCommand = new OtCommand();
+                cmd.author = "user";
+                cmd.command = dcmd.command;
+                cmd.contentVersion = dcmd.contentVersion;
+                // Command is local if it's pending, or if there is only 1
+                cmd.local = dcmd.pending || directives.length == 1;
+                cmd.reverted = false;
+                engine.executeCommand(cmd, dcmd.pending);
+            } else if (directive.dtype == TestDirectiveType.finalize) {
+                let dcmd: TestDirectiveFinalize = <TestDirectiveFinalize>directive;
+                engine.finalizeCommand(dcmd.pendingVersion, dcmd.contentVersion);
+            } else if (directive.dtype == TestDirectiveType.undo) {
+                let dcmd: TestDirectiveUndoRedo = <TestDirectiveUndoRedo>directive;
+                engine.undo(dcmd.contentVersion);
+            } else if (directive.dtype == TestDirectiveType.redo) {
+                let dcmd: TestDirectiveUndoRedo = <TestDirectiveUndoRedo>directive;
+                engine.redo(dcmd.contentVersion);
+            } else if (directive.dtype == TestDirectiveType.undoLast) {
+                engine.undoLastLocalCommand();
+            } else if (directive.dtype == TestDirectiveType.redoLast) {
+                engine.redoLastLocalCommand();
+            }
         });
 
         // Check that the resulting (modified) document is what we expected.
@@ -85,5 +173,17 @@ allTests.forEach(spec => {
         let expected: any = afterJs;
         
         expect(actual).toEqual(expected);
+
+        // If there was only ONE command, then undo it and make sure
+        // that results in the original document.
+        if (directives.length == 1) {
+            engine.undoLastLocalCommand();
+
+            actualDoc = engine.getCurrentDocument();
+            actual = Library.writeNode(actualDoc);
+            expected = beforeJs;
+            
+            expect(actual).toEqual(expected);
+        }
     });
 });
