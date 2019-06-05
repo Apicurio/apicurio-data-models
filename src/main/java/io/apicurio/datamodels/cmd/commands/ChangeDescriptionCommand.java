@@ -27,14 +27,10 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class ChangeDescriptionCommand extends AbstractCommand {
     
-    public static final ChangeDescriptionCommand create(String newDescription) {
-        return new ChangeDescriptionCommand(newDescription);
-    }
-
     public String _newDescription;
 
     public String _oldDescription;
-    public Boolean _nullInfo;
+    public boolean _nullInfo;
     
     /**
      * Constructor.
@@ -72,7 +68,7 @@ public class ChangeDescriptionCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeDescriptionCommand] Reverting.");
-        if (this._nullInfo == Boolean.TRUE) {
+        if (this._nullInfo) {
             document.info = null;
         } else {
             document.info.description = this._oldDescription;

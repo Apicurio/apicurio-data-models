@@ -27,14 +27,10 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class ChangeVersionCommand extends AbstractCommand {
     
-    public static final ChangeVersionCommand create(String newVersion) {
-        return new ChangeVersionCommand(newVersion);
-    }
-
     public String _newVersion;
 
     public String _oldVersion;
-    public Boolean _nullInfo;
+    public boolean _nullInfo;
     
     /**
      * Constructor.
@@ -72,7 +68,7 @@ public class ChangeVersionCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeVersionCommand] Reverting.");
-        if (this._nullInfo == Boolean.TRUE) {
+        if (this._nullInfo) {
             document.info = null;
         } else {
             document.info.version = this._oldVersion;

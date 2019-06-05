@@ -27,14 +27,10 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class ChangeTitleCommand extends AbstractCommand {
     
-    public static final ChangeTitleCommand create(String newTitle) {
-        return new ChangeTitleCommand(newTitle);
-    }
-
     public String _newTitle;
 
     public String _oldTitle;
-    public Boolean _nullInfo;
+    public boolean _nullInfo;
     
     /**
      * Constructor.
@@ -72,7 +68,7 @@ public class ChangeTitleCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangeTitleCommand] Reverting.");
-        if (this._nullInfo == Boolean.TRUE) {
+        if (this._nullInfo) {
             document.info = null;
         } else {
             document.info.title = this._oldTitle;

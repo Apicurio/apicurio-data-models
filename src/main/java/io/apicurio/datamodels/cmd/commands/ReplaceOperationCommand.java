@@ -30,10 +30,6 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  */
 public class ReplaceOperationCommand extends ReplaceNodeCommand<OasOperation> {
     
-    public static final ReplaceOperationCommand create(OasOperation old, OasOperation replacement) {
-        return new ReplaceOperationCommand(old, replacement);
-    }
-
     public String _method;
     public String _path;
 

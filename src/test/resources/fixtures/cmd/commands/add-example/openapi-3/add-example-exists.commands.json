@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "AddExampleCommand_30",
+        "_parentPath": "/paths[/]/get/responses[200]/content[application/json]",
+        "_newExampleValue": "WILL-NOT-BE-ADDED",
+        "_newExampleName": "foo",
+        "_newExampleSummary": null,
+        "_newExampleDescription": null
+    }
+]

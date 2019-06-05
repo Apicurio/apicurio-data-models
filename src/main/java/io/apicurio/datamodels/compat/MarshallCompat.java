@@ -31,8 +31,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import io.apicurio.datamodels.cmd.ICommand;
+import io.apicurio.datamodels.cmd.commands.CommandFactory;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
-import io.apicurio.datamodels.cmd.util.CommandFactory;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.NodePath;
 

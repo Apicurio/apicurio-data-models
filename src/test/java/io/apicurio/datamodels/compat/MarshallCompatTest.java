@@ -23,6 +23,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
+import io.apicurio.datamodels.cmd.commands.CommandFactory;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -31,7 +32,7 @@ public class MarshallCompatTest {
     
     @Test
     public void testChangeVersion() throws Exception {
-        ICommand command = ChangeVersionCommand.create("1.0");
+        ICommand command = CommandFactory.createChangeVersionCommand("1.0");
         Object mc = MarshallCompat.marshallCommand(command);
         String output = JsonCompat.stringify(mc);
         System.out.println(output);

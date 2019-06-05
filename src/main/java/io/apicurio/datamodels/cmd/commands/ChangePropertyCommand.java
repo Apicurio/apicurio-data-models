@@ -18,7 +18,6 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
@@ -34,10 +33,6 @@ import io.apicurio.datamodels.core.models.NodePath;
  * @author eric.wittmann@gmail.com
  */
 public class ChangePropertyCommand<T> extends AbstractCommand {
-
-    public static <T> ICommand create(Node node, String property, T newValue) {
-        return new ChangePropertyCommand<T>(node, property, newValue);
-    }
 
     public NodePath _nodePath;
     public String _property;

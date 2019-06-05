@@ -44,6 +44,9 @@ public abstract class OasDocument extends Document implements ISecurityRequireme
     @Override
     public abstract OasSecurityRequirement createSecurityRequirement();
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#addSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     */
     @Override
     public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement) {
         if (this.security == null) {
@@ -51,6 +54,14 @@ public abstract class OasDocument extends Document implements ISecurityRequireme
         }
         this.security.add(securityRequirement);
         return securityRequirement;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#getSecurityRequirements()
+     */
+    @Override
+    public List<SecurityRequirement> getSecurityRequirements() {
+        return this.security;
     }
 
     /**
