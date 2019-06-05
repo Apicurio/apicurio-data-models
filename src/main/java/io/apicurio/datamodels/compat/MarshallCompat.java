@@ -17,18 +17,23 @@
 package io.apicurio.datamodels.compat;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.type.SimpleType;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.commands.CommandFactory;
@@ -134,6 +139,55 @@ public class MarshallCompat {
             // TODO Auto-generated method stub
             throw new IOException("Not yet implemented.");
         }
+    }
+    
+    public static class CommandListSerializer extends JsonSerializer<List<ICommand>> {
+
+        /**
+         * @see com.fasterxml.jackson.databind.JsonSerializer#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)
+         */
+        @Override
+        public void serialize(List<ICommand> value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException {
+            gen.writeStartArray(value.size());
+            try {
+                for (ICommand command : value) {
+                    Object c = MarshallCompat.marshallCommand(command);
+                    JsonSerializer<Object> cmdSerializer = serializers.findValueSerializer(c.getClass());
+                    cmdSerializer.serialize(c, gen, serializers);
+                }
+            } catch (JsonMappingException e) {
+                throw new IOException(e);
+            }
+            gen.writeEndArray();
+        }
+        
+    }
+    
+    public static class CommandListDeserializer extends JsonDeserializer<List<ICommand>> {
+
+        /**
+         * @see com.fasterxml.jackson.databind.JsonDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)
+         */
+        @Override
+        public List<ICommand> deserialize(JsonParser p, DeserializationContext ctxt)
+                throws IOException, JsonProcessingException {
+            List<ICommand> commands = new ArrayList<>();
+            boolean done = false;
+            while (!done) {
+                JsonToken token = p.nextToken();
+                if (token == JsonToken.END_ARRAY) {
+                    done = true;
+                } else {
+                    JsonDeserializer<Object> deserializer = ctxt.findNonContextualValueDeserializer(SimpleType.constructUnsafe(JsonNode.class));
+                    TreeNode value = (TreeNode) deserializer.deserialize(p, ctxt);
+                    ICommand cmd = MarshallCompat.unmarshallCommand(value);
+                    commands.add(cmd);
+                }
+            }
+            return commands;
+        }
+        
     }
 
 }

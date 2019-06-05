@@ -16,10 +16,13 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import java.util.List;
+
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
@@ -39,7 +42,10 @@ public class CommandFactory {
     @SuppressWarnings("rawtypes")
     public static ICommand create(String cmdType) {
         switch (cmdType) {
-            
+
+            case "AggregateCommand": 
+            { return new AggregateCommand(); }
+
             /** Add Commands **/
             
             case "AddSchemaDefinitionCommand_20": 
@@ -73,6 +79,10 @@ public class CommandFactory {
             case "ChangeVersionCommand_30":
             case "ChangeVersionCommand":
             { return new ChangeVersionCommand(); }
+            case "ChangeContactCommand_20": 
+            case "ChangeContactCommand_30":
+            case "ChangeContactCommand":
+            { return new ChangeContactCommand(); }
             
             /** Replace Commands **/
 
@@ -81,8 +91,18 @@ public class CommandFactory {
             case "ReplaceOperationCommand":
             { return new ReplaceOperationCommand(); }
             
+            /** Delete Commands **/
+            case "DeleteContactCommand_20": 
+            case "DeleteContactCommand_30":
+            case "DeleteContactCommand":
+            { return new DeleteContactCommand(); }
+                        
         }
         return null;
+    }
+    
+    public static final AggregateCommand createAggregateCommand(String name, Object info, List<ICommand> commands) {
+        return new AggregateCommand(name, info, commands);
     }
 
     /* ***  Add Commands  *** */
@@ -129,11 +149,21 @@ public class CommandFactory {
     public static final ChangeVersionCommand createChangeVersionCommand(String newVersion) {
         return new ChangeVersionCommand(newVersion);
     }
+    
+    public static final ChangeContactCommand createChangeContactCommand(String name, String email, String url) {
+        return new ChangeContactCommand(name, email, url);
+    }
 
     /* ***  Replace Commands  *** */
 
     public static final ReplaceOperationCommand createReplaceOperationCommand(OasOperation old, OasOperation replacement) {
         return new ReplaceOperationCommand(old, replacement);
+    }
+
+    /* ***  Delete Commands  *** */
+    
+    public static final DeleteContactCommand createDeleteContactCommand(Info info) {
+        return new DeleteContactCommand(info);
     }
 
 }
