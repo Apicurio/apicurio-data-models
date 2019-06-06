@@ -37,7 +37,10 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.commands.CommandFactory;
+import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
+import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.NodePath;
 
@@ -51,9 +54,13 @@ public class MarshallCompat {
     static {
         SimpleModule module = new SimpleModule();
         module.addSerializer(NodePath.class, new NodePathSerializer());
-        module.addSerializer(SimplifiedType.class, new SimplifiedTypeSerializer());
+        module.addSerializer(SimplifiedType.class, new SimplifiedTypeSerializer<SimplifiedType>(SerializerFlavor.base));
+        module.addSerializer(SimplifiedParameterType.class, new SimplifiedTypeSerializer<SimplifiedParameterType>(SerializerFlavor.parameter));
+        module.addSerializer(SimplifiedPropertyType.class, new SimplifiedTypeSerializer<SimplifiedPropertyType>(SerializerFlavor.property));
         module.addDeserializer(NodePath.class, new NodePathDeserializer());
-        module.addDeserializer(SimplifiedType.class, new SimplifiedTypeDeserializer());
+        module.addDeserializer(SimplifiedType.class, new SimplifiedTypeDeserializer<SimplifiedType>(SerializerFlavor.base));
+        module.addDeserializer(SimplifiedParameterType.class, new SimplifiedTypeDeserializer<SimplifiedParameterType>(SerializerFlavor.parameter));
+        module.addDeserializer(SimplifiedPropertyType.class, new SimplifiedTypeDeserializer<SimplifiedPropertyType>(SerializerFlavor.property ));
         mapper.registerModule(module);
     }
 
@@ -88,6 +95,113 @@ public class MarshallCompat {
         }
     }
 
+
+    /**
+     * Marshalls the given simple type into a JS object.
+     * @param sType
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static Object marshallSimplifiedType(SimplifiedType sType) {
+        if (ModelUtils.isNullOrUndefined(sType)) {
+            return null;
+        }
+        Object obj = JsonCompat.objectNode();
+        JsonCompat.setPropertyString(obj, Constants.PROP_TYPE, sType.type);
+        // TODO convert from List<Object> to List<String> here rather than coercing it
+        JsonCompat.setPropertyStringArray(obj, Constants.PROP_ENUM, (List) sType.enum_);
+        JsonCompat.setProperty(obj, Constants.PROP_OF, marshallSimplifiedType(sType.of));
+        JsonCompat.setPropertyString(obj, Constants.PROP_AS, sType.as);
+        return obj;
+    }
+
+    /**
+     * Unmarshalls a simple type back into a JS object.
+     * @param from
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static SimplifiedType unmarshallSimplifiedType(Object from) {
+        if (ModelUtils.isNullOrUndefined(from)) {
+            return null;
+        }
+        SimplifiedType type = new SimplifiedType();
+        type.type = JsonCompat.getPropertyString(from, Constants.PROP_TYPE);
+        // TODO convert from List<String> to List<Object> here rather than coercing it
+        type.enum_ = (List) JsonCompat.getPropertyStringArray(from, Constants.PROP_ENUM);
+        type.of = MarshallCompat.unmarshallSimplifiedType(JsonCompat.getProperty(from, Constants.PROP_OF));
+        type.as = JsonCompat.getPropertyString(from, Constants.PROP_AS);
+        return type;
+    }
+
+    /**
+     * Marshalls the given simple type into a JS object.
+     * @param sType
+     */
+    public static Object marshallSimplifiedParameterType(SimplifiedParameterType sType) {
+        if (ModelUtils.isNullOrUndefined(sType)) {
+            return null;
+        }
+        Object obj = marshallSimplifiedType(sType);
+        JsonCompat.setPropertyBoolean(obj, Constants.PROP_REQUIRED, sType.required);
+        return obj;
+    }
+
+    /**
+     * Unmarshalls a simple parameter type back into a JS object.
+     * @param from
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static SimplifiedParameterType unmarshallSimplifiedParameterType(Object from) {
+        if (ModelUtils.isNullOrUndefined(from)) {
+            return null;
+        }
+        SimplifiedParameterType type = new SimplifiedParameterType();
+        type.type = JsonCompat.getPropertyString(from, Constants.PROP_TYPE);
+        // TODO convert from List<String> to List<Object> here rather than coercing it
+        type.enum_ = (List) JsonCompat.getPropertyStringArray(from, Constants.PROP_ENUM);
+        type.of = MarshallCompat.unmarshallSimplifiedType(JsonCompat.getProperty(from, Constants.PROP_OF));
+        type.as = JsonCompat.getPropertyString(from, Constants.PROP_AS);
+        Boolean req = JsonCompat.getPropertyBoolean(from, Constants.PROP_REQUIRED);
+        if (req != null) {
+            type.required = req;
+        }
+        return type;
+    }
+
+    /**
+     * Marshalls the given simple type into a JS object.
+     * @param sType
+     */
+    public static Object marshallSimplifiedPropertyType(SimplifiedPropertyType sType) {
+        if (ModelUtils.isNullOrUndefined(sType)) {
+            return null;
+        }
+        Object obj = marshallSimplifiedType(sType);
+        JsonCompat.setPropertyBoolean(obj, Constants.PROP_REQUIRED, sType.required);
+        return obj;
+    }
+
+    /**
+     * Unmarshalls a simple parameter type back into a JS object.
+     * @param from
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static SimplifiedPropertyType unmarshallSimplifiedPropertyType(Object from) {
+        if (ModelUtils.isNullOrUndefined(from)) {
+            return null;
+        }
+        SimplifiedPropertyType type = new SimplifiedPropertyType();
+        type.type = JsonCompat.getPropertyString(from, Constants.PROP_TYPE);
+        // TODO convert from List<String> to List<Object> here rather than coercing it
+        type.enum_ = (List) JsonCompat.getPropertyStringArray(from, Constants.PROP_ENUM);
+        type.of = MarshallCompat.unmarshallSimplifiedType(JsonCompat.getProperty(from, Constants.PROP_OF));
+        type.as = JsonCompat.getPropertyString(from, Constants.PROP_AS);
+        Boolean req = JsonCompat.getPropertyBoolean(from, Constants.PROP_REQUIRED);
+        if (req != null) {
+            type.required = req;
+        }
+        return type;
+    }
+    
     /* Some custom serializers/deserializers for marshalling and unmarshalling commands using jackson */
     
     public static class NodePathSerializer extends JsonSerializer<NodePath> {
@@ -117,27 +231,67 @@ public class MarshallCompat {
         }
     }
     
-    public static class SimplifiedTypeSerializer extends JsonSerializer<SimplifiedType> {
+    public static enum SerializerFlavor {
+        base, parameter, property
+    }
+    
+    public static class SimplifiedTypeSerializer<T extends SimplifiedType> extends JsonSerializer<T> {
+
+        private SerializerFlavor flavor;
+        
+        /**
+         * Constructor.
+         */
+        public SimplifiedTypeSerializer(SerializerFlavor flavor) {
+            this.flavor = flavor;
+        }
+        
         /**
          * @see com.fasterxml.jackson.databind.JsonSerializer#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)
          */
         @Override
-        public void serialize(SimplifiedType value, JsonGenerator gen, SerializerProvider serializers)
+        public void serialize(T value, JsonGenerator gen, SerializerProvider serializers)
                 throws IOException {
-            // TODO Auto-generated method stub
-            throw new IOException("Not yet implemented.");
+            Object c;
+            if (this.flavor == SerializerFlavor.parameter) {
+                c = MarshallCompat.marshallSimplifiedParameterType((SimplifiedParameterType)value);
+            } else if (this.flavor == SerializerFlavor.property) {
+                c = MarshallCompat.marshallSimplifiedPropertyType((SimplifiedPropertyType)value);
+            } else {
+                c = MarshallCompat.marshallSimplifiedType(value);
+            }
+            JsonSerializer<Object> cmdSerializer = serializers.findValueSerializer(c.getClass());
+            cmdSerializer.serialize(c, gen, serializers);
         }
     }
     
-    public static class SimplifiedTypeDeserializer extends JsonDeserializer<SimplifiedType> {
+    public static class SimplifiedTypeDeserializer<T extends SimplifiedType> extends JsonDeserializer<T> {
+
+        private SerializerFlavor flavor;
+        
+        /**
+         * Constructor.
+         */
+        public SimplifiedTypeDeserializer(SerializerFlavor flavor) {
+            this.flavor = flavor;
+        }
+        
         /**
          * @see com.fasterxml.jackson.databind.JsonDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)
          */
+        @SuppressWarnings("unchecked")
         @Override
-        public SimplifiedType deserialize(JsonParser p, DeserializationContext ctxt)
+        public T deserialize(JsonParser p, DeserializationContext ctxt)
                 throws IOException, JsonProcessingException {
-            // TODO Auto-generated method stub
-            throw new IOException("Not yet implemented.");
+            JsonDeserializer<Object> deserializer = ctxt.findNonContextualValueDeserializer(SimpleType.constructUnsafe(JsonNode.class));
+            TreeNode value = (TreeNode) deserializer.deserialize(p, ctxt);
+            if (this.flavor == SerializerFlavor.property) {
+                return (T) MarshallCompat.unmarshallSimplifiedPropertyType(value);
+            } else if (this.flavor == SerializerFlavor.parameter) {
+                return (T) MarshallCompat.unmarshallSimplifiedParameterType(value);
+            } else {
+                return (T) MarshallCompat.unmarshallSimplifiedType(value);
+            }
         }
     }
     

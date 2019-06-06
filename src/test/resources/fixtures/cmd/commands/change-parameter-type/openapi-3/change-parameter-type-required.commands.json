@@ -1,0 +1,13 @@
+[
+	{
+		"__type": "ChangeParameterTypeCommand_30",
+		"_paramPath": "/paths[/foo]/get/parameters[1]",
+		"_newType": {
+			"type": "array",
+			"of": {
+				"type": "string"
+			},
+			"required": true
+		}
+	}
+]

@@ -53,6 +53,6 @@ public class SimplifiedParameterType extends SimplifiedType {
         return rval;
     }
 
-    public boolean required;
+    public Boolean required;
 
 }

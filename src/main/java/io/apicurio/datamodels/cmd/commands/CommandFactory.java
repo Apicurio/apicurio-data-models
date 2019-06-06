@@ -19,10 +19,13 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import io.apicurio.datamodels.cmd.ICommand;
+import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
+import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
@@ -83,7 +86,21 @@ public class CommandFactory {
             case "ChangeContactCommand_30":
             case "ChangeContactCommand":
             { return new ChangeContactCommand(); }
-            
+            case "ChangeLicenseCommand_20": 
+            case "ChangeLicenseCommand_30":
+            case "ChangeLicenseCommand":
+            { return new ChangeLicenseCommand(); }
+            case "ChangeMediaTypeTypeCommand":
+            { return new ChangeMediaTypeTypeCommand(); }
+            case "ChangeParameterTypeCommand_20": 
+            { return new ChangeParameterTypeCommand_20(); }
+            case "ChangeParameterDefinitionTypeCommand_20": 
+            { return new ChangeParameterDefinitionTypeCommand_20(); }
+            case "ChangeParameterTypeCommand_30":
+            { return new ChangeParameterTypeCommand_30(); }
+            case "ChangeParameterDefinitionTypeCommand_30":
+            { return new ChangeParameterDefinitionTypeCommand_30(); }
+
             /** Replace Commands **/
 
             case "ReplaceOperationCommand_20": 
@@ -152,6 +169,32 @@ public class CommandFactory {
     
     public static final ChangeContactCommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
+    }
+    
+    public static final ChangeMediaTypeTypeCommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, SimplifiedType newType) {
+        return new ChangeMediaTypeTypeCommand(mediaType, newType);
+    }
+
+    public static final ChangeParameterTypeCommand createChangeParameterTypeCommand(DocumentType docType, 
+            Parameter parameter, SimplifiedParameterType newType) {
+        if (docType == DocumentType.openapi2) {
+            return new ChangeParameterTypeCommand_20(parameter, newType);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new ChangeParameterTypeCommand_30(parameter, newType);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
+    public static final ChangeParameterTypeCommand createChangeParameterDefinitionTypeCommand(DocumentType docType, 
+            Parameter parameter, SimplifiedParameterType newType) {
+        if (docType == DocumentType.openapi2) {
+            return new ChangeParameterDefinitionTypeCommand_20(parameter, newType);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new ChangeParameterDefinitionTypeCommand_30(parameter, newType);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
     }
 
     /* ***  Replace Commands  *** */
