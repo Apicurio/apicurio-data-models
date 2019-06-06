@@ -1,0 +1,18 @@
+[{
+    "__type": "ReplaceSecurityRequirementCommand",
+    "_parentPath": "/",
+    "_oldRequirement": {
+        "BasicAuth": [],
+        "MyOAuth": [
+            "read",
+            "write"
+        ]
+    },
+    "_newRequirement": {
+        "BasicAuth": [],
+        "MyOAuth": [
+            "read",
+            "admin"
+        ]
+    }
+}]

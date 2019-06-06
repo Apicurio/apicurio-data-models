@@ -1,0 +1,10 @@
+[{
+    "__type": "NewSchemaDefinitionCommand_30",
+    "_newDefinitionName": "NewType",
+    "_newDefinitionExample": {
+        "name": "Jason Bourne",
+        "age": 46,
+        "email": "jbourne@example.com",
+        "dob": "1971-04-15"
+    }
+}]

@@ -1,0 +1,7 @@
+[
+	{
+		"__type": "DeleteParameterCommand_20",
+		"_parameterPath": "/paths[/pet/{petId}]/post/parameters[2]",
+		"_parentPath": "/paths[/pet/{petId}]/post"
+	}
+]

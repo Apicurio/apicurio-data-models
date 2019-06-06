@@ -1,0 +1,20 @@
+[{
+    "__type": "ReplaceSchemaDefinitionCommand_30",
+    "_nodePath": "/components/schemas[MySchema2]",
+    "_new": {
+        "required": [
+            "name"
+        ],
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "dob": {
+                "format": "int32",
+                "type": "integer"
+            }
+        }
+    },
+    "_defName": "MySchema2"
+}]

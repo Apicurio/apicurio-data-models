@@ -1,0 +1,4 @@
+[{
+    "__type": "NewRequestBodyCommand_30",
+    "_operationPath": "/paths[/foo]/get"
+}]

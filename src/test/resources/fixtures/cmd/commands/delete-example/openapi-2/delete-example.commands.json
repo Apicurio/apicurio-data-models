@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteExampleCommand_20",
+    "_exampleContentType": "application/json",
+    "_responsePath": "/paths[/pet/findByStatus]/get/responses[200]"
+}]

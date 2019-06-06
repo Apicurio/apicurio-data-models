@@ -1,0 +1,16 @@
+[{
+    "__type": "SetExampleCommand_20",
+    "_parentPath": "/paths[/pet/{petId}]/get/responses[200]",
+    "_newExample": {
+        "property1": "foo",
+        "property2": "bar",
+        "property3": 17,
+        "property4": true,
+        "property5": {
+            "sub1": "hello",
+            "sub2": "world"
+        }
+    },
+    "_nullExamples": false,
+    "_newContentType": "application/json"
+}]

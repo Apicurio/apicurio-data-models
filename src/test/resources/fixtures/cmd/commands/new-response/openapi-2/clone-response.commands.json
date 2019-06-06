@@ -1,0 +1,17 @@
+[{
+    "__type": "NewResponseCommand_20",
+    "_operationPath": "/paths[/pets]/get",
+    "_statusCode": "204",
+    "sourceResponse": {
+        "description": "successful operation",
+        "schema": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Pet"
+            }
+        },
+        "examples": {
+            "application/json": []
+        }
+    }
+}]
