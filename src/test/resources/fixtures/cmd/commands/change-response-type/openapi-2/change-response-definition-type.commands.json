@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "ChangeResponseDefinitionTypeCommand_20",
+        "_responsePath": "/responses[ArrayComplexType]",
+        "_newType": {
+            "type": "string",
+            "as": "date-time"
+        }
+    }
+]

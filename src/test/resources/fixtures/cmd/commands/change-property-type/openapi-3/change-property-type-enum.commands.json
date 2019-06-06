@@ -1,0 +1,11 @@
+[
+    {
+        "__type": "ChangePropertyTypeCommand_30",
+        "_propPath": "/components/schemas[MySchema1]/properties[name]",
+        "_propName": "name",
+        "_newType": {
+            "type": "string",
+            "enum" : [ "option1", "option2", "option3", "option4" ]
+        }
+    }
+]

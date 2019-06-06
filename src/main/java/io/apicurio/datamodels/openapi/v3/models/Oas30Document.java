@@ -19,10 +19,13 @@ package io.apicurio.datamodels.openapi.v3.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -32,10 +35,10 @@ import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
  * Models the root document of the OpenAPI 2.0 (aka Swagger) data model.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Document extends OasDocument {
+public class Oas30Document extends OasDocument implements IServerParent {
 
     public String openapi;
-    public List<Oas30Server> servers;
+    public List<Server> servers;
     public Oas30Components components;
     
     /**
@@ -109,9 +112,10 @@ public class Oas30Document extends OasDocument {
     }
 
     /**
-     * Creates an OAS 3.0 Server object.
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#createServer()
      */
-    public Oas30Server createServer() {
+    @Override
+    public Server createServer() {
         Oas30Server rval = new Oas30Server();
         rval._ownerDocument = this;
         rval._parent = this;
@@ -123,8 +127,8 @@ public class Oas30Document extends OasDocument {
      * @param url
      * @param description
      */
-    public Oas30Server addServer(String url, String description) {
-        Oas30Server server = this.createServer();
+    public Server addServer(String url, String description) {
+        Server server = this.createServer();
         server.url = url;
         server.description = description;
         if (this.servers == null) {
@@ -142,6 +146,40 @@ public class Oas30Document extends OasDocument {
         rval._ownerDocument = this;
         rval._parent = this;
         return rval;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#addServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void addServer(Server server) {
+        if (this.servers == null) {
+            this.servers = new ArrayList<>();
+        }
+        this.servers.add(server);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#getServer(java.lang.String)
+     */
+    @Override
+    public Server getServer(String url) {
+        if (this.servers != null) {
+            for (Server server : this.servers) {
+                if (NodeCompat.equals(server.url, url)) {
+                    return server;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#getServers()
+     */
+    @Override
+    public List<Server> getServers() {
+        return this.servers;
     }
 
 }

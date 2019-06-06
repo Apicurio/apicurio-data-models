@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.compat.NodeCompat;
+import io.apicurio.datamodels.core.models.common.IServerParent;
+import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -28,12 +30,12 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * Models an OpenAPI 3.0.x path item.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30PathItem extends OasPathItem {
+public class Oas30PathItem extends OasPathItem implements IServerParent {
     
     public String summary;
     public String description;
     public Oas30Operation trace;
-    public List<Oas30Server> servers;
+    public List<Server> servers;
 
     /**
      * Constructor.
@@ -66,9 +68,10 @@ public class Oas30PathItem extends OasPathItem {
     }
 
     /**
-     * Creates an OAS 3.0 Server object.
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#createServer()
      */
-    public Oas30Server createServer() {
+    @Override
+    public Server createServer() {
         Oas30Server rval = new Oas30Server();
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
@@ -89,8 +92,8 @@ public class Oas30PathItem extends OasPathItem {
     /**
      * Gets the servers.
      */
-    public List<Oas30Server> getServers() {
-        List<Oas30Server> rval = new ArrayList<>();
+    public List<Server> getServers() {
+        List<Server> rval = new ArrayList<>();
         if (this.servers != null) {
             rval.addAll(this.servers);
         }
@@ -107,6 +110,32 @@ public class Oas30PathItem extends OasPathItem {
         } else {
             super.setOperation(operation);
         }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#addServer(io.apicurio.datamodels.core.models.common.Server)
+     */
+    @Override
+    public void addServer(Server server) {
+        if (this.servers == null) {
+            this.servers = new ArrayList<>();
+        }
+        this.servers.add((Oas30Server) server);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#getServer(java.lang.String)
+     */
+    @Override
+    public Server getServer(String url) {
+        if (this.servers != null) {
+            for (Server server : this.servers) {
+                if (NodeCompat.equals(server.url, url)) {
+                    return server;
+                }
+            }
+        }
+        return null;
     }
 
 }

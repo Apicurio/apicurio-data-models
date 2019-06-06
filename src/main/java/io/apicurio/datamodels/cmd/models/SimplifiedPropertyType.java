@@ -50,6 +50,6 @@ public class SimplifiedPropertyType extends SimplifiedType {
         return rval;
     }
 
-    public boolean required;
+    public Boolean required;
 
 }

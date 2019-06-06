@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
+import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
@@ -27,7 +28,12 @@ import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasOperation;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
+import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 
 /**
@@ -100,7 +106,22 @@ public class CommandFactory {
             { return new ChangeParameterTypeCommand_30(); }
             case "ChangeParameterDefinitionTypeCommand_30":
             { return new ChangeParameterDefinitionTypeCommand_30(); }
+            case "ChangePropertyTypeCommand":
+            case "ChangePropertyTypeCommand_20":
+            case "ChangePropertyTypeCommand_30":
+            { return new ChangePropertyTypeCommand(); }
+            case "ChangeResponseTypeCommand":
+            case "ChangeResponseTypeCommand_20":
+            case "ChangeResponseDefinitionTypeCommand_20":
+            { return new ChangeResponseTypeCommand(); }
+            case "ChangeSecuritySchemeCommand_20":
+            { return new ChangeSecuritySchemeCommand_20(); }
+            case "ChangeSecuritySchemeCommand_30":
+            { return new ChangeSecuritySchemeCommand_30(); }
+            case "ChangeServerCommand":
+            { return new ChangeServerCommand(); }
 
+            
             /** Replace Commands **/
 
             case "ReplaceOperationCommand_20": 
@@ -129,7 +150,8 @@ public class CommandFactory {
         return new AddExampleCommand_30(mediaType, example, exampleName, exampleSummary, exampleDescription);
     }
 
-    public static final AddSchemaDefinitionCommand createAddSchemaDefinitionCommand(DocumentType docType, String definitionName, Object from) {
+    public static final AddSchemaDefinitionCommand createAddSchemaDefinitionCommand(DocumentType docType, 
+            String definitionName, Object from) {
         if (docType == DocumentType.openapi2) {
             return new AddSchemaDefinitionCommand_20(definitionName, from);
         }
@@ -143,8 +165,8 @@ public class CommandFactory {
         return new AddPathItemCommand(pathItemName, from);
     }
 
-    public static final AddSecurityRequirementCommand createAddSecurityRequirementCommand(ISecurityRequirementParent parent,
-            SecurityRequirement requirement) {
+    public static final AddSecurityRequirementCommand createAddSecurityRequirementCommand(
+            ISecurityRequirementParent parent, SecurityRequirement requirement) {
         return new AddSecurityRequirementCommand(parent, requirement);
     }
 
@@ -171,7 +193,8 @@ public class CommandFactory {
         return new ChangeContactCommand(name, email, url);
     }
     
-    public static final ChangeMediaTypeTypeCommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, SimplifiedType newType) {
+    public static final ChangeMediaTypeTypeCommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 
+            SimplifiedType newType) {
         return new ChangeMediaTypeTypeCommand(mediaType, newType);
     }
 
@@ -196,10 +219,40 @@ public class CommandFactory {
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
+    
+    public static final ChangePropertyTypeCommand createChangePropertyTypeCommand(IOasPropertySchema property, 
+            SimplifiedPropertyType newType) {
+        return new ChangePropertyTypeCommand(property, newType);
+    }
+    
+    public static final ChangeResponseTypeCommand createChangeResponseTypeCommand(Oas20Response response, 
+            SimplifiedType newType) {
+        return new ChangeResponseTypeCommand(response, newType);
+    }
+
+    public static final ChangeResponseTypeCommand createChangeResponseDefinitionTypeCommand(
+            Oas20ResponseDefinition response, SimplifiedType newType) {
+        return new ChangeResponseTypeCommand(response, newType);
+    }
+    
+    public static final ChangeSecuritySchemeCommand createChangeSecuritySchemeCommand(DocumentType docType, 
+            SecurityScheme scheme) {
+        if (docType == DocumentType.openapi2) {
+            return new ChangeSecuritySchemeCommand_20(scheme);
+        } else if (docType == DocumentType.openapi3) {
+            return new ChangeSecuritySchemeCommand_30(scheme);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final ChangeServerCommand createChangeServerCommand(Server server) {
+        return new ChangeServerCommand(server);
+    }
 
     /* ***  Replace Commands  *** */
 
-    public static final ReplaceOperationCommand createReplaceOperationCommand(OasOperation old, OasOperation replacement) {
+    public static final ReplaceOperationCommand createReplaceOperationCommand(OasOperation old, 
+            OasOperation replacement) {
         return new ReplaceOperationCommand(old, replacement);
     }
 

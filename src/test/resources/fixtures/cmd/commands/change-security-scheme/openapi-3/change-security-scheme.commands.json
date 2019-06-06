@@ -1,0 +1,11 @@
+[
+    {
+        "__type": "ChangeSecuritySchemeCommand_30",
+        "_schemeName": "ImplicitOAuth2",
+        "_schemeObj": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+    }
+]

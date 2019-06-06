@@ -27,6 +27,7 @@ import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.io.OasDataModelReader;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -80,9 +81,9 @@ public class Oas30DataModelReader extends OasDataModelReader {
         doc.openapi = openapi;
 
         if (servers != null) {
-            List<Oas30Server> serverModels = new ArrayList<>();
+            List<Server> serverModels = new ArrayList<>();
             servers.forEach(server -> {
-                Oas30Server serverModel = doc.createServer();
+                Server serverModel = doc.createServer();
                 this.readServer(server, serverModel);
                 serverModels.add(serverModel);
             });
@@ -242,7 +243,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         
         if (servers != null) {
             servers.forEach(server -> {
-                Oas30Server serverModel = pi.createServer();
+                Oas30Server serverModel = (Oas30Server) pi.createServer();
                 this.readServer(server, serverModel);
                 pi.addServer(serverModel);
             });
@@ -376,7 +377,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         
         if (servers != null) {
             servers.forEach(server -> {
-                Oas30Server serverModel = operation.createServer();
+                Oas30Server serverModel = (Oas30Server) operation.createServer();
                 this.readServer(server, serverModel);
                 operation.addServer(serverModel);
             });

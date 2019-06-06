@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.cmd.util.SimplifiedTypeUtil;
