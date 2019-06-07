@@ -22,16 +22,21 @@ import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
+import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.openapi.models.IOasParameterParent;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasOperation;
+import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
@@ -120,7 +125,6 @@ public class CommandFactory {
             { return new ChangeSecuritySchemeCommand_30(); }
             case "ChangeServerCommand":
             { return new ChangeServerCommand(); }
-
             
             /** Replace Commands **/
 
@@ -134,7 +138,32 @@ public class CommandFactory {
             case "DeleteContactCommand_30":
             case "DeleteContactCommand":
             { return new DeleteContactCommand(); }
-                        
+            case "DeleteAllExamplesCommand_30":
+            case "DeleteAllExamplesCommand":
+            { return new DeleteAllExamplesCommand(); }
+            case "DeleteAllOperationsCommand":
+            { return new DeleteAllOperationsCommand(); }
+            case "DeleteAllParametersCommand_20":
+            case "DeleteAllParametersCommand_30":
+            case "DeleteAllParametersCommand":
+            { return new DeleteAllParametersCommand(); }
+            case "DeleteAllPropertiesCommand_20":
+            case "DeleteAllPropertiesCommand_30":
+            case "DeleteAllPropertiesCommand":
+            { return new DeleteAllPropertiesCommand(); }
+            case "DeleteAllResponsesCommand_20":
+            case "DeleteAllResponsesCommand_30":
+            case "DeleteAllResponsesCommand":
+            { return new DeleteAllResponsesCommand(); }
+            case "DeleteAllSecurityRequirementsCommand":
+            { return new DeleteAllSecurityRequirementsCommand(); }
+            case "DeleteAllSecuritySchemesCommand":
+            { return new DeleteAllSecuritySchemesCommand(); }
+            case "DeleteAllServersCommand":
+            { return new DeleteAllServersCommand(); }
+            case "DeleteAllTagsCommand":
+            { return new DeleteAllTagsCommand(); }
+            
         }
         return null;
     }
@@ -260,6 +289,44 @@ public class CommandFactory {
     
     public static final DeleteContactCommand createDeleteContactCommand(Info info) {
         return new DeleteContactCommand(info);
+    }
+    
+    public static final DeleteAllExamplesCommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
+        return new DeleteAllExamplesCommand(mediaType);
+    }
+    
+    public static final DeleteAllOperationsCommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
+        return new DeleteAllOperationsCommand(pathItem);
+    }
+    
+    public static final DeleteAllParametersCommand createDeleteAllParametersCommand(IOasParameterParent parent, 
+            String type) {
+        return new DeleteAllParametersCommand(parent, type);
+    }
+
+    public static final DeleteAllPropertiesCommand createDeleteAllPropertiesCommand(OasSchema schema) {
+        return new DeleteAllPropertiesCommand(schema);
+    }
+    
+    public static final DeleteAllResponsesCommand createDeleteAllResponsesCommand(OasOperation operation) {
+        return new DeleteAllResponsesCommand(Constants.PROP_RESPONSES, operation);
+    }
+    
+    public static final DeleteAllSecurityRequirementsCommand createDeleteAllSecurityRequirementsCommand(
+            ISecurityRequirementParent parent) {
+        return new DeleteAllSecurityRequirementsCommand(parent);
+    }
+    
+    public static final DeleteAllSecuritySchemesCommand createDeleteAllSecuritySchemesCommand() {
+        return new DeleteAllSecuritySchemesCommand();
+    }
+    
+    public static final DeleteAllServersCommand createDeleteAllServersCommand(IServerParent parent) {
+        return new DeleteAllServersCommand(parent);
+    }
+    
+    public static final DeleteAllTagsCommand createDeleteAllTagsCommand() {
+        return new DeleteAllTagsCommand();
     }
 
 }

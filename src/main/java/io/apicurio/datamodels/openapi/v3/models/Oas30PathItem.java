@@ -93,11 +93,7 @@ public class Oas30PathItem extends OasPathItem implements IServerParent {
      * Gets the servers.
      */
     public List<Server> getServers() {
-        List<Server> rval = new ArrayList<>();
-        if (this.servers != null) {
-            rval.addAll(this.servers);
-        }
-        return rval;
+        return this.servers;
     }
     
     /**

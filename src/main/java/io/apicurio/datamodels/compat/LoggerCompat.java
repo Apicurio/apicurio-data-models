@@ -54,4 +54,8 @@ public class LoggerCompat {
         LoggerCompat.output("WARN", System.err, message, args);
     }
 
+    public static void debug(String message, Object ...args) {
+        LoggerCompat.output("DEBUG", System.out, message, args);
+    }
+
 }
