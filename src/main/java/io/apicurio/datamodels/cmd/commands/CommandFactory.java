@@ -38,11 +38,13 @@ import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
+import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 
 /**
  * This factory is used to create an instance of {@link ICommand} given a "type" that was previously
@@ -186,7 +188,25 @@ public class CommandFactory {
             case "DeleteParameterCommand_20":
             case "DeleteParameterCommand_30":
             { return new DeleteParameterCommand(); }
-            
+            case "DeletePathCommand":
+            case "DeletePathCommand_20":
+            case "DeletePathCommand_30":
+            { return new DeletePathCommand(); }
+            case "DeletePropertyCommand":
+            case "DeletePropertyCommand_20":
+            case "DeletePropertyCommand_30":
+            { return new DeletePropertyCommand(); }
+            case "DeleteRequestBodyCommand":
+            case "DeleteRequestBodyCommand_30":
+            { return new DeleteRequestBodyCommand(); }
+            case "DeleteResponseCommand":
+            case "DeleteResponseCommand_20":
+            case "DeleteResponseCommand_30":
+            { return new DeleteResponseCommand(); }
+            case "DeleteSchemaDefinitionCommand_20":
+            { return new DeleteSchemaDefinitionCommand_20(); }
+            case "DeleteSchemaDefinitionCommand_30":
+            { return new DeleteSchemaDefinitionCommand_30(); }
         }
         return null;
     }
@@ -378,6 +398,33 @@ public class CommandFactory {
     
     public static final DeleteParameterCommand createDeleteParameterCommand(OasParameter parameter) {
         return new DeleteParameterCommand(parameter);
+    }
+    
+    public static final DeletePathCommand createDeletePathCommand(String path) {
+        return new DeletePathCommand(path);
+    }
+    
+    public static final DeletePropertyCommand createDeletePropertyCommand(IOasPropertySchema property) {
+        return new DeletePropertyCommand(property);
+    }
+    
+    public static final DeleteRequestBodyCommand createDeleteRequestBodyCommand(Oas30Operation operation) {
+        return new DeleteRequestBodyCommand(operation);
+    }
+    
+    public static final DeleteResponseCommand createDeleteResponseCommand(OasResponse response) {
+        return new DeleteResponseCommand(response);
+    }
+    
+    public static final DeleteSchemaDefinitionCommand createDeleteSchemaDefinitionCommand(
+            DocumentType docType, String definitionName) {
+        if (docType == DocumentType.openapi2) {
+            return new DeleteSchemaDefinitionCommand_20(definitionName);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new DeleteSchemaDefinitionCommand_30(definitionName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
     }
 
 }
