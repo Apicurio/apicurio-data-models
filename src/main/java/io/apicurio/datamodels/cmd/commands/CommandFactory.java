@@ -24,6 +24,7 @@ import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
@@ -35,10 +36,12 @@ import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.models.IOasParameterParent;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasOperation;
+import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 
 /**
@@ -163,6 +166,26 @@ public class CommandFactory {
             { return new DeleteAllServersCommand(); }
             case "DeleteAllTagsCommand":
             { return new DeleteAllTagsCommand(); }
+            case "DeleteExampleCommand_20":
+            { return new DeleteExampleCommand_20(); }
+            case "DeleteExampleCommand_30":
+            { return new DeleteExampleCommand_30(); }
+            case "DeleteExtensionCommand":
+            { return new DeleteExtensionCommand(); }
+            case "DeleteLicenseCommand":
+            case "DeleteLicenseCommand_20":
+            case "DeleteLicenseCommand_30":
+            { return new DeleteLicenseCommand(); }
+            case "DeleteMediaTypeCommand":
+            { return new DeleteMediaTypeCommand(); }
+            case "DeleteOperationCommand":
+            case "DeleteOperationCommand_20":
+            case "DeleteOperationCommand_30":
+            { return new DeleteOperationCommand(); }
+            case "DeleteParameterCommand":
+            case "DeleteParameterCommand_20":
+            case "DeleteParameterCommand_30":
+            { return new DeleteParameterCommand(); }
             
         }
         return null;
@@ -327,6 +350,34 @@ public class CommandFactory {
     
     public static final DeleteAllTagsCommand createDeleteAllTagsCommand() {
         return new DeleteAllTagsCommand();
+    }
+    
+    public static final DeleteExampleCommand_20 createDelete20ExampleCommand(Oas20Response response, String contentType) {
+        return new DeleteExampleCommand_20(response, contentType);
+    }
+
+    public static final DeleteExampleCommand_30 createDeleteExampleCommand(Oas30Example example) {
+        return new DeleteExampleCommand_30(example);
+    }
+    
+    public static final DeleteExtensionCommand createDeleteExtensionCommand(Extension extension) {
+        return new DeleteExtensionCommand(extension);
+    }
+    
+    public static final DeleteLicenseCommand createDeleteLicenseCommand(Info info) {
+        return new DeleteLicenseCommand(info);
+    }
+    
+    public static final DeleteMediaTypeCommand createDeleteMediaTypeCommand(Oas30MediaType mediaType) {
+        return new DeleteMediaTypeCommand(mediaType);
+    }
+    
+    public static final DeleteOperationCommand createDeleteOperationCommand(String opMethod, OasPathItem pathItem) {
+        return new DeleteOperationCommand(opMethod, pathItem);
+    }
+    
+    public static final DeleteParameterCommand createDeleteParameterCommand(OasParameter parameter) {
+        return new DeleteParameterCommand(parameter);
     }
 
 }
