@@ -16,33 +16,31 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
-import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
-import io.apicurio.datamodels.openapi.models.OasPaths;
 
 /**
- * A command used to delete a path.
+ * A command used to create a new operation in a path.
  * @author eric.wittmann@gmail.com
  */
-public class DeletePathCommand extends AbstractCommand {
+public class NewOperationCommand extends AbstractCommand {
 
     public String _path;
+    public String _method;
 
-    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
-    public Object _oldPath;
+    public boolean _created;
     
-    DeletePathCommand() {
+    NewOperationCommand() {
     }
     
-    DeletePathCommand(String path) {
+    NewOperationCommand(String path, String method) {
         this._path = path;
+        this._method = method;
     }
     
     /**
@@ -50,15 +48,25 @@ public class DeletePathCommand extends AbstractCommand {
      */
     @Override
     public void execute(Document document) {
-        LoggerCompat.info("[DeletePathCommand] Executing for path: %s", this._path);
+        LoggerCompat.info("[NewOperationCommand] Executing.");
+        
         OasDocument odoc = (OasDocument) document;
-        this._oldPath = null;
-        OasPaths paths = odoc.paths;
-        if (this.isNullOrUndefined(paths)) {
+
+        this._created = false;
+
+        if (this.isNullOrUndefined(odoc.paths)) {
             return;
         }
 
-        this._oldPath = Library.writeNode(paths.removePathItem(this._path));
+        OasPathItem path = odoc.paths.getPathItem(this._path);
+        if (this.isNullOrUndefined(path)) {
+            return;
+        }
+
+        OasOperation operation = path.createOperation(this._method);
+        NodeCompat.setProperty(path, this._method, operation);
+
+        this._created = true;
     }
     
     /**
@@ -66,16 +74,23 @@ public class DeletePathCommand extends AbstractCommand {
      */
     @Override
     public void undo(Document document) {
-        LoggerCompat.info("[DeletePathCommand] Reverting.");
+        LoggerCompat.info("[NewOperationCommand] Reverting.");
+        if (!this._created) {
+            return;
+        }
+        
         OasDocument odoc = (OasDocument) document;
-        OasPaths paths = odoc.paths;
-        if (this.isNullOrUndefined(paths) || this.isNullOrUndefined(this._oldPath)) {
+
+        if (this.isNullOrUndefined(odoc.paths)) {
             return;
         }
 
-        OasPathItem pathItem = paths.createPathItem(this._path);
-        Library.readNode(this._oldPath, pathItem);
-        paths.addPathItem(this._path, pathItem);
+        OasPathItem path = odoc.paths.getPathItem(this._path);
+        if (this.isNullOrUndefined(path)) {
+            return;
+        }
+
+        NodeCompat.setProperty(path, this._method, null);
     }
 
 }

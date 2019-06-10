@@ -30,6 +30,7 @@ import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
@@ -42,6 +43,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
+import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
@@ -219,6 +221,50 @@ public class CommandFactory {
             case "DeleteTagCommand_20":
             case "DeleteTagCommand_30":
             { return new DeleteTagCommand(); }
+            
+            /** New Commands **/
+            
+            case "NewMediaTypeCommand":
+            { return new NewMediaTypeCommand(); }
+            case "NewOperationCommand":
+            case "NewOperationCommand_20":
+            case "NewOperationCommand_30":
+            { return new NewOperationCommand(); }
+            case "NewParamCommand":
+            case "NewParamCommand_20":
+            case "NewParamCommand_30":
+            { return new NewParamCommand(); }
+            case "NewPathCommand":
+            case "NewPathCommand_20":
+            case "NewPathCommand_30":
+            { return new NewPathCommand(); }
+            case "NewRequestBodyCommand_20":
+            { return new NewRequestBodyCommand_20(); }
+            case "NewRequestBodyCommand_30":
+            { return new NewRequestBodyCommand_30(); }
+            case "NewResponseCommand":
+            case "NewResponseCommand_20":
+            case "NewResponseCommand_30":
+            { return new NewResponseCommand(); }
+            case "NewSchemaDefinitionCommand_20":
+            { return new NewSchemaDefinitionCommand_20(); }
+            case "NewSchemaDefinitionCommand_30":
+            { return new NewSchemaDefinitionCommand_30(); }
+            case "NewSchemaPropertyCommand":
+            case "NewSchemaPropertyCommand_20":
+            case "NewSchemaPropertyCommand_30":
+            { return new NewSchemaPropertyCommand(); }
+            case "NewSecuritySchemeCommand_20":
+            { return new NewSecuritySchemeCommand_20(); }
+            case "NewSecuritySchemeCommand_30":
+            { return new NewSecuritySchemeCommand_30(); }
+            case "NewServerCommand":
+            { return new NewServerCommand(); }
+            case "NewTagCommand":
+            case "NewTagCommand_20":
+            case "NewTagCommand_30":
+            { return new NewTagCommand(); }
+
         }
         return null;
     }
@@ -462,5 +508,73 @@ public class CommandFactory {
     public static final DeleteTagCommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
     }
+    
+    /** New Commands **/
+    
+    public static final NewMediaTypeCommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
+        return new NewMediaTypeCommand(parent, newMediaType);
+    }
+    
+    public static final NewOperationCommand createNewOperationCommand(String path, String method) {
+        return new NewOperationCommand(path, method);
+    }
+    
+    public static final NewParamCommand createNewParamCommand(IOasParameterParent parent, String paramName, 
+            String paramType, String description, SimplifiedParameterType newType, boolean override) {
+        return new NewParamCommand(parent, paramName, paramType, description, newType, override);
+    }
+    
+    public static final NewPathCommand createNewPathCommand(String newPath) {
+        return new NewPathCommand(newPath);
+    }
+    
+    public static final NewRequestBodyCommand createNewRequestBodyCommand(DocumentType docType, OasOperation operation) {
+        if (docType == DocumentType.openapi2) {
+            return new NewRequestBodyCommand_20(operation);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new NewRequestBodyCommand_30(operation);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final NewResponseCommand createNewResponseCommand(OasOperation operation, String statusCode, 
+            OasResponse sourceResponse) {
+        return new NewResponseCommand(operation, statusCode, sourceResponse);
+    }
+    
+    public static final NewSchemaDefinitionCommand createNewSchemaDefinitionCommand(DocumentType docType, 
+            String definitionName, Object example, String description) {
+        if (docType == DocumentType.openapi2) {
+            return new NewSchemaDefinitionCommand_20(definitionName, example, description);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new NewSchemaDefinitionCommand_30(definitionName, example, description);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final NewSchemaPropertyCommand createNewSchemaPropertyCommand(Schema schema, String propertyName, 
+            String description, SimplifiedPropertyType newType) {
+        return new NewSchemaPropertyCommand(schema, propertyName, description, newType);
+    }
 
+    public static final NewSecuritySchemeCommand createNewSecuritySchemeCommand(DocumentType docType, 
+            SecurityScheme scheme) {
+        if (docType == DocumentType.openapi2) {
+            return new NewSecuritySchemeCommand_20(scheme);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new NewSecuritySchemeCommand_30(scheme);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final NewServerCommand createNewServerCommand(IServerParent parent, Server server) {
+        return new NewServerCommand(parent, server);
+    }
+    
+    public static final NewTagCommand createNewTagCommand(String name, String description) {
+        return new NewTagCommand(name, description);
+    }
 }

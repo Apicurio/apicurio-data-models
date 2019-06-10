@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
@@ -40,7 +40,7 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
 
     public NodePath _schemaPath;
 
-    @JsonDeserialize(contentUsing=JsonNodeDeserializer.class)
+    @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
     public List<Object> _oldProperties;
 
     DeleteAllPropertiesCommand() {

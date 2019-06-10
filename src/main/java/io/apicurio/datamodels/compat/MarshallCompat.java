@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.SimpleType;
 
@@ -342,6 +343,18 @@ public class MarshallCompat {
             return commands;
         }
         
+    }
+    
+    public static class NullableJsonNodeDeserializer extends JsonNodeDeserializer {
+        private static final long serialVersionUID = -3295567082289568935L;
+
+        /**
+         * @see com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer#getNullValue(com.fasterxml.jackson.databind.DeserializationContext)
+         */
+        @Override
+        public JsonNode getNullValue(DeserializationContext ctxt) {
+            return null;
+        }
     }
 
 }

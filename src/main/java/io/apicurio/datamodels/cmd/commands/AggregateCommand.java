@@ -20,13 +20,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.CommandListDeserializer;
 import io.apicurio.datamodels.compat.MarshallCompat.CommandListSerializer;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 
 /**
@@ -37,7 +37,7 @@ import io.apicurio.datamodels.core.models.Document;
 public class AggregateCommand extends AbstractCommand {
 
     public String name;
-    @JsonDeserialize(using=JsonNodeDeserializer.class)
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object info;
     @JsonSerialize(using=CommandListSerializer.class)
     @JsonDeserialize(using=CommandListDeserializer.class)

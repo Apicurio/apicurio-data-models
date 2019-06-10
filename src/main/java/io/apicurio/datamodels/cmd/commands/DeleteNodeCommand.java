@@ -17,11 +17,11 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
@@ -36,7 +36,7 @@ public abstract class DeleteNodeCommand<T extends Node> extends AbstractCommand 
     public String _property;
     public NodePath _parentPath;
 
-    @JsonDeserialize(using=JsonNodeDeserializer.class)
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldValue;
     
     DeleteNodeCommand() {

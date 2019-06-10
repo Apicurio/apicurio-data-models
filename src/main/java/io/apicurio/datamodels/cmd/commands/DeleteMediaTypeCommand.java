@@ -17,11 +17,11 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
@@ -37,7 +37,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
     public NodePath _mediaTypePath;
     public NodePath _parentPath;
 
-    @JsonDeserialize(using=JsonNodeDeserializer.class)
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldMediaType;
     
     DeleteMediaTypeCommand() {

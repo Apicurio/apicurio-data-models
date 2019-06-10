@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
@@ -120,6 +121,47 @@ public class JsonCompat {
         return node.isBoolean();
     }
 
+    public static boolean isNumber(Object json) {
+        if (json == null) {
+            return false;
+        }
+        JsonNode node = (JsonNode) json;
+        return node.isNumber();
+    }
+
+    public static boolean isObject(Object json) {
+        if (json == null) {
+            return false;
+        }
+        JsonNode node = (JsonNode) json;
+        return node.isObject();
+    }
+
+    public static boolean isString(Object json) {
+        if (json == null) {
+            return false;
+        }
+        if (json instanceof String) {
+            return true;
+        }
+        JsonNode node = (JsonNode) json;
+        if (node.isTextual()) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static String toString(Object json) {
+        if (json instanceof String) {
+            return (String) json;
+        }
+        JsonNode node = (JsonNode) json;
+        if (node.isTextual()) {
+            return node.asText();
+        }
+        return null;
+    }
+
     public static Boolean toBoolean(Object json) {
         if (json == null) {
             return null;
@@ -127,6 +169,17 @@ public class JsonCompat {
         JsonNode node = (JsonNode) json;
         if (node.isBoolean()) {
             return ((BooleanNode) json).asBoolean();
+        }
+        return null;
+    }
+
+    public static Number toNumber(Object json) {
+        if (json == null) {
+            return null;
+        }
+        JsonNode node = (JsonNode) json;
+        if (node.isNumber()) {
+            return ((NumericNode) json).numberValue();
         }
         return null;
     }

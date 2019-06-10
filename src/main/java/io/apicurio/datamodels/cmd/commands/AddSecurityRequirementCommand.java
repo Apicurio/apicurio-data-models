@@ -19,11 +19,11 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
@@ -37,7 +37,7 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 public class AddSecurityRequirementCommand extends AbstractCommand {
 
     public NodePath _parentPath;
-    @JsonDeserialize(using=JsonNodeDeserializer.class)
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _requirement;
 
     public boolean _added;

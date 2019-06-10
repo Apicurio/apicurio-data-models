@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.openapi.models.OasDocument;
@@ -35,7 +35,7 @@ import io.apicurio.datamodels.openapi.models.OasDocument;
  */
 public class DeleteAllTagsCommand extends AbstractCommand {
 
-    @JsonDeserialize(contentUsing=JsonNodeDeserializer.class)
+    @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
     public List<Object> _oldTags;
     
     DeleteAllTagsCommand() {

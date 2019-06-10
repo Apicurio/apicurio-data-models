@@ -21,11 +21,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -39,7 +39,7 @@ public class DeleteAllExamplesCommand extends AbstractCommand {
 
     public NodePath _mediaTypePath;
 
-    @JsonDeserialize(contentUsing=JsonNodeDeserializer.class)
+    @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
     public Map<String, Object> _oldExamples;
     
     DeleteAllExamplesCommand() {

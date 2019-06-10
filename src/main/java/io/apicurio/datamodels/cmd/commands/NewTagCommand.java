@@ -17,35 +17,30 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
-import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
- * A command used to delete a single tag definition from the document.
+ * A command used to create a new tag.
  * @author eric.wittmann@gmail.com
  */
-public class DeleteTagCommand extends AbstractCommand {
+public class NewTagCommand extends AbstractCommand {
 
     public String _tagName;
+    public String _tagDescription;
 
-    public int _oldIndex;
-    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
-    public Object _oldTag;
+    public boolean _created;
     
-    DeleteTagCommand() {
+    NewTagCommand() {
     }
     
-    DeleteTagCommand(String tagName) {
-        this._tagName = tagName;
+    NewTagCommand(String name, String description) {
+        this._tagName = name;
+        this._tagDescription = description;
     }
     
     /**
@@ -53,22 +48,19 @@ public class DeleteTagCommand extends AbstractCommand {
      */
     @Override
     public void execute(Document document) {
-        LoggerCompat.info("[DeleteTagCommand] Executing.");
+        LoggerCompat.info("[NewTagCommand] Executing.");
+
+        this._created = false;
 
         if (this.isNullOrUndefined(document.tags)) {
-            return;
+            document.tags = new ArrayList<>();
         }
 
-        List<Tag> tags = document.tags;
-        Tag tag = null;
-        for (Tag t : tags) {
-            if (NodeCompat.equals(t.name, this._tagName)) {
-                tag = t;
-            }
+        Tag tag = this.findTag(document, this._tagName);
+        if (this.isNullOrUndefined(tag)) {
+            document.addTag(this._tagName, this._tagDescription);
+            this._created = true;
         }
-        this._oldIndex = tags.indexOf(tag);
-        tags.remove(this._oldIndex);
-        this._oldTag = Library.writeNode(tag);
     }
     
     /**
@@ -76,19 +68,32 @@ public class DeleteTagCommand extends AbstractCommand {
      */
     @Override
     public void undo(Document document) {
-        LoggerCompat.info("[DeleteTagCommand] Reverting.");
-
-        if (this.isNullOrUndefined(document.tags)) {
-            document.tags = new ArrayList<>();
+        LoggerCompat.info("[NewTagCommand] Reverting.");
+        if (!this._created) {
+            return;
         }
 
-        Tag tag = document.createTag();
-        Library.readNode(this._oldTag, tag);
-        if (document.tags.size() >= this._oldIndex) {
-            document.tags.add(_oldIndex, tag);
-        } else {
-            document.tags.add(tag);
+        Tag tag = this.findTag(document, this._tagName);
+        if (this.isNullOrUndefined(tag)) {
+            return;
         }
+        document.tags.remove(document.tags.indexOf(tag));
+    }
+
+    /**
+     * Finds a single tag by its name.  No way to do this but iterate through the
+     * tags array.
+     * @param {OasDocument} doc
+     * @param {string} tagName
+     * @return {OasTag}
+     */
+    private Tag findTag(Document doc, String tagName) {
+        for (Tag dt : doc.tags) {
+            if (NodeCompat.equals(dt.name, tagName)) {
+                return dt;
+            }
+        }
+        return null;
     }
 
 }
