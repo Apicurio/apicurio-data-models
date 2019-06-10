@@ -207,6 +207,18 @@ public class CommandFactory {
             { return new DeleteSchemaDefinitionCommand_20(); }
             case "DeleteSchemaDefinitionCommand_30":
             { return new DeleteSchemaDefinitionCommand_30(); }
+            case "DeleteSecurityRequirementCommand":
+            { return new DeleteSecurityRequirementCommand(); }
+            case "DeleteSecuritySchemeCommand_20":
+            { return new DeleteSecuritySchemeCommand_20(); }
+            case "DeleteSecuritySchemeCommand_30":
+            { return new DeleteSecuritySchemeCommand_30(); }
+            case "DeleteServerCommand":
+            { return new DeleteServerCommand(); }
+            case "DeleteTagCommand":
+            case "DeleteTagCommand_20":
+            case "DeleteTagCommand_30":
+            { return new DeleteTagCommand(); }
         }
         return null;
     }
@@ -425,6 +437,30 @@ public class CommandFactory {
             return new DeleteSchemaDefinitionCommand_30(definitionName);
         }
         throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final DeleteSecurityRequirementCommand createDeleteSecurityRequirementCommand(
+            ISecurityRequirementParent parent, SecurityRequirement requirement) {
+        return new DeleteSecurityRequirementCommand(parent, requirement);
+    }
+    
+    public static final DeleteSecuritySchemeCommand createDeleteSecuritySchemeCommand(DocumentType docType, 
+            String schemeName) {
+        if (docType == DocumentType.openapi2) {
+            return new DeleteSecuritySchemeCommand_20(schemeName);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new DeleteSecuritySchemeCommand_30(schemeName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final DeleteServerCommand createDeleteServerCommand(Server server) {
+        return new DeleteServerCommand(server);
+    }
+    
+    public static final DeleteTagCommand createDeleteTagCommand(String tagName) {
+        return new DeleteTagCommand(tagName);
     }
 
 }
