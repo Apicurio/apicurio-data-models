@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
@@ -44,12 +43,8 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
     }
     
     ReplaceNodeCommand(T old, T replacement) {
-        if (ModelUtils.isDefined(old)) {
-            this._nodePath = Library.createNodePath(old);
-        }
-        if (ModelUtils.isDefined(replacement)) {
-            this._new = Library.writeNode(replacement);
-        }
+        this._nodePath = Library.createNodePath(old);
+        this._new = Library.writeNode(replacement);
     }
     
     /**

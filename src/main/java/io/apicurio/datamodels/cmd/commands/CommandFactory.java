@@ -23,9 +23,11 @@ import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
@@ -43,10 +45,12 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
+import io.apicurio.datamodels.openapi.v3.models.Oas30SchemaDefinition;
 
 /**
  * This factory is used to create an instance of {@link ICommand} given a "type" that was previously
@@ -132,13 +136,6 @@ public class CommandFactory {
             { return new ChangeSecuritySchemeCommand_30(); }
             case "ChangeServerCommand":
             { return new ChangeServerCommand(); }
-            
-            /** Replace Commands **/
-
-            case "ReplaceOperationCommand_20": 
-            case "ReplaceOperationCommand_30":
-            case "ReplaceOperationCommand":
-            { return new ReplaceOperationCommand(); }
             
             /** Delete Commands **/
             case "DeleteContactCommand_20": 
@@ -281,23 +278,42 @@ public class CommandFactory {
             { return new RenameSecuritySchemeCommand(); }
             case "RenameTagDefinitionCommand":
             { return new RenameTagDefinitionCommand(); }
+            
+            /** Replace Commands **/
 
+            case "ReplaceOperationCommand_20": 
+            case "ReplaceOperationCommand_30":
+            case "ReplaceOperationCommand":
+            { return new ReplaceOperationCommand(); }
+            case "ReplaceDocumentCommand":
+            { return new ReplaceDocumentCommand(); }
+            case "ReplacePathItemCommand_20": 
+            case "ReplacePathItemCommand_30":
+            case "ReplacePathItemCommand":
+            { return new ReplacePathItemCommand(); }
+            case "ReplaceSchemaDefinitionCommand_20":
+            { return new ReplaceSchemaDefinitionCommand_20(); }
+            case "ReplaceSchemaDefinitionCommand_30":
+            { return new ReplaceSchemaDefinitionCommand_30(); }
+            case "ReplaceSecurityRequirementCommand":
+            { return new ReplaceSecurityRequirementCommand(); }
+            
         }
         return null;
     }
     
-    public static final AggregateCommand createAggregateCommand(String name, Object info, List<ICommand> commands) {
+    public static final ICommand createAggregateCommand(String name, Object info, List<ICommand> commands) {
         return new AggregateCommand(name, info, commands);
     }
 
     /* ***  Add Commands  *** */
     
-    public static final AddExampleCommand_30 createAddExampleCommand(Oas30MediaType mediaType, Object example, 
+    public static final ICommand createAddExampleCommand(Oas30MediaType mediaType, Object example, 
             String exampleName, String exampleSummary, String exampleDescription) {
         return new AddExampleCommand_30(mediaType, example, exampleName, exampleSummary, exampleDescription);
     }
 
-    public static final AddSchemaDefinitionCommand createAddSchemaDefinitionCommand(DocumentType docType, 
+    public static final ICommand createAddSchemaDefinitionCommand(DocumentType docType, 
             String definitionName, Object from) {
         if (docType == DocumentType.openapi2) {
             return new AddSchemaDefinitionCommand_20(definitionName, from);
@@ -308,11 +324,11 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    public static final AddPathItemCommand createAddPathItemCommand(String pathItemName, Object from) {
+    public static final ICommand createAddPathItemCommand(String pathItemName, Object from) {
         return new AddPathItemCommand(pathItemName, from);
     }
 
-    public static final AddSecurityRequirementCommand createAddSecurityRequirementCommand(
+    public static final ICommand createAddSecurityRequirementCommand(
             ISecurityRequirementParent parent, SecurityRequirement requirement) {
         return new AddSecurityRequirementCommand(parent, requirement);
     }
@@ -320,32 +336,32 @@ public class CommandFactory {
     
     /* ***  Change Commands  *** */
 
-    public static <T> ChangePropertyCommand<T> createChangePropertyCommand(Node node, String property, T newValue) {
+    public static <T> ICommand createChangePropertyCommand(Node node, String property, T newValue) {
         return new ChangePropertyCommand<T>(node, property, newValue);
     }
 
-    public static final ChangeTitleCommand createChangeTitleCommand(String newTitle) {
+    public static final ICommand createChangeTitleCommand(String newTitle) {
         return new ChangeTitleCommand(newTitle);
     }
     
-    public static final ChangeDescriptionCommand createChangeDescriptionCommand(String newDescription) {
+    public static final ICommand createChangeDescriptionCommand(String newDescription) {
         return new ChangeDescriptionCommand(newDescription);
     }
 
-    public static final ChangeVersionCommand createChangeVersionCommand(String newVersion) {
+    public static final ICommand createChangeVersionCommand(String newVersion) {
         return new ChangeVersionCommand(newVersion);
     }
     
-    public static final ChangeContactCommand createChangeContactCommand(String name, String email, String url) {
+    public static final ICommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
     }
     
-    public static final ChangeMediaTypeTypeCommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 
+    public static final ICommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 
             SimplifiedType newType) {
         return new ChangeMediaTypeTypeCommand(mediaType, newType);
     }
 
-    public static final ChangeParameterTypeCommand createChangeParameterTypeCommand(DocumentType docType, 
+    public static final ICommand createChangeParameterTypeCommand(DocumentType docType, 
             Parameter parameter, SimplifiedParameterType newType) {
         if (docType == DocumentType.openapi2) {
             return new ChangeParameterTypeCommand_20(parameter, newType);
@@ -356,7 +372,7 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    public static final ChangeParameterTypeCommand createChangeParameterDefinitionTypeCommand(DocumentType docType, 
+    public static final ICommand createChangeParameterDefinitionTypeCommand(DocumentType docType, 
             Parameter parameter, SimplifiedParameterType newType) {
         if (docType == DocumentType.openapi2) {
             return new ChangeParameterDefinitionTypeCommand_20(parameter, newType);
@@ -367,22 +383,22 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final ChangePropertyTypeCommand createChangePropertyTypeCommand(IOasPropertySchema property, 
+    public static final ICommand createChangePropertyTypeCommand(IOasPropertySchema property, 
             SimplifiedPropertyType newType) {
         return new ChangePropertyTypeCommand(property, newType);
     }
     
-    public static final ChangeResponseTypeCommand createChangeResponseTypeCommand(Oas20Response response, 
+    public static final ICommand createChangeResponseTypeCommand(Oas20Response response, 
             SimplifiedType newType) {
         return new ChangeResponseTypeCommand(response, newType);
     }
 
-    public static final ChangeResponseTypeCommand createChangeResponseDefinitionTypeCommand(
+    public static final ICommand createChangeResponseDefinitionTypeCommand(
             Oas20ResponseDefinition response, SimplifiedType newType) {
         return new ChangeResponseTypeCommand(response, newType);
     }
     
-    public static final ChangeSecuritySchemeCommand createChangeSecuritySchemeCommand(DocumentType docType, 
+    public static final ICommand createChangeSecuritySchemeCommand(DocumentType docType, 
             SecurityScheme scheme) {
         if (docType == DocumentType.openapi2) {
             return new ChangeSecuritySchemeCommand_20(scheme);
@@ -392,106 +408,99 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final ChangeServerCommand createChangeServerCommand(Server server) {
+    public static final ICommand createChangeServerCommand(Server server) {
         return new ChangeServerCommand(server);
-    }
-
-    /* ***  Replace Commands  *** */
-
-    public static final ReplaceOperationCommand createReplaceOperationCommand(OasOperation old, 
-            OasOperation replacement) {
-        return new ReplaceOperationCommand(old, replacement);
     }
 
     /* ***  Delete Commands  *** */
     
-    public static final DeleteContactCommand createDeleteContactCommand(Info info) {
+    public static final ICommand createDeleteContactCommand(Info info) {
         return new DeleteContactCommand(info);
     }
     
-    public static final DeleteAllExamplesCommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
+    public static final ICommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
         return new DeleteAllExamplesCommand(mediaType);
     }
     
-    public static final DeleteAllOperationsCommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
+    public static final ICommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
         return new DeleteAllOperationsCommand(pathItem);
     }
     
-    public static final DeleteAllParametersCommand createDeleteAllParametersCommand(IOasParameterParent parent, 
+    public static final ICommand createDeleteAllParametersCommand(IOasParameterParent parent, 
             String type) {
         return new DeleteAllParametersCommand(parent, type);
     }
 
-    public static final DeleteAllPropertiesCommand createDeleteAllPropertiesCommand(OasSchema schema) {
+    public static final ICommand createDeleteAllPropertiesCommand(OasSchema schema) {
         return new DeleteAllPropertiesCommand(schema);
     }
     
-    public static final DeleteAllResponsesCommand createDeleteAllResponsesCommand(OasOperation operation) {
+    public static final ICommand createDeleteAllResponsesCommand(OasOperation operation) {
         return new DeleteAllResponsesCommand(Constants.PROP_RESPONSES, operation);
     }
     
-    public static final DeleteAllSecurityRequirementsCommand createDeleteAllSecurityRequirementsCommand(
+    public static final ICommand createDeleteAllSecurityRequirementsCommand(
             ISecurityRequirementParent parent) {
         return new DeleteAllSecurityRequirementsCommand(parent);
     }
     
-    public static final DeleteAllSecuritySchemesCommand createDeleteAllSecuritySchemesCommand() {
+    public static final ICommand createDeleteAllSecuritySchemesCommand() {
         return new DeleteAllSecuritySchemesCommand();
     }
     
-    public static final DeleteAllServersCommand createDeleteAllServersCommand(IServerParent parent) {
+    public static final ICommand createDeleteAllServersCommand(IServerParent parent) {
         return new DeleteAllServersCommand(parent);
     }
     
-    public static final DeleteAllTagsCommand createDeleteAllTagsCommand() {
+    public static final ICommand createDeleteAllTagsCommand() {
         return new DeleteAllTagsCommand();
     }
     
-    public static final DeleteExampleCommand_20 createDelete20ExampleCommand(Oas20Response response, String contentType) {
+    public static final ICommand createDelete20ExampleCommand(Oas20Response response, String contentType) {
         return new DeleteExampleCommand_20(response, contentType);
     }
 
-    public static final DeleteExampleCommand_30 createDeleteExampleCommand(Oas30Example example) {
+    public static final ICommand createDeleteExampleCommand(Oas30Example example) {
         return new DeleteExampleCommand_30(example);
     }
     
-    public static final DeleteExtensionCommand createDeleteExtensionCommand(Extension extension) {
+    public static final ICommand createDeleteExtensionCommand(Extension extension) {
         return new DeleteExtensionCommand(extension);
     }
     
-    public static final DeleteLicenseCommand createDeleteLicenseCommand(Info info) {
+    public static final ICommand createDeleteLicenseCommand(Info info) {
         return new DeleteLicenseCommand(info);
     }
     
-    public static final DeleteMediaTypeCommand createDeleteMediaTypeCommand(Oas30MediaType mediaType) {
+    public static final ICommand createDeleteMediaTypeCommand(Oas30MediaType mediaType) {
         return new DeleteMediaTypeCommand(mediaType);
     }
     
-    public static final DeleteOperationCommand createDeleteOperationCommand(String opMethod, OasPathItem pathItem) {
+    public static final ICommand createDeleteOperationCommand(String opMethod, OasPathItem pathItem) {
         return new DeleteOperationCommand(opMethod, pathItem);
     }
     
-    public static final DeleteParameterCommand createDeleteParameterCommand(OasParameter parameter) {
+    public static final ICommand createDeleteParameterCommand(OasParameter parameter) {
         return new DeleteParameterCommand(parameter);
     }
     
-    public static final DeletePathCommand createDeletePathCommand(String path) {
+    public static final ICommand createDeletePathCommand(String path) {
         return new DeletePathCommand(path);
     }
     
-    public static final DeletePropertyCommand createDeletePropertyCommand(IOasPropertySchema property) {
+    public static final ICommand createDeletePropertyCommand(IOasPropertySchema property) {
         return new DeletePropertyCommand(property);
     }
     
-    public static final DeleteRequestBodyCommand createDeleteRequestBodyCommand(Oas30Operation operation) {
+    public static final ICommand createDeleteRequestBodyCommand(Oas30Operation operation) {
         return new DeleteRequestBodyCommand(operation);
     }
     
-    public static final DeleteResponseCommand createDeleteResponseCommand(OasResponse response) {
+    public static final ICommand createDeleteResponseCommand(OasResponse response) {
         return new DeleteResponseCommand(response);
     }
     
-    public static final DeleteSchemaDefinitionCommand createDeleteSchemaDefinitionCommand(
+    public static final ICommand createDeleteSchemaDefinitionCommand(
             DocumentType docType, String definitionName) {
         if (docType == DocumentType.openapi2) {
             return new DeleteSchemaDefinitionCommand_20(definitionName);
@@ -502,12 +511,12 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final DeleteSecurityRequirementCommand createDeleteSecurityRequirementCommand(
+    public static final ICommand createDeleteSecurityRequirementCommand(
             ISecurityRequirementParent parent, SecurityRequirement requirement) {
         return new DeleteSecurityRequirementCommand(parent, requirement);
     }
     
-    public static final DeleteSecuritySchemeCommand createDeleteSecuritySchemeCommand(DocumentType docType, 
+    public static final ICommand createDeleteSecuritySchemeCommand(DocumentType docType, 
             String schemeName) {
         if (docType == DocumentType.openapi2) {
             return new DeleteSecuritySchemeCommand_20(schemeName);
@@ -518,34 +527,34 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final DeleteServerCommand createDeleteServerCommand(Server server) {
+    public static final ICommand createDeleteServerCommand(Server server) {
         return new DeleteServerCommand(server);
     }
     
-    public static final DeleteTagCommand createDeleteTagCommand(String tagName) {
+    public static final ICommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
     }
     
     /** New Commands **/
     
-    public static final NewMediaTypeCommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
+    public static final ICommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
         return new NewMediaTypeCommand(parent, newMediaType);
     }
     
-    public static final NewOperationCommand createNewOperationCommand(String path, String method) {
+    public static final ICommand createNewOperationCommand(String path, String method) {
         return new NewOperationCommand(path, method);
     }
     
-    public static final NewParamCommand createNewParamCommand(IOasParameterParent parent, String paramName, 
+    public static final ICommand createNewParamCommand(IOasParameterParent parent, String paramName, 
             String paramType, String description, SimplifiedParameterType newType, boolean override) {
         return new NewParamCommand(parent, paramName, paramType, description, newType, override);
     }
     
-    public static final NewPathCommand createNewPathCommand(String newPath) {
+    public static final ICommand createNewPathCommand(String newPath) {
         return new NewPathCommand(newPath);
     }
     
-    public static final NewRequestBodyCommand createNewRequestBodyCommand(DocumentType docType, OasOperation operation) {
+    public static final ICommand createNewRequestBodyCommand(DocumentType docType, OasOperation operation) {
         if (docType == DocumentType.openapi2) {
             return new NewRequestBodyCommand_20(operation);
         }
@@ -555,12 +564,12 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final NewResponseCommand createNewResponseCommand(OasOperation operation, String statusCode, 
+    public static final ICommand createNewResponseCommand(OasOperation operation, String statusCode, 
             OasResponse sourceResponse) {
         return new NewResponseCommand(operation, statusCode, sourceResponse);
     }
     
-    public static final NewSchemaDefinitionCommand createNewSchemaDefinitionCommand(DocumentType docType, 
+    public static final ICommand createNewSchemaDefinitionCommand(DocumentType docType, 
             String definitionName, Object example, String description) {
         if (docType == DocumentType.openapi2) {
             return new NewSchemaDefinitionCommand_20(definitionName, example, description);
@@ -571,12 +580,12 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final NewSchemaPropertyCommand createNewSchemaPropertyCommand(Schema schema, String propertyName, 
+    public static final ICommand createNewSchemaPropertyCommand(Schema schema, String propertyName, 
             String description, SimplifiedPropertyType newType) {
         return new NewSchemaPropertyCommand(schema, propertyName, description, newType);
     }
 
-    public static final NewSecuritySchemeCommand createNewSecuritySchemeCommand(DocumentType docType, 
+    public static final ICommand createNewSecuritySchemeCommand(DocumentType docType, 
             SecurityScheme scheme) {
         if (docType == DocumentType.openapi2) {
             return new NewSecuritySchemeCommand_20(scheme);
@@ -587,32 +596,32 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final NewServerCommand createNewServerCommand(IServerParent parent, Server server) {
+    public static final ICommand createNewServerCommand(IServerParent parent, Server server) {
         return new NewServerCommand(parent, server);
     }
     
-    public static final NewTagCommand createNewTagCommand(String name, String description) {
+    public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
     }
     
     /** Rename Commands **/
     
-    public static final RenameParameterCommand createRenameParameterCommand(IOasParameterParent parent, 
+    public static final ICommand createRenameParameterCommand(IOasParameterParent parent, 
             String oldParamName, String newParamName, String paramIn) {
         return new RenameParameterCommand(parent, oldParamName, newParamName, paramIn);
     }
     
-    public static final RenamePathItemCommand createRenamePathItemCommand(String oldPath, String newPath, 
+    public static final ICommand createRenamePathItemCommand(String oldPath, String newPath, 
             boolean alsoRenameSubpaths) {
         return new RenamePathItemCommand(oldPath, newPath, alsoRenameSubpaths);
     }
     
-    public static final RenamePropertyCommand createRenamePropertyCommand(OasSchema parent, String oldPropertyName, 
+    public static final ICommand createRenamePropertyCommand(OasSchema parent, String oldPropertyName, 
             String newPropertyName) {
         return new RenamePropertyCommand(parent, oldPropertyName, newPropertyName);
     }
     
-    public static final RenameSchemaDefinitionCommand createRenameSchemaDefinitionCommand(DocumentType docType, 
+    public static final ICommand createRenameSchemaDefinitionCommand(DocumentType docType, 
             String oldName, String newName) {
         if (docType == DocumentType.openapi2) {
             return new RenameSchemaDefinitionCommand_20(oldName, newName);
@@ -623,12 +632,44 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final RenameSecuritySchemeCommand createRenameSecuritySchemeCommand(String oldSchemeName, 
+    public static final ICommand createRenameSecuritySchemeCommand(String oldSchemeName, 
             String newSchemeName) {
         return new RenameSecuritySchemeCommand(oldSchemeName, newSchemeName);
     }
 
-    public static final RenameTagDefinitionCommand createRenameTagDefinitionCommand(String oldTag, String newTag) {
+    public static final ICommand createRenameTagDefinitionCommand(String oldTag, String newTag) {
         return new RenameTagDefinitionCommand(oldTag, newTag);
     }
+
+    /* ***  Replace Commands  *** */
+
+    public static final ICommand createReplaceOperationCommand(OasOperation old, 
+            OasOperation replacement) {
+        return new ReplaceOperationCommand(old, replacement);
+    }
+    
+    public static final ICommand createReplaceDocumentCommand(Document old, Document replacement) {
+        return new ReplaceDocumentCommand(old, replacement);
+    }
+    
+    public static final ICommand createReplacePathItemCommand(OasPathItem old, OasPathItem replacement) {
+        return new ReplacePathItemCommand(old, replacement);
+    }
+    
+    public static final ICommand createReplaceSchemaDefinitionCommand(DocumentType docType,
+            ISchemaDefinition old, ISchemaDefinition replacement) {
+        if (docType == DocumentType.openapi2) {
+            return new ReplaceSchemaDefinitionCommand_20((Oas20SchemaDefinition) old, (Oas20SchemaDefinition) replacement);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new ReplaceSchemaDefinitionCommand_30((Oas30SchemaDefinition) old, (Oas30SchemaDefinition) replacement);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final ICommand createReplaceSecurityRequirementCommand(SecurityRequirement old, 
+            SecurityRequirement replacement) {
+        return new ReplaceSecurityRequirementCommand(old, replacement);
+    }
+
 }
