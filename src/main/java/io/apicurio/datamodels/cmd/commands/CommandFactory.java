@@ -279,6 +279,8 @@ public class CommandFactory {
             { return new RenameSchemaDefinitionCommand_30(); }
             case "RenameSecuritySchemeCommand":
             { return new RenameSecuritySchemeCommand(); }
+            case "RenameTagDefinitionCommand":
+            { return new RenameTagDefinitionCommand(); }
 
         }
         return null;
@@ -624,5 +626,9 @@ public class CommandFactory {
     public static final RenameSecuritySchemeCommand createRenameSecuritySchemeCommand(String oldSchemeName, 
             String newSchemeName) {
         return new RenameSecuritySchemeCommand(oldSchemeName, newSchemeName);
+    }
+
+    public static final RenameTagDefinitionCommand createRenameTagDefinitionCommand(String oldTag, String newTag) {
+        return new RenameTagDefinitionCommand(oldTag, newTag);
     }
 }
