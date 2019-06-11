@@ -17,7 +17,6 @@
 
 import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
 import {ICommand} from "../src/io/apicurio/datamodels/cmd/ICommand";
-import {MarshallUtils} from "../src/io/apicurio/datamodels/cmd/util/MarshallUtils";
 import {MarshallCompat} from "../src/io/apicurio/datamodels/compat/MarshallCompat";
 import {OtCommand} from "../src/io/apicurio/datamodels/cmd/ot/OtCommand";
 import {OtEngine} from "../src/io/apicurio/datamodels/cmd/ot/OtEngine";
