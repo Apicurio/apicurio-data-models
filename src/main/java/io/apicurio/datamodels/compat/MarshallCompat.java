@@ -102,7 +102,7 @@ public class MarshallCompat {
      * @param sType
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Object marshallSimplifiedType(SimplifiedType sType) {
+    private static Object marshallSimplifiedType(SimplifiedType sType) {
         if (ModelUtils.isNullOrUndefined(sType)) {
             return null;
         }
@@ -120,7 +120,7 @@ public class MarshallCompat {
      * @param from
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static SimplifiedType unmarshallSimplifiedType(Object from) {
+    private static SimplifiedType unmarshallSimplifiedType(Object from) {
         if (ModelUtils.isNullOrUndefined(from)) {
             return null;
         }
@@ -137,7 +137,7 @@ public class MarshallCompat {
      * Marshalls the given simple type into a JS object.
      * @param sType
      */
-    public static Object marshallSimplifiedParameterType(SimplifiedParameterType sType) {
+    private static Object marshallSimplifiedParameterType(SimplifiedParameterType sType) {
         if (ModelUtils.isNullOrUndefined(sType)) {
             return null;
         }
@@ -151,7 +151,7 @@ public class MarshallCompat {
      * @param from
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static SimplifiedParameterType unmarshallSimplifiedParameterType(Object from) {
+    private static SimplifiedParameterType unmarshallSimplifiedParameterType(Object from) {
         if (ModelUtils.isNullOrUndefined(from)) {
             return null;
         }
@@ -172,7 +172,7 @@ public class MarshallCompat {
      * Marshalls the given simple type into a JS object.
      * @param sType
      */
-    public static Object marshallSimplifiedPropertyType(SimplifiedPropertyType sType) {
+    private static Object marshallSimplifiedPropertyType(SimplifiedPropertyType sType) {
         if (ModelUtils.isNullOrUndefined(sType)) {
             return null;
         }
@@ -186,7 +186,7 @@ public class MarshallCompat {
      * @param from
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static SimplifiedPropertyType unmarshallSimplifiedPropertyType(Object from) {
+    private static SimplifiedPropertyType unmarshallSimplifiedPropertyType(Object from) {
         if (ModelUtils.isNullOrUndefined(from)) {
             return null;
         }
