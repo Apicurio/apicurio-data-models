@@ -16,13 +16,14 @@
 
 package io.apicurio.datamodels.openapi.v2.models;
 
+import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 
 /**
  * Models an OpenAPI 2.0 response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20Response extends OasResponse {
+public class Oas20Response extends OasResponse implements IExampleParent {
 
     public Oas20Headers headers;
     public Oas20Schema schema;

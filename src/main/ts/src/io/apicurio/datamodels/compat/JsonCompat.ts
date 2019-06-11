@@ -86,7 +86,7 @@ export class JsonCompat {
     }
 
     public static toString(json: any): boolean {
-        return <string>json;
+        return <boolean>json;
     }
     
     public static toNumber(json: any): number {

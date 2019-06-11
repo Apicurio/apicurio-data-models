@@ -25,8 +25,10 @@ import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
@@ -297,6 +299,15 @@ public class CommandFactory {
             { return new ReplaceSchemaDefinitionCommand_30(); }
             case "ReplaceSecurityRequirementCommand":
             { return new ReplaceSecurityRequirementCommand(); }
+            
+            /** Set Commands **/
+            
+            case "SetExampleCommand_20":
+            { return new SetExampleCommand_20(); }
+            case "SetExampleCommand_30":
+            { return new SetExampleCommand_30(); }
+            case "SetExtensionCommand":
+            { return new SetExtensionCommand(); }
             
         }
         return null;
@@ -670,6 +681,23 @@ public class CommandFactory {
     public static final ICommand createReplaceSecurityRequirementCommand(SecurityRequirement old, 
             SecurityRequirement replacement) {
         return new ReplaceSecurityRequirementCommand(old, replacement);
+    }
+    
+    /** Set Commands **/
+    
+    public static final ICommand createSetExampleCommand(DocumentType docType, IExampleParent parent, Object example, 
+            String nameOrContentType) {
+        if (docType == DocumentType.openapi2) {
+            return new SetExampleCommand_20((Oas20Response) parent, example, nameOrContentType);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new SetExampleCommand_30((Oas30MediaType) parent, example, nameOrContentType);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
+    public static final ICommand createSetExtensionCommand(ExtensibleNode parent, String name, Object value) {
+        return new SetExtensionCommand(parent, name, value);
     }
 
 }
