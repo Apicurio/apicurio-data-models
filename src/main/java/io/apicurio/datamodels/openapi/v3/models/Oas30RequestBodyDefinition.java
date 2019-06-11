@@ -51,5 +51,13 @@ public class Oas30RequestBodyDefinition extends Oas30RequestBody implements IOas
     public String getName() {
         return this._name;
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
 
 }

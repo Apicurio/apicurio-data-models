@@ -264,6 +264,21 @@ public class CommandFactory {
             case "NewTagCommand_20":
             case "NewTagCommand_30":
             { return new NewTagCommand(); }
+            
+            /** Rename Commands **/
+            
+            case "RenameParameterCommand":
+            { return new RenameParameterCommand(); }
+            case "RenamePathItemCommand":
+            { return new RenamePathItemCommand(); }
+            case "RenamePropertyCommand":
+            { return new RenamePropertyCommand(); }
+            case "RenameSchemaDefinitionCommand_20":
+            { return new RenameSchemaDefinitionCommand_20(); }
+            case "RenameSchemaDefinitionCommand_30":
+            { return new RenameSchemaDefinitionCommand_30(); }
+            case "RenameSecuritySchemeCommand":
+            { return new RenameSecuritySchemeCommand(); }
 
         }
         return null;
@@ -576,5 +591,38 @@ public class CommandFactory {
     
     public static final NewTagCommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
+    }
+    
+    /** Rename Commands **/
+    
+    public static final RenameParameterCommand createRenameParameterCommand(IOasParameterParent parent, 
+            String oldParamName, String newParamName, String paramIn) {
+        return new RenameParameterCommand(parent, oldParamName, newParamName, paramIn);
+    }
+    
+    public static final RenamePathItemCommand createRenamePathItemCommand(String oldPath, String newPath, 
+            boolean alsoRenameSubpaths) {
+        return new RenamePathItemCommand(oldPath, newPath, alsoRenameSubpaths);
+    }
+    
+    public static final RenamePropertyCommand createRenamePropertyCommand(OasSchema parent, String oldPropertyName, 
+            String newPropertyName) {
+        return new RenamePropertyCommand(parent, oldPropertyName, newPropertyName);
+    }
+    
+    public static final RenameSchemaDefinitionCommand createRenameSchemaDefinitionCommand(DocumentType docType, 
+            String oldName, String newName) {
+        if (docType == DocumentType.openapi2) {
+            return new RenameSchemaDefinitionCommand_20(oldName, newName);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new RenameSchemaDefinitionCommand_30(oldName, newName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+    
+    public static final RenameSecuritySchemeCommand createRenameSecuritySchemeCommand(String oldSchemeName, 
+            String newSchemeName) {
+        return new RenameSecuritySchemeCommand(oldSchemeName, newSchemeName);
     }
 }

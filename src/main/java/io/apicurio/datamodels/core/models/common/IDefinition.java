@@ -29,5 +29,11 @@ public interface IDefinition extends IVisitable {
      * Gets the definition name.
      */
     public String getName();
+    
+    /**
+     * Renames the definition.
+     * @param newName
+     */
+    public void rename(String newName);
 
 }

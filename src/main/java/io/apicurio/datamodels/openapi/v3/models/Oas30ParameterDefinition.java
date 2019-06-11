@@ -45,6 +45,14 @@ public class Oas30ParameterDefinition extends Oas30Parameter implements IParamet
     }
     
     /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.models.common.Parameter#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override

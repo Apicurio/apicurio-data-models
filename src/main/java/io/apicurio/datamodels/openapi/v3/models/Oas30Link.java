@@ -66,6 +66,14 @@ public class Oas30Link extends ExtensibleNode implements IOas30LinkDefinition, I
     public String getName() {
         return this._name;
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
 
     /**
      * Creates a link parameter expression.

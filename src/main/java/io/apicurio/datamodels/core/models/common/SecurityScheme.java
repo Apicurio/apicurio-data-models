@@ -55,6 +55,14 @@ public abstract class SecurityScheme extends ExtensibleNode implements ISecurity
     }
     
     /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._schemeName = newName;
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override

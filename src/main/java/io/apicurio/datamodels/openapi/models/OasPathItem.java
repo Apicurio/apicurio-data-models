@@ -52,6 +52,14 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     }
     
     /**
+     * Rename the path item (change its path value).
+     * @param newPath
+     */
+    public void rename(String newPath) {
+        this._path = newPath;
+    }
+    
+    /**
      * @see io.apicurio.datamodels.openapi.models.IOasParameterParent#getParameters()
      */
     @Override

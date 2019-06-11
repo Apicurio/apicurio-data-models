@@ -28,5 +28,11 @@ public interface IOasPropertySchema extends IVisitable {
      * Returns the property schema's name.
      */
     public String getPropertyName();
+    
+    /**
+     * Renames the property schema.
+     * @param newName
+     */
+    public void rename(String newName);
 
 }

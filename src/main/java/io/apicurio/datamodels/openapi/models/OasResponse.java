@@ -63,4 +63,12 @@ public class OasResponse extends ExtensibleNode implements IOasResponseDefinitio
         return this._name;
     }
     
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+    
 }
