@@ -9,6 +9,6 @@ export default {
     output: {
     	file: "dist/bundles/apicurio-data-models.umd.js",
     	format: "umd",
-    	name: "apicurio-data-models"
+    	name: "ApicurioDM"
     }
 };
