@@ -1,0 +1,6 @@
+[{
+    "__type": "RenamePathItemCommand",
+    "_oldPath": "/pet/findByStatus",
+    "_newPath": "/pet/searchByStatus",
+    "_alsoRenameSubpaths": true
+}]

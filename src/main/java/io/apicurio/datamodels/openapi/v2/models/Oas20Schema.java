@@ -159,6 +159,14 @@ public class Oas20Schema extends OasSchema {
         public String getPropertyName() {
             return this._propertyName;
         }
+        
+        /**
+         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#rename(java.lang.String)
+         */
+        @Override
+        public void rename(String newName) {
+            this._propertyName = newName;
+        }
 
         /**
          * @see io.apicurio.datamodels.core.models.common.Schema#accept(io.apicurio.datamodels.core.visitors.IVisitor)

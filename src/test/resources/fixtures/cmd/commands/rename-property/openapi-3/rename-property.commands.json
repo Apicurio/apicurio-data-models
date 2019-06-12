@@ -1,0 +1,6 @@
+[{
+    "__type": "RenamePropertyCommand",
+    "_oldPropertyName": "name",
+    "_newPropertyName": "newName",
+    "_parentPath": "/components/schemas[MySchema1]"
+}]

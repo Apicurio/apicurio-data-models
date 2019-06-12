@@ -1,0 +1,5 @@
+[{
+    "__type": "NewResponseCommand_20",
+    "_operationPath": "/paths[/pets]/get",
+    "_statusCode": "200"
+}]

@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.validation;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -31,10 +30,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
@@ -63,23 +59,8 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
 
     private List<ValidationTestCase> loadTests() throws InitializationError {
         try {
-            List<ValidationTestCase> allTests = new LinkedList<>();
-            
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/validation/tests.json");
-            String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
-            JsonNode tree = mapper.readTree(testsJsonSrc);
-            ArrayNode tests = (ArrayNode) tree;
-            tests.forEach( test -> {
-                ObjectNode testNode = (ObjectNode) test;
-                ValidationTestCase testCase = new ValidationTestCase();
-                testCase.setName(testNode.get("name").asText());
-                testCase.setTest(testNode.get("test").asText());
-                if (testNode.has("severity")) {
-                    testCase.setSeverity(testNode.get("severity").asText());
-                }
-                allTests.add(testCase);
-            });
-            
+            List<ValidationTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, ValidationTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);

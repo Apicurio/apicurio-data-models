@@ -25,4 +25,8 @@ export class LoggerCompat {
         console.warn(message, args);
     }
 
+    public static debug(message: string, ...args: any[]): void {
+        console.debug(message, args);
+    }
+
 }

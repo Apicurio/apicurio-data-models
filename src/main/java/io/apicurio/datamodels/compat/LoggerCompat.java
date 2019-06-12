@@ -26,25 +26,36 @@ import java.io.PrintStream;
 public class LoggerCompat {
     
     private static void output(String prefix, PrintStream stream, String message, Object ...args) {
-        stream.print("[");
+        stream.print("|");
         stream.print(prefix);
-        stream.print("] ");
-        stream.print(message);
-        if (args != null) {
-            for (Object arg : args) {
-                stream.print(arg);
-                stream.print(", ");
-            }
-        }
+        stream.print("| ");
+        stream.print(formatMessage(message, args));
         stream.println("");
     }
-    
+    private static String formatMessage(String message, Object[] args) {
+        boolean done = false;
+        String rval = message;
+        int argidx = 0;
+        while (!done) {
+            int idx = rval.indexOf("%");
+            if (idx == -1) {
+                break;
+            }
+            rval = rval.substring(0, idx) + String.valueOf(args[argidx++]) + rval.substring(idx + 2);
+        }
+        return rval;
+    }
+
     public static void info(String message, Object ...args) {
         LoggerCompat.output("INFO", System.out, message, args);
     }
 
     public static void warn(String message, Object ...args) {
         LoggerCompat.output("WARN", System.err, message, args);
+    }
+
+    public static void debug(String message, Object ...args) {
+        LoggerCompat.output("DEBUG", System.out, message, args);
     }
 
 }

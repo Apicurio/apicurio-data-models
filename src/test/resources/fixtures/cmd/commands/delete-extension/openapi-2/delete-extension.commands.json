@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteExtensionCommand",
+    "_parentPath": "/paths[/pet/findByStatus]/get",
+    "_name": "x-existing-extension"
+}]

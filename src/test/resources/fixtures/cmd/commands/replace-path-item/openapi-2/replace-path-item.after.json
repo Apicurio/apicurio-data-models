@@ -1,0 +1,16 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "put": {
+        "summary": "Update Pet",
+        "description": "Updates the pet.",
+        "operationId": "updatePet",
+        "consumes": [
+          "application/json"
+        ],
+        "deprecated": false
+      }
+    }
+  }
+}

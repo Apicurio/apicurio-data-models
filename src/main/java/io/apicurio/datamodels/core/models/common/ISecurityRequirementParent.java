@@ -16,10 +16,17 @@
 
 package io.apicurio.datamodels.core.models.common;
 
+import java.util.List;
+
 /**
  * @author eric.wittmann@gmail.com
  */
 public interface ISecurityRequirementParent {
+    
+    /**
+     * Returns a list of all security requirements.
+     */
+    public List<SecurityRequirement> getSecurityRequirements();
 
     /**
      * Creates an OAS Security Requirement object.

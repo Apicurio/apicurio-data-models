@@ -150,7 +150,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
                 schemes = NodeCompat.asList("http");
             }
 
-            Oas30Server server30 = this.doc30.createServer();
+            Oas30Server server30 = (Oas30Server) this.doc30.createServer();
             this.doc30.servers = new ArrayList<>();
             this.doc30.servers.add(server30);
             if (schemes.size() == 1) {
@@ -257,7 +257,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
                 !NodeCompat.isNullOrUndefined(this.doc30.servers) && 
                 this.doc30.servers.size() > 0)
         {
-            Oas30Server server30 = operation30.createServer();
+            Oas30Server server30 = (Oas30Server) operation30.createServer();
             operation30.servers = new ArrayList<>();
             operation30.servers.add(server30);
 

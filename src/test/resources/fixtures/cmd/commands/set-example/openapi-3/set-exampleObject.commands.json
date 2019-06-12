@@ -1,0 +1,6 @@
+[{
+    "__type": "SetExampleCommand_30",
+    "_parentPath": "/paths[/foo]/get/responses[200]/content[application/xml]",
+    "_newExample": "<UpdatedData>GOES HERE</UpdatedData>",
+    "_newExampleName": "list"
+}]

@@ -1,0 +1,6 @@
+[{
+    "__type": "NewSchemaPropertyCommand_30",
+    "_schemaPath": "/components/schemas[MySchema1]",
+    "_propertyName": "newProperty",
+    "_newType": null
+}]

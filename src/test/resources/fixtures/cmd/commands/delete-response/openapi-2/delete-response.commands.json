@@ -1,0 +1,6 @@
+[{
+    "__type": "DeleteResponseCommand_20",
+    "_responseCode": "405",
+    "_responsePath": "/paths[/pet]/post/responses[405]",
+    "_responsesPath": "/paths[/pet]/post/responses"
+}]

@@ -1,0 +1,24 @@
+[
+	{
+		"__type": "AddPathItemCommand_20",
+		"_newPathItemName": "/clonedPets",
+		"_newPathItemObj": {
+			"get": {
+				"summary": "List Pets",
+				"description": "Returns all pets from the system that the user has access to",
+				"operationId": "listPets",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"schemes": [
+					"http",
+					"https"
+				],
+				"deprecated": false
+			}
+		}
+	}
+]

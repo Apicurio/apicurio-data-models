@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "ChangeParameterTypeCommand_30",
+        "_paramPath" : "/paths[/foo]/get/parameters[1]",
+        "_newType" : {
+          "type": "string",
+          "enum": [ "option1", "option2", "option3" ]
+        }
+    }
+]

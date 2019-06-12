@@ -132,5 +132,13 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
         this.security.add(securityRequirement);
         return securityRequirement;
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#getSecurityRequirements()
+     */
+    @Override
+    public List<SecurityRequirement> getSecurityRequirements() {
+        return this.security;
+    }
 
 }

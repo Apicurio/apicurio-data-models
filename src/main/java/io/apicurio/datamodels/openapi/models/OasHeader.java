@@ -46,6 +46,14 @@ public class OasHeader extends ExtensibleNode implements IHeaderDefinition {
     }
 
     /**
+     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override

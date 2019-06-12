@@ -18,10 +18,8 @@ package io.apicurio.datamodels.core.paths;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.runner.Description;
 import org.junit.runner.notification.RunNotifier;
@@ -29,10 +27,7 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.core.models.NodePath;
 
@@ -58,25 +53,8 @@ public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
 
     private List<NodePathIoTestCase> loadTests() throws InitializationError {
         try {
-            List<NodePathIoTestCase> allTests = new LinkedList<>();
-            
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/io-tests.json");
-            String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
-            JsonNode tree = mapper.readTree(testsJsonSrc);
-            ArrayNode tests = (ArrayNode) tree;
-            tests.forEach( test -> {
-                ObjectNode testNode = (ObjectNode) test;
-                NodePathIoTestCase testCase = new NodePathIoTestCase();
-                testCase.setName(testNode.get("name").asText());
-                testCase.setPath(testNode.get("path").asText());
-                ArrayNode segs = (ArrayNode) testNode.get("segments");
-                Assert.assertNotNull(segs);
-                segs.forEach(s -> {
-                    testCase.getSegments().add(s.asText());
-                });
-                allTests.add(testCase);
-            });
-            
+            List<NodePathIoTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePathIoTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);

@@ -1,0 +1,9 @@
+[{
+    "__type": "NewParamCommand_30",
+    "_parentPath": "/paths[/foo]/get",
+    "_paramName": "username",
+    "_paramType": "path",
+    "_description": null,
+    "_newType": null,
+    "_override": true
+}]

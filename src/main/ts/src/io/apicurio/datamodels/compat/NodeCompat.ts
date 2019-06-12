@@ -27,6 +27,10 @@ export class NodeCompat {
         }
         return rval;
     }
+    
+    public static setProperty(node: any, propertyName: string, newValue: any): void {
+        node[propertyName] = newValue;
+    }
 
     public static indexOf(child: any, parent: any, propertyName: string): number {
         let array: any[] = parent[propertyName];

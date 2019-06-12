@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -33,10 +32,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.compat.JsonCompat;
@@ -75,23 +71,8 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
 
     private List<IoTestCase> loadTests() throws InitializationError {
         try {
-            List<IoTestCase> allTests = new LinkedList<>();
-            
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/io/tests.json");
-            String testsJsonSrc = IOUtils.toString(testsJsonUrl, "UTF-8");
-            JsonNode tree = mapper.readTree(testsJsonSrc);
-            ArrayNode tests = (ArrayNode) tree;
-            tests.forEach( test -> {
-                ObjectNode testNode = (ObjectNode) test;
-                IoTestCase testCase = new IoTestCase();
-                testCase.setName(testNode.get("name").asText());
-                testCase.setTest(testNode.get("test").asText());
-                if (testNode.has("extraProperties")) {
-                    testCase.setExtraProperties(testNode.get("extraProperties").asInt());
-                }
-                allTests.add(testCase);
-            });
-            
+            List<IoTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, IoTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);
@@ -162,7 +143,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                         String path = nodePath.toString();
                         Assert.assertNotNull(nodePath);
                         nodePath = new NodePath(path);
-                        Node resolvedNode = nodePath.resolve(doc, null);
+                        Node resolvedNode = nodePath.resolve(doc);
                         Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
                         Assert.assertTrue("Path failed to resolve to the proper node: " + path, node == resolvedNode);
                     } catch (Throwable t) {

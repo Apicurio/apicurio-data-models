@@ -27,7 +27,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  * Models an OpenAPI 3.0.x response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Response extends OasResponse {
+public class Oas30Response extends OasResponse implements IOas30MediaTypeParent {
 
     public Map<String, Oas30Header> headers = new LinkedHashMap<>();
     public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
@@ -94,9 +94,9 @@ public class Oas30Response extends OasResponse {
     }
 
     /**
-     * Creates a media type.
-     * @param name
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#createMediaType(java.lang.String)
      */
+    @Override
     public Oas30MediaType createMediaType(String name) {
         Oas30MediaType rval = new Oas30MediaType(name);
         rval._ownerDocument = this.ownerDocument();
@@ -105,33 +105,33 @@ public class Oas30Response extends OasResponse {
     }
 
     /**
-     * Adds a media type.
-     * @param name
-     * @param mediaType
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#addMediaType(java.lang.String, io.apicurio.datamodels.openapi.v3.models.Oas30MediaType)
      */
+    @Override
     public void addMediaType(String name, Oas30MediaType mediaType) {
         this.content.put(name, mediaType);
     }
 
     /**
-     * Gets a single media type by name.
-     * @param name
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#getMediaType(java.lang.String)
      */
+    @Override
     public Oas30MediaType getMediaType(String name) {
         return this.content.get(name);
     }
 
     /**
-     * Removes a single media type and returns it.  This may return null or undefined if none found.
-     * @param name
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#removeMediaType(java.lang.String)
      */
+    @Override
     public Oas30MediaType removeMediaType(String name) {
         return this.content.remove(name);
     }
 
     /**
-     * Gets a list of all media types.
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#getMediaTypes()
      */
+    @Override
     public List<Oas30MediaType> getMediaTypes() {
         List<Oas30MediaType> rval = new ArrayList<>();
         rval.addAll(this.content.values());

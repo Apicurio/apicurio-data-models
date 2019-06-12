@@ -65,12 +65,32 @@ export class JsonCompat {
         return object;
     }
     
+    public static isString(json: any): boolean {
+        return typeof json === "string";
+    }
+    
+    public static isNumber(json: any): boolean {
+        return typeof json === "number";
+    }
+
+    public static isObject(json: any): boolean {
+        return typeof json === "object";
+    }
+
     public static isBoolean(json: any): boolean {
         return typeof json === "boolean";
     }
     
     public static toBoolean(json: any): boolean {
         return <boolean>json;
+    }
+
+    public static toString(json: any): string {
+        return <string>json;
+    }
+    
+    public static toNumber(json: any): number {
+        return <number>json;
     }
     
     public static isArray(json: any): boolean {
@@ -179,4 +199,5 @@ export class JsonCompat {
             array.push(propertyValue);
         }
     }
+
 }

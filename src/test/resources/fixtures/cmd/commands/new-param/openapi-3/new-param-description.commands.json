@@ -1,0 +1,11 @@
+[
+	{
+		"__type": "NewParamCommand_30",
+		"_parentPath": "/paths[/foo]/get",
+		"_paramName": "newParameter",
+		"_paramType": "query",
+		"_description": "An included description.",
+		"_newType": null,
+		"_override": false
+	}
+]

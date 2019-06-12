@@ -1,0 +1,20 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "summary": "Foo Resources",
+      "description": "CRUD for Foos."
+    },
+    "/foo/{fooId}": {
+      "summary": "Foo Resource",
+      "description": "Foo details",
+      "get": {
+        "tags": [ "tag1", "tag2" ],
+        "summary": "Get Foo",
+        "description": "Returns a single foo.",
+        "operationId": "getFoo",
+        "deprecated": false
+      }
+    }
+  }
+}

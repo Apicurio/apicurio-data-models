@@ -142,7 +142,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     public OasSchema removeProperty(String propertyName) {
         if (this.properties != null) {
-            this.properties.remove(propertyName);
+            return this.properties.remove(propertyName);
         }
         return null;
     }

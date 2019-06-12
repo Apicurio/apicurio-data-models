@@ -21,7 +21,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IServerParent;
+import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasResponses;
@@ -31,11 +34,11 @@ import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
  * Models an OpenAPI 3.0.x operation.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Operation extends OasOperation {
+public class Oas30Operation extends OasOperation implements IServerParent {
 
     public Oas30RequestBody requestBody;
     public Map<String, Oas30Callback> callbacks = new LinkedHashMap<>();
-    public List<Oas30Server> servers;
+    public List<Server> servers;
     
     /**
      * Constructor.
@@ -145,9 +148,10 @@ public class Oas30Operation extends OasOperation {
     }
 
     /**
-     * Creates an OAS 3.0 Server object.
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#createServer()
      */
-    public Oas30Server createServer() {
+    @Override
+    public Server createServer() {
         Oas30Server rval = new Oas30Server();
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
@@ -155,14 +159,37 @@ public class Oas30Operation extends OasOperation {
     }
 
     /**
-     * Adds a server.
-     * @param serverModel
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#addServer(io.apicurio.datamodels.core.models.common.Server)
      */
-    public void addServer(Oas30Server serverModel) {
+    @Override
+    public void addServer(Server server) {
         if (this.servers == null) {
             this.servers = new ArrayList<>();
         }
-        this.servers.add(serverModel);
+        this.servers.add((Oas30Server) server);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#getServer(java.lang.String)
+     */
+    @Override
+    public Server getServer(String url) {
+        if (this.servers != null) {
+            for (Server server : this.servers) {
+                if (NodeCompat.equals(server.url, url)) {
+                    return server;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IServerParent#getServers()
+     */
+    @Override
+    public List<Server> getServers() {
+        return this.servers;
     }
 
 }

@@ -65,6 +65,25 @@ public class NodeCompat {
         
         return null;
     }
+    
+    /**
+     * Sets the value for a given node property.
+     * @param node
+     * @param propertyName
+     * @param newValue
+     */
+    public static void setProperty(Object node, String propertyName, Object newValue) {
+        try {
+            Field field = node.getClass().getField(propertyName);
+            field.set(node, newValue);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+                | IllegalAccessException e) {
+            LoggerCompat.warn("Failed to set property '%s' on Node '%s': %s", propertyName, 
+                    node.getClass().getSimpleName(), e.getMessage());
+            return;
+        }
+
+    }
 
     /**
      * Figures out the index of the given child by interrogating the parent node's list of 
