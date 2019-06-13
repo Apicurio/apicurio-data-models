@@ -122,7 +122,6 @@ public class NodePath {
      * referenced.  If the path does not point to a valid node, then this method
      * returns undefined.
      * @param document the document to resolve the path relative to
-     * @param visitor an optional visitor to invoke for each node in the path (can be null)
      */
     public Node resolve(Document document) {
         return this.resolveWithVisitor(document, null);
@@ -130,8 +129,8 @@ public class NodePath {
 
     /**
      * Resolves a path to its target node while also visiting all nodes along the way.
-     * @param document
-     * @param visitor
+     * @param document the document to resolve the path relative to
+     * @param visitor an optional visitor to invoke for each node in the path (can be null)
      */
     public Node resolveWithVisitor(Document document, IVisitor visitor) {
         Node node = document;

@@ -66,7 +66,7 @@ public class ValidationVisitor extends CombinedCompositeVisitor implements IVali
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.validation.IValidationProblemReporter#report(io.apicurio.asyncapi.core.validation.ValidationRuleMetaData, io.apicurio.asyncapi.core.models.Node, java.lang.String, java.lang.String)
+     * @see io.apicurio.datamodels.core.validation.IValidationProblemReporter#report(io.apicurio.datamodels.core.validation.ValidationRuleMetaData, io.apicurio.datamodels.core.models.Node, java.lang.String, java.lang.String)
      */
     @Override
     public void report(ValidationRuleMetaData ruleInfo, Node node, String property, String message) {

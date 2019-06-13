@@ -98,7 +98,7 @@ public class OasAllNodeVisitor extends AllNodeVisitor implements IOasVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.openapi.models.OasSchema)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.openapi.models.IOasPropertySchema)
      */
     @Override
     public void visitPropertySchema(IOasPropertySchema node) {

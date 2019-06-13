@@ -403,7 +403,7 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
     public void visitServer(Server node) {
@@ -414,7 +414,7 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
      */
     @Override
     public void visitServerVariable(ServerVariable node) {

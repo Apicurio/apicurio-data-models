@@ -73,8 +73,8 @@ public abstract class DataModelReader {
      * Reads all remaining properties.  Anything left is an "extra" (or unexpected) property.  These
      * are not extension properties - they are actually properties that SHOULD NOT have existed on
      * the node.  (all extension properties must start with "x-" and are consumed by "readExtensions".
-     * @param jsData
-     * @param model
+     * @param json
+     * @param node
      */
     protected void readExtraProperties(Object json, Node node) {
         JsonCompat.keys(json).forEach(key -> {
@@ -361,8 +361,8 @@ public abstract class DataModelReader {
 
     /**
      * Reads an OAS 3.0 OAuth Flows object from the given JS data.
-     * @param flows
-     * @param flowsModel
+     * @param json
+     * @param node
      */
     public void readOAuthFlows(Object json, OAuthFlows node) {
         Object implicit = JsonCompat.consumeProperty(json, Constants.PROP_IMPLICIT);
@@ -393,8 +393,8 @@ public abstract class DataModelReader {
 
     /**
      * Reads an OAS 3.0 OAuth Flow object from the given JS data.
-     * @param flow
-     * @param flowModel
+     * @param json
+     * @param node
      */
     public void readOAuthFlow(Object json, OAuthFlow node) {
         String authorizationUrl = JsonCompat.consumePropertyString(json, Constants.PROP_AUTHORIZATION_URL);

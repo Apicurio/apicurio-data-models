@@ -60,7 +60,7 @@ public class ReferenceUtil {
      * #/responses/NotFoundResponse
      *
      * @param $ref
-     * @param oasDocument
+     * @param from
      */
     public static boolean canResolveRef(String $ref, Node from) {
         // Don't try to resolve e.g. external references.
@@ -70,8 +70,7 @@ public class ReferenceUtil {
 
     /**
      * Check if the property value exists (is not undefined and is not null).
-     * @param propertyValue
-     * @return {boolean}
+     * @param value
      */
     public static boolean hasValue(Object value) {
         return !NodeCompat.isNullOrUndefined(value);

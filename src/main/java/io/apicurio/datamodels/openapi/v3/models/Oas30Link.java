@@ -134,7 +134,6 @@ public class Oas30Link extends ExtensibleNode implements IOas30LinkDefinition, I
 
     /**
      * Creates a link request body expression.
-     * @param name
      * @param value
      */
     public Oas30LinkRequestBodyExpression createLinkRequestBodyExpression(String value) {

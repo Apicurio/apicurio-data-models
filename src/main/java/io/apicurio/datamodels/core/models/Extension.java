@@ -30,7 +30,7 @@ public class Extension extends Node {
     public Object value;
 
     /**
-     * @see io.apicurio.asyncapi.core.models.AaiNode#accept(io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor)
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override
     public void accept(IVisitor visitor) {

@@ -39,7 +39,7 @@ public class OasInvalidHeaderReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitHeader(io.apicurio.datamodels.openapi.v3.models.Oas30Header)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitHeader(io.apicurio.datamodels.openapi.models.OasHeader)
      */
     @Override
     public void visitHeader(OasHeader node) {

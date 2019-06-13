@@ -25,7 +25,7 @@ import io.apicurio.datamodels.core.models.Node;
 public class ValidationProblemsResetVisitor extends CombinedAllNodeVisitor {
     
     /**
-     * @see io.apicurio.asyncapi.core.visitors.AllNodeVisitor#visitNode(io.apicurio.asyncapi.core.models.Node)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitNode(io.apicurio.datamodels.core.models.Node)
      */
     @Override
     protected void visitNode(Node node) {

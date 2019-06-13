@@ -80,7 +80,7 @@ public class CompositeVisitor implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IVisitor#visitValidationProblem(io.apicurio.asyncapi.core.validation.ValidationProblem)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
      */
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
@@ -88,7 +88,7 @@ public class CompositeVisitor implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IVisitor#visitDocument(io.apicurio.asyncapi.core.models.Document)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
     public void visitDocument(Document node) {
@@ -96,7 +96,7 @@ public class CompositeVisitor implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IVisitor#visitExtension(io.apicurio.asyncapi.core.models.Extension)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
      */
     @Override
     public void visitExtension(Extension node) {

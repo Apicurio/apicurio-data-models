@@ -48,7 +48,7 @@ public class ValidationProblem implements IVisitable {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.models.IAaiVisitable#accept(io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor)
+     * @see io.apicurio.datamodels.core.models.IVisitable#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
     @Override
     public void accept(IVisitor visitor) {

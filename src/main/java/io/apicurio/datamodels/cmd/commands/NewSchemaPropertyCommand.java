@@ -121,7 +121,7 @@ public class NewSchemaPropertyCommand extends AbstractCommand {
 
     /**
      * Sets the property type.
-     * @param property
+     * @param prop
      */
     protected void _setPropertyType(IOasPropertySchema prop) {
         // Update the schema's type

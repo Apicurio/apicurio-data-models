@@ -92,8 +92,8 @@ public abstract class ChangeSecuritySchemeCommand extends AbstractCommand {
 
     /**
      * Replaces the content of a scheme with the content from another scheme.
-     * @param {Oas20SecurityScheme | Oas30SecurityScheme} toScheme
-     * @param {Oas20SecurityScheme | Oas30SecurityScheme} fromScheme
+     * @param toScheme
+     * @param fromScheme
      */
     protected void replaceSchemeWith(SecurityScheme toScheme, Object fromScheme) {
         this.nullScheme(toScheme);
@@ -102,7 +102,7 @@ public abstract class ChangeSecuritySchemeCommand extends AbstractCommand {
 
     /**
      * Null out all values in the given scheme.
-     * @param {Oas20SecurityScheme | Oas30SecurityScheme} scheme
+     * @param scheme
      */
     protected void nullScheme(SecurityScheme scheme) {
         scheme.description = null;

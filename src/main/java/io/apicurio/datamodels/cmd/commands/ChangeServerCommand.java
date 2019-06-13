@@ -100,8 +100,8 @@ public class ChangeServerCommand extends AbstractCommand {
 
     /**
      * Replaces the content of a server with the content from another server.
-     * @param {Oas30Server} toServer
-     * @param {Oas30Server} fromServer
+     * @param toServer
+     * @param fromServer
      */
     protected void replaceServerWith(Server toServer, Object fromServer) {
         toServer.getServerVariables().forEach( var_ -> {

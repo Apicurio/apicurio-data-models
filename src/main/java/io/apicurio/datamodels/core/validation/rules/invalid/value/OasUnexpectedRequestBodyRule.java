@@ -36,8 +36,7 @@ public class OasUnexpectedRequestBodyRule extends OasInvalidPropertyValueRule {
 
     /**
      * Returns true if the given operation is one of:  POST, PUT, OPTIONS
-     * @param {Oas30Operation} operation
-     * @return {boolean}
+     * @param operation
      */
     protected boolean isValidRequestBodyOperation(Oas30Operation operation) {
         String method = operation.getMethod();

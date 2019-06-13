@@ -104,7 +104,7 @@ public class DataModelWriter implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitDocument(io.apicurio.datamodels.asyncapi.models.AaiDocument)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
     public void visitDocument(Document node) {
@@ -123,7 +123,7 @@ public class DataModelWriter implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitExtension(io.apicurio.asyncapi.core.models.AaiExtension)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
      */
     @Override
     public void visitExtension(Extension node) {
@@ -300,7 +300,7 @@ public class DataModelWriter implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.IAaiNodeVisitor#visitValidationProblem(io.apicurio.asyncapi.core.validation.AaiValidationProblem)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
      */
     @Override
     public void visitValidationProblem(ValidationProblem problem) {

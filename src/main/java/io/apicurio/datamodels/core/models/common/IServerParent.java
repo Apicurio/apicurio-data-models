@@ -30,7 +30,7 @@ public interface IServerParent {
 
     /**
      * Adds a server.
-     * @param serverModel
+     * @param server
      */
     public void addServer(Server server);
     

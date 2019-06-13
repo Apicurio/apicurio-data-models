@@ -69,9 +69,9 @@ public abstract class Node implements IVisitable {
         return this._modelId;
     }
 
-    /**
-     * @see io.apicurio.asyncapi.core.models.IVisitable#accept(io.apicurio.asyncapi.core.visitors.IVisitor)
-     */
+	/**
+	 * @see io.apicurio.datamodels.core.models.IVisitable#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+	 */
 	public abstract void accept(IVisitor visitor);
 	
 	/**

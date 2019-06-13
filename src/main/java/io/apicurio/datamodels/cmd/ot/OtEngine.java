@@ -198,8 +198,8 @@ public class OtEngine {
      * 3) call "executeCommand()" with the newly finalized command
      * 4) re-execute all remaining pending commands
      *
-     * @param {number} pendingCommandId
-     * @param {number} finalizedContentVersion
+     * @param pendingCommandId
+     * @param finalizedContentVersion
      */
     public void finalizeCommand(long pendingCommandId, long finalizedContentVersion) {
         LoggerCompat.info("[OtEngine] Finalizing command with contentId: %o  and new contentVersion: %o", pendingCommandId, finalizedContentVersion);

@@ -108,7 +108,7 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
 
     /**
      * Returns a list of parameters with a particular value of "in" (e.g. path, formData, body, etc...).
-     * @param _in
+     * @param in
      */
     public List<OasParameter> getParameters(String in) {
         if (this.parameters == null && in == null) {
@@ -126,7 +126,7 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     /**
      * Returns a single, unique parameter identified by "in" and "name" (which are the two
      * properties that uniquely identify a parameter).  Returns null if no parameter is found.
-     * @param _in
+     * @param in
      * @param name
      */
     public OasParameter getParameter(String in, String name) {

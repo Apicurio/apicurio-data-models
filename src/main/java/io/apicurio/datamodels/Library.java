@@ -124,7 +124,6 @@ public class Library {
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.
      * @param json
-     * @return
      */
     public static Document readDocument(Object json) {
         // Clone the input because the reader is destructive to the source data.

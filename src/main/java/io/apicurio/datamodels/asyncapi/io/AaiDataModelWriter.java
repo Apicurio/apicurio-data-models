@@ -50,10 +50,8 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
         writeExtraProperties(json, node);
     }
     
-    
-
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
     public void visitServer(Server node) {
@@ -79,7 +77,7 @@ public class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
      */
     @Override
     public void visitServerVariable(ServerVariable node) {

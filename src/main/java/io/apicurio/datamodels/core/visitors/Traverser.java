@@ -112,9 +112,9 @@ public class Traverser implements ITraverser, IVisitor {
         }
     }
 
-    /**
-     * @see io.apicurio.asyncapi.core.visitors.INodeVisitor#visitDocument(io.apicurio.datamodels.asyncapi.models.Document)
-     */
+	/**
+	 * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
+	 */
 	@Override
 	public final void visitDocument(Document node) {
 		node.accept(this.visitor);
@@ -133,8 +133,8 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseIfNotNull(node.externalDocs);
     }
 
-    /**
-	 * @see io.apicurio.asyncapi.core.visitors.INodeVisitor#visitExtension(io.apicurio.asyncapi.core.models.Extension)
+	/**
+	 * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
 	 */
 	@Override
 	public void visitExtension(Extension node) {
@@ -143,7 +143,7 @@ public class Traverser implements ITraverser, IVisitor {
 	}
 
     /**
-     * @see io.apicurio.asyncapi.core.visitors.INodeVisitor#visitValidationProblem(io.apicurio.asyncapi.core.validation.ValidationProblem)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
      */
     @Override
     public void visitValidationProblem(ValidationProblem problem) {

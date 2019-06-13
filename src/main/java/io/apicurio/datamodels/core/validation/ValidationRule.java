@@ -238,8 +238,7 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
 
     /**
      * Returns true only if the given value is a valid URL template.
-     * @param {string} propertyValue
-     * @return {boolean}
+     * @param propertyValue
      */
     protected boolean isValidUrlTemplate(String propertyValue) {
         // TODO is there a regular expression we can use to validate a URL template??
@@ -249,7 +248,6 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     /**
      * Returns true only if the given value is valid GFM style markup.
      * @param propertyValue
-     * @return {boolean}
      */
     protected boolean isValidGFM(String propertyValue) {
         // TODO implement a regexp to test for a valid Github Flavored Markdown string
@@ -259,7 +257,6 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     /**
      * Returns true only if the given value is valid CommonMark style markup.
      * @param propertyValue
-     * @return {boolean}
      */
     protected boolean isValidCommonMark(String propertyValue) {
         // TODO implement a regexp to test for a valid CommonMark string
@@ -269,7 +266,6 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     /**
      * Returns true only if the given value is a valid email address.
      * @param propertyValue
-     * @return {boolean}
      */
     protected boolean isValidEmailAddress(String propertyValue) {
         return RegexCompat.matches(propertyValue, EMAIL_MATCH_REGEX);
@@ -278,7 +274,6 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     /**
      * Returns true only if the given value is a valid mime-type.
      * @param propertyValue
-     * @return {boolean}
      */
     protected boolean isValidMimeType(List<String> propertyValue) {
         for (String v : propertyValue) {
@@ -317,7 +312,6 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     /**
      * Returns true if the given status code is a valid HTTP response code.
      * @param statusCode
-     * @return {boolean}
      */
     protected boolean isValidHttpCode(String statusCode) {
         return HTTP_STATUS_CODES.indexOf(statusCode) != -1;

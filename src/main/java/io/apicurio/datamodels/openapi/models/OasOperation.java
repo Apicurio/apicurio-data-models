@@ -122,7 +122,7 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
     public abstract OasSecurityRequirement createSecurityRequirement();
 
     /**
-     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#addSecurityRequirement(io.apicurio.datamodels.openapi.models.OasSecurityRequirement)
+     * @see io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#addSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
      */
     @Override
     public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement) {
