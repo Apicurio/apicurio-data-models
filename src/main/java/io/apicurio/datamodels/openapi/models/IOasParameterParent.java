@@ -27,6 +27,12 @@ public interface IOasParameterParent {
      * Gets the parameters.
      */
     public List<OasParameter> getParameters();
+    
+    /**
+     * Gets all parameter for a location (path, query, etc).
+     * @param in
+     */
+    public List<OasParameter> getParametersIn(String in);
 
     /**
      * Adds a parameter.

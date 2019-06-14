@@ -42,6 +42,7 @@ import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
+import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -216,6 +217,26 @@ public class Library {
         }
         
         throw new RuntimeException("Unknown data model type or version.");
+    }
+
+    /**
+     * Clones the given document by serializing it to a JS object, and then re-parsing it.
+     * @param source
+     */
+    public static Document cloneDocument(Document source) {
+        Object jsObj = writeNode(source);
+        return readDocument(jsObj);
+    }
+
+    /**
+     * Transforms from an OpenAPI 2.0 document into a 3.0 document.
+     * @param source
+     */
+    public static Oas30Document transformDocument(Oas20Document source) {
+        Oas20Document clone = (Oas20Document) cloneDocument(source);
+        Oas20to30TransformationVisitor transformer = new Oas20to30TransformationVisitor();
+        VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
+        return transformer.getResult();
     }
 
 }

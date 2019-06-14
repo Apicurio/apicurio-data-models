@@ -32,7 +32,8 @@ export class MarshallCompat {
 
     public static marshallCommand(command: ICommand): any {
         let to: any = {};
-        Object.keys(command).forEach(key => {
+        to["__type"] = command.type();
+        Object.keys(command).filter(key => key != "__type").forEach(key => {
             let value: any = command[key];
             if (value) {
                 if (pathKeys.indexOf(key) != -1) {
@@ -60,8 +61,11 @@ export class MarshallCompat {
 
     public static unmarshallCommand(from: any): ICommand {
         let type: string = from["__type"];
+        if (!type) {
+            throw Error("Missing __type from source data.");
+        }
         let command: ICommand = CommandFactory.create(type);
-        Object.keys(from).forEach(key => {
+        Object.keys(from).filter(key => key != "__type").forEach(key => {
             let value: any = from[key];
             if (value) {
                 if (pathKeys.indexOf(key) != -1) {

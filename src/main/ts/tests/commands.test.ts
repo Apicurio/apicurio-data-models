@@ -124,16 +124,15 @@ allTests.forEach(spec => {
                     directive.pending = directiveNode["__pending"];
                 }
 
-                directive.command = MarshallCompat.unmarshallCommand(directiveNode);
-                directives.push(directive);
+                // Load the command
+                let command: ICommand = MarshallCompat.unmarshallCommand(directiveNode);
 
-                // Make sure we can marshall/unmarshall the command
-                let marshalledCommand: any = MarshallCompat.marshallCommand(directive.command);
-                let mcs: string = JSON.stringify(marshalledCommand);
-                let unmarshalledCommand: ICommand = MarshallCompat.unmarshallCommand(JSON.parse(mcs));
+                // Make sure we can marshall/unmarshall the command fully
+                let marshalledCommand: any = MarshallCompat.marshallCommand(command);
+                let unmarshalledCommand: ICommand = MarshallCompat.unmarshallCommand(marshalledCommand);
                 
-                // Actually use the one that's been marshalled/unmarshalled.
                 directive.command = unmarshalledCommand;
+                directives.push(directive);
             }
         });
 
