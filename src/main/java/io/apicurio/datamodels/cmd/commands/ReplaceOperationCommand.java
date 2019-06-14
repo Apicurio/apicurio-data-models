@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.models.OasDocument;
@@ -38,10 +37,8 @@ public class ReplaceOperationCommand extends ReplaceNodeCommand<OasOperation> {
 
     ReplaceOperationCommand(OasOperation old, OasOperation replacement) {
         super(old, replacement);
-        if (ModelUtils.isDefined(old)) {
-            this._method = old.getMethod();
-            this._path = ((OasPathItem) old.parent()).getPath();
-        }
+        this._method = old.getMethod();
+        this._path = ((OasPathItem) old.parent()).getPath();
     }
     
     /**

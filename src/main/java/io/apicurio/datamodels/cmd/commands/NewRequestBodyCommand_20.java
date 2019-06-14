@@ -43,7 +43,7 @@ public class NewRequestBodyCommand_20 extends NewRequestBodyCommand {
      */
     @Override
     protected boolean hasRequestBody(OasOperation operation) {
-        return ModelUtils.isDefined(operation) && operation.getParameters("body").size() > 0;
+        return ModelUtils.isDefined(operation) && operation.getParametersIn("body").size() > 0;
     }
 
     /**
@@ -66,7 +66,7 @@ public class NewRequestBodyCommand_20 extends NewRequestBodyCommand {
     @Override
     protected void doRemoveRequestBody(OasOperation operation) {
         List<OasParameter> parameters = operation.getParameters();
-        List<OasParameter> bodyParams = operation.getParameters("body");
+        List<OasParameter> bodyParams = operation.getParametersIn("body");
         for (OasParameter bodyParam : bodyParams) {
             parameters.remove(parameters.indexOf(bodyParam));
         }

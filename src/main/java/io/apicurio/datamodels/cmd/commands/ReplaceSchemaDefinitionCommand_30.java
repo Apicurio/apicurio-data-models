@@ -29,12 +29,13 @@ public class ReplaceSchemaDefinitionCommand_30 extends ReplaceNodeCommand<Oas30S
 
     public String _defName;
 
-
+    
     ReplaceSchemaDefinitionCommand_30() {
     }
     
     ReplaceSchemaDefinitionCommand_30(Oas30SchemaDefinition old, Oas30SchemaDefinition replacement) {
         super(old, replacement);
+        this._defName = old.getName();
     }
     
     /**

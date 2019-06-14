@@ -115,7 +115,7 @@ public class OasSchemaFactory {
         }
         
         if (JsonCompat.isString(example)) {
-            example = JsonCompat.parseJSON((String) example);
+            example = JsonCompat.parseJSON(JsonCompat.toString(example));
         }
         
         resolveAll(example, schema);

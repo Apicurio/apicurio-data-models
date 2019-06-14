@@ -34,6 +34,7 @@ public class ReplacePathItemCommand extends ReplaceNodeCommand<OasPathItem> {
     
     ReplacePathItemCommand(OasPathItem old, OasPathItem replacement) {
         super(old, replacement);
+        this._pathName = replacement.getPath();
     }
     
     /**

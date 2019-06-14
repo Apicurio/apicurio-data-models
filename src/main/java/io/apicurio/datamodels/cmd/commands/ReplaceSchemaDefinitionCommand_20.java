@@ -34,6 +34,7 @@ public class ReplaceSchemaDefinitionCommand_20 extends ReplaceNodeCommand<Oas20S
     
     ReplaceSchemaDefinitionCommand_20(Oas20SchemaDefinition old, Oas20SchemaDefinition replacement) {
         super(old, replacement);
+        this._defName = old.getName();
     }
     
     /**

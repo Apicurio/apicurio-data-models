@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.openapi.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
@@ -121,23 +120,6 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
         }
         this.parameters.add(param);
         return param;
-    }
-
-    /**
-     * Returns a list of parameters with a particular value of "in" (e.g. path, formData, body, etc...).
-     * @param in
-     */
-    public List<OasParameter> getParameters(String in) {
-        if (this.parameters == null && in == null) {
-            return Collections.emptyList();
-        }
-        List<OasParameter> rval = new ArrayList<>();
-        this.parameters.forEach(param -> {
-            if (NodeCompat.equals(in, param.in)) {
-                rval.add(param);
-            }
-        });
-        return rval;
     }
 
     /**

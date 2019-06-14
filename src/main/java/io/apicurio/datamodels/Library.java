@@ -154,13 +154,14 @@ public class Library {
      * @param json
      * @param node
      */
-    public static void readNode(Object json, Node node) {
+    public static Node readNode(Object json, Node node) {
         // Clone the input because the reader is destructive to the source data.
         Object clonedJson = JsonCompat.clone(json);
         DocumentType type = node.ownerDocument().getDocumentType();
         DataModelReader reader = VisitorFactory.createDataModelReader(type);
         DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, clonedJson, reader);
         Library.visitNode(node, dispatcher);
+        return node;
     }
     
     /**

@@ -363,7 +363,7 @@ public class CommandFactory {
         return new ChangeVersionCommand(newVersion);
     }
     
-    public static final ICommand ChangeLicenseCommand(String name, String url) {
+    public static final ICommand createChangeLicenseCommand(String name, String url) {
         return new ChangeLicenseCommand(name, url);
     }
     

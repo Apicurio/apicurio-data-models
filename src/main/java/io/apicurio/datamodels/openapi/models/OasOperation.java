@@ -82,22 +82,6 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
     public abstract OasParameter createParameter();
 
     /**
-     * Returns a list of parameters with a particular value of "in" (e.g. path, formData, body, etc...).
-     * @param in
-     */
-    public List<OasParameter> getParameters(String in) {
-        List<OasParameter> rval = new ArrayList<>();
-        if (this.parameters != null) {
-            for (OasParameter parameter : this.parameters) {
-                if (NodeCompat.equals(parameter.in, in)) {
-                    rval.add(parameter);
-                }
-            }
-        }
-        return rval;
-    }
-
-    /**
      * Returns a single, unique parameter identified by "in" and "name" (which are the two
      * properties that uniquely identify a parameter).  Returns null if no parameter is found.
      * @param in
