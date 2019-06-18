@@ -40,10 +40,10 @@ public class ConsumesProducesFinder extends Oas20VisitorAdapter {
     @Override
     public void visitDocument(Document node) {
         Oas20Document doc = (Oas20Document) node;
-        if (!NodeCompat.isNullOrUndefined(doc.consumes)) {
+        if (NodeCompat.isNullOrUndefined(this.consumes)) {
             this.consumes = doc.consumes;
         }
-        if (!NodeCompat.isNullOrUndefined(doc.produces)) {
+        if (NodeCompat.isNullOrUndefined(this.produces)) {
             this.produces = doc.produces;
         }
     }
