@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -49,14 +50,114 @@ public class JsonCompat {
     private static final JsonNodeFactory factory = JsonNodeFactory.instance;
     private static final ObjectMapper mapper = new ObjectMapper();
     
+    private static class PrettyPrinter extends MinimalPrettyPrinter {
+        private static final long serialVersionUID = -4446121026177697380L;
+
+        private int indentLevel = 0;
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeStartObject(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void writeStartObject(JsonGenerator g) throws IOException {
+            super.writeStartObject(g);
+            indentLevel++;
+            g.writeRaw("\n");
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndObject(com.fasterxml.jackson.core.JsonGenerator, int)
+         */
+        @Override
+        public void writeEndObject(JsonGenerator g, int nrOfEntries) throws IOException {
+            indentLevel--;
+            g.writeRaw("\n");
+            writeIndent(g);
+            super.writeEndObject(g, nrOfEntries);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeStartArray(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void writeStartArray(JsonGenerator g) throws IOException {
+            super.writeStartArray(g);
+            indentLevel++;
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndArray(com.fasterxml.jackson.core.JsonGenerator, int)
+         */
+        @Override
+        public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException {
+            g.writeRaw("\n");
+            indentLevel--;
+            writeIndent(g);
+            super.writeEndArray(g, nrOfValues);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#beforeObjectEntries(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void beforeObjectEntries(JsonGenerator g) throws IOException {
+            writeIndent(g);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#beforeArrayValues(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void beforeArrayValues(JsonGenerator g) throws IOException {
+            g.writeRaw("\n");
+            writeIndent(g);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeArrayValueSeparator(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void writeArrayValueSeparator(JsonGenerator g) throws IOException {
+            super.writeArrayValueSeparator(g);
+            g.writeRaw("\n");
+            writeIndent(g);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeObjectEntrySeparator(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void writeObjectEntrySeparator(JsonGenerator g) throws IOException {
+            super.writeObjectEntrySeparator(g);
+            g.writeRaw("\n");
+            writeIndent(g);
+        }
+        
+        /**
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeObjectFieldValueSeparator(com.fasterxml.jackson.core.JsonGenerator)
+         */
+        @Override
+        public void writeObjectFieldValueSeparator(JsonGenerator g) throws IOException {
+            super.writeObjectFieldValueSeparator(g);
+            g.writeRaw(" ");
+        }
+        
+        private void writeIndent(JsonGenerator g) throws IOException {
+            for (int idx = 0; idx < this.indentLevel; idx++) {
+                g.writeRaw("    ");
+            }
+        }
+    }
+    
     /*
      * Util methods
      */
     
     public static String stringify(Object json) {
         try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        } catch (JsonProcessingException e) {
+            PrettyPrinter pp = new PrettyPrinter();
+            return mapper.writer(pp).writeValueAsString(json);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
