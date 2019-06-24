@@ -183,6 +183,7 @@
     { "name": "[OpenAPI 2] {Rename Param} - Rename Parameter", "test": "commands/rename-parameter/openapi-2/rename-parameter" },
     { "name": "[OpenAPI 3] {Rename Param} - Refactory Path Parameter", "test": "commands/rename-parameter/openapi-3/refactor-path-parameter" },
     { "name": "[OpenAPI 3] {Rename Param} - Rename Parameter", "test": "commands/rename-parameter/openapi-3/rename-parameter" },
+    { "name": "[OpenAPI 3] {Rename Param} - Rename Parameter With Privates", "test": "commands/rename-parameter/openapi-3/rename-parameter", "commands": ".privates-commands.json" },
     { "name": "[OpenAPI 2] {Rename Path Item} - Rename Path Item With Both", "test": "commands/rename-path-item/openapi-2/rename-path-item-with-both" },
     { "name": "[OpenAPI 2] {Rename Path Item} - Rename Path Item With Params", "test": "commands/rename-path-item/openapi-2/rename-path-item-with-params" },
     { "name": "[OpenAPI 2] {Rename Path Item} - Rename Path Item With Sub-Paths", "test": "commands/rename-path-item/openapi-2/rename-path-item-with-subPaths" },
