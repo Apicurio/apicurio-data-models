@@ -20,6 +20,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 
@@ -104,16 +105,9 @@ public class Aai20Document extends AaiDocument {
         return server;
     }
 
-    static <T> List<T> mapToList(Map<?, T> items) {
-        List<T> rval = new ArrayList<>();
-        if(items != null)
-            rval.addAll(items.values());
-        return rval;
-    }
-
     @Override
     public List<AaiChannelItem> getChannels() {
-        return mapToList(this.channels);
+        return JsonCompat.mapToList(this.channels);
     }
 
     @Override

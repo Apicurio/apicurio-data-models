@@ -7,13 +7,12 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import static io.apicurio.datamodels.asyncapi.v2.models.Aai20Document.mapToList;
 
 public class Aai20Components extends AaiComponents {
 
@@ -30,27 +29,27 @@ public class Aai20Components extends AaiComponents {
 
     @Override
     public List<AaiMessage> getMessagesList() {
-        return mapToList(messages);
+        return JsonCompat.mapToList(messages);
     }
 
     @Override
     public List<AaiSecurityScheme> getSecuritySchemesList() {
-        return mapToList(securitySchemes);
+        return JsonCompat.mapToList(securitySchemes);
     }
 
     @Override
     public List<AaiParameter> getParametersList() {
-        return mapToList(parameters);
+        return JsonCompat.mapToList(parameters);
     }
 
     @Override
     public List<AaiCorrelationId> getCorrelationIdsList() {
-        return mapToList(correlationIds);
+        return JsonCompat.mapToList(correlationIds);
     }
 
     @Override
     public List<AaiTraitItem> getTraitsList() {
-        return mapToList(traits);
+        return JsonCompat.mapToList(traits);
     }
 
     @Override

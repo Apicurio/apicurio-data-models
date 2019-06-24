@@ -375,7 +375,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
             JsonCompat.appendToArray(parent, json);
         } else if (node.parent() instanceof AaiMessageTraitExtendedItem) {
-            Object parent = this.lookupParentJson(node, JsonCompat.arrayNode().addNull());
+            Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
             JsonCompat.setToArrayIndex(parent, 0, json);
         } else if (node.parent() instanceof AaiTraitItem) {
             Object parent = this.lookupParentJson(node);
@@ -481,7 +481,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
             JsonCompat.appendToArray(parent, json);
         } else if (node.parent() instanceof AaiOperationTraitExtendedItem) {
-            Object parent = this.lookupParentJson(node, JsonCompat.arrayNode().addNull());
+            Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
             JsonCompat.setToArrayIndex(parent, 0, json);
         } else if (node.parent() instanceof AaiTraitItem) {
             Object parent = this.lookupParentJson(node);

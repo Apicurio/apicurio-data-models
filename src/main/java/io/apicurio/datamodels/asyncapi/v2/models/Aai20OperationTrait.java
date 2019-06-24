@@ -4,6 +4,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -11,8 +12,6 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import static io.apicurio.datamodels.asyncapi.v2.models.Aai20Document.mapToList;
 
 public class Aai20OperationTrait extends AaiOperationTrait {
 
@@ -38,7 +37,7 @@ public class Aai20OperationTrait extends AaiOperationTrait {
 
     @Override
     public List<AaiProtocolInfo> getProtocolInfoList() {
-        return mapToList(protocolInfo);
+        return JsonCompat.mapToList(protocolInfo);
     }
 
     @Override

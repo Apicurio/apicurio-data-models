@@ -39,7 +39,11 @@ export class JsonCompat {
     public static arrayNode(): any {
         return [];
     }
-    
+
+    public static nullNode(): any {
+        return null;
+    }
+
     public static isPropertyDefined(json: any, propertyName: string): boolean {
         return json && json[propertyName] != null && json[propertyName] != undefined;
     }
@@ -200,11 +204,25 @@ export class JsonCompat {
         }
     }
 
-    public static appendToArray(jsonArray: any, propertyValue: any): void {
+    public static appendToArray(jsonArray: any, propertyValue: any): any {
         jsonArray.push(propertyValue);
+        return jsonArray;
     }
 
     public static setToArrayIndex(jsonArray: any, index: number, propertyValue: any): void {
         jsonArray[index] = propertyValue;
+    }
+
+    public static mapToList<T>(items : any) : Array<T> {
+        let res : Array<T> = <any>([]);
+        if(items) {
+            for(let key in items) {
+                let e = items[key];
+                if(e !== null) {
+                    res.push(e);
+                }
+            }
+        }
+        return res;
     }
 }

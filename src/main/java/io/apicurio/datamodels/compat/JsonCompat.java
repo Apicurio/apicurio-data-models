@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -86,6 +87,10 @@ public class JsonCompat {
 
     public static ArrayNode arrayNode() {
         return factory.arrayNode();
+    }
+
+    public static NullNode nullNode() {
+        return factory.nullNode();
     }
     
     public static boolean isPropertyDefined(Object json, String propertyName) {
@@ -457,13 +462,14 @@ public class JsonCompat {
         }
     }
 
-    public static void appendToArray(Object jsonArray, Object propertyValue) {
+    public static Object appendToArray(Object jsonArray, Object propertyValue) {
         ArrayNode array = (ArrayNode) jsonArray;
         if (propertyValue instanceof JsonNode) {
             array.add((JsonNode) propertyValue);
         } else {
             array.add(String.valueOf(propertyValue));
         }
+        return array;
     }
 
     public static void setToArrayIndex(Object jsonArray, int index, Object propertyValue) {
@@ -623,5 +629,14 @@ public class JsonCompat {
             node.add((String) null);
         }
     }
-    
+
+    public static <T> List<T> mapToList(Map<?, T> items) {
+        List<T> rval = new ArrayList<>();
+        if(items != null) {
+            for (Map.Entry<?, T> e : items.entrySet()) {
+                rval.add(e.getValue());
+            }
+        }
+        return rval;
+    }
 }
