@@ -19,6 +19,8 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
@@ -39,6 +41,7 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * A command used to rename a parameter.
  * @author eric.wittmann@gmail.com
  */
+@JsonIgnoreProperties({ "isPathItem", "isOperation" })
 public class RenameParameterCommand extends AbstractCommand {
 
     public NodePath _parentPath;
@@ -46,8 +49,8 @@ public class RenameParameterCommand extends AbstractCommand {
     public String _newParamName;
     public String _paramIn;
     
-    private boolean isPathItem;
-    private boolean isOperation;
+    private transient boolean isPathItem;
+    private transient boolean isOperation;
 
     RenameParameterCommand() {
     }
