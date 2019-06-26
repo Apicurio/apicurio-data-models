@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 /**
  * Represents `[Message Trait Object, Map[string, any]]`
  *
+ * @author Jakub Senko<jsenko@redhat.com>
  * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#messageObject">AsyncAPI 2.0.0 spec</a>
  */
 public class Aai20MessageTraitExtendedItem extends AaiMessageTraitExtendedItem {

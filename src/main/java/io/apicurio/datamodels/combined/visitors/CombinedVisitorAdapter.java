@@ -102,6 +102,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
 

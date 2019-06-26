@@ -27,7 +27,5 @@ public abstract class AaiOperationTraitItems extends Node {
     }
 
     public abstract void addExtendedItem(AaiOperationTraitExtendedItem item);
-
-
     public abstract void addItem(AaiOperationTrait item);
 }

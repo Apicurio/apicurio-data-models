@@ -24,7 +24,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 import static java.util.Objects.requireNonNull;
 
 /**
- *
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20AuthorizationCodeOAuthFlow extends AuthorizationCodeOAuthFlow {
 

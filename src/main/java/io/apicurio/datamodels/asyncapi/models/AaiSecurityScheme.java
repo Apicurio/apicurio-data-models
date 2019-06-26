@@ -10,24 +10,9 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AaiSecurityScheme extends SecurityScheme {
 
-    /**
-     * Required.
-     */
     public String scheme;
-
-    /**
-     * Required.
-     */
     public AaiOAuthFlows flows;
-
-    /**
-     * Required.
-     */
     public String openIdConnectUrl;
-
-    /**
-     * NOT Required.
-     */
     public String bearerFormat;
 
     public AaiSecurityScheme(Node parent) {

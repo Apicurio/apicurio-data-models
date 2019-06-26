@@ -30,8 +30,6 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
         ((IAaiVisitor)visitor).visitAaiParameter(this);
     }
 
-    //public abstract Schema createSchema();
-
     public AaiParameter(Node parent) {
         if(parent != null) {
             this._parent = parent;

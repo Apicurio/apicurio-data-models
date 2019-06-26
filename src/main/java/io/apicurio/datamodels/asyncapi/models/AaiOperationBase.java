@@ -32,7 +32,6 @@ public abstract class AaiOperationBase extends Operation {
 
     public String $ref;
     public List<Tag> tags;
-
     public Map<String, AaiProtocolInfo> protocolInfo;
 
     public AaiOperationBase(Node parent, String opType) {
@@ -49,8 +48,6 @@ public abstract class AaiOperationBase extends Operation {
 
 
     public abstract List<AaiProtocolInfo> getProtocolInfoList();
-
     public abstract void addTag(AaiTag tag);
-
     public abstract void addProtocolInfo(AaiProtocolInfo value);
 }

@@ -21,15 +21,10 @@ public abstract class AaiMessageBase extends ExtensibleNode {
     public String $ref;
 
     /**
-     * NOT Required.
-     * <p>
      * Represents `Map[string, Schema Object | Reference Object]` type.
      */
     public Map<String, AaiHeaderItem> headers;
 
-    /**
-     * NOT Required.
-     */
     public AaiCorrelationId correlationId;
     public String schemaFormat;
     public String contentType;
@@ -69,12 +64,8 @@ public abstract class AaiMessageBase extends ExtensibleNode {
     }
 
     public abstract List<AaiHeaderItem> getHeadersList();
-
     public abstract List<AaiProtocolInfo> getProtocolInfoList();
-
     public abstract void addHeaderItem(AaiHeaderItem item);
-
     public abstract void addTag(AaiTag tag);
-
     public abstract void addProtocolInfo(AaiProtocolInfo item);
 }

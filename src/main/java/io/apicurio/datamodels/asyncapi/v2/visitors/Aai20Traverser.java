@@ -39,15 +39,10 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 import io.apicurio.datamodels.openapi.visitors.OasTraverser;
 
 /**
- * An OpenAPI 2.0 data model traverser.
  * @author eric.wittmann@gmail.com
  */
 public class Aai20Traverser extends AaiTraverser implements IAai20Visitor {
 
-    /**
-     * Constructor.
-     * @param visitor
-     */
     public Aai20Traverser(IAai20Visitor visitor) {
         super(visitor);
     }

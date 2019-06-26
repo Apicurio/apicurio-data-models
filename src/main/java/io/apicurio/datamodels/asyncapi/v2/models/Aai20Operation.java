@@ -30,6 +30,7 @@ import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20Operation extends AaiOperation {
 

@@ -45,6 +45,7 @@ import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
  * Async API implementation of a data model reader dispatcher.
  *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispatcher implements IAaiVisitor {
 
@@ -52,9 +53,6 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
 
     /**
      * Constructor.
-     *
-     * @param reader
-     * @param json
      */
     public AaiDataModelReaderDispatcher(Object json, AaiDataModelReader reader) {
         super(json, reader);

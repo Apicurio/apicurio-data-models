@@ -21,6 +21,7 @@ import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20License extends AaiLicense {
 

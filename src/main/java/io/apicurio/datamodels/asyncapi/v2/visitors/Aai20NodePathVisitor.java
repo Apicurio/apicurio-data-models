@@ -31,12 +31,10 @@ import io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20NodePathVisitor extends AaiNodePathVisitor implements IAai20Visitor {
     
-    /**
-     * Constructor.
-     */
     public Aai20NodePathVisitor() {
     }
 }

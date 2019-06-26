@@ -20,7 +20,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiExternalDocumentation;
 import io.apicurio.datamodels.core.models.Node;
 
 /**
- *
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20ExternalDocumentation extends AaiExternalDocumentation {
 

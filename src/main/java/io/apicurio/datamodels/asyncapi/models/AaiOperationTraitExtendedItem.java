@@ -15,7 +15,6 @@ import static java.util.Objects.requireNonNull;
 public abstract class AaiOperationTraitExtendedItem extends Node {
 
     public String _name;
-
     public AaiOperationTrait _operationTrait;
 
     /**
@@ -27,10 +26,6 @@ public abstract class AaiOperationTraitExtendedItem extends Node {
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#operationObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, Object> _traitExtension;
-
-//    public AaiOperationTraitExtendedItem(String _name) {
-//        this._name = _name;
-//    }
 
     public AaiOperationTraitExtendedItem(Node parent) {
         if(parent != null) {
@@ -47,6 +42,5 @@ public abstract class AaiOperationTraitExtendedItem extends Node {
     public String getName() {
         return _name;
     }
-
     public abstract void addExtension(String key, Object value);
 }

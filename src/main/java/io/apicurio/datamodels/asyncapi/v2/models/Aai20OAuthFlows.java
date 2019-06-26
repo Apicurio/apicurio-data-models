@@ -9,7 +9,9 @@ import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
-
+/**
+ * @author Jakub Senko<jsenko@redhat.com>
+ */
 public class Aai20OAuthFlows extends AaiOAuthFlows {
 
     public Aai20OAuthFlows(Node parent) {

@@ -11,16 +11,8 @@ import static java.util.Objects.requireNonNull;
 public abstract class AaiCorrelationId extends ExtensibleNode {
 
     public String _name;
-
     public String $ref;
-    /**
-     * Required.
-     */
     public String location;
-
-    /**
-     * NOT Required.
-     */
     public String description;
 
     public AaiCorrelationId(Node parent) {

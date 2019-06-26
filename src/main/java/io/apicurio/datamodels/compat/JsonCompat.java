@@ -480,6 +480,16 @@ public class JsonCompat {
             array.set(index, factory.textNode(String.valueOf(propertyValue)));
         }
     }
+
+    public static <T> List<T> mapToList(Map<?, T> items) {
+        List<T> rval = new ArrayList<>();
+        if(items != null) {
+            for (Map.Entry<?, T> e : items.entrySet()) {
+                rval.add(e.getValue());
+            }
+        }
+        return rval;
+    }
     
     /*
      * Internal only (not required by the TS layer)
@@ -628,15 +638,5 @@ public class JsonCompat {
         } else {
             node.add((String) null);
         }
-    }
-
-    public static <T> List<T> mapToList(Map<?, T> items) {
-        List<T> rval = new ArrayList<>();
-        if(items != null) {
-            for (Map.Entry<?, T> e : items.entrySet()) {
-                rval.add(e.getValue());
-            }
-        }
-        return rval;
     }
 }

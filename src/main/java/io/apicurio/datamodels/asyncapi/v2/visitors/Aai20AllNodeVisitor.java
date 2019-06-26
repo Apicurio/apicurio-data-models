@@ -30,6 +30,7 @@ import io.apicurio.datamodels.openapi.visitors.OasAllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20AllNodeVisitor extends AaiAllNodeVisitor implements IAai20Visitor {
 

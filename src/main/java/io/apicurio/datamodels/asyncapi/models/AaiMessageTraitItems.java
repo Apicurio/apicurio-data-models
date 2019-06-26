@@ -14,20 +14,10 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AaiMessageTraitItems extends Node {
 
-    //public String _name;
-
     // is either
     public List<AaiMessageTrait> _traitItems;
     // or
     public List<AaiMessageTraitExtendedItem> _traitExtendedItems;
-
-//    public AaiMessageTraitItems(String _name) {
-//        this._name = _name;
-//    }
-//
-//    public String getName() {
-//        return _name;
-//    }
 
     public AaiMessageTraitItems(Node parent) {
         if(parent != null) {
@@ -37,6 +27,5 @@ public abstract class AaiMessageTraitItems extends Node {
     }
 
     public abstract void addItem(AaiMessageTrait item);
-
     public abstract void addExtendedItem(AaiMessageTraitExtendedItem item);
 }

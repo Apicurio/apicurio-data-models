@@ -4,7 +4,9 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Schema;
 
-
+/**
+ * @author Jakub Senko<jsenko@redhat.com>
+ */
 public class Aai20Parameter extends AaiParameter {
 
     public Aai20Parameter(Node parent) {
@@ -14,9 +16,4 @@ public class Aai20Parameter extends AaiParameter {
     public Aai20Parameter(Node parent, String name) {
         super(parent, name);
     }
-
-//    @Override
-//    public Schema createSchema() {
-//        throw new UnsupportedOperationException();
-//    }
 }

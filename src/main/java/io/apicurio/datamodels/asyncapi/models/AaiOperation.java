@@ -26,7 +26,6 @@ public abstract class AaiOperation extends AaiOperationBase {
 
 
     public AaiOperationTraitItems traits;
-
     public AaiMessage message;
 
     public AaiOperation(Node parent) {

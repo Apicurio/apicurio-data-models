@@ -12,7 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * @author Jakub Senko <jsenko@redhat.com>
+ */
 public class Aai20ChannelItem extends AaiChannelItem {
 
 

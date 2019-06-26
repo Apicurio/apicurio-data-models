@@ -49,9 +49,6 @@ import io.apicurio.datamodels.core.visitors.NodePathVisitor;
  */
 public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
 
-    /**
-     * Constructor.
-     */
     public AaiNodePathVisitor() {
     }
 
@@ -106,13 +103,12 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
             if(!node._isOneOfMessage) {
                 this.path.prependSegment(Constants.PROP_MESSAGE, false);
             } else {
-                //this.path.prependSegment(Constants.PROP_ONE_OF, false);
                 int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ONE_OF);
                 if (idx != -1) {
                     this.path.prependSegment(String.valueOf(idx), true);
                     this.path.prependSegment(Constants.PROP_ONE_OF, false);
                 } else {
-                    throw new IllegalStateException("One of message without an index");
+                    throw new IllegalStateException("oneOf message without an index");
                 }
             }
         }
@@ -125,23 +121,10 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
             this.path.prependSegment(String.valueOf(idx), true);
             this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
         }
-//        if(node.getName() != null) {
-//            this.path.prependSegment(node.getName(), true);
-//            this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
-//        } else {
-//            int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_EXTENDED_ITEMS);
-//            if (idx != -1) {
-//                this.path.prependSegment(String.valueOf(idx), true);
-//                this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);//this.path.prependSegment(Constants.PROP_TRAITS, false);
-//            } else {
-//                throw new IllegalStateException();
-//            }
-//        }
     }
 
     @Override
     public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        //this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_TRAITS, false);
     }
 
@@ -172,7 +155,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
             int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_EXTENDED_ITEMS);
             if (idx != -1) {
                 this.path.prependSegment(String.valueOf(idx), true);
-                this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);//this.path.prependSegment(Constants.PROP_TRAITS, false);
+                this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
             } else {
                 throw new IllegalStateException();
             }
@@ -181,17 +164,11 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
 
     @Override
     public void visitOperationTraitItems(AaiOperationTraitItems node) {
-//        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAITS);
-//        if (idx != -1) {
-//            this.path.prependSegment(String.valueOf(idx), true);
-//            this.path.prependSegment(Constants.PROP_TRAITS, false);
-//        }
         this.path.prependSegment(Constants.PROP_TRAITS, false);
     }
 
     @Override
     public void visitOperationTrait(AaiOperationTrait node) {
-        //this.path.prependSegment(Constants.PROP_OPERATION_TRAIT, false);
         if (node.parent() instanceof AaiOperationTraitItems) {
             int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_ITEMS);
             if (idx != -1) {
@@ -220,9 +197,6 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
         this.path.prependSegment(Constants.PROP_SECURITY_SCHEMES, false);
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
     @Override
     public void visitServer(AaiServer node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
@@ -232,9 +206,6 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
         }
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
     public void visitServerVariable(AaiServerVariable node) {
         this.path.prependSegment(node.getName(), true);

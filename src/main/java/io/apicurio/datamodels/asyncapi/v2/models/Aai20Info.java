@@ -23,6 +23,7 @@ import io.apicurio.datamodels.core.models.common.Info;
 /**
  * Models an AsyncAPI 'Info' node.
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20Info extends AaiInfo {
 

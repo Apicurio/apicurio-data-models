@@ -55,11 +55,6 @@ import io.apicurio.datamodels.core.visitors.Traverser;
  */
 public class AaiTraverser extends Traverser implements IAaiVisitor {
 
-    /**
-     * Constructor.
-     *
-     * @param visitor
-     */
     public AaiTraverser(IAaiVisitor visitor) {
         super(visitor);
     }
@@ -244,7 +239,6 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     @Override
     public void visitAaiParameter(AaiParameter node) {
         node.accept(visitor);
-        //traverseIfNotNull(node);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }

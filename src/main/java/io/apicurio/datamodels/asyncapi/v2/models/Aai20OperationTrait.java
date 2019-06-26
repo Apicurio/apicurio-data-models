@@ -13,6 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Jakub Senko<jsenko@redhat.com>
+ */
 public class Aai20OperationTrait extends AaiOperationTrait {
 
     public Aai20OperationTrait(Node parent, String opType) {
@@ -30,7 +33,6 @@ public class Aai20OperationTrait extends AaiOperationTrait {
 
     @Override
     public void accept(IVisitor visitor) {
-        // super.accept(visitor);
         IAai20Visitor v = (IAai20Visitor) visitor;
         v.visitOperationTrait(this);
     }

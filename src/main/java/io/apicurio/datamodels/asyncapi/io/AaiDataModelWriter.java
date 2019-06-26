@@ -57,6 +57,7 @@ import java.util.Map.Entry;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiDataModelWriter extends DataModelWriter implements IAaiVisitor {
 
@@ -80,9 +81,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         this.updateIndex(node, json);
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
     @Override
     public void visitServer(AaiServer node) {
         Object parent = this.lookupParentJson(node);
@@ -108,9 +106,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY);
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
     public void visitServerVariable(AaiServerVariable node) {
         Object parent = this.lookupParentJson(node);
@@ -517,7 +512,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             } else {
                 throw new IllegalStateException("error in writing protocol info");
             }
-            //
             this.updateIndex(node, json);
         }
     }
@@ -561,7 +555,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             }
             JsonCompat.appendToArray(list, json);
         }
-
         this.updateIndex(node, json);
     }
 
@@ -577,7 +570,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         } else {
             throw new IllegalStateException("error in writing a security scheme");
         }
-        //JsonCompat.setProperty(parent, node.getSchemeName(), json);
     }
 
     @Override

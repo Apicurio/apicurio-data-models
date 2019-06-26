@@ -27,9 +27,6 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AaiTag extends Tag {
 
-    /**
-     * Constructor.
-     */
     public AaiTag(Node parent) {
         if(parent != null) {
             this._parent = parent;

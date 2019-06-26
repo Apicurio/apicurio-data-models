@@ -15,14 +15,10 @@ import java.util.List;
 /**
  * Represents `[Operation Trait Object] | [[Operation Trait Object, Map]]`
  *
+ * @author Jakub Senko<jsenko@redhat.com>
  * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#messageObject">AsyncAPI 2.0.0 spec</a>
  */
 public class Aai20OperationTraitItems extends AaiOperationTraitItems {
-
-//    // is either
-//    public List<AaiOperationTrait> _traitItems;
-//    // or
-//    public List<AaiOperationTraitExtendedItem> _traitExtendedItems;
 
     public Aai20OperationTraitItems(Node parent) {
         super(parent);
@@ -47,6 +43,4 @@ public class Aai20OperationTraitItems extends AaiOperationTraitItems {
         IAai20Visitor v = (IAai20Visitor) visitor;
         v.visitOperationTraitItems(this);
     }
-
-
 }

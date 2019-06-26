@@ -19,14 +19,11 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 import io.apicurio.datamodels.asyncapi.models.AaiContact;
 import io.apicurio.datamodels.core.models.Node;
 
+/**
+ * @author Jakub Senko <jsenko@redhat.com>
+ */
 public class Aai20Contact extends AaiContact {
 
-
-    /**
-     * Constructor.
-     *
-     * @param parent
-     */
     public Aai20Contact(Node parent) {
         super(parent);
     }

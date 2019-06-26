@@ -105,6 +105,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * This is an "All Node Visitor" that can be used as a base class for interesting visitors that wish
  * to visit every node in all data models.  This would work for OpenAPI 2, 3 and AsyncAPI data models.
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
 

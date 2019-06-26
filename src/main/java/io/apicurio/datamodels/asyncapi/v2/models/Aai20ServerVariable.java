@@ -23,6 +23,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20ServerVariable extends AaiServerVariable {
 

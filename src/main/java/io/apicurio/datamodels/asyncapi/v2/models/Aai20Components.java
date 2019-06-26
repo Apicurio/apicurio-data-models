@@ -14,6 +14,9 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * @author Jakub Senko <jsenko@redhat.com>
+ */
 public class Aai20Components extends AaiComponents {
 
 

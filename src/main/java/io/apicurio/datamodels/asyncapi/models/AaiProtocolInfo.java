@@ -38,6 +38,5 @@ public abstract class AaiProtocolInfo extends Node {
     public String getName() {
         return _name;
     }
-
     public abstract void addItem(String key, Object value);
 }

@@ -165,7 +165,6 @@ public class Constants {
     public static final String PROP_PROTOCOL_VERSION = "protocolVersion";
     public static final String PROP_BASE_CHANNEL = "baseChannel";
     public static final String PROP_MESSAGES = "messages";
-
     public static final String PROP___TYPE = "__type";
     public static final String PROP_OF = "of";
     public static final String PROP_AS = "as";

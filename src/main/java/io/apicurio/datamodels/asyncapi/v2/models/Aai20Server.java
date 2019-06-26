@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.Node;
@@ -27,6 +26,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * Models an AsyncAPI server.
  *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20Server extends AaiServer {
 

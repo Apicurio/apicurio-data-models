@@ -21,12 +21,10 @@ import io.apicurio.datamodels.core.models.common.Contact;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiContact extends Contact {
 
-    /**
-     * Constructor.
-     */
     public AaiContact(Node parent) {
         if(parent != null) {
             this._parent = parent;

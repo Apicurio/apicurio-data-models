@@ -7,8 +7,6 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 
 
 /**
- * Represents `Schema Object | Reference Object` type.
- *
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20HeaderItem extends AaiHeaderItem {

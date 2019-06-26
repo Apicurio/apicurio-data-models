@@ -15,32 +15,13 @@ import static java.util.Objects.requireNonNull;
 public abstract class AaiChannelItem extends ExtensibleNode implements IReferenceNode {
 
     public String _name;
-
-    /**
-     * NOT Required.
-     */
     public String $ref;
-
-    /**
-     * NOT Required.
-     */
     public AaiOperation subscribe;
-
-    /**
-     * NOT Required.
-     */
     public AaiOperation publish;
-
-    /**
-     * NOT Required.
-     */
     public List<AaiParameter> parameters;
-
-    /**
-     * NOT Required.
-     */
     public Map<String, AaiProtocolInfo> protocolInfo;
     public String description;
+
 
     public AaiChannelItem(Node parent) {
         if(parent != null) {
@@ -59,8 +40,6 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
     }
 
     public abstract List<AaiProtocolInfo> getProtocolInfoList();
-
     public abstract void addParameter(AaiParameter param);
-
     public abstract void addProtocolInfo(String key, AaiProtocolInfo protocolInfo);
 }

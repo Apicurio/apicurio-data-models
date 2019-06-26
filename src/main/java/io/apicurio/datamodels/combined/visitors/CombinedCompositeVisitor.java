@@ -16,8 +16,6 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
@@ -79,7 +77,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
@@ -92,6 +89,7 @@ import java.util.List;
  * A composite visitor base class useful for any data model type.
  *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
 
@@ -149,7 +147,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitPathItem(OasPathItem node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -158,7 +155,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitResponse(OasResponse node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -167,7 +163,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitResponses(OasResponses node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -176,7 +171,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitXML(OasXML node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -185,7 +179,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitAllOfSchema(OasSchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -194,7 +187,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitItemsSchema(OasSchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -203,7 +195,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitAdditionalPropertiesSchema(OasSchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -212,7 +203,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitPropertySchema(IOasPropertySchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -221,7 +211,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitHeader(OasHeader node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -230,7 +219,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitResponseDefinition(IOasResponseDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -239,7 +227,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitDocument(Document node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -248,7 +235,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitInfo(Info node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -257,7 +243,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitContact(Contact node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -266,7 +251,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLicense(License node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -275,7 +259,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitTag(Tag node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -284,7 +267,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -293,7 +275,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitExtension(Extension node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -302,7 +283,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitServer(Server node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -311,7 +291,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -320,7 +299,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitServerVariable(ServerVariable node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -329,7 +307,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
         this.acceptAll(problem);
-        
     }
 
     /**
@@ -338,7 +315,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitSchema(Schema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -347,7 +323,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitSchemaDefinition(ISchemaDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -356,7 +331,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitParameter(Parameter node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -365,7 +339,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitOperation(Operation node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -374,7 +347,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -383,7 +355,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitComponents(Oas30Components node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -392,7 +363,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitCallbackPathItem(Oas30CallbackPathItem node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -401,7 +371,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitCallback(Oas30Callback node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -410,7 +379,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLinkServer(Oas30LinkServer node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -419,7 +387,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitCallbackDefinition(Oas30CallbackDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -428,7 +395,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLink(Oas30Link node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -437,7 +403,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLinkRequestBodyExpression(Oas30LinkRequestBodyExpression node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -446,7 +411,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLinkParameterExpression(Oas30LinkParameterExpression node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -455,7 +419,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitLinkDefinition(Oas30LinkDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -464,7 +427,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitAuthorizationCodeOAuthFlow(Oas30AuthorizationCodeOAuthFlow node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -473,7 +435,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitClientCredentialsOAuthFlow(Oas30ClientCredentialsOAuthFlow node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -482,7 +443,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitPasswordOAuthFlow(Oas30PasswordOAuthFlow node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -491,7 +451,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitImplicitOAuthFlow(Oas30ImplicitOAuthFlow node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -500,7 +459,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitOAuthFlows(Oas30OAuthFlows node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -509,7 +467,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitExample(Oas30Example node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -518,7 +475,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitEncoding(Oas30Encoding node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -527,7 +483,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitMediaType(Oas30MediaType node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -536,7 +491,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitHeaderDefinition(Oas30HeaderDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -545,7 +499,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -554,7 +507,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitRequestBodyDefinition(Oas30RequestBodyDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -563,7 +515,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitExampleDefinition(Oas30ExampleDefinition node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -572,7 +523,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitDiscriminator(Oas30Discriminator node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -581,7 +531,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitNotSchema(Oas30NotSchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -590,7 +539,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitOneOfSchema(Oas30OneOfSchema node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -615,7 +563,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitItems(Oas20Items node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -624,7 +571,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitScopes(Oas20Scopes node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -633,7 +579,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitSecurityDefinitions(Oas20SecurityDefinitions node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -642,7 +587,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitDefinitions(Oas20Definitions node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -651,7 +595,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -660,7 +603,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitExample(Oas20Example node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -669,7 +611,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitHeaders(Oas20Headers node) {
         this.acceptAll(node);
-        
     }
 
     /**
@@ -678,18 +619,7 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     @Override
     public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
         this.acceptAll(node);
-        
     }
-
-//    @Override
-//    public void visitAaiServer(AaiServer node) {
-//        this.acceptAll(node);
-//    }
-//
-//    @Override
-//    public void visitAaiServerVariable(AaiServerVariable node) {
-//        this.acceptAll(node);
-//    }
 
     protected void visitNode(Node node) {
         // Does nothing - subclasses should override this.  The class is not abstract because we

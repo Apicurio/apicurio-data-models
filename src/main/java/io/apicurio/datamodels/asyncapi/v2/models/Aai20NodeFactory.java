@@ -29,6 +29,9 @@ import io.apicurio.datamodels.asyncapi.models.AaiTag;
 import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
 import io.apicurio.datamodels.core.models.Node;
 
+/**
+ * @author Jakub Senko<jsenko@redhat.com>
+ */
 public class Aai20NodeFactory implements AaiNodeFactory {
 
     @Override

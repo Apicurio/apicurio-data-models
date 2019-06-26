@@ -60,6 +60,7 @@ import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Tag;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20TraitItem;
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.Document;
@@ -196,7 +197,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
         AaiServer aaiNode = (AaiServer) node;
 
         aaiNode.protocol = JsonCompat.consumePropertyString(json, Constants.PROP_PROTOCOL);
-        ;
         aaiNode.protocolVersion = JsonCompat.consumePropertyString(json, Constants.PROP_PROTOCOL_VERSION);
         aaiNode.baseChannel = JsonCompat.consumePropertyString(json, Constants.PROP_BASE_CHANNEL);
 
@@ -244,7 +244,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
             aaiNode.message = value;
         }
         this.readOperationBase(json, aaiNode);
-        //super.readOperation(json, node);
     }
 
     public void readMessage(Object json, AaiMessage node) {
@@ -272,8 +271,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
             }
         }
 
-        //this.readExtensions(json, node);
-        //this.readExtraProperties(json, node);
         this.readMessageBase(json, node);
     }
 
@@ -291,8 +288,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 }
             });
         }
-
-        //this.readExtraProperties(json, node);
     }
 
     public void readMessageBase(Object json, AaiMessageBase node) {
@@ -369,9 +364,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
         } else {
             node._schemaRaw = json;
         }
-
-        //this.readExtensions(json, node);
-        //this.readExtraProperties(json, node);
     }
 
     public void readMessageTrait(Object json, AaiMessageTrait node) {
@@ -392,8 +384,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 node.addExtension(key, value);
             });
         }
-
-        //this.readExtraProperties(json, node);
     }
 
     public void readOperationTraitItems(List<Object> json, AaiOperationTraitItems node) {
@@ -410,8 +400,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 }
             });
         }
-
-        //this.readExtraProperties(json, node);
     }
 
     public void readOperationBase(Object json, AaiOperationBase node) {
@@ -456,8 +444,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 node.addExtension(key, value);
             });
         }
-
-        //this.readExtraProperties(json, node);
     }
 
     public void readComponents(Object json, AaiComponents node) {
@@ -524,26 +510,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
         this.readExtraProperties(json, node);
     }
 
-//    @Override
-//    public void readParameter(Object json, Parameter node) {
-//        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
-//        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
-//        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
-//        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
-//
-//        node.$ref = $ref;
-//        node.name = name;
-//        node.description = description;
-//
-//        if (schema != null) {
-//            node.schema = node.createSchema();
-//            this.readSchema(schema, node.schema);
-//        }
-//
-//        this.readExtensions(json, node);
-//        this.readExtraProperties(json, node);
-//    }
-
     /**
      * Detect if the json represents message or operation trait
      * Return null if we could not determine which one it is
@@ -583,10 +549,9 @@ public abstract class AaiDataModelReader extends DataModelReader {
             this.readExtraProperties(json, node);
         } else {
             node._unknownTrait = json;
-            // warn?
-            // throw new IllegalStateException("Could not detect trait type.");
+            LoggerCompat.warn("Could not determine if this JSON represents a message " +
+                    "or an operation trait: %s", json);
         }
-
     }
 
     @Override
