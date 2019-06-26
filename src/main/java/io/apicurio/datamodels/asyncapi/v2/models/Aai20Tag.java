@@ -40,9 +40,6 @@ public class Aai20Tag extends AaiTag {
      */
     @Override
     public Aai20ExternalDocumentation createExternalDocumentation() {
-        Aai20ExternalDocumentation ed = new Aai20ExternalDocumentation(this);
-        ed._ownerDocument = this.ownerDocument();
-        ed._parent = this;
-        return ed;
+        return new Aai20ExternalDocumentation(this);
     }
 }

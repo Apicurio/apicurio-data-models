@@ -12,8 +12,9 @@ public abstract class AaiOAuthFlows extends OAuthFlows {
 
 
     public AaiOAuthFlows(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 }

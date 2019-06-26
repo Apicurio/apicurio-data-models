@@ -28,9 +28,10 @@ public abstract class AaiMessageTraitExtendedItem extends Node {
     public Map<String, Object> _traitExtension;
 
     public AaiMessageTraitExtendedItem(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
     public abstract void addExtension(String key, Object value);

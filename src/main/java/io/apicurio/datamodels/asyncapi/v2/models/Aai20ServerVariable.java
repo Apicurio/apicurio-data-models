@@ -18,6 +18,7 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -26,13 +27,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 public class Aai20ServerVariable extends AaiServerVariable {
 
 
-    /**
-     * Constructor.
-     *
-     * @param name
-     */
-    public Aai20ServerVariable(String name) {
-        super(name);
+    public Aai20ServerVariable(Node parent, String name) {
+        super(parent, name);
+    }
+
+    public Aai20ServerVariable(Node parent) {
+        super(parent);
     }
 
     /**

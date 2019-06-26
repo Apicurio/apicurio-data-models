@@ -12,12 +12,12 @@ import java.util.LinkedList;
 
 public class Aai20ProtocolInfo extends AaiProtocolInfo {
 
-    public Aai20ProtocolInfo(String _name) {
-        super(_name);
+    public Aai20ProtocolInfo(Node parent) {
+        super(parent);
     }
 
-    public Aai20ProtocolInfo(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20ProtocolInfo(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

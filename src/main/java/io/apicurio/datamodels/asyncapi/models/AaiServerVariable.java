@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 
 import java.util.List;
@@ -28,12 +29,15 @@ public abstract class AaiServerVariable extends ServerVariable {
 
     public List<String> examples;
 
-    /**
-     * Constructor.
-     *
-     * @param name
-     */
-    public AaiServerVariable(String name) {
+    public AaiServerVariable(Node parent, String name) {
         super(name);
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
+    }
+
+    public AaiServerVariable(Node parent) {
+        this(parent, null);
     }
 }

@@ -20,8 +20,8 @@ public class Aai20OperationTraitExtendedItem extends AaiOperationTraitExtendedIt
         super(parent);
     }
 
-    public Aai20OperationTraitExtendedItem(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20OperationTraitExtendedItem(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

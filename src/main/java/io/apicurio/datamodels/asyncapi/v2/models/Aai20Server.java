@@ -19,6 +19,7 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -29,10 +30,9 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20Server extends AaiServer {
 
-    /**
-     * Constructor.
-     */
-    public Aai20Server() {
+
+    public Aai20Server(Node parent) {
+        super(parent);
     }
 
     /**
@@ -49,20 +49,14 @@ public class Aai20Server extends AaiServer {
      */
     @Override
     public Aai20ServerVariable createServerVariable(String name) {
-        Aai20ServerVariable variable = new Aai20ServerVariable(name);
-        variable._ownerDocument = this.ownerDocument();
-        variable._parent = this;
-        return variable;
+        return new Aai20ServerVariable(this, name);
     }
 
     /**
      * Creates a security requirement.
      */
     @Override
-    public AaiSecurityRequirement createSecurityRequirement() {
-        Aai20SecurityRequirement requirement = new Aai20SecurityRequirement();
-        requirement._ownerDocument = this.ownerDocument();
-        requirement._parent = this;
-        return requirement;
+    public Aai20SecurityRequirement createSecurityRequirement() {
+        return new Aai20SecurityRequirement(this);
     }
 }

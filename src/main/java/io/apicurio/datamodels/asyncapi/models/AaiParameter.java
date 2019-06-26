@@ -33,16 +33,15 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
     //public abstract Schema createSchema();
 
     public AaiParameter(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
-    public AaiParameter(Node parent, String _name) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
-        this._name = _name;
+    public AaiParameter(Node parent, String name) {
+        this(parent);
+        this._name = name;
     }
 
     public String getName() {

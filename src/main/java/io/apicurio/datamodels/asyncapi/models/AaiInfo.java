@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Info;
 
 /**
@@ -24,5 +25,12 @@ import io.apicurio.datamodels.core.models.common.Info;
  * @author eric.wittmann@gmail.com
  */
 public abstract class AaiInfo extends Info {
+
+    public AaiInfo(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
+    }
 
 }

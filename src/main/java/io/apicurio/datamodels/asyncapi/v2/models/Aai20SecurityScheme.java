@@ -13,7 +13,7 @@ public class Aai20SecurityScheme extends AaiSecurityScheme {
         super(parent);
     }
 
-    public Aai20SecurityScheme(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20SecurityScheme(Node parent, String name) {
+        super(parent, name);
     }
 }

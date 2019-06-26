@@ -32,8 +32,8 @@ public abstract class AaiMessage extends AaiMessageBase {
         super(parent);
     }
 
-    public AaiMessage(Node parent, String _name) {
-        super(parent, _name);
+    public AaiMessage(Node parent, String name) {
+        super(parent, name);
     }
 
     public abstract void addOneOfMessage(AaiMessage item);

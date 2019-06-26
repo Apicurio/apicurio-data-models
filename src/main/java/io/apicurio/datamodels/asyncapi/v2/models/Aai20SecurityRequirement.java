@@ -17,10 +17,14 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class Aai20SecurityRequirement extends AaiSecurityRequirement {
 
+    public Aai20SecurityRequirement(Node parent) {
+        super(parent);
+    }
 }

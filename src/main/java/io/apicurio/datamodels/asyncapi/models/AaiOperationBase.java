@@ -37,16 +37,14 @@ public abstract class AaiOperationBase extends Operation {
 
     public AaiOperationBase(Node parent, String opType) {
         super(opType);
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
     public AaiOperationBase(Node parent) {
-        super(null);
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        this(parent, null);
     }
 
 

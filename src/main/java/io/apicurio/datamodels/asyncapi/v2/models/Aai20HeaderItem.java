@@ -18,8 +18,8 @@ public class Aai20HeaderItem extends AaiHeaderItem {
         super(parent);
     }
 
-    public Aai20HeaderItem(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20HeaderItem(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

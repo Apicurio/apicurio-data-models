@@ -17,8 +17,8 @@ public class Aai20TraitItem extends AaiTraitItem {
         super(parent);
     }
 
-    public Aai20TraitItem(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20TraitItem(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

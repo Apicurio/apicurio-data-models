@@ -27,6 +27,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiNodeFactory;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
@@ -80,6 +81,13 @@ import java.util.List;
  */
 public abstract class AaiDataModelReader extends DataModelReader {
 
+
+    private final AaiNodeFactory nodeFactory;
+
+    public AaiDataModelReader(AaiNodeFactory nodeFactory) {
+        this.nodeFactory = nodeFactory;
+    }
+
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
@@ -96,7 +104,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (channels != null) {
             JsonCompat.keys(channels).forEach(key -> {
                 Object json_ = JsonCompat.consumeProperty(channels, key);
-                AaiChannelItem value = doc.createChannelItem(key);
+                AaiChannelItem value = nodeFactory.createChannelItem(node, key);
                 this.readChannelItem(json_, value);
                 doc.addChannelItem(value);
             });
@@ -106,7 +114,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
         if (servers != null) {
             servers.forEach(server -> {
-                AaiServer serverModel = doc.createServer();
+                AaiServer serverModel = nodeFactory.createServer(node);
                 this.readServer(server, serverModel);
                 doc.addServer(serverModel);
             });
@@ -115,7 +123,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // components
         Object json_ = JsonCompat.consumeProperty(json, Constants.PROP_COMPONENTS);
         if (json_ != null) {
-            AaiComponents components = doc.createComponents();
+            AaiComponents components = nodeFactory.createComponents(node);
             this.readComponents(json_, components);
             doc.components = components;
         }
@@ -131,7 +139,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // subscribe
         Object json_ = JsonCompat.consumeProperty(json, Constants.PROP_SUBSCRIBE);
         if (json_ != null) {
-            AaiOperation operation = new Aai20Operation(node, Constants.PROP_SUBSCRIBE);
+            AaiOperation operation = nodeFactory.createOperation(node, Constants.PROP_SUBSCRIBE);
             this.readOperation(json_, operation);
             node.subscribe = operation;
         }
@@ -139,7 +147,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // publish
         json_ = JsonCompat.consumeProperty(json, Constants.PROP_PUBLISH);
         if (json_ != null) {
-            AaiOperation operation = new Aai20Operation(node, Constants.PROP_PUBLISH);
+            AaiOperation operation = nodeFactory.createOperation(node, Constants.PROP_PUBLISH);
             this.readOperation(json_, operation);
             node.publish = operation;
         }
@@ -148,7 +156,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> parameters = JsonCompat.consumePropertyArray(json, Constants.PROP_PARAMETERS);
         if (parameters != null) {
             parameters.forEach(server -> {
-                AaiParameter serverModel = new Aai20Parameter(node);
+                AaiParameter serverModel = nodeFactory.createParameter(node, null);
                 this.readAaiParameter(server, serverModel);
                 node.addParameter(serverModel);
             });
@@ -159,7 +167,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (pi != null) {
             JsonCompat.keys(pi).forEach(key -> {
                 Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = new Aai20ProtocolInfo(node, key);
+                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
                 this.readProtocolInfo(j, value);
                 node.addProtocolInfo(key, value);
             });
@@ -195,7 +203,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
         if (security != null) {
             security.forEach(sec -> {
-                AaiSecurityRequirement secModel = aaiNode.createSecurityRequirement();
+                AaiSecurityRequirement secModel = nodeFactory.createSecurityRequirement(node);
                 this.readSecurityRequirement(sec, secModel);
                 aaiNode.addSecurityRequirement(secModel);
             });
@@ -223,7 +231,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // traits
         List<Object> traits = JsonCompat.consumePropertyArray(json, Constants.PROP_TRAITS);
         if (traits != null) {
-            AaiOperationTraitItems items = new Aai20OperationTraitItems(node);
+            AaiOperationTraitItems items = nodeFactory.createOperationTraitItems(node);
             this.readOperationTraitItems(traits, items);
             aaiNode.traits = items;
         }
@@ -231,7 +239,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // message
         Object json_ = JsonCompat.consumeProperty(json, Constants.PROP_MESSAGE);
         if (json_ != null) {
-            AaiMessage value = new Aai20Message(node);
+            AaiMessage value = nodeFactory.createMessage(node, null);
             this.readMessage(json_, value);
             aaiNode.message = value;
         }
@@ -248,7 +256,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // traits
         List<Object> traits = JsonCompat.consumePropertyArray(json, Constants.PROP_TRAITS);
         if (traits != null) {
-            AaiMessageTraitItems items = new Aai20MessageTraitItems(node);
+            AaiMessageTraitItems items = nodeFactory.createMessageTraitItems(node);
             this.readMessageTraitItems(traits, items);
             node.traits = items;
         }
@@ -257,7 +265,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> oneOfJson = JsonCompat.consumePropertyArray(json, Constants.PROP_ONE_OF);
         if (oneOfJson != null) {
             for(Object itemJson: oneOfJson) {
-                AaiMessage item = new Aai20Message(node);
+                AaiMessage item = nodeFactory.createMessage(node, null);
                 this.readMessage(itemJson, item);
                 item._isOneOfMessage = true;
                 node.addOneOfMessage(item);
@@ -273,11 +281,11 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (json != null) {
             json.forEach(e -> {
                 if (JsonCompat.isArray(e)) { // extended
-                    AaiMessageTraitExtendedItem value = new Aai20MessageTraitExtendedItem(node);
+                    AaiMessageTraitExtendedItem value = nodeFactory.createMessageTraitExtendedItem(node);
                     this.readMessageTraitExtendedItem(JsonCompat.toList(e), value);
                     node.addExtendedItem(value);
                 } else {
-                    AaiMessageTrait value = new Aai20MessageTrait(node);
+                    AaiMessageTrait value = nodeFactory.createMessageTrait(node, null);
                     this.readMessageTrait(e, value);
                     node.addItem(value);
                 }
@@ -293,7 +301,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonHeaders != null) {
             JsonCompat.keys(jsonHeaders).forEach(key -> {
                 Object j = JsonCompat.consumeProperty(jsonHeaders, key);
-                AaiHeaderItem value = new Aai20HeaderItem(node, key);
+                AaiHeaderItem value = nodeFactory.createHeaderItem(node, key);
                 this.readHeaderItem(j, value);
                 node.addHeaderItem(value);
             });
@@ -301,7 +309,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // correlationId
         Object jsonCI = JsonCompat.consumeProperty(json, Constants.PROP_CORRELATION_ID);
         if (jsonCI != null) {
-            AaiCorrelationId value = new Aai20CorrelationId(node/*, Constants.PROP_CORRELATION_ID*/);
+            AaiCorrelationId value = nodeFactory.createCorrelationId(node, null);
             this.readCorrelationId(jsonCI, value);
             node.correlationId = value;
         }
@@ -317,7 +325,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> jsonTags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
         if (jsonTags != null) {
             jsonTags.forEach(j -> {
-                AaiTag tag = new Aai20Tag(node);
+                AaiTag tag = nodeFactory.createTag(node);
                 this.readTag(j, tag);
                 node.addTag(tag);
             });
@@ -325,7 +333,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // external docs
         Object jsonED = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
         if (jsonED != null) {
-            AaiExternalDocumentation value = new Aai20ExternalDocumentation(node);
+            AaiExternalDocumentation value = nodeFactory.createExternalDocumentation(node);
             this.readExternalDocumentation(jsonED, value);
             node.externalDocs = value;
         }
@@ -334,7 +342,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (pi != null) {
             JsonCompat.keys(pi).forEach(key -> {
                 Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = new Aai20ProtocolInfo(node, key);
+                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
                 this.readProtocolInfo(j, value);
                 node.addProtocolInfo(value);
             });
@@ -373,7 +381,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
     public void readMessageTraitExtendedItem(List<Object> json, AaiMessageTraitExtendedItem node) {
         Object jsonTrait = json.get(0);
         if (jsonTrait != null) {
-            AaiMessageTrait value = new Aai20MessageTrait(node);
+            AaiMessageTrait value = nodeFactory.createMessageTrait(node, null);
             this.readMessageTrait(jsonTrait, value);
             node._trait = value;
         }
@@ -392,11 +400,11 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (json != null) {
             json.forEach(e -> {
                 if (JsonCompat.isArray(e)) { // extended
-                    AaiOperationTraitExtendedItem value = new Aai20OperationTraitExtendedItem(node);
+                    AaiOperationTraitExtendedItem value = nodeFactory.createOperationTraitExtendedItem(node, null);
                     this.readOperationTraitExtendedItem(JsonCompat.toList(e), value);
                     node.addExtendedItem(value);
                 } else {
-                    AaiOperationTrait value = new Aai20OperationTrait(node);
+                    AaiOperationTrait value = nodeFactory.createOperationTrait(node, null);
                     this.readOperationTrait(e, value);
                     node.addItem(value);
                 }
@@ -412,7 +420,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         List<Object> jsonTags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
         if (jsonTags != null) {
             jsonTags.forEach(j -> {
-                AaiTag tag = new Aai20Tag(node);
+                AaiTag tag = nodeFactory.createTag(node);
                 this.readTag(j, tag);
                 node.addTag(tag);
             });
@@ -422,7 +430,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (pi != null) {
             JsonCompat.keys(pi).forEach(key -> {
                 Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = new Aai20ProtocolInfo(node, key);
+                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
                 this.readProtocolInfo(j, value);
                 node.addProtocolInfo(value);
             });
@@ -437,7 +445,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
     public void readOperationTraitExtendedItem(List<Object> json, AaiOperationTraitExtendedItem node) {
         Object jsonTrait = json.get(0);
         if (jsonTrait != null) {
-            AaiOperationTrait value = new Aai20OperationTrait(node);
+            AaiOperationTrait value = nodeFactory.createOperationTrait(node, null);
             this.readOperationTrait(jsonTrait, value);
             node._operationTrait = value;
         }
@@ -466,7 +474,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonM != null) {
             JsonCompat.keys(jsonM).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonM, key);
-                AaiMessage value = new Aai20Message(node, key);
+                AaiMessage value = nodeFactory.createMessage(node, key);
                 this.readMessage(jsonValue, value);
                 node.addMessage(key, value);
             });
@@ -476,7 +484,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonSS != null) {
             JsonCompat.keys(jsonSS).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonSS, key);
-                AaiSecurityScheme value = new Aai20SecurityScheme(node, key);
+                AaiSecurityScheme value = nodeFactory.createSecurityScheme(node, key);
                 this.readSecurityScheme(jsonValue, value);
                 node.addSecurityScheme(key, value);
             });
@@ -486,7 +494,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonParameters != null) {
             JsonCompat.keys(jsonParameters).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonParameters, key);
-                AaiParameter value = new Aai20Parameter(node, key);
+                AaiParameter value = nodeFactory.createParameter(node, key);
                 this.readAaiParameter(jsonValue, value);
                 node.addParameter(key, value);
             });
@@ -496,7 +504,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonCI != null) {
             JsonCompat.keys(jsonCI).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonCI, key);
-                AaiCorrelationId value = new Aai20CorrelationId(node, key);
+                AaiCorrelationId value = nodeFactory.createCorrelationId(node, key);
                 this.readCorrelationId(jsonValue, value);
                 node.addCorrelationId(key, value);
             });
@@ -506,7 +514,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonT != null) {
             JsonCompat.keys(jsonT).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonT, key);
-                AaiTraitItem value = new Aai20TraitItem(node, key);
+                AaiTraitItem value = nodeFactory.createTraitItem(node, key);
                 this.readTraitItem(jsonValue, value);
                 node.addTraitItem(key, value);
             });
@@ -564,11 +572,11 @@ public abstract class AaiDataModelReader extends DataModelReader {
         Boolean isMessage = isMessageTrait(json);
         if (isMessage != null) {
             if (isMessage) {
-                AaiMessageTrait trait = new Aai20MessageTrait(node);
+                AaiMessageTrait trait = nodeFactory.createMessageTrait(node, null);
                 this.readMessageTrait(json, trait);
                 node._messageTrait = trait;
             } else {
-                AaiOperationTrait trait = new Aai20OperationTrait(node);
+                AaiOperationTrait trait = nodeFactory.createOperationTrait(node, null);
                 this.readOperationTrait(json, trait);
                 node._operationTrait = trait;
             }
@@ -589,7 +597,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // flows
         Object jsonFlows = JsonCompat.consumeProperty(json, Constants.PROP_FLOWS);
         if (jsonFlows != null) {
-            AaiOAuthFlows value = new Aai20OAuthFlows(node);
+            AaiOAuthFlows value = nodeFactory.createOAuthFlows(node);
             this.readOAuthFlows(jsonFlows, value);
             aaiNode.flows = value;
         }

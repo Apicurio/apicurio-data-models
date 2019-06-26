@@ -16,12 +16,12 @@ import java.util.List;
 public class Aai20ChannelItem extends AaiChannelItem {
 
 
-    public Aai20ChannelItem(String _name) {
-        super(_name);
+    public Aai20ChannelItem(Node parent) {
+        super(parent);
     }
 
-    public Aai20ChannelItem(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20ChannelItem(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

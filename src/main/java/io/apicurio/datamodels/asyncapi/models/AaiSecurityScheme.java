@@ -31,16 +31,14 @@ public abstract class AaiSecurityScheme extends SecurityScheme {
     public String bearerFormat;
 
     public AaiSecurityScheme(Node parent) {
-        super(null);
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        this(parent, null);
     }
 
-    public AaiSecurityScheme(Node parent, String _name) {
-        super(_name);
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+    public AaiSecurityScheme(Node parent, String name) {
+        super(name);
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 }

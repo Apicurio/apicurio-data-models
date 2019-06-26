@@ -12,7 +12,7 @@ public abstract class AaiMessageTrait extends AaiMessageBase {
         super(parent);
     }
 
-    public AaiMessageTrait(Node parent, String _name) {
-        super(parent, _name);
+    public AaiMessageTrait(Node parent, String name) {
+        super(parent, name);
     }
 }

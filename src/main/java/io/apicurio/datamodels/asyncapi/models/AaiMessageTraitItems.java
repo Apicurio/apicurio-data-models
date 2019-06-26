@@ -30,9 +30,10 @@ public abstract class AaiMessageTraitItems extends Node {
 //    }
 
     public AaiMessageTraitItems(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
     public abstract void addItem(AaiMessageTrait item);

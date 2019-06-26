@@ -30,8 +30,9 @@ import static java.util.Objects.requireNonNull;
 public abstract class AaiExternalDocumentation extends ExternalDocumentation {
 
     public AaiExternalDocumentation(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 }

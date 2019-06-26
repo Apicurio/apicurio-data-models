@@ -11,8 +11,8 @@ public class Aai20Parameter extends AaiParameter {
         super(parent);
     }
 
-    public Aai20Parameter(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20Parameter(Node parent, String name) {
+        super(parent, name);
     }
 
 //    @Override

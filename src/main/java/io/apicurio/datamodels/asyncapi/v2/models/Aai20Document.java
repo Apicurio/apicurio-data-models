@@ -50,10 +50,7 @@ public class Aai20Document extends AaiDocument {
      */
     @Override
     public Aai20Info createInfo() {
-        Aai20Info info = new Aai20Info();
-        info._parent = this;
-        info._ownerDocument = this;
-        return info;
+        return new Aai20Info(this);
     }
 
     /**
@@ -61,8 +58,7 @@ public class Aai20Document extends AaiDocument {
      */
     @Override
     public Aai20Tag createTag() {
-        Aai20Tag tag = new Aai20Tag(this);
-        return tag;
+        return new Aai20Tag(this);
     }
 
     /**
@@ -70,8 +66,7 @@ public class Aai20Document extends AaiDocument {
      */
     @Override
     public Aai20ExternalDocumentation createExternalDocumentation() {
-        Aai20ExternalDocumentation ed = new Aai20ExternalDocumentation(this);
-        return ed;
+        return new Aai20ExternalDocumentation(this);
     }
 
     /**
@@ -79,10 +74,7 @@ public class Aai20Document extends AaiDocument {
      */
     @Override
     public Aai20Server createServer() {
-        Aai20Server rval = new Aai20Server();
-        rval._ownerDocument = this;
-        rval._parent = this;
-        return rval;
+        return new Aai20Server(this);
     }
 
     /**
@@ -90,10 +82,10 @@ public class Aai20Document extends AaiDocument {
      */
     @Override
     public Aai20Server createServer(String url, String description) {
-        Aai20Server rval = createServer();
-        rval.url = url;
-        rval.description = description;
-        return rval;
+        Aai20Server server = new Aai20Server(this);
+        server.url = url;
+        server.description = description;
+        return server;
     }
 
     @Override
@@ -111,7 +103,7 @@ public class Aai20Document extends AaiDocument {
     }
 
     @Override
-    public AaiChannelItem createChannelItem(String name) {
+    public Aai20ChannelItem createChannelItem(String name) {
         return new Aai20ChannelItem(this, name);
     }
 
@@ -123,7 +115,7 @@ public class Aai20Document extends AaiDocument {
     }
 
     @Override
-    public AaiComponents createComponents() {
+    public Aai20Components createComponents() {
         return new Aai20Components(this);
     }
 }

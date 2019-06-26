@@ -21,8 +21,8 @@ public class Aai20Message extends AaiMessage {
         super(parent);
     }
 
-    public Aai20Message(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20Message(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

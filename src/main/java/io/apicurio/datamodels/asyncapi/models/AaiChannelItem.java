@@ -42,16 +42,16 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
     public Map<String, AaiProtocolInfo> protocolInfo;
     public String description;
 
-    public AaiChannelItem(String _name) {
-        this._name = _name;
+    public AaiChannelItem(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
-    public AaiChannelItem(Node parent, String _name) {
-        requireNonNull(parent);
-        requireNonNull(_name);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
-        this._name = _name;
+    public AaiChannelItem(Node parent, String name) {
+        this(parent);
+        this._name = name;
     }
 
     public String getName() {

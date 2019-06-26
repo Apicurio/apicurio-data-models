@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 
 /**
@@ -23,4 +24,10 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
  */
 public abstract class AaiSecurityRequirement extends SecurityRequirement {
 
+    public AaiSecurityRequirement(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
+    }
 }

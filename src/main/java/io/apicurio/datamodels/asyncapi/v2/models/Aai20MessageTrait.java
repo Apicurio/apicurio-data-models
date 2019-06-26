@@ -21,8 +21,8 @@ public class Aai20MessageTrait extends AaiMessageTrait {
         super(parent);
     }
 
-    public Aai20MessageTrait(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20MessageTrait(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override

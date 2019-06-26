@@ -19,6 +19,7 @@ package io.apicurio.datamodels.core.factories;
 import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReader;
 import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReaderDispatcher;
 import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelWriter;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.io.DataModelWriter;
@@ -38,6 +39,8 @@ import io.apicurio.datamodels.openapi.v3.io.Oas30DataModelWriter;
  */
 public class VisitorFactory {
 
+    private static Aai20NodeFactory aai20NodeFactory = new Aai20NodeFactory();
+
     public static final ValidationProblemsResetVisitor createValidationProblemsResetVisitor(Document doc) {
         return new ValidationProblemsResetVisitor();
     }
@@ -49,7 +52,7 @@ public class VisitorFactory {
     public static final DataModelReader createDataModelReader(DocumentType type) {
         switch (type) {
             case asyncapi2:
-                return new Aai20DataModelReader();
+                return new Aai20DataModelReader(aai20NodeFactory);
             case openapi2:
                 return new Oas20DataModelReader();
             case openapi3:

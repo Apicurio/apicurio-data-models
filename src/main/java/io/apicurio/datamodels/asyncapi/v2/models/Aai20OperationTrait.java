@@ -24,8 +24,8 @@ public class Aai20OperationTrait extends AaiOperationTrait {
     }
 
     @Override
-    public ExternalDocumentation createExternalDocumentation() {
-        return null;
+    public Aai20ExternalDocumentation createExternalDocumentation() {
+        return new Aai20ExternalDocumentation(this);
     }
 
     @Override

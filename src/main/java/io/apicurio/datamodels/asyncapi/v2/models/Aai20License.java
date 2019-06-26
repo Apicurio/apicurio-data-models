@@ -17,16 +17,14 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiLicense;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class Aai20License extends AaiLicense {
 
-    /**
-     * Constructor.
-     */
-    public Aai20License() {
+    public Aai20License(Node parent) {
+        super(parent);
     }
-
 }

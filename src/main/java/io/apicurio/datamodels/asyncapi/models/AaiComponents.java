@@ -75,8 +75,9 @@ public abstract class AaiComponents extends ExtensibleNode {
     public abstract void addTraitItem(String key, AaiTraitItem value);
 
     public AaiComponents(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 }

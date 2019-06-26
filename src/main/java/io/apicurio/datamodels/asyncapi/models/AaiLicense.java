@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.License;
 
 /**
@@ -26,7 +27,11 @@ public abstract class AaiLicense extends License {
     /**
      * Constructor.
      */
-    public AaiLicense() {
+    public AaiLicense(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
 }

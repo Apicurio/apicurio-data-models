@@ -33,16 +33,15 @@ public abstract class AaiOperationTraitExtendedItem extends Node {
 //    }
 
     public AaiOperationTraitExtendedItem(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
-    public AaiOperationTraitExtendedItem(Node parent, String _name) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
-        this._name = _name;
+    public AaiOperationTraitExtendedItem(Node parent, String name) {
+        this(parent);
+        this._name = name;
     }
 
     public String getName() {

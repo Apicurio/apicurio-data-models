@@ -20,9 +20,10 @@ public abstract class AaiOperationTraitItems extends Node {
     public List<AaiOperationTraitExtendedItem> _traitExtendedItems;
 
     public AaiOperationTraitItems(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
     public abstract void addExtendedItem(AaiOperationTraitExtendedItem item);

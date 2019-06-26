@@ -65,8 +65,7 @@ public class Aai20Operation extends AaiOperation {
      * Creates a Tag node.
      */
     public Aai20Tag createTag() {
-        Aai20Tag tag = new Aai20Tag(this);
-        return tag;
+        return new Aai20Tag(this);
     }
 
     /**
@@ -91,8 +90,7 @@ public class Aai20Operation extends AaiOperation {
      */
     @Override
     public Aai20ExternalDocumentation createExternalDocumentation() {
-        Aai20ExternalDocumentation externalDocs = new Aai20ExternalDocumentation(this);
-        return externalDocs;
+        return new Aai20ExternalDocumentation(this);
     }
 
 }

@@ -23,16 +23,16 @@ public abstract class AaiProtocolInfo extends Node {
      */
     public Map<String, Object> _protocolInfoItems;
 
-    public AaiProtocolInfo(String _name) {
-        this._name = _name;
+    public AaiProtocolInfo(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
-    public AaiProtocolInfo(Node parent, String _name) {
-        requireNonNull(parent);
-        requireNonNull(_name);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
-        this._name = _name;
+    public AaiProtocolInfo(Node parent, String name) {
+        this(parent);
+        this._name = name;
     }
 
     public String getName() {

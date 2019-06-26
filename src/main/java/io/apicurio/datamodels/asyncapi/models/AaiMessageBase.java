@@ -53,16 +53,15 @@ public abstract class AaiMessageBase extends ExtensibleNode {
     public Map<String, Object> examples;
 
     public AaiMessageBase(Node parent) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
 
-    public AaiMessageBase(Node parent, String _name) {
-        requireNonNull(parent);
-        this._parent = parent;
-        this._ownerDocument = parent.ownerDocument();
-        this._name = _name;
+    public AaiMessageBase(Node parent, String name) {
+        this(parent);
+        this._name = name;
     }
 
     public String getName() {

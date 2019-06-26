@@ -13,8 +13,8 @@ public class Aai20CorrelationId extends AaiCorrelationId {
         super(parent);
     }
 
-    public Aai20CorrelationId(Node parent, String _name) {
-        super(parent, _name);
+    public Aai20CorrelationId(Node parent, String name) {
+        super(parent, name);
     }
 
     @Override
