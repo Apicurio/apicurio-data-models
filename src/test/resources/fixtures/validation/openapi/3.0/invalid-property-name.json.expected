@@ -24,7 +24,7 @@
 [PDEF-001] |medium| {/components/parameters[Some$Parameter]->name} :: Parameter Definition Name is not valid.
 [EDEF-001] |medium| {/components/examples[Example|1]->name} :: Example Definition Name is not valid.
 [RBDEF-001] |medium| {/components/requestBodies[Request Body]->name} :: Request Body Definition Name is not valid.
-[HDEF-001] |medium| {/components/headers[[Header]]->name} :: Header Definition Name is not valid.
+[HDEF-001] |medium| {/components/headers[~2Header~3]->name} :: Header Definition Name is not valid.
 [SS-013] |medium| {/components/securitySchemes[Security%Scheme]->name} :: Security Scheme Name is not valid.
 [LDEF-001] |medium| {/components/links[Link*Twelve]->name} :: Link Definition Name is not valid.
 [CDEF-001] |medium| {/components/callbacks[Invalid Callback Name]->name} :: Callback Definition Name is not valid.

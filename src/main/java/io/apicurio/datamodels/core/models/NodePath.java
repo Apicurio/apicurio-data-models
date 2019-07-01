@@ -19,6 +19,8 @@ package io.apicurio.datamodels.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -191,9 +193,9 @@ public class NodePath {
         String rval = "";
         for (NodePathSegment segment : this.segments) {
             if (segment.isIndex()) {
-                rval += '[' + segment.getValue() + ']';
+                rval += '[' + segment.asString() + ']';
             } else {
-                rval += '/' + segment.getValue();
+                rval += '/' + segment.asString();
             }
         }
         return rval;
@@ -217,12 +219,17 @@ public class NodePath {
         
         /**
          * Constructor.
+         *
+         * @param value RAW (non-escaped) segment value or null
          */
         public NodePathSegment(String value, boolean index) {
             this(value);
             this.index = index;
         }
-        
+
+        /**
+         * @return RAW (non-escaped) segment value or null
+         */
         public String getValue() {
             return this.value;
         }
@@ -255,22 +262,76 @@ public class NodePath {
             }
             return childNode;
         }
-        
+
         /**
-         * Creates a segment from a string.
-         * @param segment
+         * This is a reverse operation to {@link #fromString(String)}.
+         * Not using "toString" as the method name is intentional,
+         * since the format of that methods output should not be assumed
+         * to be stable and precisely defined.
+         *
+         * @return ESCAPED segment value or null
+         */
+        public String asString() {
+            if(getValue() == null)
+                return null;
+            return escapePathSegmentValue(getValue(), !isIndex());
+        }
+
+        /**
+         * Creates a segment from an ESCAPED string.
+         * @param segment Escaped segment value. If it represents an "indexed"
+         *                node, it MUST be surrounded by '[' and ']'.
          */
         public static NodePathSegment fromString(String segment) {
             if (segment == null) {
                 return new NodePathSegment(null);
             }
-            if (segment.indexOf("[") == 0) {
-                int bStart = segment.indexOf("[");
-                int bEnd = segment.indexOf("]", bStart);
-                String value = segment.substring(bStart + 1, bEnd);
-                return new NodePathSegment(value, true);
+            boolean isIndex = false;
+            if (segment.indexOf("[") == 0
+                    && segment.indexOf("]") == (segment.length() - 1)) {
+                segment = segment.substring(1, segment.length() - 1);
+                isIndex = true;
             }
-            return new NodePathSegment(segment);
+            segment = unescapePathSegmentValue(segment);
+            return new NodePathSegment(segment, isIndex);
+        }
+
+        /**
+         * When a path is represented as a string,
+         * we are using three characters with special meaning
+         * to encode it's structure.
+         * '/' to separate path segments, and '[' with ']' to denote a segment for an "indexed" node.
+         * Since these characters can also appear in the segment values themselves (in their non-special meaning),
+         * they have to be escaped.
+         * The following rules are used, inspired by <a href="https://tools.ietf.org/html/rfc6901">RFC 6901</a>:
+         * - The escape character is '~', preceding a number which determines which special character is encoded.
+         * - '~1' ≡ '/'
+         * - '~2' ≡ '['
+         * - '~3' ≡ ']'
+         * The escape character is itself encoded as '~0'.
+         *
+         * @param escapeSlash In the "indexed" segment, '/' can be used unescaped.
+         */
+        private static String escapePathSegmentValue(String rawValue, boolean escapeSlash) {
+            // order is important
+            String res = rawValue.replace("~", "~0");
+            if(escapeSlash)
+                res = res.replace("/", "~1");
+            res = res.replace("[", "~2");
+            res = res.replace("]", "~3");
+            return res;
+        }
+
+        /**
+         * @see io.apicurio.datamodels.core.models.NodePath.NodePathSegment#escapePathSegmentValue(String, boolean)
+         */
+        private static String unescapePathSegmentValue(String escapedValue) {
+            // order is important
+            String res = escapedValue.replace("~3", "]");
+            res = res.replace("~2", "[");
+            res = res.replace("~1", "/");
+            res = res.replace("~0", "~");
+            return res;
         }
     }
     
