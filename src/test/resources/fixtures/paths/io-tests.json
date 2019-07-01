@@ -3,5 +3,12 @@
 	{ "name": "Info", "path": "/info", "segments": [ "info" ] },
 	{ "name": "Path Segments", "path": "/foo/bar/baz", "segments": [ "foo", "bar", "baz" ] },
 	{ "name": "Path and Index Segments", "path": "/foo/bar[10]/baz[/zippy]/crash", "segments": [ "foo", "bar", "10", "baz", "/zippy", "crash" ] },
-	{ "name": "Multiple Index Segments", "path": "/foo/bar[10][baz]/res1[10][3][6]", "segments": [ "foo", "bar", "10", "baz", "res1", "10", "3", "6" ] }
+	{ "name": "Multiple Index Segments", "path": "/foo/bar[10][baz]/res1[10][3][6]", "segments": [ "foo", "bar", "10", "baz", "res1", "10", "3", "6" ] },
+	{ "name": "Escaped ~", "path": "/~0foo/bar", "segments": [ "~foo", "bar"] },
+	{ "name": "Escaped /", "path": "/~1foo/bar", "segments": [ "/foo", "bar"] },
+	{ "name": "Escaped [", "path": "/~2foo/bar", "segments": [ "[foo", "bar"] },
+	{ "name": "Escaped ]", "path": "/~3foo/bar", "segments": [ "]foo", "bar"] },
+	{ "name": "Escaped brackets", "path": "/foo[/~3bar]", "segments": [ "foo", "/]bar"] },
+	{ "name": "Double escaped 1", "path": "/foo[~03bar]", "segments": [ "foo", "~3bar"] },
+	{ "name": "Double escaped 2", "path": "/foo[~30bar]", "segments": [ "foo", "]0bar"] }
 ]
