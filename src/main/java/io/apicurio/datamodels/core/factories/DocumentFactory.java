@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -31,7 +32,7 @@ public class DocumentFactory {
     public static final Document create(DocumentType type) {
         switch (type) {
             case asyncapi2: {
-                AaiDocument doc = new AaiDocument();
+                AaiDocument doc = new Aai20Document();
                 doc.asyncapi = "2.0.0";
                 return doc;
             }

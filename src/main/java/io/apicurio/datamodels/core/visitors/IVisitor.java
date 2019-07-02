@@ -38,20 +38,19 @@ import io.apicurio.datamodels.core.models.common.Tag;
  */
 public interface IVisitor {
 
-    public void visitDocument(Document node);
-    public void visitInfo(Info node);
-    public void visitContact(Contact node);
-    public void visitLicense(License node);
-    public void visitTag(Tag node);
-    public void visitExternalDocumentation(ExternalDocumentation node);
-    public void visitValidationProblem(ValidationProblem problem);
-    public void visitSchema(Schema node);
-    public void visitSchemaDefinition(ISchemaDefinition node);
-    public void visitParameter(Parameter node);
-    public void visitParameterDefinition(IParameterDefinition node);
-    public void visitOperation(Operation node);
-    public void visitSecurityScheme(SecurityScheme node);
-    public void visitSecurityRequirement(SecurityRequirement node);
-    public void visitExtension(Extension node);
-
+    void visitContact(Contact node);
+    void visitDocument(Document node);
+    void visitExtension(Extension node);
+    void visitExternalDocumentation(ExternalDocumentation node);
+    void visitInfo(Info node);
+    void visitLicense(License node);
+    void visitOperation(Operation node);
+    void visitParameterDefinition(IParameterDefinition node);
+    void visitParameter(Parameter node);
+    void visitSchemaDefinition(ISchemaDefinition node);
+    void visitSchema(Schema node);
+    void visitSecurityRequirement(SecurityRequirement node);
+    void visitSecurityScheme(SecurityScheme node);
+    void visitTag(Tag node);
+    void visitValidationProblem(ValidationProblem problem);
 }

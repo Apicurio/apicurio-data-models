@@ -1,0 +1,152 @@
+{
+    "info": {
+        "version": "1.0.0", 
+        "description": "A cut of the Streetlights API to test Correlation ID", 
+        "license": {
+            "url": "https://www.apache.org/licenses/LICENSE-2.0", 
+            "name": "Apache 2.0"
+        }, 
+        "title": "Correlation ID Example"
+    }, 
+    "channels": {
+        "action/{streetlightId}/dim": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/streetlightId"
+                }
+            ], 
+            "publish": {
+                "message": {
+                    "$ref": "#/components/messages/dimLight"
+                }, 
+                "operationId": "dimLight"
+            }
+        }, 
+        "event/{streetlightId}/lighting/measured": {
+            "subscribe": {
+                "message": {
+                    "$ref": "#/components/messages/lightMeasured"
+                }, 
+                "summary": "Receive information about environmental lighting conditions of a particular streetlight.", 
+                "operationId": "receiveLightMeasurement"
+            }, 
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/streetlightId"
+                }
+            ]
+        }
+    }, 
+    "components": {
+        "messages": {
+            "lightMeasured": {
+                "contentType": "application/json", 
+                "name": "lightMeasured", 
+                "title": "Light measured", 
+                "payload": {
+                    "$ref": "#/components/schemas/lightMeasuredPayload"
+                }, 
+                "correlationId": {
+                    "location": "$message.header#/MQMD/CorrelId"
+                }, 
+                "summary": "Inform about environmental lighting conditions for a particular streetlight."
+            }, 
+            "dimLight": {
+                "correlationId": {
+                    "$ref": "#/components/correlationIds/sentAtCorrelator"
+                }, 
+                "title": "Dim light", 
+                "payload": {
+                    "$ref": "#/components/schemas/dimLightPayload"
+                }, 
+                "name": "dimLight", 
+                "summary": "Command a particular streetlight to dim the lights."
+            }
+        }, 
+        "correlationIds": {
+            "sentAtCorrelator": {
+                "description": "Data from message payload used as correlation ID", 
+                "location": "$message.payload#/sentAt"
+            }
+        }, 
+        "parameters": {
+            "streetlightId": {
+                "description": "The ID of the streetlight.", 
+                "name": "streetlightId", 
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }, 
+        "schemas": {
+            "dimLightPayload": {
+                "type": "object", 
+                "properties": {
+                    "percentage": {
+                        "minimum": 0, 
+                        "type": "integer", 
+                        "description": "Percentage to which the light should be dimmed to.", 
+                        "maximum": 100
+                    }, 
+                    "sentAt": {
+                        "$ref": "#/components/schemas/sentAt"
+                    }
+                }
+            }, 
+            "lightMeasuredPayload": {
+                "type": "object", 
+                "properties": {
+                    "lumens": {
+                        "minimum": 0, 
+                        "type": "integer", 
+                        "description": "Light intensity measured in lumens."
+                    }, 
+                    "sentAt": {
+                        "$ref": "#/components/schemas/sentAt"
+                    }
+                }
+            }, 
+            "sentAt": {
+                "type": "string", 
+                "description": "Date and time when the message was sent.", 
+                "format": "date-time"
+            }
+        }
+    }, 
+    "defaultContentType": "application/json", 
+    "asyncapi": "2.0.0",
+    "id": "urn:com:smartylighting:streetlights:server", 
+    "servers": [
+        {
+            "protocol": "mqtt", 
+            "description": "Test broker", 
+            "baseChannel": "smartylighting/streetlights/1/0", 
+            "url": "api.streetlights.smartylighting.com:{port}", 
+            "variables": {
+                "port": {
+                    "default": "1883", 
+                    "enum": [
+                        "1883", 
+                        "8883"
+                    ], 
+                    "description": "Secure connection (TLS) is available through port 8883."
+                }
+            }, 
+            "security": [
+                {
+                    "apiKey": []
+                }, 
+                {
+                    "supportedOauthFlows": [
+                        "streetlights:on", 
+                        "streetlights:off", 
+                        "streetlights:dim"
+                    ]
+                }, 
+                {
+                    "openIdConnectWellKnown": []
+                }
+            ]
+        }
+    ]
+}

@@ -16,29 +16,137 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiComponents;
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
+import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
+import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
     @Override
-    public void visitServer(Server node) {
+    public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
         visitNode(node);
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
-    public void visitServerVariable(ServerVariable node) {
+    public void visitChannelItem(AaiChannelItem node) {
         visitNode(node);
     }
 
+    @Override
+    public void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitComponents(AaiComponents node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitCorrelationId(AaiCorrelationId node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitHeaderItem(AaiHeaderItem node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitMessage(AaiMessage node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTraitItems(AaiMessageTraitItems node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitMessageTrait(AaiMessageTrait node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitOAuthFlows(OAuthFlows node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTraitItems(AaiOperationTraitItems node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitOperationTrait(AaiOperationTrait node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitProtocolInfo(AaiProtocolInfo node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitServer(AaiServer node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitServerVariable(AaiServerVariable node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitTraitItem(AaiTraitItem node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitAaiParameter(AaiParameter node) {
+        visitNode(node);
+    }
 }

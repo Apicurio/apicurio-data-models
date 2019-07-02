@@ -18,8 +18,10 @@ package io.apicurio.datamodels.core.models.common;
 
 /**
  * Models an authorization code OAuth flow.
+ *
  * @author eric.wittmann@gmail.com
  */
 public abstract class AuthorizationCodeOAuthFlow extends OAuthFlow {
+
 
 }

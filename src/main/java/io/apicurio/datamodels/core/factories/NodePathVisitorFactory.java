@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.core.factories;
 
-import io.apicurio.datamodels.asyncapi.visitors.AaiNodePathVisitor;
+import io.apicurio.datamodels.asyncapi.v2.visitors.Aai20NodePathVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.Oas20NodePathVisitor;
@@ -30,7 +30,7 @@ public class NodePathVisitorFactory {
     public static NodePathVisitor createNodePathVisitor(Document doc) {
         switch (doc.getDocumentType()) {
             case asyncapi2:
-                return new AaiNodePathVisitor();
+                return new Aai20NodePathVisitor();
             case openapi2:
                 return new Oas20NodePathVisitor();
             case openapi3:

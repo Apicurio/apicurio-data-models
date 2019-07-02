@@ -162,15 +162,26 @@ public class NodePathVisitor implements IVisitor {
      */
     @Override
     public void visitOperation(Operation node) {
+        // _type determines the field name
         this.path.prependSegment(node.getType(), false);
     }
     
+//    /**
+//     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+//     */
+//    @Override
+//    public void visitSecurityScheme(SecurityScheme node) {
+//        this.path.prependSegment(node.getSchemeName(), true);
+//    }
+
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         this.path.prependSegment(node.getSchemeName(), true);
+        // TODO test fails
+        //this.path.prependSegment(Constants.PROP_SECURITY_SCHEMES, false);
     }
     
     /**

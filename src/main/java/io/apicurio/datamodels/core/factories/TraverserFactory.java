@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.core.factories;
 
-import io.apicurio.datamodels.asyncapi.visitors.AaiTraverser;
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.asyncapi.v2.visitors.Aai20Traverser;
+import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.combined.visitors.CombinedReverseTraverser;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.ITraverser;
@@ -30,12 +30,14 @@ import io.apicurio.datamodels.openapi.v3.visitors.Oas30Traverser;
 
 /**
  * Creates a traverser for a particular data model.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class TraverserFactory {
-    
+
     /**
      * Create the appropriate traverser for the given document/data model.
+     *
      * @param doc
      * @param visitor
      * @param direction
@@ -46,7 +48,7 @@ public class TraverserFactory {
         }
         switch (doc.getDocumentType()) {
             case asyncapi2:
-                return direction == TraverserDirection.down ? new AaiTraverser((IAaiVisitor) visitor) : new CombinedReverseTraverser((IAaiVisitor) visitor);
+                return direction == TraverserDirection.down ? new Aai20Traverser((IAai20Visitor) visitor) : new CombinedReverseTraverser((IAai20Visitor) visitor);
             case openapi2:
                 return direction == TraverserDirection.down ? new Oas20Traverser((IOas20Visitor) visitor) : new CombinedReverseTraverser((IOas20Visitor) visitor);
             case openapi3:

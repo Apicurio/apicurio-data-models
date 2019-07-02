@@ -3,7 +3,18 @@
 	{ "name": "[AsyncAPI 2] Simple Info", "test": "asyncapi/2.0/simple/simple-info.json" },
 	{ "name": "[AsyncAPI 2] Simple Info With Extra Properties", "test": "asyncapi/2.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
 	{ "name": "[AsyncAPI 2] Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" },
+
+    { "name": "[AsyncAPI 2] Complete anyof", "test": "asyncapi/2.0/complete/anyof.json" },
+    { "name": "[AsyncAPI 2] Complete application-headers", "test": "asyncapi/2.0/complete/application-headers.json" },
     { "name": "[AsyncAPI 2] Complete Info", "test": "asyncapi/2.0/complete/complete-info.json" },
+    { "name": "[AsyncAPI 2] Complete correlation-id", "test": "asyncapi/2.0/complete/correlation-id.json" },
+    { "name": "[AsyncAPI 2] Complete gitter-streaming", "test": "asyncapi/2.0/complete/gitter-streaming.json" },
+    { "name": "[AsyncAPI 2] Complete not", "test": "asyncapi/2.0/complete/not.json" },
+    { "name": "[AsyncAPI 2] Complete oneof", "test": "asyncapi/2.0/complete/oneof.json" },
+    { "name": "[AsyncAPI 2] Complete rpc-client", "test": "asyncapi/2.0/complete/rpc-client.json" },
+    { "name": "[AsyncAPI 2] Complete rpc-server", "test": "asyncapi/2.0/complete/rpc-server.json" },
+    { "name": "[AsyncAPI 2] Complete slack-rtm", "test": "asyncapi/2.0/complete/slack-rtm.json" },
+    { "name": "[AsyncAPI 2] Complete streetlights", "test": "asyncapi/2.0/complete/streetlights.json" },
     
     { "name": "[OpenAPI 2] Simple - External Docs", "test": "openapi/2.0/simple/simple-externalDocs.json" },
     { "name": "[OpenAPI 2] Simple - Info + Extensions", "test": "openapi/2.0/simple/simple-info-extensions.json" },

@@ -1,0 +1,51 @@
+{
+    "info": {
+        "version": "1.0.0", 
+        "title": "AnyOf example"
+    }, 
+    "channels": {
+        "test": {
+            "publish": {
+                "message": {
+                    "$ref": "#/components/messages/testMessages"
+                }
+            }
+        }
+    }, 
+    "asyncapi": "2.0.0",
+    "id": "https://github.com/asyncapi/asyncapi/examples/next/anyof.yml", 
+    "components": {
+        "messages": {
+            "testMessages": {
+                "payload": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/components/schemas/objectWithKey"
+                        }, 
+                        {
+                            "$ref": "#/components/schemas/objectWithKey2"
+                        }
+                    ]
+                }
+            }
+        }, 
+        "schemas": {
+            "objectWithKey2": {
+                "type": "object", 
+                "properties": {
+                    "key2": {
+                        "type": "string"
+                    }
+                }
+            }, 
+            "objectWithKey": {
+                "type": "object", 
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
