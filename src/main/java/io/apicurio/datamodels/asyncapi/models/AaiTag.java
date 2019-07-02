@@ -16,29 +16,21 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Tag;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiTag extends Tag {
-    
-    /**
-     * Constructor.
-     */
-    public AaiTag() {
-    }
+public abstract class AaiTag extends Tag {
 
-    /**
-     * @see io.apicurio.datamodels.core.models.common.Tag#createExternalDocumentation()
-     */
-    @Override
-    public ExternalDocumentation createExternalDocumentation() {
-        ExternalDocumentation ed = new AaiExternalDocumentation();
-        ed._ownerDocument = this.ownerDocument();
-        ed._parent = this;
-        return ed;
+    public AaiTag(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
-
 }

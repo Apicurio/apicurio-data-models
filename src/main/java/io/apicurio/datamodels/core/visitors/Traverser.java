@@ -119,8 +119,6 @@ public class Traverser implements ITraverser, IVisitor {
 	public final void visitDocument(Document node) {
 		node.accept(this.visitor);
 		this.traverseDocument(node);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
 	}
 	
 	/**
@@ -128,6 +126,8 @@ public class Traverser implements ITraverser, IVisitor {
      * @param node
      */
     protected void traverseDocument(Document node) {
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
         this.traverseIfNotNull(node.info);
         this.traverseCollection(node.tags);
         this.traverseIfNotNull(node.externalDocs);
@@ -254,10 +254,11 @@ public class Traverser implements ITraverser, IVisitor {
     public void visitOperation(Operation node) {
         node.accept(this.visitor);
         traverseOperation(node);
+    }
+
+    protected void traverseOperation(Operation node) {
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
-    }
-    protected void traverseOperation(Operation node) {
         this.traverseIfNotNull(node.externalDocs);
     }
 

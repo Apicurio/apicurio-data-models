@@ -19,6 +19,7 @@ package io.apicurio.datamodels.core.io;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -85,12 +86,22 @@ public class DataModelWriter implements IVisitor {
         });
     }
 
-    protected Object lookup(int modelId) {
+    /**
+     * Lookup the parent node via modelId if it exists (we already processed it).
+     * Caller must provide the parent object as a second argument for cases when it does not exist.
+     * @param modelId
+     * @param jsonDefault not null
+     * @return
+     */
+    protected Object lookup(int modelId, Object jsonDefault) {
+        Objects.requireNonNull(jsonDefault);
         Object rval = this._modelIdToJS.get(modelId);
         // If not found, return a throwaway object (this would happen when doing a partial
         // read of a subsection of a document).
+        // TODO: This assumption is not always correct,
+        // The parent node may be an array
         if (rval == null) {
-            return JsonCompat.objectNode();
+            rval = jsonDefault;
         }
         return rval;
     }
@@ -100,7 +111,11 @@ public class DataModelWriter implements IVisitor {
      * @param node
      */
     protected Object lookupParentJson(Node node) {
-        return this.lookup(node.parent().modelId());
+        return this.lookup(node.parent().modelId(), JsonCompat.objectNode());
+    }
+
+    protected Object lookupParentJson(Node node, Object jsonDefault) {
+        return this.lookup(node.parent().modelId(), jsonDefault);
     }
 
     /**

@@ -16,17 +16,20 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Contact;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiContact extends Contact {
+public abstract class AaiContact extends Contact {
 
-    /**
-     * Constructor.
-     */
-    public AaiContact() {
+    public AaiContact(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
     }
-    
+
 }

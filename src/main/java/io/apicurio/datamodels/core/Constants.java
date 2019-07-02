@@ -164,7 +164,7 @@ public class Constants {
     public static final String PROP_PROTOCOL = "protocol";
     public static final String PROP_PROTOCOL_VERSION = "protocolVersion";
     public static final String PROP_BASE_CHANNEL = "baseChannel";
-
+    public static final String PROP_MESSAGES = "messages";
     public static final String PROP___TYPE = "__type";
     public static final String PROP_OF = "of";
     public static final String PROP_AS = "as";
@@ -179,4 +179,19 @@ public class Constants {
     public static final String REF_PREFIX_SCHEMA = "#/components/schemas/";
     public static final String REF_PREFIX_SECURITY_SCHEME = "#/components/securitySchemes/";
 
+    public static final String PROP_CORRELATION_IDS = "correlationIds";
+    public static final String PROP_TRAITS = "traits";
+    public static final String PROP_MESSAGE = "message";
+    public static final String PROP_PROTOCOL_INFO = "protocolInfo";
+    public static final String PROP_CORRELATION_ID = "correlationId";
+    public static final String PROP_TRAIT_EXTENDED_ITEMS = "_traitExtendedItems";
+    public static final String PROP_TRAIT_ITEMS = "_traitItems";
+    public static final String PROP_SUBSCRIBE = "subscribe";
+    public static final String PROP_PUBLISH = "publish";
+    public static final String PROP_PAYLOAD = "payload";
+    public static final String PROP_SCHEMA_FORMAT = "schemaFormat";
+    public static final String PROP_LOCATION = "location";
+    public static final String PROP_DEFAULT_CONTENT_TYPE = "defaultContentType";
+    public static final String PROP__TRAIT = "_trait";
+    public static final String PROP__OPERATION_TRAIT = "_operationTrait";
 }

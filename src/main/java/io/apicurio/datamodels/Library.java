@@ -16,9 +16,7 @@
 
 package io.apicurio.datamodels;
 
-import java.util.List;
-
-import io.apicurio.datamodels.asyncapi.models.AaiDocument;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
@@ -44,10 +42,13 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
 
+import java.util.List;
+
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
  * for performing common actions such as i/o, visiting, and validation.
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
     
@@ -58,7 +59,7 @@ public class Library {
     public static Document createDocument(DocumentType type) {
         switch (type) {
             case asyncapi2:
-                return new AaiDocument();
+                return new Aai20Document();
             case openapi2:
                 return new Oas20Document();
             case openapi3:

@@ -16,12 +16,23 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Models an AsyncAPI external documentation node.
+ *
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class AaiExternalDocumentation extends ExternalDocumentation {
+public abstract class AaiExternalDocumentation extends ExternalDocumentation {
 
+    public AaiExternalDocumentation(Node parent) {
+        if(parent != null) {
+            this._parent = parent;
+            this._ownerDocument = parent.ownerDocument();
+        }
+    }
 }

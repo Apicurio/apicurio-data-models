@@ -16,18 +16,39 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiComponents;
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
+import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
+import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IParameterDefinition;
 import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -81,16 +102,17 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
  * @author eric.wittmann@gmail.com
+ * @author Jakub Senko <jsenko@redhat.com>
  */
-public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAaiVisitor {
+public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAai20Visitor {
 
     /**
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPaths(io.apicurio.datamodels.openapi.models.OasPaths)
      */
     @Override
     public void visitPaths(OasPaths node) {
-        
-        
+
+
     }
 
     /**
@@ -98,8 +120,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitPathItem(OasPathItem node) {
-        
-        
+
+
     }
 
     /**
@@ -107,8 +129,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitResponse(OasResponse node) {
-        
-        
+
+
     }
 
     /**
@@ -116,8 +138,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitResponses(OasResponses node) {
-        
-        
+
+
     }
 
     /**
@@ -125,8 +147,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitXML(OasXML node) {
-        
-        
+
+
     }
 
     /**
@@ -134,8 +156,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitAllOfSchema(OasSchema node) {
-        
-        
+
+
     }
 
     /**
@@ -143,8 +165,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitItemsSchema(OasSchema node) {
-        
-        
+
+
     }
 
     /**
@@ -152,8 +174,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitAdditionalPropertiesSchema(OasSchema node) {
-        
-        
+
+
     }
 
     /**
@@ -161,8 +183,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitPropertySchema(IOasPropertySchema node) {
-        
-        
+
+
     }
 
     /**
@@ -170,8 +192,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitDocument(Document node) {
-        
-        
+
+
     }
 
     /**
@@ -179,8 +201,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitInfo(Info node) {
-        
-        
+
+
     }
 
     /**
@@ -188,8 +210,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitContact(Contact node) {
-        
-        
+
+
     }
 
     /**
@@ -197,8 +219,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLicense(License node) {
-        
-        
+
+
     }
 
     /**
@@ -206,8 +228,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitTag(Tag node) {
-        
-        
+
+
     }
 
     /**
@@ -215,8 +237,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
-        
-        
+
+
     }
 
     /**
@@ -224,8 +246,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitExtension(Extension node) {
-        
-        
+
+
     }
 
     /**
@@ -233,8 +255,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitServer(Server node) {
-        
-        
+
+
     }
 
     /**
@@ -242,8 +264,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
-        
-        
+
+
     }
 
     /**
@@ -251,8 +273,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitServerVariable(ServerVariable node) {
-        
-        
+
+
     }
 
     /**
@@ -260,8 +282,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitValidationProblem(ValidationProblem problem) {
-        
-        
+
+
     }
 
     /**
@@ -269,8 +291,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitSchema(Schema node) {
-        
-        
+
+
     }
 
     /**
@@ -278,8 +300,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitSchemaDefinition(ISchemaDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -287,8 +309,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitParameter(Parameter node) {
-        
-        
+
+
     }
 
     /**
@@ -296,8 +318,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitOperation(Operation node) {
-        
-        
+
+
     }
 
     /**
@@ -305,16 +327,16 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        
-        
+
+
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
      */
     @Override
     public void visitParameterDefinition(IParameterDefinition node) {
-        
+
     }
 
     /**
@@ -322,8 +344,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitItems(Oas20Items node) {
-        
-        
+
+
     }
 
     /**
@@ -331,8 +353,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitScopes(Oas20Scopes node) {
-        
-        
+
+
     }
 
     /**
@@ -340,8 +362,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitSecurityDefinitions(Oas20SecurityDefinitions node) {
-        
-        
+
+
     }
 
     /**
@@ -349,8 +371,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitDefinitions(Oas20Definitions node) {
-        
-        
+
+
     }
 
     /**
@@ -358,8 +380,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
-        
-        
+
+
     }
 
     /**
@@ -367,8 +389,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitHeader(OasHeader node) {
-        
-        
+
+
     }
 
     /**
@@ -376,8 +398,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitResponseDefinition(IOasResponseDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -385,8 +407,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitExample(Oas20Example node) {
-        
-        
+
+
     }
 
     /**
@@ -394,8 +416,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitHeaders(Oas20Headers node) {
-        
-        
+
+
     }
 
     /**
@@ -403,8 +425,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
-        
-        
+
+
     }
 
     /**
@@ -412,8 +434,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitComponents(Oas30Components node) {
-        
-        
+
+
     }
 
     /**
@@ -421,8 +443,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitCallbackPathItem(Oas30CallbackPathItem node) {
-        
-        
+
+
     }
 
     /**
@@ -430,8 +452,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitCallback(Oas30Callback node) {
-        
-        
+
+
     }
 
     /**
@@ -439,8 +461,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLinkServer(Oas30LinkServer node) {
-        
-        
+
+
     }
 
     /**
@@ -448,8 +470,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitCallbackDefinition(Oas30CallbackDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -457,8 +479,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLink(Oas30Link node) {
-        
-        
+
+
     }
 
     /**
@@ -466,8 +488,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLinkRequestBodyExpression(Oas30LinkRequestBodyExpression node) {
-        
-        
+
+
     }
 
     /**
@@ -475,8 +497,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLinkParameterExpression(Oas30LinkParameterExpression node) {
-        
-        
+
+
     }
 
     /**
@@ -484,8 +506,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLinkDefinition(Oas30LinkDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -493,8 +515,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitAuthorizationCodeOAuthFlow(Oas30AuthorizationCodeOAuthFlow node) {
-        
-        
+
+
     }
 
     /**
@@ -502,8 +524,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitClientCredentialsOAuthFlow(Oas30ClientCredentialsOAuthFlow node) {
-        
-        
+
+
     }
 
     /**
@@ -511,8 +533,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitPasswordOAuthFlow(Oas30PasswordOAuthFlow node) {
-        
-        
+
+
     }
 
     /**
@@ -520,8 +542,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitImplicitOAuthFlow(Oas30ImplicitOAuthFlow node) {
-        
-        
+
+
     }
 
     /**
@@ -529,8 +551,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitOAuthFlows(Oas30OAuthFlows node) {
-        
-        
+
+
     }
 
     /**
@@ -538,8 +560,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitExample(Oas30Example node) {
-        
-        
+
+
     }
 
     /**
@@ -547,8 +569,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitEncoding(Oas30Encoding node) {
-        
-        
+
+
     }
 
     /**
@@ -556,8 +578,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitMediaType(Oas30MediaType node) {
-        
-        
+
+
     }
 
     /**
@@ -565,8 +587,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitHeaderDefinition(Oas30HeaderDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -574,8 +596,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
-        
-        
+
+
     }
 
     /**
@@ -583,8 +605,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitRequestBodyDefinition(Oas30RequestBodyDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -592,8 +614,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitExampleDefinition(Oas30ExampleDefinition node) {
-        
-        
+
+
     }
 
     /**
@@ -601,8 +623,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitDiscriminator(Oas30Discriminator node) {
-        
-        
+
+
     }
 
     /**
@@ -610,8 +632,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitNotSchema(Oas30NotSchema node) {
-        
-        
+
+
     }
 
     /**
@@ -619,8 +641,8 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitOneOfSchema(Oas30OneOfSchema node) {
-        
-        
+
+
     }
 
     /**
@@ -628,8 +650,112 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitAnyOfSchema(Oas30AnyOfSchema node) {
-        
-        
+
+
     }
 
+    @Override
+    public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
+
+    }
+
+    @Override
+    public void visitChannelItem(AaiChannelItem node) {
+
+    }
+
+    @Override
+    public void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node) {
+
+    }
+
+    @Override
+    public void visitComponents(AaiComponents node) {
+
+    }
+
+    @Override
+    public void visitCorrelationId(AaiCorrelationId node) {
+
+    }
+
+    @Override
+    public void visitHeaderItem(AaiHeaderItem node) {
+
+    }
+
+    @Override
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
+
+    }
+
+    @Override
+    public void visitMessage(AaiMessage node) {
+
+    }
+
+    @Override
+    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
+
+    }
+
+    @Override
+    public void visitMessageTraitItems(AaiMessageTraitItems node) {
+
+    }
+
+    @Override
+    public void visitMessageTrait(AaiMessageTrait node) {
+
+    }
+
+    @Override
+    public void visitOAuthFlows(OAuthFlows node) {
+
+    }
+
+    @Override
+    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
+
+    }
+
+    @Override
+    public void visitOperationTraitItems(AaiOperationTraitItems node) {
+
+    }
+
+    @Override
+    public void visitOperationTrait(AaiOperationTrait node) {
+
+    }
+
+    @Override
+    public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
+
+    }
+
+    @Override
+    public void visitProtocolInfo(AaiProtocolInfo node) {
+
+    }
+
+    @Override
+    public void visitServer(AaiServer node) {
+
+    }
+
+    @Override
+    public void visitServerVariable(AaiServerVariable node) {
+
+    }
+
+    @Override
+    public void visitTraitItem(AaiTraitItem node) {
+
+    }
+
+    @Override
+    public void visitAaiParameter(AaiParameter aaiParameter) {
+
+    }
 }

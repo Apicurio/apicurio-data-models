@@ -1,0 +1,106 @@
+{
+    "info": {
+        "version": "1.0.0", 
+        "description": "This example demonstrates how to define an RPC server.", 
+        "title": "RPC Server Example"
+    }, 
+    "channels": {
+        "rpc_queue": {
+            "subscribe": {
+                "message": {
+                    "protocolInfo": {
+                        "amqp-0-9-1": {
+                            "properties": {
+                                "reply_to": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }, 
+                    "payload": {
+                        "type": "object", 
+                        "properties": {
+                            "numbers": {
+                                "items": {
+                                    "type": "number"
+                                }, 
+                                "type": "array", 
+                                "examples": [
+                                    [
+                                        4, 
+                                        3
+                                    ]
+                                ]
+                            }
+                        }
+                    }, 
+                    "correlationId": {
+                        "location": "$message.header#/correlation_id"
+                    }
+                }, 
+                "operationId": "sum"
+            }, 
+            "protocolInfo": {
+                "amqp-0-9-1": {
+                    "queue": {
+                        "durable": false
+                    }, 
+                    "channelIsQueue": true
+                }
+            }
+        }, 
+        "{queue}": {
+            "protocolInfo": {
+                "amqp-0-9-1": {
+                    "queue": {
+                        "exclusive": true, 
+                        "randomName": true
+                    }, 
+                    "channelIsQueue": true
+                }
+            }, 
+            "parameters": [
+                {
+                    "name": "queue", 
+                    "schema": {
+                        "pattern": "^amq\\\\.gen\\\\-.+$", 
+                        "type": "string"
+                    }
+                }
+            ], 
+            "publish": {
+                "message": {
+                    "payload": {
+                        "type": "object", 
+                        "properties": {
+                            "result": {
+                                "type": "number", 
+                                "examples": [
+                                    7
+                                ]
+                            }
+                        }
+                    }, 
+                    "correlationId": {
+                        "location": "$message.header#/correlation_id"
+                    }
+                }, 
+                "protocolInfo": {
+                    "amqp-0-9-1": {
+                        "ack": true
+                    }
+                }, 
+                "operationId": "sendSumResult"
+            }
+        }
+    }, 
+    "defaultContentType": "application/json", 
+    "asyncapi": "2.0.0",
+    "id": "urn:rpc:example:server", 
+    "servers": [
+        {
+            "url": "rabbitmq.example.org", 
+            "protocol": "amqp"
+        }
+    ]
+}
