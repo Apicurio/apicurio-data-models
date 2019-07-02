@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
@@ -27,7 +30,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
-import io.apicurio.datamodels.asyncapi.models.AaiNodeFactory;
+import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
@@ -42,23 +45,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
 import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20CorrelationId;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20ExternalDocumentation;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20HeaderItem;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Message;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageTrait;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageTraitItems;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OAuthFlows;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Operation;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationTrait;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationTraitItems;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Parameter;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20ProtocolInfo;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Tag;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20TraitItem;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -66,13 +52,9 @@ import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
-import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A data model reader for the AsyncAPI data model.
@@ -83,9 +65,9 @@ import java.util.List;
 public abstract class AaiDataModelReader extends DataModelReader {
 
 
-    private final AaiNodeFactory nodeFactory;
+    private final IAaiNodeFactory nodeFactory;
 
-    public AaiDataModelReader(AaiNodeFactory nodeFactory) {
+    public AaiDataModelReader(IAaiNodeFactory nodeFactory) {
         this.nodeFactory = nodeFactory;
     }
 

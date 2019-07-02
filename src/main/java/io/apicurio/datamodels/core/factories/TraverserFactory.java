@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.v2.visitors.Aai20Traverser;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.combined.visitors.CombinedReverseTraverser;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.ITraverser;

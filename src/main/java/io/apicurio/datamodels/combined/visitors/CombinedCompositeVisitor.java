@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
@@ -81,9 +84,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A composite visitor base class useful for any data model type.

@@ -16,18 +16,16 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Models an AsyncAPI root document.

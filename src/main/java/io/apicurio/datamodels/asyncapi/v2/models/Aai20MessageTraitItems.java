@@ -1,15 +1,13 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
+import java.util.LinkedList;
+
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**

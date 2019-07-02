@@ -24,7 +24,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
-import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;

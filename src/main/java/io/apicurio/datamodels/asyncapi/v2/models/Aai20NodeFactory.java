@@ -13,7 +13,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
-import io.apicurio.datamodels.asyncapi.models.AaiNodeFactory;
+import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
@@ -32,7 +32,7 @@ import io.apicurio.datamodels.core.models.Node;
 /**
  * @author Jakub Senko<jsenko@redhat.com>
  */
-public class Aai20NodeFactory implements AaiNodeFactory {
+public class Aai20NodeFactory implements IAaiNodeFactory {
 
     @Override
     public AaiChannelItem createChannelItem(Node parent, String key) {

@@ -1,10 +1,8 @@
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.Node;
-
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * Represents `[Operation Trait Object, [string, any]]`

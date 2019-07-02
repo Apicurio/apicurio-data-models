@@ -1,12 +1,10 @@
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.ExtensibleNode;
-import io.apicurio.datamodels.core.models.Node;
-
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
+import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>

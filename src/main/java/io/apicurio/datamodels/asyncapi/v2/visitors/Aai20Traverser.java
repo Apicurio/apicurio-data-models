@@ -17,26 +17,6 @@
 package io.apicurio.datamodels.asyncapi.v2.visitors;
 
 import io.apicurio.datamodels.asyncapi.visitors.AaiTraverser;
-import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.common.Parameter;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.models.OasResponse;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
-import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
-import io.apicurio.datamodels.openapi.visitors.OasTraverser;
 
 /**
  * @author eric.wittmann@gmail.com

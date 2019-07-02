@@ -24,7 +24,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
-import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
@@ -49,44 +48,25 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 public interface IAaiVisitor extends IVisitor {
 
     void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node);
-
     void visitChannelItem(AaiChannelItem node);
-
     void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node);
-
     void visitComponents(AaiComponents node);
-
     void visitCorrelationId(AaiCorrelationId node);
-
     void visitHeaderItem(AaiHeaderItem node);
-
     void visitImplicitOAuthFlow(ImplicitOAuthFlow node);
-
     void visitMessage(AaiMessage node);
-
     void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node);
-
     void visitMessageTraitItems(AaiMessageTraitItems node);
-
     void visitMessageTrait(AaiMessageTrait node);
-
     void visitOAuthFlows(OAuthFlows node);
-
     void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node);
-
     void visitOperationTraitItems(AaiOperationTraitItems node);
-
     void visitOperationTrait(AaiOperationTrait node);
-
     void visitPasswordOAuthFlow(PasswordOAuthFlow node);
-
     void visitProtocolInfo(AaiProtocolInfo node);
-
     void visitServer(AaiServer node);
-
     void visitServerVariable(AaiServerVariable node);
-
     void visitTraitItem(AaiTraitItem node);
-
     void visitAaiParameter(AaiParameter aaiParameter);
+
 }

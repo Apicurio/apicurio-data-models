@@ -16,10 +16,10 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
-
-import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com

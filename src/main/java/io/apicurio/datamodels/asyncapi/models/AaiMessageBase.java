@@ -1,14 +1,12 @@
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.List;
+import java.util.Map;
+
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Tag;
-
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Contains shared fields in {@link AaiMessage} and {@link AaiMessageTrait}

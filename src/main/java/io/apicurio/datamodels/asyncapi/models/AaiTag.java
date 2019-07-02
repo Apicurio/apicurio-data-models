@@ -19,8 +19,6 @@ package io.apicurio.datamodels.asyncapi.models;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Tag;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * @author eric.wittmann@gmail.com
  * @author Jakub Senko <jsenko@redhat.com>

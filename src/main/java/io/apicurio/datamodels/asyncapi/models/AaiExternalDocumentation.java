@@ -19,8 +19,6 @@ package io.apicurio.datamodels.asyncapi.models;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * Models an AsyncAPI external documentation node.
  *

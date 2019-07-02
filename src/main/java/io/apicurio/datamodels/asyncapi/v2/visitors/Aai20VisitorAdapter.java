@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.asyncapi.v2.visitors;
 
 import io.apicurio.datamodels.asyncapi.visitors.AaiVisitorAdapter;
-import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 
 /**
  * An AsyncAPI 2.0 visitor adapter.

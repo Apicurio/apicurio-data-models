@@ -16,11 +16,11 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.Server;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Server;
 
 /**
  * Models an AsyncAPI server.

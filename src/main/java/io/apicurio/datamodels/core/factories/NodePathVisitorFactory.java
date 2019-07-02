@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.core.factories;
 
 import io.apicurio.datamodels.asyncapi.v2.visitors.Aai20NodePathVisitor;
-import io.apicurio.datamodels.asyncapi.visitors.AaiNodePathVisitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.Oas20NodePathVisitor;

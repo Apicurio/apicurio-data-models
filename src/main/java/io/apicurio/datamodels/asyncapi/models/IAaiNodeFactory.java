@@ -16,7 +16,7 @@ import io.apicurio.datamodels.core.models.Node;
  *
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public interface AaiNodeFactory {
+public interface IAaiNodeFactory {
 
     AaiChannelItem createChannelItem(Node parent, String key);
     AaiComponents createComponents(Node parent);

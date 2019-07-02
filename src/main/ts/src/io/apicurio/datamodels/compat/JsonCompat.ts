@@ -215,13 +215,13 @@ export class JsonCompat {
 
     public static mapToList<T>(items : any) : Array<T> {
         let res : Array<T> = <any>([]);
-        if(items) {
-            for(let key in items) {
-                let e = items[key];
-                if(e !== null) {
+        if (items) {
+            Object.getOwnPropertyNames(items).forEach(key => {
+                let e: T = items[key];
+                if (e) {
                     res.push(e);
                 }
-            }
+            });
         }
         return res;
     }

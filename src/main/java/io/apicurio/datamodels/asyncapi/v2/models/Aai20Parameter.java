@@ -2,7 +2,6 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.Schema;
 
 /**
  * @author Jakub Senko<jsenko@redhat.com>

@@ -1,8 +1,8 @@
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.Node;
-
 import java.util.List;
+
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>

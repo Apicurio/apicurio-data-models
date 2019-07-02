@@ -4,11 +4,7 @@ import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.Parameter;
-import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>

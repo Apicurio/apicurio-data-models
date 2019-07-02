@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels;
 
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -41,8 +43,6 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
-
-import java.util.List;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods

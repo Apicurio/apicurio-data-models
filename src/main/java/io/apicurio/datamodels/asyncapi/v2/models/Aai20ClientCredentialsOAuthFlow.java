@@ -16,12 +16,12 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
+import static java.util.Objects.requireNonNull;
+
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>

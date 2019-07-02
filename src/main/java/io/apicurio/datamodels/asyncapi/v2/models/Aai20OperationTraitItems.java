@@ -1,16 +1,13 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
+import java.util.LinkedList;
+
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Represents `[Operation Trait Object] | [[Operation Trait Object, Map]]`

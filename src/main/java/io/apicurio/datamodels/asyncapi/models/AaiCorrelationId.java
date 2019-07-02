@@ -3,8 +3,6 @@ package io.apicurio.datamodels.asyncapi.models;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */

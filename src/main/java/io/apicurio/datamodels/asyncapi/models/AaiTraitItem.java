@@ -2,8 +2,6 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.core.models.Node;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * Represents `Operation Trait Object | Message Trait Object` type.
  *

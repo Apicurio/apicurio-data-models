@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.core.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;

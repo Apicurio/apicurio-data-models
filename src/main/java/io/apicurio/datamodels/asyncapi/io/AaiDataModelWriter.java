@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
+import java.util.Map.Entry;
+
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
@@ -52,8 +54,6 @@ import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
-
-import java.util.Map.Entry;
 
 /**
  * @author eric.wittmann@gmail.com

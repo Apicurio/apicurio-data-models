@@ -17,17 +17,6 @@
 package io.apicurio.datamodels.asyncapi.v2.visitors;
 
 import io.apicurio.datamodels.asyncapi.visitors.AaiNodePathVisitor;
-import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
-import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
-import io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor;
 
 /**
  * @author eric.wittmann@gmail.com

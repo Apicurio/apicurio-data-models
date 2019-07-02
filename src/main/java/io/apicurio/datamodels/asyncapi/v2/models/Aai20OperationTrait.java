@@ -1,17 +1,16 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Jakub Senko<jsenko@redhat.com>
