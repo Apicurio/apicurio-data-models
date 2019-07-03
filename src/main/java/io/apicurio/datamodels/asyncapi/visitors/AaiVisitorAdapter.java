@@ -31,7 +31,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
@@ -141,8 +141,11 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
         // NOOP
     }
 
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
+     */
     @Override
-    public void visitTraitItem(AaiTraitItem node) {
+    public void visitUnknownTrait(AaiUnknownTrait node) {
         // NOOP
     }
 

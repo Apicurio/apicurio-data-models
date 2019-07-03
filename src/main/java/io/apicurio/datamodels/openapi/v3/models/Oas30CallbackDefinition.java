@@ -16,13 +16,14 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class Oas30CallbackDefinition extends Oas30Callback {
+public class Oas30CallbackDefinition extends Oas30Callback implements IDefinition {
 
     /**
      * Constructor.

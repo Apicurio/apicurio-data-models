@@ -2,16 +2,24 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.INamed;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiCorrelationId extends ExtensibleNode {
+public abstract class AaiCorrelationId extends ExtensibleNode implements INamed {
 
     public String _name;
     public String $ref;
     public String location;
     public String description;
+    
+    /**
+     * Constructor.
+     */
+    public AaiCorrelationId(String name) {
+        this._name = name;
+    }
 
     public AaiCorrelationId(Node parent) {
         if(parent != null) {
@@ -25,7 +33,20 @@ public abstract class AaiCorrelationId extends ExtensibleNode {
         this._name = name;
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
     public String getName() {
-        return _name;
+        return this._name;
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+
 }

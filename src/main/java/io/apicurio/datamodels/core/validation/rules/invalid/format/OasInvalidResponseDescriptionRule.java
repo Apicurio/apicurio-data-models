@@ -17,9 +17,9 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 
 /**
@@ -47,10 +47,10 @@ public class OasInvalidResponseDescriptionRule extends ValidationRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         visitResponse((OasResponse) node);
     }
     

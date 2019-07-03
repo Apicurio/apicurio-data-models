@@ -27,6 +27,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20AuthorizationCodeOAuthFlow extends AuthorizationCodeOAuthFlow {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20AuthorizationCodeOAuthFlow() {
+    }
 
     public Aai20AuthorizationCodeOAuthFlow(Node parent) {
         requireNonNull(parent);

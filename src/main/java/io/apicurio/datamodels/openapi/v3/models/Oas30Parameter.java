@@ -38,6 +38,19 @@ public class Oas30Parameter extends OasParameter implements IReferenceNode, IOas
     public Object example;
     public Map<String, Oas30Example> examples = new LinkedHashMap<>();
     public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
+    
+    /**
+     * Constructor.
+     */
+    public Oas30Parameter() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public Oas30Parameter(String named) {
+        super(named);
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.common.Parameter#createSchema()

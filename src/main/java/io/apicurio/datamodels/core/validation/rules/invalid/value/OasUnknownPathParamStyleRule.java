@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -50,10 +50,10 @@ public class OasUnknownPathParamStyleRule extends OasInvalidPropertyValueRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         this.visitParameter((Parameter) node);
     }
 

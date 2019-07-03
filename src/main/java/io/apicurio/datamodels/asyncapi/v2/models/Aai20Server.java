@@ -30,6 +30,11 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20Server extends AaiServer {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Server() {
+    }
 
     public Aai20Server(Node parent) {
         super(parent);

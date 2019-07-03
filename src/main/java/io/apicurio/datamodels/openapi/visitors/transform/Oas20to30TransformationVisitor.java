@@ -35,9 +35,8 @@ import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -53,7 +52,6 @@ import io.apicurio.datamodels.core.visitors.OperationFinder;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.models.IOasParameterParent;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -400,10 +398,10 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         Oas20ParameterDefinition pd20 = (Oas20ParameterDefinition) node;
         if (NodeCompat.equals(pd20.in, "body")) {
             Oas30Components parent30 = this.getOrCreateComponents();
@@ -498,10 +496,10 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         Oas30Components parent30 = this.getOrCreateComponents();
         Oas30ResponseDefinition responseDef30 = parent30.createResponseDefinition(node.getName());
         parent30.addResponseDefinition(node.getName(), responseDef30);
@@ -706,10 +704,10 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(ISchemaDefinition node) {
+    public void visitSchemaDefinition(IDefinition node) {
         Oas20SchemaDefinition sd20 = (Oas20SchemaDefinition) node;
         
         Oas30Components parent30 = this.getOrCreateComponents();

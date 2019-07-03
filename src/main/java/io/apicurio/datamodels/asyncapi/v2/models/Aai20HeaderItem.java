@@ -11,6 +11,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20HeaderItem extends AaiHeaderItem {
 
+    /**
+     * Constructor.
+     */
+    public Aai20HeaderItem(String name) {
+        super(name);
+    }
 
     public Aai20HeaderItem(Node parent) {
         super(parent);

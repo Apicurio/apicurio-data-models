@@ -16,6 +16,12 @@ public abstract class AaiOperationTraitItems extends Node {
     public List<AaiOperationTrait> _traitItems;
     // or
     public List<AaiOperationTraitExtendedItem> _traitExtendedItems;
+    
+    /**
+     * Constructor.
+     */
+    public AaiOperationTraitItems() {
+    }
 
     public AaiOperationTraitItems(Node parent) {
         if(parent != null) {

@@ -16,6 +16,13 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20OperationTrait extends AaiOperationTrait {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20OperationTrait(String opType) {
+        super(opType);
+    }
 
     public Aai20OperationTrait(Node parent, String opType) {
         super(parent, opType);

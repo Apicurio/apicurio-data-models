@@ -103,13 +103,24 @@
                 }
             ]
         }
-    }, 
+    },
     "components": {
         "traits": {
             "docs": {
                 "externalDocs": {
                     "url": "https://company.com/docs#{{headerId}}"
                 }
+            },
+            "operationTrait": {
+                "operationId": "ot1",
+                "summary": "Summary of OT1",
+                "description": "This is the description of OT1."
+            },
+            "messageTrait": {
+                "name": "mt1",
+                "title": "MT1 Title",
+                "summary": "Summary of MT1",
+                "description": "This is the description of MT1."
             }
         }, 
         "schemas": {

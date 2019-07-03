@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.models;
+package io.apicurio.datamodels.core.models.common;
 
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.IVisitable;
 
 /**
- * An OpenAPI response definition.
+ * Any node model that has a name.
  * @author eric.wittmann@gmail.com
  */
-public interface IOasResponseDefinition extends IDefinition {
+public interface INamed extends IVisitable {
+    
+    /**
+     * Gets the definition name.
+     */
+    public String getName();
+    
+    /**
+     * Renames the definition.
+     * @param newName
+     */
+    public void rename(String newName);
 
 }

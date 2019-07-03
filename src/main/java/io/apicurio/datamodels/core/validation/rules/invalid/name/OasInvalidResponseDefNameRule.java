@@ -18,8 +18,8 @@ package io.apicurio.datamodels.core.validation.rules.invalid.name;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 
 /**
  * Implements the Invalid Response Definition Name Rule.
@@ -36,10 +36,10 @@ public class OasInvalidResponseDefNameRule extends OasInvalidPropertyNameRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         this.reportIfInvalid(isValidDefinitionName(node.getName()), (Node) node, Constants.PROP_NAME, map());
     }
 

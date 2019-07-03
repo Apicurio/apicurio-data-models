@@ -19,8 +19,6 @@ package io.apicurio.datamodels.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -305,9 +303,9 @@ public class NodePath {
          * they have to be escaped.
          * The following rules are used, inspired by <a href="https://tools.ietf.org/html/rfc6901">RFC 6901</a>:
          * - The escape character is '~', preceding a number which determines which special character is encoded.
-         * - '~1' ≡ '/'
-         * - '~2' ≡ '['
-         * - '~3' ≡ ']'
+         * - '~1' = '/'
+         * - '~2' = '['
+         * - '~3' = ']'
          * The escape character is itself encoded as '~0'.
          *
          * @param escapeSlash In the "indexed" segment, '/' can be used unescaped.

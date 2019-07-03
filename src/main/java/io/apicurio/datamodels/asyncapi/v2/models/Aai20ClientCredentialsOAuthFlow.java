@@ -28,6 +28,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20ClientCredentialsOAuthFlow extends ClientCredentialsOAuthFlow {
 
+    /**
+     * Constructor.
+     */
+    public Aai20ClientCredentialsOAuthFlow() {
+    }
+    
     public Aai20ClientCredentialsOAuthFlow(Node parent) {
         requireNonNull(parent);
         this._parent = parent;

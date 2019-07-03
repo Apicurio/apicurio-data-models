@@ -18,12 +18,10 @@ package io.apicurio.datamodels.openapi.v3.visitors;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
@@ -64,19 +62,19 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(ISchemaDefinition node) {
+    public void visitSchemaDefinition(IDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_SCHEMAS, false);
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_PARAMETERS, false);
     }
@@ -91,10 +89,10 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_RESPONSES, false);
     }

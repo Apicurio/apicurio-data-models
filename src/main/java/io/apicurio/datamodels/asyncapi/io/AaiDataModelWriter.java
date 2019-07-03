@@ -38,7 +38,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -362,7 +362,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
     @Override
     public void visitMessageTrait(AaiMessageTrait node) {
-
         Object json = this.writeMessageBase(node);
         // PROCESS PARENT
         // We need to find out what actually to do with the serialized json...
@@ -372,10 +371,16 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         } else if (node.parent() instanceof AaiMessageTraitExtendedItem) {
             Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
             JsonCompat.setToArrayIndex(parent, 0, json);
-        } else if (node.parent() instanceof AaiTraitItem) {
+        } else if (node.parent() instanceof AaiComponents) {
             Object parent = this.lookupParentJson(node);
-            AaiTraitItem par = (AaiTraitItem) node.parent();
-            JsonCompat.setProperty(parent, par.getName(), json);
+            
+            Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
+            if (traits == null) {
+                traits = JsonCompat.objectNode();
+                JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
+            }
+            
+            JsonCompat.setProperty(traits, node.getName(), json);
         } else {
             throw new IllegalStateException("Don't know where to write a trait node.");
         }
@@ -468,7 +473,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
     @Override
     public void visitOperationTrait(AaiOperationTrait node) {
-
         Object json = this.writeOperationBase(node);
         // PROCESS PARENT
         // We need to find out what actually to do with the serialized json...
@@ -478,10 +482,16 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         } else if (node.parent() instanceof AaiOperationTraitExtendedItem) {
             Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
             JsonCompat.setToArrayIndex(parent, 0, json);
-        } else if (node.parent() instanceof AaiTraitItem) {
+        } else if (node.parent() instanceof AaiComponents) {
             Object parent = this.lookupParentJson(node);
-            AaiTraitItem par = (AaiTraitItem) node.parent();
-            JsonCompat.setProperty(parent, par.getName(), json);
+
+            Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
+            if (traits == null) {
+                traits = JsonCompat.objectNode();
+                JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
+            }
+            
+            JsonCompat.setProperty(traits, node.getType(), json);
         } else {
             throw new IllegalStateException("Don't know where to write a trait node.");
         }
@@ -516,16 +526,28 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         }
     }
 
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
+     */
     @Override
-    public void visitTraitItem(AaiTraitItem node) {
+    public void visitUnknownTrait(AaiUnknownTrait node) {
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
-        // children will add themselves, except if unknown
-        if(node._unknownTrait != null) {
-            JsonCompat.setProperty(json, node.getName(), node._unknownTrait);
+
+        JsonCompat.setPropertyString(json, Constants.PROP_SUMMARY, node.summary);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
+        JsonCompat.setPropertyNull(json, Constants.PROP_TAGS); // list
+        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS); // prop
+        JsonCompat.setPropertyNull(json, Constants.PROP_PROTOCOL_INFO); // map
+        this.writeExtraProperties(json, node);
+        
+        Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
+        if (traits == null) {
+            traits = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
         }
-        // PROCESS PARENT
-        JsonCompat.setProperty(parent, Constants.PROP_TRAITS, json);
+        
+        JsonCompat.setProperty(traits, node.getName(), json);
 
         this.updateIndex(node, json);
     }

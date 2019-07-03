@@ -34,6 +34,12 @@ public abstract class AaiServer extends Server {
     public String protocolVersion;
     public String baseChannel;
     public List<AaiSecurityRequirement> security;
+    
+    /**
+     * Constructor.
+     */
+    public AaiServer() {
+    }
 
     public AaiServer(Node parent) {
         if(parent != null) {

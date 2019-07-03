@@ -23,7 +23,7 @@ import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
 import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -95,7 +95,7 @@ public class OasSchemaFactory {
      * @param name
      * @param example
      */
-    public static ISchemaDefinition createSchemaDefinitionFromExample(OasDocument document, String name, Object example) {
+    public static IDefinition createSchemaDefinitionFromExample(OasDocument document, String name, Object example) {
         OasSchema schema = null;
         
         if (document.getDocumentType() == DocumentType.openapi2) {
@@ -121,7 +121,7 @@ public class OasSchemaFactory {
         resolveAll(example, schema);
         schema.title = "Root Type for " + name;
         schema.description = "The root of the " + name + " type's schema.";
-        return (ISchemaDefinition) schema;
+        return (IDefinition) schema;
     }
 
 }

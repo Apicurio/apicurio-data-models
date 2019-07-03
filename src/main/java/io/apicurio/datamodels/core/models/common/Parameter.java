@@ -24,12 +24,25 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * Models a parameter.
  * @author eric.wittmann@gmail.com
  */
-public abstract class Parameter extends ExtensibleNode implements IReferenceNode {
+public abstract class Parameter extends ExtensibleNode implements IReferenceNode, INamed {
     
     public String $ref;
     public String name;
     public String description;
     public Schema schema;
+    
+    /**
+     * Constructor.
+     */
+    public Parameter() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public Parameter(String name) {
+        this.name = name;
+    }
     
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
@@ -40,5 +53,21 @@ public abstract class Parameter extends ExtensibleNode implements IReferenceNode
     }
     
     public abstract Schema createSchema();
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this.name = newName;
+    }
 
 }

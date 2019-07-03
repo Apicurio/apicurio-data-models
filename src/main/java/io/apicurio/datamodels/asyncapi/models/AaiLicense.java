@@ -24,6 +24,12 @@ import io.apicurio.datamodels.core.models.common.License;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiLicense extends License {
+    
+    /**
+     * Constructor.
+     */
+    public AaiLicense() {
+    }
 
     public AaiLicense(Node parent) {
         if(parent != null) {

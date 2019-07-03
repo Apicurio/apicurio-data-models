@@ -27,6 +27,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20ServerVariable extends AaiServerVariable {
 
+    /**
+     * Constructor.
+     */
+    public Aai20ServerVariable(String name) {
+        super(name);
+    }
 
     public Aai20ServerVariable(Node parent, String name) {
         super(parent, name);

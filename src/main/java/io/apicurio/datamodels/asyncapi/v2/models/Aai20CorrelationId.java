@@ -10,6 +10,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20CorrelationId extends AaiCorrelationId {
 
+    /**
+     * Constructor.
+     */
+    public Aai20CorrelationId(String name) {
+        super(name);
+    }
 
     public Aai20CorrelationId(Node parent) {
         super(parent);

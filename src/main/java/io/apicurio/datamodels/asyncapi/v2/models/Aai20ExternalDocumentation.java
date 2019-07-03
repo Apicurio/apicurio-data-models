@@ -24,6 +24,12 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class Aai20ExternalDocumentation extends AaiExternalDocumentation {
 
+    /**
+     * Constructor.
+     */
+    public Aai20ExternalDocumentation() {
+    }
+    
     public Aai20ExternalDocumentation(Node parent) {
         super(parent);
     }

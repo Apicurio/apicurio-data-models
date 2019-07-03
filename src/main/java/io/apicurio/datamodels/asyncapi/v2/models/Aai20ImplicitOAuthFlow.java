@@ -28,6 +28,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20ImplicitOAuthFlow extends ImplicitOAuthFlow {
 
+    /**
+     * Constructor.
+     */
+    public Aai20ImplicitOAuthFlow() {
+    }
+    
     public Aai20ImplicitOAuthFlow(Node parent) {
         requireNonNull(parent);
         this._parent = parent;

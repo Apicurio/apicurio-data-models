@@ -16,6 +16,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#messageObject">AsyncAPI 2.0.0 spec</a>
  */
 public class Aai20OperationTraitItems extends AaiOperationTraitItems {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20OperationTraitItems() {
+    }
 
     public Aai20OperationTraitItems(Node parent) {
         super(parent);

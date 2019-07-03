@@ -6,6 +6,7 @@ import java.util.Map;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.Tag;
 
 /**
@@ -13,7 +14,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  *
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiMessageBase extends ExtensibleNode {
+public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
 
     public String _name; // Map
     public String $ref;
@@ -44,6 +45,13 @@ public abstract class AaiMessageBase extends ExtensibleNode {
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#schemaObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, Object> examples;
+    
+    /**
+     * Constructor.
+     */
+    public AaiMessageBase(String name) {
+        this._name = name;
+    }
 
     public AaiMessageBase(Node parent) {
         if(parent != null) {
@@ -57,10 +65,22 @@ public abstract class AaiMessageBase extends ExtensibleNode {
         this._name = name;
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
     public String getName() {
         return _name;
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+    
     public abstract List<AaiHeaderItem> getHeadersList();
     public abstract List<AaiProtocolInfo> getProtocolInfoList();
     public abstract void addHeaderItem(AaiHeaderItem item);

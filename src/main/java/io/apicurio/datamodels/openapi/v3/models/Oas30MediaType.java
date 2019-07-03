@@ -23,6 +23,7 @@ import java.util.Map;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
@@ -30,7 +31,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models an OpenAPI 3.0.x media type.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30MediaType extends ExtensibleNode implements IOas30MediaTypeDefinition, IExampleParent {
+public class Oas30MediaType extends ExtensibleNode implements INamed, IExampleParent {
 
     private String _name;
 
@@ -48,7 +49,7 @@ public class Oas30MediaType extends ExtensibleNode implements IOas30MediaTypeDef
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
     @Override
     public String getName() {
@@ -56,7 +57,7 @@ public class Oas30MediaType extends ExtensibleNode implements IOas30MediaTypeDef
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
     @Override
     public void rename(String newName) {

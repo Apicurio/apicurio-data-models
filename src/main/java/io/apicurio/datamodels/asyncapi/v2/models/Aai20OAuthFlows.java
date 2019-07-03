@@ -13,6 +13,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20OAuthFlows extends AaiOAuthFlows {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20OAuthFlows() {
+    }
 
     public Aai20OAuthFlows(Node parent) {
         super(parent);

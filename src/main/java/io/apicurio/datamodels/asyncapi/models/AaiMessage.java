@@ -27,6 +27,9 @@ public abstract class AaiMessage extends AaiMessageBase {
     public Object payload;
     public AaiMessageTraitItems traits;
 
+    public AaiMessage(String name) {
+        super(name);
+    }
 
     public AaiMessage(Node parent) {
         super(parent);

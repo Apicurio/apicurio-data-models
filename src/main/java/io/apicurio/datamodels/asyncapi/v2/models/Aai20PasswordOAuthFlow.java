@@ -27,6 +27,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20PasswordOAuthFlow extends PasswordOAuthFlow {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20PasswordOAuthFlow() {
+    }
 
     public Aai20PasswordOAuthFlow(Node parent) {
         requireNonNull(parent);
