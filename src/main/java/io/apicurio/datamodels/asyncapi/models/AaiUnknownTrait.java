@@ -84,27 +84,11 @@ public abstract class AaiUnknownTrait extends ExtensibleNode implements INamed, 
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isMessageTrait()
+     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#getTraitType()
      */
     @Override
-    public boolean isMessageTrait() {
-        return false;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isOperationTrait()
-     */
-    @Override
-    public boolean isOperationTrait() {
-        return false;
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isUnknownTrait()
-     */
-    @Override
-    public boolean isUnknownTrait() {
-        return true;
+    public AaiTraitType getTraitType() {
+        return AaiTraitType.unknown;
     }
 
     public abstract ExternalDocumentation createExternalDocumentation();

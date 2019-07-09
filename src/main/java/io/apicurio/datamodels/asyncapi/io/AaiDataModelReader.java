@@ -43,6 +43,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
+import io.apicurio.datamodels.asyncapi.models.AaiTraitType;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
 import io.apicurio.datamodels.asyncapi.models.IAaiTrait;
@@ -64,7 +65,6 @@ import io.apicurio.datamodels.core.models.common.ServerVariable;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiDataModelReader extends DataModelReader {
-
 
     private final IAaiNodeFactory nodeFactory;
 
@@ -521,9 +521,10 @@ public abstract class AaiDataModelReader extends DataModelReader {
             JsonCompat.keys(jsonT).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonT, key);
                 IAaiTrait value = createTrait(node, key, jsonValue);
-                if (value.isMessageTrait()) {
+                AaiTraitType tt = value.getTraitType();
+                if (tt == AaiTraitType.message) {
                     this.readMessageTrait(jsonValue, (AaiMessageTrait) value);
-                } else if (value.isOperationTrait()) {
+                } else if (tt == AaiTraitType.operation) {
                     this.readOperationTrait(jsonValue, (AaiOperationTrait) value);
                 } else {
                     this.readUnknownTrait(jsonValue, (AaiUnknownTrait) value);
@@ -541,7 +542,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
      * Detect if the json represents message or operation trait
      * Return null if we could not determine which one it is
      */
-    private Boolean isMessageTrait(Object json) {
+    private AaiTraitType getTraitType(Object json) {
         List<String> messageOnlyProperties = Arrays.asList(
                 "headers", "correlationId", "schemaFormat",
                 "contentType", "name", "title",
@@ -551,24 +552,24 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 "operationId"
         );
         for (String p : messageOnlyProperties) {
-            if (JsonCompat.isPropertyDefined(json, p))
-                return true;
+            if (JsonCompat.isPropertyDefined(json, p)) {
+                return AaiTraitType.message;
+            }
         }
         for (String p : operationOnlyProperties) {
-            if (JsonCompat.isPropertyDefined(json, p))
-                return false;
+            if (JsonCompat.isPropertyDefined(json, p)) {
+                return AaiTraitType.operation;
+            }
         }
-        return null;
+        return AaiTraitType.unknown;
     }
 
     private IAaiTrait createTrait(AaiComponents parent, String key, Object jsonValue) {
-        Boolean isMessage = isMessageTrait(jsonValue);
-        if (isMessage != null) {
-            if (isMessage) {
-                return nodeFactory.createMessageTrait(parent, key);
-            } else {
-                return nodeFactory.createOperationTrait(parent, key);
-            }
+        AaiTraitType traitType = getTraitType(jsonValue);
+        if (traitType == AaiTraitType.message) {
+            return nodeFactory.createMessageTrait(parent, key);
+        } else if (traitType == AaiTraitType.operation) {
+            return nodeFactory.createOperationTrait(parent, key);
         } else {
             LoggerCompat.warn("Could not determine if this JSON represents a message " +
                     "or an operation trait: %s", jsonValue);

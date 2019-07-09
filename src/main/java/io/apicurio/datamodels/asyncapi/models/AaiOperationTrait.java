@@ -23,26 +23,11 @@ public abstract class AaiOperationTrait extends AaiOperationBase implements IAai
     }
     
     /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isMessageTrait()
+     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#getTraitType()
      */
     @Override
-    public boolean isMessageTrait() {
-        return false;
+    public AaiTraitType getTraitType() {
+        return AaiTraitType.operation;
     }
     
-    /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isOperationTrait()
-     */
-    @Override
-    public boolean isOperationTrait() {
-        return true;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.asyncapi.models.IAaiTrait#isUnknownTrait()
-     */
-    @Override
-    public boolean isUnknownTrait() {
-        return false;
-    }
 }

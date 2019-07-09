@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 JBoss Inc
+ * Copyright 2019 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.IVisitable;
-
 /**
  * @author eric.wittmann@gmail.com
  */
-public interface IAaiTrait extends IVisitable {
+public enum AaiTraitType {
 
-    public AaiTraitType getTraitType();
+    message, operation, unknown;
     
 }
