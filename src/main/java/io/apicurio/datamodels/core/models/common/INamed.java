@@ -16,13 +16,11 @@
 
 package io.apicurio.datamodels.core.models.common;
 
-import io.apicurio.datamodels.core.models.IVisitable;
-
 /**
  * Any node model that has a name.
  * @author eric.wittmann@gmail.com
  */
-public interface INamed extends IVisitable {
+public interface INamed {
     
     /**
      * Gets the definition name.
