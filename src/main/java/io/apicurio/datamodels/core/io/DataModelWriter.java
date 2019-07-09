@@ -29,8 +29,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -347,10 +346,10 @@ public class DataModelWriter implements IVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(ISchemaDefinition node) {
+    public void visitSchemaDefinition(IDefinition node) {
         Schema schema = (Schema) node;
         Object parent = this.lookupParentJson(schema);
         Object json = JsonCompat.objectNode();
@@ -361,15 +360,15 @@ public class DataModelWriter implements IVisitor {
 
         this.updateIndex(schema, json);
     }
-    protected void addSchemaDefinitionToParent(Object parent, Object json, ISchemaDefinition node) {
+    protected void addSchemaDefinitionToParent(Object parent, Object json, IDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);
     }
     
     /**
-     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         Parameter pdef = (Parameter) node;
         
         Object parent = this.lookupParentJson(pdef);
@@ -381,7 +380,7 @@ public class DataModelWriter implements IVisitor {
 
         this.updateIndex(pdef, json);        
     }
-    protected void addParameterDefinitionToParent(Object parent, Object json, IParameterDefinition node) {
+    protected void addParameterDefinitionToParent(Object parent, Object json, IDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);
     }
 

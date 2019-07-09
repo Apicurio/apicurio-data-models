@@ -23,7 +23,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * Models a Tag node.
  * @author eric.wittmann@gmail.com
  */
-public abstract class Tag extends ExtensibleNode implements IExternalDocumentationParent {
+public abstract class Tag extends ExtensibleNode implements IExternalDocumentationParent, INamed {
 
     public String name;
     public String description;
@@ -33,6 +33,13 @@ public abstract class Tag extends ExtensibleNode implements IExternalDocumentati
      * Constructor.
      */
     public Tag() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public Tag(String name) {
+        this.name = name;
     }
     
     /**
@@ -67,6 +74,22 @@ public abstract class Tag extends ExtensibleNode implements IExternalDocumentati
         ed.url = url;
         this.externalDocs = ed;
         return ed;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this.name = newName;
     }
 
 }

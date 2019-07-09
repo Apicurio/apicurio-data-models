@@ -31,13 +31,19 @@ public abstract class AaiComponents extends ExtensibleNode {
      *
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#componentsObject">AsyncAPI 2.0.0 spec</a>
      */
-    public Map<String, AaiTraitItem> traits;
+    public Map<String, IAaiTrait> traits;
 
     public abstract List<AaiMessage> getMessagesList();
     public abstract List<AaiSecurityScheme> getSecuritySchemesList();
     public abstract List<AaiParameter> getParametersList();
     public abstract List<AaiCorrelationId> getCorrelationIdsList();
-    public abstract List<AaiTraitItem> getTraitsList();
+    public abstract List<IAaiTrait> getTraitsList();
+    
+    /**
+     * Constructor.
+     */
+    public AaiComponents() {
+    }
 
     public AaiComponents(Node parent) {
         if(parent != null) {
@@ -51,5 +57,5 @@ public abstract class AaiComponents extends ExtensibleNode {
     public abstract void addSecurityScheme(String key, AaiSecurityScheme value);
     public abstract void addParameter(String key, AaiParameter value);
     public abstract void addCorrelationId(String key, AaiCorrelationId value);
-    public abstract void addTraitItem(String key, AaiTraitItem value);
+    public abstract void addTrait(String key, IAaiTrait value);
 }

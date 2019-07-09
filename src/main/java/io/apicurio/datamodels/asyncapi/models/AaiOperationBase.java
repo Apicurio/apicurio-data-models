@@ -31,6 +31,13 @@ public abstract class AaiOperationBase extends Operation {
     public String $ref;
     public List<Tag> tags;
     public Map<String, AaiProtocolInfo> protocolInfo;
+    
+    /**
+     * Constructor.
+     */
+    public AaiOperationBase(String opType) {
+        super(opType);
+    }
 
     public AaiOperationBase(Node parent, String opType) {
         super(opType);

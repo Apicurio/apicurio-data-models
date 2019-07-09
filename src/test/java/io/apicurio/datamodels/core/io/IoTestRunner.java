@@ -40,7 +40,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.models.OasOperation;
@@ -155,6 +155,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 // Now do a partial read/write test?  This isn't great because there's not a great way to
                 // assert the results.  But at least it runs everything through the reader dispatchers.
                 for (Node node : allNodes) {
+                    // Skip extensions and expressions.
                     if (node instanceof Extension || node instanceof IOas30Expression) {
                         continue;
                     }
@@ -172,6 +173,9 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                         
                         Object finalJson = Library.writeNode(clonedNode);
                         String finalJsonStr = JsonCompat.stringify(finalJson);
+                        
+//                        LoggerCompat.info("PARTIAL: %s", partialNodeJson);
+//                        LoggerCompat.info("FINAL:   %s", finalJsonStr);
                         
                         assertJsonEquals(partialNodeJsonStr, finalJsonStr);
                     } catch (Throwable t) {
@@ -217,9 +221,9 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
         Constructor<? extends Node> constructor;
         Node clonedNode = null;
         try {
-            if (node instanceof IDefinition) {
+            if (node instanceof INamed) {
                 constructor = node.getClass().getConstructor(String.class);
-                clonedNode = constructor.newInstance(((IDefinition) node).getName());
+                clonedNode = constructor.newInstance(((INamed) node).getName());
             } else if (node instanceof OasPathItem) {
                 constructor = node.getClass().getConstructor(String.class);
                 clonedNode = constructor.newInstance(((OasPathItem) node).getPath());

@@ -19,8 +19,7 @@ package io.apicurio.datamodels.openapi.v3.io;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
@@ -29,7 +28,6 @@ import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.io.OasDataModelWriter;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -207,10 +205,10 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     }
 
     /**
-     * @see io.apicurio.datamodels.core.io.DataModelWriter#addParameterDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#addParameterDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    protected void addParameterDefinitionToParent(Object parent, Object json, IParameterDefinition node) {
+    protected void addParameterDefinitionToParent(Object parent, Object json, IDefinition node) {
         Object parameters = JsonCompat.getProperty(parent, Constants.PROP_PARAMETERS);
         if (parameters == null) {
             parameters = JsonCompat.objectNode();
@@ -596,10 +594,10 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.core.io.DataModelWriter#addSchemaDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#addSchemaDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    protected void addSchemaDefinitionToParent(Object parent, Object json, ISchemaDefinition node) {
+    protected void addSchemaDefinitionToParent(Object parent, Object json, IDefinition node) {
         Object schemas = JsonCompat.getProperty(parent, Constants.PROP_SCHEMAS);
         if (schemas == null) {
             schemas = JsonCompat.objectNode();
@@ -610,10 +608,10 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#addResponseDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#addResponseDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    protected void addResponseDefinitionToParent(Object parent, Object json, IOasResponseDefinition node) {
+    protected void addResponseDefinitionToParent(Object parent, Object json, IDefinition node) {
         Object responses = JsonCompat.getProperty(parent, Constants.PROP_RESPONSES);
         if (responses == null) {
             responses = JsonCompat.objectNode();

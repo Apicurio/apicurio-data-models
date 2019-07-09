@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v2.models;
 
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
@@ -23,7 +24,7 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  * Models an OpenAPI 2.0 response definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20ResponseDefinition extends Oas20Response {
+public class Oas20ResponseDefinition extends Oas20Response implements IDefinition {
 
     /**
      * Constructor.

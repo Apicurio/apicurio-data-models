@@ -31,7 +31,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
@@ -138,6 +138,9 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
             }
         } else if (node.parent() instanceof AaiMessageTraitExtendedItem) {
             this.path.prependSegment(Constants.PROP__TRAIT, false);
+        } else if (node.parent() instanceof AaiComponents) {
+            this.path.prependSegment(node.getName(), true);
+            this.path.prependSegment(Constants.PROP_TRAITS, false);
         }
     }
 
@@ -177,6 +180,9 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
             }
         } else if (node.parent() instanceof AaiOperationTraitExtendedItem) {
             this.path.prependSegment(Constants.PROP__OPERATION_TRAIT, false);
+        } else if (node.parent() instanceof AaiComponents) {
+            this.path.prependSegment(node.getType(), true);
+            this.path.prependSegment(Constants.PROP_TRAITS, false);
         }
     }
 
@@ -213,7 +219,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitTraitItem(AaiTraitItem node) {
+    public void visitUnknownTrait(AaiUnknownTrait node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_TRAITS, false);
     }

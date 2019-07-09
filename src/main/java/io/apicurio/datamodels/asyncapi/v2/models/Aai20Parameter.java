@@ -7,6 +7,13 @@ import io.apicurio.datamodels.core.models.Node;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20Parameter extends AaiParameter {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20Parameter(String name) {
+        super(name);
+    }
 
     public Aai20Parameter(Node parent) {
         super(parent);

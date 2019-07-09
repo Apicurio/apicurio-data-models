@@ -16,6 +16,11 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20OperationTraitExtendedItem extends AaiOperationTraitExtendedItem {
 
+    /**
+     * Constructor.
+     */
+    public Aai20OperationTraitExtendedItem() {
+    }
 
     public Aai20OperationTraitExtendedItem(Node parent) {
         super(parent);

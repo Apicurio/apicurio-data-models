@@ -13,6 +13,13 @@ public abstract class AaiSecurityScheme extends SecurityScheme {
     public String openIdConnectUrl;
     public String bearerFormat;
 
+    /**
+     * Constructor.
+     */
+    public AaiSecurityScheme(String name) {
+        super(name);
+    }
+    
     public AaiSecurityScheme(Node parent) {
         this(parent, null);
     }

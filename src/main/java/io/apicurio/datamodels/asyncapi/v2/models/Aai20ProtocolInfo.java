@@ -11,6 +11,13 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20ProtocolInfo extends AaiProtocolInfo {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20ProtocolInfo(String name) {
+        super(name);
+    }
 
     public Aai20ProtocolInfo(Node parent) {
         super(parent);

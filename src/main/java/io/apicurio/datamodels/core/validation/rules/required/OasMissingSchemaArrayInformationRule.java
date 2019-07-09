@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
@@ -104,10 +104,10 @@ public class OasMissingSchemaArrayInformationRule extends OasRequiredPropertyVal
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(ISchemaDefinition node) {
+    public void visitSchemaDefinition(IDefinition node) {
         this.visitSchema((Schema) node);
     }
 }

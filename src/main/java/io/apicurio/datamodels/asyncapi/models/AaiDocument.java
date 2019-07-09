@@ -56,6 +56,12 @@ public abstract class AaiDocument extends Document {
     public AaiComponents components;
 
     public String defaultContentType;
+    
+    /**
+     * Constructor.
+     */
+    public AaiDocument() {
+    }
 
     public abstract AaiServer createServer();
 

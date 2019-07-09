@@ -25,6 +25,12 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class Aai20SecurityRequirement extends AaiSecurityRequirement {
 
+    /**
+     * Constructor.
+     */
+    public Aai20SecurityRequirement() {
+    }
+    
     public Aai20SecurityRequirement(Node parent) {
         super(parent);
     }

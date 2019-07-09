@@ -12,7 +12,6 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public abstract class AaiMessageTraitExtendedItem extends Node {
 
-
     public AaiMessageTrait _trait;
 
     /**
@@ -24,6 +23,12 @@ public abstract class AaiMessageTraitExtendedItem extends Node {
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#messageObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, Object> _traitExtension;
+    
+    /**
+     * Constructor.
+     */
+    public AaiMessageTraitExtendedItem() {
+    }
 
     public AaiMessageTraitExtendedItem(Node parent) {
         if(parent != null) {

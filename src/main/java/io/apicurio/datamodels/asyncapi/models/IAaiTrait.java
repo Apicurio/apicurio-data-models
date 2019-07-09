@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2019 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.v3.models;
+package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.IVisitable;
 
 /**
- * An Encoding definition.
  * @author eric.wittmann@gmail.com
  */
-public interface IOas30EncodingDefinition extends IDefinition {
+public interface IAaiTrait extends IVisitable {
 
+    public boolean isMessageTrait();
+    
+    public boolean isOperationTrait();
+    
+    public boolean isUnknownTrait();
+    
 }

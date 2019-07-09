@@ -3,11 +3,12 @@ package io.apicurio.datamodels.asyncapi.models;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.INamed;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiProtocolInfo extends Node {
+public abstract class AaiProtocolInfo extends Node implements INamed {
 
     public String _name;
 
@@ -20,6 +21,13 @@ public abstract class AaiProtocolInfo extends Node {
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#protocolInfoObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, Object> _protocolInfoItems;
+    
+    /**
+     * Constructor.
+     */
+    public AaiProtocolInfo(String name) {
+        this._name = name;
+    }
 
     public AaiProtocolInfo(Node parent) {
         if(parent != null) {
@@ -33,8 +41,21 @@ public abstract class AaiProtocolInfo extends Node {
         this._name = name;
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
     public String getName() {
-        return _name;
+        return this._name;
     }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
+
     public abstract void addItem(String key, Object value);
 }

@@ -43,5 +43,5 @@ public interface IAaiNodeFactory {
     AaiServer createServer(Node parent);
     AaiServerVariable createServerVariable(Node parent, String key);
     AaiTag createTag(Node parent);
-    AaiTraitItem createTraitItem(Node parent, String key);
+    AaiUnknownTrait createUnknownTrait(Node parent, String key);
 }

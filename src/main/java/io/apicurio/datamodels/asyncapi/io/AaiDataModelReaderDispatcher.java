@@ -31,7 +31,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
@@ -153,10 +153,10 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     public void visitServerVariable(AaiServerVariable node) {
         aaiReader.readServerVariable(this.json, node);
     }
-
+    
     @Override
-    public void visitTraitItem(AaiTraitItem node) {
-        aaiReader.readTraitItem(this.json, node);
+    public void visitUnknownTrait(AaiUnknownTrait node) {
+        aaiReader.readUnknownTrait(this.json, node);
     }
 
     @Override

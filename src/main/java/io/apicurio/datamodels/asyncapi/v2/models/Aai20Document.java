@@ -24,6 +24,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 
@@ -34,6 +35,13 @@ import io.apicurio.datamodels.core.models.DocumentType;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Aai20Document extends AaiDocument {
+    
+    /**
+     * Constructor.
+     */
+    public Aai20Document() {
+        this.asyncapi = Constants.ASYNC_API_20_DEFAULT_VERSION;
+    }
 
     /**
      * @see Document#getDocumentType()

@@ -26,6 +26,12 @@ import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiExternalDocumentation extends ExternalDocumentation {
+    
+    /**
+     * Constructor.
+     */
+    public AaiExternalDocumentation() {
+    }
 
     public AaiExternalDocumentation(Node parent) {
         if(parent != null) {

@@ -23,6 +23,12 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiSecurityRequirement extends SecurityRequirement {
+    
+    /**
+     * Constructor.
+     */
+    public AaiSecurityRequirement() {
+    }
 
     public AaiSecurityRequirement(Node parent) {
         if(parent != null) {

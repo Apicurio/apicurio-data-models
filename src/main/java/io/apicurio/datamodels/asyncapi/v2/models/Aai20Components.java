@@ -8,7 +8,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.IAaiTrait;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
@@ -19,6 +19,11 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20Components extends AaiComponents {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Components() {
+    }
 
     public Aai20Components(Node parent) {
         super(parent);
@@ -51,7 +56,7 @@ public class Aai20Components extends AaiComponents {
     }
 
     @Override
-    public List<AaiTraitItem> getTraitsList() {
+    public List<IAaiTrait> getTraitsList() {
         return JsonCompat.mapToList(traits);
     }
 
@@ -89,9 +94,9 @@ public class Aai20Components extends AaiComponents {
             correlationIds = new LinkedHashMap<>();
         correlationIds.put(key, value);
     }
-
+    
     @Override
-    public void addTraitItem(String key, AaiTraitItem value) {
+    public void addTrait(String key, IAaiTrait value) {
         if(traits == null)
             traits = new LinkedHashMap<>();
         traits.put(key, value);

@@ -18,6 +18,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20MessageTrait extends AaiMessageTrait {
 
+    /**
+     * Constructor.
+     */
+    public Aai20MessageTrait(String name) {
+        super(name);
+    }
 
     public Aai20MessageTrait(Node parent) {
         super(parent);

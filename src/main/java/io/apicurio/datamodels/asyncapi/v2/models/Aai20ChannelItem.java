@@ -17,6 +17,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public class Aai20ChannelItem extends AaiChannelItem {
 
+    /**
+     * Constructor.
+     */
+    public Aai20ChannelItem(String name) {
+        super(name);
+    }
 
     public Aai20ChannelItem(Node parent) {
         super(parent);

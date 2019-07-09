@@ -29,6 +29,13 @@ public class Oas20Tag extends OasTag {
      */
     public Oas20Tag() {
     }
+    
+    /**
+     * Constructor.
+     */
+    public Oas20Tag(String name) {
+        super(name);
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.common.Tag#createExternalDocumentation()

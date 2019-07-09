@@ -36,7 +36,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
@@ -152,6 +152,20 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     public void visitMessageTrait(AaiMessageTrait node) {
         this.traverseMessageBase(node);
     }
+    
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
+     */
+    @Override
+    public void visitUnknownTrait(AaiUnknownTrait node) {
+        node.accept(visitor);
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
+
+        this.traverseCollection(node.tags);
+        this.traverseIfNotNull(node.externalDocs);
+        this.traverseCollection(node.getProtocolInfoList());
+    }
 
     @Override
     public void visitOAuthFlows(OAuthFlows node) {
@@ -225,15 +239,6 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         node.accept(visitor);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
-    }
-
-    @Override
-    public void visitTraitItem(AaiTraitItem node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
-
-        this.traverseIfNotNull(node._messageTrait);
-        this.traverseIfNotNull(node._operationTrait);
     }
 
     @Override

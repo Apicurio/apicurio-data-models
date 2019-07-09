@@ -18,7 +18,7 @@ package io.apicurio.datamodels.core.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.util.ReferenceUtil;
 import io.apicurio.datamodels.core.validation.ValidationRule;
@@ -49,10 +49,10 @@ public class OasInvalidParameterReferenceRule extends ValidationRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         Parameter param = (Parameter) node;
         if (param.ownerDocument().getDocumentType() == DocumentType.openapi3) {
             this.visitParameter(param);

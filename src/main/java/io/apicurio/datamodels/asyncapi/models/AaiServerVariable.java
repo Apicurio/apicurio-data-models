@@ -28,6 +28,13 @@ import io.apicurio.datamodels.core.models.common.ServerVariable;
 public abstract class AaiServerVariable extends ServerVariable {
 
     public List<String> examples;
+    
+    /**
+     * Constructor.
+     */
+    public AaiServerVariable(String name) {
+        super(name);
+    }
 
     public AaiServerVariable(Node parent, String name) {
         super(name);

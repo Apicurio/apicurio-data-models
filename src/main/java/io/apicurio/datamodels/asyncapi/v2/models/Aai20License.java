@@ -25,6 +25,12 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class Aai20License extends AaiLicense {
 
+    /**
+     * Constructor.
+     */
+    public Aai20License() {
+    }
+    
     public Aai20License(Node parent) {
         super(parent);
     }

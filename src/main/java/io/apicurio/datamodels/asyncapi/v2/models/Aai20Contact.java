@@ -24,6 +24,12 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class Aai20Contact extends AaiContact {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Contact() {
+    }
+    
     public Aai20Contact(Node parent) {
         super(parent);
     }

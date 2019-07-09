@@ -34,6 +34,12 @@ import io.apicurio.datamodels.core.models.common.Operation;
  */
 public class Aai20Operation extends AaiOperation {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Operation(String opType) {
+        super(opType);
+    }
 
     public Aai20Operation(Node parent) {
         super(parent);

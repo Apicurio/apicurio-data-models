@@ -26,5 +26,18 @@ public abstract class OasParameter extends Parameter {
     public String in;
     public Boolean required;
     public Boolean allowEmptyValue;
+    
+    /**
+     * Constructor.
+     */
+    public OasParameter() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public OasParameter(String name) {
+        super(name);
+    }
 
 }

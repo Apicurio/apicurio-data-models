@@ -18,9 +18,9 @@ package io.apicurio.datamodels.openapi.visitors;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -138,10 +138,10 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         this.path.prependSegment(node.getName(), true);
     }
 

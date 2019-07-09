@@ -7,7 +7,13 @@ import io.apicurio.datamodels.core.models.Node;
  * @author Jakub Senko<jsenko@redhat.com>
  */
 public class Aai20SecurityScheme extends AaiSecurityScheme {
-
+    
+    /**
+     * Constructor.
+     */
+    public Aai20SecurityScheme(String name) {
+        super(name);
+    }
 
     public Aai20SecurityScheme(Node parent) {
         super(parent);

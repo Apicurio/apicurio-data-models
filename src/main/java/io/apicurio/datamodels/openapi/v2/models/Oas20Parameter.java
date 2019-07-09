@@ -44,6 +44,19 @@ public class Oas20Parameter extends OasParameter {
     public Boolean uniqueItems;
     public List<String> enum_;
     public Number multipleOf;
+    
+    /**
+     * Constructor.
+     */
+    public Oas20Parameter() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public Oas20Parameter(String name) {
+        super(name);
+    }
 
     /**
      * @see io.apicurio.datamodels.core.models.common.Parameter#createSchema()

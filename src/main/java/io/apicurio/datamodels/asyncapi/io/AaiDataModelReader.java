@@ -30,7 +30,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
-import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
@@ -44,7 +43,9 @@ import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitItem;
+import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
+import io.apicurio.datamodels.asyncapi.models.IAaiTrait;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -407,6 +408,43 @@ public abstract class AaiDataModelReader extends DataModelReader {
         }
         super.readOperation(json, node);
     }
+    
+    public void readUnknownTrait(Object json, AaiUnknownTrait node) {
+        String summary = JsonCompat.consumePropertyString(json, Constants.PROP_SUMMARY);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
+        
+        node.summary = summary;
+        node.description = description;
+
+        if (externalDocs != null) {
+            node.externalDocs = node.createExternalDocumentation();
+            this.readExternalDocumentation(externalDocs, node.externalDocs);
+        }
+        
+        // tags
+        List<Object> jsonTags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
+        if (jsonTags != null) {
+            jsonTags.forEach(j -> {
+                AaiTag tag = nodeFactory.createTag(node);
+                this.readTag(j, tag);
+                node.addTag(tag);
+            });
+        }
+        // protocol info
+        Object pi = JsonCompat.consumeProperty(json, Constants.PROP_PROTOCOL_INFO);
+        if (pi != null) {
+            JsonCompat.keys(pi).forEach(key -> {
+                Object j = JsonCompat.consumeProperty(pi, key);
+                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
+                this.readProtocolInfo(j, value);
+                node.addProtocolInfo(value);
+            });
+        }
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
 
     public void readOperationTrait(Object json, AaiOperationTrait node) {
         this.readOperationBase(json, node);
@@ -482,15 +520,22 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (jsonT != null) {
             JsonCompat.keys(jsonT).forEach(key -> {
                 Object jsonValue = JsonCompat.consumeProperty(jsonT, key);
-                AaiTraitItem value = nodeFactory.createTraitItem(node, key);
-                this.readTraitItem(jsonValue, value);
-                node.addTraitItem(key, value);
+                IAaiTrait value = createTrait(node, key, jsonValue);
+                if (value.isMessageTrait()) {
+                    this.readMessageTrait(jsonValue, (AaiMessageTrait) value);
+                } else if (value.isOperationTrait()) {
+                    this.readOperationTrait(jsonValue, (AaiOperationTrait) value);
+                } else {
+                    this.readUnknownTrait(jsonValue, (AaiUnknownTrait) value);
+                }
+                node.addTrait(key, value);
             });
         }
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
+
 
     /**
      * Detect if the json represents message or operation trait
@@ -516,23 +561,18 @@ public abstract class AaiDataModelReader extends DataModelReader {
         return null;
     }
 
-    public void readTraitItem(Object json, AaiTraitItem node) {
-        Boolean isMessage = isMessageTrait(json);
+    private IAaiTrait createTrait(AaiComponents parent, String key, Object jsonValue) {
+        Boolean isMessage = isMessageTrait(jsonValue);
         if (isMessage != null) {
             if (isMessage) {
-                AaiMessageTrait trait = nodeFactory.createMessageTrait(node, null);
-                this.readMessageTrait(json, trait);
-                node._messageTrait = trait;
+                return nodeFactory.createMessageTrait(parent, key);
             } else {
-                AaiOperationTrait trait = nodeFactory.createOperationTrait(node, null);
-                this.readOperationTrait(json, trait);
-                node._operationTrait = trait;
+                return nodeFactory.createOperationTrait(parent, key);
             }
-            this.readExtraProperties(json, node);
         } else {
-            node._unknownTrait = json;
             LoggerCompat.warn("Could not determine if this JSON represents a message " +
-                    "or an operation trait: %s", json);
+                    "or an operation trait: %s", jsonValue);
+            return nodeFactory.createUnknownTrait(parent, key);
         }
     }
 

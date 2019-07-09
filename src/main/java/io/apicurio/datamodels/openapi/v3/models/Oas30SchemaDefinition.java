@@ -16,13 +16,13 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class Oas30SchemaDefinition extends Oas30Schema implements ISchemaDefinition {
+public class Oas30SchemaDefinition extends Oas30Schema implements IDefinition {
 
     private String _name;
 
@@ -35,7 +35,7 @@ public class Oas30SchemaDefinition extends Oas30Schema implements ISchemaDefinit
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
     @Override
     public String getName() {
@@ -43,7 +43,7 @@ public class Oas30SchemaDefinition extends Oas30Schema implements ISchemaDefinit
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
     @Override
     public void rename(String newName) {

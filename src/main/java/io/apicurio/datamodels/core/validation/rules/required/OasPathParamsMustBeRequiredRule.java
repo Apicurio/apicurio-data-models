@@ -18,7 +18,7 @@ package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -52,10 +52,10 @@ public class OasPathParamsMustBeRequiredRule extends OasRequiredPropertyValidati
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         visitParameter((Parameter) node);
     }
 

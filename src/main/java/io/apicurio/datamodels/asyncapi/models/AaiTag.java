@@ -24,6 +24,19 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiTag extends Tag {
+    
+    /**
+     * Constructor.
+     */
+    public AaiTag() {
+    }
+    
+    /**
+     * Constructor.
+     */
+    public AaiTag(String name) {
+        super(name);
+    }
 
     public AaiTag(Node parent) {
         if(parent != null) {

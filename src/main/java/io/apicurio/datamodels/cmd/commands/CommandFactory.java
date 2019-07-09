@@ -28,8 +28,8 @@ import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
@@ -672,7 +672,7 @@ public class CommandFactory {
     }
     
     public static final ICommand createReplaceSchemaDefinitionCommand(DocumentType docType,
-            ISchemaDefinition old, ISchemaDefinition replacement) {
+            IDefinition old, IDefinition replacement) {
         if (docType == DocumentType.openapi2) {
             return new ReplaceSchemaDefinitionCommand_20((Oas20SchemaDefinition) old, (Oas20SchemaDefinition) replacement);
         }

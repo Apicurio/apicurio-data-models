@@ -24,9 +24,15 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public abstract class AaiOperation extends AaiOperationBase {
 
-
     public AaiOperationTraitItems traits;
     public AaiMessage message;
+    
+    /**
+     * Constructor.
+     */
+    public AaiOperation(String opType) {
+        super(opType);
+    }
 
     public AaiOperation(Node parent) {
         super(parent);

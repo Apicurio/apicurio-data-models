@@ -28,5 +28,12 @@ public abstract class OasTag extends Tag {
      */
     public OasTag() {
     }
+    
+    /**
+     * Constructor.
+     */
+    public OasTag(String name) {
+        super(name);
+    }
 
 }

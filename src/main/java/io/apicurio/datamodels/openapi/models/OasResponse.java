@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.models;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
@@ -25,7 +26,7 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  * Models an OpenAPI 
  * @author eric.wittmann@gmail.com
  */
-public class OasResponse extends ExtensibleNode implements IOasResponseDefinition, IReferenceNode {
+public class OasResponse extends ExtensibleNode implements INamed, IReferenceNode {
     
     private String _name;
     public String $ref;
@@ -56,7 +57,7 @@ public class OasResponse extends ExtensibleNode implements IOasResponseDefinitio
     }
 
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
     @Override
     public String getName() {
@@ -64,7 +65,7 @@ public class OasResponse extends ExtensibleNode implements IOasResponseDefinitio
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
     @Override
     public void rename(String newName) {

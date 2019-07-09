@@ -26,7 +26,23 @@ import io.apicurio.datamodels.core.models.common.Tag;
  */
 public class Aai20Tag extends AaiTag {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Tag() {
+    }
 
+    /**
+     * Constructor.
+     */
+    public Aai20Tag(String name) {
+        super(name);
+    }
+    
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20Tag(Node parent) {
         super(parent);
     }

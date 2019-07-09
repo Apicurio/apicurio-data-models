@@ -24,9 +24,9 @@ import io.apicurio.datamodels.core.models.ExtensibleNode;
  * Models a server variable.
  * @author eric.wittmann@gmail.com
  */
-public abstract class ServerVariable extends ExtensibleNode {
+public abstract class ServerVariable extends ExtensibleNode implements INamed {
     
-    public final String _name;
+    public String _name;
     public List<String> enum_;
     public String default_;
     public String description;
@@ -37,12 +37,21 @@ public abstract class ServerVariable extends ExtensibleNode {
     public ServerVariable(String name) {
         this._name = name;
     }
-    
+
     /**
-     * Gets the server variable name.
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
+    @Override
     public String getName() {
         return this._name;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
     }
 
 }

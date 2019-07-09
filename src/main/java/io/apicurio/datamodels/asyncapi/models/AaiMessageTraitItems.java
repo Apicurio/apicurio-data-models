@@ -16,6 +16,12 @@ public abstract class AaiMessageTraitItems extends Node {
     public List<AaiMessageTrait> _traitItems;
     // or
     public List<AaiMessageTraitExtendedItem> _traitExtendedItems;
+    
+    /**
+     * Constructor.
+     */
+    public AaiMessageTraitItems() {
+    }
 
     public AaiMessageTraitItems(Node parent) {
         if(parent != null) {

@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v2.models;
 
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 
@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  * Models an OpenAPI 2.0 parameter definition.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20ParameterDefinition extends Oas20Parameter implements IParameterDefinition {
+public class Oas20ParameterDefinition extends Oas20Parameter implements IDefinition {
 
     private String _name;
 
@@ -37,7 +37,7 @@ public class Oas20ParameterDefinition extends Oas20Parameter implements IParamet
     }
 
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#getName()
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
     @Override
     public String getName() {
@@ -45,7 +45,7 @@ public class Oas20ParameterDefinition extends Oas20Parameter implements IParamet
     }
     
     /**
-     * @see io.apicurio.datamodels.core.models.common.IDefinition#rename(java.lang.String)
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
     @Override
     public void rename(String newName) {

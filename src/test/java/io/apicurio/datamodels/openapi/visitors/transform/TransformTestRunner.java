@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.visitors.TraverserDirection;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 
 /**
@@ -108,9 +108,7 @@ public class TransformTestRunner extends ParentRunner<TransformTestCase> {
                 Assert.assertEquals(DocumentType.openapi2, doc20.getDocumentType());
                 
                 // Transform the document
-                Oas20to30TransformationVisitor transformer = new Oas20to30TransformationVisitor();
-                Library.visitTree(doc20, transformer, TraverserDirection.down);
-                Oas30Document doc30 = transformer.getResult();
+                Oas30Document doc30 = Library.transformDocument((Oas20Document) doc20);
                 Assert.assertNotNull(doc30);
                 
                 // Now compare with expected

@@ -8,6 +8,11 @@ import io.apicurio.datamodels.core.models.common.OAuthFlows;
  */
 public abstract class AaiOAuthFlows extends OAuthFlows {
 
+    /**
+     * Constructor.
+     */
+    public AaiOAuthFlows() {
+    }
 
     public AaiOAuthFlows(Node parent) {
         if(parent != null) {

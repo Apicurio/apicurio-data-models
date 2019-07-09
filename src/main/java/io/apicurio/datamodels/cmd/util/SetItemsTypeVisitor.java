@@ -19,8 +19,7 @@ package io.apicurio.datamodels.cmd.util;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.IParameterDefinition;
-import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
@@ -77,10 +76,10 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.ISchemaDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(ISchemaDefinition node) {
+    public void visitSchemaDefinition(IDefinition node) {
         this.visitSchema((Schema) node);
     }
     /**
@@ -112,10 +111,10 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
         this.visitSchema((Schema) node);
     }
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IParameterDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitParameterDefinition(IParameterDefinition node) {
+    public void visitParameterDefinition(IDefinition node) {
         this.visitParameter((Parameter) node);
     }
 

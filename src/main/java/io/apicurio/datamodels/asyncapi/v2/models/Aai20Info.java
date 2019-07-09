@@ -27,6 +27,11 @@ import io.apicurio.datamodels.core.models.common.Info;
  */
 public class Aai20Info extends AaiInfo {
 
+    /**
+     * Constructor.
+     */
+    public Aai20Info() {
+    }
 
     public Aai20Info(Node parent) {
         super(parent);

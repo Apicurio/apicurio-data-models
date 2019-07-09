@@ -20,11 +20,11 @@ import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelWriter;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
-import io.apicurio.datamodels.openapi.models.IOasResponseDefinition;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -279,10 +279,10 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IOasResponseDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
      */
     @Override
-    public void visitResponseDefinition(IOasResponseDefinition node) {
+    public void visitResponseDefinition(IDefinition node) {
         OasResponse response = (OasResponse) node;
         
         Object parent = this.lookupParentJson(response);
@@ -298,7 +298,7 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
         JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
     }
-    protected void addResponseDefinitionToParent(Object parent, Object json, IOasResponseDefinition node) {
+    protected void addResponseDefinitionToParent(Object parent, Object json, IDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);
     }
 
