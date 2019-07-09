@@ -161,6 +161,6 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
 
     @Override
     public AaiUnknownTrait createUnknownTrait(Node parent, String key) {
-        return new AaiUnknownTrait(parent, key);
+        return new Aai20UnknownTrait(parent, key);
     }
 }

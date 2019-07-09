@@ -21,8 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20ExternalDocumentation;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Tag;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
@@ -35,7 +33,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class AaiUnknownTrait extends ExtensibleNode implements INamed, IAaiTrait {
+public abstract class AaiUnknownTrait extends ExtensibleNode implements INamed, IAaiTrait {
     
     public String _name;
     
@@ -109,13 +107,9 @@ public class AaiUnknownTrait extends ExtensibleNode implements INamed, IAaiTrait
         return true;
     }
 
-    public Aai20ExternalDocumentation createExternalDocumentation() {
-        return new Aai20ExternalDocumentation(this);
-    }
+    public abstract ExternalDocumentation createExternalDocumentation();
     
-    public Aai20Tag createTag() {
-        return new Aai20Tag(this);
-    }
+    public abstract Tag createTag();
 
     public List<AaiProtocolInfo> getProtocolInfoList() {
         return JsonCompat.mapToList(protocolInfo);
