@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.combined.visitors;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
@@ -29,8 +28,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
@@ -38,6 +35,7 @@ import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IDefinition;
@@ -392,7 +390,7 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {
@@ -668,7 +666,7 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
 
     }
 
@@ -734,16 +732,6 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
 
     @Override
     public void visitProtocolInfo(AaiProtocolInfo node) {
-
-    }
-
-    @Override
-    public void visitServer(AaiServer node) {
-
-    }
-
-    @Override
-    public void visitServerVariable(AaiServerVariable node) {
 
     }
 

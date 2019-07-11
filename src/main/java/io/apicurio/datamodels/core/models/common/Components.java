@@ -16,9 +16,12 @@
 
 package io.apicurio.datamodels.core.models.common;
 
+import io.apicurio.datamodels.core.models.ExtensibleNode;
+
 /**
+ * Base class for components defined by AsyncAPI 2+ and OpenAPI 3+.
  * @author eric.wittmann@gmail.com
  */
-public class Components {
+public abstract class Components extends ExtensibleNode {
 
 }

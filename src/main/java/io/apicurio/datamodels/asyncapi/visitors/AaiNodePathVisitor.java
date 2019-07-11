@@ -29,17 +29,18 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 
 /**
@@ -69,7 +70,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
         this.path.prependSegment(Constants.PROP_COMPONENTS, false);
     }
 
@@ -204,7 +205,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitServer(AaiServer node) {
+    public void visitServer(Server node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
@@ -213,7 +214,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitServerVariable(AaiServerVariable node) {
+    public void visitServerVariable(ServerVariable node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_VARIABLES, false);
     }

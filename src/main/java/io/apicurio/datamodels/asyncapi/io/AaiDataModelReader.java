@@ -52,6 +52,8 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -466,13 +468,14 @@ public abstract class AaiDataModelReader extends DataModelReader {
         }
     }
 
-    public void readComponents(Object json, AaiComponents node) {
+    public void readComponents(Object json, Components node) {
+        AaiComponents components = (AaiComponents) node;
         // schemas
         Object jsonSch = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMAS);
         if (jsonSch != null) {
             JsonCompat.keys(jsonSch).forEach(key -> {
                 Object value = JsonCompat.consumeProperty(jsonSch, key);
-                node.addSchema(key, value);
+                components.addSchema(key, value);
             });
         }
         // messages
@@ -482,7 +485,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 Object jsonValue = JsonCompat.consumeProperty(jsonM, key);
                 AaiMessage value = nodeFactory.createMessage(node, key);
                 this.readMessage(jsonValue, value);
-                node.addMessage(key, value);
+                components.addMessage(key, value);
             });
         }
         // security schemes
@@ -492,7 +495,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 Object jsonValue = JsonCompat.consumeProperty(jsonSS, key);
                 AaiSecurityScheme value = nodeFactory.createSecurityScheme(node, key);
                 this.readSecurityScheme(jsonValue, value);
-                node.addSecurityScheme(key, value);
+                components.addSecurityScheme(key, value);
             });
         }
         // parameters
@@ -502,7 +505,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 Object jsonValue = JsonCompat.consumeProperty(jsonParameters, key);
                 AaiParameter value = nodeFactory.createParameter(node, key);
                 this.readAaiParameter(jsonValue, value);
-                node.addParameter(key, value);
+                components.addParameter(key, value);
             });
         }
         // correlationIds
@@ -512,7 +515,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 Object jsonValue = JsonCompat.consumeProperty(jsonCI, key);
                 AaiCorrelationId value = nodeFactory.createCorrelationId(node, key);
                 this.readCorrelationId(jsonValue, value);
-                node.addCorrelationId(key, value);
+                components.addCorrelationId(key, value);
             });
         }
         // traits
@@ -529,7 +532,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 } else {
                     this.readUnknownTrait(jsonValue, (AaiUnknownTrait) value);
                 }
-                node.addTrait(key, value);
+                components.addTrait(key, value);
             });
         }
 
@@ -564,7 +567,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
         return AaiTraitType.unknown;
     }
 
-    private IAaiTrait createTrait(AaiComponents parent, String key, Object jsonValue) {
+    private IAaiTrait createTrait(Node parent, String key, Object jsonValue) {
         AaiTraitType traitType = getTraitType(jsonValue);
         if (traitType == AaiTraitType.message) {
             return nodeFactory.createMessageTrait(parent, key);

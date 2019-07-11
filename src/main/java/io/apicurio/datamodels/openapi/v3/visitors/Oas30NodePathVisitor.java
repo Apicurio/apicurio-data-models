@@ -89,7 +89,7 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.OasNodePathVisitor#visitResponseDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {

@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.asyncapi.io;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
@@ -29,17 +28,18 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 
 /**
  * Async API implementation of a data model reader dispatcher.
@@ -75,7 +75,7 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
         aaiReader.readComponents(this.json, node);
     }
 
@@ -145,12 +145,12 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitServer(AaiServer node) {
+    public void visitServer(Server node) {
         aaiReader.readServer(this.json, node);
     }
 
     @Override
-    public void visitServerVariable(AaiServerVariable node) {
+    public void visitServerVariable(ServerVariable node) {
         aaiReader.readServerVariable(this.json, node);
     }
     

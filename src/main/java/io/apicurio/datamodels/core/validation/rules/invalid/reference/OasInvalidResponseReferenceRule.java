@@ -46,9 +46,9 @@ public class OasInvalidResponseReferenceRule extends ValidationRule {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(node.$ref, node), node, Constants.PROP_$REF, map());
         }
     }
-    
+
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {

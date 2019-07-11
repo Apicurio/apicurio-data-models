@@ -212,7 +212,7 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitResponseDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {
@@ -524,7 +524,7 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(Oas30NotSchema)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
     public void visitNotSchema(Oas30NotSchema node) {
@@ -532,7 +532,7 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(Oas30OneOfSchema)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
     public void visitOneOfSchema(Oas30OneOfSchema node) {
@@ -540,7 +540,7 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(Oas30AnyOfSchema)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
     public void visitAnyOfSchema(Oas30AnyOfSchema node) {

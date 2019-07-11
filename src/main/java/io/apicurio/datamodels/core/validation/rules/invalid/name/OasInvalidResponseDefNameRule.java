@@ -36,7 +36,7 @@ public class OasInvalidResponseDefNameRule extends OasInvalidPropertyNameRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitResponseDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {

@@ -35,16 +35,18 @@ import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.Traverser;
 
 /**
@@ -92,16 +94,18 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
+        AaiComponents components = (AaiComponents) node;
+        
         node.accept(visitor);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
 
-        this.traverseCollection(node.getMessagesList());
-        this.traverseCollection(node.getSecuritySchemesList());
-        this.traverseCollection(node.getParametersList());
-        this.traverseCollection(node.getCorrelationIdsList());
-        this.traverseCollection(node.getTraitsList());
+        this.traverseCollection(components.getMessagesList());
+        this.traverseCollection(components.getSecuritySchemesList());
+        this.traverseCollection(components.getParametersList());
+        this.traverseCollection(components.getCorrelationIdsList());
+        this.traverseCollection(components.getTraitsList());
     }
 
     @Override
@@ -225,17 +229,17 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     }
 
     @Override
-    public void visitServer(AaiServer node) {
+    public void visitServer(Server node) {
         node.accept(visitor);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
 
         this.traverseCollection(node.getServerVariables());
-        this.traverseCollection(node.security);
+        this.traverseCollection(((AaiServer) node).security);
     }
 
     @Override
-    public void visitServerVariable(AaiServerVariable node) {
+    public void visitServerVariable(ServerVariable node) {
         node.accept(visitor);
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);

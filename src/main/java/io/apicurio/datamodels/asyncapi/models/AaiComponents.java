@@ -3,13 +3,13 @@ package io.apicurio.datamodels.asyncapi.models;
 import java.util.List;
 import java.util.Map;
 
-import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.Components;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiComponents extends ExtensibleNode {
+public abstract class AaiComponents extends Components {
 
     /**
      * Represents `Map[string, any]`.

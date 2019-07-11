@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.asyncapi.visitors;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
@@ -29,14 +28,15 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.VisitorAdapter;
 
 /**
@@ -62,7 +62,7 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
         // NOOP
     }
 
@@ -132,12 +132,12 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
     }
 
     @Override
-    public void visitServer(AaiServer node) {
+    public void visitServer(Server node) {
         // NOOP
     }
 
     @Override
-    public void visitServerVariable(AaiServerVariable node) {
+    public void visitServerVariable(ServerVariable node) {
         // NOOP
     }
 

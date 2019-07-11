@@ -608,7 +608,7 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     }
     
     /**
-     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#addResponseDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.openapi.models.IDefinition)
+     * @see io.apicurio.datamodels.openapi.io.OasDataModelWriter#addResponseDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
     protected void addResponseDefinitionToParent(Object parent, Object json, IDefinition node) {

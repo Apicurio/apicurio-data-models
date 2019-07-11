@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
@@ -29,7 +29,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models an OpenAPI 3.0.x Components.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Components extends ExtensibleNode {
+public class Oas30Components extends Components {
 
     public Map<String, Oas30SchemaDefinition> schemas = new LinkedHashMap<>();
     public Map<String, Oas30ResponseDefinition> responses = new LinkedHashMap<>();

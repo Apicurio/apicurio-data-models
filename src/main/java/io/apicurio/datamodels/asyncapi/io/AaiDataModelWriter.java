@@ -46,6 +46,7 @@ import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
@@ -82,7 +83,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitServer(AaiServer node) {
+    public void visitServer(Server node) {
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
         writeServer(json, node);
@@ -107,7 +108,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitServerVariable(AaiServerVariable node) {
+    public void visitServerVariable(ServerVariable node) {
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
         writeServerVariable(json, node);
@@ -172,13 +173,15 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitComponents(AaiComponents node) {
+    public void visitComponents(Components node) {
+        AaiComponents components = (AaiComponents) node;
+        
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
         // write the schemas because they are not visited later
         Object schemas = JsonCompat.objectNode();
-        if(node.schemas != null) {
-            for (Entry<String, Object> e : node.schemas.entrySet()) {
+        if(components.schemas != null) {
+            for (Entry<String, Object> e : components.schemas.entrySet()) {
                 JsonCompat.setProperty(schemas, e.getKey(), e.getValue());
             }
             JsonCompat.setProperty(json, Constants.PROP_SCHEMAS, schemas); // map

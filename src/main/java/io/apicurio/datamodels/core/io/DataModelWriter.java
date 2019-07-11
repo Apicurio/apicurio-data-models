@@ -90,7 +90,6 @@ public class DataModelWriter implements IVisitor {
      * Caller must provide the parent object as a second argument for cases when it does not exist.
      * @param modelId
      * @param jsonDefault not null
-     * @return
      */
     protected Object lookup(int modelId, Object jsonDefault) {
         Objects.requireNonNull(jsonDefault);
