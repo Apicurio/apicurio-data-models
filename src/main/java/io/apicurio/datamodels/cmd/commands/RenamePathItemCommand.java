@@ -23,6 +23,7 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -102,6 +103,8 @@ public class RenamePathItemCommand extends AbstractCommand {
 
         if (fromPathParamNames.size() != toPathParamNames.size()) {
             // TODO uh oh - what to do here?
+            LoggerCompat.warn("Renaming a path with %o parameters to a new value that has %o parameters!", 
+                    fromPathParamNames.size(), toPathParamNames.size());
         }
         // First, rename the path itself
         OasPathItem path = document.paths.removePathItem(from);
@@ -111,11 +114,26 @@ public class RenamePathItemCommand extends AbstractCommand {
         // Next, rename all of the path params (if necessary)
         for (int idx = 0; idx < fromPathParamNames.size(); idx++) {
             String fromParamName = fromPathParamNames.get(idx);
-            String toParamName = toPathParamNames.get(idx);
+            String toParamName = null;
+            if (idx < toPathParamNames.size()) {
+                toParamName = toPathParamNames.get(idx);
+            }
             if (ModelUtils.isDefined(toParamName)) {
                 this._renamePathParameter(path, fromParamName, toParamName);
             } else {
                 this._removePathParameter(path, fromParamName);
+            }
+        }
+        
+        // Finally, add new path params if necessary!
+        if (toPathParamNames.size() > fromPathParamNames.size()) {
+            for (int idx = fromPathParamNames.size(); idx < toPathParamNames.size(); idx++) {
+                String paramName = toPathParamNames.get(idx);
+                OasParameter parameter = path.createParameter();
+                parameter.name = paramName;
+                parameter.in = "path";
+                parameter.required = true;
+                path.addParameter(parameter);
             }
         }
     }

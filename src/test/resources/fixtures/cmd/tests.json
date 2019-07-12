@@ -190,6 +190,7 @@
     { "name": "[OpenAPI 2] {Rename Path Item} - Rename Path Item", "test": "commands/rename-path-item/openapi-2/rename-path-item" },
     { "name": "[OpenAPI 3] {Rename Path Item} - Rename Path Item With Both", "test": "commands/rename-path-item/openapi-3/rename-path-item-with-both" },
     { "name": "[OpenAPI 3] {Rename Path Item} - Rename Path Item With Params", "test": "commands/rename-path-item/openapi-3/rename-path-item-with-params" },
+    { "name": "[OpenAPI 3] {Rename Path Item} - Rename Path Item Remove Params", "test": "commands/rename-path-item/openapi-3/rename-path-item-remove-params" },
     { "name": "[OpenAPI 3] {Rename Path Item} - Rename Path Item With Sub-Paths", "test": "commands/rename-path-item/openapi-3/rename-path-item-with-subPaths" },
     { "name": "[OpenAPI 3] {Rename Path Item} - Rename Path Item", "test": "commands/rename-path-item/openapi-3/rename-path-item" },
     { "name": "[OpenAPI 2] {Rename Property} - Rename Property", "test": "commands/rename-property/openapi-2/rename-property" },
