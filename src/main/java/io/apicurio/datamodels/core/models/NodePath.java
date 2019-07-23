@@ -108,12 +108,28 @@ public class NodePath {
     }
 
     /**
+     * Adds a non-index segment to the beginning of the path.
+     * @param value
+     */
+    public void prependSegment(String value) {
+        this.prependSegment(value, false);
+    }
+
+    /**
      * Adds a segment to the end of the path.
      * @param value
      * @param index
      */
     public void appendSegment(String value, boolean index) {
         this.segments.add(new NodePathSegment(value, index));
+    }
+
+    /**
+     * Adds a non-index segment to the end of the path.
+     * @param value
+     */
+    public void appendSegment(String value) {
+        this.appendSegment(value, false);
     }
 
     /**
