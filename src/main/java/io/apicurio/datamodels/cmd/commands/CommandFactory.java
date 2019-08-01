@@ -52,6 +52,7 @@ import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
 import io.apicurio.datamodels.openapi.v3.models.Oas30SchemaDefinition;
 
 /**
@@ -81,6 +82,8 @@ public class CommandFactory {
             { return new AddSchemaDefinitionCommand_30(); }
             case "AddExampleCommand_30":
             { return new AddExampleCommand_30(); }
+            case "AddParameterExampleCommand_30":
+            { return new AddParameterExampleCommand_30(); }
             case "AddPathItemCommand":
             case "AddPathItemCommand_20":
             case "AddPathItemCommand_30":
@@ -147,6 +150,9 @@ public class CommandFactory {
             case "DeleteAllExamplesCommand_30":
             case "DeleteAllExamplesCommand":
             { return new DeleteAllExamplesCommand(); }
+            case "DeleteAllParameterExamplesCommand_30":
+            case "DeleteAllParameterExamplesCommand":
+            { return new DeleteAllParameterExamplesCommand(); }
             case "DeleteAllOperationsCommand":
             { return new DeleteAllOperationsCommand(); }
             case "DeleteAllParametersCommand_20":
@@ -173,6 +179,8 @@ public class CommandFactory {
             { return new DeleteExampleCommand_20(); }
             case "DeleteExampleCommand_30":
             { return new DeleteExampleCommand_30(); }
+            case "DeleteParameterExampleCommand_30":
+            { return new DeleteParameterExampleCommand_30(); }
             case "DeleteExtensionCommand":
             { return new DeleteExtensionCommand(); }
             case "DeleteLicenseCommand":
@@ -306,6 +314,8 @@ public class CommandFactory {
             { return new SetExampleCommand_20(); }
             case "SetExampleCommand_30":
             { return new SetExampleCommand_30(); }
+            case "SetParameterExampleCommand_30":
+            { return new SetParameterExampleCommand_30(); }
             case "SetExtensionCommand":
             { return new SetExtensionCommand(); }
             
@@ -322,6 +332,11 @@ public class CommandFactory {
     public static final ICommand createAddExampleCommand(Oas30MediaType mediaType, Object example, 
             String exampleName, String exampleSummary, String exampleDescription) {
         return new AddExampleCommand_30(mediaType, example, exampleName, exampleSummary, exampleDescription);
+    }
+
+    public static final ICommand createAddParameterExampleCommand(Oas30Parameter parameter, Object example, 
+            String exampleName, String exampleSummary, String exampleDescription) {
+        return new AddParameterExampleCommand_30(parameter, example, exampleName, exampleSummary, exampleDescription);
     }
 
     public static final ICommand createAddSchemaDefinitionCommand(DocumentType docType, 
@@ -436,6 +451,10 @@ public class CommandFactory {
     public static final ICommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
         return new DeleteAllExamplesCommand(mediaType);
     }
+
+    public static final ICommand createDeleteAllParameterExamplesCommand(Oas30Parameter parameter) {
+        return new DeleteAllParameterExamplesCommand(parameter);
+    }
     
     public static final ICommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
         return new DeleteAllOperationsCommand(pathItem);
@@ -477,6 +496,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteExampleCommand(Oas30Example example) {
         return new DeleteExampleCommand_30(example);
+    }
+
+    public static final ICommand createDeleteParameterExampleCommand(Oas30Example example) {
+        return new DeleteParameterExampleCommand_30(example);
     }
     
     public static final ICommand createDeleteExtensionCommand(Extension extension) {
@@ -698,6 +721,10 @@ public class CommandFactory {
             return new SetExampleCommand_30((Oas30MediaType) parent, example, nameOrContentType);
         }
         throw new RuntimeException("Document type not supported by this command.");
+    }
+
+    public static final ICommand createSetParameterExampleCommand(IExampleParent parent, Object example, String exampleName) {
+        return new SetParameterExampleCommand_30((Oas30Parameter) parent, example, exampleName);
     }
 
     public static final ICommand createSetExtensionCommand(ExtensibleNode parent, String name, Object value) {
