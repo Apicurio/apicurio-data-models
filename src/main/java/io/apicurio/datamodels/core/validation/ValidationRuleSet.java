@@ -182,8 +182,11 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSche
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSecuritySchemeFlowsRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOpenApiPropertyRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOpenIdConnectSecuritySchemeConnectUrlRule;
+import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationIdRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationResponsesRule;
+import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationSummaryRule;
+import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationTagsRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterArrayTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterLocationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterNameRule;
@@ -366,7 +369,10 @@ public class ValidationRuleSet {
         this.rules.add(md("INF-002", "Missing API Version", "Required Property", "Info", new DocumentType[] { oai20, oai30, aai20 }, true, "API is missing a version.", OasMissingApiVersionRule.class));
         this.rules.add(md("LIC-001", "Missing License Name", "Required Property", "License", new DocumentType[] { oai20, oai30 }, true, "License is missing a name.", OasMissingLicenseNameRule.class));
         this.rules.add(md("OP-007", "Missing Operation Responses", "Required Property", "Operation", new DocumentType[] { oai20, oai30 }, true, "Operation must have at least one response.", OasMissingOperationResponsesRule.class));
-        this.rules.add(md("OP-008", "Missing Operation ID", "Required Property", "Operation", new DocumentType[] { oai20, oai30 }, false, "Operation is missing a operation id.", OasMissingOperationIdRule.class));
+        this.rules.add(md("OP-008", "Missing Operation ID", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a operation id.", OasMissingOperationIdRule.class));
+        this.rules.add(md("OP-014", "Missing Operation Summary", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a summary.", OasMissingOperationSummaryRule.class));
+        this.rules.add(md("OP-015", "Missing Operation Description", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a description.", OasMissingOperationDescriptionRule.class));
+        this.rules.add(md("OP-016", "Missing Operation Tags", "Required Property", "Operation", new DocumentType[] { oai20, oai30 }, false, "Operation must have at least one tag.", OasMissingOperationTagsRule.class));
         this.rules.add(md("ED-001", "Missing External Documentation URL", "Required Property", "External Documentation", new DocumentType[] { oai20, oai30 }, true, "External Documentation is missing a URL.", OasMissingExternalDocumentationUrlRule.class));
         this.rules.add(md("PAR-001", "Missing Parameter Name", "Required Property", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Parameter is missing a name.", OasMissingParameterNameRule.class));
         this.rules.add(md("PAR-002", "Missing Parameter Location", "Required Property", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Parameter is missing a location (Query, Header, etc).", OasMissingParameterLocationRule.class));

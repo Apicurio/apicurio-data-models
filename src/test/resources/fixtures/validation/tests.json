@@ -9,7 +9,7 @@
 	{ "name": "[OpenAPI 2.0] Invalid Property Name", "test": "openapi/2.0/invalid-property-name.json" },
 	{ "name": "[OpenAPI 2.0] Invalid Reference [All]", "test": "openapi/2.0/invalid-reference.json" },
 	{ "name": "[OpenAPI 2.0] Mutually Exclusive [All]", "test": "openapi/2.0/mutually-exclusive.json" },
-	{ "name": "[OpenAPI 2.0] Required operationId if un-ignored", "test": "openapi/2.0/operation-id.json", "severity": "high" },
+	{ "name": "[OpenAPI 2.0] Operation ID", "test": "openapi/2.0/operation-id.json", "severity": "high" },
 	{ "name": "[OpenAPI 2.0] Pet Store [Extra Properties]", "test": "openapi/2.0/pet-store-extra-properties.json" },
 	{ "name": "[OpenAPI 2.0] Security Scheme [Invalid Property Format]", "test": "openapi/2.0/security-scheme-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Security Scheme [Required Properties]", "test": "openapi/2.0/security-scheme-required-properties.json" },
@@ -31,6 +31,7 @@
 	{ "name": "[OpenAPI 3.0] Unknown Properties", "test": "openapi/3.0/unknown-properties.json" },
     { "name": "[OpenAPI 3.0] Duplicate Path Params", "test": "openapi/3.0/duplicate-path-param.json" },
 	{ "name": "[OpenAPI 3.0] Valid Pet Store", "test": "openapi/3.0/valid-pet-store.json" },
+    { "name": "[OpenAPI 3.0] Operation Properties", "test": "openapi/3.0/operation-properties.json", "severity": "high" },
 
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" }
 	
