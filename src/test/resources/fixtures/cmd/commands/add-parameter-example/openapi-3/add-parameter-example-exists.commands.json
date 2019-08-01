@@ -1,0 +1,14 @@
+[
+	{
+		"__type": "AddParameterExampleCommand_30",
+		"_parentPath": "/paths[/test]/parameters[0]",
+		"_newExampleValue": {
+			"property1": "hello",
+			"property2": "world",
+			"property3": true
+		},
+		"_newExampleName": "bar",
+		"_newExampleSummary": "Bar Example",
+		"_newExampleDescription": "The bar example!"
+	}
+]
