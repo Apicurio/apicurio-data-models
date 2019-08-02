@@ -28,6 +28,7 @@ import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
@@ -53,6 +54,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
+import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30SchemaDefinition;
 
 /**
@@ -90,7 +92,11 @@ public class CommandFactory {
             { return new AddPathItemCommand(); }
             case "AddSecurityRequirementCommand":
             { return new AddSecurityRequirementCommand(); }
-            
+            case "AddResponseDefinitionCommand_20": 
+            { return new AddResponseDefinitionCommand_20(); }
+            case "AddResponseDefinitionCommand_30":
+            { return new AddResponseDefinitionCommand_30(); }
+
             /** Change Commands **/
             
             case "ChangePropertyCommand_20": 
@@ -216,6 +222,10 @@ public class CommandFactory {
             { return new DeleteSchemaDefinitionCommand_20(); }
             case "DeleteSchemaDefinitionCommand_30":
             { return new DeleteSchemaDefinitionCommand_30(); }
+            case "DeleteResponseDefinitionCommand_20":
+            { return new DeleteResponseDefinitionCommand_20(); }
+            case "DeleteResponseDefinitionCommand_30":
+            { return new DeleteResponseDefinitionCommand_30(); }
             case "DeleteSecurityRequirementCommand":
             { return new DeleteSecurityRequirementCommand(); }
             case "DeleteSecuritySchemeCommand_20":
@@ -311,9 +321,15 @@ public class CommandFactory {
             { return new ReplaceSchemaDefinitionCommand_30(); }
             case "ReplaceSecurityRequirementCommand":
             { return new ReplaceSecurityRequirementCommand(); }
+            case "ReplaceResponseDefinitionCommand_20":
+            { return new ReplaceResponseDefinitionCommand_20(); }
+            case "ReplaceResponseDefinitionCommand_30":
+            { return new ReplaceResponseDefinitionCommand_30(); }
             
             /** Set Commands **/
-            
+
+            case "SetPropertyCommand":
+            { return new SetPropertyCommand(); }
             case "SetExampleCommand_20":
             { return new SetExampleCommand_20(); }
             case "SetExampleCommand_30":
@@ -354,6 +370,17 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
+    public static final ICommand createAddResponseDefinitionCommand(DocumentType docType, 
+            String definitionName, Object from) {
+        if (docType == DocumentType.openapi2) {
+            return new AddResponseDefinitionCommand_20(definitionName, from);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new AddResponseDefinitionCommand_30(definitionName, from);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
     public static final ICommand createAddPathItemCommand(String pathItemName, Object from) {
         return new AddPathItemCommand(pathItemName, from);
     }
@@ -369,7 +396,7 @@ public class CommandFactory {
     public static <T> ICommand createChangePropertyCommand(Node node, String property, T newValue) {
         return new ChangePropertyCommand<T>(node, property, newValue);
     }
-
+    
     public static final ICommand createChangeTitleCommand(String newTitle) {
         return new ChangeTitleCommand(newTitle);
     }
@@ -552,7 +579,18 @@ public class CommandFactory {
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
+    public static final ICommand createDeleteResponseDefinitionCommand(
+            DocumentType docType, String definitionName) {
+        if (docType == DocumentType.openapi2) {
+            return new DeleteResponseDefinitionCommand_20(definitionName);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new DeleteResponseDefinitionCommand_30(definitionName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
     public static final ICommand createDeleteSecurityRequirementCommand(
             ISecurityRequirementParent parent, SecurityRequirement requirement) {
         return new DeleteSecurityRequirementCommand(parent, requirement);
@@ -719,14 +757,29 @@ public class CommandFactory {
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
+    public static final ICommand createReplaceResponseDefinitionCommand(DocumentType docType,
+            IDefinition old, IDefinition replacement) {
+        if (docType == DocumentType.openapi2) {
+            return new ReplaceResponseDefinitionCommand_20((Oas20ResponseDefinition) old, (Oas20ResponseDefinition) replacement);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new ReplaceResponseDefinitionCommand_30((Oas30ResponseDefinition) old, (Oas30ResponseDefinition) replacement);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
     public static final ICommand createReplaceSecurityRequirementCommand(SecurityRequirement old, 
             SecurityRequirement replacement) {
         return new ReplaceSecurityRequirementCommand(old, replacement);
     }
     
     /** Set Commands **/
-    
+
+    public static <T> ICommand createSetPropertyCommand(NodePath path, String property, T newValue) {
+        return new SetPropertyCommand<T>(path, property, newValue);
+    }
+
     public static final ICommand createSetExampleCommand(DocumentType docType, IExampleParent parent, Object example, 
             String nameOrContentType) {
         if (docType == DocumentType.openapi2) {

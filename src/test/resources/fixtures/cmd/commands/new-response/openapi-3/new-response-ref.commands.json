@@ -10,7 +10,7 @@
                 "_statusCode": "404"
             },
             {
-                "__type": "ChangePropertyCommand",
+                "__type": "SetPropertyCommand",
                 "_nodePath": "/paths[/foo]/get/responses[404]",
                 "_property": "$ref",
                 "_newValue": "#/components/responses/NotFound"
