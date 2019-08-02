@@ -271,6 +271,10 @@ public class CommandFactory {
             case "NewTagCommand_20":
             case "NewTagCommand_30":
             { return new NewTagCommand(); }
+            case "NewResponseDefinitionCommand_20":
+            { return new NewResponseDefinitionCommand_20(); }
+            case "NewResponseDefinitionCommand_30":
+            { return new NewResponseDefinitionCommand_30(); }
             
             /** Rename Commands **/
             
@@ -614,6 +618,17 @@ public class CommandFactory {
         }
         if (docType == DocumentType.openapi3) {
             return new NewSchemaDefinitionCommand_30(definitionName, example, description);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
+    public static final ICommand createNewResponseDefinitionCommand(DocumentType docType, 
+            String definitionName, String description) {
+        if (docType == DocumentType.openapi2) {
+            return new NewResponseDefinitionCommand_20(definitionName, description);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new NewResponseDefinitionCommand_30(definitionName, description);
         }
         throw new RuntimeException("Document type not supported by this command.");
     }

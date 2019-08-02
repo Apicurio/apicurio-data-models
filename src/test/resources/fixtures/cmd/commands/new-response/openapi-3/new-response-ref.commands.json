@@ -1,0 +1,20 @@
+[
+    {
+        "__type": "AggregateCommand",
+        "name": "new-response-ref-aggregate",
+        "info": null,
+        "_commands": [
+            {
+                "__type": "NewResponseCommand_30",
+                "_operationPath": "/paths[/foo]/get",
+                "_statusCode": "404"
+            },
+            {
+                "__type": "ChangePropertyCommand",
+                "_nodePath": "/paths[/foo]/get/responses[404]",
+                "_property": "$ref",
+                "_newValue": "#/components/responses/NotFound"
+            }
+        ]
+    }
+]
