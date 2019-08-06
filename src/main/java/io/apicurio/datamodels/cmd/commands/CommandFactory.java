@@ -302,6 +302,10 @@ public class CommandFactory {
             { return new RenameSecuritySchemeCommand(); }
             case "RenameTagDefinitionCommand":
             { return new RenameTagDefinitionCommand(); }
+            case "RenameResponseDefinitionCommand_20":
+            { return new RenameResponseDefinitionCommand_20(); }
+            case "RenameResponseDefinitionCommand_30":
+            { return new RenameResponseDefinitionCommand_30(); }
             
             /** Replace Commands **/
 
@@ -722,7 +726,18 @@ public class CommandFactory {
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
+    public static final ICommand createRenameResponseDefinitionCommand(DocumentType docType, 
+            String oldName, String newName) {
+        if (docType == DocumentType.openapi2) {
+            return new RenameResponseDefinitionCommand_20(oldName, newName);
+        }
+        if (docType == DocumentType.openapi3) {
+            return new RenameResponseDefinitionCommand_30(oldName, newName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
+    }
+
     public static final ICommand createRenameSecuritySchemeCommand(String oldSchemeName, 
             String newSchemeName) {
         return new RenameSecuritySchemeCommand(oldSchemeName, newSchemeName);

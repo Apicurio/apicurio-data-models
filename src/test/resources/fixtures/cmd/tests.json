@@ -213,6 +213,8 @@
     { "name": "[OpenAPI 3] {Rename Property} - Rename Property", "test": "commands/rename-property/openapi-3/rename-property" },
     { "name": "[OpenAPI 2] {Rename Schema Definition} - Rename Schema Definition", "test": "commands/rename-schema-definition/openapi-2/rename-schema-definition" },
     { "name": "[OpenAPI 3] {Rename Schema Definition} - Rename Schema Definition", "test": "commands/rename-schema-definition/openapi-3/rename-schema-definition" },
+    { "name": "[OpenAPI 2] {Rename Response Definition} - Rename Response Definition", "test": "commands/rename-response-definition/openapi-2/rename-response-definition" },
+    { "name": "[OpenAPI 3] {Rename Response Definition} - Rename Response Definition", "test": "commands/rename-response-definition/openapi-3/rename-response-definition" },
     { "name": "[OpenAPI 2] {Rename Security Scheme} - Refactor Security Scheme", "test": "commands/rename-security-scheme/openapi-2/refactor-security-scheme" },
     { "name": "[OpenAPI 2] {Rename Security Scheme} - Rename Security Scheme", "test": "commands/rename-security-scheme/openapi-2/rename-security-scheme" },
     { "name": "[OpenAPI 3] {Rename Security Scheme} - Rename Security Scheme", "test": "commands/rename-security-scheme/openapi-3/rename-security-scheme" },
