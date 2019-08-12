@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
@@ -23,7 +24,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Components;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -51,7 +51,7 @@ import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
  */
 public interface IOas30Visitor extends IOasVisitor {
 
-    public void visitComponents(Oas30Components node);
+    public void visitComponents(Components node);
     public void visitCallbackPathItem(Oas30CallbackPathItem node);
     public void visitCallback(Oas30Callback node);
     public void visitLinkServer(Oas30LinkServer node);

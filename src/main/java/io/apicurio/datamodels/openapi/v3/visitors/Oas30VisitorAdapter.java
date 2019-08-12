@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v3.visitors;
 
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
@@ -23,7 +24,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Components;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -52,11 +52,10 @@ import io.apicurio.datamodels.openapi.visitors.OasVisitorAdapter;
 public class Oas30VisitorAdapter extends OasVisitorAdapter implements IOas30Visitor {
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.openapi.v3.models.Oas30Components)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.core.models.common.Components)
      */
     @Override
-    public void visitComponents(Oas30Components node) {
-        
+    public void visitComponents(Components node) {
         
     }
 

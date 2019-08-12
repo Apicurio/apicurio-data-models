@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.openapi.v3.visitors;
 
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
@@ -146,20 +147,21 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.openapi.v3.models.Oas30Components)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.core.models.common.Components)
      */
     @Override
-    public void visitComponents(Oas30Components node) {
+    public void visitComponents(Components node) {
+        Oas30Components components = (Oas30Components) node;
         node.accept(this.visitor);
-        this.traverseCollection(node.getSchemaDefinitions());
-        this.traverseCollection(node.getResponseDefinitions());
-        this.traverseCollection(node.getParameterDefinitions());
-        this.traverseCollection(node.getExampleDefinitions());
-        this.traverseCollection(node.getRequestBodyDefinitions());
-        this.traverseCollection(node.getHeaderDefinitions());
-        this.traverseCollection(node.getSecuritySchemes());
-        this.traverseCollection(node.getLinkDefinitions());
-        this.traverseCollection(node.getCallbackDefinitions());
+        this.traverseCollection(components.getSchemaDefinitions());
+        this.traverseCollection(components.getResponseDefinitions());
+        this.traverseCollection(components.getParameterDefinitions());
+        this.traverseCollection(components.getExampleDefinitions());
+        this.traverseCollection(components.getRequestBodyDefinitions());
+        this.traverseCollection(components.getHeaderDefinitions());
+        this.traverseCollection(components.getSecuritySchemes());
+        this.traverseCollection(components.getLinkDefinitions());
+        this.traverseCollection(components.getCallbackDefinitions());
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }

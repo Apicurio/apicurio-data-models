@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v3.io;
 
+import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.io.OasDataModelReaderDispatcher;
@@ -69,11 +70,11 @@ public class Oas30DataModelReaderDispatcher extends OasDataModelReaderDispatcher
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.openapi.v3.models.Oas30Components)
+     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.core.models.common.Components)
      */
     @Override
-    public void visitComponents(Oas30Components node) {
-        this.oas30Reader().readComponents(this.json, node);
+    public void visitComponents(Components node) {
+        this.oas30Reader().readComponents(this.json, (Oas30Components) node);
     }
 
     /**

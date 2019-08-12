@@ -74,7 +74,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Components;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -421,15 +420,6 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
-
-
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitComponents(io.apicurio.datamodels.openapi.v3.models.Oas30Components)
-     */
-    @Override
-    public void visitComponents(Oas30Components node) {
 
 
     }
