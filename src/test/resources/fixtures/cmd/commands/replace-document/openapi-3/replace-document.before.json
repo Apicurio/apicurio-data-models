@@ -131,5 +131,10 @@
         "example": "{\n    \"name\": \"Batman\",\n    \"disposition\": \"Sour\"\n}"
       }
     }
-  }
+  },
+  "x-componentx-extensions": {
+     "compext1": [ 1, 2, 3, 4 ],
+     "compext2": "foo-bar"
+  },
+  "x-myprime": 17
 }

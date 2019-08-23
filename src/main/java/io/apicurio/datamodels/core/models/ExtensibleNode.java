@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -64,7 +65,7 @@ public abstract class ExtensibleNode extends Node {
      */
     public Collection<Extension> getExtensions() {
         if (this._extensions != null) {
-            return this._extensions.values();
+            return new ArrayList<>(this._extensions.values());
         } else {
             return null;
         }
