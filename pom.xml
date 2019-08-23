@@ -5,7 +5,7 @@
 	
 	<groupId>io.apicurio</groupId>
 	<artifactId>apicurio-data-models</artifactId>
-	<version>1.0.12-SNAPSHOT</version>
+	<version>1.0.12.Final</version>
 	<name>apicurio-data-models</name>
 
 	<url>https://www.apicur.io/</url>
