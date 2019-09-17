@@ -67,22 +67,6 @@
 		<version.org.skyscreamer>1.5.0</version.org.skyscreamer>
 	</properties>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>jsweet-plugins-release</id>
-			<name>plugins-release</name>
-			<url>http://repository.jsweet.org/artifactory/plugins-release-local</url>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<repositories>
-		<repository>
-			<id>jsweet-central</id>
-			<name>libs-release</name>
-			<url>http://repository.jsweet.org/artifactory/libs-release-local</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<!-- Third Party Deps -->
 		<dependency>
@@ -94,11 +78,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${version.com.fasterxml.jackson}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>${version.com.fasterxml.jackson.dataformat}</version>
 		</dependency>
 
 		<!-- Test Only Deps -->
@@ -194,152 +173,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Generate TS from Java -->
-			<plugin>
-				<groupId>org.jsweet</groupId>
-				<artifactId>jsweet-maven-plugin</artifactId>
-				<version>${version.org.jsweet}</version>
-				<configuration>
-					<verbose>true</verbose>
-					<tsOut>target/ts/src</tsOut>
-					<targetVersion>ES6</targetVersion>
-					<module>umd</module>
-					<moduleResolution>classic</moduleResolution>
-					<tsOnly>true</tsOnly>
-					<excludes>
-						<exclude>**/_*/**</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>generate-js</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>jsweet</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<!-- Copy TS env from src into target -->
-					<execution>
-						<id>copy-ts</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/ts</outputDirectory>
-							<overwrite>true</overwrite>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/main/ts</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<!-- Copy test fixtures into ts env -->
-					<execution>
-						<id>copy-fixtures</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/ts/tests/fixtures</outputDirectory>
-							<overwrite>true</overwrite>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/test/resources/fixtures</directory>
-									<filtering>false</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Generate the core.ts file -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>generate-corets</id>
-						<phase>package</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>io.apicurio.datamodels._build.GenerateCoreTs</mainClass>
-					<arguments>
-						<argument>${basedir}/target/ts/src</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-			<!-- Build the TS into a library bundle -->
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>${version.frontend-maven.plugin}</version>
-				<executions>
-					<!-- Install Node and Yarn -->
-					<execution>
-						<id>install node and yarn</id>
-						<goals>
-							<goal>install-node-and-yarn</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<workingDirectory>${basedir}/target/ts</workingDirectory>
-							<nodeVersion>v8.15.0</nodeVersion>
-							<yarnVersion>v1.15.2</yarnVersion>
-						</configuration>
-					</execution>
-					<!-- Install npm/yarn dependencies -->
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<workingDirectory>${basedir}/target/ts</workingDirectory>
-							<arguments>install</arguments>
-						</configuration>
-					</execution>
-					<!-- Test the library -->
-					<execution>
-						<id>ng test</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>test</phase>
-						<configuration>
-							<workingDirectory>${basedir}/target/ts</workingDirectory>
-							<arguments>test</arguments>
-						</configuration>
-					</execution>
-					<!-- Build+package the library -->
-					<execution>
-						<id>ng build</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<workingDirectory>${basedir}/target/ts</workingDirectory>
-							<arguments>package</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -351,6 +184,178 @@
 	</distributionManagement>
 
 	<profiles>
+        <profile>
+            <id>transpilation</id>
+            
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>jsweet-plugins-release</id>
+                    <name>plugins-release</name>
+                    <url>http://repository.jsweet.org/artifactory/plugins-release-local</url>
+                </pluginRepository>
+            </pluginRepositories>
+        
+            <repositories>
+                <repository>
+                    <id>jsweet-central</id>
+                    <name>libs-release</name>
+                    <url>http://repository.jsweet.org/artifactory/libs-release-local</url>
+                </repository>
+            </repositories>
+            
+            <build>
+                <plugins>
+                    <!-- Generate TS from Java -->
+                    <plugin>
+                        <groupId>org.jsweet</groupId>
+                        <artifactId>jsweet-maven-plugin</artifactId>
+                        <version>${version.org.jsweet}</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <tsOut>target/ts/src</tsOut>
+                            <targetVersion>ES6</targetVersion>
+                            <module>umd</module>
+                            <moduleResolution>classic</moduleResolution>
+                            <tsOnly>true</tsOnly>
+                            <excludes>
+                                <exclude>**/_*/**</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-js</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>jsweet</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <!-- Copy TS env from src into target -->
+                            <execution>
+                                <id>copy-ts</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/ts</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/main/ts</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <!-- Copy test fixtures into ts env -->
+                            <execution>
+                                <id>copy-fixtures</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/ts/tests/fixtures</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/test/resources/fixtures</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Generate the core.ts file -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>generate-corets</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>io.apicurio.datamodels._build.GenerateCoreTs</mainClass>
+                            <arguments>
+                                <argument>${basedir}/target/ts/src</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                    <!-- Build the TS into a library bundle -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${version.frontend-maven.plugin}</version>
+                        <executions>
+                            <!-- Install Node and Yarn -->
+                            <execution>
+                                <id>install node and yarn</id>
+                                <goals>
+                                    <goal>install-node-and-yarn</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <nodeVersion>v8.15.0</nodeVersion>
+                                    <yarnVersion>v1.15.2</yarnVersion>
+                                </configuration>
+                            </execution>
+                            <!-- Install npm/yarn dependencies -->
+                            <execution>
+                                <id>yarn install</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Test the library -->
+                            <execution>
+                                <id>ng test</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <arguments>test</arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Build+package the library -->
+                            <execution>
+                                <id>ng build</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <arguments>package</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            
+            
+            </build>
+        </profile>
 		<profile>
 			<id>release</id>
 			<build>
