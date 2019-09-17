@@ -16,4 +16,4 @@ jobs:
       - run: mvn --version
       - run: node --version
       - run: npm --version
-      - run: mvn clean package
+      - run: mvn -B clean package -Ptranspilation
