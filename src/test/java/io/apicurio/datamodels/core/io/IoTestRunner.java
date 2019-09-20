@@ -41,9 +41,9 @@ import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
-import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Schema.Oas20PropertySchema;
 import io.apicurio.datamodels.openapi.v3.models.IOas30Expression;
@@ -145,7 +145,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                         nodePath = new NodePath(path);
                         Node resolvedNode = nodePath.resolve(doc);
                         Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
-                        Assert.assertTrue("Path failed to resolve to the proper node: " + path, node == resolvedNode);
+                        Assert.assertTrue("Path failed to resolve [" + node.getClass().getSimpleName() + "] to the proper node: " + path, node == resolvedNode);
                     } catch (Throwable t) {
                         System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
                         throw t;
@@ -227,9 +227,9 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
             } else if (node instanceof OasPathItem) {
                 constructor = node.getClass().getConstructor(String.class);
                 clonedNode = constructor.newInstance(((OasPathItem) node).getPath());
-            } else if (node instanceof OasOperation) {
+            } else if (node instanceof Operation) {
                 constructor = node.getClass().getConstructor(String.class);
-                clonedNode = constructor.newInstance(((OasOperation) node).getMethod());
+                clonedNode = constructor.newInstance(((Operation) node).getType());
             } else if (node instanceof Oas20PropertySchema) {
                 constructor = node.getClass().getConstructor(String.class);
                 clonedNode = constructor.newInstance(((Oas20PropertySchema) node).getPropertyName());

@@ -1,38 +1,37 @@
 {
-    "info": {
-        "version": "1.0.0", 
-        "title": "Not example"
-    }, 
-    "channels": {
-        "test": {
-            "publish": {
-                "message": {
-                    "$ref": "#/components/messages/testMessages"
-                }
+   "asyncapi": "2.0.0",
+   "info": {
+      "title": "Not example",
+      "version": "1.0.0"
+   },
+   "channels": {
+      "test": {
+         "publish": {
+            "message": {
+               "$ref": "#/components/messages/testMessages"
             }
-        }
-    }, 
-    "asyncapi": "2.0.0",
-    "id": "https://github.com/asyncapi/asyncapi/examples/next/not.yml", 
-    "components": {
-        "messages": {
-            "testMessages": {
-                "payload": {
-                    "$ref": "#/components/schemas/testSchema"
-                }
+         }
+      }
+   },
+   "components": {
+      "messages": {
+         "testMessages": {
+            "payload": {
+               "$ref": "#/components/schemas/testSchema"
             }
-        }, 
-        "schemas": {
-            "testSchema": {
-                "type": "object", 
-                "properties": {
-                    "key": {
-                        "not": {
-                            "type": "integer"
-                        }
-                    }
-                }
+         }
+      },
+      "schemas": {
+         "testSchema": {
+            "type": "object",
+            "properties": {
+               "key": {
+                  "not": {
+                     "type": "integer"
+                  }
+               }
             }
-        }
-    }
+         }
+      }
+   }
 }

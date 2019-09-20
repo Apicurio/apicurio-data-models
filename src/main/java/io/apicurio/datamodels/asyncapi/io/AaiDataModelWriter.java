@@ -18,6 +18,8 @@ package io.apicurio.datamodels.asyncapi.io;
 
 import java.util.Map.Entry;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
@@ -25,20 +27,22 @@ import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -87,9 +91,14 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
         writeServer(json, node);
-        writeExtraProperties(json, node);
+        
         // PROCESS PARENT
-        JsonCompat.appendToArrayProperty(parent, Constants.PROP_SERVERS, json);
+        Object servers = JsonCompat.getProperty(parent, Constants.PROP_SERVERS);
+        if (servers == null) {
+            servers = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_SERVERS, servers);
+        }
+        JsonCompat.setProperty(servers, ((AaiServer) node).getName(), json);
 
         this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
@@ -103,8 +112,8 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         AaiServer server = (AaiServer) node;
         JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL, server.protocol);
         JsonCompat.setPropertyString(json, Constants.PROP_PROTOCOL_VERSION, server.protocolVersion);
-        JsonCompat.setPropertyString(json, Constants.PROP_BASE_CHANNEL, server.baseChannel);
         JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY);
+        JsonCompat.setPropertyNull(json, Constants.PROP_BINDINGS);
     }
 
     @Override
@@ -153,8 +162,8 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
         JsonCompat.setPropertyNull(json, Constants.PROP_PUBLISH);
         JsonCompat.setPropertyNull(json, Constants.PROP_SUBSCRIBE);
-        JsonCompat.setPropertyNull(json, Constants.PROP_PARAMETERS); // list
-        JsonCompat.setPropertyNull(json, Constants.PROP_PROTOCOL_INFO); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_PARAMETERS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_BINDINGS); // map
         // PARENT
         Object map = JsonCompat.getProperty(parent, Constants.PROP_CHANNELS);
         if (map == null) {
@@ -190,7 +199,13 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY_SCHEMES); // map
         JsonCompat.setPropertyNull(json, Constants.PROP_PARAMETERS); // map
         JsonCompat.setPropertyNull(json, Constants.PROP_CORRELATION_IDS); // map
-        JsonCompat.setPropertyNull(json, Constants.PROP_TRAITS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_OPERATION_TRAITS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_MESSAGE_TRAITS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_SERVER_BINDINGS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_CHANNEL_BINDINGS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_OPERATION_BINDINGS); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_MESSAGE_BINDINGS); // map
+
         // PROCESS PARENT
         JsonCompat.setProperty(parent, Constants.PROP_COMPONENTS, json);
 
@@ -225,7 +240,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
     @Override
     public void visitHeaderItem(AaiHeaderItem node) {
-        // null properties are deleted later...
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
         if (node.$ref != null) {
@@ -234,19 +248,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             json = node._schemaRaw;
         }
         // PROCESS PARENT
-        // determine if property or map
-        if (node.getName() != null) {
-            // assuming map
-            Object map = JsonCompat.getProperty(parent, Constants.PROP_HEADERS);
-            if (map == null) {
-                map = JsonCompat.objectNode();
-                JsonCompat.setProperty(parent, Constants.PROP_HEADERS, map);
-            }
-            JsonCompat.setProperty(map, node.getName(), json);
-        } else {
-            // this case should not be present atm
-            throw new IllegalStateException("Could not determine map key for " + node);
-        }
+        JsonCompat.setProperty(parent, Constants.PROP_HEADERS, json);
 
         this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
@@ -287,7 +289,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setPropertyNull(json, Constants.PROP_TAGS); // list
         JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS); // prop
-        JsonCompat.setPropertyNull(json, Constants.PROP_PROTOCOL_INFO); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_BINDINGS); // map
 
         return json;
     }
@@ -329,64 +331,13 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-        Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
-        Object json = JsonCompat.arrayNode();
-
-        // leave the message trait serialization to the visitor
-        JsonCompat.appendToArray(json, JsonCompat.objectNode());
-        // serialize extension directly
-        if(node._traitExtension != null) {
-            Object _traitExtension = JsonCompat.objectNode();
-            for (Entry<String, Object> e : node._traitExtension.entrySet()) {
-                JsonCompat.setProperty(_traitExtension, e.getKey(), e.getValue());
-            }
-            JsonCompat.appendToArray(json, _traitExtension);
-        }
-        // PROCESS PARENT
-        // parent json is also an array, (see AaiMessageTraitItems)
-        JsonCompat.appendToArray(parent, json);
-
-        this.updateIndex(node, json);
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.arrayNode();
-        // The json of this node is an array, whether it is
-        // [Message Trait Object] or [[Message Trait Object, Map]]
-        // Visitors of the child nodes will take case of adding the items.
-        // PROCESS PARENT
-        JsonCompat.setProperty(parent, Constants.PROP_TRAITS, json);
-
-        this.updateIndex(node, json);
-    }
-
-    @Override
     public void visitMessageTrait(AaiMessageTrait node) {
         Object json = this.writeMessageBase(node);
         // PROCESS PARENT
-        // We need to find out what actually to do with the serialized json...
-        if (node.parent() instanceof AaiMessageTraitItems) {
-            Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
-            JsonCompat.appendToArray(parent, json);
-        } else if (node.parent() instanceof AaiMessageTraitExtendedItem) {
-            Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
-            JsonCompat.setToArrayIndex(parent, 0, json);
-        } else if (node.parent() instanceof AaiComponents) {
-            Object parent = this.lookupParentJson(node);
-            
-            Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
-            if (traits == null) {
-                traits = JsonCompat.objectNode();
-                JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
-            }
-            
-            JsonCompat.setProperty(traits, node.getName(), json);
-        } else {
-            throw new IllegalStateException("Don't know where to write a trait node.");
-        }
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_TRAITS, json);
+        
+        this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
     }
 
@@ -406,41 +357,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-        Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
-        Object json = JsonCompat.arrayNode();
-
-        // leave the operation trait serialization to the visitor
-        JsonCompat.appendToArray(json, JsonCompat.objectNode());
-        // serialize extension directly
-        if(node._traitExtension != null) {
-            Object _traitExtension = JsonCompat.objectNode();
-            for (Entry<String, Object> e : node._traitExtension.entrySet()) {
-                JsonCompat.setProperty(_traitExtension, e.getKey(), e.getValue());
-            }
-            JsonCompat.appendToArray(json, _traitExtension);
-        }
-        // PROCESS PARENT
-        // parent json is also an array, (see AaiOperationTraitItems)
-        JsonCompat.appendToArray(parent, json);
-
-        this.updateIndex(node, json);
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.arrayNode();
-        // The json of this node is an array, whether it is
-        // [Operation Trait Object] or [[Operation Trait Object, Map]]
-        // Visitors of the child nodes will take case of adding the items.
-        // PROCESS PARENT
-        JsonCompat.setProperty(parent, Constants.PROP_TRAITS, json);
-
-        this.updateIndex(node, json);
-    }
-
-    @Override
     protected void writeOperation(Object json, Operation node) {
         AaiOperation aaiNode = (AaiOperation) node;
         super.writeOperation(json, aaiNode);
@@ -454,7 +370,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
         JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS); // prop
         JsonCompat.setPropertyNull(json, Constants.PROP_TAGS); // list
-        JsonCompat.setPropertyNull(json, Constants.PROP_PROTOCOL_INFO); // map
+        JsonCompat.setPropertyNull(json, Constants.PROP_BINDINGS); // map
 
         return json;
     }
@@ -478,26 +394,10 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     public void visitOperationTrait(AaiOperationTrait node) {
         Object json = this.writeOperationBase(node);
         // PROCESS PARENT
-        // We need to find out what actually to do with the serialized json...
-        if (node.parent() instanceof AaiOperationTraitItems) {
-            Object parent = this.lookupParentJson(node, JsonCompat.arrayNode());
-            JsonCompat.appendToArray(parent, json);
-        } else if (node.parent() instanceof AaiOperationTraitExtendedItem) {
-            Object parent = this.lookupParentJson(node, JsonCompat.appendToArray(JsonCompat.arrayNode(), JsonCompat.nullNode()));
-            JsonCompat.setToArrayIndex(parent, 0, json);
-        } else if (node.parent() instanceof AaiComponents) {
-            Object parent = this.lookupParentJson(node);
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.appendToArrayProperty(parent, Constants.PROP_TRAITS, json);
 
-            Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
-            if (traits == null) {
-                traits = JsonCompat.objectNode();
-                JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
-            }
-            
-            JsonCompat.setProperty(traits, node.getType(), json);
-        } else {
-            throw new IllegalStateException("Don't know where to write a trait node.");
-        }
+        this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
     }
 
@@ -507,63 +407,14 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-        Object parent = this.lookupParentJson(node);
-        if(node._protocolInfoItems != null) {
-            Object json = JsonCompat.objectNode();
-            for (Entry<String, Object> e : node._protocolInfoItems.entrySet()) {
-                JsonCompat.setProperty(json, e.getKey(), e.getValue());
-            }
-            // PARENT
-            if(node.getName() != null) {
-                Object map = JsonCompat.getProperty(parent, Constants.PROP_PROTOCOL_INFO);
-                if (map == null) {
-                    map = JsonCompat.objectNode();
-                    JsonCompat.setProperty(parent, Constants.PROP_PROTOCOL_INFO, map);
-                }
-                JsonCompat.setProperty(map, node.getName(), json);
-            } else {
-                throw new IllegalStateException("error in writing protocol info");
-            }
-            this.updateIndex(node, json);
-        }
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
-     */
-    @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
-        Object parent = this.lookupParentJson(node);
-        Object json = JsonCompat.objectNode();
-
-        JsonCompat.setPropertyString(json, Constants.PROP_SUMMARY, node.summary);
-        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
-        JsonCompat.setPropertyNull(json, Constants.PROP_TAGS); // list
-        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS); // prop
-        JsonCompat.setPropertyNull(json, Constants.PROP_PROTOCOL_INFO); // map
-        this.writeExtraProperties(json, node);
-        
-        Object traits = JsonCompat.getProperty(parent, Constants.PROP_TRAITS);
-        if (traits == null) {
-            traits = JsonCompat.objectNode();
-            JsonCompat.setProperty(parent, Constants.PROP_TRAITS, traits);
-        }
-        
-        JsonCompat.setProperty(traits, node.getName(), json);
-
-        this.updateIndex(node, json);
-    }
-
-    @Override
     public void visitAaiParameter(AaiParameter node) {
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
 
         JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
-        JsonCompat.setPropertyString(json, Constants.PROP_NAME, node.name);
         JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
         JsonCompat.setProperty(json, Constants.PROP_SCHEMA, node.schema);
+        JsonCompat.setPropertyString(json, Constants.PROP_LOCATION, node.location);
         // PROCESS PARENT
         if(node.getName() != null) {
             Object map = JsonCompat.getProperty(parent, Constants.PROP_PARAMETERS);
@@ -580,6 +431,8 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
             }
             JsonCompat.appendToArray(list, json);
         }
+        
+        this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
     }
 
@@ -607,4 +460,311 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyString(json, Constants.PROP_OPEN_ID_CONNECT_URL, aaiNode.openIdConnectUrl);
         JsonCompat.setPropertyString(json, Constants.PROP_BEARER_FORMAT, aaiNode.bearerFormat);
     }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition)
+     */
+    @Override
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
+        Object json = this.writeMessageBase(node);
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_MESSAGE_TRAITS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_MESSAGE_TRAITS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition)
+     */
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
+        Object json = this.writeOperationBase(node);
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_OPERATION_TRAITS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_OPERATION_TRAITS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindings(io.apicurio.datamodels.asyncapi.models.AaiServerBindings)
+     */
+    @Override
+    public void visitServerBindings(AaiServerBindings node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+        
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.setProperty(parent, Constants.PROP_BINDINGS, json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition)
+     */
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_SERVER_BINDINGS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_SERVER_BINDINGS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindings(io.apicurio.datamodels.asyncapi.models.AaiOperationBindings)
+     */
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.setProperty(parent, Constants.PROP_BINDINGS, json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition)
+     */
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_OPERATION_BINDINGS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_OPERATION_BINDINGS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindings(io.apicurio.datamodels.asyncapi.models.AaiMessageBindings)
+     */
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.setProperty(parent, Constants.PROP_BINDINGS, json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition)
+     */
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_MESSAGE_BINDINGS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_MESSAGE_BINDINGS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindings(io.apicurio.datamodels.asyncapi.models.AaiChannelBindings)
+     */
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        JsonCompat.setProperty(parent, Constants.PROP_BINDINGS, json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition)
+     */
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        Object json = this.writeNullBindings();
+        JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
+        JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
+        JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP, node.amqp);
+        JsonCompat.setProperty(json, Constants.PROP_AMQP1, node.amqp1);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT, node.mqtt);
+        JsonCompat.setProperty(json, Constants.PROP_MQTT5, node.mqtt5);
+        JsonCompat.setProperty(json, Constants.PROP_NATS, node.nats);
+        JsonCompat.setProperty(json, Constants.PROP_JMS, node.jms);
+        JsonCompat.setProperty(json, Constants.PROP_SNS, node.sns);
+        JsonCompat.setProperty(json, Constants.PROP_SQS, node.sqs);
+        JsonCompat.setProperty(json, Constants.PROP_STOMP, node.stomp);
+        JsonCompat.setProperty(json, Constants.PROP_REDIS, node.redis);
+
+        // PROCESS PARENT
+        Object parent = this.lookupParentJson(node);
+        Object map = JsonCompat.getProperty(parent, Constants.PROP_CHANNEL_BINDINGS);
+        if (map == null) {
+            map = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_CHANNEL_BINDINGS, map);
+        }
+        JsonCompat.setProperty(map, node.getName(), json);
+        
+        this.writeExtraProperties(json, node);
+        this.updateIndex(node, json);
+    }
+
+    /**
+     * Writes a Server/Channel/Operation/Message Bindings model to JSON.
+     * @param node
+     */
+    protected Object writeNullBindings() {
+        Object json = JsonCompat.objectNode();
+
+        JsonCompat.setPropertyNull(json, Constants.PROP_HTTP);
+        JsonCompat.setPropertyNull(json, Constants.PROP_WS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_KAFKA);
+        JsonCompat.setPropertyNull(json, Constants.PROP_AMQP);
+        JsonCompat.setPropertyNull(json, Constants.PROP_AMQP1);
+        JsonCompat.setPropertyNull(json, Constants.PROP_MQTT);
+        JsonCompat.setPropertyNull(json, Constants.PROP_MQTT5);
+        JsonCompat.setPropertyNull(json, Constants.PROP_NATS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_JMS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SNS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_SQS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_STOMP);
+        JsonCompat.setPropertyNull(json, Constants.PROP_REDIS);
+
+        return json;
+    }
+
 }

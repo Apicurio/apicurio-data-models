@@ -16,20 +16,24 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
@@ -86,7 +90,6 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
 
     @Override
     public void visitHeaderItem(AaiHeaderItem node) {
-        this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_HEADERS, false);
     }
 
@@ -116,33 +119,23 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_EXTENDED_ITEMS);
+    public void visitMessageTrait(AaiMessageTrait node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAITS);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
-            this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
-        }
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        this.path.prependSegment(Constants.PROP_TRAITS, false);
-    }
-
-    @Override
-    public void visitMessageTrait(AaiMessageTrait node) {
-        if (node.parent() instanceof AaiMessageTraitItems) {
-            int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_ITEMS);
-            if (idx != -1) {
-                this.path.prependSegment(String.valueOf(idx), true);
-                this.path.prependSegment(Constants.PROP_TRAIT_ITEMS, false);
-            }
-        } else if (node.parent() instanceof AaiMessageTraitExtendedItem) {
-            this.path.prependSegment(Constants.PROP__TRAIT, false);
-        } else if (node.parent() instanceof AaiComponents) {
-            this.path.prependSegment(node.getName(), true);
             this.path.prependSegment(Constants.PROP_TRAITS, false);
+        } else {
+            throw new IllegalStateException("message trait without an index");
         }
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition)
+     */
+    @Override
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_MESSAGE_TRAITS, false);
     }
 
     @Override
@@ -151,51 +144,25 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-        if(node.getName() != null) {
-            this.path.prependSegment(node.getName(), true);
-            this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
-        } else {
-            int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_EXTENDED_ITEMS);
-            if (idx != -1) {
-                this.path.prependSegment(String.valueOf(idx), true);
-                this.path.prependSegment(Constants.PROP_TRAIT_EXTENDED_ITEMS, false);
-            } else {
-                throw new IllegalStateException();
-            }
-        }
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
-        this.path.prependSegment(Constants.PROP_TRAITS, false);
-    }
-
-    @Override
     public void visitOperationTrait(AaiOperationTrait node) {
-        if (node.parent() instanceof AaiOperationTraitItems) {
-            int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAIT_ITEMS);
-            if (idx != -1) {
-                this.path.prependSegment(String.valueOf(idx), true);
-                this.path.prependSegment(Constants.PROP_TRAIT_ITEMS, false);
-            }
-        } else if (node.parent() instanceof AaiOperationTraitExtendedItem) {
-            this.path.prependSegment(Constants.PROP__OPERATION_TRAIT, false);
-        } else if (node.parent() instanceof AaiComponents) {
-            this.path.prependSegment(node.getType(), true);
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_TRAITS);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
             this.path.prependSegment(Constants.PROP_TRAITS, false);
+        } else {
+            throw new IllegalStateException("operation trait without an index");
         }
+    }
+    
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_OPERATION_TRAITS, false);
     }
 
     @Override
     public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
         this.path.prependSegment(Constants.PROP_PASSWORD, false);
-    }
-
-    @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-        this.path.prependSegment(node.getName(), true);
-        this.path.prependSegment(Constants.PROP_PROTOCOL_INFO, false);
     }
 
     @Override
@@ -206,23 +173,14 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
 
     @Override
     public void visitServer(Server node) {
-        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_SERVERS);
-        if (idx != -1) {
-            this.path.prependSegment(String.valueOf(idx), true);
-            this.path.prependSegment(Constants.PROP_SERVERS, false);
-        }
+        this.path.prependSegment(((AaiServer) node).getName(), true);
+        this.path.prependSegment(Constants.PROP_SERVERS, false);
     }
 
     @Override
     public void visitServerVariable(ServerVariable node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_VARIABLES, false);
-    }
-
-    @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
-        this.path.prependSegment(node.getName(), true);
-        this.path.prependSegment(Constants.PROP_TRAITS, false);
     }
 
     @Override
@@ -237,5 +195,73 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
                 this.path.prependSegment(Constants.PROP_PARAMETERS, false);
             }
         }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindings(io.apicurio.datamodels.asyncapi.models.AaiServerBindings)
+     */
+    @Override
+    public void visitServerBindings(AaiServerBindings node) {
+        this.path.prependSegment(Constants.PROP_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition)
+     */
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_SERVER_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindings(io.apicurio.datamodels.asyncapi.models.AaiOperationBindings)
+     */
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+        this.path.prependSegment(Constants.PROP_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition)
+     */
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_OPERATION_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindings(io.apicurio.datamodels.asyncapi.models.AaiMessageBindings)
+     */
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+        this.path.prependSegment(Constants.PROP_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition)
+     */
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_MESSAGE_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindings(io.apicurio.datamodels.asyncapi.models.AaiChannelBindings)
+     */
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+        this.path.prependSegment(Constants.PROP_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition)
+     */
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_CHANNEL_BINDINGS, false);
     }
 }

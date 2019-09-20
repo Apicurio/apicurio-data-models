@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2019 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,27 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
 import io.apicurio.datamodels.core.models.Node;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class Aai20UnknownTrait extends AaiUnknownTrait {
+public class Aai20ChannelBindings extends AaiChannelBindings {
 
-    public Aai20UnknownTrait(String name) {
-        super(name);
+    /**
+     * Constructor.
+     */
+    public Aai20ChannelBindings() {
+        super();
     }
 
-    public Aai20UnknownTrait(Node parent, String name) {
-        super(parent, name);
-    }
-    
     /**
-     * @see io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait#createExternalDocumentation()
+     * Constructor.
+     * @param parent
      */
-    @Override
-    public Aai20ExternalDocumentation createExternalDocumentation() {
-        return new Aai20ExternalDocumentation(this);
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait#createTag()
-     */
-    @Override
-    public Aai20Tag createTag() {
-        return new Aai20Tag(this);
+    public Aai20ChannelBindings(Node parent) {
+        super(parent);
     }
 
 }

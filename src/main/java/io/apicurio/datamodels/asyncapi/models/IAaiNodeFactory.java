@@ -24,24 +24,29 @@ public interface IAaiNodeFactory {
     AaiCorrelationId createCorrelationId(Node parent, String key);
     AaiDocument createDocument();
     AaiExternalDocumentation createExternalDocumentation(Node parent);
-    AaiHeaderItem createHeaderItem(Node parent, String key);
+    AaiHeaderItem createHeaderItem(Node parent);
     AaiInfo createInfo(Node parent);
     AaiLicense createLicense(Node parent);
     AaiMessage createMessage(Node parent, String key);
-    AaiMessageTraitExtendedItem createMessageTraitExtendedItem(Node parent);
-    AaiMessageTraitItems createMessageTraitItems(Node parent);
     AaiMessageTrait createMessageTrait(Node parent, String key);
     AaiOAuthFlows createOAuthFlows(Node parent);
     AaiOperation createOperation(Node parent, String key);
-    AaiOperationTraitExtendedItem createOperationTraitExtendedItem(Node parent, String key);
-    AaiOperationTraitItems createOperationTraitItems(Node parent);
     AaiOperationTrait createOperationTrait(Node parent, String key);
     AaiParameter createParameter(Node parent, String key);
-    AaiProtocolInfo createProtocolInfo(Node parent, String key);
     AaiSecurityRequirement createSecurityRequirement(Node parent);
     AaiSecurityScheme createSecurityScheme(Node parent, String key);
-    AaiServer createServer(Node parent);
+    AaiServer createServer(Node parent, String key);
     AaiServerVariable createServerVariable(Node parent, String key);
     AaiTag createTag(Node parent);
-    AaiUnknownTrait createUnknownTrait(Node parent, String key);
+    AaiServerBindings createServerBindings(Node parent);
+    AaiServerBindingsDefinition createServerBindingsDefinition(Node parent, String key);
+    AaiOperationBindings createOperationBindings(Node parent);
+    AaiOperationBindingsDefinition createOperationBindingsDefinition(Node parent, String key);
+    AaiMessageBindings createMessageBindings(Node parent);
+    AaiMessageBindingsDefinition createMessageBindingsDefinition(Node parent, String key);
+    AaiChannelBindings createChannelBindings(Node parent);
+    AaiChannelBindingsDefinition createChannelBindingsDefinition(Node parent, String key);
+    AaiOperationTraitDefinition createOperationTraitDefinition(Node parent, String key);
+    AaiMessageTraitDefinition createMessageTraitDefinition(Node parent, String key);
+    
 }

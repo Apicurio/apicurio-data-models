@@ -163,12 +163,16 @@ public class Constants {
     public static final String PROP_CHANNELS = "channels";
     public static final String PROP_PROTOCOL = "protocol";
     public static final String PROP_PROTOCOL_VERSION = "protocolVersion";
-    public static final String PROP_BASE_CHANNEL = "baseChannel";
     public static final String PROP_MESSAGES = "messages";
     public static final String PROP___TYPE = "__type";
     public static final String PROP_OF = "of";
     public static final String PROP_AS = "as";
-
+    public static final String PROP_BINDINGS = "bindings";
+    public static final String PROP_SERVER_BINDINGS = "serverBindings";
+    public static final String PROP_CHANNEL_BINDINGS = "channelBindings";
+    public static final String PROP_MESSAGE_BINDINGS = "messageBindings";
+    public static final String PROP_OPERATION_BINDINGS = "operationBindings";
+    
     public static final String REF_PREFIX_API_RESPONSE = "#/components/responses/";
     public static final String REF_PREFIX_CALLBACK = "#/components/callbacks/";
     public static final String REF_PREFIX_EXAMPLE = "#/components/examples/";
@@ -181,8 +185,9 @@ public class Constants {
 
     public static final String PROP_CORRELATION_IDS = "correlationIds";
     public static final String PROP_TRAITS = "traits";
+    public static final String PROP_MESSAGE_TRAITS = "messageTraits";
+    public static final String PROP_OPERATION_TRAITS = "operationTraits";
     public static final String PROP_MESSAGE = "message";
-    public static final String PROP_PROTOCOL_INFO = "protocolInfo";
     public static final String PROP_CORRELATION_ID = "correlationId";
     public static final String PROP_TRAIT_EXTENDED_ITEMS = "_traitExtendedItems";
     public static final String PROP_TRAIT_ITEMS = "_traitItems";
@@ -194,4 +199,19 @@ public class Constants {
     public static final String PROP_DEFAULT_CONTENT_TYPE = "defaultContentType";
     public static final String PROP__TRAIT = "_trait";
     public static final String PROP__OPERATION_TRAIT = "_operationTrait";
+    
+    public static final String PROP_HTTP = "http";
+    public static final String PROP_WS = "ws";
+    public static final String PROP_KAFKA = "kafka";
+    public static final String PROP_AMQP = "amqp";
+    public static final String PROP_AMQP1 = "amqp1";
+    public static final String PROP_MQTT = "mqtt";
+    public static final String PROP_MQTT5 = "mqtt5";
+    public static final String PROP_NATS = "nats";
+    public static final String PROP_JMS = "jms";
+    public static final String PROP_SNS = "sns";
+    public static final String PROP_SQS = "sqs";
+    public static final String PROP_STOMP = "stomp";
+    public static final String PROP_REDIS = "redis";
+
 }

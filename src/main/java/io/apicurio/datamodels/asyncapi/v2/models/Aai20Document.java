@@ -16,14 +16,8 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
@@ -76,48 +70,27 @@ public class Aai20Document extends AaiDocument {
     }
 
     /**
-     * Creates an AAI 2.0 Server object.
+     * @see io.apicurio.datamodels.asyncapi.models.AaiDocument#createServer(java.lang.String)
      */
     @Override
-    public Aai20Server createServer() {
-        return new Aai20Server(this);
+    public AaiServer createServer(String name) {
+        return new Aai20Server(this, name);
     }
 
     /**
-     * Creates an AAI 2.0 Server object.
+     * @see io.apicurio.datamodels.asyncapi.models.AaiDocument#createServer(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public Aai20Server createServer(String url, String description) {
-        Aai20Server server = new Aai20Server(this);
+    public AaiServer createServer(String name, String url, String description) {
+        Aai20Server server = new Aai20Server(this, name);
         server.url = url;
         server.description = description;
         return server;
     }
 
     @Override
-    public AaiServer addServer(AaiServer server) {
-        if (this.servers == null) {
-            this.servers = new ArrayList<>();
-        }
-        this.servers.add(server);
-        return server;
-    }
-
-    @Override
-    public List<AaiChannelItem> getChannels() {
-        return JsonCompat.mapToList(this.channels);
-    }
-
-    @Override
     public Aai20ChannelItem createChannelItem(String name) {
         return new Aai20ChannelItem(this, name);
-    }
-
-    @Override
-    public void addChannelItem(AaiChannelItem item) {
-        if (channels == null)
-            channels = new LinkedHashMap<>();
-        channels.put(item.getName(), item);
     }
 
     @Override

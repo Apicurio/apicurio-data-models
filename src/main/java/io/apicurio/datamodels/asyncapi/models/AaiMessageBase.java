@@ -20,9 +20,9 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
     public String $ref;
 
     /**
-     * Represents `Map[string, Schema Object | Reference Object]` type.
+     * Represents `Schema Object | Reference Object` type.
      */
-    public Map<String, AaiHeaderItem> headers;
+    public AaiHeaderItem headers;
 
     public AaiCorrelationId correlationId;
     public String schemaFormat;
@@ -33,7 +33,7 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
     public String description;
     public List<Tag> tags;
     public ExternalDocumentation externalDocs;
-    public Map<String, AaiProtocolInfo> protocolInfo;
+    public AaiMessageBindings bindings;
 
     /**
      * Represents `Map[string, any]` type.
@@ -42,7 +42,7 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
      * In TypeScript, this field contains the raw JS object, in case of Java
      * it is a {@link com.fasterxml.jackson.databind.node.ObjectNode}.
      *
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#schemaObject">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#schemaObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, Object> examples;
     
@@ -53,6 +53,10 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
         this._name = name;
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiMessageBase(Node parent) {
         if(parent != null) {
             this._parent = parent;
@@ -60,6 +64,11 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
         }
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param name
+     */
     public AaiMessageBase(Node parent, String name) {
         this(parent);
         this._name = name;
@@ -81,9 +90,5 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
         this._name = newName;
     }
     
-    public abstract List<AaiHeaderItem> getHeadersList();
-    public abstract List<AaiProtocolInfo> getProtocolInfoList();
-    public abstract void addHeaderItem(AaiHeaderItem item);
     public abstract void addTag(AaiTag tag);
-    public abstract void addProtocolInfo(AaiProtocolInfo item);
 }

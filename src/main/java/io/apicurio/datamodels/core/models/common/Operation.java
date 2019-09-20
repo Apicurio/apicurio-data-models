@@ -24,7 +24,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public abstract class Operation extends ExtensibleNode implements IExternalDocumentationParent {
     
-    private String _type;
+    protected String _type;
     public String operationId;
     public String summary;
     public String description;

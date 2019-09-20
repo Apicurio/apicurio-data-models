@@ -16,19 +16,23 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
@@ -87,32 +91,12 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
     }
 
     @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-        // NOOP
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        // NOOP
-    }
-
-    @Override
     public void visitMessageTrait(AaiMessageTrait node) {
         // NOOP
     }
 
     @Override
     public void visitOAuthFlows(OAuthFlows node) {
-        // NOOP
-    }
-
-    @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-        // NOOP
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
         // NOOP
     }
 
@@ -127,11 +111,6 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
     }
 
     @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-        // NOOP
-    }
-
-    @Override
     public void visitServer(Server node) {
         // NOOP
     }
@@ -141,16 +120,58 @@ public class AaiVisitorAdapter extends VisitorAdapter implements IAaiVisitor {
         // NOOP
     }
 
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
-     */
     @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
+    public void visitAaiParameter(AaiParameter node) {
         // NOOP
     }
 
     @Override
-    public void visitAaiParameter(AaiParameter node) {
+    public void visitServerBindings(AaiServerBindings node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
+        // NOOP
+    }
+
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
         // NOOP
     }
 }

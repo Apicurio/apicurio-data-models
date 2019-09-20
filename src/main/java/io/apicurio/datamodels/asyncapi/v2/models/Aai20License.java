@@ -31,6 +31,10 @@ public class Aai20License extends AaiLicense {
     public Aai20License() {
     }
     
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20License(Node parent) {
         super(parent);
     }

@@ -16,19 +16,23 @@
 
 package io.apicurio.datamodels.combined.visitors;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
@@ -681,32 +685,12 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
     }
 
     @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-
-    }
-
-    @Override
     public void visitMessageTrait(AaiMessageTrait node) {
 
     }
 
     @Override
     public void visitOAuthFlows(OAuthFlows node) {
-
-    }
-
-    @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
 
     }
 
@@ -721,17 +705,78 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
     }
 
     @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-
-    }
-
-    @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
-
-    }
-
-    @Override
     public void visitAaiParameter(AaiParameter aaiParameter) {
 
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindings(io.apicurio.datamodels.asyncapi.models.AaiServerBindings)
+     */
+    @Override
+    public void visitServerBindings(AaiServerBindings node) {
+        
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition)
+     */
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindings(io.apicurio.datamodels.asyncapi.models.AaiOperationBindings)
+     */
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition)
+     */
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindings(io.apicurio.datamodels.asyncapi.models.AaiMessageBindings)
+     */
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition)
+     */
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindings(io.apicurio.datamodels.asyncapi.models.AaiChannelBindings)
+     */
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition)
+     */
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition)
+     */
+    @Override
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition)
+     */
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
     }
 }

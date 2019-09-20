@@ -1,79 +1,78 @@
 {
-    "info": {
-        "version": "1.0.0", 
-        "title": "OneOf example"
-    }, 
-    "channels": {
-        "test": {
-            "publish": {
-                "message": {
-                    "$ref": "#/components/messages/testMessages"
-                }
+   "asyncapi": "2.0.0",
+   "info": {
+      "title": "OneOf example",
+      "version": "1.0.0"
+   },
+   "channels": {
+      "test": {
+         "publish": {
+            "message": {
+               "$ref": "#/components/messages/testMessages"
             }
-        }, 
-        "test2": {
-            "subscribe": {
-                "message": {
-                    "oneOf": [
-                        {
-                            "payload": {
-                                "$ref": "#/components/schemas/objectWithKey"
-                            }
-                        }, 
-                        {
-                            "payload": {
-                                "$ref": "#/components/schemas/objectWithKey2"
-                            }
-                        }
-                    ]
-                }
+         }
+      },
+      "test2": {
+         "subscribe": {
+            "message": {
+               "oneOf": [
+                  {
+                     "payload": {
+                        "$ref": "#/components/schemas/objectWithKey"
+                     }
+                  },
+                  {
+                     "payload": {
+                        "$ref": "#/components/schemas/objectWithKey2"
+                     }
+                  }
+               ]
             }
-        }
-    }, 
-    "asyncapi": "2.0.0",
-    "id": "https://github.com/asyncapi/asyncapi/examples/next/oneof.yml", 
-    "components": {
-        "messages": {
-            "testMessages": {
-                "payload": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/components/schemas/objectWithKey"
-                        }, 
-                        {
-                            "$ref": "#/components/schemas/objectWithKey2"
-                        }
-                    ]
-                }
-            }, 
-            "testMessage2": {
-                "payload": {
-                    "$ref": "#/components/schemas/objectWithKey2"
-                }
-            }, 
-            "testMessage1": {
-                "payload": {
-                    "$ref": "#/components/schemas/objectWithKey"
-                }
+         }
+      }
+   },
+   "components": {
+      "messages": {
+         "testMessages": {
+            "payload": {
+               "oneOf": [
+                  {
+                     "$ref": "#/components/schemas/objectWithKey"
+                  },
+                  {
+                     "$ref": "#/components/schemas/objectWithKey2"
+                  }
+               ]
             }
-        }, 
-        "schemas": {
-            "objectWithKey2": {
-                "type": "object", 
-                "properties": {
-                    "key2": {
-                        "type": "string"
-                    }
-                }
-            }, 
-            "objectWithKey": {
-                "type": "object", 
-                "properties": {
-                    "key": {
-                        "type": "string"
-                    }
-                }
+         },
+         "testMessage1": {
+            "payload": {
+               "$ref": "#/components/schemas/objectWithKey"
             }
-        }
-    }
+         },
+         "testMessage2": {
+            "payload": {
+               "$ref": "#/components/schemas/objectWithKey2"
+            }
+         }
+      },
+      "schemas": {
+         "objectWithKey": {
+            "type": "object",
+            "properties": {
+               "key": {
+                  "type": "string"
+               }
+            }
+         },
+         "objectWithKey2": {
+            "type": "object",
+            "properties": {
+               "key2": {
+                  "type": "string"
+               }
+            }
+         }
+      }
+   }
 }

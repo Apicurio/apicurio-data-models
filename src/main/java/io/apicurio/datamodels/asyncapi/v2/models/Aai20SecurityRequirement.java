@@ -31,6 +31,10 @@ public class Aai20SecurityRequirement extends AaiSecurityRequirement {
     public Aai20SecurityRequirement() {
     }
     
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20SecurityRequirement(Node parent) {
         super(parent);
     }

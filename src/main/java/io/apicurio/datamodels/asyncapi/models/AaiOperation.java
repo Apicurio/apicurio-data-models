@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.Node;
 
 /**
@@ -24,7 +27,7 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public abstract class AaiOperation extends AaiOperationBase {
 
-    public AaiOperationTraitItems traits;
+    public List<AaiOperationTrait> traits;
     public AaiMessage message;
     
     /**
@@ -34,11 +37,31 @@ public abstract class AaiOperation extends AaiOperationBase {
         super(opType);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiOperation(Node parent) {
         super(parent);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param opType
+     */
     public AaiOperation(Node parent, String opType) {
         super(parent, opType);
     }
+
+    /**
+     * Adds a tag.
+     * @param tag
+     */
+    public void addTrait(AaiOperationTrait trait) {
+        if(traits == null)
+            traits = new LinkedList<>();
+        traits.add(trait);
+    }
+
 }
