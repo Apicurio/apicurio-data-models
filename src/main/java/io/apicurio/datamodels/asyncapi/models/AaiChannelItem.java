@@ -1,12 +1,16 @@
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
@@ -15,11 +19,11 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
 
     public String _name;
     public String $ref;
+    public String description;
     public AaiOperation subscribe;
     public AaiOperation publish;
-    public List<AaiParameter> parameters;
-    public Map<String, AaiProtocolInfo> protocolInfo;
-    public String description;
+    public Map<String, AaiParameter> parameters;
+    public AaiChannelBindings bindings;
 
     /**
      * Constructor.
@@ -39,6 +43,15 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
         this(parent);
         this._name = name;
     }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IAai20Visitor v = (IAai20Visitor) visitor;
+        v.visitChannelItem(this);
+    }
     
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#getName()
@@ -56,7 +69,19 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
         this._name = newName;
     }
 
-    public abstract List<AaiProtocolInfo> getProtocolInfoList();
-    public abstract void addParameter(AaiParameter param);
-    public abstract void addProtocolInfo(String key, AaiProtocolInfo protocolInfo);
+    /**
+     * Adds a parameter.
+     * @param paramName
+     * @param param
+     */
+    public void addParameter(String paramName, AaiParameter param) {
+        if (this.parameters == null) {
+            this.parameters = new LinkedHashMap<>();
+        }
+        this.parameters.put(paramName, param);
+    }
+
+    public List<AaiParameter> getParameterlist() {
+        return JsonCompat.mapToList(parameters);
+    }
 }

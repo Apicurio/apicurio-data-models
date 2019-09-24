@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
@@ -23,19 +25,21 @@ import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
@@ -67,7 +71,7 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         AaiDocument aaiNode = (AaiDocument) node;
 
         this.traverseCollection(aaiNode.getChannels());
-        this.traverseCollection(aaiNode.servers);
+        this.traverseCollection(aaiNode.getServers());
         this.traverseIfNotNull(aaiNode.components);
     }
 
@@ -84,8 +88,8 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
 
         this.traverseIfNotNull(node.subscribe);
         this.traverseIfNotNull(node.publish);
-        this.traverseCollection(node.parameters);
-        this.traverseCollection(node.getProtocolInfoList());
+        this.traverseCollection(node.getParameterlist());
+        this.traverseIfNotNull(node.bindings);
     }
 
     @Override
@@ -105,7 +109,12 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         this.traverseCollection(components.getSecuritySchemesList());
         this.traverseCollection(components.getParametersList());
         this.traverseCollection(components.getCorrelationIdsList());
-        this.traverseCollection(components.getTraitsList());
+        this.traverseCollection(components.getMessageTraitDefinitionsList());
+        this.traverseCollection(components.getOperationTraitDefinitionsList());
+        this.traverseCollection(components.getServerBindingsDefinitionList());
+        this.traverseCollection(components.getChannelBindingsDefinitionList());
+        this.traverseCollection(components.getOperationBindingsDefinitionList());
+        this.traverseCollection(components.getMessageBindingsDefinitionList());
     }
 
     @Override
@@ -132,45 +141,20 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         this.traverseMessageBase(node);
 
         this.traverseCollection(node.oneOf);
-        this.traverseIfNotNull(node.traits);
+        this.traverseCollection(node.traits);
     }
 
-    @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
-
-        this.traverseIfNotNull(node._trait);
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
-
-        this.traverseCollection(node._traitItems);
-        this.traverseCollection(node._traitExtendedItems);
-    }
 
     @Override
     public void visitMessageTrait(AaiMessageTrait node) {
         this.traverseMessageBase(node);
     }
     
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitUnknownTrait(io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait)
-     */
     @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
-        node.accept(visitor);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
-
-        this.traverseCollection(node.tags);
-        this.traverseIfNotNull(node.externalDocs);
-        this.traverseCollection(node.getProtocolInfoList());
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
+        this.visitMessageTrait(node);
     }
-
+    
     @Override
     public void visitOAuthFlows(OAuthFlows node) {
         node.accept(visitor);
@@ -191,41 +175,23 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
 
         AaiOperation aaiNode = (AaiOperation) node;
         this.traverseOperationBase(aaiNode);
-        this.traverseIfNotNull(aaiNode.traits);
+        this.traverseCollection(aaiNode.traits);
         this.traverseIfNotNull(aaiNode.message);
-    }
-
-    @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
-
-        this.traverseIfNotNull(node._operationTrait);
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
-
-        this.traverseCollection(node._traitItems);
-        this.traverseCollection(node._traitExtendedItems);
     }
 
     @Override
     public void visitOperationTrait(AaiOperationTrait node) {
         this.traverseOperationBase(node);
     }
+    
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
+        this.visitOperationTrait(node);
+    }
 
     @Override
     public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
         this.traverseOAuthFlow(node);
-    }
-
-    @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-        node.accept(visitor);
-        this.traverseValidationProblems(node);
     }
 
     @Override
@@ -236,6 +202,7 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
 
         this.traverseCollection(node.getServerVariables());
         this.traverseCollection(((AaiServer) node).security);
+        this.traverseIfNotNull(((AaiServer) node).bindings);
     }
 
     @Override
@@ -257,11 +224,11 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
 
-        this.traverseCollection(node.getHeadersList());
+        this.traverseIfNotNull(node.headers);
         this.traverseIfNotNull(node.correlationId);
         this.traverseCollection(node.tags);
         this.traverseIfNotNull(node.externalDocs);
-        this.traverseCollection(node.getProtocolInfoList());
+        this.traverseIfNotNull(node.bindings);
     }
 
     protected void traverseOperationBase(AaiOperationBase node) {
@@ -269,12 +236,137 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
         this.traverseOperation(node);
 
         this.traverseCollection(node.tags);
-        this.traverseCollection(node.getProtocolInfoList());
+        this.traverseIfNotNull(node.bindings);
     }
 
     @Override
     protected void traverseSecurityScheme(SecurityScheme node) {
+        node.accept(visitor);
         AaiSecurityScheme aaiNode = (AaiSecurityScheme) node;
         this.traverseIfNotNull(aaiNode.flows);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindings(io.apicurio.datamodels.asyncapi.models.AaiServerBindings)
+     */
+    @Override
+    public void visitServerBindings(AaiServerBindings node) {
+        node.accept(visitor);
+        this.traverseValidationProblems(node);
+        
+//        this.traverseIfNotNull(node.http);
+//        this.traverseIfNotNull(node.ws);
+//        this.traverseIfNotNull(node.kafka);
+//        this.traverseIfNotNull(node.amqp);
+//        this.traverseIfNotNull(node.amqp1);
+//        this.traverseIfNotNull(node.mqtt);
+//        this.traverseIfNotNull(node.mqtt5);
+//        this.traverseIfNotNull(node.nats);
+//        this.traverseIfNotNull(node.jms);
+//        this.traverseIfNotNull(node.sns);
+//        this.traverseIfNotNull(node.sqs);
+//        this.traverseIfNotNull(node.stomp);
+//        this.traverseIfNotNull(node.redis);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitServerBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition)
+     */
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+        this.visitServerBindings(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindings(io.apicurio.datamodels.asyncapi.models.AaiOperationBindings)
+     */
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+        node.accept(visitor);
+        this.traverseValidationProblems(node);
+        
+//        this.traverseIfNotNull(node.http);
+//        this.traverseIfNotNull(node.ws);
+//        this.traverseIfNotNull(node.kafka);
+//        this.traverseIfNotNull(node.amqp);
+//        this.traverseIfNotNull(node.amqp1);
+//        this.traverseIfNotNull(node.mqtt);
+//        this.traverseIfNotNull(node.mqtt5);
+//        this.traverseIfNotNull(node.nats);
+//        this.traverseIfNotNull(node.jms);
+//        this.traverseIfNotNull(node.sns);
+//        this.traverseIfNotNull(node.sqs);
+//        this.traverseIfNotNull(node.stomp);
+//        this.traverseIfNotNull(node.redis);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOperationBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition)
+     */
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+        this.visitOperationBindings(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindings(io.apicurio.datamodels.asyncapi.models.AaiMessageBindings)
+     */
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+        node.accept(visitor);
+        this.traverseValidationProblems(node);
+        
+//        this.traverseIfNotNull(node.http);
+//        this.traverseIfNotNull(node.ws);
+//        this.traverseIfNotNull(node.kafka);
+//        this.traverseIfNotNull(node.amqp);
+//        this.traverseIfNotNull(node.amqp1);
+//        this.traverseIfNotNull(node.mqtt);
+//        this.traverseIfNotNull(node.mqtt5);
+//        this.traverseIfNotNull(node.nats);
+//        this.traverseIfNotNull(node.jms);
+//        this.traverseIfNotNull(node.sns);
+//        this.traverseIfNotNull(node.sqs);
+//        this.traverseIfNotNull(node.stomp);
+//        this.traverseIfNotNull(node.redis);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitMessageBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition)
+     */
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+        this.visitMessageBindings(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindings(io.apicurio.datamodels.asyncapi.models.AaiChannelBindings)
+     */
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+        node.accept(visitor);
+        this.traverseValidationProblems(node);
+        
+//        this.traverseIfNotNull(node.http);
+//        this.traverseIfNotNull(node.ws);
+//        this.traverseIfNotNull(node.kafka);
+//        this.traverseIfNotNull(node.amqp);
+//        this.traverseIfNotNull(node.amqp1);
+//        this.traverseIfNotNull(node.mqtt);
+//        this.traverseIfNotNull(node.mqtt5);
+//        this.traverseIfNotNull(node.nats);
+//        this.traverseIfNotNull(node.jms);
+//        this.traverseIfNotNull(node.sns);
+//        this.traverseIfNotNull(node.sqs);
+//        this.traverseIfNotNull(node.stomp);
+//        this.traverseIfNotNull(node.redis);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitChannelBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition)
+     */
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        this.visitChannelBindings(node);
     }
 }

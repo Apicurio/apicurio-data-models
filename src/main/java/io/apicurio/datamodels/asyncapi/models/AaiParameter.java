@@ -18,9 +18,9 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
     public String _name;
 
     public String $ref;
-    public String name;
     public String description;
     public Object schema;
+    public String location;
     
     /**
      * Constructor.
@@ -29,6 +29,10 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
         this._name = name;
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiParameter(Node parent) {
         if(parent != null) {
             this._parent = parent;
@@ -36,6 +40,11 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
         }
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param name
+     */
     public AaiParameter(Node parent, String name) {
         this(parent);
         this._name = name;

@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Document;
 
 /**
@@ -31,27 +32,27 @@ import io.apicurio.datamodels.core.models.Document;
 public abstract class AaiDocument extends Document {
 
     /**
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#A2SVersionString">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#A2SVersionString">AsyncAPI 2.0.0 spec</a>
      */
     public String asyncapi;
 
     /**
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#A2SIdString">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#A2SIdString">AsyncAPI 2.0.0 spec</a>
      */
     public String id;
 
     /**
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#channelsObject">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#channelsObject">AsyncAPI 2.0.0 spec</a>
      */
     public Map<String, AaiChannelItem> channels = new LinkedHashMap<>();
 
     /**
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#serverObject">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#serverObject">AsyncAPI 2.0.0 spec</a>
      */
-    public List<AaiServer> servers;
+    public Map<String, AaiServer> servers;
 
     /**
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0-rc1/#componentsObject">AsyncAPI 2.0.0 spec</a>
+     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#componentsObject">AsyncAPI 2.0.0 spec</a>
      */
     public AaiComponents components;
 
@@ -63,20 +64,33 @@ public abstract class AaiDocument extends Document {
     public AaiDocument() {
     }
 
-    public abstract AaiServer createServer();
+    public AaiServer addServer(String name, AaiServer server) {
+        if (this.servers == null) {
+            this.servers = new LinkedHashMap<>();
+        }
+        this.servers.put(name, server);
+        return server;
+    }
 
-    public abstract AaiServer createServer(String url, String description);
+    public List<AaiChannelItem> getChannels() {
+        return JsonCompat.mapToList(this.channels);
+    }
 
-    /**
-     * Adds a server and returns it.
-     */
-    public abstract AaiServer addServer(AaiServer server);
+    public void addChannelItem(AaiChannelItem item) {
+        if (channels == null)
+            channels = new LinkedHashMap<>();
+        channels.put(item.getName(), item);
+    }
 
-    public abstract List<AaiChannelItem> getChannels();
+    public abstract AaiServer createServer(String name);
+
+    public abstract AaiServer createServer(String name, String url, String description);
 
     public abstract AaiChannelItem createChannelItem(String name);
 
-    public abstract void addChannelItem(AaiChannelItem item);
-
     public abstract AaiComponents createComponents();
+
+    public List<AaiServer> getServers() {
+        return JsonCompat.mapToList(servers);
+    }
 }

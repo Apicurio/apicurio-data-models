@@ -34,12 +34,19 @@ public class Aai20PasswordOAuthFlow extends PasswordOAuthFlow {
     public Aai20PasswordOAuthFlow() {
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20PasswordOAuthFlow(Node parent) {
         requireNonNull(parent);
         this._parent = parent;
         this._ownerDocument = parent.ownerDocument();
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
+     */
     @Override
     public void accept(IVisitor visitor) {
         IAai20Visitor v = (IAai20Visitor) visitor;

@@ -33,6 +33,10 @@ public class Aai20Info extends AaiInfo {
     public Aai20Info() {
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20Info(Node parent) {
         super(parent);
     }

@@ -1,5 +1,7 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiContact;
@@ -10,22 +12,24 @@ import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiLicense;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
 import io.apicurio.datamodels.core.models.Node;
 
@@ -65,8 +69,8 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     }
 
     @Override
-    public AaiHeaderItem createHeaderItem(Node parent, String key) {
-        return new Aai20HeaderItem(parent, key);
+    public AaiHeaderItem createHeaderItem(Node parent) {
+        return new Aai20HeaderItem(parent);
     }
 
     @Override
@@ -85,18 +89,13 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     }
 
     @Override
-    public AaiMessageTraitExtendedItem createMessageTraitExtendedItem(Node parent) {
-        return new Aai20MessageTraitExtendedItem(parent);
-    }
-
-    @Override
-    public AaiMessageTraitItems createMessageTraitItems(Node parent) {
-        return new Aai20MessageTraitItems(parent);
-    }
-
-    @Override
     public AaiMessageTrait createMessageTrait(Node parent, String key) {
         return new Aai20MessageTrait(parent, key);
+    }
+    
+    @Override
+    public AaiMessageTraitDefinition createMessageTraitDefinition(Node parent, String key) {
+        return new Aai20MessageTraitDefinition(parent, key);
     }
 
     @Override
@@ -110,28 +109,18 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     }
 
     @Override
-    public AaiOperationTraitExtendedItem createOperationTraitExtendedItem(Node parent, String key) {
-        return new Aai20OperationTraitExtendedItem(parent, key);
-    }
-
-    @Override
-    public AaiOperationTraitItems createOperationTraitItems(Node parent) {
-        return new Aai20OperationTraitItems(parent);
-    }
-
-    @Override
     public AaiOperationTrait createOperationTrait(Node parent, String key) {
         return new Aai20OperationTrait(parent, key);
+    }
+    
+    @Override
+    public AaiOperationTraitDefinition createOperationTraitDefinition(Node parent, String key) {
+        return new Aai20OperationTraitDefinition(parent, key);
     }
 
     @Override
     public AaiParameter createParameter(Node parent, String key) {
         return new Aai20Parameter(parent, key);
-    }
-
-    @Override
-    public AaiProtocolInfo createProtocolInfo(Node parent, String key) {
-        return new Aai20ProtocolInfo(parent, key);
     }
 
     @Override
@@ -145,8 +134,8 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     }
 
     @Override
-    public AaiServer createServer(Node parent) {
-        return new Aai20Server(parent);
+    public AaiServer createServer(Node parent, String key) {
+        return new Aai20Server(parent, key);
     }
 
     @Override
@@ -160,7 +149,42 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     }
 
     @Override
-    public AaiUnknownTrait createUnknownTrait(Node parent, String key) {
-        return new Aai20UnknownTrait(parent, key);
+    public AaiServerBindings createServerBindings(Node parent) {
+        return new Aai20ServerBindings(parent);
+    }
+
+    @Override
+    public AaiServerBindingsDefinition createServerBindingsDefinition(Node parent, String key) {
+        return new Aai20ServerBindingsDefinition(parent, key);
+    }
+
+    @Override
+    public AaiOperationBindings createOperationBindings(Node parent) {
+        return new Aai20OperationBindings(parent);
+    }
+
+    @Override
+    public AaiOperationBindingsDefinition createOperationBindingsDefinition(Node parent, String key) {
+        return new Aai20OperationBindingsDefinition(parent, key);
+    }
+
+    @Override
+    public AaiMessageBindings createMessageBindings(Node parent) {
+        return new Aai20MessageBindings(parent);
+    }
+
+    @Override
+    public AaiMessageBindingsDefinition createMessageBindingsDefinition(Node parent, String key) {
+        return new Aai20MessageBindingsDefinition(parent, key);
+    }
+
+    @Override
+    public AaiChannelBindings createChannelBindings(Node parent) {
+        return new Aai20ChannelBindings(parent);
+    }
+
+    @Override
+    public AaiChannelBindingsDefinition createChannelBindingsDefinition(Node parent, String key) {
+        return new Aai20ChannelBindingsDefinition(parent, key);
     }
 }

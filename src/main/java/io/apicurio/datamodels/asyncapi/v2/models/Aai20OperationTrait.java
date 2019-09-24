@@ -1,16 +1,8 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
-import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author Jakub Senko<jsenko@redhat.com>
@@ -24,41 +16,37 @@ public class Aai20OperationTrait extends AaiOperationTrait {
         super(opType);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param opType
+     */
     public Aai20OperationTrait(Node parent, String opType) {
         super(parent, opType);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20OperationTrait(Node parent) {
         super(parent);
     }
+    
+    /**
+     * @see io.apicurio.datamodels.asyncapi.models.AaiOperationBase#createTag()
+     */
+    @Override
+    public AaiTag createTag() {
+        return new Aai20Tag(this);
+    }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.common.Operation#createExternalDocumentation()
+     */
     @Override
     public Aai20ExternalDocumentation createExternalDocumentation() {
         return new Aai20ExternalDocumentation(this);
     }
 
-    @Override
-    public void accept(IVisitor visitor) {
-        IAai20Visitor v = (IAai20Visitor) visitor;
-        v.visitOperationTrait(this);
-    }
-
-    @Override
-    public List<AaiProtocolInfo> getProtocolInfoList() {
-        return JsonCompat.mapToList(protocolInfo);
-    }
-
-    @Override
-    public void addTag(AaiTag tag) {
-        if(tags == null)
-            tags = new LinkedList<>();
-        tags.add(tag);
-    }
-
-    @Override
-    public void addProtocolInfo(AaiProtocolInfo item) {
-        if(protocolInfo == null)
-            protocolInfo = new LinkedHashMap<>();
-        protocolInfo.put(item.getName(), item);
-    }
 }

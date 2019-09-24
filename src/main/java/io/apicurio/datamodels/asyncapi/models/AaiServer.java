@@ -19,8 +19,11 @@ package io.apicurio.datamodels.asyncapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models an AsyncAPI server.
@@ -28,19 +31,25 @@ import io.apicurio.datamodels.core.models.common.Server;
  * @author eric.wittmann@gmail.com
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiServer extends Server {
+public abstract class AaiServer extends Server implements INamed {
 
+    public String _name;
     public String protocol;
     public String protocolVersion;
-    public String baseChannel;
     public List<AaiSecurityRequirement> security;
-    
+    public AaiServerBindings bindings;
+
     /**
      * Constructor.
      */
-    public AaiServer() {
+    public AaiServer(String name) {
+        this._name = name;
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiServer(Node parent) {
         if(parent != null) {
             this._parent = parent;
@@ -48,8 +57,45 @@ public abstract class AaiServer extends Server {
         }
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param name
+     */
+    public AaiServer(Node parent, String name) {
+        this(parent);
+        this._name = name;
+    }
 
+    /**
+     * @see io.apicurio.datamodels.core.models.Node#accept(IVisitor)
+     */
+    @Override
+    public void accept(IVisitor visitor) {
+        IAaiVisitor viz = (IAaiVisitor) visitor;
+        viz.visitServer(this);
+    }
+
+    /**
+     * Creates a security requirement child node.
+     */
     public abstract AaiSecurityRequirement createSecurityRequirement();
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
+    public String getName() {
+        return this._name;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        this._name = newName;
+    }
 
 
     /**

@@ -24,13 +24,13 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public abstract class AaiTag extends Tag {
-    
+
     /**
      * Constructor.
      */
     public AaiTag() {
     }
-    
+
     /**
      * Constructor.
      */
@@ -38,8 +38,12 @@ public abstract class AaiTag extends Tag {
         super(name);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiTag(Node parent) {
-        if(parent != null) {
+        if (parent != null) {
             this._parent = parent;
             this._ownerDocument = parent.ownerDocument();
         }

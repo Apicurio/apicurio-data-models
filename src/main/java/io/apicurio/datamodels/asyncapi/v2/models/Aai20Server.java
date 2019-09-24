@@ -17,10 +17,8 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * Models an AsyncAPI server.
@@ -33,20 +31,25 @@ public class Aai20Server extends AaiServer {
     /**
      * Constructor.
      */
-    public Aai20Server() {
+    public Aai20Server(String name) {
+        super(name);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20Server(Node parent) {
         super(parent);
     }
 
     /**
-     * @see io.apicurio.datamodels.core.models.Node#accept(IVisitor)
+     * Constructor.
+     * @param parent
+     * @param name
      */
-    @Override
-    public void accept(IVisitor visitor) {
-        IAaiVisitor viz = (IAaiVisitor) visitor;
-        viz.visitServer(this);
+    public Aai20Server(Node parent, String name) {
+        super(parent, name);
     }
 
     /**

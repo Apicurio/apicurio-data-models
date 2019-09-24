@@ -16,8 +16,9 @@
 
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -30,7 +31,7 @@ public abstract class AaiOperationBase extends Operation {
 
     public String $ref;
     public List<Tag> tags;
-    public Map<String, AaiProtocolInfo> protocolInfo;
+    public AaiOperationBindings bindings;
     
     /**
      * Constructor.
@@ -39,6 +40,11 @@ public abstract class AaiOperationBase extends Operation {
         super(opType);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param opType
+     */
     public AaiOperationBase(Node parent, String opType) {
         super(opType);
         if(parent != null) {
@@ -47,12 +53,40 @@ public abstract class AaiOperationBase extends Operation {
         }
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public AaiOperationBase(Node parent) {
         this(parent, null);
     }
 
+    /**
+     * Adds a tag.
+     * @param tag
+     */
+    public void addTag(AaiTag tag) {
+        if(tags == null)
+            tags = new LinkedList<>();
+        tags.add(tag);
+    }
 
-    public abstract List<AaiProtocolInfo> getProtocolInfoList();
-    public abstract void addTag(AaiTag tag);
-    public abstract void addProtocolInfo(AaiProtocolInfo value);
+    /**
+     * Adds a tag.
+     *
+     * @param name
+     * @param description
+     */
+    public AaiTag addTag(String name, String description) {
+        AaiTag tag = this.createTag();
+        tag.name = name;
+        tag.description = description;
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        this.tags.add(tag);
+        return tag;
+    }
+    
+    public abstract AaiTag createTag();
 }

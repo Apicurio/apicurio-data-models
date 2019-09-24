@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.core.io;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
 import io.apicurio.datamodels.core.models.Node;
 
@@ -24,10 +27,10 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
     
-    public int extraPropertyCount = 0;
+    public List<String> extraProperties = new ArrayList<>();
 
     public int getExtraPropertyCount() {
-        return extraPropertyCount;
+        return extraProperties.size();
     }
 
     /**
@@ -35,11 +38,8 @@ public class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
      */
     @Override
     protected void visitNode(Node node) {
-        extraPropertyCount += node.getExtraPropertyNames().size();
         if (node.getExtraPropertyNames().size() > 0) {
-            // This can be a good place to set a breakpoint, hence the pointless code below.
-            Boolean v = Boolean.TRUE;
-            v = v || Boolean.TRUE;
+            extraProperties.addAll(node.getExtraPropertyNames());
         }
     }
         

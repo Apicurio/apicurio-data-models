@@ -16,9 +16,10 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
-import java.util.Arrays;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
@@ -27,32 +28,30 @@ import io.apicurio.datamodels.asyncapi.models.AaiExternalDocumentation;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOAuthFlows;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBase;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
 import io.apicurio.datamodels.asyncapi.models.AaiTag;
-import io.apicurio.datamodels.asyncapi.models.AaiTraitType;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
 import io.apicurio.datamodels.asyncapi.models.IAaiNodeFactory;
-import io.apicurio.datamodels.asyncapi.models.IAaiTrait;
 import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -97,12 +96,13 @@ public abstract class AaiDataModelReader extends DataModelReader {
         }
 
         // servers
-        List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
-        if (servers != null) {
-            servers.forEach(server -> {
-                AaiServer serverModel = nodeFactory.createServer(node);
-                this.readServer(server, serverModel);
-                doc.addServer(serverModel);
+        Object serversJson = JsonCompat.consumeProperty(json, Constants.PROP_SERVERS);
+        if (serversJson != null) {
+            JsonCompat.keys(serversJson).forEach(key -> {
+                Object serverJson = JsonCompat.consumeProperty(serversJson, key);
+                AaiServer serverModel = nodeFactory.createServer(node, key);
+                this.readServer(serverJson, serverModel);
+                doc.addServer(key, serverModel);
             });
         }
 
@@ -139,40 +139,27 @@ public abstract class AaiDataModelReader extends DataModelReader {
         }
 
         // parameters
-        List<Object> parameters = JsonCompat.consumePropertyArray(json, Constants.PROP_PARAMETERS);
-        if (parameters != null) {
-            parameters.forEach(server -> {
-                AaiParameter serverModel = nodeFactory.createParameter(node, null);
-                this.readAaiParameter(server, serverModel);
-                node.addParameter(serverModel);
+        final Object jsonP_ = JsonCompat.consumeProperty(json, Constants.PROP_PARAMETERS);
+        if (jsonP_ != null && JsonCompat.isObject(jsonP_)) {
+            JsonCompat.keys(jsonP_).forEach(key -> {
+                Object param = JsonCompat.consumeProperty(jsonP_, key);
+                AaiParameter paramModel = nodeFactory.createParameter(node, key);
+                this.readAaiParameter(param, paramModel);
+                node.addParameter(key, paramModel);
             });
         }
 
-        // protocol info
-        Object pi = JsonCompat.consumeProperty(json, Constants.PROP_PROTOCOL_INFO);
-        if (pi != null) {
-            JsonCompat.keys(pi).forEach(key -> {
-                Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
-                this.readProtocolInfo(j, value);
-                node.addProtocolInfo(key, value);
-            });
+        // bindings
+        json_ = JsonCompat.consumeProperty(json, Constants.PROP_BINDINGS);
+        if (json_ != null) {
+            AaiChannelBindings channelBindingsModel = nodeFactory.createChannelBindings(node);
+            this.readChannelBindings(json_, channelBindingsModel);
+            node.bindings = channelBindingsModel;
         }
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-
-
-    public void readProtocolInfo(Object json, AaiProtocolInfo node) {
-        JsonCompat.keys(json).forEach(key -> {
-            Object value = JsonCompat.consumeProperty(json, key);
-            node.addItem(key, value);
-        });
-
-        this.readExtraProperties(json, node);
-    }
-
 
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readServer(java.lang.Object, io.apicurio.datamodels.core.models.common.Server)
@@ -183,7 +170,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
 
         aaiNode.protocol = JsonCompat.consumePropertyString(json, Constants.PROP_PROTOCOL);
         aaiNode.protocolVersion = JsonCompat.consumePropertyString(json, Constants.PROP_PROTOCOL_VERSION);
-        aaiNode.baseChannel = JsonCompat.consumePropertyString(json, Constants.PROP_BASE_CHANNEL);
 
         List<Object> security = JsonCompat.consumePropertyArray(json, Constants.PROP_SECURITY);
         if (security != null) {
@@ -192,6 +178,13 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 this.readSecurityRequirement(sec, secModel);
                 aaiNode.addSecurityRequirement(secModel);
             });
+        }
+        
+        Object bindings = JsonCompat.consumeProperty(json, Constants.PROP_BINDINGS);
+        if (bindings != null) {
+            AaiServerBindings serverBindingsModel = nodeFactory.createServerBindings(node);
+            this.readServerBindings(bindings, serverBindingsModel);
+            aaiNode.bindings = serverBindingsModel;
         }
 
         super.readServer(json, node);
@@ -216,9 +209,11 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // traits
         List<Object> traits = JsonCompat.consumePropertyArray(json, Constants.PROP_TRAITS);
         if (traits != null) {
-            AaiOperationTraitItems items = nodeFactory.createOperationTraitItems(node);
-            this.readOperationTraitItems(traits, items);
-            aaiNode.traits = items;
+            traits.forEach(trait -> {
+                AaiOperationTrait traitModel = nodeFactory.createOperationTrait(node, null);
+                this.readOperationTrait(trait, traitModel);
+                aaiNode.addTrait(traitModel);
+            });
         }
 
         // message
@@ -240,9 +235,11 @@ public abstract class AaiDataModelReader extends DataModelReader {
         // traits
         List<Object> traits = JsonCompat.consumePropertyArray(json, Constants.PROP_TRAITS);
         if (traits != null) {
-            AaiMessageTraitItems items = nodeFactory.createMessageTraitItems(node);
-            this.readMessageTraitItems(traits, items);
-            node.traits = items;
+            traits.forEach(trait -> {
+                AaiMessageTrait traitModel = nodeFactory.createMessageTrait(node, null);
+                this.readMessageTrait(trait, traitModel);
+                node.addTrait(traitModel);
+            });
         }
 
         // Process a "oneOf" message
@@ -259,32 +256,13 @@ public abstract class AaiDataModelReader extends DataModelReader {
         this.readMessageBase(json, node);
     }
 
-    public void readMessageTraitItems(List<Object> json, AaiMessageTraitItems node) {
-        if (json != null) {
-            json.forEach(e -> {
-                if (JsonCompat.isArray(e)) { // extended
-                    AaiMessageTraitExtendedItem value = nodeFactory.createMessageTraitExtendedItem(node);
-                    this.readMessageTraitExtendedItem(JsonCompat.toList(e), value);
-                    node.addExtendedItem(value);
-                } else {
-                    AaiMessageTrait value = nodeFactory.createMessageTrait(node, null);
-                    this.readMessageTrait(e, value);
-                    node.addItem(value);
-                }
-            });
-        }
-    }
-
     public void readMessageBase(Object json, AaiMessageBase node) {
         // headers
         Object jsonHeaders = JsonCompat.consumeProperty(json, Constants.PROP_HEADERS);
         if (jsonHeaders != null) {
-            JsonCompat.keys(jsonHeaders).forEach(key -> {
-                Object j = JsonCompat.consumeProperty(jsonHeaders, key);
-                AaiHeaderItem value = nodeFactory.createHeaderItem(node, key);
-                this.readHeaderItem(j, value);
-                node.addHeaderItem(value);
-            });
+            AaiHeaderItem headerModel = nodeFactory.createHeaderItem(node);
+            this.readHeaderItem(jsonHeaders, headerModel);
+            node.headers = headerModel;
         }
         // correlationId
         Object jsonCI = JsonCompat.consumeProperty(json, Constants.PROP_CORRELATION_ID);
@@ -317,15 +295,13 @@ public abstract class AaiDataModelReader extends DataModelReader {
             this.readExternalDocumentation(jsonED, value);
             node.externalDocs = value;
         }
-        // protocol info
-        Object pi = JsonCompat.consumeProperty(json, Constants.PROP_PROTOCOL_INFO);
-        if (pi != null) {
-            JsonCompat.keys(pi).forEach(key -> {
-                Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
-                this.readProtocolInfo(j, value);
-                node.addProtocolInfo(value);
-            });
+
+        // bindings
+        Object bindings = JsonCompat.consumeProperty(json, Constants.PROP_BINDINGS);
+        if (bindings != null) {
+            AaiMessageBindings bindingsModel = nodeFactory.createMessageBindings(node);
+            this.readMessageBindings(bindings, bindingsModel);
+            node.bindings = bindingsModel;
         }
 
         this.readExtensions(json, node);
@@ -355,38 +331,6 @@ public abstract class AaiDataModelReader extends DataModelReader {
         this.readMessageBase(json, node);
     }
 
-    public void readMessageTraitExtendedItem(List<Object> json, AaiMessageTraitExtendedItem node) {
-        Object jsonTrait = json.get(0);
-        if (jsonTrait != null) {
-            AaiMessageTrait value = nodeFactory.createMessageTrait(node, null);
-            this.readMessageTrait(jsonTrait, value);
-            node._trait = value;
-        }
-        Object jsonExt = json.get(1);
-        if (jsonExt != null) {
-            JsonCompat.keys(jsonExt).forEach(key -> {
-                Object value = JsonCompat.consumeProperty(jsonExt, key);
-                node.addExtension(key, value);
-            });
-        }
-    }
-
-    public void readOperationTraitItems(List<Object> json, AaiOperationTraitItems node) {
-        if (json != null) {
-            json.forEach(e -> {
-                if (JsonCompat.isArray(e)) { // extended
-                    AaiOperationTraitExtendedItem value = nodeFactory.createOperationTraitExtendedItem(node, null);
-                    this.readOperationTraitExtendedItem(JsonCompat.toList(e), value);
-                    node.addExtendedItem(value);
-                } else {
-                    AaiOperationTrait value = nodeFactory.createOperationTrait(node, null);
-                    this.readOperationTrait(e, value);
-                    node.addItem(value);
-                }
-            });
-        }
-    }
-
     public void readOperationBase(Object json, AaiOperationBase node) {
         node.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         // tags
@@ -398,186 +342,141 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 node.addTag(tag);
             });
         }
-        // protocol info
-        Object pi = JsonCompat.consumeProperty(json, Constants.PROP_PROTOCOL_INFO);
-        if (pi != null) {
-            JsonCompat.keys(pi).forEach(key -> {
-                Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
-                this.readProtocolInfo(j, value);
-                node.addProtocolInfo(value);
-            });
+        
+        // bindings
+        Object bindings = JsonCompat.consumeProperty(json, Constants.PROP_BINDINGS);
+        if (bindings != null) {
+            AaiOperationBindings operationBindingsModel = nodeFactory.createOperationBindings(node);
+            this.readOperationBindings(bindings, operationBindingsModel);
+            node.bindings = operationBindingsModel;
         }
+        
         super.readOperation(json, node);
-    }
-    
-    public void readUnknownTrait(Object json, AaiUnknownTrait node) {
-        String summary = JsonCompat.consumePropertyString(json, Constants.PROP_SUMMARY);
-        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
-        Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
-        
-        node.summary = summary;
-        node.description = description;
-
-        if (externalDocs != null) {
-            node.externalDocs = node.createExternalDocumentation();
-            this.readExternalDocumentation(externalDocs, node.externalDocs);
-        }
-        
-        // tags
-        List<Object> jsonTags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
-        if (jsonTags != null) {
-            jsonTags.forEach(j -> {
-                AaiTag tag = nodeFactory.createTag(node);
-                this.readTag(j, tag);
-                node.addTag(tag);
-            });
-        }
-        // protocol info
-        Object pi = JsonCompat.consumeProperty(json, Constants.PROP_PROTOCOL_INFO);
-        if (pi != null) {
-            JsonCompat.keys(pi).forEach(key -> {
-                Object j = JsonCompat.consumeProperty(pi, key);
-                AaiProtocolInfo value = nodeFactory.createProtocolInfo(node, key);
-                this.readProtocolInfo(j, value);
-                node.addProtocolInfo(value);
-            });
-        }
-
-        this.readExtensions(json, node);
-        this.readExtraProperties(json, node);
     }
 
     public void readOperationTrait(Object json, AaiOperationTrait node) {
         this.readOperationBase(json, node);
     }
 
-    public void readOperationTraitExtendedItem(List<Object> json, AaiOperationTraitExtendedItem node) {
-        Object jsonTrait = json.get(0);
-        if (jsonTrait != null) {
-            AaiOperationTrait value = nodeFactory.createOperationTrait(node, null);
-            this.readOperationTrait(jsonTrait, value);
-            node._operationTrait = value;
-        }
-        Object jsonExt = json.get(1);
-        if (jsonExt != null) {
-            JsonCompat.keys(jsonExt).forEach(key -> {
-                Object value = JsonCompat.consumeProperty(jsonExt, key);
-                node.addExtension(key, value);
-            });
-        }
-    }
-
     public void readComponents(Object json, Components node) {
         AaiComponents components = (AaiComponents) node;
         // schemas
-        Object jsonSch = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMAS);
-        if (jsonSch != null) {
-            JsonCompat.keys(jsonSch).forEach(key -> {
-                Object value = JsonCompat.consumeProperty(jsonSch, key);
+        final Object _jsonSchemas = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMAS);
+        if (_jsonSchemas != null) {
+            JsonCompat.keys(_jsonSchemas).forEach(key -> {
+                Object value = JsonCompat.consumeProperty(_jsonSchemas, key);
                 components.addSchema(key, value);
             });
         }
         // messages
-        Object jsonM = JsonCompat.consumeProperty(json, Constants.PROP_MESSAGES);
-        if (jsonM != null) {
-            JsonCompat.keys(jsonM).forEach(key -> {
-                Object jsonValue = JsonCompat.consumeProperty(jsonM, key);
+        final Object _jsonMessages = JsonCompat.consumeProperty(json, Constants.PROP_MESSAGES);
+        if (_jsonMessages != null) {
+            JsonCompat.keys(_jsonMessages).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonMessages, key);
                 AaiMessage value = nodeFactory.createMessage(node, key);
                 this.readMessage(jsonValue, value);
                 components.addMessage(key, value);
             });
         }
         // security schemes
-        Object jsonSS = JsonCompat.consumeProperty(json, Constants.PROP_SECURITY_SCHEMES);
-        if (jsonSS != null) {
-            JsonCompat.keys(jsonSS).forEach(key -> {
-                Object jsonValue = JsonCompat.consumeProperty(jsonSS, key);
+        final Object _jsonSecuritySchemes = JsonCompat.consumeProperty(json, Constants.PROP_SECURITY_SCHEMES);
+        if (_jsonSecuritySchemes != null) {
+            JsonCompat.keys(_jsonSecuritySchemes).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonSecuritySchemes, key);
                 AaiSecurityScheme value = nodeFactory.createSecurityScheme(node, key);
                 this.readSecurityScheme(jsonValue, value);
                 components.addSecurityScheme(key, value);
             });
         }
         // parameters
-        Object jsonParameters = JsonCompat.consumeProperty(json, Constants.PROP_PARAMETERS);
-        if (jsonParameters != null) {
-            JsonCompat.keys(jsonParameters).forEach(key -> {
-                Object jsonValue = JsonCompat.consumeProperty(jsonParameters, key);
+        final Object _jsonParams = JsonCompat.consumeProperty(json, Constants.PROP_PARAMETERS);
+        if (_jsonParams != null) {
+            JsonCompat.keys(_jsonParams).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonParams, key);
                 AaiParameter value = nodeFactory.createParameter(node, key);
                 this.readAaiParameter(jsonValue, value);
                 components.addParameter(key, value);
             });
         }
         // correlationIds
-        Object jsonCI = JsonCompat.consumeProperty(json, Constants.PROP_CORRELATION_IDS);
-        if (jsonCI != null) {
-            JsonCompat.keys(jsonCI).forEach(key -> {
-                Object jsonValue = JsonCompat.consumeProperty(jsonCI, key);
+        final Object _jsonCorrelationIds = JsonCompat.consumeProperty(json, Constants.PROP_CORRELATION_IDS);
+        if (_jsonCorrelationIds != null) {
+            JsonCompat.keys(_jsonCorrelationIds).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonCorrelationIds, key);
                 AaiCorrelationId value = nodeFactory.createCorrelationId(node, key);
                 this.readCorrelationId(jsonValue, value);
                 components.addCorrelationId(key, value);
             });
         }
-        // traits
-        Object jsonT = JsonCompat.consumeProperty(json, Constants.PROP_TRAITS);
-        if (jsonT != null) {
-            JsonCompat.keys(jsonT).forEach(key -> {
-                Object jsonValue = JsonCompat.consumeProperty(jsonT, key);
-                IAaiTrait value = createTrait(node, key, jsonValue);
-                AaiTraitType tt = value.getTraitType();
-                if (tt == AaiTraitType.message) {
-                    this.readMessageTrait(jsonValue, (AaiMessageTrait) value);
-                } else if (tt == AaiTraitType.operation) {
-                    this.readOperationTrait(jsonValue, (AaiOperationTrait) value);
-                } else {
-                    this.readUnknownTrait(jsonValue, (AaiUnknownTrait) value);
-                }
-                components.addTrait(key, value);
+        
+        // operation traits
+        final Object _jsonOpTraits = JsonCompat.consumeProperty(json, Constants.PROP_OPERATION_TRAITS);
+        if (_jsonOpTraits != null) {
+            JsonCompat.keys(_jsonOpTraits).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonOpTraits, key);
+                AaiOperationTraitDefinition traitDef = nodeFactory.createOperationTraitDefinition(node, key);
+                this.readOperationTrait(jsonValue, traitDef);
+                components.addOperationTraitDefinition(key, traitDef);
+            });
+        }
+
+        // message traits
+        final Object _jsonMessageTraits = JsonCompat.consumeProperty(json, Constants.PROP_MESSAGE_TRAITS);
+        if (_jsonMessageTraits != null) {
+            JsonCompat.keys(_jsonMessageTraits).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonMessageTraits, key);
+                AaiMessageTraitDefinition traitDef = nodeFactory.createMessageTraitDefinition(node, key);
+                this.readMessageTrait(jsonValue, traitDef);
+                components.addMessageTraitDefinition(key, traitDef);
+            });
+        }
+
+        // server bindings
+        final Object _jsonServerBindings = JsonCompat.consumeProperty(json, Constants.PROP_SERVER_BINDINGS);
+        if (_jsonServerBindings != null) {
+            JsonCompat.keys(_jsonServerBindings).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonServerBindings, key);
+                AaiServerBindingsDefinition bindingsDef = nodeFactory.createServerBindingsDefinition(node, key);
+                this.readServerBindings(jsonValue, bindingsDef);
+                components.addServerBindingDefinition(key, bindingsDef);
+            });
+        }
+
+        // channel bindings
+        final Object _jsonChannelBindings = JsonCompat.consumeProperty(json, Constants.PROP_CHANNEL_BINDINGS);
+        if (_jsonChannelBindings != null) {
+            JsonCompat.keys(_jsonChannelBindings).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonChannelBindings, key);
+                AaiChannelBindingsDefinition bindingsDef = nodeFactory.createChannelBindingsDefinition(node, key);
+                this.readChannelBindings(jsonValue, bindingsDef);
+                components.addChannelBindingDefinition(key, bindingsDef);
+            });
+        }
+
+        // operation bindings
+        final Object _jsonOpBindings = JsonCompat.consumeProperty(json, Constants.PROP_OPERATION_BINDINGS);
+        if (_jsonOpBindings != null) {
+            JsonCompat.keys(_jsonOpBindings).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonOpBindings, key);
+                AaiOperationBindingsDefinition bindingsDef = nodeFactory.createOperationBindingsDefinition(node, key);
+                this.readOperationBindings(jsonValue, bindingsDef);
+                components.addOperationBindingDefinition(key, bindingsDef);
+            });
+        }
+
+        // message bindings
+        final Object _jsonMessageBindings = JsonCompat.consumeProperty(json, Constants.PROP_MESSAGE_BINDINGS);
+        if (_jsonMessageBindings != null) {
+            JsonCompat.keys(_jsonMessageBindings).forEach(key -> {
+                Object jsonValue = JsonCompat.consumeProperty(_jsonMessageBindings, key);
+                AaiMessageBindingsDefinition bindingsDef = nodeFactory.createMessageBindingsDefinition(node, key);
+                this.readMessageBindings(jsonValue, bindingsDef);
+                components.addMessageBindingDefinition(key, bindingsDef);
             });
         }
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
-    }
-
-
-    /**
-     * Detect if the json represents message or operation trait
-     * Return null if we could not determine which one it is
-     */
-    private AaiTraitType getTraitType(Object json) {
-        List<String> messageOnlyProperties = Arrays.asList(
-                "headers", "correlationId", "schemaFormat",
-                "contentType", "name", "title",
-                "examples"
-        );
-        List<String> operationOnlyProperties = Arrays.asList(
-                "operationId"
-        );
-        for (String p : messageOnlyProperties) {
-            if (JsonCompat.isPropertyDefined(json, p)) {
-                return AaiTraitType.message;
-            }
-        }
-        for (String p : operationOnlyProperties) {
-            if (JsonCompat.isPropertyDefined(json, p)) {
-                return AaiTraitType.operation;
-            }
-        }
-        return AaiTraitType.unknown;
-    }
-
-    private IAaiTrait createTrait(Node parent, String key, Object jsonValue) {
-        AaiTraitType traitType = getTraitType(jsonValue);
-        if (traitType == AaiTraitType.message) {
-            return nodeFactory.createMessageTrait(parent, key);
-        } else if (traitType == AaiTraitType.operation) {
-            return nodeFactory.createOperationTrait(parent, key);
-        } else {
-            LoggerCompat.warn("Could not determine if this JSON represents a message " +
-                    "or an operation trait: %s", jsonValue);
-            return nodeFactory.createUnknownTrait(parent, key);
-        }
     }
 
     @Override
@@ -603,4 +502,97 @@ public abstract class AaiDataModelReader extends DataModelReader {
     public void readOAuthFlows(Object json, OAuthFlows node) {
         super.readOAuthFlows(json, node);
     }
+    
+    /**
+     * Reads a channel bindings model.
+     * @param json
+     * @param node
+     */
+    public void readChannelBindings(Object json, AaiChannelBindings node) {
+        node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
+        node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
+        node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
+        node.amqp = JsonCompat.consumeProperty(json, Constants.PROP_AMQP);
+        node.amqp1 = JsonCompat.consumeProperty(json, Constants.PROP_AMQP1);
+        node.mqtt = JsonCompat.consumeProperty(json, Constants.PROP_MQTT);
+        node.mqtt5 = JsonCompat.consumeProperty(json, Constants.PROP_MQTT5);
+        node.nats = JsonCompat.consumeProperty(json, Constants.PROP_NATS);
+        node.jms = JsonCompat.consumeProperty(json, Constants.PROP_JMS);
+        node.sns = JsonCompat.consumeProperty(json, Constants.PROP_SNS);
+        node.sqs = JsonCompat.consumeProperty(json, Constants.PROP_SQS);
+        node.stomp = JsonCompat.consumeProperty(json, Constants.PROP_STOMP);
+        node.redis = JsonCompat.consumeProperty(json, Constants.PROP_REDIS);
+        
+        this.readExtraProperties(json, node);
+    }
+    
+    /**
+     * Reads a message bindings model.
+     * @param json
+     * @param node
+     */
+    public void readMessageBindings(Object json, AaiMessageBindings node) {
+        node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
+        node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
+        node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
+        node.amqp = JsonCompat.consumeProperty(json, Constants.PROP_AMQP);
+        node.amqp1 = JsonCompat.consumeProperty(json, Constants.PROP_AMQP1);
+        node.mqtt = JsonCompat.consumeProperty(json, Constants.PROP_MQTT);
+        node.mqtt5 = JsonCompat.consumeProperty(json, Constants.PROP_MQTT5);
+        node.nats = JsonCompat.consumeProperty(json, Constants.PROP_NATS);
+        node.jms = JsonCompat.consumeProperty(json, Constants.PROP_JMS);
+        node.sns = JsonCompat.consumeProperty(json, Constants.PROP_SNS);
+        node.sqs = JsonCompat.consumeProperty(json, Constants.PROP_SQS);
+        node.stomp = JsonCompat.consumeProperty(json, Constants.PROP_STOMP);
+        node.redis = JsonCompat.consumeProperty(json, Constants.PROP_REDIS);
+        
+        this.readExtraProperties(json, node);
+    }
+    
+    /**
+     * Reads a operation bindings model.
+     * @param json
+     * @param node
+     */
+    public void readOperationBindings(Object json, AaiOperationBindings node) {
+        node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
+        node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
+        node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
+        node.amqp = JsonCompat.consumeProperty(json, Constants.PROP_AMQP);
+        node.amqp1 = JsonCompat.consumeProperty(json, Constants.PROP_AMQP1);
+        node.mqtt = JsonCompat.consumeProperty(json, Constants.PROP_MQTT);
+        node.mqtt5 = JsonCompat.consumeProperty(json, Constants.PROP_MQTT5);
+        node.nats = JsonCompat.consumeProperty(json, Constants.PROP_NATS);
+        node.jms = JsonCompat.consumeProperty(json, Constants.PROP_JMS);
+        node.sns = JsonCompat.consumeProperty(json, Constants.PROP_SNS);
+        node.sqs = JsonCompat.consumeProperty(json, Constants.PROP_SQS);
+        node.stomp = JsonCompat.consumeProperty(json, Constants.PROP_STOMP);
+        node.redis = JsonCompat.consumeProperty(json, Constants.PROP_REDIS);
+        
+        this.readExtraProperties(json, node);
+    }
+    
+    /**
+     * Reads a server bindings model.
+     * @param json
+     * @param node
+     */
+    public void readServerBindings(Object json, AaiServerBindings node) {
+        node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
+        node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
+        node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
+        node.amqp = JsonCompat.consumeProperty(json, Constants.PROP_AMQP);
+        node.amqp1 = JsonCompat.consumeProperty(json, Constants.PROP_AMQP1);
+        node.mqtt = JsonCompat.consumeProperty(json, Constants.PROP_MQTT);
+        node.mqtt5 = JsonCompat.consumeProperty(json, Constants.PROP_MQTT5);
+        node.nats = JsonCompat.consumeProperty(json, Constants.PROP_NATS);
+        node.jms = JsonCompat.consumeProperty(json, Constants.PROP_JMS);
+        node.sns = JsonCompat.consumeProperty(json, Constants.PROP_SNS);
+        node.sqs = JsonCompat.consumeProperty(json, Constants.PROP_SQS);
+        node.stomp = JsonCompat.consumeProperty(json, Constants.PROP_STOMP);
+        node.redis = JsonCompat.consumeProperty(json, Constants.PROP_REDIS);
+        
+        this.readExtraProperties(json, node);
+    }
+
 }

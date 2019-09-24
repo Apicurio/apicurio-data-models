@@ -319,14 +319,14 @@ public abstract class DataModelReader {
      */
     public void readAaiParameter(Object json, AaiParameter node) {
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
-        String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
+        String location = JsonCompat.consumePropertyString(json, Constants.PROP_LOCATION);
 
         node.$ref = $ref;
-        node.name = name;
         node.description = description;
         node.schema = schema;
+        node.location = location;
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);

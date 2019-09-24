@@ -16,15 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiTag;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Operation;
 
@@ -41,55 +33,29 @@ public class Aai20Operation extends AaiOperation {
         super(opType);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20Operation(Node parent) {
         super(parent);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param opType
+     */
     public Aai20Operation(Node parent, String opType) {
         super(parent, opType);
     }
 
-    @Override
-    public List<AaiProtocolInfo> getProtocolInfoList() {
-        return JsonCompat.mapToList(this.protocolInfo);
-    }
-
-    @Override
-    public void addTag(AaiTag tag) {
-        if(tags == null)
-            tags = new LinkedList<>();
-        tags.add(tag);
-    }
-
-    @Override
-    public void addProtocolInfo(AaiProtocolInfo item) {
-        if(protocolInfo == null)
-            protocolInfo = new LinkedHashMap<>();
-        protocolInfo.put(item.getName(), item);
-    }
-
     /**
-     * Creates a Tag node.
+     * @see io.apicurio.datamodels.asyncapi.models.AaiOperationBase#createTag()
      */
+    @Override
     public Aai20Tag createTag() {
         return new Aai20Tag(this);
-    }
-
-    /**
-     * Adds a tag.
-     *
-     * @param name
-     * @param description
-     */
-    public Aai20Tag addTag(String name, String description) {
-        Aai20Tag tag = this.createTag();
-        tag.name = name;
-        tag.description = description;
-        if (this.tags == null) {
-            this.tags = new ArrayList<>();
-        }
-        this.tags.add(tag);
-        return tag;
     }
 
     /**

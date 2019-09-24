@@ -16,21 +16,24 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitExtendedItem;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitItems;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiProtocolInfo;
-import io.apicurio.datamodels.asyncapi.models.AaiUnknownTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
@@ -100,17 +103,12 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitMessageTraitExtendedItem(AaiMessageTraitExtendedItem node) {
-        aaiReader.readMessageTraitExtendedItem(JsonCompat.toList(this.json), node);
-    }
-
-    @Override
-    public void visitMessageTraitItems(AaiMessageTraitItems node) {
-        aaiReader.readMessageTraitItems(JsonCompat.toList(this.json), node);
-    }
-
-    @Override
     public void visitMessageTrait(AaiMessageTrait node) {
+        aaiReader.readMessageTrait(this.json, node);
+    }
+    
+    @Override
+    public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
         aaiReader.readMessageTrait(this.json, node);
     }
 
@@ -120,28 +118,18 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitOperationTraitExtendedItem(AaiOperationTraitExtendedItem node) {
-        aaiReader.readOperationTraitExtendedItem(JsonCompat.toList(this.json), node);
-    }
-
-    @Override
-    public void visitOperationTraitItems(AaiOperationTraitItems node) {
-        aaiReader.readOperationTraitItems(JsonCompat.toList(this.json), node);
-    }
-
-    @Override
     public void visitOperationTrait(AaiOperationTrait node) {
+        aaiReader.readOperationTrait(this.json, node);
+    }
+    
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
         aaiReader.readOperationTrait(this.json, node);
     }
 
     @Override
     public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
         aaiReader.readOAuthFlow(this.json, node);
-    }
-
-    @Override
-    public void visitProtocolInfo(AaiProtocolInfo node) {
-        aaiReader.readProtocolInfo(this.json, node);
     }
 
     @Override
@@ -155,12 +143,48 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
     
     @Override
-    public void visitUnknownTrait(AaiUnknownTrait node) {
-        aaiReader.readUnknownTrait(this.json, node);
-    }
-
-    @Override
     public void visitAaiParameter(AaiParameter node) {
         aaiReader.readAaiParameter(this.json, node);
     }
+
+    @Override
+    public void visitServerBindings(AaiServerBindings node) {
+        aaiReader.readServerBindings(this.json, node);
+    }
+
+    @Override
+    public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
+        aaiReader.readServerBindings(this.json, node);
+    }
+
+    @Override
+    public void visitOperationBindings(AaiOperationBindings node) {
+        aaiReader.readOperationBindings(this.json, node);
+    }
+
+    @Override
+    public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
+        aaiReader.readOperationBindings(this.json, node);
+    }
+
+    @Override
+    public void visitMessageBindings(AaiMessageBindings node) {
+        aaiReader.readMessageBindings(this.json, node);
+    }
+
+    @Override
+    public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
+        aaiReader.readMessageBindings(this.json, node);
+    }
+
+    @Override
+    public void visitChannelBindings(AaiChannelBindings node) {
+        aaiReader.readChannelBindings(this.json, node);
+    }
+
+    @Override
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        aaiReader.readChannelBindings(this.json, node);
+    }
+    
 }

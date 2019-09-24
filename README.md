@@ -77,7 +77,7 @@ As of the time of this writing, the AsyncAPI specification is in the process of 
 This will be the first version of AsyncAPI supported by this library.  As other versions are released,
 the library will be updated to support them.  There are currently no plans to support older versions.
 
-* [AsyncAPI Version 2.0.0](https://www.asyncapi.com/docs/specifications/2.0.0-rc1/)
+* [AsyncAPI Version 2.0.0](https://www.asyncapi.com/docs/specifications/2.0.0/)
 
 ## Building the Library
 This section explains how to build, package, test, and publish the library.  If you are a developer

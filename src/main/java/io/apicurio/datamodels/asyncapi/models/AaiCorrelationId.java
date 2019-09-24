@@ -1,8 +1,10 @@
 package io.apicurio.datamodels.asyncapi.models;
 
+import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
@@ -33,6 +35,12 @@ public abstract class AaiCorrelationId extends ExtensibleNode implements INamed 
         this._name = name;
     }
 
+    @Override
+    public void accept(IVisitor visitor) {
+        IAaiVisitor v = (IAaiVisitor) visitor;
+        v.visitCorrelationId(this);
+    }
+    
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */

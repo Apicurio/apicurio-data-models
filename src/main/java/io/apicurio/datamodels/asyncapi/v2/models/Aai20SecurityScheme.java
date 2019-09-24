@@ -15,10 +15,19 @@ public class Aai20SecurityScheme extends AaiSecurityScheme {
         super(name);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     */
     public Aai20SecurityScheme(Node parent) {
         super(parent);
     }
 
+    /**
+     * Constructor.
+     * @param parent
+     * @param name
+     */
     public Aai20SecurityScheme(Node parent, String name) {
         super(parent, name);
     }
