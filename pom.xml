@@ -59,7 +59,7 @@
 
 		<version.frontend-maven.plugin>1.8.0</version.frontend-maven.plugin>
 
-		<version.com.fasterxml.jackson>2.10.0.pr1</version.com.fasterxml.jackson>
+		<version.com.fasterxml.jackson>2.10.0</version.com.fasterxml.jackson>
 		<version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
 		<version.commons-io>2.6</version.commons-io>
 		<version.junit>4.12</version.junit>
