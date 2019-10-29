@@ -17,11 +17,12 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -45,10 +46,18 @@ public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
      */
     @Override
     protected void removeNode(Document doc, Document node) {
-        if (node.getDocumentType() == DocumentType.openapi2) {
-            this.reset2xDocument((Oas20Document) node);
-        } else {
-            this.reset3xDocument((Oas30Document) node);
+        switch (node.getDocumentType()) {
+            case asyncapi2:
+                this.resetAai2xDocument((Aai20Document) node);
+                break;
+            case openapi2:
+                this.resetOas2xDocument((Oas20Document) node);
+                break;
+            case openapi3:
+                this.resetOas3xDocument((Oas30Document) node);
+                break;
+            default:
+                break;
         }
     }
     
@@ -73,7 +82,7 @@ public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
      * Resets a 2.0 OAI document by nulling out all of its properties.
      * @param doc
      */
-    private void reset2xDocument(Oas20Document doc) {
+    private void resetOas2xDocument(Oas20Document doc) {
         doc.host = null;
         doc.basePath = null;
         doc.schemes= null;
@@ -83,16 +92,39 @@ public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
         doc.parameters = null;
         doc.responses = null;
         doc.securityDefinitions = null;
-        this.resetDocument(doc);
+        this.resetOasDocument(doc);
     }
 
     /**
      * Resets a 3.x OAI document by nulling out all of its properties.
      * @param doc
      */
-    private void reset3xDocument(Oas30Document doc) {
+    private void resetOas3xDocument(Oas30Document doc) {
         doc.servers = null;
         doc.components = null;
+        this.resetOasDocument(doc);
+    }
+
+    /**
+     * Resets a 2.0 AAI document by nulling out all of its properties.
+     * @param doc
+     */
+    private void resetAai2xDocument(Aai20Document doc) {
+        doc.id = null;
+        doc.channels = new LinkedHashMap<>();
+        doc.servers = null;
+        doc.components = null;
+        doc.defaultContentType = null;
+        this.resetDocument(doc);
+    }
+
+    /**
+     * Resets the common properties of an OAS doc.
+     * @param doc
+     */
+    private void resetOasDocument(OasDocument doc) {
+        doc.paths = null;
+        doc.security = null;
         this.resetDocument(doc);
     }
 
@@ -100,10 +132,8 @@ public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
      * Resets the common properties.
      * @param doc
      */
-    private void resetDocument(OasDocument doc) {
+    private void resetDocument(Document doc) {
         doc.info = null;
-        doc.paths = null;
-        doc.security = null;
         doc.tags = null;
         doc.externalDocs = null;
 

@@ -241,5 +241,7 @@
     { "name": "[OpenAPI 2] {Set Extension} - Replace Extension", "test": "commands/set-extension/openapi-2/replace-extension" },
     { "name": "[OpenAPI 2] {Set Extension} - Set Extension", "test": "commands/set-extension/openapi-2/set-extension" },
     { "name": "[OpenAPI 3] {Set Extension} - Replace Extension", "test": "commands/set-extension/openapi-3/replace-extension" },
-    { "name": "[OpenAPI 3] {Set Extension} - Set Extension", "test": "commands/set-extension/openapi-3/set-extension" }
+    { "name": "[OpenAPI 3] {Set Extension} - Set Extension", "test": "commands/set-extension/openapi-3/set-extension" },
+    
+    { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" }
 ]
