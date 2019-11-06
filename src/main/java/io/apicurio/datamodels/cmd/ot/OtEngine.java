@@ -18,6 +18,7 @@ package io.apicurio.datamodels.cmd.ot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
@@ -118,6 +119,10 @@ public class OtEngine {
      * by ensuring that each command has a list of NodePaths that represent the affected parts of
      * the document tree.  These paths can be used to determine which commands conflict with
      * other commands.
+     * 
+     * Whenever a command is executed, any local commands that have been undone can now be
+     * safely removed from the list of commands, because making a change (by definition) orphans
+     * any existing reverted commands.  There is no way to recover them.
      *
      * @param command
      * @param pending
@@ -128,6 +133,7 @@ public class OtEngine {
             LoggerCompat.info("[OtEngine] Executing PENDING command with contentId: %o", command.contentVersion);
             command.execute(this.document);
             this.pendingCommands.add(command);
+            this.pruneRevertedCommands();
             return;
         }
 
@@ -344,6 +350,8 @@ public class OtEngine {
         int idx;
         List<OtCommand> commandsToUndo = new ArrayList<>();
 
+        LoggerCompat.info("[OtEngine] Undo command with content version: %o", contentVersion);
+
         // 1. Undo all pending commands
         // 2. Undo all commands (in reverse chronological order) up to and including the one referenced by "contentVersion"
         // 3. Mark the command as "reverted"
@@ -404,6 +412,8 @@ public class OtEngine {
         int idx;
         List<OtCommand> commandsToUndo = new ArrayList<>();
 
+        LoggerCompat.info("[OtEngine] Redo command with content version: %o", contentVersion);
+
         // 1. Undo all pending commands
         // 2. Undo all commands (in reverse chronological order) up to and including the one referenced by "contentVersion"
         // 3. Mark the command as "NOT reverted"
@@ -456,4 +466,24 @@ public class OtEngine {
         return foundCmd;
     }
 
+    /**
+     * Called to remove any (local only) commands that have been undone/reverted.  This is 
+     * done whenever a new local command is executed.  It is done because when a new command
+     * is executed, any existing reverted commands can no longer be "redone". 
+     */
+    protected void pruneRevertedCommands() {
+        // Remove reverted commands
+        List<OtCommand> cmds = this.commands.stream().filter(cmd -> cmd.reverted).collect(Collectors.toList());
+        cmds.forEach(cmd -> this.commands.remove(cmd));
+        if (!cmds.isEmpty()) {
+            LoggerCompat.info("[OtEngine] Pruned %d reverted commands", cmds.size());
+        }
+        
+        // Remove reverted pending commands
+        cmds = this.pendingCommands.stream().filter(cmd -> cmd.reverted).collect(Collectors.toList());
+        cmds.forEach(cmd -> this.pendingCommands.remove(cmd));
+        if (!cmds.isEmpty()) {
+            LoggerCompat.info("[OtEngine] Pruned %d reverted pending commands", cmds.size());
+        }
+    }
 }

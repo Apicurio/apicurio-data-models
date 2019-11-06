@@ -16,6 +16,7 @@
     { "name": "[OT] Undo Pending", "test": "ot/undo-pending/undo-pending" },
     { "name": "[OT] Undo Pending {Late Finalize}", "test": "ot/undo-pending/undo-pending", "commands": ".late.json" },
     { "name": "[OT] Undo Pending {Out of Order Finalize}", "test": "ot/undo-pending/undo-pending", "commands": ".ooo.json" },
+    { "name": "[OT] Undo Redo Change", "test": "ot/undo-redo-change/undo-redo-change" },
     { "name": "[OpenAPI 2] {Add Definition} - Add Definition", "test": "commands/add-definition/openapi-2/add-definition" },
     { "name": "[OpenAPI 2] {Add Definition} - Clone Definition", "test": "commands/add-definition/openapi-2/clone-definition" },
     { "name": "[OpenAPI 3] {Add Definition} - Add Definition", "test": "commands/add-definition/openapi-3/add-definition" },
