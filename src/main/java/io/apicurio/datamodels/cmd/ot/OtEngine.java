@@ -18,7 +18,6 @@ package io.apicurio.datamodels.cmd.ot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
@@ -473,17 +472,23 @@ public class OtEngine {
      */
     protected void pruneRevertedCommands() {
         // Remove reverted commands
-        List<OtCommand> cmds = this.commands.stream().filter(cmd -> cmd.reverted).collect(Collectors.toList());
+        final List<OtCommand> cmds = new ArrayList<>();
+        this.commands.forEach(cmd -> {
+            if (cmd.reverted) cmds.add(cmd);
+        });
         cmds.forEach(cmd -> this.commands.remove(cmd));
         if (!cmds.isEmpty()) {
             LoggerCompat.info("[OtEngine] Pruned %d reverted commands", cmds.size());
         }
         
         // Remove reverted pending commands
-        cmds = this.pendingCommands.stream().filter(cmd -> cmd.reverted).collect(Collectors.toList());
-        cmds.forEach(cmd -> this.pendingCommands.remove(cmd));
-        if (!cmds.isEmpty()) {
-            LoggerCompat.info("[OtEngine] Pruned %d reverted pending commands", cmds.size());
+        final List<OtCommand> pcmds = new ArrayList<>();
+        this.pendingCommands.forEach(cmd -> {
+            if (cmd.reverted) pcmds.add(cmd);
+        });
+        pcmds.forEach(cmd -> this.pendingCommands.remove(cmd));
+        if (!pcmds.isEmpty()) {
+            LoggerCompat.info("[OtEngine] Pruned %d reverted pending commands", pcmds.size());
         }
     }
 }
