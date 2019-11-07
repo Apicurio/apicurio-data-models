@@ -243,6 +243,14 @@ public class JsonCompat {
         return node.isObject();
     }
 
+    public static boolean isNull(Object json) {
+        if (json == null) {
+            return true;
+        }
+        JsonNode node = (JsonNode) json;
+        return node.isNull();
+    }
+
     public static boolean isString(Object json) {
         if (json == null) {
             return false;

@@ -80,6 +80,10 @@ export class JsonCompat {
     public static isObject(json: any): boolean {
         return typeof json === "object";
     }
+    
+    public static isNull(json: any): boolean {
+        return json === null;
+    }
 
     public static isBoolean(json: any): boolean {
         return typeof json === "boolean";

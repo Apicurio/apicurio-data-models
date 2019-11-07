@@ -63,6 +63,8 @@ public class OasSchemaFactory {
             } else if (RegexCompat.matches(value, "^(\\d{4})\\D?(0[1-9]|1[0-2])\\D?([12]\\d|0[1-9]|3[01])(\\D?([01]\\d|2[0-3])\\D?([0-5]\\d)\\D?([0-5]\\d)?\\D?(\\d{3})?([zZ]|([\\+-])([01]\\d|2[0-3])\\D?([0-5]\\d)?)?)?$")) {
                 schema.format = "date-time";
             }
+        } else if (JsonCompat.isNull(thing)) {
+            schema.type = "string";
         }
     }
     

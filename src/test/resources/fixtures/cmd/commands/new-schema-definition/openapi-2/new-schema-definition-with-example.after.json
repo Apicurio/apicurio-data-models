@@ -38,6 +38,9 @@
         "dob": {
           "type": "string",
           "format": "date"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "example": {
