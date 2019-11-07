@@ -169,7 +169,7 @@ allTests.forEach(spec => {
         let actualDoc: Document = engine.getCurrentDocument();
         let actual: any = Library.writeNode(actualDoc);
         let expected: any = afterJs;
-        
+
         expect(actual).toEqual(expected);
 
         // If there was only ONE command, then undo it and make sure

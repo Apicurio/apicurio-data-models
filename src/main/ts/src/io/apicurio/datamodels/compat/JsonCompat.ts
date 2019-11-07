@@ -78,11 +78,14 @@ export class JsonCompat {
     }
 
     public static isObject(json: any): boolean {
+        if (json == null || json == undefined) {
+            return false;
+        }
         return typeof json === "object";
     }
     
     public static isNull(json: any): boolean {
-        return json === null;
+        return json == null || json == undefined;
     }
 
     public static isBoolean(json: any): boolean {
@@ -115,6 +118,9 @@ export class JsonCompat {
     /****** Getters ******/
 
     public static keys(json: any): string[] {
+        if (!json) {
+            return [];
+        }
         return Object.keys(json);
     }
     
