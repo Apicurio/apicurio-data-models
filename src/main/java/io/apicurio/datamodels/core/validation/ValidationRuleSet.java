@@ -192,6 +192,7 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameter
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingRequestBodyContentRule;
+import io.apicurio.datamodels.core.validation.rules.required.OasMissingResponseDefinitionDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingResponseDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingSchemaArrayInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingSecuritySchemeTypeRule;
@@ -383,6 +384,7 @@ public class ValidationRuleSet {
         this.rules.add(md("IT-001", "Missing Items Type", "Required Property", "Items", new DocumentType[] { oai20 }, true, "Type information is missing for array items.", OasMissingItemsTypeRule.class));
         this.rules.add(md("IT-002", "Missing Items Array Information", "Required Property", "Items", new DocumentType[] { oai20 }, true, "Type information missing for array items.", OasMissingItemsArrayInformationRule.class));
         this.rules.add(md("RES-001", "Missing Response Description", "Required Property", "Response", new DocumentType[] { oai20, oai30 }, true, "Response (code ${'statusCode'}) is missing a description.", OasMissingResponseDescriptionRule.class));
+        this.rules.add(md("RDEF-002", "Missing Response Definition Description", "Required Property", "Response Definition", new DocumentType[] { oai20, oai30 }, true, "Response Definition '${'name'}' is missing a description.", OasMissingResponseDefinitionDescriptionRule.class));
         this.rules.add(md("HEAD-001", "Missing Header Type", "Required Property", "Header", new DocumentType[] { oai20 }, true, "Header is missing type information.", OasMissingHeaderTypeRule.class));
         this.rules.add(md("HEAD-002", "Missing Header Array Information", "Required Property", "Header", new DocumentType[] { oai20 }, true, "Header is missing array type information.", OasMissingHeaderArrayInformationRule.class));
         this.rules.add(md("SCH-005", "Missing Schema Array Information", "Required Property", "Schema", new DocumentType[] { oai20, oai30 }, true, "Schema is missing array type information.", OasMissingSchemaArrayInformationRule.class));

@@ -698,7 +698,9 @@
       }
     },
     "responses": {
-      "The Response": {}
+      "The Response": {
+        "description": "..."
+      }
     },
     "parameters": {
       "var": {
