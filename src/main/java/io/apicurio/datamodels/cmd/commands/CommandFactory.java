@@ -147,6 +147,8 @@ public class CommandFactory {
             { return new ChangeSecuritySchemeCommand_30(); }
             case "ChangeServerCommand":
             { return new ChangeServerCommand(); }
+            case "ChangeSchemaTypeCommand":
+            { return new ChangeSchemaTypeCommand(); }
             
             /** Delete Commands **/
             case "DeleteContactCommand_20": 
@@ -452,7 +454,11 @@ public class CommandFactory {
             SimplifiedPropertyType newType) {
         return new ChangePropertyTypeCommand(property, newType);
     }
-    
+
+    public static final ICommand createChangeSchemaTypeCommand(OasSchema schema, SimplifiedType newType) {
+        return new ChangeSchemaTypeCommand(schema, newType);
+    }
+
     public static final ICommand createChangeResponseTypeCommand(Oas20Response response, 
             SimplifiedType newType) {
         return new ChangeResponseTypeCommand(response, newType);
