@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 
@@ -29,7 +30,7 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  * An OpenAPI 2.0 example.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20Example extends Node {
+public class Oas20Example extends Node implements IExample {
     
     private Map<String, Object> items = new LinkedHashMap<>();
     

@@ -26,7 +26,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ExampleDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
@@ -172,15 +171,6 @@ public class Oas30VisitorAdapter extends OasVisitorAdapter implements IOas30Visi
      */
     @Override
     public void visitOAuthFlows(Oas30OAuthFlows node) {
-        
-        
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
-     */
-    @Override
-    public void visitExample(Oas30Example node) {
         
         
     }

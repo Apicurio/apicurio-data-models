@@ -17,13 +17,14 @@
 package io.apicurio.datamodels.openapi.v2.visitors;
 
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
@@ -149,12 +150,12 @@ public class Oas20Traverser extends OasTraverser implements IOas20Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
+    public void visitExample(IExample node) {
         node.accept(this.visitor);
-        this.traverseValidationProblems(node);
+        this.traverseValidationProblems((Node) node);
     }
 
     /**

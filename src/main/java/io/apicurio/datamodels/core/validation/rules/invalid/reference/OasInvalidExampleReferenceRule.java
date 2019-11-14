@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.util.ReferenceUtil;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -38,12 +39,13 @@ public class OasInvalidExampleReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
-        if (hasValue(node.$ref)) {
-            this.reportIfInvalid(ReferenceUtil.canResolveRef(node.$ref, node), node, Constants.PROP_$REF, map());
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
+        if (hasValue(example30.$ref)) {
+            this.reportIfInvalid(ReferenceUtil.canResolveRef(example30.$ref, example30), example30, Constants.PROP_$REF, map());
         }
     }
     

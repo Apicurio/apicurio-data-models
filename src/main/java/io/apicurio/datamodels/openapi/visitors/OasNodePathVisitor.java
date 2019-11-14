@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.visitors;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasHeader;
@@ -143,6 +144,14 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
     @Override
     public void visitResponseDefinition(IDefinition node) {
         this.path.prependSegment(node.getName(), true);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
+     */
+    @Override
+    public void visitExample(IExample node) {
+        throw new RuntimeException("Must be implemented by subclasses.");
     }
 
 }

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -37,12 +38,13 @@ public class OasInvalidExampleDescriptionRule extends ValidationRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
-        if (hasValue(node.description)) {
-            this.reportIfInvalid(isValidCommonMark(node.description), node, Constants.PROP_DESCRIPTION, map());
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
+        if (hasValue(example30.description)) {
+            this.reportIfInvalid(isValidCommonMark(example30.description), example30, Constants.PROP_DESCRIPTION, map());
         }
     }
     

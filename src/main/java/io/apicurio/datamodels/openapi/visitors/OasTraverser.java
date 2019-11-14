@@ -22,6 +22,7 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -219,6 +220,14 @@ public class OasTraverser extends Traverser implements IOasVisitor {
         this.traverseCollection(operation.security);
         
         super.traverseOperation(node);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
+     */
+    @Override
+    public void visitExample(IExample node) {
+        throw new RuntimeException("Must be implemented by subclasses.");
     }
 
 }

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.mutex;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
@@ -35,12 +36,14 @@ public class OasExampleValueMutualExclusivityRule extends ValidationRule {
     public OasExampleValueMutualExclusivityRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
+    
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
-        this.reportIf(hasValue(node.value) && hasValue(node.externalValue), node, Constants.PROP_VALUE, map());
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
+        this.reportIf(hasValue(example30.value) && hasValue(example30.externalValue), example30, Constants.PROP_VALUE, map());
     }
     
     /**

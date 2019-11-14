@@ -21,6 +21,7 @@ import java.util.List;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -55,13 +56,14 @@ public class OasUnmatchedExampleTypeRule extends OasInvalidPropertyNameRule {
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
-        Oas20Document doc = (Oas20Document) node.ownerDocument();
+    public void visitExample(IExample node) {
+        Oas20Example example20 = (Oas20Example) node;
+        Oas20Document doc = (Oas20Document) example20.ownerDocument();
         List<String> produces = doc.produces;
-        Oas20Operation operation = (Oas20Operation) findParentOperation(node);
+        Oas20Operation operation = (Oas20Operation) findParentOperation(example20);
         if (hasValue(operation.produces)) {
             produces = operation.produces;
         }
@@ -69,9 +71,9 @@ public class OasUnmatchedExampleTypeRule extends OasInvalidPropertyNameRule {
             produces = new ArrayList<>();
         }
 
-        List<String> ctypes = node.getExampleContentTypes();
+        List<String> ctypes = example20.getExampleContentTypes();
         for (String ct : ctypes) {
-            this.reportIfInvalid(produces.indexOf(ct) != -1, node, Constants.PROP_PRODUCES, map("contentType", ct));
+            this.reportIfInvalid(produces.indexOf(ct) != -1, example20, Constants.PROP_PRODUCES, map("contentType", ct));
         }
     }
 

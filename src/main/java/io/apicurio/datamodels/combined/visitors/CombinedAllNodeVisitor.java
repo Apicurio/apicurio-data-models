@@ -44,6 +44,7 @@ import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -66,7 +67,6 @@ import io.apicurio.datamodels.openapi.models.OasResponses;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -81,7 +81,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ExampleDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
@@ -411,11 +410,11 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
-        this.visitNode(node);
+    public void visitExample(IExample node) {
+        this.visitNode((Node) node);
         
     }
 
@@ -559,15 +558,6 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitOAuthFlows(Oas30OAuthFlows node) {
-        this.visitNode(node);
-        
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
-     */
-    @Override
-    public void visitExample(Oas30Example node) {
         this.visitNode(node);
         
     }

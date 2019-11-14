@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.v3.visitors;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
@@ -293,13 +294,14 @@ public class Oas30Traverser extends OasTraverser implements IOas30Visitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
         node.accept(this.visitor);
-        this.traverseExtensions(node);
-        this.traverseValidationProblems(node);
+        this.traverseExtensions(example30);
+        this.traverseValidationProblems(example30);
    }
 
     /**

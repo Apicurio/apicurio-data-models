@@ -21,6 +21,7 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -300,6 +301,14 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
     }
     protected void addResponseDefinitionToParent(Object parent, Object json, IDefinition node) {
         JsonCompat.setProperty(parent, node.getName(), json);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
+     */
+    @Override
+    public void visitExample(IExample node) {
+        throw new RuntimeException("Must be implemented by subclasses.");
     }
 
 }

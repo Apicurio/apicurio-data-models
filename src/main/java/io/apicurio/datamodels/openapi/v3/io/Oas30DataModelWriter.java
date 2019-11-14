@@ -21,6 +21,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
@@ -414,27 +415,29 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
-        Object parent = this.lookupParentJson(node);
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
+        
+        Object parent = this.lookupParentJson(example30);
         Object json = JsonCompat.objectNode();
-        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
-        JsonCompat.setPropertyString(json, Constants.PROP_SUMMARY, node.summary);
-        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, node.description);
-        JsonCompat.setProperty(json, Constants.PROP_VALUE, node.value);
-        JsonCompat.setPropertyString(json, Constants.PROP_EXTERNAL_VALUE, node.externalValue);
-        this.writeExtraProperties(json, node);
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, example30.$ref);
+        JsonCompat.setPropertyString(json, Constants.PROP_SUMMARY, example30.summary);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, example30.description);
+        JsonCompat.setProperty(json, Constants.PROP_VALUE, example30.value);
+        JsonCompat.setPropertyString(json, Constants.PROP_EXTERNAL_VALUE, example30.externalValue);
+        this.writeExtraProperties(json, example30);
 
         Object examples = JsonCompat.getProperty(parent, Constants.PROP_EXAMPLES);
         if (examples == null) {
             examples = JsonCompat.objectNode();
             JsonCompat.setProperty(parent, Constants.PROP_EXAMPLES, examples);
         }
-        JsonCompat.setProperty(examples, node.getName(), json);
+        JsonCompat.setProperty(examples, example30.getName(), json);
 
-        this.updateIndex(node, json);        
+        this.updateIndex(example30, json);        
     }
 
     /**

@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.openapi.v2.io;
 
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.openapi.io.OasDataModelReaderDispatcher;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
@@ -95,11 +96,11 @@ public class Oas20DataModelReaderDispatcher extends OasDataModelReaderDispatcher
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
-        this.oas20Reader().readExample(this.json, node);
+    public void visitExample(IExample node) {
+        this.oas20Reader().readExample(this.json, (Oas20Example) node);
         
     }
 

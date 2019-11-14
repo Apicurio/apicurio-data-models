@@ -17,8 +17,8 @@
 package io.apicurio.datamodels.openapi.v2.visitors;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -79,10 +79,10 @@ public class Oas20NodePathVisitor extends OasNodePathVisitor implements IOas20Vi
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
+    public void visitExample(IExample node) {
         this.path.prependSegment(Constants.PROP_EXAMPLES, false);
     }
 
@@ -101,5 +101,5 @@ public class Oas20NodePathVisitor extends OasNodePathVisitor implements IOas20Vi
     public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
         this.path.prependSegment(Constants.PROP_RESPONSES, false);
     }
-
+    
 }

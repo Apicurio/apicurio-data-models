@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.io;
 
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasHeader;
@@ -147,6 +148,14 @@ public class OasDataModelReaderDispatcher extends DataModelReaderDispatcher impl
     public void visitResponseDefinition(IDefinition node) {
         this.oasReader().readResponse(this.json, (OasResponse) node);
         
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
+     */
+    @Override
+    public void visitExample(IExample node) {
+        throw new RuntimeException("Must be implemented by subclasses.");
     }
 
 }

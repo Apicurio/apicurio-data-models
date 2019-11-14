@@ -21,6 +21,7 @@ import java.util.List;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -229,22 +230,23 @@ public class Oas20DataModelWriter extends OasDataModelWriter implements IOas20Vi
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
-        Object parent = this.lookupParentJson(node);
+    public void visitExample(IExample node) {
+        Oas20Example example20 = (Oas20Example) node;
+        Object parent = this.lookupParentJson(example20);
         Object json = JsonCompat.objectNode();
         
-        List<String> contentTypes = node.getExampleContentTypes();
+        List<String> contentTypes = example20.getExampleContentTypes();
         contentTypes.forEach(ct -> {
-            Object example = node.getExample(ct);
+            Object example = example20.getExample(ct);
             JsonCompat.setProperty(json, ct, example);
         });
 
         JsonCompat.setProperty(parent, Constants.PROP_EXAMPLES, json);
 
-        this.updateIndex(node, json);
+        this.updateIndex(example20, json);
     }
 
     /**

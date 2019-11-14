@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.openapi.v2.visitors;
 
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -65,13 +64,6 @@ public class Oas20VisitorAdapter extends OasVisitorAdapter implements IOas20Visi
      */
     @Override
     public void visitParameterDefinitions(Oas20ParameterDefinitions node) {
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
-     */
-    @Override
-    public void visitExample(Oas20Example node) {
     }
 
     /**

@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.v3.models;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
@@ -26,7 +27,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models an OpenAPI 3.0.x example.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Example extends ExtensibleNode implements IReferenceNode, INamed {
+public class Oas30Example extends ExtensibleNode implements IReferenceNode, INamed, IExample {
 
     private String _name;
 

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.openapi.visitors;
 
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasHeader;
@@ -44,5 +45,6 @@ public interface IOasVisitor extends IVisitor {
     public void visitPropertySchema(IOasPropertySchema node);
     public void visitHeader(OasHeader node);
     public void visitResponseDefinition(IDefinition node);
+    void visitExample(IExample node);
 
 }

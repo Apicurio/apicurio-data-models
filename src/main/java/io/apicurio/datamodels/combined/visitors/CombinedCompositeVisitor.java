@@ -28,6 +28,7 @@ import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -48,7 +49,6 @@ import io.apicurio.datamodels.openapi.models.OasResponses;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Example;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
@@ -63,7 +63,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ExampleDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
@@ -451,14 +450,6 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
-     */
-    @Override
-    public void visitExample(Oas30Example node) {
-        this.acceptAll(node);
-    }
-
-    /**
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitEncoding(io.apicurio.datamodels.openapi.v3.models.Oas30Encoding)
      */
     @Override
@@ -587,10 +578,10 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor#visitExample(io.apicurio.datamodels.openapi.v2.models.Oas20Example)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas20Example node) {
+    public void visitExample(IExample node) {
         this.acceptAll(node);
     }
 

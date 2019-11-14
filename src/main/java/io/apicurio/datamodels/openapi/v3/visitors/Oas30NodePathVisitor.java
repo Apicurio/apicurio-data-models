@@ -20,6 +20,7 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
@@ -215,11 +216,12 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitExample(io.apicurio.datamodels.openapi.v3.models.Oas30Example)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitExample(io.apicurio.datamodels.core.models.common.IExample)
      */
     @Override
-    public void visitExample(Oas30Example node) {
-        this.path.prependSegment(node.getName(), true);
+    public void visitExample(IExample node) {
+        Oas30Example example30 = (Oas30Example) node;
+        this.path.prependSegment(example30.getName(), true);
         this.path.prependSegment(Constants.PROP_EXAMPLES, false);
     }
 
