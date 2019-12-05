@@ -149,6 +149,8 @@ public class CommandFactory {
             { return new ChangeServerCommand(); }
             case "ChangeSchemaTypeCommand":
             { return new ChangeSchemaTypeCommand(); }
+            case "ChangeSchemaInheritanceCommand":
+            { return new ChangeSchemaInheritanceCommand(); }
             
             /** Delete Commands **/
             case "DeleteContactCommand_20": 
@@ -418,7 +420,11 @@ public class CommandFactory {
     public static final ICommand createChangeLicenseCommand(String name, String url) {
         return new ChangeLicenseCommand(name, url);
     }
-    
+
+    public static final ICommand createChangeSchemaInheritanceCommand(OasSchema schema, String inheritanceType) {
+        return new ChangeSchemaInheritanceCommand(schema, inheritanceType);
+    }
+
     public static final ICommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
     }

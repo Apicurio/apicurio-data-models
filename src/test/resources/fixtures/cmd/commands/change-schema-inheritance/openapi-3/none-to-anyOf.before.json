@@ -1,0 +1,29 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Schema Inheritance",
+        "version": "1.0.0"
+    },
+    "paths": {},
+    "components": {
+        "schemas": {
+            "DataType": {
+                "description": "",
+                "required": [
+                    "property-1"
+                ],
+                "type": "object",
+                "properties": {
+                    "property-1": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "property-2": {
+                        "description": "",
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}
