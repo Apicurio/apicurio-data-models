@@ -18,7 +18,7 @@
     "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && rollup -c rollup.config.js"
   },
   "dependencies": {
-    "core-js": "3.4.3"
+    "core-js": "3.4.7"
   },
   "devDependencies": {
     "@types/diff": "4.0.2",
@@ -32,6 +32,6 @@
     "rollup": "0.68.2",
     "rollup-plugin-commonjs": "8.4.1",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.2"
+    "typescript": "3.7.3"
   }
 }
