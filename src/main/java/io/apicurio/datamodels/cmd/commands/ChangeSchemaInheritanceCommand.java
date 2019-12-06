@@ -22,7 +22,6 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
@@ -51,13 +50,8 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
  * 
  * @author eric.wittmann@gmail.com
  */
-public class ChangeSchemaInheritanceCommand extends AbstractCommand {
+public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
     
-    public static final String TYPE_NONE = "none";
-    public static final String TYPE_ALL_OF = "allOf";
-    public static final String TYPE_ONE_OF = "oneOf";
-    public static final String TYPE_ANY_OF = "anyOf";
-
     public NodePath _schemaPath;
     public String _newInheritanceType;
     public String _oldInheritanceType;

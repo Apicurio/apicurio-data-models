@@ -96,6 +96,8 @@ public class CommandFactory {
             { return new AddResponseDefinitionCommand_20(); }
             case "AddResponseDefinitionCommand_30":
             { return new AddResponseDefinitionCommand_30(); }
+            case "AddChildSchemaCommand":
+            { return new AddChildSchemaCommand(); }
 
             /** Change Commands **/
             
@@ -396,6 +398,10 @@ public class CommandFactory {
     public static final ICommand createAddSecurityRequirementCommand(
             ISecurityRequirementParent parent, SecurityRequirement requirement) {
         return new AddSecurityRequirementCommand(parent, requirement);
+    }
+
+    public static final ICommand createAddChildSchemaCommand(OasSchema schema, OasSchema childSchema, String childType) {
+        return new AddChildSchemaCommand(schema, childSchema, childType);
     }
 
     

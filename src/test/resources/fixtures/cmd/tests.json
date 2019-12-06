@@ -39,6 +39,7 @@
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Doc2", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-doc2" },
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Op", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-op" },
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/openapi-3/add-security-requirement" },
+    { "name": "[OpenAPI 3] {Add Child Schema} - Add to AllOf", "test": "commands/add-child-schema/openapi-3/add-child-schema" },
     { "name": "[OpenAPI 3] {Aggregate} - Aggregate Ordering", "test": "commands/aggregate/openapi-3/aggregate-ordering" },
     { "name": "[OpenAPI 3] {Aggregate} - Aggregate", "test": "commands/aggregate/openapi-3/aggregate" },
     { "name": "[OpenAPI 2] {Change Contact Info} - Add Contact Info", "test": "commands/change-contact-info/openapi-2/add-contact-info" },
