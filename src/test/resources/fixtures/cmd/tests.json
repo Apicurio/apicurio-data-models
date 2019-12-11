@@ -120,6 +120,7 @@
     { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-pathItem" },
     { "name": "[OpenAPI 2] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/openapi-2/delete-all-tags" },
     { "name": "[OpenAPI 3] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/openapi-3/delete-all-tags" },
+    { "name": "[OpenAPI 3] {Delete All Child Schemas} - All Of", "test": "commands/delete-all-child-schemas/openapi-3/delete-all-schemas" },
     { "name": "[OpenAPI 2] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-2/delete-contact" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact NA", "test": "commands/delete-contact/openapi-3/delete-contact-na" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" },

@@ -27,12 +27,9 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 
 /**
  * Allows changing the inheritance setting for a schema.  This basically allows changing
@@ -193,53 +190,6 @@ public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
     }
 
     /**
-     * Copies the given list of schemas to the appropriate property on the model
-     * @param schemas
-     * @param targetSchema 
-     * @param inheritanceType
-     */
-    private void copySchemaJsTo(List<Object> schemas, OasSchema targetSchema, String inheritanceType) {
-        if (NodeCompat.equals(TYPE_ALL_OF, inheritanceType)) {
-            schemas.forEach(ser -> {
-                targetSchema.addAllOfSchema((OasSchema) Library.readNode(ser, targetSchema.createAllOfSchema()));
-            });
-        }
-        if (NodeCompat.equals(TYPE_ANY_OF, inheritanceType)) {
-            Oas30Schema targetSchema30 = (Oas30Schema) targetSchema;
-            schemas.forEach(ser -> {
-                targetSchema30.addAnyOfSchema((Oas30AnyOfSchema) Library.readNode(ser, targetSchema30.createAnyOfSchema()));
-            });
-        }
-        if (NodeCompat.equals(TYPE_ONE_OF, inheritanceType)) {
-            Oas30Schema targetSchema30 = (Oas30Schema) targetSchema;
-            schemas.forEach(ser -> {
-                targetSchema30.addOneOfSchema((Oas30OneOfSchema) Library.readNode(ser, targetSchema30.createOneOfSchema()));
-            });
-        }        
-    }
-
-    /**
-     * Creates a schema of a particular type (allOf, anyOf, etc).
-     * @param parentSchema
-     * @param inheritanceType
-     */
-    private OasSchema createSchema(OasSchema parentSchema, String inheritanceType) {
-        if (NodeCompat.equals(TYPE_ALL_OF, inheritanceType)) {
-            return parentSchema.createAllOfSchema();
-        }
-        if (NodeCompat.equals(TYPE_ANY_OF, inheritanceType)) {
-            Oas30Schema schema30 = (Oas30Schema) parentSchema;
-            return schema30.createAnyOfSchema();
-        }
-        if (NodeCompat.equals(TYPE_ONE_OF, inheritanceType)) {
-            Oas30Schema schema30 = (Oas30Schema) parentSchema;
-            return schema30.createOneOfSchema();
-        }
-        // TODO is it possible to get here?  if so what should we do?
-        return parentSchema.createAllOfSchema();
-    }
-
-    /**
      * Moves properties from one schema to another.
      * @param from
      * @param to
@@ -254,26 +204,6 @@ public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
         
         to.required = from.required;
         from.required = null;
-    }
-
-    /**
-     * Determines the current inheritance type for the given schema.
-     * @param schema
-     */
-    private static String getInheritanceType(OasSchema schema) {
-        if (ModelUtils.isDefined(schema.allOf)) {
-            return TYPE_ALL_OF;
-        }
-        if (schema.ownerDocument().getDocumentType() == DocumentType.openapi3) {
-            Oas30Schema schema30 = (Oas30Schema) schema;
-            if (ModelUtils.isDefined(schema30.anyOf)) {
-                return TYPE_ANY_OF;
-            }
-            if (ModelUtils.isDefined(schema30.oneOf)) {
-                return TYPE_ONE_OF;
-            }
-        }
-        return TYPE_NONE;
     }
 
 }
