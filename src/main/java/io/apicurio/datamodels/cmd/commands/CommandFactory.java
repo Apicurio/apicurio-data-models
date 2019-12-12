@@ -246,7 +246,9 @@ public class CommandFactory {
             case "DeleteTagCommand_20":
             case "DeleteTagCommand_30":
             { return new DeleteTagCommand(); }
-            
+            case "DeleteChildSchemaCommand":
+            { return new DeleteChildSchemaCommand(); }
+
             /** New Commands **/
             
             case "NewMediaTypeCommand":
@@ -501,6 +503,10 @@ public class CommandFactory {
     
     public static final ICommand createDeleteContactCommand(Info info) {
         return new DeleteContactCommand(info);
+    }
+
+    public static final ICommand createDeleteChildSchemaCommand(OasSchema schema) {
+        return new DeleteChildSchemaCommand(schema);
     }
     
     public static final ICommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
