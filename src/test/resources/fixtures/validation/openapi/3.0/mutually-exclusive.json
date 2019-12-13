@@ -54,7 +54,7 @@
     },
     "links": {
       "link-001": {
-        "operationRef": "#paths~12.0~1repositories~1{$response.body#/username}",
+        "operationRef": "#/components/examples/ex-004",
         "operationId": "getRepositoriesByOwner",
         "parameters": {
           "username": "$response.body#/username"

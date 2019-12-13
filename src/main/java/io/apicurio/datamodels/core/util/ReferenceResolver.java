@@ -38,6 +38,7 @@ public class ReferenceResolver implements IReferenceResolver {
      * @param from
      */
     public Node resolveRef(String $ref, Node from) {
+        // TODO support escaped chars in JSON refs
         if ($ref.indexOf("#/") != 0) { return null; }
         return this.resolveRefInternal($ref, from, new ArrayList<>());
     }
