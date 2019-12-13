@@ -47,7 +47,7 @@ public class ReferenceUtil {
         if (!hasValue($ref)) {
             return null;
         }
-        ReferenceResolver resolver = new ReferenceResolver();
+        IReferenceResolver resolver = ReferenceResolverChain.getInstance();
         return resolver.resolveRef($ref, from);
     }
 

@@ -36,6 +36,7 @@ public interface IReferenceResolver {
      * Resolves a reference to a JSON object or {@link Node}.
      * @param reference
      * @param from
+     * @return null if the resolver cannot resolve the reference
      */
     public Node resolveRef(String reference, Node from);
 
