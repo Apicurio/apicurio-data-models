@@ -41,6 +41,7 @@ import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
+import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
@@ -252,7 +253,13 @@ public class Library {
         return transformer.getResult();
     }
 
-
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with no external references.
+     * @param source
+     */
     public static Document dereferenceDocument(Document source) {
         OasDocument clone = (OasDocument) cloneDocument(source);
         return clone;
