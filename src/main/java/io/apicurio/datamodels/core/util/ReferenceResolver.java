@@ -38,6 +38,7 @@ public class ReferenceResolver implements IReferenceResolver {
      * @param from
      */
     public Node resolveRef(String $ref, Node from) {
+        if ($ref.indexOf("#/") != 0) { return null; }
         return this.resolveRefInternal($ref, from, new ArrayList<>());
     }
     

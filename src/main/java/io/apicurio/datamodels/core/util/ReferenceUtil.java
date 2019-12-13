@@ -63,8 +63,6 @@ public class ReferenceUtil {
      * @param from
      */
     public static boolean canResolveRef(String $ref, Node from) {
-        // Don't try to resolve e.g. external references.
-        if ($ref.indexOf("#/") != 0) { return true; }
         return hasValue(ReferenceUtil.resolveRef($ref, from));
     }
 
