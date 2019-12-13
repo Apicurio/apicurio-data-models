@@ -252,4 +252,9 @@ public class Library {
         return transformer.getResult();
     }
 
+
+    public static Document dereferenceDocument(Document source) {
+        OasDocument clone = (OasDocument) cloneDocument(source);
+        return clone;
+    }
 }
