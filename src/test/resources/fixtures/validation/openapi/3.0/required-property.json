@@ -78,10 +78,10 @@
       "disc-001": {
         "oneOf": [
           {
-            "$ref": "https://gigantic-server.com/schemas/Cat/schema.json"
+            "$ref": "#/components/schemas/ed-001"
           },
           {
-            "$ref": "https://gigantic-server.com/schemas/Monster/schema.json"
+            "$ref": "#/components/schemas/ed-001"
           }
         ],
         "discriminator": {
