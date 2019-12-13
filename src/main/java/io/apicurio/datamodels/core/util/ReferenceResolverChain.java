@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.util;
 
 import io.apicurio.datamodels.core.models.Node;
 
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class ReferenceResolverChain implements IReferenceResolver {
      * Constructor.
      */
     public ReferenceResolverChain() {
-        addResolver(new ReferenceResolver());
+        addResolver(new LocalReferenceResolver());
     }
     
     /**

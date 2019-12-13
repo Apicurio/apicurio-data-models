@@ -29,7 +29,7 @@ import io.apicurio.datamodels.core.models.Node;
  * A class to help with resolving references.  Handles recursion with loop detection.
  * @author eric.wittmann@gmail.com
  */
-public class ReferenceResolver implements IReferenceResolver {
+public class LocalReferenceResolver implements IReferenceResolver {
 
     /**
      * Resolves a reference from a relative position in the data model.  Returns null if the
