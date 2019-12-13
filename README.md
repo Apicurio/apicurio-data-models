@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Apicurio/apicurio-data-models.svg?style=svg)](https://circleci.com/gh/Apicurio/apicurio-data-models)
-safsfs
+
 # Apicurio Data Models Library (Java & Typescript)
 
 ## What is it?
