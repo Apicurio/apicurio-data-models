@@ -73,24 +73,19 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
-import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackPathItem;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Encoding;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ExampleDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Link;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkParameterExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkRequestBodyExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
-import io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows;
-import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
@@ -495,62 +490,14 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitLinkDefinition(Oas30LinkDefinition node) {
-
-
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAuthorizationCodeOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow)
-     */
-    @Override
-    public void visitAuthorizationCodeOAuthFlow(Oas30AuthorizationCodeOAuthFlow node) {
-
-
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitClientCredentialsOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow)
-     */
-    @Override
-    public void visitClientCredentialsOAuthFlow(Oas30ClientCredentialsOAuthFlow node) {
-
-
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitPasswordOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow)
-     */
-    @Override
-    public void visitPasswordOAuthFlow(Oas30PasswordOAuthFlow node) {
-
-
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitImplicitOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow)
-     */
-    @Override
-    public void visitImplicitOAuthFlow(Oas30ImplicitOAuthFlow node) {
-
-
-    }
-
-    /**
-     * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOAuthFlows(io.apicurio.datamodels.openapi.v3.models.Oas30OAuthFlows)
-     */
-    @Override
-    public void visitOAuthFlows(Oas30OAuthFlows node) {
-
-
-    }
 
     /**
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitEncoding(io.apicurio.datamodels.openapi.v3.models.Oas30Encoding)
      */
     @Override
     public void visitEncoding(Oas30Encoding node) {
-
-
     }
 
     /**
@@ -558,8 +505,6 @@ public class CombinedVisitorAdapter implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitMediaType(Oas30MediaType node) {
-
-
     }
 
     /**

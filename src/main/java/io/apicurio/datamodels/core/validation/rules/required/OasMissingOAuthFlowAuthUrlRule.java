@@ -17,9 +17,9 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -35,18 +35,18 @@ public class OasMissingOAuthFlowAuthUrlRule extends OasRequiredPropertyValidatio
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitImplicitOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitImplicitOAuthFlow(io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow)
      */
     @Override
-    public void visitImplicitOAuthFlow(Oas30ImplicitOAuthFlow node) {
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
         this.requireProperty(node, Constants.PROP_AUTHORIZATION_URL, map("flowType", "Implicit"));
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAuthorizationCodeOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow)
+     * 
      */
     @Override
-    public void visitAuthorizationCodeOAuthFlow(Oas30AuthorizationCodeOAuthFlow node) {
+    public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
         this.requireProperty(node, Constants.PROP_AUTHORIZATION_URL, map("flowType", "Auth Code"));
     }
 
