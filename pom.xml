@@ -57,7 +57,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<version.frontend-maven.plugin>1.8.0</version.frontend-maven.plugin>
+		<version.frontend-maven.plugin>1.9.0</version.frontend-maven.plugin>
 
 		<version.com.fasterxml.jackson>2.10.1</version.com.fasterxml.jackson>
 		<version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
