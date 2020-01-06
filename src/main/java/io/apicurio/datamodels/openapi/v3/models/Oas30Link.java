@@ -76,6 +76,16 @@ public class Oas30Link extends ExtensibleNode implements INamed, IReferenceNode 
         this._name = newName;
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * Creates a link parameter expression.
      * @param name

@@ -261,7 +261,13 @@ public class Library {
      * @param source
      */
     public static Document dereferenceDocument(Document source) {
+        /*
+         1) Search the document for nodes that can use references
+         2) For each such node, rus the resolver chain to get the dereferenced node instead
+         3) Replace the $ref with the full node
+         */
         OasDocument clone = (OasDocument) cloneDocument(source);
+
         return clone;
     }
 }

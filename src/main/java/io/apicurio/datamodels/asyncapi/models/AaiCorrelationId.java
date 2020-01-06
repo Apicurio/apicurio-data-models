@@ -2,6 +2,7 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -9,7 +10,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiCorrelationId extends ExtensibleNode implements INamed {
+public abstract class AaiCorrelationId extends ExtensibleNode implements IReferenceNode, INamed {
 
     public String _name;
     public String $ref;
@@ -57,4 +58,13 @@ public abstract class AaiCorrelationId extends ExtensibleNode implements INamed 
         this._name = newName;
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
 }

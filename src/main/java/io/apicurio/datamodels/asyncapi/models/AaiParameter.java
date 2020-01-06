@@ -74,4 +74,13 @@ public abstract class AaiParameter extends ExtensibleNode implements IReferenceN
         this._name = newName;
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
 }

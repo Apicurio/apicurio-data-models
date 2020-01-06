@@ -49,6 +49,16 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
         super(name);
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * Creates a child items model.
      */

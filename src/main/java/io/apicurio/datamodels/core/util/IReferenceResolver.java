@@ -38,6 +38,6 @@ public interface IReferenceResolver {
      * @param from
      * @return null if the resolver cannot resolve the reference
      */
-    public Node resolveRef(String reference, Node from);
+    public Node resolveRef(String reference, Node from); // TODO if can return JSON object, why Node return type?
 
 }

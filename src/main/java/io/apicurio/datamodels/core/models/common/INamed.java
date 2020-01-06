@@ -18,6 +18,10 @@ package io.apicurio.datamodels.core.models.common;
 
 /**
  * Any node model that has a name.
+ *
+ * Practical use case: If this node is contained in a map within a parent node (e.g. a definition),
+ * the key that it's stored under equals the name, i.e. {@link INamed#getName()}
+ *
  * @author eric.wittmann@gmail.com
  */
 public interface INamed {
@@ -25,12 +29,12 @@ public interface INamed {
     /**
      * Gets the definition name.
      */
-    public String getName();
+    String getName();
     
     /**
      * Renames the definition.
      * @param newName
      */
-    public void rename(String newName);
+    void rename(String newName);
 
 }

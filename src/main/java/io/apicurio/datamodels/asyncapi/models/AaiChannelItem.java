@@ -69,6 +69,16 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
         this._name = newName;
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * Adds a parameter.
      * @param paramName

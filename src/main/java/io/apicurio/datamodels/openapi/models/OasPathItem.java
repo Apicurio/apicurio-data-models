@@ -58,7 +58,17 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     public void rename(String newPath) {
         this._path = newPath;
     }
-    
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * @see io.apicurio.datamodels.openapi.models.IOasParameterParent#getParameters()
      */

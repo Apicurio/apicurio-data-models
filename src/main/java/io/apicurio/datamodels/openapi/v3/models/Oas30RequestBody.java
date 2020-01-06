@@ -52,6 +52,16 @@ public class Oas30RequestBody extends ExtensibleNode implements IReferenceNode, 
         viz.visitRequestBody(this);
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#createMediaType(java.lang.String)
      */

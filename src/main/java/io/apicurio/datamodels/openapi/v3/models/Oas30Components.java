@@ -37,7 +37,7 @@ public class Oas30Components extends Components {
     public Map<String, Oas30ExampleDefinition> examples = new LinkedHashMap<>();
     public Map<String, Oas30RequestBodyDefinition> requestBodies = new LinkedHashMap<>();
     public Map<String, Oas30HeaderDefinition> headers = new LinkedHashMap<>();
-    public Map<String, Oas30SecurityScheme> securitySchemes = new LinkedHashMap<>();
+    public Map<String, Oas30SecurityScheme> securitySchemes = new LinkedHashMap<>(); // TODO should be a separate definition object?
     public Map<String, Oas30LinkDefinition> links = new LinkedHashMap<>();
     public Map<String, Oas30CallbackDefinition> callbacks = new LinkedHashMap<>();
 

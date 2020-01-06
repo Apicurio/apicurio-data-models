@@ -71,5 +71,14 @@ public class OasResponse extends ExtensibleNode implements INamed, IReferenceNod
     public void rename(String newName) {
         this._name = newName;
     }
-    
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
 }

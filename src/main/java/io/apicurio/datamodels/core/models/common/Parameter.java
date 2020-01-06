@@ -51,7 +51,17 @@ public abstract class Parameter extends ExtensibleNode implements IReferenceNode
     public void accept(IVisitor visitor) {
         visitor.visitParameter(this);
     }
-    
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     public abstract Schema createSchema();
     
     /**
