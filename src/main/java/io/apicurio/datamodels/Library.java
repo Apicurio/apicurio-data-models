@@ -63,6 +63,9 @@ public class Library {
     public static void addReferenceResolver(IReferenceResolver resolver) {
         ReferenceResolverChain.getInstance().addResolver(resolver);
     }
+    public static void removeReferenceResolver(IReferenceResolver resolver) {
+        ReferenceResolverChain.getInstance().removeResolver(resolver);
+    }
     
     /**
      * Creates a new, empty document of the given type.

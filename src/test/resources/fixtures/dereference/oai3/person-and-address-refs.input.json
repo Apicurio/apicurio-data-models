@@ -1,0 +1,24 @@
+{
+    "openapi": "3.0.2",
+    "components": {
+        "schemas": {
+            "Widget": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Person"
+                    },
+                    "location": {
+                        "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
+                    }
+                }
+            }
+        }
+    }
+}

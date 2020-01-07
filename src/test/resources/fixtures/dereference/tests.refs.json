@@ -1,0 +1,106 @@
+{
+    "http://www.example.com/schemas/foo.json#/components/schemas/Person": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "type": "string"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/Address": {
+        "type": "object",
+        "properties": {
+            "street": {
+                "type": "string"
+            },
+            "city": {
+                "type": "string"
+            },
+            "state": {
+                "type": "string"
+            },
+            "zip": {
+                "type": "string"
+            }
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddress": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddressAndSpouse": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
+            },
+            "spouse": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Person"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithRelativeAddressAndSpouse": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "#/components/schemas/Address"
+            },
+            "spouse": {
+                "$ref": "#/components/schemas/Person"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    }
+    
+}
