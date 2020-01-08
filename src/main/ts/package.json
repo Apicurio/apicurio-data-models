@@ -31,7 +31,7 @@
     "rimraf": "3.0.0",
     "rollup": "0.68.2",
     "rollup-plugin-commonjs": "8.4.1",
-    "ts-jest": "24.2.0",
+    "ts-jest": "24.3.0",
     "typescript": "3.7.4"
   }
 }
