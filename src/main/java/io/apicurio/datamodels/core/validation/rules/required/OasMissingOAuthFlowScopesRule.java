@@ -17,12 +17,12 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow;
-import io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -46,34 +46,34 @@ public class OasMissingOAuthFlowScopesRule extends OasRequiredPropertyValidation
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitImplicitOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30ImplicitOAuthFlow)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitImplicitOAuthFlow(io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow)
      */
     @Override
-    public void visitImplicitOAuthFlow(Oas30ImplicitOAuthFlow node) {
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
         this.visitOAuthFlow(node);
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitPasswordOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30PasswordOAuthFlow)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitPasswordOAuthFlow(io.apicurio.datamodels.core.models.common.PasswordOAuthFlow)
      */
     @Override
-    public void visitPasswordOAuthFlow(Oas30PasswordOAuthFlow node) {
+    public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
         this.visitOAuthFlow(node);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitClientCredentialsOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30ClientCredentialsOAuthFlow)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitClientCredentialsOAuthFlow(io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow)
      */
     @Override
-    public void visitClientCredentialsOAuthFlow(Oas30ClientCredentialsOAuthFlow node) {
+    public void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node) {
         this.visitOAuthFlow(node);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAuthorizationCodeOAuthFlow(io.apicurio.datamodels.openapi.v3.models.Oas30AuthorizationCodeOAuthFlow)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAuthorizationCodeOAuthFlow(io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow)
      */
     @Override
-    public void visitAuthorizationCodeOAuthFlow(Oas30AuthorizationCodeOAuthFlow node) {
+    public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
         this.visitOAuthFlow(node);
     }
 

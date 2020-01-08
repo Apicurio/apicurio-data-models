@@ -1,0 +1,47 @@
+[
+    {
+        "name" : "[OpenAPI 2] No Changes 1",
+        "input" : "oai2/no-changes-1.input.json",
+        "expected" : "oai2/no-changes-1.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 2] No Changes 2",
+        "input" : "oai2/no-changes-2.input.json",
+        "expected" : "oai2/no-changes-2.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] No Changes Self Reference",
+        "input" : "oai3/no-changes-selfref.input.json",
+        "expected" : "oai3/no-changes-selfref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Address Reference",
+        "input" : "oai3/address-ref.input.json",
+        "expected" : "oai3/address-ref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person Reference",
+        "input" : "oai3/person-ref.input.json",
+        "expected" : "oai3/person-ref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person And Address",
+        "input" : "oai3/person-and-address-refs.input.json",
+        "expected" : "oai3/person-and-address-refs.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Address",
+        "input" : "oai3/person-with-address.input.json",
+        "expected" : "oai3/person-with-address.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Address and Spouse",
+        "input" : "oai3/person-with-address-and-spouse.input.json",
+        "expected" : "oai3/person-with-address-and-spouse.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Relative Address And Spouse",
+        "input" : "oai3/person-with-relative-address-and-spouse.input.json",
+        "expected" : "oai3/person-with-relative-address-and-spouse.expected.json"
+    }
+]

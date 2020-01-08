@@ -56,6 +56,13 @@ public class ReferenceResolverChain implements IReferenceResolver {
         resolvers.add(0, resolver);
     }
 
+    /**
+     * @param resolver
+     */
+    public void removeResolver(IReferenceResolver resolver) {
+        resolvers.remove(resolver);
+    }
+
     @Override
     public Node resolveRef(String reference, Node from) {
         for (IReferenceResolver resolver : resolvers) {
