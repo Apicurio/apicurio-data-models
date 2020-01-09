@@ -10,9 +10,13 @@ import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -58,48 +62,76 @@ public class ReferenceLocalization {
                 throw new RuntimeException("Unknown document type: " + clone.getDocumentType());
         }
 
-        boolean done = false;
-        while(!done) {
+        Queue<Context> processQueue = new LinkedList<>();
 
+
+
+
+        Map<String, String> resolvedToLocalMap = new HashMap<>();
+
+        processQueue.add(new Context(null, clone));
+
+        while(!processQueue.isEmpty()) {
+            Context item = processQueue.remove();
+
+            // Local components originalRef -> full node
             Map<String, Node> localComponents = ds.getExistingLocalComponents(clone);
 
-            // collect all
+            // originalRef -> collect all reference objects
             ReferenceCollectionVisitor rcv = new ReferenceCollectionVisitor();
-            VisitorUtil.visitTree(clone, rcv, TraverserDirection.down);
-            Map<String, IReferenceNode> collectedNodes = rcv.getCollectedNodes();
+            VisitorUtil.visitTree(item.node, rcv, TraverserDirection.down);
+            Map<String, IReferenceNode> referencedNodes = rcv.getReferencedNodes();
 
-            for (Entry<String, IReferenceNode> e : collectedNodes.entrySet()) {
+
+            for (Entry<String, IReferenceNode> e : referencedNodes.entrySet()) {
                 // skip if local
                 if (!localComponents.containsKey(e.getKey())) {
 
+                    Reference ref = new Reference(e.getKey());
+
+                    Node resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
+                    if(resolved == null && ref.isRelative() && item.originalRef != null) {
+                        ref = ref.withAbsoluteFrom(new Reference(item.originalRef));
+                        resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
+                    }
+
                     // resolve
-                    Node resolved = resolver.resolveRef(e.getKey(), (Node) e.getValue());
+                    // break recursion?
+                    if(resolvedToLocalMap.containsKey(ref.getRef())) {
+                        e.getValue().setReference(resolvedToLocalMap.get(ref.getRef()));
+                        continue;
+                    }
+
                     // if null keep the reference in an 'unresolvable' set to decide later
                     if (resolved == null) {
                         unresolvable.add(e.getKey());
                     } else {
-                        String ref = null;
+                        ReferenceLocalizationStrategy.Pair localRef = null;
                         // try to attach, resolve possible name conflict
                         // TODO any other strategy?
-                        String[] parts = e.getKey().split("/"); // TODO check
-                        String name = parts[parts.length - 1];
+                        //String[] parts = e.getKey().split("/"); // TODO check
+                        String name = ref.getName(); //parts[parts.length - 1];
                         for (int i = 0; i < 50; i++) { // TODO good limit?
                             if (i > 0)
                                 name += i;
                             try {
-                                ref = ds.attachAsDefinition(clone, name, resolved);
+                                localRef = ds.attachAsDefinition(clone, name, resolved);
                             } catch (IllegalArgumentException ex) {
                                 continue;
                             }
-                            if(ref == null) {
+                            if(localRef == null) {
                                 unresolvable.add(e.getKey());
                             } else {
                                 // success!
                                 // rename the original reference
-                                e.getValue().setReference(ref);
+                                e.getValue().setReference(localRef.ref);
+                                //((IReferenceNode)localRef.node).setReference(localRef.ref);
                                 // we're not done yet, possible nested refs
-                                done = true;
+                                //done = false;
+                                processQueue.add(new Context(ref.getRef(), localRef.node));
+                                resolvedToLocalMap.put(ref.getRef(), localRef.ref);
                             }
+                            break;
                         }
                     }
                 }
@@ -122,5 +154,39 @@ public class ReferenceLocalization {
 
     public Set<String> getUnresolvableReferences() {
         return Collections.unmodifiableSet(unresolvable);
+    }
+
+
+    private class Context {
+
+        //private String parentRef;
+        private String originalRef;
+        private Node node;
+
+//        public Context(String parentRef, String originalRef, Node node) {
+//            this.parentRef = parentRef;
+//            this.originalRef = originalRef;
+//            this.node = node;
+//        }
+
+        public Context(String originalRef, Node node) {
+            this.originalRef = originalRef;
+            this.node = node;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Context context = (Context) o;
+            return /*Objects.equals(parentRef, context.parentRef)*/ true &&
+                    Objects.equals(originalRef, context.originalRef) &&
+                    Objects.equals(node, context.node);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(/*parentRef,*/ originalRef, node);
+        }
     }
 }

@@ -10,7 +10,7 @@ public interface ReferenceLocalizationStrategy {
 
     /**
      * Add the node to the document (wrapped) as a definition.
-     * Return the definition that was added or null on failure.
+     * Return the reference to this definition.
      *
      * @param model
      * @param name
@@ -18,7 +18,7 @@ public interface ReferenceLocalizationStrategy {
      * @return
      * @throws java.lang.IllegalArgumentException if there is a naming conflict. // TODO some better way?
      */
-    /*IDefinition*/String attachAsDefinition(Document model, String name, Node component);
+    /*IDefinition*/Pair attachAsDefinition(Document model, String name, Node component);
 
 
     /**
@@ -28,4 +28,15 @@ public interface ReferenceLocalizationStrategy {
      * @return
      */
     Map<String, Node> getExistingLocalComponents(Document model);
+
+
+    public static class Pair {
+        String ref;
+        Node node;
+
+        public Pair(String ref, Node node) {
+            this.ref = ref;
+            this.node = node;
+        }
+    }
 }

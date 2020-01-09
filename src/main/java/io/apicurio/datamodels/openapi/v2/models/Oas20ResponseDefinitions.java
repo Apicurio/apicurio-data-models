@@ -32,7 +32,7 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  */
 public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20ResponseDefinition> {
     
-    private Map<String, Oas20ResponseDefinition> items = new LinkedHashMap<>();
+    public Map<String, Oas20ResponseDefinition> items = new LinkedHashMap<>();
     
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)

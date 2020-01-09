@@ -244,7 +244,7 @@ public abstract class Node implements IVisitable {
 		if(!parent.isAttached())
 			throw new IllegalArgumentException("Target parent node (method argument) is not itself attached.");
     	this._ownerDocument = parent.ownerDocument();
-    	this._parent = parent();
+    	this._parent = parent;
 	}
 
 }

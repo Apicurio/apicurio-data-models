@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.openapi.v2.models;
 
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
+import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
@@ -140,7 +141,7 @@ public class Oas20Schema extends OasSchema {
 
     }
 
-    public static class Oas20PropertySchema extends Oas20Schema implements IOasPropertySchema {
+    public static class Oas20PropertySchema extends Oas20Schema implements IOasPropertySchema, INamed {
         
         private String _propertyName;
         
@@ -159,7 +160,12 @@ public class Oas20Schema extends OasSchema {
         public String getPropertyName() {
             return this._propertyName;
         }
-        
+
+        @Override
+        public String getName() {
+            return _propertyName;
+        }
+
         /**
          * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#rename(java.lang.String)
          */

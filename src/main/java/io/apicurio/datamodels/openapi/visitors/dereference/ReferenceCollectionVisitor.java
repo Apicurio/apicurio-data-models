@@ -3,10 +3,13 @@ package io.apicurio.datamodels.openapi.visitors.dereference;
 import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
 import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.INamed;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Collect all nodes representing reference objects.
@@ -20,7 +23,8 @@ import java.util.Map;
  */
 public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
 
-    private Map<String, IReferenceNode> collectedNodes = new LinkedHashMap<>();
+    private Set<IReferenceNode> fullNodes = new HashSet<>();
+    private Map<String, IReferenceNode> referencedNodes = new LinkedHashMap<>();
 
     /**
      * Visit a node.  This is a common method called for every node type.
@@ -29,16 +33,23 @@ public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
      */
     @Override
     protected void visitNode(Node node) {
-        if (node instanceof IReferenceNode) {
+        if (node instanceof IReferenceNode && node instanceof INamed) {
             IReferenceNode refNode = (IReferenceNode) node;
-            collectedNodes.put(refNode.getReference(), refNode);
+            if(refNode.getReference() != null)
+                referencedNodes.put(refNode.getReference(), refNode);
+            else
+                fullNodes.add(refNode);
         }
     }
 
     /**
      * @return An unmodifiable map of collected nodes.
      */
-    public Map<String, IReferenceNode> getCollectedNodes() {
-        return Collections.unmodifiableMap(collectedNodes);
+    public Map<String, IReferenceNode> getReferencedNodes() {
+        return Collections.unmodifiableMap(referencedNodes);
+    }
+
+    public Set<IReferenceNode> getFullNodes() {
+        return Collections.unmodifiableSet(fullNodes);
     }
 }

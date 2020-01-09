@@ -1,6 +1,5 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
@@ -25,124 +24,107 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Function;
 
-public class Oas30ReferenceLocalizationStrategy implements ReferenceLocalizationStrategy {
-
-    private static final String PREFIX = "#/components/";
-
-    /**
-     * Warning: This method assumes that the definition and the represented object can be read from the same JSON,
-     * i.e. effectively contain the same data.
-     */
-    private Node wrap(Node source, Node target) {
-        return Library.readNode(Library.writeNode(source), target);
-    }
+public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocalizationStrategy implements ReferenceLocalizationStrategy {
 
     // throw
+    // when attaching, we actually create a copy of the "component" node, so we should return it
     @Override
-    public String attachAsDefinition(Document model0, String name, Node component) {
+    public Pair attachAsDefinition(Document model0, String name, Node component) {
         Oas30Document model = (Oas30Document) model0; // TODO explicit check
+//        component._ownerDocument = model0;
         // TODO reduce code duplication?
         if (component instanceof Oas30Schema) {
-            if (model.components.getSchemaDefinition(name) == null)
+            if (model.components.getSchemaDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30SchemaDefinition definition = (Oas30SchemaDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30SchemaDefinition definition = wrap(component, new Oas30SchemaDefinition(name), model);
             definition.attachToParent(model.components); // TODO this should be done by vvv
             model.components.addSchemaDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "schemas/" + name;
+            return new Pair(PREFIX + "schemas/" + name, definition);
         }
         if (component instanceof Oas30Response) {
-            if (model.components.getResponseDefinition(name) == null)
+            if (model.components.getResponseDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30ResponseDefinition definition = (Oas30ResponseDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30ResponseDefinition definition = wrap(component, new Oas30ResponseDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addResponseDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "responses/" + name;
+            return new Pair(PREFIX + "responses/" + name, definition);
         }
         if (component instanceof Oas30Parameter) {
-            if (model.components.getParameterDefinition(name) == null)
+            if (model.components.getParameterDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30ParameterDefinition definition = (Oas30ParameterDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30ParameterDefinition definition = wrap(component, new Oas30ParameterDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addParameterDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "parameters/" + name;
+            return new Pair(PREFIX + "parameters/" + name, definition);
         }
         if (component instanceof Oas30Example) {
-            if (model.components.getExampleDefinition(name) == null)
+            if (model.components.getExampleDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30ExampleDefinition definition = (Oas30ExampleDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30ExampleDefinition definition = wrap(component, new Oas30ExampleDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addExampleDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "examples/" + name;
+            return new Pair(PREFIX + "examples/" + name, definition);
         }
         if (component instanceof Oas30RequestBody) {
-            if (model.components.getRequestBodyDefinition(name) == null)
+            if (model.components.getRequestBodyDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30RequestBodyDefinition definition = (Oas30RequestBodyDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30RequestBodyDefinition definition = wrap(component, new Oas30RequestBodyDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addRequestBodyDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "requestBodies/" + name;
+            return new Pair(PREFIX + "requestBodies/" + name, definition);
         }
         if (component instanceof Oas30Header) {
-            if (model.components.getHeaderDefinition(name) == null)
+            if (model.components.getHeaderDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30HeaderDefinition definition = (Oas30HeaderDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30HeaderDefinition definition = wrap(component, new Oas30HeaderDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addHeaderDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "headers/" + name;
+            return new Pair(PREFIX + "headers/" + name, definition);
         }
         if (component instanceof ModernSecurityScheme) {
-            if (model.components.getSecurityScheme(name) == null)
+            if (model.components.getSecurityScheme(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30SecurityScheme definition = (Oas30SecurityScheme) wrap(component, new Oas30SecurityScheme(name));
+            Oas30SecurityScheme definition = wrap(component, new Oas30SecurityScheme(name), model);
             definition.attachToParent(model.components);
             model.components.addSecurityScheme(definition.getName(), definition);
             //return definition;
-            return PREFIX + "securitySchemes/" + name;
+            return new Pair(PREFIX + "securitySchemes/" + name, definition);
         }
         if (component instanceof Oas30Link) {
-            if (model.components.getLinkDefinition(name) == null)
+            if (model.components.getLinkDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30LinkDefinition definition = (Oas30LinkDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30LinkDefinition definition = wrap(component, new Oas30LinkDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addLinkDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "links/" + name;
+            return new Pair(PREFIX + "links/" + name, definition);
         }
         if (component instanceof Oas30Callback) {
-            if (model.components.getCallbackDefinition(name) == null)
+            if (model.components.getCallbackDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
-            Oas30CallbackDefinition definition = (Oas30CallbackDefinition) wrap(component, new Oas30SchemaDefinition(name));
+            Oas30CallbackDefinition definition = wrap(component, new Oas30CallbackDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addCallbackDefinition(definition.getName(), definition);
             //return definition;
-            return PREFIX + "callbacks/" + name;
+            return new Pair(PREFIX + "callbacks/" + name, definition);
         }
         return null;
-    }
-
-
-    private void transform(Map<String, ? extends io.apicurio.datamodels.core.models.Node> source, Function<String, String> transformName, Map<String, io.apicurio.datamodels.core.models.Node> result) {
-        for (Entry<String, ?> e : source.entrySet()) {
-            result.put(transformName.apply(e.getKey()), (io.apicurio.datamodels.core.models.Node) e.getValue());
-        }
     }
 
 
@@ -151,15 +133,19 @@ public class Oas30ReferenceLocalizationStrategy implements ReferenceLocalization
         Oas30Document model = (Oas30Document) model0; // TODO explicit check
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
         Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();
-        transform(model.components.schemas, name -> PREFIX + "schemas/" + name, res);
-        transform(model.components.responses, name -> PREFIX + "responses/" + name, res);
-        transform(model.components.parameters, name -> PREFIX + "parameters/" + name, res);
-        transform(model.components.examples, name -> PREFIX + "examples/" + name, res);
-        transform(model.components.requestBodies, name -> PREFIX + "requestBodies/" + name, res);
-        transform(model.components.headers, name -> PREFIX + "headers/" + name, res);
-        transform(model.components.securitySchemes, name -> PREFIX + "securitySchemes/" + name, res);
-        transform(model.components.links, name -> PREFIX + "links/" + name, res);
-        transform(model.components.callbacks, name -> PREFIX + "callbacks/" + name, res);
+        if(model.components != null) {
+            transform(model.components.schemas, name -> PREFIX + "schemas/" + name, res);
+            transform(model.components.responses, name -> PREFIX + "responses/" + name, res);
+            transform(model.components.parameters, name -> PREFIX + "parameters/" + name, res);
+            transform(model.components.examples, name -> PREFIX + "examples/" + name, res);
+            transform(model.components.requestBodies, name -> PREFIX + "requestBodies/" + name, res);
+            transform(model.components.headers, name -> PREFIX + "headers/" + name, res);
+            transform(model.components.securitySchemes, name -> PREFIX + "securitySchemes/" + name, res);
+            transform(model.components.links, name -> PREFIX + "links/" + name, res);
+            transform(model.components.callbacks, name -> PREFIX + "callbacks/" + name, res);
+        }
         return res;
     }
+
+
 }

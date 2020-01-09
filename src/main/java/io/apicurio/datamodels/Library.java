@@ -45,6 +45,7 @@ import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
+import io.apicurio.datamodels.openapi.visitors.dereference.ReferenceLocalization;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
 
 /**
@@ -269,8 +270,10 @@ public class Library {
          2) For each such node, rus the resolver chain to get the dereferenced node instead
          3) Replace the $ref with the full node
          */
-        OasDocument clone = (OasDocument) cloneDocument(source);
-
-        return clone;
+        //OasDocument clone = (OasDocument) cloneDocument(source);
+        ReferenceLocalization rl = new ReferenceLocalization(source);
+        Document normalized = rl.normalize();
+        System.out.println(Library.writeDocumentToJSONString(normalized));
+        return normalized;
     }
 }

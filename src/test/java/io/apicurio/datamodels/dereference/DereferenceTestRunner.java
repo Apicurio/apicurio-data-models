@@ -131,7 +131,7 @@ public class DereferenceTestRunner extends ParentRunner<DereferenceTestCase> {
                 Assert.assertNotSame(srcDoc, dereferencedDoc);
                 
                 // Now compare with expected
-                String actual = Library.writeDocumentToJSONString(srcDoc);
+                String actual = Library.writeDocumentToJSONString(dereferencedDoc);
                 String expectedCP = "fixtures/dereference/" + child.getExpected();
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
                 Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
