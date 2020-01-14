@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -178,15 +177,19 @@ public class ReferenceLocalization {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
+
             Context context = (Context) o;
-            return /*Objects.equals(parentRef, context.parentRef)*/ true &&
-                    Objects.equals(originalRef, context.originalRef) &&
-                    Objects.equals(node, context.node);
+
+            if (originalRef != null ? !originalRef.equals(context.originalRef) : context.originalRef != null)
+                return false;
+            return node != null ? node.equals(context.node) : context.node == null;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(/*parentRef,*/ originalRef, node);
+            int result = originalRef != null ? originalRef.hashCode() : 0;
+            result = 31 * result + (node != null ? node.hashCode() : 0);
+            return result;
         }
     }
 }

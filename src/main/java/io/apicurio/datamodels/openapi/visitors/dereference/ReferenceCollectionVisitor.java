@@ -6,6 +6,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,10 +47,10 @@ public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
      * @return An unmodifiable map of collected nodes.
      */
     public Map<String, IReferenceNode> getReferencedNodes() {
-        return Collections.unmodifiableMap(referencedNodes);
+        return new HashMap<>(referencedNodes);
     }
 
     public Set<IReferenceNode> getFullNodes() {
-        return Collections.unmodifiableSet(fullNodes);
+        return new HashSet<>(fullNodes);
     }
 }
