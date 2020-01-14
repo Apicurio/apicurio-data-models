@@ -1,11 +1,11 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
-
-import java.util.Map;
-import java.util.function.Function;
 
 public abstract class AbstractReferenceLocalizationStrategy {
 
@@ -15,6 +15,7 @@ public abstract class AbstractReferenceLocalizationStrategy {
      * Warning: This method assumes that the definition and the represented object can be read from the same JSON,
      * i.e. effectively contain the same data.
      */
+    @SuppressWarnings("unchecked")
     protected <T extends Node> T wrap(Node source, T target, Document model) {
         target._ownerDocument = model;
         target._parent = target;

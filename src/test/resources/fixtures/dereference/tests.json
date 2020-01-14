@@ -43,5 +43,30 @@
         "name" : "[OpenAPI 3] Person With Relative Address And Spouse",
         "input" : "oai3/person-with-relative-address-and-spouse.input.json",
         "expected" : "oai3/person-with-relative-address-and-spouse.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Item With Local Widget",
+        "input" : "oai3/item-with-local-widget.input.json",
+        "expected" : "oai3/item-with-local-widget.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person and Person",
+        "input" : "oai3/person-and-person.input.json",
+        "expected" : "oai3/person-and-person.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Response",
+        "input" : "oai3/response.input.json",
+        "expected" : "oai3/response.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Self Reference Widget",
+        "input" : "oai3/self-ref-widget.input.json",
+        "expected" : "oai3/self-ref-widget.expected.json"
+    },
+        {
+        "name" : "[OpenAPI 3] Multi-Reference 1",
+        "input" : "oai3/multi-ref-1.input.json",
+        "expected" : "oai3/multi-ref-1.expected.json"
     }
 ]

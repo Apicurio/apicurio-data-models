@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.core.models.common;
 
 import io.apicurio.datamodels.core.models.IVisitable;
-import io.apicurio.datamodels.core.models.Node;
 
 /**
  * Any node model that represents a re-usable definition.  Examples include
