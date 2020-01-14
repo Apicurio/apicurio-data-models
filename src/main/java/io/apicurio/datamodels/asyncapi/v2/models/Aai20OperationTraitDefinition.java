@@ -27,7 +27,7 @@ public class Aai20OperationTraitDefinition extends AaiOperationTraitDefinition {
 
     /**
      * Constructor.
-     * @param parent
+     * @param name
      */
     public Aai20OperationTraitDefinition(String name) {
         super(name);

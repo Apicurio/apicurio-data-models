@@ -29,14 +29,15 @@ import io.apicurio.datamodels.core.models.Node;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocalizationStrategy implements ReferenceLocalizationStrategy {
+public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocalizationStrategy implements IReferenceManipulationStrategy {
 
 
     @Override
-    public Pair attachAsDefinition(Document model0, String name, Node component) {
-        Aai20Document model = (Aai20Document) model0; // TODO explicit check
-//        component._ownerDocument = model0;
-        // TODO reduce code duplication?
+    public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
+        if(!(document instanceof Aai20Document))
+            throw new IllegalArgumentException("Aai20Document expected.");
+        Aai20Document model = (Aai20Document) document;
+        // TODO reduce code repetition?
         if (component instanceof Aai20Message) {
             if (model.components.messages.get(name) == null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
@@ -44,34 +45,34 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Aai20Message definition = (Aai20Message) component;
             definition.attachToParent(model.components); // TODO this should be done by vvv
             model.components.messages.put(definition.getName(), definition);
-            return new Pair(PREFIX + "messages/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "messages/" + name, definition);
         }
         if (component instanceof AaiSecurityScheme) {
             if (model.components.messages.get(name) == null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
             AaiSecurityScheme definition = (AaiSecurityScheme) component;
-            definition.attachToParent(model.components); // TODO this should be done by vvv
+            definition.attachToParent(model.components);
             model.components.securitySchemes.put(definition.getName(), definition);
-            return new Pair(PREFIX + "securitySchemes/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "securitySchemes/" + name, definition);
         }
         if (component instanceof AaiParameter) {
             if (model.components.parameters.get(name) == null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
             AaiParameter definition = (AaiParameter) component;
-            definition.attachToParent(model.components); // TODO this should be done by vvv
+            definition.attachToParent(model.components);
             model.components.parameters.put(definition.getName(), definition);
-            return new Pair(PREFIX + "parameters/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "parameters/" + name, definition);
         }
         if (component instanceof AaiCorrelationId) {
             if (model.components.messages.get(name) == null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
             AaiCorrelationId definition = (AaiCorrelationId) component;
-            definition.attachToParent(model.components); // TODO this should be done by vvv
+            definition.attachToParent(model.components);
             model.components.correlationIds.put(definition.getName(), definition);
-            return new Pair(PREFIX + "correlationIds/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "correlationIds/" + name, definition);
         }
         // ---
         if (component instanceof AaiOperationTrait) {
@@ -81,7 +82,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiOperationTraitDefinition definition = wrap(component, new Aai20OperationTraitDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.operationTraits.put(definition.getName(), definition);
-            return new Pair(PREFIX + "operationTraits/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "operationTraits/" + name, definition);
         }
         if (component instanceof AaiMessageTrait) {
             if (model.components.messageTraits.get(name) != null)
@@ -90,7 +91,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiMessageTraitDefinition definition = wrap(component, new Aai20MessageTraitDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.messageTraits.put(definition.getName(), definition);
-            return new Pair(PREFIX + "messageTraits/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "messageTraits/" + name, definition);
         }
         if (component instanceof AaiServerBindings) {
             if (model.components.serverBindings.get(name) != null)
@@ -99,7 +100,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiServerBindingsDefinition definition = wrap(component, new Aai20ServerBindingsDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.serverBindings.put(definition.getName(), definition);
-            return new Pair(PREFIX + "serverBindings/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "serverBindings/" + name, definition);
         }
         if (component instanceof AaiChannelBindings) {
             if (model.components.channelBindings.get(name) != null)
@@ -108,7 +109,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiChannelBindingsDefinition definition = wrap(component, new Aai20ChannelBindingsDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.channelBindings.put(definition.getName(), definition);
-            return new Pair(PREFIX + "channelBindings/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "channelBindings/" + name, definition);
         }
         if (component instanceof AaiOperationBindings) {
             if (model.components.operationBindings.get(name) != null)
@@ -117,7 +118,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiOperationBindingsDefinition definition = wrap(component, new Aai20OperationBindingsDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.operationBindings.put(definition.getName(), definition);
-            return new Pair(PREFIX + "operationBindings/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "operationBindings/" + name, definition);
         }
         if (component instanceof AaiMessageBindings) {
             if (model.components.messageBindings.get(name) != null)
@@ -126,15 +127,17 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             AaiMessageBindingsDefinition definition = wrap(component, new Aai20MessageBindingsDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.messageBindings.put(definition.getName(), definition);
-            return new Pair(PREFIX + "messageBindings/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "messageBindings/" + name, definition);
         }
         return null;
     }
 
 
     @Override
-    public Map<String, Node> getExistingLocalComponents(Document model0) {
-        Aai20Document model = (Aai20Document) model0; // TODO explicit check
+    public Map<String, Node> getExistingLocalComponents(Document document) {
+        if(!(document instanceof Aai20Document))
+            throw new IllegalArgumentException("Aai20Document expected.");
+        Aai20Document model = (Aai20Document) document;
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
         Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();
 
@@ -149,9 +152,7 @@ public class Aai20ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             transform(model.components.channelBindings, name -> PREFIX + "channelBindings/" + name, res);
             transform(model.components.operationBindings, name -> PREFIX + "operationBindings/" + name, res);
             transform(model.components.messageBindings, name -> PREFIX + "messageBindings/" + name, res);
-
             // schemas are not Nodes, they have to be treated separately
-            //transform(model.components.schemas, name -> PREFIX + "schemas/" + name, res);
             for (String name : model.components.schemas.keySet()) {
                 res.put(PREFIX + "schemas/" + name, null);
             }

@@ -26,23 +26,7 @@ import io.apicurio.datamodels.core.models.Node;
  * Any class implementing this interface MUST have {@link io.apicurio.datamodels.core.models.Node} as it's supertype.
  *
  * @author eric.wittmann@gmail.com
- *
- * @param <T> Type of the node that this definition represents.
- *           <T> SHOULD usually be a superclass of a class implementing this interface.
- *           This way we only need a one-way conversion.
  */
-public interface IDefinition/*<T extends Node>*/ extends INamed, IVisitable {
+public interface IDefinition extends INamed, IVisitable {
 
-//    /**
-//     * Create a <b>new</b> definition of the same type as this one.
-//     * It has the same name ({@link INamed#getName()}), and the data is copied from the represented node.
-//     *
-//     * The new node is detached, i.e. it does not belong to a document and does not have a parent.
-//     *
-//     * This method does not affect the state of this object,
-//     * but borrows the .
-//     */
-//    IDefinition<T> newFromRepresentedNode(String name, T representedNode);
-
-    // wrap method instead?
 }

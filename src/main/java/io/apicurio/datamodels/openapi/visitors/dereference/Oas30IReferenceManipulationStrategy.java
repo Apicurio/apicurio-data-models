@@ -25,15 +25,15 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocalizationStrategy implements ReferenceLocalizationStrategy {
+public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocalizationStrategy implements IReferenceManipulationStrategy {
 
-    // throw
-    // when attaching, we actually create a copy of the "component" node, so we should return it
+
     @Override
-    public Pair attachAsDefinition(Document model0, String name, Node component) {
-        Oas30Document model = (Oas30Document) model0; // TODO explicit check
-//        component._ownerDocument = model0;
-        // TODO reduce code duplication?
+    public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
+        if (!(document instanceof Oas30Document))
+            throw new IllegalArgumentException("Oas30Document expected.");
+        Oas30Document model = (Oas30Document) document;
+
         if (component instanceof Oas30Schema) {
             if (model.components.getSchemaDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
@@ -41,8 +41,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30SchemaDefinition definition = wrap(component, new Oas30SchemaDefinition(name), model);
             definition.attachToParent(model.components); // TODO this should be done by vvv
             model.components.addSchemaDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "schemas/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "schemas/" + name, definition);
         }
         if (component instanceof Oas30Response) {
             if (model.components.getResponseDefinition(name) != null)
@@ -51,8 +50,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30ResponseDefinition definition = wrap(component, new Oas30ResponseDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addResponseDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "responses/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "responses/" + name, definition);
         }
         if (component instanceof Oas30Parameter) {
             if (model.components.getParameterDefinition(name) != null)
@@ -61,8 +59,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30ParameterDefinition definition = wrap(component, new Oas30ParameterDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addParameterDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "parameters/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "parameters/" + name, definition);
         }
         if (component instanceof Oas30Example) {
             if (model.components.getExampleDefinition(name) != null)
@@ -71,8 +68,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30ExampleDefinition definition = wrap(component, new Oas30ExampleDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addExampleDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "examples/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "examples/" + name, definition);
         }
         if (component instanceof Oas30RequestBody) {
             if (model.components.getRequestBodyDefinition(name) != null)
@@ -81,8 +77,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30RequestBodyDefinition definition = wrap(component, new Oas30RequestBodyDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addRequestBodyDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "requestBodies/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "requestBodies/" + name, definition);
         }
         if (component instanceof Oas30Header) {
             if (model.components.getHeaderDefinition(name) != null)
@@ -91,8 +86,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30HeaderDefinition definition = wrap(component, new Oas30HeaderDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addHeaderDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "headers/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "headers/" + name, definition);
         }
         if (component instanceof ModernSecurityScheme) {
             if (model.components.getSecurityScheme(name) != null)
@@ -101,8 +95,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30SecurityScheme definition = wrap(component, new Oas30SecurityScheme(name), model);
             definition.attachToParent(model.components);
             model.components.addSecurityScheme(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "securitySchemes/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "securitySchemes/" + name, definition);
         }
         if (component instanceof Oas30Link) {
             if (model.components.getLinkDefinition(name) != null)
@@ -111,8 +104,7 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30LinkDefinition definition = wrap(component, new Oas30LinkDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addLinkDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "links/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "links/" + name, definition);
         }
         if (component instanceof Oas30Callback) {
             if (model.components.getCallbackDefinition(name) != null)
@@ -121,19 +113,20 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
             Oas30CallbackDefinition definition = wrap(component, new Oas30CallbackDefinition(name), model);
             definition.attachToParent(model.components);
             model.components.addCallbackDefinition(definition.getName(), definition);
-            //return definition;
-            return new Pair(PREFIX + "callbacks/" + name, definition);
+            return new ReferenceAndNode(PREFIX + "callbacks/" + name, definition);
         }
         return null;
     }
 
 
     @Override
-    public Map<String, io.apicurio.datamodels.core.models.Node> getExistingLocalComponents(Document model0) {
-        Oas30Document model = (Oas30Document) model0; // TODO explicit check
+    public Map<String, io.apicurio.datamodels.core.models.Node> getExistingLocalComponents(Document document) {
+        if (!(document instanceof Oas30Document))
+            throw new IllegalArgumentException("Oas30Document expected.");
+        Oas30Document model = (Oas30Document) document;
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
         Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();
-        if(model.components != null) {
+        if (model.components != null) {
             transform(model.components.schemas, name -> PREFIX + "schemas/" + name, res);
             transform(model.components.responses, name -> PREFIX + "responses/" + name, res);
             transform(model.components.parameters, name -> PREFIX + "parameters/" + name, res);
@@ -146,6 +139,4 @@ public class Oas30ReferenceLocalizationStrategy extends AbstractReferenceLocaliz
         }
         return res;
     }
-
-
 }

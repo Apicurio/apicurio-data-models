@@ -41,11 +41,10 @@ import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
-import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
-import io.apicurio.datamodels.openapi.visitors.dereference.ReferenceLocalization;
+import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
 
 /**
@@ -262,18 +261,11 @@ public class Library {
      * the document and pull them into this document.  It will then update any external
      * reference to instead point to the local copy.  The result is a functionally
      * equivalent document with no external references.
+     *
      * @param source
      */
     public static Document dereferenceDocument(Document source) {
-        /*
-         1) Search the document for nodes that can use references
-         2) For each such node, rus the resolver chain to get the dereferenced node instead
-         3) Replace the $ref with the full node
-         */
-        //OasDocument clone = (OasDocument) cloneDocument(source);
-        ReferenceLocalization rl = new ReferenceLocalization(source);
-        Document normalized = rl.normalize();
-        System.out.println(Library.writeDocumentToJSONString(normalized));
-        return normalized;
+        Dereferencer rl = new Dereferencer(source);
+        return rl.dereference();
     }
 }
