@@ -30,7 +30,8 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
 
     @Override
     public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
-        if (!(document instanceof Oas30Document))
+        // TODO visitor?
+        if (!(document instanceof Oas30Document)) // TODO get documenttype
             throw new IllegalArgumentException("Oas30Document expected.");
         Oas30Document model = (Oas30Document) document;
 
