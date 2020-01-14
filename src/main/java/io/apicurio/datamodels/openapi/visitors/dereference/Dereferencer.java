@@ -88,6 +88,9 @@ public class Dereferencer {
 
         // Prevents recursive loops
         Map<String, String> resolvedToLocalMap = new HashMap<>();
+        for (String ref : strategy.getExistingLocalComponents(clone).keySet()) {
+            resolvedToLocalMap.put(ref, ref);
+        }
 
         while (!processQueue.isEmpty()) {
             Context item = processQueue.remove();
@@ -111,13 +114,10 @@ public class Dereferencer {
                 Reference ref = new Reference(e.getKey());
 
                 // Attempt to resolve
-                Node resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
-                if (resolved == null && ref.isRelative() && item.originalRef != null) {
-                    // otherwise if possible do a relative resolve
-                    // TODO maybe do this immediately
+                if(ref.isRelative()) {
                     ref = ref.withAbsoluteFrom(new Reference(item.originalRef));
-                    resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
                 }
+                Node resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
 
                 // if we've already seen the resolved reference, just point to the existing one
                 // to avoid cycles
@@ -135,7 +135,7 @@ public class Dereferencer {
                     // try to attach
                     // repeat in case of name conflict
                     String name = ref.getName();
-                    for (int i = 0; i < 50; i++) { // TODO correct limit?
+                    for (int i = 0; i < Integer.MAX_VALUE; i++) {
                         if (i > 0)
                             name = ref.getName() + i;
                         try {
