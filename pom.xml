@@ -57,12 +57,12 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<version.frontend-maven.plugin>1.8.0</version.frontend-maven.plugin>
+		<version.frontend-maven.plugin>1.9.1</version.frontend-maven.plugin>
 
-		<version.com.fasterxml.jackson>2.10.1</version.com.fasterxml.jackson>
+		<version.com.fasterxml.jackson>2.10.2</version.com.fasterxml.jackson>
 		<version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
 		<version.commons-io>2.6</version.commons-io>
-		<version.junit>4.12</version.junit>
+		<version.junit>4.13</version.junit>
 		<version.org.jsweet>2.3.5</version.org.jsweet>
 		<version.org.skyscreamer>1.5.0</version.org.skyscreamer>
 	</properties>
@@ -150,7 +150,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
