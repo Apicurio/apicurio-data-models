@@ -12,8 +12,8 @@ import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -101,43 +101,45 @@ public class Dereferencer {
             // Collect all reference objects in the processed node
             ReferenceCollectionVisitor rcv = new ReferenceCollectionVisitor();
             VisitorUtil.visitTree(item.node, rcv, TraverserDirection.down);
-            Map<String, IReferenceNode> referencedNodes = rcv.getReferencedNodes();
+            List<IReferenceNode> referencedNodes = rcv.getReferencedNodes();
 
             // For each reference node ...
-            for (Entry<String, IReferenceNode> e : referencedNodes.entrySet()) {
+            for (IReferenceNode node : referencedNodes) {
 
                 // skip if already local, this makes sense if we're initially processing the whole Document
-                if (item.originalRef == null && localComponents.containsKey(e.getKey()))
+                if (item.parentRef == null && localComponents.containsKey(node.getReference()))
                     continue;
 
                 // Reference to be resolved
-                Reference ref = new Reference(e.getKey());
+                Reference originalRef = new Reference(node.getReference());
+                Reference resolvedRef = originalRef;
 
                 // Attempt to resolve
-                if(ref.isRelative()) {
-                    ref = ref.withAbsoluteFrom(new Reference(item.originalRef));
+                if(item.parentRef != null && resolvedRef.isRelative()) {
+                    resolvedRef = resolvedRef.withAbsoluteFrom(new Reference(item.parentRef));
                 }
-                Node resolved = resolver.resolveRef(ref.getRef(), (Node) e.getValue());
 
                 // if we've already seen the resolved reference, just point to the existing one
                 // to avoid cycles
-                if (resolvedToLocalMap.containsKey(ref.getRef())) {
-                    e.getValue().setReference(resolvedToLocalMap.get(ref.getRef()));
+                if (resolvedToLocalMap.containsKey(resolvedRef.getRef())) {
+                    node.setReference(resolvedToLocalMap.get(resolvedRef.getRef()));
                     continue;
                 }
 
+                Node resolved = resolver.resolveRef(resolvedRef.getRef(), (Node) node);
+
                 // if null keep the reference in an 'unresolvable' set to decide later
                 if (resolved == null) {
-                    unresolvable.add(e.getKey());
+                    unresolvable.add(node.getReference());
                 } else {
                     IReferenceManipulationStrategy.ReferenceAndNode localRef = null;
 
                     // try to attach
                     // repeat in case of name conflict
-                    String name = ref.getName();
+                    String name = originalRef.getName();
                     for (int i = 0; i < Integer.MAX_VALUE; i++) {
                         if (i > 0)
-                            name = ref.getName() + i;
+                            name = originalRef.getName() + i;
                         try {
                             localRef = strategy.attachAsDefinition(clone, name, resolved);
                             break;
@@ -148,15 +150,15 @@ public class Dereferencer {
                     }
 
                     if (localRef == null) {
-                        unresolvable.add(e.getKey());
+                        unresolvable.add(node.getReference());
                     } else {
                         // success!
                         // rename the original reference
-                        e.getValue().setReference(localRef.getRef());
+                        node.setReference(localRef.getRef());
                         // add resolved node to processing queue
-                        processQueue.add(new Context(ref.getRef(), localRef.getNode()));
+                        processQueue.add(new Context(originalRef.getRef(), localRef.getNode()));
                         // remember, to prevent cycles
-                        resolvedToLocalMap.put(ref.getRef(), localRef.getRef());
+                        resolvedToLocalMap.put(resolvedRef.getRef(), localRef.getRef());
                     }
                 }
             }
@@ -190,11 +192,11 @@ public class Dereferencer {
      */
     private class Context { // TODO maybe merge with IReferenceManipulationStrategy.ReferenceAndNode}
 
-        private String originalRef;
+        private String parentRef;
         private Node node;
 
-        private Context(String originalRef, Node node) {
-            this.originalRef = originalRef;
+        private Context(String parentRef, Node node) {
+            this.parentRef = parentRef;
             this.node = node;
         }
 
@@ -205,14 +207,14 @@ public class Dereferencer {
 
             Context context = (Context) o;
 
-            if (originalRef != null ? !originalRef.equals(context.originalRef) : context.originalRef != null)
+            if (parentRef != null ? !parentRef.equals(context.parentRef) : context.parentRef != null)
                 return false;
             return node != null ? node.equals(context.node) : context.node == null;
         }
 
         @Override
         public int hashCode() {
-            int result = originalRef != null ? originalRef.hashCode() : 0;
+            int result = parentRef != null ? parentRef.hashCode() : 0;
             result = 31 * result + (node != null ? node.hashCode() : 0);
             return result;
         }

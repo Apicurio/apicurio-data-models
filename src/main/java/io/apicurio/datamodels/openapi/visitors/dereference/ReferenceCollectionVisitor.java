@@ -5,9 +5,11 @@ import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,8 +26,9 @@ import java.util.Set;
  */
 public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
 
-    private Set<IReferenceNode> fullNodes = new HashSet<>();
-    private Map<String, IReferenceNode> referencedNodes = new LinkedHashMap<>();
+    private List<IReferenceNode> fullNodes = new ArrayList<>();
+    private List<IReferenceNode> referencedNodes = new ArrayList<>();
+
 
     /**
      * Visit a node.  This is a common method called for every node type.
@@ -37,7 +40,7 @@ public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
         if (node instanceof IReferenceNode && node instanceof INamed) {
             IReferenceNode refNode = (IReferenceNode) node;
             if (refNode.getReference() != null)
-                referencedNodes.put(refNode.getReference(), refNode);
+                referencedNodes.add(refNode);
             else
                 fullNodes.add(refNode);
         }
@@ -46,15 +49,15 @@ public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
     /**
      * @return An map of collected nodes that CONTAIN an actual reference string.
      */
-    public Map<String, IReferenceNode> getReferencedNodes() {
-        return new HashMap<>(referencedNodes);
+    public List<IReferenceNode> getReferencedNodes() {
+        return new ArrayList<>(referencedNodes);
     }
 
     /**
      * @return An map of collected nodes that DO NOT CONTAIN an actual reference string,
      * i.e. full nodes.
      */
-    public Set<IReferenceNode> getFullNodes() {
-        return new HashSet<>(fullNodes);
+    public List<IReferenceNode> getFullNodes() {
+        return new ArrayList<>(fullNodes);
     }
 }
