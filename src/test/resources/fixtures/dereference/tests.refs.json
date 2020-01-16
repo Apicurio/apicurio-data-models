@@ -156,5 +156,91 @@
 			}
 		},
 		"description": ""
+	},
+	"https://apis.example.com/common.js#/components/schemas/Widget": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string"
+			}
+		}
+	},
+	"https://apis.example.com/common.js#/components/responses/PetResponse": {
+		"description": "a pet to be returned",
+		"content": {
+			"application/json": {
+				"schema": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"https://apis.example.com/common.js#/components/parameters/Param": {
+		"name": "username",
+		"in": "path",
+		"description": "username to fetch",
+		"required": true,
+		"schema": {
+			"type": "string"
+		}
+	},
+	"https://apis.example.com/common.js#/components/examples/Example": {
+		"summary": "Example 1 Summary",
+		"description": "Example 1 description.",
+		"value": "Example1Value"
+	},
+	"https://apis.example.com/common.js#/components/requestBodies/MyRequestBody": {
+		"description": "The request body.",
+		"content": {
+			"application/json": {
+				"schema": {
+					"$ref": "#/components/schemas/Widget"
+				}
+			}
+		},
+		"required": true
+	},
+	"https://apis.example.com/common.js#/components/headers/Header": {
+		"description": "The number of allowed requests in the current period",
+		"schema": {
+			"type": "integer"
+		}
+	},
+	"https://apis.example.com/common.js#/components/securitySchemes/BASIC": {
+		"type": "http",
+		"scheme": "basic"
+	},
+	"https://apis.example.com/common.js#/components/links/SomeLink": {
+		"operationRef": "#paths~12.0~1repositories~1{$response.body#/username}",
+		"operationId": "getRepositoriesByOwner",
+		"parameters": {
+			"username": "$response.body#/username"
+		},
+		"description": "The link1 description.",
+		"server": {
+			"url": "https://development.gigantic-server.com/v1",
+			"description": "Development server"
+		}
+	},
+	"TheCallback": {
+		"$request.header#/put-url": {
+			"put": {
+				"requestBody": {
+					"description": "Callback payload",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Widget"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "webhook successfully processed and no retries will be performed"
+					}
+				}
+			}
+		}
 	}
 }

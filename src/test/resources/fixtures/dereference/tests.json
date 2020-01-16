@@ -64,9 +64,14 @@
         "input" : "oai3/self-ref-widget.input.json",
         "expected" : "oai3/self-ref-widget.expected.json"
     },
-        {
+    {
         "name" : "[OpenAPI 3] Multi-Reference 1",
         "input" : "oai3/multi-ref-1.input.json",
         "expected" : "oai3/multi-ref-1.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Kitchen Sink",
+        "input" : "oai3/kitchen-sink.input.json",
+        "expected" : "oai3/kitchen-sink.expected.json"
     }
 ]
