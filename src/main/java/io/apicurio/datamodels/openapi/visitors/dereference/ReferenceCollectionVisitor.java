@@ -1,17 +1,12 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
 import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Collect all nodes representing reference objects. Those nodes
