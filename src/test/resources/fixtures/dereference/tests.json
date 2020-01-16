@@ -78,5 +78,11 @@
         "name" : "[OpenAPI 3] Kitchen Sink",
         "input" : "oai3/kitchen-sink.input.json",
         "expected" : "oai3/kitchen-sink.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 2] Kitchen Sink",
+        "input" : "aai2/kitchen-sink.input.json",
+        "expected" : "aai2/kitchen-sink.expected.json"
     }
+    
 ]

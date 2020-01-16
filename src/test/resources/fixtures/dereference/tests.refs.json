@@ -282,5 +282,60 @@
 		"schema": {
 			"type": "string"
 		}
+	},
+	"https://asyncapi.example.com/common#/components/messages/lightMeasured": {
+		"name": "lightMeasured",
+		"title": "Light measured",
+		"summary": "Inform about environmental lighting conditions of a particular streetlight.",
+		"contentType": "application/json",
+		"traits": [
+			{
+				"$ref": "#/components/messageTraits/commonHeaders"
+			}
+		],
+		"payload": {
+			"$ref": "#/components/schemas/lightMeasuredPayload"
+		}
+	},
+	"https://asyncapi.example.com/common#/components/securitySchemes/token": {
+		"type": "http",
+		"scheme": "bearer"
+	},
+	"https://asyncapi.example.com/common#/components/parameters/streetlightId": {
+		"description": "The ID of the streetlight.",
+		"schema": {
+			"type": "string"
+		}
+	},
+	"https://asyncapi.example.com/common#/components/correlationIds/sentAtCorrelator": {
+		"description": "Data from message payload used as correlation ID",
+		"location": "$message.payload#/sentAt"
+	},
+	"https://asyncapi.example.com/common#/components/operationTraits/kafka": {
+		"bindings": {
+			"kafka": {
+				"clientId": "my-app-id"
+			}
+		}
+	},
+	"https://asyncapi.example.com/common#/components/messageTraits/commonHeaders": {
+		"headers": {
+			"type": "object",
+			"properties": {
+				"my-app-header": {
+					"type": "integer",
+					"minimum": 0,
+					"maximum": 100
+				}
+			}
+		}
+	},
+	"https://asyncapi.example.com/common#/components/messageBindings/streamingHeaders": {
+		"http": {
+			"headers": {
+				"Transfer-Encoding": "chunked",
+				"Trailer": "\\r\\n"
+			}
+		}
 	}
 }

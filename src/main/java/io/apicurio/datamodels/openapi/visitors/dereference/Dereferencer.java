@@ -26,7 +26,6 @@ import java.util.Set;
  */
 public class Dereferencer {
 
-
     private final Document source;
     private final IReferenceResolver resolver;
     private final boolean strict;
