@@ -10,7 +10,7 @@
 			"put": {
 				"parameters": [
 					{
-						"$ref": "https://apis.example.com/common.js#/components/parameterse/Param"
+						"$ref": "https://apis.example.com/common.js#/components/parameters/Param"
 					}
 				],
 				"requestBody": {

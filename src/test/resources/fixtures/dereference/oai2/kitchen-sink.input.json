@@ -1,0 +1,50 @@
+{
+	"swagger": "2.0",
+	"paths": {
+		"/": {
+			"get": {
+				"summary": "List Pets",
+				"description": "Returns all pets from the system that the user has access to",
+				"operationId": "listPets",
+				"parameters": [
+					{
+						"name": "token",
+						"in": "header",
+						"description": "token to be passed as a header",
+						"required": true,
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int64"
+						},
+						"collectionFormat": "csv"
+					},
+					{
+						"name": "user",
+						"in": "body",
+						"description": "user to add to the system",
+						"required": true,
+						"schema": {
+							"$ref": "https://apis20.example.com/components.js#/definitions/Widget20"
+						},
+						"allowEmptyValue": false
+					},
+					{
+						"$ref": "https://apis20.example.com/components.js#/parameters/skipParam"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A simple string response",
+						"schema": {
+							"$ref": "https://apis20.example.com/components.js#/definitions/Widget20"
+						}
+					},
+					"500": {
+						"$ref": "https://apis20.example.com/components.js#/responses/GeneralError"
+					}
+				}
+			}
+		}
+	}
+}

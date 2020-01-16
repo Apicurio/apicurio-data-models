@@ -10,7 +10,7 @@
 			"put": {
 				"parameters": [
 					{
-						"$ref": "#/components/parameterse/Param"
+						"$ref": "#/components/parameters/Param"
 					}
 				],
 				"requestBody": {

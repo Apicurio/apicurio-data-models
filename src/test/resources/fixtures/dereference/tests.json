@@ -10,6 +10,11 @@
         "expected" : "oai2/no-changes-2.expected.json"
     },
     {
+        "name" : "[OpenAPI 2] Kitchen Sink",
+        "input" : "oai2/kitchen-sink.input.json",
+        "expected" : "oai2/kitchen-sink.expected.json"
+    },
+    {
         "name" : "[OpenAPI 3] No Changes Self Reference",
         "input" : "oai3/no-changes-selfref.input.json",
         "expected" : "oai3/no-changes-selfref.expected.json"

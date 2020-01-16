@@ -32,7 +32,7 @@ public class ReferenceCollectionVisitor extends CombinedAllNodeVisitor {
      */
     @Override
     protected void visitNode(Node node) {
-        if (node instanceof IReferenceNode && node instanceof INamed) {
+        if (node instanceof IReferenceNode) {
             IReferenceNode refNode = (IReferenceNode) node;
             if (refNode.getReference() != null)
                 referencedNodes.add(refNode);

@@ -222,7 +222,7 @@
 			"description": "Development server"
 		}
 	},
-	"TheCallback": {
+	"https://apis.example.com/common.js#/components/callbacks/TheCallback": {
 		"$request.header#/put-url": {
 			"put": {
 				"requestBody": {
@@ -241,6 +241,46 @@
 					}
 				}
 			}
+		}
+	},
+	"https://apis20.example.com/components.js#/definitions/Widget20": {
+		"title": "Example Schema",
+		"type": "object",
+		"minProperties": 2,
+		"maxProperties": 3,
+		"readOnly": false,
+		"properties": {
+			"firstName": {
+				"type": "string"
+			},
+			"lastName": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 128
+			},
+			"age": {
+				"description": "Age in years",
+				"type": "integer",
+				"minimum": 0
+			}
+		},
+		"required": [
+			"firstName",
+			"lastName"
+		]
+	},
+	"https://apis20.example.com/components.js#/parameters/skipParam": {
+		"name": "skip",
+		"in": "query",
+		"description": "number of items to skip",
+		"required": true,
+		"type": "integer",
+		"format": "int32"
+	},
+	"https://apis20.example.com/components.js#/responses/GeneralError": {
+		"description": "General Error",
+		"schema": {
+			"type": "string"
 		}
 	}
 }

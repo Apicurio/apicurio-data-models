@@ -23,6 +23,8 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
             throw new IllegalArgumentException("Oas20Document expected.");
         Oas20Document model = (Oas20Document) document;
         if (component instanceof Oas20Schema) {
+            if (model.definitions == null)
+                model.definitions = model.createDefinitions();
             if (model.definitions.getDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
@@ -32,6 +34,8 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
             return new ReferenceAndNode(PREFIX + "definitions/" + name, definition);
         }
         if (component instanceof Oas20Parameter) {
+            if (model.parameters == null)
+                model.parameters = model.createParameterDefinitions();
             if (model.parameters.getParameter(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
@@ -41,6 +45,8 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
             return new ReferenceAndNode(PREFIX + "parameters/" + name, definition);
         }
         if (component instanceof Oas20Response) {
+            if (model.responses == null)
+                model.responses = model.createResponseDefinitions();
             if (model.responses.getResponse(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
 
