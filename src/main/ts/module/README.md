@@ -103,6 +103,18 @@ full OpenAPI JS object will be returned.  If, for example, you pass in only the
 data model will be returned.  The `readDocumentFromJSONString` method must be
 sent a full Document, and will return a stringified object.
 
+### Resolve External References
+`Library::addReferenceResolver(resolver: IReferenceResolver): void`
+
+The OpenAPI specification allows references across documents (in various places)
+using the `$ref` property.  The library itself cannot resolve external references,
+but rather supports a customizable reference resolution layer.  Use this layer by
+providing a custom implementation of the `IReferenceResolver` interface and 
+installing it via the `Library::addReferenceResolver(resolver: IReferenceResolver)`
+method.  Multiple reference resolvers can be installed - the first resolver that
+can successfully resolve a reference will win.  The library has one default resolver
+that is capable of resolving internal references - for example `#!/components/schemas/Widget`.
+
 #### Validate
 `Library::validate(Node, IValidationSeverityRegistry): ValidationProblem[]`
 
