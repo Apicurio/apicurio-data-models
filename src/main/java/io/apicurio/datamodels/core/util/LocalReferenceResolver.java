@@ -29,9 +29,7 @@ import io.apicurio.datamodels.core.models.Node;
  * A class to help with resolving references.  Handles recursion with loop detection.
  * @author eric.wittmann@gmail.com
  */
-public class ReferenceResolver {
-
-    private List<Node> visitedNodes = new ArrayList<>();
+public class LocalReferenceResolver implements IReferenceResolver {
 
     /**
      * Resolves a reference from a relative position in the data model.  Returns null if the
@@ -40,13 +38,14 @@ public class ReferenceResolver {
      * @param from
      */
     public Node resolveRef(String $ref, Node from) {
-        this.visitedNodes = new ArrayList<>();
-        return this.resolveRefInternal($ref, from);
+        // TODO support escaped chars in JSON refs
+        if ($ref.indexOf("#/") != 0) { return null; }
+        return this.resolveRefInternal($ref, from, new ArrayList<>());
     }
     
     
     @SuppressWarnings("rawtypes")
-    private Node resolveRefInternal(String $ref, Node from) {
+    private Node resolveRefInternal(String $ref, Node from, List<Node> visitedNodes) {
         if ($ref == null) {
             return null;
         }
@@ -73,17 +72,17 @@ public class ReferenceResolver {
             }
     
             // If we've already seen cnode, then we're in a loop!
-            if (this.visitedNodes.indexOf(cnode) != -1) {
+            if (visitedNodes.indexOf(cnode) != -1) {
                 return null;
             }
             
             // Otherwise, add it to the nodes we've seen.
-            this.visitedNodes.add((Node) cnode);
+            visitedNodes.add((Node) cnode);
     
             // If cnode itself has a $ref, then keep looking!
             String another$ref = (String) NodeCompat.getProperty(cnode, Constants.PROP_$REF);
             if (another$ref != null) {
-                return this.resolveRefInternal(another$ref, (Node) cnode);
+                return this.resolveRefInternal(another$ref, (Node) cnode, visitedNodes);
             } else {
                 return (Node) cnode;
             }

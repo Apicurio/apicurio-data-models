@@ -241,7 +241,7 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
 
     @Override
     protected void traverseSecurityScheme(SecurityScheme node) {
-        node.accept(visitor);
+        super.traverseSecurityScheme(node);
         AaiSecurityScheme aaiNode = (AaiSecurityScheme) node;
         this.traverseIfNotNull(aaiNode.flows);
     }

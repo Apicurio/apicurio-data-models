@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Tag;
@@ -27,7 +28,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiOperationBase extends Operation {
+public abstract class AaiOperationBase extends Operation implements IReferenceNode {
 
     public String $ref;
     public List<Tag> tags;
@@ -59,6 +60,16 @@ public abstract class AaiOperationBase extends Operation {
      */
     public AaiOperationBase(Node parent) {
         this(parent, null);
+    }
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
     }
 
     /**

@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -30,7 +29,7 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
  * Models an OpenAPI 3.0.x parameter.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Parameter extends OasParameter implements IReferenceNode, IOas30MediaTypeParent, IExampleParent {
+public class Oas30Parameter extends OasParameter implements IOas30MediaTypeParent, IExampleParent {
 
     public Boolean deprecated;
     public String style; // matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject

@@ -32,7 +32,7 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  */
 public class Oas20ParameterDefinitions extends Node implements IIndexedNode<Oas20ParameterDefinition> {
 
-    private Map<String, Oas20ParameterDefinition> items = new LinkedHashMap<>();
+    public Map<String, Oas20ParameterDefinition> items = new LinkedHashMap<>();
     
     /**
      * Constructor.

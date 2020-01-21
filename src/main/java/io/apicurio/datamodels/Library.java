@@ -31,7 +31,9 @@ import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.util.IReferenceResolver;
 import io.apicurio.datamodels.core.util.NodePathUtil;
+import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
@@ -42,6 +44,7 @@ import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
+import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
 
 /**
@@ -51,6 +54,18 @@ import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30Transformation
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
+    
+    /**
+     * Adds a reference resolver to the library.  The resolver will be used whenever the library
+     * needs to resolve a $ref reference.
+     * @param resolver
+     */
+    public static void addReferenceResolver(IReferenceResolver resolver) {
+        ReferenceResolverChain.getInstance().addResolver(resolver);
+    }
+    public static void removeReferenceResolver(IReferenceResolver resolver) {
+        ReferenceResolverChain.getInstance().removeResolver(resolver);
+    }
     
     /**
      * Creates a new, empty document of the given type.
@@ -241,4 +256,16 @@ public class Library {
         return transformer.getResult();
     }
 
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with no external references.
+     *
+     * @param source
+     */
+    public static Document dereferenceDocument(Document source) {
+        Dereferencer rl = new Dereferencer(source);
+        return rl.dereference();
+    }
 }

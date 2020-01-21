@@ -749,12 +749,13 @@
         }
       },
       "Some$Parameter": {
-        "$ref": "http://www.example.org/openapi.json#/components/parameters/FooParam"
+        "name":"some",
+        "in":"path",
+        "required": true
       }
     },
     "examples": {
       "Example|1": {
-        "$ref": "http://www.example.org/openapi.json#/components/examples/FooExample"
       }
     },
     "requestBodies": {

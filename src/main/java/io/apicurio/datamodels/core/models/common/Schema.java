@@ -36,4 +36,13 @@ public class Schema extends ExtensibleNode implements IReferenceNode {
         visitor.visitSchema(this);
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
 }

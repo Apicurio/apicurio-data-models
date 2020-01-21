@@ -41,9 +41,6 @@
         "http"
     ],
     "paths":{
-        "/reference": {
-            "$ref" : "paths.json#/paths/ExternalPath"
-        },
         "/pet":{
             "post":{
                 "tags":[

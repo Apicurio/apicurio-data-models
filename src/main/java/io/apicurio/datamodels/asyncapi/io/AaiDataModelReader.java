@@ -482,6 +482,8 @@ public abstract class AaiDataModelReader extends DataModelReader {
     @Override
     public void readSecurityScheme(Object json, SecurityScheme node) {
         AaiSecurityScheme aaiNode = (AaiSecurityScheme) node;
+        // $ref
+        aaiNode.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         // scheme
         aaiNode.scheme = JsonCompat.consumePropertyString(json, Constants.PROP_SCHEME);
         // flows

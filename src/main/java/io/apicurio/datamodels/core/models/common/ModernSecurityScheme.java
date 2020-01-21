@@ -38,6 +38,16 @@ public abstract class ModernSecurityScheme extends SecurityScheme implements IRe
         super(schemeName);
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     public abstract OAuthFlows createOAuthFlows();
 
 }

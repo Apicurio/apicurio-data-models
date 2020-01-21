@@ -60,7 +60,17 @@ public class Oas30Example extends ExtensibleNode implements IReferenceNode, INam
     public void rename(String newName) {
         this._name = newName;
     }
-    
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */

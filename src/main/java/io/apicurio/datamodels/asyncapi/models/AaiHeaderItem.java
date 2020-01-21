@@ -2,6 +2,7 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -10,7 +11,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  *
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiHeaderItem extends ExtensibleNode {
+public abstract class AaiHeaderItem extends ExtensibleNode implements IReferenceNode {
 
     public String $ref;
 
@@ -47,5 +48,15 @@ public abstract class AaiHeaderItem extends ExtensibleNode {
     public void accept(IVisitor visitor) {
         IAaiVisitor v = (IAaiVisitor) visitor;
         v.visitHeaderItem(this);
+    }
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
     }
 }

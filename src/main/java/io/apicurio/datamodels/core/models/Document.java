@@ -110,4 +110,8 @@ public abstract class Document extends ExtensibleNode implements IExternalDocume
         return ed;
     }
 
+    @Override
+    public boolean isAttached() {
+        return true;
+    }
 }

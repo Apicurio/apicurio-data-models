@@ -57,5 +57,10 @@ public class Oas30SchemaDefinition extends Oas30Schema implements IDefinition {
     public void accept(IVisitor visitor) {
         visitor.visitSchemaDefinition(this);
     }
-    
+
+
+//    @Override
+//    public Oas30SchemaDefinition newFromRepresentedNode(Oas30Schema representedNode) {
+//        return new Oas30SchemaDefinition();
+//    }
 }

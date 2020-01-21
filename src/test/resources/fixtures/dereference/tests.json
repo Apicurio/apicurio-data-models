@@ -1,0 +1,88 @@
+[
+    {
+        "name" : "[OpenAPI 2] No Changes 1",
+        "input" : "oai2/no-changes-1.input.json",
+        "expected" : "oai2/no-changes-1.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 2] No Changes 2",
+        "input" : "oai2/no-changes-2.input.json",
+        "expected" : "oai2/no-changes-2.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 2] Kitchen Sink",
+        "input" : "oai2/kitchen-sink.input.json",
+        "expected" : "oai2/kitchen-sink.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] No Changes Self Reference",
+        "input" : "oai3/no-changes-selfref.input.json",
+        "expected" : "oai3/no-changes-selfref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Address Reference",
+        "input" : "oai3/address-ref.input.json",
+        "expected" : "oai3/address-ref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person Reference",
+        "input" : "oai3/person-ref.input.json",
+        "expected" : "oai3/person-ref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person And Address",
+        "input" : "oai3/person-and-address-refs.input.json",
+        "expected" : "oai3/person-and-address-refs.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Address",
+        "input" : "oai3/person-with-address.input.json",
+        "expected" : "oai3/person-with-address.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Address and Spouse",
+        "input" : "oai3/person-with-address-and-spouse.input.json",
+        "expected" : "oai3/person-with-address-and-spouse.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person With Relative Address And Spouse",
+        "input" : "oai3/person-with-relative-address-and-spouse.input.json",
+        "expected" : "oai3/person-with-relative-address-and-spouse.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Item With Local Widget",
+        "input" : "oai3/item-with-local-widget.input.json",
+        "expected" : "oai3/item-with-local-widget.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Person and Person",
+        "input" : "oai3/person-and-person.input.json",
+        "expected" : "oai3/person-and-person.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Response",
+        "input" : "oai3/response.input.json",
+        "expected" : "oai3/response.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Self Reference Widget",
+        "input" : "oai3/self-ref-widget.input.json",
+        "expected" : "oai3/self-ref-widget.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Multi-Reference 1",
+        "input" : "oai3/multi-ref-1.input.json",
+        "expected" : "oai3/multi-ref-1.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Kitchen Sink",
+        "input" : "oai3/kitchen-sink.input.json",
+        "expected" : "oai3/kitchen-sink.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 2] Kitchen Sink",
+        "input" : "aai2/kitchen-sink.input.json",
+        "expected" : "aai2/kitchen-sink.expected.json"
+    }
+    
+]

@@ -47,7 +47,7 @@ public class ReferenceUtil {
         if (!hasValue($ref)) {
             return null;
         }
-        ReferenceResolver resolver = new ReferenceResolver();
+        IReferenceResolver resolver = ReferenceResolverChain.getInstance();
         return resolver.resolveRef($ref, from);
     }
 
@@ -63,8 +63,6 @@ public class ReferenceUtil {
      * @param from
      */
     public static boolean canResolveRef(String $ref, Node from) {
-        // Don't try to resolve e.g. external references.
-        if ($ref.indexOf("#/") != 0) { return true; }
         return hasValue(ReferenceUtil.resolveRef($ref, from));
     }
 

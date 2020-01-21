@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.ExtensibleNode;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.INamed;
@@ -14,7 +15,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  *
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
+public abstract class AaiMessageBase extends ExtensibleNode implements IReferenceNode, INamed {
 
     public String _name; // Map
     public String $ref;
@@ -89,6 +90,16 @@ public abstract class AaiMessageBase extends ExtensibleNode implements INamed {
     public void rename(String newName) {
         this._name = newName;
     }
-    
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     public abstract void addTag(AaiTag tag);
 }

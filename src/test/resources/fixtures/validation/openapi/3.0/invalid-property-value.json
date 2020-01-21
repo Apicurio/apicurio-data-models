@@ -942,7 +942,6 @@
                   "type": "object",
                   "properties": {
                     "property-1": {
-                      "$ref": "http://www.example.org/apis/foo.json#/components/schemas/S1"
                     }
                   },
                   "discriminator": {

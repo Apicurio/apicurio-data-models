@@ -32,7 +32,7 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  */
 public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20SecurityScheme> {
     
-    private Map<String, Oas20SecurityScheme> items;
+    public Map<String, Oas20SecurityScheme> items;
     
     /**
      * Constructor.

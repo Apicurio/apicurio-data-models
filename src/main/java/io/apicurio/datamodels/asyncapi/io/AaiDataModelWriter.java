@@ -454,6 +454,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     protected void writeSecurityScheme(Object json, SecurityScheme node) {
         AaiSecurityScheme aaiNode = (AaiSecurityScheme) node;
         super.writeSecurityScheme(json, node);
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, aaiNode.$ref);
         JsonCompat.setPropertyString(json, Constants.PROP_SCHEME, aaiNode.scheme);
 
         // openIdConnectUrl & bearerFormat

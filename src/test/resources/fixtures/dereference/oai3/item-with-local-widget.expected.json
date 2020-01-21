@@ -1,0 +1,57 @@
+{
+	"openapi": "3.0.2",
+	"components": {
+		"schemas": {
+			"Sample": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"widget": {
+						"$ref": "#!/components/schemas/Widget"
+					},
+					"item": {
+						"$ref": "#/components/schemas/Item"
+					}
+				}
+			},
+			"Widget": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"size": {
+						"type": "integer"
+					}
+				}
+			},
+			"Item": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"format": "string"
+					},
+					"widget": {
+						"$ref": "#/components/schemas/Widget1"
+					}
+				}
+			},
+			"Widget1": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}

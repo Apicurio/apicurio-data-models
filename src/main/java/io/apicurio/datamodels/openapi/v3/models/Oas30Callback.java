@@ -72,6 +72,16 @@ public class Oas30Callback extends ExtensibleNode
         this._name = newName;
     }
 
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
+    }
+
     /**
      * Returns a single path item by name.
      * @param name

@@ -216,4 +216,35 @@ public abstract class Node implements IVisitable {
         return null;
     }
 
+	/**
+	 * Determine if this node has a parent and owner document defined.
+	 *
+	 * @throws java.lang.IllegalStateException if the state is inconsistent, i.e. one is set but not the other
+	 */
+	public boolean isAttached() {
+    	if(_parent == null || _ownerDocument == null) {
+			if(_parent == null && _ownerDocument == null)
+				return false;
+			else
+				throw new IllegalStateException("Partially attached.");
+		}
+    	return true;
+	}
+
+	/**
+	 * Set this {@link io.apicurio.datamodels.core.models.Node} to have the argument as its parent,
+	 * and the same {@link io.apicurio.datamodels.core.models.Document}.
+	 *
+	 * Warning: The parent MUST attach this child node separately.
+	 *
+	 * @throws java.lang.IllegalArgumentException if the parent is not attached itself
+	 * @throws java.lang.IllegalStateException if the parent's {@link Node#isAttached()} throws the exception
+	 */
+	public void attachToParent(Node parent) {
+		if(!parent.isAttached())
+			throw new IllegalArgumentException("Target parent node (method argument) is not itself attached.");
+    	this._ownerDocument = parent.ownerDocument();
+    	this._parent = parent;
+	}
+
 }
