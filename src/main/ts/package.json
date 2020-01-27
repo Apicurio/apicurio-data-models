@@ -27,7 +27,7 @@
     "cpx": "1.5.0",
     "diff": "4.0.2",
     "jest": "24.9.0",
-    "mkdirp": "0.5.1",
+    "mkdirp": "1.0.3",
     "rimraf": "3.0.0",
     "rollup": "0.68.2",
     "rollup-plugin-commonjs": "8.4.1",
