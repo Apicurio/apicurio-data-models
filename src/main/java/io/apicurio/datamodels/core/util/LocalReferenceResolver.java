@@ -16,12 +16,10 @@
 
 package io.apicurio.datamodels.core.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
-import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 
@@ -32,23 +30,17 @@ import io.apicurio.datamodels.core.models.Node;
 public class LocalReferenceResolver implements IReferenceResolver {
 
     /**
-     * Resolves a reference from a relative position in the data model.  Returns null if the
-     * $ref is null or cannot be resolved.
-     * @param $ref
-     * @param from
+     * @see io.apicurio.datamodels.core.util.IReferenceResolver#resolveRef(java.lang.String, io.apicurio.datamodels.core.models.Node)
      */
-    public Node resolveRef(String $ref, Node from) {
-        // TODO support escaped chars in JSON refs
-        if ($ref.indexOf("#/") != 0) { return null; }
-        return this.resolveRefInternal($ref, from, new ArrayList<>());
-    }
-    
-    
     @SuppressWarnings("rawtypes")
-    private Node resolveRefInternal(String $ref, Node from, List<Node> visitedNodes) {
-        if ($ref == null) {
+    @Override
+    public Node resolveRef(String $ref, Node from) {
+        // Only handle internal $refs
+        if ($ref == null || $ref.indexOf("#/") != 0) {
             return null;
         }
+        
+        // TODO support escaped chars in JSON refs
         // TODO implement a proper reference resolver including external file resolution: https://github.com/EricWittmann/oai-ts-core/issues/8
         List<String[]> split = RegexCompat.findMatches($ref, "([^/]+)/?");
         Object cnode = null;
@@ -65,29 +57,27 @@ public class LocalReferenceResolver implements IReferenceResolver {
             }
         }
         
-        try {
-            // Not found?  Return null.
-            if (cnode == null) {
-                return null;
-            }
-    
-            // If we've already seen cnode, then we're in a loop!
-            if (visitedNodes.indexOf(cnode) != -1) {
-                return null;
-            }
-            
-            // Otherwise, add it to the nodes we've seen.
-            visitedNodes.add((Node) cnode);
-    
-            // If cnode itself has a $ref, then keep looking!
-            String another$ref = (String) NodeCompat.getProperty(cnode, Constants.PROP_$REF);
-            if (another$ref != null) {
-                return this.resolveRefInternal(another$ref, (Node) cnode, visitedNodes);
-            } else {
-                return (Node) cnode;
-            }
-        } catch (Throwable t) {
+        if (cnode instanceof Node) {
+            return (Node) cnode;
+        } else {
             return null;
         }
+
+//        try {
+//            // Not found?  Return null.
+//            if (cnode == null) {
+//                return null;
+//            }
+//    
+//            // If cnode itself has a $ref, then keep looking!
+//            String another$ref = (String) NodeCompat.getProperty(cnode, Constants.PROP_$REF);
+//            if (another$ref != null) {
+//                return ReferenceUtil.resolveRef(another$ref, from);
+//            } else {
+//                return (Node) cnode;
+//            }
+//        } catch (Throwable t) {
+//            return null;
+//        }
     }
 }

@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.required;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IDefinition;
@@ -39,6 +40,9 @@ public class OasMissingResponseDefinitionDescriptionRule extends OasRequiredProp
      */
     @Override
     public void visitResponseDefinition(IDefinition node) {
+        if (hasValue(NodeCompat.getProperty(node, Constants.PROP_$REF))) {
+            return;
+        }
         this.requireProperty((Node) node, Constants.PROP_DESCRIPTION, map("name", node.getName()));
     }
 

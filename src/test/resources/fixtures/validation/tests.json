@@ -32,6 +32,7 @@
     { "name": "[OpenAPI 3.0] Duplicate Path Params", "test": "openapi/3.0/duplicate-path-param.json" },
 	{ "name": "[OpenAPI 3.0] Valid Pet Store", "test": "openapi/3.0/valid-pet-store.json" },
     { "name": "[OpenAPI 3.0] Operation Properties", "test": "openapi/3.0/operation-properties.json", "severity": "high" },
+    { "name": "[OpenAPI 3.0] Data Type Reference", "test": "openapi/3.0/data-type-reference.json" },
 
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" },
     { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" }

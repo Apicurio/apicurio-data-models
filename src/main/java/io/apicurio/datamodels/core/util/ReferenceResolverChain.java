@@ -67,7 +67,7 @@ public class ReferenceResolverChain implements IReferenceResolver {
     public Node resolveRef(String reference, Node from) {
         for (IReferenceResolver resolver : resolvers) {
             Node resolvedNode = resolver.resolveRef(reference, from);
-            if(resolvedNode != null) {
+            if (resolvedNode != null) {
                 return resolvedNode;
             }
         }

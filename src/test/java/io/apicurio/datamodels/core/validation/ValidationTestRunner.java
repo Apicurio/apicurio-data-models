@@ -33,14 +33,19 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.cloning.ModelCloner;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
+import io.apicurio.datamodels.core.util.IReferenceResolver;
+import io.apicurio.datamodels.core.util.ReferenceUtil;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
+public class ValidationTestRunner extends ParentRunner<ValidationTestCase> implements IReferenceResolver {
 
     private Class<?> testClass;
     private List<ValidationTestCase> children;
@@ -56,7 +61,24 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
         this.testClass = testClass;
         this.children = loadTests();
     }
+    
+    /**
+     * @see org.junit.runners.ParentRunner#run(org.junit.runner.notification.RunNotifier)
+     */
+    @Override
+    public void run(RunNotifier notifier) {
+        Library.addReferenceResolver(this);
+        try {
+            super.run(notifier);
+        } finally {
+            Library.removeReferenceResolver(this);
+        }
+    }
 
+    /**
+     * Loads the tests.
+     * @throws InitializationError
+     */
     private List<ValidationTestCase> loadTests() throws InitializationError {
         try {
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/validation/tests.json");
@@ -144,13 +166,6 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
      */
     protected String formatProblems(List<ValidationProblem> problems) {
         StringBuilder builder = new StringBuilder();
-//        problems.sort(new Comparator<ValidationProblem>() {
-//            @Override
-//            public int compare(ValidationProblem o1, ValidationProblem o2) {
-//                int rval = o1.errorCode.compareTo(o2.errorCode);
-//                return rval;
-//            }
-//        });
         problems.forEach(problem -> {
             builder.append("[");
             builder.append(problem.errorCode);
@@ -186,4 +201,32 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> {
         JSONAssert.assertEquals(expected, actual, true);
     }
 
+    /**
+     * @see io.apicurio.datamodels.core.util.IReferenceResolver#resolveRef(java.lang.String, io.apicurio.datamodels.core.models.Node)
+     */
+    @Override
+    public Node resolveRef(String reference, Node from) {
+        try {
+            if (reference != null && reference.startsWith("test:")) {
+                int colonIdx = reference.indexOf(":");
+                int hashIdx = reference.indexOf("#");
+                String resourceName = reference.substring(colonIdx + 1, hashIdx);
+                String fragment = reference.substring(hashIdx + 1);
+                String resourceCP = "fixtures/validation/shared/" + resourceName;
+                URL testUrl = Thread.currentThread().getContextClassLoader().getResource(resourceCP);
+                Assert.assertNotNull("Could not find test resource: " + resourceName, testUrl);
+                String resourceContent = loadResource(testUrl);
+                Assert.assertNotNull("Failed to load test resource: " + resourceName, resourceContent);
+                Object content = JsonCompat.parseJSON(resourceContent);
+                Assert.assertNotNull("Could not parse test resource: " + resourceName, content);
+                Object resolvedContent = ReferenceUtil.resolveFragmentFromJS(content, fragment);
+                Assert.assertNotNull("Failed to resolve fragment: " + fragment, resolvedContent);
+                Node emptyClone = ModelCloner.createEmptyClone(from);
+                return Library.readNode(resolvedContent, emptyClone);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }
