@@ -5,6 +5,7 @@
 	
 	<groupId>io.apicurio</groupId>
 	<artifactId>apicurio-data-models</artifactId>
+        <packaging>bundle</packaging>
 	<version>1.1.2-SNAPSHOT</version>
 	<name>apicurio-data-models</name>
 
@@ -135,6 +136,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+                                <plugin>
+                                        <groupId>org.apache.felix</groupId>
+                                        <artifactId>maven-bundle-plugin</artifactId>
+                                        <version>4.2.1</version>
+                                </plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -173,6 +179,37 @@
 					</execution>
 				</executions>
 			</plugin>
+                        <plugin>
+                                <groupId>org.apache.felix</groupId>
+                                <artifactId>maven-bundle-plugin</artifactId>
+                                <extensions>true</extensions>
+                                <executions>
+                                        <execution>
+                                                <id>versions</id>
+                                                <phase>validate</phase>
+                                                <goals>
+                                                        <goal>cleanVersions</goal>
+                                                </goals>
+                                                <configuration>
+                                                        <versions>
+                                                                <apicurio.osgi.version.clean>${project.version}</apicurio.osgi.version.clean>
+                                                        </versions>
+                                                </configuration>
+                                        </execution>
+                                </executions>
+                                <configuration>
+                                        <instructions>
+                                                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                                                <Import-Package>
+                                                        com.fasterxml.jackson*;resolution:=optional;version="[2.9,3)"
+                                                </Import-Package>
+                                                <Export-Package>
+                                                        io.apicurio.datamodels*
+                                                </Export-Package>
+                                        </instructions>
+                                        <niceManifest>true</niceManifest>
+                                </configuration>
+                        </plugin>
 		</plugins>
 	</build>
 
