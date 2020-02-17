@@ -58,14 +58,30 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <version.frontend-maven.plugin>1.9.1</version.frontend-maven.plugin>
+        <!-- Node/Yarn Versions -->
+        <version.node-js>8.15.0</version.node-js>
+        <version.yarn>1.15.2</version.yarn>
 
+        <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.10.2</version.com.fasterxml.jackson>
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
         <version.commons-io>2.6</version.commons-io>
         <version.junit>4.13</version.junit>
         <version.org.jsweet>2.3.5</version.org.jsweet>
         <version.org.skyscreamer>1.5.0</version.org.skyscreamer>
+        
+        <!-- Plugin Versions -->
+        <version.org.eclipse.m2e.lifecycle-mapping>1.0.0</version.org.eclipse.m2e.lifecycle-mapping>
+        <version.org.apache.felix.maven-bundle-plugin>4.2.1</version.org.apache.felix.maven-bundle-plugin>
+        <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+        <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
+        <version.maven-javadoc-plugin>3.1.1</version.maven-javadoc-plugin>
+        <version.maven-resources-plugin>3.1.0</version.maven-resources-plugin>
+        <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
+        <version.org.codehaus.mojo.exec-maven-plugin>1.6.0</version.org.codehaus.mojo.exec-maven-plugin>
+        <version.com.github.eirslett.frontend-maven-plugin>1.9.1</version.com.github.eirslett.frontend-maven-plugin>
+        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.8</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        
     </properties>
 
     <dependencies>
@@ -100,7 +116,6 @@
             <version>${version.org.skyscreamer}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -109,7 +124,7 @@
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
+                    <version>${version.org.eclipse.m2e.lifecycle-mapping}</version>
                     <configuration>
                         <lifecycleMappingMetadata>
                             <pluginExecutions>
@@ -136,17 +151,13 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>4.2.1</version>
-                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${version.maven-compiler-plugin}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -156,7 +167,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${version.maven-source-plugin}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -169,7 +180,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>${version.maven-javadoc-plugin}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -182,6 +193,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
+                <version>${version.org.apache.felix.maven-bundle-plugin}</version>
                 <extensions>true</extensions>
                 <executions>
                     <execution>
@@ -269,8 +281,9 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>${version.maven-resources-plugin}</version>
                         <executions>
                             <!-- Copy TS env from src into target -->
                             <execution>
@@ -314,7 +327,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
+                        <version>${version.org.codehaus.mojo.exec-maven-plugin}</version>
                         <executions>
                             <execution>
                                 <id>generate-corets</id>
@@ -335,7 +348,7 @@
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
-                        <version>${version.frontend-maven.plugin}</version>
+                        <version>${version.com.github.eirslett.frontend-maven-plugin}</version>
                         <executions>
                             <!-- Install Node and Yarn -->
                             <execution>
@@ -346,8 +359,8 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <nodeVersion>v8.15.0</nodeVersion>
-                                    <yarnVersion>v1.15.2</yarnVersion>
+                                    <nodeVersion>v${version.node-js}</nodeVersion>
+                                    <yarnVersion>v${version.yarn}</yarnVersion>
                                 </configuration>
                             </execution>
                             <!-- Install npm/yarn dependencies -->
@@ -400,7 +413,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>${version.org.sonatype.plugins.nexus-staging-maven-plugin}</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -411,6 +424,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${version.maven-gpg-plugin}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -434,6 +448,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${version.maven-javadoc-plugin}</version>
                         <configuration>
                             <doclint>none</doclint>
                         </configuration>
