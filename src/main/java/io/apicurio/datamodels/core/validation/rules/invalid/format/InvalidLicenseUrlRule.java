@@ -14,31 +14,35 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.required;
+package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
+ * Implements the Invalid License URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingLicenseNameRule extends OasRequiredPropertyValidationRule {
+public class InvalidLicenseUrlRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingLicenseNameRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidLicenseUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-
+    
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
      */
     @Override
     public void visitLicense(License node) {
-        this.requireProperty(node, Constants.PROP_NAME, map());
+        if (hasValue(node.url)) {
+            this.reportIfInvalid(isValidUrl(node.url), node, Constants.PROP_URL, map());
+        }
     }
 
 }

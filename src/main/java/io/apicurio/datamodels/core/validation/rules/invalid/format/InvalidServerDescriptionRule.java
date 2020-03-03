@@ -22,16 +22,16 @@ import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Server URL Rule
+ * Implements the Invalid Server Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidServerUrlRule extends ValidationRule {
+public class InvalidServerDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidServerUrlRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidServerDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
@@ -40,8 +40,8 @@ public class OasInvalidServerUrlRule extends ValidationRule {
      */
     @Override
     public void visitServer(Server node) {
-        if (hasValue(node.url)) {
-            this.reportIfInvalid(isValidUrlTemplate(node.url), node, Constants.PROP_URL, map());
+        if (hasValue(node.description)) {
+            this.reportIfInvalid(isValidCommonMark(node.description), node, Constants.PROP_DESCRIPTION, map());
         }
     }
 

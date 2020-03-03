@@ -17,31 +17,31 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid API Description Rule
+ * Implements the Invalid Contact Email Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidApiDescriptionRule extends ValidationRule {
+public class InvalidContactEmailRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidApiDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidContactEmailRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
      */
     @Override
-    public void visitInfo(Info node) {
-        if (hasValue(node.description)) {
-            this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
+    public void visitContact(Contact node) {
+        if (hasValue(node.email)) {
+            this.reportIfInvalid(isValidEmailAddress(node.email), node, Constants.PROP_EMAIL, map());
         }
     }
 

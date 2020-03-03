@@ -17,31 +17,31 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.License;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid License URL Rule
+ * Implements the Invalid API Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidLicenseUrlRule extends ValidationRule {
+public class InvalidApiDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidLicenseUrlRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidApiDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
      */
     @Override
-    public void visitLicense(License node) {
-        if (hasValue(node.url)) {
-            this.reportIfInvalid(isValidUrl(node.url), node, Constants.PROP_URL, map());
+    public void visitInfo(Info node) {
+        if (hasValue(node.description)) {
+            this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
         }
     }
 

@@ -14,31 +14,35 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.required;
+package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
+ * Implements the Invalid Server URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingServerTemplateUrlRule extends OasRequiredPropertyValidationRule {
+public class InvalidServerUrlRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingServerTemplateUrlRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidServerUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-
+    
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
     public void visitServer(Server node) {
-        this.requireProperty(node, Constants.PROP_URL, map());
+        if (hasValue(node.url)) {
+            this.reportIfInvalid(isValidUrlTemplate(node.url), node, Constants.PROP_URL, map());
+        }
     }
 
 }

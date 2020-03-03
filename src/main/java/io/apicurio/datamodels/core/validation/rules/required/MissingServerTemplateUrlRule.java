@@ -14,35 +14,31 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.invalid.format;
+package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Contact;
-import io.apicurio.datamodels.core.validation.ValidationRule;
+import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Contact Email Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidContactEmailRule extends ValidationRule {
+public class MissingServerTemplateUrlRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidContactEmailRule(ValidationRuleMetaData ruleInfo) {
+    public MissingServerTemplateUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-    
+
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
      */
     @Override
-    public void visitContact(Contact node) {
-        if (hasValue(node.email)) {
-            this.reportIfInvalid(isValidEmailAddress(node.email), node, Constants.PROP_EMAIL, map());
-        }
+    public void visitServer(Server node) {
+        this.requireProperty(node, Constants.PROP_URL, map());
     }
 
 }

@@ -14,35 +14,31 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.invalid.format;
+package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Contact;
-import io.apicurio.datamodels.core.validation.ValidationRule;
+import io.apicurio.datamodels.core.models.common.License;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Contact URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidContactUrlRule extends ValidationRule {
+public class MissingLicenseNameRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidContactUrlRule(ValidationRuleMetaData ruleInfo) {
+    public MissingLicenseNameRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-    
+
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
      */
     @Override
-    public void visitContact(Contact node) {
-        if (hasValue(node.url)) {
-            this.reportIfInvalid(isValidUrl(node.url), node, Constants.PROP_URL, map());
-        }
+    public void visitLicense(License node) {
+        this.requireProperty(node, Constants.PROP_NAME, map());
     }
 
 }

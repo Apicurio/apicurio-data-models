@@ -17,31 +17,31 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Info;
+import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Terms of Service URL Rule
+ * Implements the Invalid Contact URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidTermsOfServiceUrlRule extends ValidationRule {
+public class InvalidContactUrlRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidTermsOfServiceUrlRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidContactUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
      */
     @Override
-    public void visitInfo(Info node) {
-        if (hasValue(node.termsOfService)) {
-            this.reportIfInvalid(isValidUrl(node.termsOfService), node, Constants.PROP_TERMS_OF_SERVICE, map());
+    public void visitContact(Contact node) {
+        if (hasValue(node.url)) {
+            this.reportIfInvalid(isValidUrl(node.url), node, Constants.PROP_URL, map());
         }
     }
 

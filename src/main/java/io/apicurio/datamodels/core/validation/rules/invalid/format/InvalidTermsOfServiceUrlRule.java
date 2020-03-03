@@ -17,31 +17,31 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Server Description Rule
+ * Implements the Invalid Terms of Service URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidServerDescriptionRule extends ValidationRule {
+public class InvalidTermsOfServiceUrlRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidServerDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidTermsOfServiceUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
      */
     @Override
-    public void visitServer(Server node) {
-        if (hasValue(node.description)) {
-            this.reportIfInvalid(isValidCommonMark(node.description), node, Constants.PROP_DESCRIPTION, map());
+    public void visitInfo(Info node) {
+        if (hasValue(node.termsOfService)) {
+            this.reportIfInvalid(isValidUrl(node.termsOfService), node, Constants.PROP_TERMS_OF_SERVICE, map());
         }
     }
 
