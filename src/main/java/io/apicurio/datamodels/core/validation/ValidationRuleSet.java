@@ -171,6 +171,7 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingHeaderTyp
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingHttpSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsArrayInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsTypeRule;
+import io.apicurio.datamodels.core.validation.rules.required.AasMissingServerProtocolRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingLicenseNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthFlowAuthUrlRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthFlowRokenUrlRule;
@@ -402,6 +403,7 @@ public class ValidationRuleSet {
         this.rules.add(md("FLOW-002", "Missing OAuth Flow Token URL", "Required Property", "OAuth Flow", new DocumentType[] { oai30 }, true, "${'flowType'} OAuth Flow is missing a Token URL.", OasMissingOAuthFlowRokenUrlRule.class));
         this.rules.add(md("RB-002", "Missing Request Body Content", "Required Property", "Request Body", new DocumentType[] { oai30 }, true, "Request Body content is missing.", OasMissingRequestBodyContentRule.class));
         this.rules.add(md("SRV-001", "Missing Server Template URL", "Required Property", "Server", new DocumentType[] { oai30, aai20 }, true, "Server is missing a template URL.", MissingServerTemplateUrlRule.class));
+        this.rules.add(md("SRV-004", "Missing Server Protocol", "Required Property", "Server", new DocumentType[] { aai20 }, true, "Server is missing a protocol.", AasMissingServerProtocolRule.class));
         this.rules.add(md("SS-019", "Missing HTTP Security Scheme Style", "Required Property", "Security Scheme", new DocumentType[] { oai30 }, true, "HTTP Security Scheme is missing a scheme (Basic, Digest, etc).", OasMissingHttpSecuritySchemeTypeRule.class));
         this.rules.add(md("SS-020", "Missing OAuth Security Scheme Flows", "Required Property", "Security Scheme", new DocumentType[] { oai30 }, true, "OAuth Security Scheme does not define any OAuth flows.", OasMissingOAuthSecuritySchemeFlowsRule.class));
         this.rules.add(md("SS-021", "Missing OID Connect Security Scheme Connect URL", "Required Property", "Security Scheme", new DocumentType[] { oai30 }, true, "OpenID Connect Security Scheme is missing a Connect URL.", OasMissingOpenIdConnectSecuritySchemeConnectUrlRule.class));

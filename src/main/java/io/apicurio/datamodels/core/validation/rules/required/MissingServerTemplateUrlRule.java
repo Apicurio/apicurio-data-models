@@ -27,6 +27,7 @@ public class MissingServerTemplateUrlRule extends OasRequiredPropertyValidationR
 
     /**
      * Constructor.
+     * 
      * @param ruleInfo
      */
     public MissingServerTemplateUrlRule(ValidationRuleMetaData ruleInfo) {
