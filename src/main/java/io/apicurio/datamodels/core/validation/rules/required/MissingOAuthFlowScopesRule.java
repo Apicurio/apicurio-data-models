@@ -19,28 +19,46 @@ package io.apicurio.datamodels.core.validation.rules.required;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
+import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOAuthFlowRokenUrlRule extends RequiredPropertyValidationRule {
-
+public class MissingOAuthFlowScopesRule extends RequiredPropertyValidationRule {
+    
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingOAuthFlowRokenUrlRule(ValidationRuleMetaData ruleInfo) {
+    public MissingOAuthFlowScopesRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
+
+    /**
+     * Require the 'scopes' property.
+     * @param node
+     */
+    private void visitOAuthFlow(OAuthFlow node) {
+        this.requireProperty(node, Constants.PROP_SCOPES, map());
+    }
     
+    /**
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitImplicitOAuthFlow(io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow)
+     */
+    @Override
+    public void visitImplicitOAuthFlow(ImplicitOAuthFlow node) {
+        this.visitOAuthFlow(node);
+    }
+
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitPasswordOAuthFlow(io.apicurio.datamodels.core.models.common.PasswordOAuthFlow)
      */
     @Override
     public void visitPasswordOAuthFlow(PasswordOAuthFlow node) {
-        this.requireProperty(node, Constants.PROP_TOKEN_URL, map("flowType", "Password"));
+        this.visitOAuthFlow(node);
     }
     
     /**
@@ -48,7 +66,7 @@ public class OasMissingOAuthFlowRokenUrlRule extends RequiredPropertyValidationR
      */
     @Override
     public void visitClientCredentialsOAuthFlow(ClientCredentialsOAuthFlow node) {
-        this.requireProperty(node, Constants.PROP_TOKEN_URL, map("flowType", "Client Credentials"));
+        this.visitOAuthFlow(node);
     }
     
     /**
@@ -56,7 +74,7 @@ public class OasMissingOAuthFlowRokenUrlRule extends RequiredPropertyValidationR
      */
     @Override
     public void visitAuthorizationCodeOAuthFlow(AuthorizationCodeOAuthFlow node) {
-        this.requireProperty(node, Constants.PROP_TOKEN_URL, map("flowType", "Auth Code"));
+        this.visitOAuthFlow(node);
     }
 
 }

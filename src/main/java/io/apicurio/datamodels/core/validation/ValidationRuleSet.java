@@ -173,9 +173,9 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsArra
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.AasMissingServerProtocolRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingLicenseNameRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthFlowAuthUrlRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthFlowRokenUrlRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthFlowScopesRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOAuthFlowAuthUrlRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOAuthFlowRokenUrlRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOAuthFlowScopesRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSchemeAuthUrlRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSchemeFlowTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSchemeScopesRule;
@@ -398,9 +398,9 @@ public class ValidationRuleSet {
         this.rules.add(md("SS-006", "Missing OAuth Scheme Token URL", "Required Property", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme is missing a Token URL.", OasMissingOAuthSchemeTokenUrlRule.class));
         this.rules.add(md("SS-007", "Missing OAuth Scheme Scopes", "Required Property", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme is missing defined scopes.", OasMissingOAuthSchemeScopesRule.class));
         this.rules.add(md("DISC-001", "Missing a Discriminator Property Name", "Required Property", "Discriminator", new DocumentType[] { oai30 }, true, "Discriminator must indicate a property (by name).", OasMissingDiscriminatorPropertyNameRule.class));
-        this.rules.add(md("FLOW-006", "Missing OAuth Flow Scopes", "Required Property", "OAuth Flow", new DocumentType[] { oai30 }, true, "OAuth Flow is missing defined scopes.", OasMissingOAuthFlowScopesRule.class));
-        this.rules.add(md("FLOW-001", "Missing OAuth Flow Authorization URL", "Required Property", "OAuth Flow", new DocumentType[] { oai30 }, true, "${'flowType'} OAuth Flow is missing an Authorization URL.", OasMissingOAuthFlowAuthUrlRule.class));
-        this.rules.add(md("FLOW-002", "Missing OAuth Flow Token URL", "Required Property", "OAuth Flow", new DocumentType[] { oai30 }, true, "${'flowType'} OAuth Flow is missing a Token URL.", OasMissingOAuthFlowRokenUrlRule.class));
+        this.rules.add(md("FLOW-006", "Missing OAuth Flow Scopes", "Required Property", "OAuth Flow", new DocumentType[] { oai30, aai20 }, true, "OAuth Flow is missing defined scopes.", MissingOAuthFlowScopesRule.class));
+        this.rules.add(md("FLOW-001", "Missing OAuth Flow Authorization URL", "Required Property", "OAuth Flow", new DocumentType[] { oai30, aai20 }, true, "${'flowType'} OAuth Flow is missing an Authorization URL.", MissingOAuthFlowAuthUrlRule.class));
+        this.rules.add(md("FLOW-002", "Missing OAuth Flow Token URL", "Required Property", "OAuth Flow", new DocumentType[] { oai30, aai20 }, true, "${'flowType'} OAuth Flow is missing a Token URL.", MissingOAuthFlowRokenUrlRule.class));
         this.rules.add(md("RB-002", "Missing Request Body Content", "Required Property", "Request Body", new DocumentType[] { oai30 }, true, "Request Body content is missing.", OasMissingRequestBodyContentRule.class));
         this.rules.add(md("SRV-001", "Missing Server Template URL", "Required Property", "Server", new DocumentType[] { oai30, aai20 }, true, "Server is missing a template URL.", MissingServerTemplateUrlRule.class));
         this.rules.add(md("SRV-004", "Missing Server Protocol", "Required Property", "Server", new DocumentType[] { aai20 }, true, "Server is missing a protocol.", AasMissingServerProtocolRule.class));
