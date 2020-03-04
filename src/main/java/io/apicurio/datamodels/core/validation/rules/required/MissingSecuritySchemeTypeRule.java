@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.required;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -23,22 +24,25 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingApiKeySchemeParamNameRule extends OasRequiredPropertyValidationRule {
+public class MissingSecuritySchemeTypeRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingApiKeySchemeParamNameRule(ValidationRuleMetaData ruleInfo) {
+    public MissingSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        this.requirePropertyWhen(node, Constants.PROP_NAME, Constants.PROP_TYPE, "apiKey", map());
+        if (hasValue(NodeCompat.getProperty(node, Constants.PROP_$REF))) {
+            return;
+        }
+        this.requireProperty(node, Constants.PROP_TYPE, map());
     }
 
 }

@@ -159,7 +159,7 @@ import io.apicurio.datamodels.core.validation.rules.other.TagUniquenessValidatio
 import io.apicurio.datamodels.core.validation.rules.other.OasUnknownPropertyRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiKeySchemeParamLocationRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiKeySchemeParamNameRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingApiKeySchemeParamNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiPathsRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingApiTitleRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingApiVersionRule;
@@ -196,7 +196,7 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingRequestBo
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingResponseDefinitionDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingResponseDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingSchemaArrayInformationRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingSecuritySchemeTypeRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingServerTemplateUrlRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingServerVarDefaultValueRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingTagNameRule;
@@ -390,8 +390,8 @@ public class ValidationRuleSet {
         this.rules.add(md("HEAD-002", "Missing Header Array Information", "Required Property", "Header", new DocumentType[] { oai20 }, true, "Header is missing array type information.", OasMissingHeaderArrayInformationRule.class));
         this.rules.add(md("SCH-005", "Missing Schema Array Information", "Required Property", "Schema", new DocumentType[] { oai20, oai30 }, true, "Schema is missing array type information.", OasMissingSchemaArrayInformationRule.class));
         this.rules.add(md("TAG-001", "Missing Tag Name", "Required Property", "Tag", new DocumentType[] { oai20, oai30, aai20 }, true, "Tag is missing a name.", MissingTagNameRule.class));
-        this.rules.add(md("SS-001", "Missing Security Scheme Type", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "Security Scheme is missing a type.", OasMissingSecuritySchemeTypeRule.class));
-        this.rules.add(md("SS-002", "Missing API-Key Scheme Parameter Name", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).", OasMissingApiKeySchemeParamNameRule.class));
+        this.rules.add(md("SS-001", "Missing Security Scheme Type", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30, aai20 }, true, "Security Scheme is missing a type.", MissingSecuritySchemeTypeRule.class));
+        this.rules.add(md("SS-002", "Missing API-Key Scheme Parameter Name", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30, aai20 }, true, "API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).", MissingApiKeySchemeParamNameRule.class));
         this.rules.add(md("SS-003", "Missing API-Key Scheme Parameter Location", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).", OasMissingApiKeySchemeParamLocationRule.class));
         this.rules.add(md("SS-004", "Missing OAuth Scheme Flow Type", "Required Property", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme is missing a flow type.", OasMissingOAuthSchemeFlowTypeRule.class));
         this.rules.add(md("SS-005", "Missing OAuth Scheme Auth URL", "Required Property", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme is missing an Authorization URL.", OasMissingOAuthSchemeAuthUrlRule.class));
