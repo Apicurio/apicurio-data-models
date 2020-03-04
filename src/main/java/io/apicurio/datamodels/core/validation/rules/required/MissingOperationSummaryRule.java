@@ -23,13 +23,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOperationDescriptionRule extends OasRequiredPropertyValidationRule {
+public class MissingOperationSummaryRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingOperationDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public MissingOperationSummaryRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -38,7 +38,7 @@ public class OasMissingOperationDescriptionRule extends OasRequiredPropertyValid
      */
     @Override
     public void visitOperation(Operation node) {
-        this.requireProperty(node, Constants.PROP_DESCRIPTION, map());
+        this.requireProperty(node, Constants.PROP_SUMMARY, map());
     }
 
 }

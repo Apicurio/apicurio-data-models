@@ -26,13 +26,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Tag Name Uniqueness validation rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasTagUniquenessValidationRule extends ValidationRule {
+public class TagUniquenessValidationRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasTagUniquenessValidationRule(ValidationRuleMetaData ruleInfo) {
+    public TagUniquenessValidationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     

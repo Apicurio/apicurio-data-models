@@ -14,35 +14,31 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.invalid.format;
+package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Tag;
-import io.apicurio.datamodels.core.validation.ValidationRule;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Tag Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidTagDescriptionRule extends ValidationRule {
+public class MissingApiTitleRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidTagDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public MissingApiTitleRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
      */
     @Override
-    public void visitTag(Tag node) {
-        if (hasValue(node.description)) {
-            this.reportIfInvalid(isValidCommonMark(node.description), node, Constants.PROP_DESCRIPTION, map());
-        }
+    public void visitInfo(Info node) {
+        this.requireProperty(node, Constants.PROP_TITLE, map());
     }
 
 }

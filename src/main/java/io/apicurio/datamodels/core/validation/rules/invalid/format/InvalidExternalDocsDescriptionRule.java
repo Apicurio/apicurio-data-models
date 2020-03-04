@@ -25,13 +25,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Invalid External Documentation Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidExternalDocsDescriptionRule extends ValidationRule {
+public class InvalidExternalDocsDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidExternalDocsDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidExternalDocsDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     

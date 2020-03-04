@@ -30,7 +30,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidApi
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidContactEmailRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidContactUrlRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidExampleDescriptionRule;
-import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidExternalDocsDescriptionRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidExternalDocsDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidExternalDocsUrlRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidHeaderDefaultValueRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidHeaderDescriptionRule;
@@ -54,7 +54,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidSec
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidServerDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidServerUrlRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidServerVariableDescriptionRule;
-import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidTagDescriptionRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidTagDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidTermsOfServiceUrlRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidXmlNamespaceUrlRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.name.OasDuplicatePathSegmentRule;
@@ -155,14 +155,14 @@ import io.apicurio.datamodels.core.validation.rules.other.OasIgnoredContentTypeH
 import io.apicurio.datamodels.core.validation.rules.other.OasIgnoredHeaderParameterRule;
 import io.apicurio.datamodels.core.validation.rules.other.OasOperationIdUniquenessValidationRule;
 import io.apicurio.datamodels.core.validation.rules.other.OasParameterUniquenessValidationRule;
-import io.apicurio.datamodels.core.validation.rules.other.OasTagUniquenessValidationRule;
+import io.apicurio.datamodels.core.validation.rules.other.TagUniquenessValidationRule;
 import io.apicurio.datamodels.core.validation.rules.other.OasUnknownPropertyRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiKeySchemeParamLocationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiKeySchemeParamNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiPathsRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiTitleRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiVersionRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingApiTitleRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingApiVersionRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingBodyParameterSchemaRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingDiscriminatorPropertyNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingExternalDocumentationUrlRule;
@@ -183,10 +183,10 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSche
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOAuthSecuritySchemeFlowsRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOpenApiPropertyRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOpenIdConnectSecuritySchemeConnectUrlRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationDescriptionRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationIdRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOperationDescriptionRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOperationIdRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationResponsesRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationSummaryRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingOperationSummaryRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingOperationTagsRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterArrayTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingParameterLocationRule;
@@ -199,7 +199,7 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingSchemaArr
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingServerTemplateUrlRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingServerVarDefaultValueRule;
-import io.apicurio.datamodels.core.validation.rules.required.OasMissingTagNameRule;
+import io.apicurio.datamodels.core.validation.rules.required.MissingTagNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasPathParamsMustBeRequiredRule;
 
 /**
@@ -230,7 +230,7 @@ public class ValidationRuleSet {
 
         this.rules.add(md("UNKNOWN-001", "Unknown/Unexpected Property", "Unknown Property", "All", new DocumentType[] { oai20, oai30 }, true, "An unexpected property \"${'property'}\" was found.  Extension properties should begin with \"x-\".", OasUnknownPropertyRule.class));
         /** Uniqueness **/
-        this.rules.add(md("TAG-003", "Duplicate Tag Definition", "Uniqueness", "Tag", new DocumentType[] { oai20, oai30 }, true, "Duplicate tag '${'tagName'}' found (every tag must have a unique name).", OasTagUniquenessValidationRule.class));
+        this.rules.add(md("TAG-003", "Duplicate Tag Definition", "Uniqueness", "Tag", new DocumentType[] { oai20, oai30, aai20 }, true, "Duplicate tag '${'tagName'}' found (every tag must have a unique name).", TagUniquenessValidationRule.class));
         this.rules.add(md("OP-003", "Duplicate Operation ID", "Uniqueness", "Operation", new DocumentType[] { oai20, oai30 }, true, "Duplicate operationId '${'operationId'}' found (operation IDs must be unique across all operations in the API).", OasOperationIdUniquenessValidationRule.class));
         this.rules.add(md("PAR-019", "Duplicate Parameter", "Uniqueness", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Duplicate ${'paramIn'} parameter named '${'paramName'}' found (parameters must be unique by name and location).", OasParameterUniquenessValidationRule.class));
         this.rules.add(md("PAR-020", "Duplicate Body Parameter", "Uniqueness", "Parameter", new DocumentType[] { oai20 }, true, "Operation has multiple \"body\" parameters.", OasBodyParameterUniquenessValidationRule.class));
@@ -245,12 +245,12 @@ public class ValidationRuleSet {
         this.rules.add(md("OP-002", "Invalid Operation Description", "Invalid Property Format", "Operation", new DocumentType[] { oai20, oai30 }, true, "Operation Description is an incorrect format.", OasInvalidOperationDescriptionRule.class));
         this.rules.add(md("OP-005", "Invalid Operation 'Consumes' Type", "Invalid Property Format", "Operation", new DocumentType[] { oai20 }, true, "Operation \"consumes\" must be a valid mime type.", OasInvalidOperationConsumesRule.class));
         this.rules.add(md("OP-006", "Invalid Operation 'Produces' Type", "Invalid Property Format", "Operation", new DocumentType[] { oai20 }, true, "Operation \"produces\" must be a valid mime type.", OasInvalidOperationProducesRule.class));
-        this.rules.add(md("ED-002", "Invalid External Documentation Description", "Invalid Property Format", "External Documentation", new DocumentType[] { oai20, oai30 }, true, "External Docs Description is an incorrect format.", OasInvalidExternalDocsDescriptionRule.class));
+        this.rules.add(md("ED-002", "Invalid External Documentation Description", "Invalid Property Format", "External Documentation", new DocumentType[] { oai20, oai30, aai20 }, true, "External Docs Description is an incorrect format.", InvalidExternalDocsDescriptionRule.class));
         this.rules.add(md("ED-003", "Invalid External Documentation URL", "Invalid Property Format", "External Documentation", new DocumentType[] { oai20, oai30 }, true, "External Docs URL is an incorrect format.", OasInvalidExternalDocsUrlRule.class));
         this.rules.add(md("PAR-010", "Invalid Parameter Description", "Invalid Property Format", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Parameter Description is an incorrect format.", OasInvalidParameterDescriptionRule.class));
         this.rules.add(md("IT-007", "Invalid Schema Items Default Value", "Invalid Property Format", "Shema Items", new DocumentType[] { oai20, oai30 }, true, "Schema Items default value does not conform to the correct type.", OasInvalidSchemaItemsDefaultValueRule.class));
         this.rules.add(md("HEAD-005", "Invalid Header Default Value", "Invalid Property Format", "Header Items", new DocumentType[] { oai20 }, true, "The \"default\" property must conform to the \"type\" of the items.", OasInvalidHeaderDefaultValueRule.class));
-        this.rules.add(md("TAG-002", "Invalid Tag Description", "Invalid Property Format", "Tag", new DocumentType[] { oai20, oai30 }, true, "Tag Description is an incorrect format.", OasInvalidTagDescriptionRule.class));
+        this.rules.add(md("TAG-002", "Invalid Tag Description", "Invalid Property Format", "Tag", new DocumentType[] { oai20, oai30, aai20 }, true, "Tag Description is an incorrect format.", InvalidTagDescriptionRule.class));
         this.rules.add(md("SS-011", "Invalid Security Scheme Auth URL", "Invalid Property Format", "Security Scheme", new DocumentType[] { oai20 }, true, "Security Scheme Authorization URL is an incorrect format.", OasInvalidSecuritySchemeAuthUrlRule.class));
         this.rules.add(md("SS-012", "Invalid Security Scheme Token URL", "Invalid Property Format", "Security Scheme", new DocumentType[] { oai20 }, true, "Security Scheme Token URL is an incorrect format.", OasInvalidSecuritySchemeTokenUrlRule.class));
         this.rules.add(md("XML-001", "Invalid XML Namespace URL", "Invalid Property Format", "XML", new DocumentType[] { oai20, oai30 }, true, "XML Namespace URL is an incorrect format.", OasInvalidXmlNamespaceUrlRule.class));
@@ -367,13 +367,13 @@ public class ValidationRuleSet {
         this.rules.add(md("R-001", "Missing OpenAPI Property", "Required Property", "API", new DocumentType[] { oai20, oai30 }, true, "API is missing the 'openapi' property.", OasMissingOpenApiPropertyRule.class));
         this.rules.add(md("R-002", "Missing API Information", "Required Property", "API", new DocumentType[] { oai20, oai30 }, true, "API is missing the 'info' property.", OasMissingApiInformationRule.class));
         this.rules.add(md("R-003", "Missing API Paths", "Required Property", "API", new DocumentType[] { oai20, oai30 }, true, "API is missing the 'paths' property.", OasMissingApiPathsRule.class));
-        this.rules.add(md("INF-001", "Missing API Title", "Required Property", "Info", new DocumentType[] { oai20, oai30, aai20 }, true, "API is missing a title.", OasMissingApiTitleRule.class));
-        this.rules.add(md("INF-002", "Missing API Version", "Required Property", "Info", new DocumentType[] { oai20, oai30, aai20 }, true, "API is missing a version.", OasMissingApiVersionRule.class));
+        this.rules.add(md("INF-001", "Missing API Title", "Required Property", "Info", new DocumentType[] { oai20, oai30, aai20 }, true, "API is missing a title.", MissingApiTitleRule.class));
+        this.rules.add(md("INF-002", "Missing API Version", "Required Property", "Info", new DocumentType[] { oai20, oai30, aai20 }, true, "API is missing a version.", MissingApiVersionRule.class));
         this.rules.add(md("LIC-001", "Missing License Name", "Required Property", "License", new DocumentType[] { oai20, oai30, aai20 }, true, "License is missing a name.", MissingLicenseNameRule.class));
         this.rules.add(md("OP-007", "Missing Operation Responses", "Required Property", "Operation", new DocumentType[] { oai20, oai30 }, true, "Operation must have at least one response.", OasMissingOperationResponsesRule.class));
-        this.rules.add(md("OP-008", "Missing Operation ID", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a operation id.", OasMissingOperationIdRule.class));
-        this.rules.add(md("OP-014", "Missing Operation Summary", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a summary.", OasMissingOperationSummaryRule.class));
-        this.rules.add(md("OP-015", "Missing Operation Description", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a description.", OasMissingOperationDescriptionRule.class));
+        this.rules.add(md("OP-008", "Missing Operation ID", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a operation id.", MissingOperationIdRule.class));
+        this.rules.add(md("OP-014", "Missing Operation Summary", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a summary.", MissingOperationSummaryRule.class));
+        this.rules.add(md("OP-015", "Missing Operation Description", "Required Property", "Operation", new DocumentType[] { oai20, oai30, aai20 }, false, "Operation is missing a description.", MissingOperationDescriptionRule.class));
         this.rules.add(md("OP-016", "Missing Operation Tags", "Required Property", "Operation", new DocumentType[] { oai20, oai30 }, false, "Operation must have at least one tag.", OasMissingOperationTagsRule.class));
         this.rules.add(md("ED-001", "Missing External Documentation URL", "Required Property", "External Documentation", new DocumentType[] { oai20, oai30 }, true, "External Documentation is missing a URL.", OasMissingExternalDocumentationUrlRule.class));
         this.rules.add(md("PAR-001", "Missing Parameter Name", "Required Property", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Parameter is missing a name.", OasMissingParameterNameRule.class));
@@ -389,7 +389,7 @@ public class ValidationRuleSet {
         this.rules.add(md("HEAD-001", "Missing Header Type", "Required Property", "Header", new DocumentType[] { oai20 }, true, "Header is missing type information.", OasMissingHeaderTypeRule.class));
         this.rules.add(md("HEAD-002", "Missing Header Array Information", "Required Property", "Header", new DocumentType[] { oai20 }, true, "Header is missing array type information.", OasMissingHeaderArrayInformationRule.class));
         this.rules.add(md("SCH-005", "Missing Schema Array Information", "Required Property", "Schema", new DocumentType[] { oai20, oai30 }, true, "Schema is missing array type information.", OasMissingSchemaArrayInformationRule.class));
-        this.rules.add(md("TAG-001", "Missing Tag Name", "Required Property", "Tag", new DocumentType[] { oai20, oai30 }, true, "Tag is missing a name.", OasMissingTagNameRule.class));
+        this.rules.add(md("TAG-001", "Missing Tag Name", "Required Property", "Tag", new DocumentType[] { oai20, oai30, aai20 }, true, "Tag is missing a name.", MissingTagNameRule.class));
         this.rules.add(md("SS-001", "Missing Security Scheme Type", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "Security Scheme is missing a type.", OasMissingSecuritySchemeTypeRule.class));
         this.rules.add(md("SS-002", "Missing API-Key Scheme Parameter Name", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).", OasMissingApiKeySchemeParamNameRule.class));
         this.rules.add(md("SS-003", "Missing API-Key Scheme Parameter Location", "Required Property", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).", OasMissingApiKeySchemeParamLocationRule.class));

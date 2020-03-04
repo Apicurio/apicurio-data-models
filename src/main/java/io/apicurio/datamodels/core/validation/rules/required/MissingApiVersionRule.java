@@ -17,28 +17,28 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOperationIdRule extends OasRequiredPropertyValidationRule {
+public class MissingApiVersionRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingOperationIdRule(ValidationRuleMetaData ruleInfo) {
+    public MissingApiVersionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
      */
     @Override
-    public void visitOperation(Operation node) {
-        this.requireProperty(node, Constants.PROP_OPERATION_ID, map());
+    public void visitInfo(Info node) {
+        this.requireProperty(node, Constants.PROP_VERSION, map());
     }
 
 }
