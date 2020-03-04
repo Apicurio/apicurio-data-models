@@ -23,13 +23,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingHttpSecuritySchemeTypeRule extends OasRequiredPropertyValidationRule {
+public class MissingOAuthSecuritySchemeFlowsRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingHttpSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
+    public MissingOAuthSecuritySchemeFlowsRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -38,7 +38,7 @@ public class OasMissingHttpSecuritySchemeTypeRule extends OasRequiredPropertyVal
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        this.requirePropertyWhen(node, Constants.PROP_SCHEME, Constants.PROP_TYPE, "http", map());
+        this.requirePropertyWhen(node, Constants.PROP_FLOWS, Constants.PROP_TYPE, "oauth2", map());
     }
 
 }

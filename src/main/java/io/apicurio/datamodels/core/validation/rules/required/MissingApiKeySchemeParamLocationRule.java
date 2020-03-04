@@ -17,19 +17,21 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingApiKeySchemeParamLocationRule extends OasRequiredPropertyValidationRule {
+public class MissingApiKeySchemeParamLocationRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
+     * 
      * @param ruleInfo
      */
-    public OasMissingApiKeySchemeParamLocationRule(ValidationRuleMetaData ruleInfo) {
+    public MissingApiKeySchemeParamLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -38,7 +40,15 @@ public class OasMissingApiKeySchemeParamLocationRule extends OasRequiredProperty
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        this.requirePropertyWhen(node, Constants.PROP_IN, Constants.PROP_TYPE, "apiKey", map());
+        if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
+            if (equals(node.type, "apiKey")) {
+                this.requirePropertyWhen(node, Constants.PROP_IN, Constants.PROP_TYPE, "apiKey", map());
+            } else if (equals(node.type, "httpApiKey")) {
+                this.requirePropertyWhen(node, Constants.PROP_IN, Constants.PROP_TYPE, "httpApiKey", map());
+            }
+        } else {
+            this.requirePropertyWhen(node, Constants.PROP_IN, Constants.PROP_TYPE, "apiKey", map());
+        }
     }
 
 }

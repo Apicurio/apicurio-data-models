@@ -23,13 +23,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOpenIdConnectSecuritySchemeConnectUrlRule extends OasRequiredPropertyValidationRule {
+public class MissingHttpSecuritySchemeTypeRule extends OasRequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingOpenIdConnectSecuritySchemeConnectUrlRule(ValidationRuleMetaData ruleInfo) {
+    public MissingHttpSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -38,7 +38,7 @@ public class OasMissingOpenIdConnectSecuritySchemeConnectUrlRule extends OasRequ
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        this.requirePropertyWhen(node, Constants.PROP_OPEN_ID_CONNECT_URL, Constants.PROP_TYPE, "openIdConnect", map());
+        this.requirePropertyWhen(node, Constants.PROP_SCHEME, Constants.PROP_TYPE, "http", map());
     }
 
 }
