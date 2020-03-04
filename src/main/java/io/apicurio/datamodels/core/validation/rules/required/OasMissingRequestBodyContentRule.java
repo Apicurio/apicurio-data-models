@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingRequestBodyContentRule extends OasRequiredPropertyValidationRule {
+public class OasMissingRequestBodyContentRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

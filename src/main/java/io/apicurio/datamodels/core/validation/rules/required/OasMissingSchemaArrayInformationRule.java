@@ -29,7 +29,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingSchemaArrayInformationRule extends OasRequiredPropertyValidationRule {
+public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

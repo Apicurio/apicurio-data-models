@@ -27,13 +27,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Base class for all Required Property rules.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasRequiredPropertyValidationRule extends ValidationRule {
+public abstract class RequiredPropertyValidationRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasRequiredPropertyValidationRule(ValidationRuleMetaData ruleInfo) {
+    public RequiredPropertyValidationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 

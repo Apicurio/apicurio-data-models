@@ -26,7 +26,7 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasPathParamsMustBeRequiredRule extends OasRequiredPropertyValidationRule {
+public class OasPathParamsMustBeRequiredRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

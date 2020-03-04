@@ -23,7 +23,7 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingBodyParameterSchemaRule extends OasRequiredPropertyValidationRule {
+public class OasMissingBodyParameterSchemaRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

@@ -23,7 +23,7 @@ import io.apicurio.datamodels.openapi.models.OasHeader;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingHeaderArrayInformationRule extends OasRequiredPropertyValidationRule {
+public class OasMissingHeaderArrayInformationRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

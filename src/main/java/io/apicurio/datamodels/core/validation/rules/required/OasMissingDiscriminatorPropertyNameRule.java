@@ -23,7 +23,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Discriminator;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingDiscriminatorPropertyNameRule extends OasRequiredPropertyValidationRule {
+public class OasMissingDiscriminatorPropertyNameRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

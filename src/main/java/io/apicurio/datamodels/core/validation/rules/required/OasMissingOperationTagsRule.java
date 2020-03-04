@@ -25,7 +25,7 @@ import io.apicurio.datamodels.openapi.models.OasOperation;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOperationTagsRule extends OasRequiredPropertyValidationRule {
+public class OasMissingOperationTagsRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

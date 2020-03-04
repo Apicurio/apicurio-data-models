@@ -4,7 +4,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
-public class AasMissingServerProtocolRule extends OasRequiredPropertyValidationRule {
+public class AasMissingServerProtocolRule extends RequiredPropertyValidationRule {
 
 	public AasMissingServerProtocolRule(ValidationRuleMetaData ruleInfo) {
 		super(ruleInfo);

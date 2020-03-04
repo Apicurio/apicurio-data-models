@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingParameterArrayTypeRule extends OasRequiredPropertyValidationRule {
+public class OasMissingParameterArrayTypeRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.
