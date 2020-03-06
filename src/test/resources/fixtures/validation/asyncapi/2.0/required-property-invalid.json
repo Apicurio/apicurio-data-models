@@ -35,5 +35,10 @@
         "type": "openIdConnect"
      }
     }
- }
+ },
+ "tags": [
+    { 
+     "description": "tag-001"
+    }
+  ]
 }

@@ -1,6 +1,7 @@
 [INF-001] |medium| {/info->title} :: API is missing a title.
 [INF-002] |medium| {/info->version} :: API is missing a version.
 [LIC-001] |medium| {/info/license->name} :: License is missing a name.
+[TAG-001] |medium| {/tags[0]->name} :: Tag is missing a name.
 [SRV-001] |medium| {/servers[production]->url} :: Server is missing a template URL.
 [SRV-004] |medium| {/servers[production]->protocol} :: Server is missing a protocol.
 [SS-003] |medium| {/components/securitySchemes[apiKey]->in} :: API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).

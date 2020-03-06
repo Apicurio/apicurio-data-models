@@ -74,5 +74,11 @@
         "openIdConnectUrl": "https://authserver.example/.well-known"
       }
     }
- }
+ },
+ "tags": [
+    { 
+     "name": "user",
+     "description": "tag-001"
+    }
+  ]
 }
