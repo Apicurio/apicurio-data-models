@@ -23,7 +23,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingResponseDescriptionRule extends OasRequiredPropertyValidationRule {
+public class OasMissingResponseDescriptionRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.

@@ -1,6 +1,9 @@
 [
 	{ "name": "[AsyncAPI 2.0] Simple [Valid]", "test": "asyncapi/2.0/simple/valid-simple.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Info", "test": "asyncapi/2.0/simple/info.json" },
+	{ "name": "[AsyncAPI 2.0] Flow [Required Properties]", "test": "asyncapi/2.0/flow-required-properties.json" },
+	{ "name": "[AsyncAPI 2.0] Required Property [Valid]", "test": "asyncapi/2.0/required-property-valid.json" },
+	{ "name": "[AsyncAPI 2.0] Required Property [Invalid]", "test": "asyncapi/2.0/required-property-invalid.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },

@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingOAuthSchemeTokenUrlRule extends OasRequiredPropertyValidationRule {
+public class OasMissingOAuthSchemeTokenUrlRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.
