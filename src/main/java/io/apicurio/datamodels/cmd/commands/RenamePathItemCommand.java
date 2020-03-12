@@ -107,6 +107,10 @@ public class RenamePathItemCommand extends AbstractCommand {
         }
         // First, rename the path itself
         OasPathItem path = document.paths.removePathItem(from);
+        // If we can't find the path, just return.
+        if (NodeCompat.isNullOrUndefined(path)) {
+            return;
+        }
         path.rename(to);
         document.paths.addPathItem(to, path);
 
