@@ -43,7 +43,7 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
     /**
      * @param currentSecurityRequirement
      * @param otherSecurityRequirement
-     * @return returns true if the two sec reqs are equal
+     * @return returns true if the two security requirements are equal
      */
     private boolean isEqualTo(SecurityRequirement currentSecurityRequirement,
             SecurityRequirement otherSecurityRequirement) {
@@ -95,7 +95,6 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
      */
     public void visitSecurityRequirement(SecurityRequirement node) {
-        // may also be a root document
         ISecurityRequirementParent parent = (ISecurityRequirementParent) node.parent();
         List<SecurityRequirement> securityRequirements = parent.getSecurityRequirements();
 
@@ -104,8 +103,6 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
         }
 
         if (checkForDuplicates(node, securityRequirements)) {
-            System.out.println("Found duplicate for " + node.getSecurityRequirementNames().toString() + "\n");
-            // not sure what exactly I should report here
             this.report(node, Constants.PROP_SECURITY,
                     map("securityReq", node.getSecurityRequirementNames().toString()));
         }
