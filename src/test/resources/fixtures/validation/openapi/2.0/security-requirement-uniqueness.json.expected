@@ -1,0 +1,6 @@
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[0]->security} :: Duplicate Security Requirement '[api_key]' in Security field
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[1]->security} :: Duplicate Security Requirement '[api_key]' in Security field
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[2]->security} :: Duplicate Security Requirement '[api_key, petstore_auth]' in Security field
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[3]->security} :: Duplicate Security Requirement '[petstore_auth, api_key]' in Security field
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[4]->security} :: Duplicate Security Requirement '[petstore_auth]' in Security field
+[SREQ-005] |medium| {/paths[/pet/{petId}]/get/security[5]->security} :: Duplicate Security Requirement '[petstore_auth]' in Security field

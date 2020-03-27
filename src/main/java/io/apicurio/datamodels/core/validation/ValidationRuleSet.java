@@ -24,6 +24,7 @@ import java.util.Set;
 import io.apicurio.datamodels.compat.ValidationCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidApiBasePathRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidApiDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidApiHostRule;
@@ -157,6 +158,7 @@ import io.apicurio.datamodels.core.validation.rules.other.OasOperationIdUniquene
 import io.apicurio.datamodels.core.validation.rules.other.OasParameterUniquenessValidationRule;
 import io.apicurio.datamodels.core.validation.rules.other.TagUniquenessValidationRule;
 import io.apicurio.datamodels.core.validation.rules.other.OasUnknownPropertyRule;
+import io.apicurio.datamodels.core.validation.rules.other.SecurityRequirementUniquenessValidationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingApiInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingApiKeySchemeParamLocationRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingApiKeySchemeParamNameRule;
@@ -235,6 +237,7 @@ public class ValidationRuleSet {
         this.rules.add(md("OP-003", "Duplicate Operation ID", "Uniqueness", "Operation", new DocumentType[] { oai20, oai30 }, true, "Duplicate operationId '${'operationId'}' found (operation IDs must be unique across all operations in the API).", OasOperationIdUniquenessValidationRule.class));
         this.rules.add(md("PAR-019", "Duplicate Parameter", "Uniqueness", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Duplicate ${'paramIn'} parameter named '${'paramName'}' found (parameters must be unique by name and location).", OasParameterUniquenessValidationRule.class));
         this.rules.add(md("PAR-020", "Duplicate Body Parameter", "Uniqueness", "Parameter", new DocumentType[] { oai20 }, true, "Operation has multiple \"body\" parameters.", OasBodyParameterUniquenessValidationRule.class));
+        this.rules.add(md("SREQ-005", "Duplicate Security Requirements", "Uniqueness", "Security Requirement", new DocumentType[] { oai20, oai30 }, true, "Duplicate Security Requirement '${'securityReq'}' in Security field", SecurityRequirementUniquenessValidationRule.class));
         /** Invalid Property Format **/
         this.rules.add(md("R-004", "Invalid API Host", "Invalid Property Format", "API", new DocumentType[] { oai20 }, true, "Host not properly formatted - only the host name (and optionally port) should be specified.", OasInvalidApiHostRule.class));
         this.rules.add(md("R-005", "Invalid API Base Path", "Invalid Property Format", "API", new DocumentType[] { oai20 }, true, "Base Path should being with a '/' character.", OasInvalidApiBasePathRule.class));
