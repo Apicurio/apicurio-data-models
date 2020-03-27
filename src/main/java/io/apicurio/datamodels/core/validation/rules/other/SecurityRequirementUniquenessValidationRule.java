@@ -45,7 +45,7 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
      * @param otherSecurityRequirement
      * @return returns true if the two security requirements are equal
      */
-    private boolean isEqualTo(SecurityRequirement currentSecurityRequirement,
+    private static boolean isEqualTo(SecurityRequirement currentSecurityRequirement,
             SecurityRequirement otherSecurityRequirement) {
         // compare security requirement names
         List<String> currentSecurityRequirementNames = currentSecurityRequirement
@@ -77,7 +77,7 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
      * @param allRequirements
      * @return true if duplicates are found
      */
-    private boolean checkForDuplicates(SecurityRequirement currentSecurityRequirement,
+    private static boolean checkForDuplicates(SecurityRequirement currentSecurityRequirement,
             List<SecurityRequirement> allRequirements) {
         ArrayList<SecurityRequirement> clonedList = new ArrayList<SecurityRequirement>(allRequirements);
         clonedList.remove(currentSecurityRequirement); // remove the current one to examine siblings
@@ -106,6 +106,5 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
             this.report(node, Constants.PROP_SECURITY,
                     map("securityReq", node.getSecurityRequirementNames().toString()));
         }
-        ;
     }
 }
