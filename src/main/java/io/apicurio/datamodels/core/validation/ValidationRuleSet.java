@@ -24,7 +24,6 @@ import java.util.Set;
 import io.apicurio.datamodels.compat.ValidationCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidApiBasePathRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidApiDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.OasInvalidApiHostRule;

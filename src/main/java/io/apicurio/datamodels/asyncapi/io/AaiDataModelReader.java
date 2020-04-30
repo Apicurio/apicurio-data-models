@@ -226,6 +226,21 @@ public abstract class AaiDataModelReader extends DataModelReader {
         this.readOperationBase(json, aaiNode);
     }
 
+    public void readAaiParameter(Object json, AaiParameter node) {
+        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
+        String location = JsonCompat.consumePropertyString(json, Constants.PROP_LOCATION);
+
+        node.$ref = $ref;
+        node.description = description;
+        node.schema = schema;
+        node.location = location;
+
+        this.readExtensions(json, node);
+        this.readExtraProperties(json, node);
+    }
+
     public void readMessage(Object json, AaiMessage node) {
         // payload
         Object jPayload = JsonCompat.consumeProperty(json, Constants.PROP_PAYLOAD);

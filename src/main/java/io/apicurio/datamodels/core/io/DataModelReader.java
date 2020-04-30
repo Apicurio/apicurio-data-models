@@ -19,7 +19,6 @@ package io.apicurio.datamodels.core.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -307,26 +306,6 @@ public abstract class DataModelReader {
     public void readSchema(Object json, Schema node) {
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         node.$ref = $ref;
-
-        this.readExtensions(json, node);
-        this.readExtraProperties(json, node);
-    }
-
-    /**
-     * Reads a single parameter.
-     * @param json
-     * @param node
-     */
-    public void readAaiParameter(Object json, AaiParameter node) {
-        String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
-        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
-        Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
-        String location = JsonCompat.consumePropertyString(json, Constants.PROP_LOCATION);
-
-        node.$ref = $ref;
-        node.description = description;
-        node.schema = schema;
-        node.location = location;
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
