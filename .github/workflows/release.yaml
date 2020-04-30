@@ -78,7 +78,7 @@ jobs:
           gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
           nexus_password: ${{ secrets.OSSRH_TOKEN }}
-          maven_goals_phases: clean deploy --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
+          maven_goals_phases: deploy --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
           maven_profiles: release   
       - name: Create GitHub Release
         uses: actions/create-release@latest
@@ -91,8 +91,6 @@ jobs:
         run: gren release --token=${{ secrets.GITHUB_TOKEN }} --override --prefix=v             
       - name: Update Snapshot version ${{steps.metadata.outputs.snapshot-version}}
         run: mvn versions:set -DnewVersion=${{steps.metadata.outputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
-      - name: Verify Build
-        run: mvn clean install -Ptranspilation
       - name: Commit Snapshot Version Change
         run: |
           git add .
