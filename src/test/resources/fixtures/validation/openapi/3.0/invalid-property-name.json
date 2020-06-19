@@ -643,6 +643,39 @@
           }
         }
       }
+    },
+    "/pathstest28/{var1}.{var2}": {
+      "get": {
+        "description": "pathstest28 - path with dot (/pathstest28/{var1}.{var2}) - valid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/var1"
+          },
+          {
+            "$ref": "#/components/parameters/var2"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/pathstest28/test.{var1}": {
+      "get": {
+        "description": "pathstest28 - path with dot (/pathstest28/test.{var1}) - valid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/var1"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
     }
   },
   "components": {
