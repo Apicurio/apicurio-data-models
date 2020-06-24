@@ -49,8 +49,8 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
         }));
     };
 
-    private static String PATH_MATCH_REGEX = "^(\\/[^{}\\/]*(\\{[a-zA-Z_][0-9a-zA-Z_]*\\})?(\\.\\{[a-zA-Z_][0-9a-zA-Z_]*\\})?)+$";
-    private static String SEG_MATCH_REGEX = "[\\/\\.]([^{}\\/]*)(\\{([a-zA-Z_][0-9a-zA-Z_]*)\\})?";
+    private static String PATH_MATCH_REGEX = "^(\\/[^{}\\/]*(\\{[a-zA-Z_][0-9a-zA-Z_\\-\\.]*\\})?(\\.\\{[a-zA-Z_][0-9a-zA-Z_\\-\\.]*\\})?)+$";
+    private static String SEG_MATCH_REGEX = "[\\/\\.]([^{}\\/]*)(\\{([a-zA-Z_][0-9a-zA-Z_\\-\\.]*)\\})?";
     private static String URL_MATCH_REGEX = "^(?!mailto:)(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$";
     private static String EMAIL_MATCH_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private static String MIME_TYPE_MATCH_REGEX = "^.*\\/.*(;.*)?$";

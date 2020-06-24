@@ -676,6 +676,21 @@
           }
         }
       }
+    },
+    "/pathstest29/{var-name}": {
+      "get": {
+        "description": "pathstest29 - path variable with hyphen in name (valid)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/var-name"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -774,6 +789,15 @@
       },
       "var2": {
         "name":"var2",
+        "in":"path",
+        "description":"Param in path",
+        "required":true,
+        "schema": {
+          "type":"string"
+        }
+      },
+      "var-name": {
+        "name":"var-name",
         "in":"path",
         "description":"Param in path",
         "required":true,
