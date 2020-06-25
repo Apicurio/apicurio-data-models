@@ -69,17 +69,6 @@ jobs:
         uses: filipstefansson/set-npm-token-action@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-      - name: Publish to NPM
-        run: npm publish ./target/ts/dist/
-      - name: Publish to Maven Central
-        uses: samuelmeuli/action-maven-publish@v1
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          nexus_username: ${{ secrets.OSSRH_USERNAME }}
-          nexus_password: ${{ secrets.OSSRH_TOKEN }}
-          maven_goals_phases: deploy --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
-          maven_profiles: release   
       - name: Create GitHub Release
         uses: actions/create-release@latest
         env:
@@ -89,6 +78,17 @@ jobs:
           release_name: ${{steps.metadata.outputs.release-version}}
       - name: Generate Release Notes
         run: gren release --token=${{ secrets.GITHUB_TOKEN }} --override --prefix=v             
+      - name: Publish to Maven Central
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          nexus_username: ${{ secrets.OSSRH_USERNAME }}
+          nexus_password: ${{ secrets.OSSRH_TOKEN }}
+          maven_goals_phases: deploy --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
+          maven_profiles: release   
+      - name: Publish to NPM
+        run: npm publish ./target/ts/dist/
       - name: Update Snapshot version ${{steps.metadata.outputs.snapshot-version}}
         run: mvn versions:set -DnewVersion=${{steps.metadata.outputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
       - name: Commit Snapshot Version Change
