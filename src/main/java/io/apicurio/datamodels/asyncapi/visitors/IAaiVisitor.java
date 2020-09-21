@@ -31,8 +31,10 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
@@ -76,5 +78,11 @@ public interface IAaiVisitor extends IVisitor {
     void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node);
     void visitChannelBindings(AaiChannelBindings node);
     void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node);
-
+    void visitAllOfSchema(AaiSchema node);
+    void visitOneOfSchema(AaiSchema node);
+    void visitAnyOfSchema(AaiSchema node);
+    void visitNotSchema(AaiSchema node);
+    void visitPropertySchema(IAaiPropertySchema node);
+    void visitItemsSchema(AaiSchema node);
+    void visitAdditionalPropertiesSchema(AaiSchema node);
 }

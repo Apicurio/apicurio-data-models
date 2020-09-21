@@ -31,8 +31,11 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
@@ -161,6 +164,41 @@ public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
 
     @Override
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        visitNode((Node) node);
+    }
+
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        visitNode(node);
+    }
+
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
         visitNode(node);
     }
 

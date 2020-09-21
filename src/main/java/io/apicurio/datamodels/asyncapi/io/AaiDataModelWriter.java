@@ -38,13 +38,16 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiServerVariable;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
@@ -56,6 +59,7 @@ import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
@@ -189,7 +193,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         Object json = JsonCompat.objectNode();
         // write the schemas because they are not visited later
         Object schemas = JsonCompat.objectNode();
-        if(components.schemas != null) {
+        if (components.schemas != null) {
             for (Entry<String, Object> e : components.schemas.entrySet()) {
                 JsonCompat.setProperty(schemas, e.getKey(), e.getValue());
             }
@@ -745,6 +749,132 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        this.doVisitSchema(node, Constants.PROP_ALL_OF, true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        this.doVisitSchema(node, Constants.PROP_ONE_OF, true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        this.doVisitSchema(node, Constants.PROP_ANY_OF, true);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        this.doVisitSchema(node, Constants.PROP_NOT, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        AaiSchema schema = (AaiSchema) node;
+        Object parent = this.lookupParentJson(schema);
+        Object json = JsonCompat.objectNode();
+        writeSchema(json, schema);
+        writeExtraProperties(json, schema);
+
+        Object properties = JsonCompat.getProperty(parent, Constants.PROP_PROPERTIES);
+        if (properties == null) {
+            properties = JsonCompat.objectNode();
+            JsonCompat.setProperty(parent, Constants.PROP_PROPERTIES, properties);
+        }
+
+        JsonCompat.setProperty(properties, node.getPropertyName(), json);
+        this.updateIndex(schema, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        AaiSchema parentSchema = (AaiSchema) node;
+        this.doVisitSchema(node, Constants.PROP_ITEMS, NodeCompat.isList(parentSchema.items));
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+        this.doVisitSchema(node, Constants.PROP_ADDITIONAL_PROPERTIES, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#writeSchema(java.lang.Object, io.apicurio.datamodels.core.models.common.Schema)
+     */
+    @Override
+    protected void writeSchema(Object json, Schema node) {
+        AaiSchema schema = (AaiSchema) node;
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, schema.$ref);
+        JsonCompat.setPropertyString(json, Constants.PROP_FORMAT, schema.format);
+        JsonCompat.setPropertyString(json, Constants.PROP_TITLE, schema.title);
+        JsonCompat.setPropertyString(json, Constants.PROP_DESCRIPTION, schema.description);
+        JsonCompat.setProperty(json, Constants.PROP_DEFAULT, schema.default_);
+
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MULTIPLE_OF, schema.multipleOf);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAXIMUM, schema.maximum);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_EXCLUSIVE_MAXIMUM, schema.exclusiveMaximum);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MINIMUM, schema.minimum);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_EXCLUSIVE_MINIMUM, schema.exclusiveMinimum);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAX_LENGTH, schema.maxLength);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MIN_LENGTH, schema.minLength);
+        JsonCompat.setPropertyString(json, Constants.PROP_PATTERN, schema.pattern);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAX_ITEMS, schema.maxItems);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MIN_ITEMS, schema.minItems);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_UNIQUE_ITEMS, schema.uniqueItems);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MAX_PROPERTIES, schema.maxProperties);
+        JsonCompat.setPropertyNumber(json, Constants.PROP_MIN_PROPERTIES, schema.minProperties);
+        JsonCompat.setPropertyStringArray(json, Constants.PROP_REQUIRED, schema.required);
+        if (schema.enum_ != null) {
+            for (Object enumValue : schema.enum_) {
+                JsonCompat.appendToArrayProperty(json, Constants.PROP_ENUM, enumValue);
+            }
+        }
+        JsonCompat.setPropertyString(json, Constants.PROP_TYPE, schema.type);
+
+        JsonCompat.setPropertyNull(json, Constants.PROP_ITEMS);
+        JsonCompat.setPropertyNull(json, Constants.PROP_ALL_OF);
+        JsonCompat.setPropertyNull(json, Constants.PROP_ONE_OF);
+        JsonCompat.setPropertyNull(json, Constants.PROP_ANY_OF);
+        JsonCompat.setPropertyNull(json, Constants.PROP_NOT);
+        JsonCompat.setPropertyNull(json, Constants.PROP_PROPERTIES);
+        if (NodeCompat.isNode(schema.additionalProperties)) {
+            JsonCompat.setPropertyNull(json, Constants.PROP_ADDITIONAL_PROPERTIES);
+        } else {
+            JsonCompat.setPropertyBoolean(json, Constants.PROP_ADDITIONAL_PROPERTIES, (Boolean) schema.additionalProperties);
+        }
+
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_READ_ONLY, schema.readOnly);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_WRITE_ONLY, schema.writeOnly);
+        JsonCompat.setPropertyString(json, Constants.PROP_DISCRIMINATOR, schema.discriminator);
+        JsonCompat.setPropertyBoolean(json, Constants.PROP_DEPRECATED, schema.deprecated);
+
+        JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS);
+        JsonCompat.setProperty(json, Constants.PROP_EXAMPLE, schema.example);
+
+        super.writeSchema(json, schema);
+    }
+
+    /**
      * Writes a Server/Channel/Operation/Message Bindings model to JSON.
      * @param node
      */
@@ -767,5 +897,4 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
         return json;
     }
-
 }
