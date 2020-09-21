@@ -16,10 +16,38 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.*;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
+import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
+import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.*;
+import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
+import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
+import io.apicurio.datamodels.core.models.common.OAuthFlows;
+import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 
 /**
