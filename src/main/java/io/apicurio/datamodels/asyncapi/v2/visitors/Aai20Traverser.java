@@ -16,7 +16,9 @@
 
 package io.apicurio.datamodels.asyncapi.v2.visitors;
 
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Components;
 import io.apicurio.datamodels.asyncapi.visitors.AaiTraverser;
+import io.apicurio.datamodels.core.models.common.Components;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -25,5 +27,24 @@ public class Aai20Traverser extends AaiTraverser implements IAai20Visitor {
 
     public Aai20Traverser(IAai20Visitor visitor) {
         super(visitor);
+    }
+
+    @Override
+    public void visitComponents(Components node) {
+        Aai20Components components = (Aai20Components) node;
+        node.accept(visitor);
+        this.traverseCollection(components.getSchemaDefinitions());
+        this.traverseCollection(components.getMessagesList());
+        this.traverseCollection(components.getSecuritySchemesList());
+        this.traverseCollection(components.getParametersList());
+        this.traverseCollection(components.getCorrelationIdsList());
+        this.traverseCollection(components.getMessageTraitDefinitionsList());
+        this.traverseCollection(components.getOperationTraitDefinitionsList());
+        this.traverseCollection(components.getServerBindingsDefinitionList());
+        this.traverseCollection(components.getChannelBindingsDefinitionList());
+        this.traverseCollection(components.getOperationBindingsDefinitionList());
+        this.traverseCollection(components.getMessageBindingsDefinitionList());
+        this.traverseExtensions(node);
+        this.traverseValidationProblems(node);
     }
 }

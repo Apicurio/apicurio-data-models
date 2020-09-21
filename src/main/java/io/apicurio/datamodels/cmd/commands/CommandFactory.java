@@ -98,6 +98,9 @@ public class CommandFactory {
             { return new AddResponseDefinitionCommand_30(); }
             case "AddChildSchemaCommand":
             { return new AddChildSchemaCommand(); }
+            case "AddChannelItemCommand":
+            case "AddChannelItemCommand_Aai20":
+            { return new AddChannelItemCommand(); }
 
             /** Change Commands **/
             
@@ -248,6 +251,9 @@ public class CommandFactory {
             { return new DeleteTagCommand(); }
             case "DeleteChildSchemaCommand":
             { return new DeleteChildSchemaCommand(); }
+            case "DeleteChannelCommand":
+            case "DeleteChannelCommand_Aai20":
+            { return new DeleteChannelCommand(); }
 
             /** New Commands **/
             

@@ -3,26 +3,8 @@ package io.apicurio.datamodels.openapi.visitors.dereference;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
-import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20ChannelBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20CorrelationId;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Message;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageTraitDefinition;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationTraitDefinition;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Parameter;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20ServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.*;
+import io.apicurio.datamodels.asyncapi.v2.models.*;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 
@@ -142,7 +124,7 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
         Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();
 
-        if(model.components != null) {
+        if (model.components != null) {
             transform(model.components.messages, name -> PREFIX + "messages/" + name, res);
             transform(model.components.securitySchemes, name -> PREFIX + "securitySchemes/" + name, res);
             transform(model.components.parameters, name -> PREFIX + "parameters/" + name, res);
@@ -153,10 +135,17 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
             transform(model.components.channelBindings, name -> PREFIX + "channelBindings/" + name, res);
             transform(model.components.operationBindings, name -> PREFIX + "operationBindings/" + name, res);
             transform(model.components.messageBindings, name -> PREFIX + "messageBindings/" + name, res);
-            // schemas are not Nodes, they have to be treated separately
-            for (String name : model.components.schemas.keySet()) {
+            // schemas are not Nodes on AaiComponents, they have to be treated separately
+            /*
+            for (String name : components.schemas.keySet()) {
                 res.put(PREFIX + "schemas/" + name, null);
             }
+            */
+            // However, we mahe them Nodes on Aai20Components, so now we can cat document and components,
+            // retrieve tham adn treat them as regular nodes we're going to transform.
+            Aai20Components components = (Aai20Components) ((Aai20Document) document).components;
+            transform(components.schemas, name -> PREFIX + "schemas/" + name, res);
+
         }
         return res;
     }

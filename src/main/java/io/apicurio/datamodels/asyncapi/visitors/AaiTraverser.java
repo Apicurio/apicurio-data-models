@@ -36,11 +36,15 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
@@ -48,10 +52,13 @@ import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.Traverser;
+
+import java.util.List;
 
 /**
  * An AsyncAPI traverser implementation.
@@ -368,5 +375,85 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     @Override
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
         this.visitChannelBindings(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        this.visitSchema((Schema) node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+        this.visitSchema(node);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.visitors.Traverser#traverseSchema(io.apicurio.datamodels.core.models.common.Schema)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void traverseSchema(Schema node) {
+        super.traverseSchema(node);
+        AaiSchema schema = (AaiSchema) node;
+        if (NodeCompat.isList(schema.items)) {
+            this.traverseCollection((List<Node>) schema.items);
+        } else {
+            this.traverseIfNotNull((Node) schema.items);
+        }
+        this.traverseCollection(schema.allOf);
+        this.traverseCollection(schema.oneOf);
+        this.traverseCollection(schema.anyOf);
+        this.traverseIfNotNull(schema.not);
+        this.traverseCollection(schema.getProperties());
+        if (NodeCompat.isNode(schema.additionalProperties)) {
+            this.traverseIfNotNull((Node) schema.additionalProperties);
+        }
+        this.traverseIfNotNull(schema.externalDocs);
     }
 }

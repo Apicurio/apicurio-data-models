@@ -16,35 +16,10 @@
 
 package io.apicurio.datamodels.asyncapi.visitors;
 
-import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
-import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessage;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiServer;
-import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.*;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
-import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.core.models.common.Components;
-import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
-import io.apicurio.datamodels.core.models.common.OAuthFlows;
-import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.*;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 
 /**
@@ -76,6 +51,12 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     @Override
     public void visitComponents(Components node) {
         this.path.prependSegment(Constants.PROP_COMPONENTS, false);
+    }
+
+    @Override
+    public void visitSchemaDefinition(IDefinition node) {
+        this.path.prependSegment(node.getName(), true);
+        this.path.prependSegment(Constants.PROP_SCHEMAS, false);
     }
 
     @Override
@@ -263,5 +244,82 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_CHANNEL_BINDINGS, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ALL_OF);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
+            this.path.prependSegment(Constants.PROP_ALL_OF, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ONE_OF);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
+            this.path.prependSegment(Constants.PROP_ONE_OF, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ANY_OF);
+        if (idx != -1) {
+            this.path.prependSegment(String.valueOf(idx), true);
+            this.path.prependSegment(Constants.PROP_ANY_OF, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        this.path.prependSegment(Constants.PROP_NOT, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        this.path.prependSegment(node.getPropertyName(), true);
+        this.path.prependSegment(Constants.PROP_PROPERTIES, false);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        if (node.hasItemsSchemas()) {
+            int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ITEMS);
+            if (idx != -1) {
+                this.path.prependSegment(String.valueOf(idx), true);
+                this.path.prependSegment(Constants.PROP_ITEMS, false);
+            }
+        } else {
+            this.path.prependSegment(Constants.PROP_ITEMS, false);
+        }
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+        this.path.prependSegment(Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
 }

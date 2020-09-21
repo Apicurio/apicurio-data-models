@@ -31,10 +31,14 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Schema;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
@@ -315,4 +319,62 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
         this.clone = factory.createChannelBindingsDefinition(node.parent(), node.getName());
     }
 
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAllOfSchema();
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createOneOfSchema();
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAnyOfSchema();
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createNotSchema();
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        Aai20Schema.Aai20PropertySchema rval = new Aai20Schema.Aai20PropertySchema(node.getPropertyName());
+        rval._ownerDocument = ((Aai20Schema) node)._ownerDocument;
+        rval._parent = ((Aai20Schema) node)._parent;
+        this.clone = rval;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createItemsSchema();
+    }
+
+    /**
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     */
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+        this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAdditionalPropertiesSchema();
+    }
 }

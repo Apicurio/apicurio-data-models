@@ -16,33 +16,10 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
-import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
-import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessage;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
-import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
-import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
+import io.apicurio.datamodels.asyncapi.models.*;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
-import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
-import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
-import io.apicurio.datamodels.core.models.common.Components;
-import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
-import io.apicurio.datamodels.core.models.common.OAuthFlows;
-import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
-import io.apicurio.datamodels.core.models.common.Server;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
+import io.apicurio.datamodels.core.models.common.*;
 
 /**
  * Async API implementation of a data model reader dispatcher.
@@ -186,5 +163,39 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
         aaiReader.readChannelBindings(this.json, node);
     }
-    
+
+    @Override
+    public void visitAllOfSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
+
+    @Override
+    public void visitOneOfSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
+
+    @Override
+    public void visitAnyOfSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
+
+    @Override
+    public void visitNotSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
+
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        aaiReader.readSchema(this.json, (Schema) node);
+    }
+
+    @Override
+    public void visitItemsSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
+
+    @Override
+    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+        aaiReader.readSchema(this.json, node);
+    }
 }
