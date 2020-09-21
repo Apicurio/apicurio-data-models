@@ -160,8 +160,8 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
                 res.put(PREFIX + "schemas/" + name, null);
             }
             */
-            // However, we mahe them Nodes on Aai20Components, so now we can cat document and components,
-            // retrieve tham adn treat them as regular nodes we're going to transform.
+            // However, we made them Nodes on Aai20Components, so now we can cat document and components,
+            // retrieve tham and treat them as regular nodes we're going to transform.
             Aai20Components components = (Aai20Components) ((Aai20Document) document).components;
             transform(components.schemas, name -> PREFIX + "schemas/" + name, res);
 
