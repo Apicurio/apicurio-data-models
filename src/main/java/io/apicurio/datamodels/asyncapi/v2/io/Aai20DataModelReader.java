@@ -23,28 +23,7 @@ public class Aai20DataModelReader extends AaiDataModelReader {
         super(nodeFactory);
         this.nodeFactory = nodeFactory;
     }
-
-    /**
-     * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
-     */
-    @Override
-    public void readDocument(Object json, Document node) {
-        AaiDocument doc = (AaiDocument) node;
-        
-        // components
-        /*
-        Object json_ = JsonCompat.consumeProperty(json, Constants.PROP_COMPONENTS);
-        if (json_ != null) {
-            AaiComponents components = nodeFactory.createComponents(node);
-            this.readComponents(json_, components);
-            doc.components = components;
-        }
-        */
-        
-        super.readDocument(json, node);
-    }
-
-
+    
     @Override
     public void readComponents(Object json, Components node) {
         Aai20Components components = (Aai20Components) node;
