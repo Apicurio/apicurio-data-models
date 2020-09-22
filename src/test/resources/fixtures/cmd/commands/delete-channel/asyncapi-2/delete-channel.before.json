@@ -1,0 +1,32 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Channel example",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "test": {
+      "publish": {
+        "message": {
+          "$ref": "#/components/messages/testMessages"
+        }
+      }
+    },
+    "toRemove": {}
+  },
+  "components": {
+    "messages": {
+      "testMessages": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

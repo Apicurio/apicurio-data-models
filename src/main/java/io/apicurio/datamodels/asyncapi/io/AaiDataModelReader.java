@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
@@ -40,6 +41,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
@@ -55,6 +57,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
@@ -492,6 +495,140 @@ public abstract class AaiDataModelReader extends DataModelReader {
 
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
+    }
+
+    @Override
+    public void readSchema(Object json, Schema node) {
+        AaiSchema schema = (AaiSchema) node;
+
+        String format = JsonCompat.consumePropertyString(json, Constants.PROP_FORMAT);
+        String title = JsonCompat.consumePropertyString(json, Constants.PROP_TITLE);
+        String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
+        Object default_ = JsonCompat.consumePropertyObject(json, Constants.PROP_DEFAULT);
+        Number multipleOf = JsonCompat.consumePropertyNumber(json, Constants.PROP_MULTIPLE_OF);
+        Number maximum = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAXIMUM);
+        Boolean exclusiveMaximum = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXCLUSIVE_MAXIMUM);
+        Number minimum = JsonCompat.consumePropertyNumber(json, Constants.PROP_MINIMUM);
+        Boolean exclusiveMinimum = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXCLUSIVE_MINIMUM);
+        Number maxLength = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAX_LENGTH);
+        Number minLength = JsonCompat.consumePropertyNumber(json, Constants.PROP_MIN_LENGTH);
+        String pattern = JsonCompat.consumePropertyString(json, Constants.PROP_PATTERN);
+        Number maxItems = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAX_ITEMS);
+        Number minItems = JsonCompat.consumePropertyNumber(json, Constants.PROP_MIN_ITEMS);
+        Boolean uniqueItems = JsonCompat.consumePropertyBoolean(json, Constants.PROP_UNIQUE_ITEMS);
+        Number maxProperties = JsonCompat.consumePropertyNumber(json, Constants.PROP_MAX_PROPERTIES);
+        Number minProperties = JsonCompat.consumePropertyNumber(json, Constants.PROP_MIN_PROPERTIES);
+        List<String> required = JsonCompat.consumePropertyStringArray(json, Constants.PROP_REQUIRED);
+        List<Object> enum_ = JsonCompat.consumePropertyArray(json, Constants.PROP_ENUM);
+        String type = JsonCompat.consumePropertyString(json, Constants.PROP_TYPE);
+
+        Object items = JsonCompat.consumeProperty(json, Constants.PROP_ITEMS);
+        List<Object> allOf = JsonCompat.consumePropertyArray(json, Constants.PROP_ALL_OF);
+        List<Object> oneOf = JsonCompat.consumePropertyArray(json, Constants.PROP_ONE_OF);
+        List<Object> anyOf = JsonCompat.consumePropertyArray(json, Constants.PROP_ANY_OF);
+        Object not = JsonCompat.consumeProperty(json, Constants.PROP_NOT);
+        Object properties = JsonCompat.consumeProperty(json, Constants.PROP_PROPERTIES);
+        Object additionalProperties = JsonCompat.consumeProperty(json, Constants.PROP_ADDITIONAL_PROPERTIES);
+        
+        Boolean readOnly = JsonCompat.consumePropertyBoolean(json, Constants.PROP_READ_ONLY);
+        Boolean writeOnly = JsonCompat.consumePropertyBoolean(json, Constants.PROP_WRITE_ONLY);
+        String discriminator = JsonCompat.consumePropertyString(json, Constants.PROP_DISCRIMINATOR);
+        Boolean deprecated = JsonCompat.consumePropertyBoolean(json, Constants.PROP_DEPRECATED);
+
+        schema.format = format;
+        schema.title = title;
+        schema.description = description;
+        schema.default_ = default_;
+        schema.multipleOf = multipleOf;
+        schema.maximum = maximum;
+        schema.exclusiveMaximum = exclusiveMaximum;
+        schema.minimum = minimum;
+        schema.exclusiveMinimum = exclusiveMinimum;
+        schema.maxLength = maxLength;
+        schema.minLength = minLength;
+        schema.pattern = pattern;
+        schema.maxItems = maxItems;
+        schema.minItems = minItems;
+        schema.uniqueItems = uniqueItems;
+        schema.maxProperties = maxProperties;
+        schema.minProperties = minProperties;
+        schema.required = required;
+        schema.enum_ = enum_;
+        schema.type = type;
+
+        schema.readOnly = readOnly;
+        schema.writeOnly = writeOnly;
+        schema.discriminator = discriminator;
+        schema.deprecated = deprecated;
+
+        if (items != null) {
+            if (JsonCompat.isArray(items)) {
+                List<AaiSchema> schemaModels = new ArrayList<>();
+                List<Object> itemList = JsonCompat.toList(items);
+                for (Object item : itemList) {
+                    AaiSchema itemsSchemaModel = schema.createItemsSchema();
+                    this.readSchema(item, itemsSchemaModel);
+                    schemaModels.add(itemsSchemaModel);
+                }
+                schema.items = schemaModels;
+            } else {
+                schema.items = schema.createItemsSchema();
+                this.readSchema(items, (AaiSchema) schema.items);
+            }
+        }
+        
+        if (allOf != null) {
+            List<AaiSchema> schemaModels = new ArrayList<>();
+            for (Object allOfSchema : allOf) {
+                AaiSchema allOfSchemaModel = schema.createAllOfSchema();
+                this.readSchema(allOfSchema, allOfSchemaModel);
+                schemaModels.add(allOfSchemaModel);
+            }
+            schema.allOf = schemaModels;
+        }
+
+        if (oneOf != null) {
+            oneOf.forEach(oneOfSchema -> {
+                AaiSchema oneOfSchemaModel = schema.createOneOfSchema();
+                this.readSchema(oneOfSchema, oneOfSchemaModel);
+                schema.addOneOfSchema(oneOfSchemaModel);
+            });
+        }
+
+        if (anyOf != null) {
+            anyOf.forEach(anyOfSchema -> {
+                AaiSchema anyOfSchemaModel = schema.createAnyOfSchema();
+                this.readSchema(anyOfSchema, anyOfSchemaModel);
+                schema.addAnyOfSchema(anyOfSchemaModel);
+            });
+        }
+
+        if (not != null) {
+            schema.not = schema.createNotSchema();
+            this.readSchema(not, schema.not);
+        }
+        
+        if (properties != null) {
+            List<String> propertyNames = JsonCompat.keys(properties);
+            for (String propertyName : propertyNames) {
+                Object propertySchema = JsonCompat.consumeProperty(properties, propertyName);
+                AaiSchema propertySchemaModel = schema.createPropertySchema(propertyName);
+                this.readSchema(propertySchema, propertySchemaModel);
+                schema.addProperty(propertyName, propertySchemaModel);
+            }
+        }
+        
+        if (additionalProperties != null) {
+            if (JsonCompat.isBoolean(additionalProperties)) {
+                schema.additionalProperties = JsonCompat.toBoolean(additionalProperties);
+            } else {
+                AaiSchema additionalPropertiesModel = schema.createAdditionalPropertiesSchema();
+                this.readSchema(additionalProperties, additionalPropertiesModel);
+                schema.additionalProperties = additionalPropertiesModel;
+            }
+        }
+
+        super.readSchema(json, schema);
     }
 
     @Override
