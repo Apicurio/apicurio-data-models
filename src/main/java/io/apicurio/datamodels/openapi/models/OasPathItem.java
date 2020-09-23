@@ -19,7 +19,6 @@ package io.apicurio.datamodels.openapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
@@ -83,7 +82,7 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     @Override
     public List<OasParameter> getParametersIn(String in) {
         List<OasParameter> params = new ArrayList<>();
-        if (ModelUtils.isDefined(this.parameters)) {
+        if (!NodeCompat.isNullOrUndefined(this.parameters)) {
             this.parameters.forEach(param -> {
                 if (NodeCompat.equals(param.in, in)) {
                     params.add(param);
