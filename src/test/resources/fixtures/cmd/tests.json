@@ -256,5 +256,6 @@
 
     { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item", "test": "commands/add-channel-item/asyncapi-2/add-channel-item" },
     { "name": "[AsyncAPI 2] {Delete Channel} - Delete Channel", "test": "commands/delete-channel/asyncapi-2/delete-channel" },
+    { "name": "[AsyncAPI 2] {New Channel} - New Channel", "test": "commands/new-channel/asyncapi-2/new-channel" },
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" }
 ]

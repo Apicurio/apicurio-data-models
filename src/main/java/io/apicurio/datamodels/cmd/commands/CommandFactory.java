@@ -301,7 +301,10 @@ public class CommandFactory {
             { return new NewResponseDefinitionCommand_20(); }
             case "NewResponseDefinitionCommand_30":
             { return new NewResponseDefinitionCommand_30(); }
-            
+            case "NewChannelCommand":
+            case "NewChannelCommand_Aai20":
+            { return new NewChannelCommand(); }
+
             /** Rename Commands **/
             
             case "RenameParameterCommand":
