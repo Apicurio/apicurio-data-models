@@ -45,6 +45,7 @@ import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
@@ -278,7 +279,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ALL_OF);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
@@ -287,10 +288,10 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ONE_OF);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
@@ -299,10 +300,10 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ANY_OF);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
@@ -311,10 +312,10 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         this.path.prependSegment(Constants.PROP_NOT, false);
     }
 
@@ -328,11 +329,12 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitItemsSchema(AaiSchema node) {
-        if (node.hasItemsSchemas()) {
+    public void visitItemsSchema(Schema node) {
+        AaiSchema schema = (AaiSchema) node;
+        if (schema.hasItemsSchemas()) {
             int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ITEMS);
             if (idx != -1) {
                 this.path.prependSegment(String.valueOf(idx), true);
@@ -344,10 +346,10 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.path.prependSegment(Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
 }

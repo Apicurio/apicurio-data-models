@@ -21,10 +21,6 @@ import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.OasSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 
 /**
  * Implements the Invalid Property Type validation rule.  This rule is responsible
@@ -57,19 +53,19 @@ public abstract class OasInvalidPropertyTypeValidationRule extends ValidationRul
     }
     
     @Override
-    public void visitAllOfSchema(OasSchema node) { this.visitSchema(node); }
+    public void visitAllOfSchema(Schema node) { this.visitSchema(node); }
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) { this.visitSchema(node); }
+    public void visitAnyOfSchema(Schema node) { this.visitSchema(node); }
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) { this.visitSchema(node); }
+    public void visitOneOfSchema(Schema node) { this.visitSchema(node); }
     @Override
-    public void visitNotSchema(Oas30NotSchema node) { this.visitSchema(node); }
+    public void visitNotSchema(Schema node) { this.visitSchema(node); }
     @Override
     public void visitPropertySchema(IPropertySchema node) { this.visitSchema((Schema) node); }
     @Override
-    public void visitItemsSchema(OasSchema node) { this.visitSchema(node); }
+    public void visitItemsSchema(Schema node) { this.visitSchema(node); }
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) { this.visitSchema(node); }
+    public void visitAdditionalPropertiesSchema(Schema node) { this.visitSchema(node); }
     @Override
     public void visitSchemaDefinition(IDefinition node) { this.visitSchema((Schema) node); }
 

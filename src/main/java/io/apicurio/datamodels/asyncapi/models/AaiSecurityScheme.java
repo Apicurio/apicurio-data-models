@@ -1,20 +1,13 @@
 package io.apicurio.datamodels.asyncapi.models;
 
-import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IDefinition;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
 
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiSecurityScheme extends SecurityScheme implements IReferenceNode, IDefinition {
-
-    public String $ref;
-    public String scheme;
-    public AaiOAuthFlows flows;
-    public String openIdConnectUrl;
-    public String bearerFormat;
+public abstract class AaiSecurityScheme extends ModernSecurityScheme implements IDefinition {
 
     /**
      * Constructor.
@@ -34,14 +27,5 @@ public abstract class AaiSecurityScheme extends SecurityScheme implements IRefer
             this._ownerDocument = parent.ownerDocument();
         }
     }
-
-    @Override
-    public String getReference() {
-        return $ref;
-    }
-
-    @Override
-    public void setReference(String reference) {
-        $ref = reference;
-    }
+    
 }

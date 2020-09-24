@@ -31,7 +31,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.Node;
@@ -42,6 +41,7 @@ import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
@@ -168,22 +168,22 @@ public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         visitNode(node);
     }
 
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         visitNode(node);
     }
 
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         visitNode(node);
     }
 
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         visitNode(node);
     }
 
@@ -193,12 +193,12 @@ public class AaiAllNodeVisitor extends AllNodeVisitor implements IAaiVisitor {
     }
 
     @Override
-    public void visitItemsSchema(AaiSchema node) {
+    public void visitItemsSchema(Schema node) {
         visitNode(node);
     }
 
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         visitNode(node);
     }
 

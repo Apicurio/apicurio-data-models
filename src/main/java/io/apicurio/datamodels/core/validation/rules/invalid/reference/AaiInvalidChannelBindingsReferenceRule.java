@@ -16,47 +16,43 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
+import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.common.IDefinition;
-import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.util.ReferenceUtil;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Reference rule.
+ * Implements the Invalid Channel Bindings Reference rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidParameterReferenceRule extends ValidationRule {
+public class AaiInvalidChannelBindingsReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidParameterReferenceRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidChannelBindingsReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitChannelBindings(io.apicurio.datamodels.asyncapi.models.AaiChannelBindings)
      */
     @Override
-    public void visitParameter(Parameter node) {
+    public void visitChannelBindings(AaiChannelBindings node) {
         if (hasValue(node.$ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(node.$ref, node), node, Constants.PROP_$REF, map());
         }
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitChannelBindingsDefinition(io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition)
      */
     @Override
-    public void visitParameterDefinition(IDefinition node) {
-        Parameter param = (Parameter) node;
-        if (param.ownerDocument().getDocumentType() == DocumentType.openapi3) {
-            this.visitParameter(param);
-        }
+    public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
+        visitChannelBindings(node);
     }
 
 }

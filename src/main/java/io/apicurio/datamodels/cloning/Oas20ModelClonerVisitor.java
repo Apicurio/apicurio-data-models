@@ -40,6 +40,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Items;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Schema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityDefinitions;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
@@ -96,15 +97,15 @@ public class Oas20ModelClonerVisitor extends ModelClonerVisitor implements IOas2
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
-        this.clone = node.createAllOfSchema();
+    public void visitAllOfSchema(Schema node) {
+        this.clone = ((Oas20Schema) node).createAllOfSchema();
     }
 
     /**
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.clone = ((OasSchema) ((OasDocument) node.ownerDocument()).createPaths().createPathItem("")
                 .createOperation(null).createParameter().createSchema()).createItemsSchema();
     }
@@ -113,7 +114,7 @@ public class Oas20ModelClonerVisitor extends ModelClonerVisitor implements IOas2
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.clone = ((OasSchema) ((OasDocument) node.ownerDocument()).createPaths().createPathItem("")
                 .createOperation(null).createParameter().createSchema()).createAdditionalPropertiesSchema();
     }

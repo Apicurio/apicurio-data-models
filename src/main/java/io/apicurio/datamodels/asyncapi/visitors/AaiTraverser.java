@@ -378,34 +378,34 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.visitSchema(node);
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.visitSchema(node);
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.visitSchema(node);
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         this.visitSchema(node);
     }
 
@@ -418,18 +418,18 @@ public class AaiTraverser extends Traverser implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitItemsSchema(AaiSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.visitSchema(node);
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.Schema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.visitSchema(node);
     }
 

@@ -513,6 +513,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitServerBindings(AaiServerBindings node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -541,6 +542,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitServerBindingsDefinition(AaiServerBindingsDefinition node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -574,6 +576,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitOperationBindings(AaiOperationBindings node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -602,6 +605,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitOperationBindingsDefinition(AaiOperationBindingsDefinition node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -635,6 +639,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitMessageBindings(AaiMessageBindings node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -663,6 +668,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitMessageBindingsDefinition(AaiMessageBindingsDefinition node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -696,6 +702,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitChannelBindings(AaiChannelBindings node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -724,6 +731,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     @Override
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
         Object json = this.writeNullBindings();
+        JsonCompat.setPropertyString(json, Constants.PROP_$REF, node.$ref);
         JsonCompat.setProperty(json, Constants.PROP_HTTP, node.http);
         JsonCompat.setProperty(json, Constants.PROP_WS, node.ws);
         JsonCompat.setProperty(json, Constants.PROP_KAFKA, node.kafka);
@@ -755,7 +763,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ALL_OF, true);
     }
 
@@ -763,7 +771,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ONE_OF, true);
     }
 
@@ -771,7 +779,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ANY_OF, true);
     }
 
@@ -779,7 +787,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_NOT, false);
     }
 
@@ -808,7 +816,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitItemsSchema(AaiSchema node) {
+    public void visitItemsSchema(Schema node) {
         AaiSchema parentSchema = (AaiSchema) node;
         this.doVisitSchema(node, Constants.PROP_ITEMS, NodeCompat.isList(parentSchema.items));
     }
@@ -817,7 +825,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
 

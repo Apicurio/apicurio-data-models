@@ -34,9 +34,6 @@ import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 
 /**
  * A command used to rename a schema definition, along with all references to it.
@@ -159,7 +156,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
-        public void visitAdditionalPropertiesSchema(OasSchema node) {
+        public void visitAdditionalPropertiesSchema(Schema node) {
             this.processSchema(node);
         }
         
@@ -167,7 +164,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
-        public void visitAllOfSchema(OasSchema node) {
+        public void visitAllOfSchema(Schema node) {
             this.processSchema(node);
         }
         
@@ -175,7 +172,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
-        public void visitItemsSchema(OasSchema node) {
+        public void visitItemsSchema(Schema node) {
             this.processSchema(node);
         }
         
@@ -183,7 +180,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
          */
         @Override
-        public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+        public void visitAnyOfSchema(Schema node) {
             this.processSchema(node);
         }
         
@@ -191,7 +188,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
          */
         @Override
-        public void visitOneOfSchema(Oas30OneOfSchema node) {
+        public void visitOneOfSchema(Schema node) {
             this.processSchema(node);
         }
         
@@ -199,7 +196,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
          */
         @Override
-        public void visitNotSchema(Oas30NotSchema node) {
+        public void visitNotSchema(Schema node) {
             this.processSchema(node);
         }
 

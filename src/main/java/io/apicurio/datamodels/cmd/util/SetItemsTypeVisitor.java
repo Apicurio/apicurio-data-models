@@ -117,21 +117,21 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
      * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.visitSchema((Schema) node);
     }
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.visitSchema((Schema) node);
     }
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.visitSchema((Schema) node);
     }
     /**

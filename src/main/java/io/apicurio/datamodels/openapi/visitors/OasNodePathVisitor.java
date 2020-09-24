@@ -21,6 +21,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -89,7 +90,7 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ALL_OF);
         if (idx != -1) {
             this.path.prependSegment(String.valueOf(idx), true);
@@ -101,8 +102,9 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
-        if (node.hasItemsSchemas()) {
+    public void visitItemsSchema(Schema node) {
+        OasSchema schema = (OasSchema) node;
+        if (schema.hasItemsSchemas()) {
             int idx = NodeCompat.indexOf(node, node.parent(), Constants.PROP_ITEMS);
             if (idx != -1) {
                 this.path.prependSegment(String.valueOf(idx), true);
@@ -117,7 +119,7 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.path.prependSegment(Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
 

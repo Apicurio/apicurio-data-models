@@ -16,32 +16,32 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Server Variable Description Rule
+ * Implements the Invalid Message Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidServerVariableDescriptionRule extends ValidationRule {
+public class AaiInvalidMessageDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidServerVariableDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidMessageDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitMessage(io.apicurio.datamodels.asyncapi.models.AaiMessage)
      */
     @Override
-    public void visitServerVariable(ServerVariable node) {
+    public void visitMessage(AaiMessage node) {
         if (hasValue(node.description)) {
-            this.reportIfInvalid(isValidCommonMark(node.description), node, Constants.PROP_DESCRIPTION, map());
+            this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
         }
     }
 

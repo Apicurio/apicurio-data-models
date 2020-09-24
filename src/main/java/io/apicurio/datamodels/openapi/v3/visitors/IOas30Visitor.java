@@ -22,6 +22,7 @@ import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
@@ -39,9 +40,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
 /**
@@ -71,9 +69,9 @@ public interface IOas30Visitor extends IOasVisitor {
     public void visitRequestBodyDefinition(Oas30RequestBodyDefinition node);
     public void visitExampleDefinition(Oas30ExampleDefinition node);
     public void visitDiscriminator(Oas30Discriminator node);
-    public void visitNotSchema(Oas30NotSchema node);
-    public void visitOneOfSchema(Oas30OneOfSchema node);
-    public void visitAnyOfSchema(Oas30AnyOfSchema node);
+    public void visitNotSchema(Schema node);
+    public void visitOneOfSchema(Schema node);
+    public void visitAnyOfSchema(Schema node);
     public void visitServer(Server node);
     public void visitServerVariable(ServerVariable node);
 

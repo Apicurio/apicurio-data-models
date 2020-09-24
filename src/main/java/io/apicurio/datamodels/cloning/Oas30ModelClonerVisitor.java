@@ -61,9 +61,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Response;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
@@ -120,15 +118,15 @@ public class Oas30ModelClonerVisitor extends ModelClonerVisitor implements IOas3
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
-        this.clone = node.createAllOfSchema();
+    public void visitAllOfSchema(Schema node) {
+        this.clone = ((Oas30Schema) node).createAllOfSchema();
     }
 
     /**
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.clone = ((OasSchema) ((OasDocument) node.ownerDocument()).createPaths().createPathItem("")
                 .createOperation(null).createParameter().createSchema()).createItemsSchema();
     }
@@ -137,7 +135,7 @@ public class Oas30ModelClonerVisitor extends ModelClonerVisitor implements IOas3
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.clone = ((OasSchema) ((OasDocument) node.ownerDocument()).createPaths().createPathItem("")
                 .createOperation(null).createParameter().createSchema()).createAdditionalPropertiesSchema();
     }
@@ -395,7 +393,7 @@ public class Oas30ModelClonerVisitor extends ModelClonerVisitor implements IOas3
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
-    public void visitNotSchema(Oas30NotSchema node) {
+    public void visitNotSchema(Schema node) {
         this.clone = ((Oas30Document) ((Node) node).ownerDocument()).createComponents().createSchemaDefinition("").createNotSchema();
     }
 
@@ -403,7 +401,7 @@ public class Oas30ModelClonerVisitor extends ModelClonerVisitor implements IOas3
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.clone = ((Oas30Document) ((Node) node).ownerDocument()).createComponents().createSchemaDefinition("").createOneOfSchema();
     }
 
@@ -411,7 +409,7 @@ public class Oas30ModelClonerVisitor extends ModelClonerVisitor implements IOas3
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.clone = ((Oas30Document) ((Node) node).ownerDocument()).createComponents().createSchemaDefinition("").createAnyOfSchema();
     }
 

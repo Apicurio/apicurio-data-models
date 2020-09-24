@@ -17,29 +17,29 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Operation;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Operation Description Rule
+ * Implements the Invalid Security Scheme Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidOperationDescriptionRule extends ValidationRule {
+public class InvalidSecuritySchemeDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidOperationDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidSecuritySchemeDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
     @Override
-    public void visitOperation(Operation node) {
+    public void visitSecurityScheme(SecurityScheme node) {
         if (hasValue(node.description)) {
             this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
         }

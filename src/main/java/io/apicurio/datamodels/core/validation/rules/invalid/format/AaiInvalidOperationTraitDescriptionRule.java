@@ -16,33 +16,41 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Security Scheme Description Rule
+ * Implements the Invalid Operation Trait Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecuritySchemeDescriptionRule extends ValidationRule {
+public class AaiInvalidOperationTraitDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidSecuritySchemeDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidOperationTraitDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperationTrait(io.apicurio.datamodels.asyncapi.models.AaiOperationTrait)
      */
     @Override
-    public void visitSecurityScheme(SecurityScheme node) {
+    public void visitOperationTrait(AaiOperationTrait node) {
         if (hasValue(node.description)) {
             this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
         }
+    }
+    /**
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperationTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition)
+     */
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
+        this.visitOperationTrait(node);
     }
 
 }

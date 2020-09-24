@@ -137,7 +137,7 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.visitSchema(node);
     }
 
@@ -145,7 +145,7 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.visitSchema(node);
     }
 
@@ -153,7 +153,7 @@ public class OasTraverser extends Traverser implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.visitSchema(node);
     }
 

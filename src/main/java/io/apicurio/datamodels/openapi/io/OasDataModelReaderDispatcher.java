@@ -26,7 +26,6 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
-import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
@@ -100,7 +99,7 @@ public class OasDataModelReaderDispatcher extends DataModelReaderDispatcher impl
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.oasReader().readSchema(this.json, node);
         
     }
@@ -109,7 +108,7 @@ public class OasDataModelReaderDispatcher extends DataModelReaderDispatcher impl
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.oasReader().readSchema(this.json, node);
         
     }
@@ -118,7 +117,7 @@ public class OasDataModelReaderDispatcher extends DataModelReaderDispatcher impl
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.oasReader().readSchema(this.json, node);
         
     }

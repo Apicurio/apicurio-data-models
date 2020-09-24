@@ -17,24 +17,28 @@
 package io.apicurio.datamodels.core.validation.rules.required;
 
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * @author cfoskin@redhat.com
+ * @author eric.wittmann@gmail.com
  */
-public class AasMissingServerProtocolRule extends RequiredPropertyValidationRule {
+public class AaiMissingApiChannelsRule extends RequiredPropertyValidationRule {
 
-    public AasMissingServerProtocolRule(ValidationRuleMetaData ruleInfo) {
+    /**
+     * Constructor.
+     * @param ruleInfo
+     */
+    public AaiMissingApiChannelsRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    public void visitServer(Server node) {
-        this.requireProperty(node, Constants.PROP_PROTOCOL, map());
+    public void visitDocument(Document node) {
+        this.requireProperty(node, Constants.PROP_CHANNELS, map());
     }
 
 }

@@ -19,11 +19,15 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
@@ -107,9 +111,13 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
-        public void visitAllOfSchema(OasSchema node) {
-            OasSchema parentSchema = (OasSchema) node.parent();
-            parentSchema.removeAllOfSchema(node);
+        public void visitAllOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((OasSchema) parentSchema).removeAllOfSchema((OasSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).removeAllOfSchema((AaiSchema) node);
+            }
             this.type = TYPE_ALL_OF;
         }
         
@@ -117,9 +125,13 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
          */
         @Override
-        public void visitAnyOfSchema(Oas30AnyOfSchema node) {
-            Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.removeAnyOfSchema(node);
+        public void visitAnyOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((Oas30Schema) parentSchema).removeAnyOfSchema((Oas30AnyOfSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).removeAnyOfSchema((AaiSchema) node);
+            }
             this.type = TYPE_ANY_OF;
         }
         
@@ -127,9 +139,13 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
          */
         @Override
-        public void visitOneOfSchema(Oas30OneOfSchema node) {
-            Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.removeOneOfSchema(node);
+        public void visitOneOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((Oas30Schema) parentSchema).removeOneOfSchema((Oas30OneOfSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).removeOneOfSchema((AaiSchema) node);
+            }
             this.type = TYPE_ONE_OF;
         }
         
@@ -146,29 +162,48 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
-        public void visitAllOfSchema(OasSchema node) {
-            OasSchema parentSchema = (OasSchema) node.parent();
-            parentSchema.addAllOfSchema(node);
+        public void visitAllOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((OasSchema) parentSchema).addAllOfSchema((OasSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).addAllOfSchema((AaiSchema) node);
+            }
         }
         
         /**
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
          */
         @Override
-        public void visitAnyOfSchema(Oas30AnyOfSchema node) {
-            Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.addAnyOfSchema(node);
+        public void visitAnyOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((Oas30Schema) parentSchema).addAnyOfSchema((Oas30AnyOfSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).addAnyOfSchema((AaiSchema) node);
+            }
         }
         
         /**
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
          */
         @Override
-        public void visitOneOfSchema(Oas30OneOfSchema node) {
-            Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.addOneOfSchema(node);
+        public void visitOneOfSchema(Schema node) {
+            Schema parentSchema = (Schema) node.parent();
+            if (isOai(parentSchema)) {
+                ((Oas30Schema) parentSchema).addOneOfSchema((Oas30OneOfSchema) node);
+            } else if (isAai(parentSchema)) {
+                ((AaiSchema) parentSchema).addOneOfSchema((AaiSchema) node);
+            }
         }
         
     }
 
+    private static final boolean isOai(Node node) {
+        return node.ownerDocument().getDocumentType() != DocumentType.asyncapi2;
+    }
+    private static final boolean isAai(Node node) {
+        return node.ownerDocument().getDocumentType() == DocumentType.asyncapi2;
+    }
+    
 }

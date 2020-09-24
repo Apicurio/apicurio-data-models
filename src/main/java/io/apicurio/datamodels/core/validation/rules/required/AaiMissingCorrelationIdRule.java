@@ -23,9 +23,9 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author cfoskin@redhat.com
  */
-public class AaMissingCorrelationIdRule extends RequiredPropertyValidationRule {
+public class AaiMissingCorrelationIdRule extends RequiredPropertyValidationRule {
 
-    public AaMissingCorrelationIdRule(ValidationRuleMetaData ruleInfo) {
+    public AaiMissingCorrelationIdRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 

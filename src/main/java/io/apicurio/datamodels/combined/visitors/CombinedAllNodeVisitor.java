@@ -31,7 +31,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
@@ -65,7 +64,6 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
-import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Headers;
@@ -90,9 +88,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
 /**
@@ -161,7 +156,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -170,7 +165,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -179,7 +174,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -580,7 +575,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
-    public void visitNotSchema(Oas30NotSchema node) {
+    public void visitNotSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -589,7 +584,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -598,7 +593,7 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.visitNode(node);
         
     }
@@ -726,54 +721,6 @@ public class CombinedAllNodeVisitor implements IOas20Visitor, IOas30Visitor, IAa
      */
     @Override
     public void visitChannelBindingsDefinition(AaiChannelBindingsDefinition node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitAllOfSchema(AaiSchema node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitOneOfSchema(AaiSchema node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitAnyOfSchema(AaiSchema node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitNotSchema(AaiSchema node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitItemsSchema(AaiSchema node) {
-        this.visitNode(node);
-    }
-
-    /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
-     */
-    @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
         this.visitNode(node);
     }
 

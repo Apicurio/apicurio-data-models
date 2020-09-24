@@ -30,13 +30,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Operation ID Uniqueness validation rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasOperationIdUniquenessValidationRule extends ValidationRule {
+public class OperationIdUniquenessValidationRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasOperationIdUniquenessValidationRule(ValidationRuleMetaData ruleInfo) {
+    public OperationIdUniquenessValidationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 

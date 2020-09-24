@@ -140,7 +140,7 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ALL_OF, true);
     }
 
@@ -148,7 +148,7 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         OasSchema parentSchema = (OasSchema) node;
         this.doVisitSchema(node, Constants.PROP_ITEMS, NodeCompat.isList(parentSchema.items));
     }
@@ -157,7 +157,7 @@ public class OasDataModelWriter extends DataModelWriter implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ADDITIONAL_PROPERTIES, false);
     }
 

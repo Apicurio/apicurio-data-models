@@ -20,13 +20,13 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
-import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 
 /**
@@ -78,7 +78,7 @@ public class OasAllNodeVisitor extends AllNodeVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         visitNode(node);
     }
 
@@ -86,7 +86,7 @@ public class OasAllNodeVisitor extends AllNodeVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         visitNode(node);
     }
 
@@ -94,7 +94,7 @@ public class OasAllNodeVisitor extends AllNodeVisitor implements IOasVisitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         visitNode(node);
     }
 

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -27,7 +28,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * 
  * @author eric.wittmann@gmail.com
  */
-public abstract class AaiServerBindings extends Node {
+public abstract class AaiServerBindings extends Node implements IReferenceNode {
 
 //    public AaiHTTPServerBinding http;
 //    public AaiWebSocketsServerBinding ws;
@@ -43,6 +44,7 @@ public abstract class AaiServerBindings extends Node {
 //    public AaiSTOMPServerBinding stomp;
 //    public AaiRedisServerBinding redis;
 
+    public String $ref;
     public Object http;
     public Object ws;
     public Object kafka;
@@ -81,6 +83,16 @@ public abstract class AaiServerBindings extends Node {
     public void accept(IVisitor visitor) {
         IAaiVisitor v = (IAaiVisitor) visitor;
         v.visitServerBindings(this);
+    }
+
+    @Override
+    public String getReference() {
+        return $ref;
+    }
+
+    @Override
+    public void setReference(String reference) {
+        $ref = reference;
     }
 
 }

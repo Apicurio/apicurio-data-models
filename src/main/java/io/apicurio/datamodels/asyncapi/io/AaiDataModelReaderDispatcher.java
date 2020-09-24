@@ -31,7 +31,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
@@ -191,22 +190,22 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 
@@ -216,12 +215,12 @@ public abstract class AaiDataModelReaderDispatcher extends DataModelReaderDispat
     }
 
     @Override
-    public void visitItemsSchema(AaiSchema node) {
+    public void visitItemsSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         aaiReader.readSchema(this.json, node);
     }
 }

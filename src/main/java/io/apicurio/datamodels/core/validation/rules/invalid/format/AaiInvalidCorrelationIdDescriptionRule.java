@@ -16,42 +16,33 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.IDefinition;
-import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Description Rule
+ * Implements the Invalid Correlation ID Description Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidParameterDescriptionRule extends ValidationRule {
+public class AaiInvalidCorrelationIdDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidParameterDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidCorrelationIdDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitCorrelationId(io.apicurio.datamodels.asyncapi.models.AaiCorrelationId)
      */
     @Override
-    public void visitParameter(Parameter node) {
+    public void visitCorrelationId(AaiCorrelationId node) {
         if (hasValue(node.description)) {
             this.reportIfInvalid(isValidGFM(node.description), node, Constants.PROP_DESCRIPTION, map());
         }
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
-     */
-    @Override
-    public void visitParameterDefinition(IDefinition node) {
-        visitParameter((Parameter) node);
     }
 
 }

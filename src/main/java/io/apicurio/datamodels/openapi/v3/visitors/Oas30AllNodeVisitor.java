@@ -22,6 +22,7 @@ import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
@@ -39,9 +40,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.visitors.OasAllNodeVisitor;
 
 /**
@@ -202,7 +200,7 @@ public class Oas30AllNodeVisitor extends OasAllNodeVisitor implements IOas30Visi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
-    public void visitNotSchema(Oas30NotSchema node) {
+    public void visitNotSchema(Schema node) {
         visitNode(node);
         
     }
@@ -211,7 +209,7 @@ public class Oas30AllNodeVisitor extends OasAllNodeVisitor implements IOas30Visi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) {
+    public void visitOneOfSchema(Schema node) {
         visitNode(node);
         
     }
@@ -220,7 +218,7 @@ public class Oas30AllNodeVisitor extends OasAllNodeVisitor implements IOas30Visi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         visitNode(node);
         
     }

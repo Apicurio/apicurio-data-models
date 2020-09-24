@@ -31,7 +31,6 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
-import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiServerBindingsDefinition;
@@ -323,7 +322,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAllOfSchema(AaiSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAllOfSchema();
     }
 
@@ -331,7 +330,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitOneOfSchema(AaiSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createOneOfSchema();
     }
 
@@ -339,7 +338,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAnyOfSchema(AaiSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAnyOfSchema();
     }
 
@@ -347,7 +346,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitNotSchema(AaiSchema node) {
+    public void visitNotSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createNotSchema();
     }
 
@@ -366,7 +365,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitItemsSchema(AaiSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createItemsSchema();
     }
 
@@ -374,7 +373,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(AaiSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.clone = ((Aai20Document) node.ownerDocument()).createComponents().createSchemaDefinition("").createAdditionalPropertiesSchema();
     }
 }

@@ -21,10 +21,6 @@ import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.OasSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -51,7 +47,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         this.visitSchema(node);
     }
     
@@ -59,7 +55,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.visitSchema(node);
     }
     
@@ -67,7 +63,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.visitSchema(node);
     }
     
@@ -75,7 +71,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
-    public void visitNotSchema(Oas30NotSchema node) {
+    public void visitNotSchema(Schema node) {
         this.visitSchema(node);
     }
     
@@ -91,7 +87,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         this.visitSchema(node);
     }
     
@@ -99,7 +95,7 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         this.visitSchema(node);
     }
     

@@ -665,6 +665,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
      * @param node
      */
     public void readChannelBindings(Object json, AaiChannelBindings node) {
+        node.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
         node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
         node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
@@ -688,6 +689,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
      * @param node
      */
     public void readMessageBindings(Object json, AaiMessageBindings node) {
+        node.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
         node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
         node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
@@ -711,6 +713,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
      * @param node
      */
     public void readOperationBindings(Object json, AaiOperationBindings node) {
+        node.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
         node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
         node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);
@@ -734,6 +737,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
      * @param node
      */
     public void readServerBindings(Object json, AaiServerBindings node) {
+        node.$ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         node.http = JsonCompat.consumeProperty(json, Constants.PROP_HTTP);
         node.ws = JsonCompat.consumeProperty(json, Constants.PROP_WS);
         node.kafka = JsonCompat.consumeProperty(json, Constants.PROP_KAFKA);

@@ -19,13 +19,13 @@ package io.apicurio.datamodels.openapi.visitors;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
-import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 
 /**
@@ -39,9 +39,9 @@ public interface IOasVisitor extends IVisitor {
     public void visitResponse(OasResponse node);
     public void visitResponses(OasResponses node);
     public void visitXML(OasXML node);
-    public void visitAllOfSchema(OasSchema node);
-    public void visitItemsSchema(OasSchema node);
-    public void visitAdditionalPropertiesSchema(OasSchema node);
+    public void visitAllOfSchema(Schema node);
+    public void visitItemsSchema(Schema node);
+    public void visitAdditionalPropertiesSchema(Schema node);
     public void visitPropertySchema(IPropertySchema node);
     public void visitHeader(OasHeader node);
     public void visitResponseDefinition(IDefinition node);

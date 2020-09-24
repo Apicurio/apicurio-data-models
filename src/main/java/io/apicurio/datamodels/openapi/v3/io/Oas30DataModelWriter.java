@@ -60,9 +60,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Response;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
@@ -576,7 +573,7 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitNotSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema)
      */
     @Override
-    public void visitNotSchema(Oas30NotSchema node) {
+    public void visitNotSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_NOT, false);
     }
 
@@ -584,7 +581,7 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitOneOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema)
      */
     @Override
-    public void visitOneOfSchema(Oas30OneOfSchema node) {
+    public void visitOneOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ONE_OF, true);
     }
 
@@ -592,7 +589,7 @@ public class Oas30DataModelWriter extends OasDataModelWriter implements IOas30Vi
      * @see io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor#visitAnyOfSchema(io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema)
      */
     @Override
-    public void visitAnyOfSchema(Oas30AnyOfSchema node) {
+    public void visitAnyOfSchema(Schema node) {
         this.doVisitSchema(node, Constants.PROP_ANY_OF, true);
     }
     

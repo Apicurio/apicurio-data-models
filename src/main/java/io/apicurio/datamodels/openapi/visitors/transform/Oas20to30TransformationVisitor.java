@@ -58,7 +58,6 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
-import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Definitions;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -739,7 +738,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAdditionalPropertiesSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAdditionalPropertiesSchema(OasSchema node) {
+    public void visitAdditionalPropertiesSchema(Schema node) {
         Oas30Schema parent30 = (Oas30Schema) this.lookup(node.parent());
         Oas30AdditionalPropertiesSchema additionalProps30 = (Oas30AdditionalPropertiesSchema) parent30.createAdditionalPropertiesSchema();
         parent30.additionalProperties = additionalProps30;
@@ -753,7 +752,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitAllOfSchema(OasSchema node) {
+    public void visitAllOfSchema(Schema node) {
         Oas30Schema parent30 =  (Oas30Schema) this.lookup(node.parent());
         Oas30AllOfSchema allOf30 = (Oas30AllOfSchema) parent30.createAllOfSchema();
         if (NodeCompat.isNullOrUndefined(parent30.allOf)) {
@@ -770,7 +769,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
      * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitItemsSchema(io.apicurio.datamodels.openapi.models.OasSchema)
      */
     @Override
-    public void visitItemsSchema(OasSchema node) {
+    public void visitItemsSchema(Schema node) {
         Oas30Schema parent30 = (Oas30Schema) this.lookup(node.parent());
         Oas30ItemsSchema items30 = (Oas30ItemsSchema) parent30.createItemsSchema();
         if (!NodeCompat.isNullOrUndefined(parent30.items) && NodeCompat.isNode(parent30.items)) {
