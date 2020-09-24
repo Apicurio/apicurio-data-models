@@ -256,5 +256,11 @@
 
     { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item", "test": "commands/add-channel-item/asyncapi-2/add-channel-item" },
     { "name": "[AsyncAPI 2] {Delete Channel} - Delete Channel", "test": "commands/delete-channel/asyncapi-2/delete-channel" },
+    { "name": "[AsyncAPI 2] {New Channel} - New Channel", "test": "commands/new-channel/asyncapi-2/new-channel" },
+    { "name": "[AsyncAPI 2] {New Schema Def} - New Schema Definition With Description", "test": "commands/new-schema-definition/asyncapi-2/new-schema-definition-with-description" },
+    { "name": "[AsyncAPI 2] {New Schema Def} - New Schema Definition With Example", "test": "commands/new-schema-definition/asyncapi-2/new-schema-definition-with-example" },
+    { "name": "[AsyncAPI 2] {New Schema Def} - New Schema Definition", "test": "commands/new-schema-definition/asyncapi-2/new-schema-definition" },
+    { "name": "[AsyncAPI 2] {New Schema Property} - New Schema Property Both", "test": "commands/new-schema-property/asyncapi-2/new-schema-property-both" },
+    { "name": "[AsyncAPI 2] {New Schema Property} - New Schema Property", "test": "commands/new-schema-property/asyncapi-2/new-schema-property" },
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" }
 ]

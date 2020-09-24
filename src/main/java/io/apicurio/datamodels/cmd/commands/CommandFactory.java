@@ -18,6 +18,7 @@ package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
@@ -101,6 +102,8 @@ public class CommandFactory {
             case "AddChannelItemCommand":
             case "AddChannelItemCommand_Aai20":
             { return new AddChannelItemCommand(); }
+            case "AddSchemaDefinitionCommand_Aai20":
+            { return new AddSchemaDefinitionCommand_Aai20(); }
 
             /** Change Commands **/
             
@@ -301,7 +304,14 @@ public class CommandFactory {
             { return new NewResponseDefinitionCommand_20(); }
             case "NewResponseDefinitionCommand_30":
             { return new NewResponseDefinitionCommand_30(); }
-            
+            case "NewChannelCommand":
+            case "NewChannelCommand_Aai20":
+            { return new NewChannelCommand(); }
+            case "NewSchemaDefinitionCommand_Aai20":
+            { return new NewSchemaDefinitionCommand_Aai20(); }
+            case "NewSchemaPropertyCommand_Aai20":
+            { return new NewSchemaPropertyCommand_Aai20(); }
+
             /** Rename Commands **/
             
             case "RenameParameterCommand":
@@ -387,6 +397,9 @@ public class CommandFactory {
         if (docType == DocumentType.openapi3) {
             return new AddSchemaDefinitionCommand_30(definitionName, from);
         }
+        if (docType == DocumentType.asyncapi2) {
+            return new AddSchemaDefinitionCommand_Aai20(definitionName, from);
+        }
         throw new RuntimeException("Document type not supported by this command.");
     }
 
@@ -412,6 +425,10 @@ public class CommandFactory {
 
     public static final ICommand createAddChildSchemaCommand(OasSchema schema, OasSchema childSchema, String childType) {
         return new AddChildSchemaCommand(schema, childSchema, childType);
+    }
+
+    public static final ICommand createAddChannelItemCommand(String channelItemName, Object from) {
+        return new AddChannelItemCommand(channelItemName, from);
     }
 
     
@@ -654,7 +671,11 @@ public class CommandFactory {
     public static final ICommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
     }
-    
+
+    public static final ICommand createDeleteChannelCommand(String channelName) {
+        return new DeleteChannelCommand(channelName);
+    }
+
     /** New Commands **/
     
     public static final ICommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
@@ -697,6 +718,9 @@ public class CommandFactory {
         if (docType == DocumentType.openapi3) {
             return new NewSchemaDefinitionCommand_30(definitionName, example, description);
         }
+        if (docType == DocumentType.asyncapi2) {
+            return new NewSchemaDefinitionCommand_Aai20(definitionName, example, description);
+        }
         throw new RuntimeException("Document type not supported by this command.");
     }
 
@@ -713,6 +737,9 @@ public class CommandFactory {
     
     public static final ICommand createNewSchemaPropertyCommand(Schema schema, String propertyName, 
             String description, SimplifiedPropertyType newType) {
+        if (schema instanceof AaiSchema) {
+            return new NewSchemaPropertyCommand_Aai20(schema, propertyName, description, newType);
+        }
         return new NewSchemaPropertyCommand(schema, propertyName, description, newType);
     }
 
@@ -733,6 +760,14 @@ public class CommandFactory {
     
     public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
+    }
+
+    public static final ICommand createNewChannelCommand(String name) {
+        return new NewChannelCommand(name);
+    }
+
+    public static final ICommand createNewSchemaDefinitionCommand_Aai20(String name, Object example, String descriptioon) {
+        return new NewSchemaDefinitionCommand_Aai20(name, example, descriptioon);
     }
     
     /** Rename Commands **/

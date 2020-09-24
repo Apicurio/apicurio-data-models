@@ -1,0 +1,60 @@
+{
+  "asyncapi": "2.0.0",
+  "components": {
+    "schemas": {
+      "MySchema1" : {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "MySchema2": {
+        "type": "string",
+        "format": "email"
+      },
+      "RefSchema":{
+        "$ref": "#/other/Ref"
+      },
+      "NewType": {
+        "title": "Root Type for NewType",
+        "description": "The root of the NewType type's schema.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "age": 46,
+          "dob": "1971-04-15",
+          "email": "jbourne@example.com",
+          "name": "Jason Bourne"
+        }
+      }
+    }
+  }
+}
