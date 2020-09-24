@@ -16,10 +16,10 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
-import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -164,7 +164,7 @@ public class Aai20Schema extends AaiSchema {
 
     }
 
-    public static class Aai20PropertySchema extends Aai20Schema implements IAaiPropertySchema, INamed {
+    public static class Aai20PropertySchema extends Aai20Schema implements IPropertySchema, INamed {
 
         private String _propertyName;
 
@@ -177,7 +177,7 @@ public class Aai20Schema extends AaiSchema {
         }
 
         /**
-         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#getPropertyName()
+         * @see io.apicurio.datamodels.core.models.common.IPropertySchema#getPropertyName()
          */
         @Override
         public String getPropertyName() {
@@ -190,7 +190,7 @@ public class Aai20Schema extends AaiSchema {
         }
 
         /**
-         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#rename(java.lang.String)
+         * @see io.apicurio.datamodels.core.models.common.IPropertySchema#rename(java.lang.String)
          */
         @Override
         public void rename(String newName) {
@@ -203,7 +203,7 @@ public class Aai20Schema extends AaiSchema {
         @Override
         public void accept(IVisitor visitor) {
             IAaiVisitor viz = (IAaiVisitor) visitor;
-            viz.visitPropertySchema((IAaiPropertySchema) this);
+            viz.visitPropertySchema((IPropertySchema) this);
         }
 
     }

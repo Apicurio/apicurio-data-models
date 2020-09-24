@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.openapi.models;
+package io.apicurio.datamodels.core.models.common;
 
 import io.apicurio.datamodels.core.models.IVisitable;
 
 /**
- * An OpenAPI property schema.
+ * A property schema.
  * @author eric.wittmann@gmail.com
  */
-public interface IOasPropertySchema extends IVisitable {
+public interface IPropertySchema extends IVisitable {
     
     /**
      * Returns the property schema's name.

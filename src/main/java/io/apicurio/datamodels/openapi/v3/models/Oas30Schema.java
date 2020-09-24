@@ -21,8 +21,8 @@ import java.util.List;
 
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
@@ -276,7 +276,7 @@ public class Oas30Schema extends OasSchema {
 
     }
 
-    public static class Oas30PropertySchema extends Oas30Schema implements IOasPropertySchema, INamed {
+    public static class Oas30PropertySchema extends Oas30Schema implements IPropertySchema, INamed {
         
         private String _propertyName;
         
@@ -289,7 +289,7 @@ public class Oas30Schema extends OasSchema {
         }
         
         /**
-         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#getPropertyName()
+         * @see io.apicurio.datamodels.core.models.common.IPropertySchema#getPropertyName()
          */
         @Override
         public String getPropertyName() {
@@ -302,7 +302,7 @@ public class Oas30Schema extends OasSchema {
         }
 
         /**
-         * @see io.apicurio.datamodels.openapi.models.IOasPropertySchema#rename(java.lang.String)
+         * @see io.apicurio.datamodels.core.models.common.IPropertySchema#rename(java.lang.String)
          */
         @Override
         public void rename(String newName) {
@@ -315,7 +315,7 @@ public class Oas30Schema extends OasSchema {
         @Override
         public void accept(IVisitor visitor) {
             IOasVisitor viz = (IOasVisitor) visitor;
-            viz.visitPropertySchema((IOasPropertySchema) this);
+            viz.visitPropertySchema((IPropertySchema) this);
         }
 
     }

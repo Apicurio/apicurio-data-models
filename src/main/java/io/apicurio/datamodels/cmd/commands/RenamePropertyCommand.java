@@ -24,7 +24,7 @@ import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 /**
@@ -87,7 +87,7 @@ public class RenamePropertyCommand extends AbstractCommand {
             return;
         }
         
-        ((IOasPropertySchema) property).rename(to);
+        ((IPropertySchema) property).rename(to);
         parent.addProperty(to, property);
 
         List<String> required = parent.required;

@@ -20,8 +20,8 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.visitors.NodePathVisitor;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
@@ -122,10 +122,10 @@ public class OasNodePathVisitor extends NodePathVisitor implements IOasVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.openapi.models.IOasPropertySchema)
+     * @see io.apicurio.datamodels.openapi.visitors.IOasVisitor#visitPropertySchema(io.apicurio.datamodels.core.models.common.IPropertySchema)
      */
     @Override
-    public void visitPropertySchema(IOasPropertySchema node) {
+    public void visitPropertySchema(IPropertySchema node) {
         this.path.prependSegment(node.getPropertyName(), true);
         this.path.prependSegment(Constants.PROP_PROPERTIES, false);
     }

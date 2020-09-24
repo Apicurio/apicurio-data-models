@@ -17,14 +17,13 @@
 package io.apicurio.datamodels.cmd.util;
 
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
-import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 
@@ -48,11 +47,34 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
      */
     @Override
     public void visitSchema(Schema node) {
+        if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
+            this.setItems((AaiSchema) node);
+        } else {
+            this.setItems((OasSchema) node);
+        }
+    }
+    
+    private void setItems(OasSchema node) {
         OasSchema schema = (OasSchema) node;
         schema.items = schema.createItemsSchema();
         if (ModelUtils.isDefined(this.type.of)) {
             // TODO Handle the case where "items" is actually a List of schemas.
             OasSchema items = (OasSchema) schema.items;
+            if (this.type.of.isRef()) {
+                items.$ref = this.type.of.type;
+            } else {
+                items.type = this.type.of.type;
+                items.format = this.type.of.as;
+            }
+        }
+    }
+
+    private void setItems(AaiSchema node) {
+        AaiSchema schema = (AaiSchema) node;
+        schema.items = schema.createItemsSchema();
+        if (ModelUtils.isDefined(this.type.of)) {
+            // TODO Handle the case where "items" is actually a List of schemas.
+            AaiSchema items = (AaiSchema) schema.items;
             if (this.type.of.isRef()) {
                 items.$ref = this.type.of.type;
             } else {
@@ -85,10 +107,10 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
         this.visitSchema((Schema) node);
     }
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitPropertySchema(io.apicurio.datamodels.openapi.models.IOasPropertySchema)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitPropertySchema(io.apicurio.datamodels.core.models.common.IPropertySchema)
      */
     @Override
-    public void visitPropertySchema(IOasPropertySchema node) {
+    public void visitPropertySchema(IPropertySchema node) {
         this.visitSchema((Schema) node);
     }
     /**
@@ -120,26 +142,4 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
         this.visitParameter((Parameter) node);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
-     */
-    @Override
-    public void visitPropertySchema(IAaiPropertySchema node) {
-        this.visitAaiSchema((AaiSchema) node);
-    }
-
-    private void visitAaiSchema(AaiSchema node) {
-        AaiSchema schema = (AaiSchema) node;
-        schema.items = schema.createItemsSchema();
-        if (ModelUtils.isDefined(this.type.of)) {
-            // TODO Handle the case where "items" is actually a List of schemas.
-            AaiSchema items = (AaiSchema) schema.items;
-            if (this.type.of.isRef()) {
-                items.$ref = this.type.of.type;
-            } else {
-                items.type = this.type.of.type;
-                items.format = this.type.of.as;
-            }
-        }
-    }
 }

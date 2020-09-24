@@ -15,9 +15,11 @@
  */
 package io.apicurio.datamodels.cmd.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
-import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
@@ -28,10 +30,8 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A command used to create a new schema property for AsyncAPI Schema
@@ -82,7 +82,7 @@ public class NewSchemaPropertyCommand_Aai20 extends AbstractCommand {
             property.description = this._description;
         }
         if (ModelUtils.isDefined(this._newType)) {
-            this._setPropertyType((IAaiPropertySchema) property);
+            this._setPropertyType((IPropertySchema) property);
         }
         schema.addProperty(this._propertyName, property);
         LoggerCompat.info("[NewSchemaPropertyCommand_Aai20] Property [%s] created successfully.", this._propertyName);
@@ -122,7 +122,7 @@ public class NewSchemaPropertyCommand_Aai20 extends AbstractCommand {
      * Sets the property type.
      * @param prop
      */
-    protected void _setPropertyType(IAaiPropertySchema prop) {
+    protected void _setPropertyType(IPropertySchema prop) {
         // Update the schema's type
         SimplifiedTypeUtil.setSimplifiedType((AaiSchema) prop, this._newType);
         if (ModelUtils.isDefined(this._newType) && this._newType.required == Boolean.TRUE) {

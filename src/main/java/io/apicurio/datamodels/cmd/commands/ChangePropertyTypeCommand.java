@@ -32,7 +32,7 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 /**
@@ -53,7 +53,7 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
     ChangePropertyTypeCommand() {
     }
 
-    ChangePropertyTypeCommand(IOasPropertySchema property, SimplifiedPropertyType newType) {
+    ChangePropertyTypeCommand(IPropertySchema property, SimplifiedPropertyType newType) {
         this._propPath = Library.createNodePath((Node) property);
         this._propName = property.getPropertyName();
         this._newType = newType;
@@ -65,7 +65,7 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[ChangePropertyTypeCommand] Executing: " + this._newType);
-        IOasPropertySchema prop = (IOasPropertySchema) this._propPath.resolve(document);
+        IPropertySchema prop = (IPropertySchema) this._propPath.resolve(document);
         if (this.isNullOrUndefined(prop)) {
             return;
         }
@@ -103,7 +103,7 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[ChangePropertyTypeCommand] Reverting.");
-        IOasPropertySchema prop = (IOasPropertySchema) this._propPath.resolve(document);
+        IPropertySchema prop = (IPropertySchema) this._propPath.resolve(document);
         if (this.isNullOrUndefined(prop)) {
             return;
         }

@@ -17,10 +17,10 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.type;
 
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30NotSchema;
@@ -65,7 +65,7 @@ public abstract class OasInvalidPropertyTypeValidationRule extends ValidationRul
     @Override
     public void visitNotSchema(Oas30NotSchema node) { this.visitSchema(node); }
     @Override
-    public void visitPropertySchema(IOasPropertySchema node) { this.visitSchema((Schema) node); }
+    public void visitPropertySchema(IPropertySchema node) { this.visitSchema((Schema) node); }
     @Override
     public void visitItemsSchema(OasSchema node) { this.visitSchema(node); }
     @Override

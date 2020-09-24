@@ -21,7 +21,7 @@ import java.util.List;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 /**
@@ -30,7 +30,7 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 public class SimplifiedPropertyType extends SimplifiedType {
 
     @SuppressWarnings("unchecked")
-    public static SimplifiedPropertyType fromPropertySchema(IOasPropertySchema schema) {
+    public static SimplifiedPropertyType fromPropertySchema(IPropertySchema schema) {
         OasSchema s = (OasSchema) schema;
         SimplifiedPropertyType rval = new SimplifiedPropertyType();
         

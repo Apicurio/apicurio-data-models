@@ -25,7 +25,7 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 /**
@@ -44,7 +44,7 @@ public class DeletePropertyCommand extends AbstractCommand {
     DeletePropertyCommand() {
     }
     
-    DeletePropertyCommand(IOasPropertySchema property) {
+    DeletePropertyCommand(IPropertySchema property) {
         this._propertyName = property.getPropertyName();
         this._propertyPath = Library.createNodePath((Node) property);
         this._schemaPath = Library.createNodePath(((Node) property).parent());
@@ -58,7 +58,7 @@ public class DeletePropertyCommand extends AbstractCommand {
         LoggerCompat.info("[DeletePropertyCommand] Executing.");
         this._oldProperty = null;
 
-        IOasPropertySchema property = (IOasPropertySchema) this._propertyPath.resolve(document);
+        IPropertySchema property = (IPropertySchema) this._propertyPath.resolve(document);
         if (this.isNullOrUndefined(property)) {
             return;
         }

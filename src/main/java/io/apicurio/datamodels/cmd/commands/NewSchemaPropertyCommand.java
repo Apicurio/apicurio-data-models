@@ -30,8 +30,8 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 /**
@@ -83,7 +83,7 @@ public class NewSchemaPropertyCommand extends AbstractCommand {
             property.description = this._description;
         }
         if (ModelUtils.isDefined(this._newType)) {
-            this._setPropertyType((IOasPropertySchema) property);
+            this._setPropertyType((IPropertySchema) property);
         }
         schema.addProperty(this._propertyName, property);
         LoggerCompat.info("[NewSchemaPropertyCommand] Property [%s] created successfully.", this._propertyName);
@@ -123,7 +123,7 @@ public class NewSchemaPropertyCommand extends AbstractCommand {
      * Sets the property type.
      * @param prop
      */
-    protected void _setPropertyType(IOasPropertySchema prop) {
+    protected void _setPropertyType(IPropertySchema prop) {
         // Update the schema's type
         SimplifiedTypeUtil.setSimplifiedType((OasSchema) prop, this._newType);
         if (ModelUtils.isDefined(this._newType) && this._newType.required == Boolean.TRUE) {

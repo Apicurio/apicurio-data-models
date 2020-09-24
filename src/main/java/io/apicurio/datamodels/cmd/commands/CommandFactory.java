@@ -32,6 +32,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Info;
@@ -41,7 +42,6 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.models.IOasParameterParent;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -489,7 +489,7 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
     
-    public static final ICommand createChangePropertyTypeCommand(IOasPropertySchema property, 
+    public static final ICommand createChangePropertyTypeCommand(IPropertySchema property, 
             SimplifiedPropertyType newType) {
         return new ChangePropertyTypeCommand(property, newType);
     }
@@ -614,7 +614,7 @@ public class CommandFactory {
         return new DeletePathCommand(path);
     }
     
-    public static final ICommand createDeletePropertyCommand(IOasPropertySchema property) {
+    public static final ICommand createDeletePropertyCommand(IPropertySchema property) {
         return new DeletePropertyCommand(property);
     }
     

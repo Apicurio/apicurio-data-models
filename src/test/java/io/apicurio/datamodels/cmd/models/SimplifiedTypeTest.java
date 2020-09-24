@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.openapi.models.IOasPropertySchema;
+import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
@@ -262,15 +262,15 @@ public class SimplifiedTypeTest {
         Oas20SchemaDefinition definition = doc.definitions.getDefinition("Examples");
 
         // Array
-        SimplifiedPropertyType propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("array-property"));
+        SimplifiedPropertyType propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("array-property"));
         assertSimplifiedType(propType, false, true, false, false, false, "array", null, null);
         Assert.assertFalse("#required", propType.required);
         // Boolean
-        propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("boolean-property"));
+        propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("boolean-property"));
         assertSimplifiedType(propType, false, false, false, false, true, "boolean", null, null);
         Assert.assertTrue("#required", propType.required);
         // Enum
-        propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("enum-property"));
+        propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("enum-property"));
         List<Object> vals = new ArrayList<>(3);
         vals.add("val1");
         vals.add("val2");
@@ -278,15 +278,15 @@ public class SimplifiedTypeTest {
         assertSimplifiedType(propType, false, false, true, false, true, "string", null, vals);
         Assert.assertFalse("#required", propType.required);
         // Number
-        propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("number-property"));
+        propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("number-property"));
         assertSimplifiedType(propType, false, false, false, false, true, "number", null, null);
         Assert.assertTrue("#required", propType.required);
         // Ref
-        propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("ref-property"));
+        propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("ref-property"));
         assertSimplifiedType(propType, true, false, false, false, false, "#/definitions/ExampleObject", null, null);
         Assert.assertFalse("#required", propType.required);
         // String
-        propType = SimplifiedPropertyType.fromPropertySchema((IOasPropertySchema) definition.getProperty("string-property"));
+        propType = SimplifiedPropertyType.fromPropertySchema((IPropertySchema) definition.getProperty("string-property"));
         assertSimplifiedType(propType, false, false, false, false, true, "string", null, null);
         Assert.assertFalse("#required", propType.required);
 
