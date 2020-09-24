@@ -18,9 +18,7 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
-import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.cmd.util.SimplifiedTypeUtil;
@@ -29,7 +27,6 @@ import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
 
@@ -37,24 +34,13 @@ import io.apicurio.datamodels.core.models.common.Schema;
  * A command used to create a new schema property for AsyncAPI Schema
  * @author laurent.broudoux@gmail.com
  */
-public class NewSchemaPropertyCommand_Aai20 extends AbstractCommand {
-
-    public String _propertyName;
-    public NodePath _schemaPath;
-    public String _description;
-    public SimplifiedPropertyType _newType;
-
-    public boolean _created;
-    public boolean _nullRequired;
+public class NewSchemaPropertyCommand_Aai20 extends NewSchemaPropertyCommand {
 
     NewSchemaPropertyCommand_Aai20() {
     }
 
     NewSchemaPropertyCommand_Aai20(Schema schema, String propertyName, String description, SimplifiedPropertyType newType) {
-        this._schemaPath = Library.createNodePath(schema);
-        this._propertyName = propertyName;
-        this._description = description;
-        this._newType = newType;
+        super(schema, propertyName, description, newType);
     }
     
     /**

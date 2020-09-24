@@ -18,7 +18,6 @@ package io.apicurio.datamodels.core.factories;
 
 import java.util.List;
 
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
@@ -30,10 +29,49 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 
 /**
+ * TODO: the functionality of this is duplicated in {@link AaiSchemaFactory} - consider ways to share the logic.
  * @author eric.wittmann@gmail.com
  */
 public class OasSchemaFactory {
-    
+
+    /**
+     * Creates a new definition schema from a given example.  This method will analyze the example
+     * object and create a new schema object that represents the example.  Note that this method
+     * does not support arbitrarily complicated examples, and should be used as a starting point
+     * for a schema, not a canonical one.
+     * @param document
+     * @param name
+     * @param example
+     */
+    public static IDefinition createSchemaDefinitionFromExample(OasDocument document, String name, Object example) {
+        OasSchema schema = null;
+        
+        if (document.getDocumentType() == DocumentType.openapi2) {
+            Oas20Document doc20 = (Oas20Document) document;
+            if (NodeCompat.isNullOrUndefined(doc20.definitions)) {
+                doc20.definitions = doc20.createDefinitions();
+            }
+            schema = doc20.definitions.createSchemaDefinition(name);
+        } else if (document.getDocumentType() == DocumentType.openapi3) {
+            Oas30Document doc30 = (Oas30Document) document;
+            if (NodeCompat.isNullOrUndefined(doc30.components)) {
+                doc30.components = doc30.createComponents();
+            }
+            schema = doc30.components.createSchemaDefinition(name);
+        } else {
+            throw new RuntimeException("Only OpenAPI 2 and 3 are currently supported.");
+        }
+        
+        if (JsonCompat.isString(example)) {
+            example = JsonCompat.parseJSON(JsonCompat.toString(example));
+        }
+        
+        resolveAll(example, schema);
+        schema.title = "Root Type for " + name;
+        schema.description = "The root of the " + name + " type's schema.";
+        return (IDefinition) schema;
+    }
+
     private static void resolveType(Object thing, OasSchema schema) {
         if (JsonCompat.isNumber(thing)) {
             Number value = JsonCompat.toNumber(thing);
@@ -86,44 +124,6 @@ public class OasSchemaFactory {
                 resolveAll(propValue, pschema);
             }
         }
-    }
-
-    /**
-     * Creates a new definition schema from a given example.  This method will analyze the example
-     * object and create a new schema object that represents the example.  Note that this method
-     * does not support arbitrarily complicated examples, and should be used as a starting point
-     * for a schema, not a canonical one.
-     * @param document
-     * @param name
-     * @param example
-     */
-    public static IDefinition createSchemaDefinitionFromExample(OasDocument document, String name, Object example) {
-        OasSchema schema = null;
-        
-        if (document.getDocumentType() == DocumentType.openapi2) {
-            Oas20Document doc20 = (Oas20Document) document;
-            if (ModelUtils.isNullOrUndefined(doc20.definitions)) {
-                doc20.definitions = doc20.createDefinitions();
-            }
-            schema = doc20.definitions.createSchemaDefinition(name);
-        } else if (document.getDocumentType() == DocumentType.openapi3) {
-            Oas30Document doc30 = (Oas30Document) document;
-            if (ModelUtils.isNullOrUndefined(doc30.components)) {
-                doc30.components = doc30.createComponents();
-            }
-            schema = doc30.components.createSchemaDefinition(name);
-        } else {
-            throw new RuntimeException("Only OpenAPI 2 and 3 are currently supported.");
-        }
-        
-        if (JsonCompat.isString(example)) {
-            example = JsonCompat.parseJSON(JsonCompat.toString(example));
-        }
-        
-        resolveAll(example, schema);
-        schema.title = "Root Type for " + name;
-        schema.description = "The root of the " + name + " type's schema.";
-        return (IDefinition) schema;
     }
 
 }

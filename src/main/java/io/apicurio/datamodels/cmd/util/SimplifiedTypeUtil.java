@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
+import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
@@ -29,7 +31,16 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
  */
 public class SimplifiedTypeUtil {
 
-    public static void setSimplifiedType(OasSchema node, SimplifiedType type) {
+    public static void setSimplifiedType(Schema node, SimplifiedType type) {
+        if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
+            setSimplifiedType_aai((AaiSchema) node, type);
+        } else {
+            setSimplifiedType_oas((OasSchema) node, type);
+        }
+        
+    }
+    
+    private static void setSimplifiedType_oas(OasSchema node, SimplifiedType type) {
         node.$ref = null;
         node.type = null;
         node.enum_ = null;
@@ -59,7 +70,7 @@ public class SimplifiedTypeUtil {
         }
     }
 
-    public static void setSimplifiedType(AaiSchema node, SimplifiedType type) {
+    private static void setSimplifiedType_aai(AaiSchema node, SimplifiedType type) {
         node.$ref = null;
         node.type = null;
         node.enum_ = null;

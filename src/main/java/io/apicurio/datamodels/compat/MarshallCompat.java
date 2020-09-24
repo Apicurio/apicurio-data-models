@@ -41,7 +41,6 @@ import io.apicurio.datamodels.cmd.commands.CommandFactory;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.NodePath;
 
@@ -103,7 +102,7 @@ public class MarshallCompat {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object marshallSimplifiedType(SimplifiedType sType) {
-        if (ModelUtils.isNullOrUndefined(sType)) {
+        if (NodeCompat.isNullOrUndefined(sType)) {
             return null;
         }
         Object obj = JsonCompat.objectNode();
@@ -121,7 +120,7 @@ public class MarshallCompat {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static SimplifiedType unmarshallSimplifiedType(Object from) {
-        if (ModelUtils.isNullOrUndefined(from)) {
+        if (NodeCompat.isNullOrUndefined(from)) {
             return null;
         }
         SimplifiedType type = new SimplifiedType();
@@ -138,7 +137,7 @@ public class MarshallCompat {
      * @param sType
      */
     private static Object marshallSimplifiedParameterType(SimplifiedParameterType sType) {
-        if (ModelUtils.isNullOrUndefined(sType)) {
+        if (NodeCompat.isNullOrUndefined(sType)) {
             return null;
         }
         Object obj = marshallSimplifiedType(sType);
@@ -152,7 +151,7 @@ public class MarshallCompat {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static SimplifiedParameterType unmarshallSimplifiedParameterType(Object from) {
-        if (ModelUtils.isNullOrUndefined(from)) {
+        if (NodeCompat.isNullOrUndefined(from)) {
             return null;
         }
         SimplifiedParameterType type = new SimplifiedParameterType();
@@ -173,7 +172,7 @@ public class MarshallCompat {
      * @param sType
      */
     private static Object marshallSimplifiedPropertyType(SimplifiedPropertyType sType) {
-        if (ModelUtils.isNullOrUndefined(sType)) {
+        if (NodeCompat.isNullOrUndefined(sType)) {
             return null;
         }
         Object obj = marshallSimplifiedType(sType);
@@ -187,7 +186,7 @@ public class MarshallCompat {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static SimplifiedPropertyType unmarshallSimplifiedPropertyType(Object from) {
-        if (ModelUtils.isNullOrUndefined(from)) {
+        if (NodeCompat.isNullOrUndefined(from)) {
             return null;
         }
         SimplifiedPropertyType type = new SimplifiedPropertyType();

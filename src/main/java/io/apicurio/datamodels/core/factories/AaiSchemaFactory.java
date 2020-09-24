@@ -16,20 +16,20 @@
 
 package io.apicurio.datamodels.core.factories;
 
+import java.util.List;
+
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Components;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 
-import java.util.List;
-
 /**
+ * TODO: the functionality of this is duplicated in {@link OasSchemaFactory} - consider ways to share the logic.
  * @author laurent.broudoux@gmail.com
  */
 public class AaiSchemaFactory {
@@ -48,7 +48,7 @@ public class AaiSchemaFactory {
 
       if (document.getDocumentType() == DocumentType.asyncapi2) {
          Aai20Document doc = (Aai20Document) document;
-         if (ModelUtils.isNullOrUndefined(doc.components)) {
+         if (NodeCompat.isNullOrUndefined(doc.components)) {
             doc.components = doc.createComponents();
          }
          schema = ((Aai20Components) doc.components).createSchemaDefinition(name);
@@ -64,26 +64,6 @@ public class AaiSchemaFactory {
       schema.title = "Root Type for " + name;
       schema.description = "The root of the " + name + " type's schema.";
       return (IDefinition) schema;
-   }
-
-   private static void resolveAll(Object object, AaiSchema schema) {
-      resolveType(object, schema);
-      if (NodeCompat.equals(schema.type, "array")) {
-         schema.items = schema.createItemsSchema();
-         List<Object> list = JsonCompat.toList(object);
-         if (list.size() > 0) {
-            resolveAll(list.get(0), (AaiSchema) schema.items);
-         }
-      } else if (NodeCompat.equals(schema.type, "object")) {
-         schema.type = "object";
-         List<String> keys = JsonCompat.keys(object);
-         for (String propName : keys) {
-            AaiSchema pschema = schema.createPropertySchema(propName);
-            schema.addProperty(propName, pschema);
-            Object propValue = JsonCompat.getProperty(object, propName);
-            resolveAll(propValue, pschema);
-         }
-      }
    }
 
    private static void resolveType(Object thing, AaiSchema schema) {
@@ -119,4 +99,25 @@ public class AaiSchemaFactory {
          schema.type = "string";
       }
    }
+   
+   private static void resolveAll(Object object, AaiSchema schema) {
+      resolveType(object, schema);
+      if (NodeCompat.equals(schema.type, "array")) {
+         schema.items = schema.createItemsSchema();
+         List<Object> list = JsonCompat.toList(object);
+         if (list.size() > 0) {
+            resolveAll(list.get(0), (AaiSchema) schema.items);
+         }
+      } else if (NodeCompat.equals(schema.type, "object")) {
+         schema.type = "object";
+         List<String> keys = JsonCompat.keys(object);
+         for (String propName : keys) {
+            AaiSchema pschema = schema.createPropertySchema(propName);
+            schema.addProperty(propName, pschema);
+            Object propValue = JsonCompat.getProperty(object, propName);
+            resolveAll(propValue, pschema);
+         }
+      }
+   }
+
 }

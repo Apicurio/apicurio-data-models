@@ -80,5 +80,9 @@ export class NodeCompat {
     public static isNullOrUndefined(value: any): boolean {
         return value === null || value === undefined;
     }
+    
+    public static isDefined(value: any): boolean {
+        return value !== null && value !== undefined;
+    }
 
 }

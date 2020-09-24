@@ -125,7 +125,7 @@ public class NewSchemaPropertyCommand extends AbstractCommand {
      */
     protected void _setPropertyType(IPropertySchema prop) {
         // Update the schema's type
-        SimplifiedTypeUtil.setSimplifiedType((OasSchema) prop, this._newType);
+        SimplifiedTypeUtil.setSimplifiedType((Schema) prop, this._newType);
         if (ModelUtils.isDefined(this._newType) && this._newType.required == Boolean.TRUE) {
             OasSchema parent = (OasSchema) ((Node) prop).parent();
             List<String> required = parent.required;

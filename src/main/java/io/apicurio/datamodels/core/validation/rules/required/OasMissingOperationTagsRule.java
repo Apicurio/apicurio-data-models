@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.required;
 
-import io.apicurio.datamodels.cmd.util.ModelUtils;
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -41,7 +41,7 @@ public class OasMissingOperationTagsRule extends RequiredPropertyValidationRule 
     @Override
     public void visitOperation(Operation node) {
         OasOperation op = (OasOperation) node;
-        if (ModelUtils.isNullOrUndefined(op.tags) || op.tags.size() == 0) {
+        if (NodeCompat.isNullOrUndefined(op.tags) || op.tags.size() == 0) {
             this.report(node, Constants.PROP_TAGS, map());
         }
     }

@@ -188,4 +188,12 @@ public class NodeCompat {
         return value == null;
     }
     
+    /**
+     * Returns true if the given value is defined (ie if the value is NOT null or undefined).
+     * @param value
+     */
+    public static boolean isDefined(Object value) {
+        return !isNullOrUndefined(value);
+    }
+    
 }

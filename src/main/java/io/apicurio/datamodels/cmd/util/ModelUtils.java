@@ -41,7 +41,7 @@ public class ModelUtils {
      * @param object
      */
     public static boolean isDefined(Object object) {
-        return !ModelUtils.isNullOrUndefined(object);
+        return NodeCompat.isDefined(object);
     }
 
     /**
