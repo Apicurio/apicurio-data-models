@@ -48,5 +48,6 @@ public interface IAaiNodeFactory {
     AaiChannelBindingsDefinition createChannelBindingsDefinition(Node parent, String key);
     AaiOperationTraitDefinition createOperationTraitDefinition(Node parent, String key);
     AaiMessageTraitDefinition createMessageTraitDefinition(Node parent, String key);
+    AaiSchema createSchemaDefinition(Node parent, String key);
     
 }

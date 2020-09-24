@@ -15,6 +15,7 @@
  */
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public abstract class AaiComponents extends Components {
 
-    /**
-     * Represents `Map[string, any]`.
-     * Objects of `any` type are deserialized as follows:
-     * In TypeScript, this field contains the raw JS object, in case of Java
-     * it is a {@link com.fasterxml.jackson.databind.node.ObjectNode}.
-     *
-     * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#protocolInfoObject">AsyncAPI 2.0.0 spec</a>
-     */
-    public Map<String, Object> schemas;
-
+    public Map<String, AaiSchema> schemas;
     public Map<String, AaiMessage> messages;
     public Map<String, AaiSecurityScheme> securitySchemes;
     public Map<String, AaiParameter> parameters;
@@ -116,10 +108,37 @@ public abstract class AaiComponents extends Components {
     }
     
 
-    public void addSchema(String key, Object value) {
+    public void addSchemaDefinition(String key, AaiSchema value) {
         if(schemas == null)
             schemas = new LinkedHashMap<>();
         schemas.put(key, value);
+    }
+
+    /**
+     * Gets a single schema definition by name.
+     * @param name
+     */
+    public AaiSchema getSchemaDefinition(String name) {
+        return this.schemas.get(name);
+    }
+
+    /**
+     * Removes a single schema definition and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    public AaiSchema removeSchemaDefinition(String name) {
+        return this.schemas.remove(name);
+    }
+
+    /**
+     * Gets a list of all schema definitions.
+     */
+    public List<AaiSchema> getSchemaDefinitions() {
+        List<AaiSchema> rval = new ArrayList<>();
+        if (this.schemas != null) {
+            rval.addAll(this.schemas.values());
+        }
+        return rval;
     }
 
     public void addMessage(String key, AaiMessage value) {

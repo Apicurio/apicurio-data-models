@@ -383,7 +383,9 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (_jsonSchemas != null) {
             JsonCompat.keys(_jsonSchemas).forEach(key -> {
                 Object value = JsonCompat.consumeProperty(_jsonSchemas, key);
-                components.addSchema(key, value);
+                AaiSchema schemaModel = nodeFactory.createSchemaDefinition(node, key);
+                this.readSchema(value, schemaModel);
+                components.addSchemaDefinition(key, schemaModel);
             });
         }
         // messages

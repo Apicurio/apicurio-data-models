@@ -15,11 +15,6 @@
  */
 package io.apicurio.datamodels.asyncapi.v2.models;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.core.models.Node;
 
@@ -28,8 +23,6 @@ import io.apicurio.datamodels.core.models.Node;
  * @author laurent.broudoux@gmail.com
  */
 public class Aai20Components extends AaiComponents {
-
-    public Map<String, Aai20SchemaDefinition> schemas = new LinkedHashMap<>();
 
     /**
      * Constructor.
@@ -41,13 +34,6 @@ public class Aai20Components extends AaiComponents {
         super(parent);
     }
 
-    public void addSchemaDefinition(String key, Aai20SchemaDefinition value) {
-        if (schemas == null) {
-            schemas = new LinkedHashMap<>();
-        }
-        schemas.put(key, value);
-    }
-
     /**
      * Creates a schema definition.
      * @param name
@@ -56,30 +42,4 @@ public class Aai20Components extends AaiComponents {
         return new Aai20SchemaDefinition(this, name);
     }
 
-    /**
-     * Gets a single schema definition by name.
-     * @param name
-     */
-    public Aai20SchemaDefinition getSchemaDefinition(String name) {
-        return this.schemas.get(name);
-    }
-
-    /**
-     * Removes a single schema definition and returns it.  This may return null or undefined if none found.
-     * @param name
-     */
-    public Aai20SchemaDefinition removeSchemaDefinition(String name) {
-        return this.schemas.remove(name);
-    }
-
-    /**
-     * Gets a list of all schema definitions.
-     */
-    public List<Aai20SchemaDefinition> getSchemaDefinitions() {
-        List<Aai20SchemaDefinition> rval = new ArrayList<>();
-        if (this.schemas != null) {
-            rval.addAll(this.schemas.values());
-        }
-        return rval;
-    }
 }

@@ -26,6 +26,13 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
 public class Aai20SchemaDefinition extends Aai20Schema implements IDefinition {
     
     private String _name;
+    
+    /**
+     * Constructor.
+     */
+    public Aai20SchemaDefinition(String name) {
+        this._name = name;
+    }
 
     /**
      * Constructor.

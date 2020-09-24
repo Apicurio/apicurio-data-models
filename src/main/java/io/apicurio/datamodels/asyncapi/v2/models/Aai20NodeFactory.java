@@ -23,6 +23,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiOperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiParameter;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityRequirement;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
@@ -186,5 +187,10 @@ public class Aai20NodeFactory implements IAaiNodeFactory {
     @Override
     public AaiChannelBindingsDefinition createChannelBindingsDefinition(Node parent, String key) {
         return new Aai20ChannelBindingsDefinition(parent, key);
+    }
+    
+    @Override
+    public AaiSchema createSchemaDefinition(Node parent, String key) {
+        return new Aai20SchemaDefinition(parent, key);
     }
 }

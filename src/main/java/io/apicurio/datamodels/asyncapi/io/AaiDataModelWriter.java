@@ -16,12 +16,9 @@
 
 package io.apicurio.datamodels.asyncapi.io;
 
-import java.util.Map.Entry;
-
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
-import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
@@ -54,6 +51,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.AuthorizationCodeOAuthFlow;
 import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
@@ -187,18 +185,9 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
     @Override
     public void visitComponents(Components node) {
-        AaiComponents components = (AaiComponents) node;
-        
         Object parent = this.lookupParentJson(node);
         Object json = JsonCompat.objectNode();
-        // write the schemas because they are not visited later
-        Object schemas = JsonCompat.objectNode();
-        if (components.schemas != null) {
-            for (Entry<String, Object> e : components.schemas.entrySet()) {
-                JsonCompat.setProperty(schemas, e.getKey(), e.getValue());
-            }
-            JsonCompat.setProperty(json, Constants.PROP_SCHEMAS, schemas); // map
-        }
+        JsonCompat.setPropertyNull(json, Constants.PROP_SCHEMAS); // map
         JsonCompat.setPropertyNull(json, Constants.PROP_MESSAGES); // map
         JsonCompat.setPropertyNull(json, Constants.PROP_SECURITY_SCHEMES); // map
         JsonCompat.setPropertyNull(json, Constants.PROP_PARAMETERS); // map
@@ -215,6 +204,20 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
         this.writeExtraProperties(json, node);
         this.updateIndex(node, json);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.io.DataModelWriter#addSchemaDefinitionToParent(java.lang.Object, java.lang.Object, io.apicurio.datamodels.core.models.common.IDefinition)
+     */
+    @Override
+    protected void addSchemaDefinitionToParent(Object parent, Object json, IDefinition node) {
+       Object schemas = JsonCompat.getProperty(parent, Constants.PROP_SCHEMAS);
+       if (schemas == null) {
+          schemas = JsonCompat.objectNode();
+          JsonCompat.setProperty(parent, Constants.PROP_SCHEMAS, schemas);
+       }
+
+       JsonCompat.setProperty(schemas, node.getName(), json);
     }
 
     @Override

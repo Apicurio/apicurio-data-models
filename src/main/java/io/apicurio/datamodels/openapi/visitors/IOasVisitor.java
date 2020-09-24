@@ -45,6 +45,6 @@ public interface IOasVisitor extends IVisitor {
     public void visitPropertySchema(IOasPropertySchema node);
     public void visitHeader(OasHeader node);
     public void visitResponseDefinition(IDefinition node);
-    void visitExample(IExample node);
+    public void visitExample(IExample node);
 
 }
