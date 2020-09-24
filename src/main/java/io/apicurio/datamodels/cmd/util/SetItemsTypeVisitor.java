@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.cmd.util;
 
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
+import io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema;
 import io.apicurio.datamodels.cmd.models.SimplifiedType;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.core.models.DocumentType;
@@ -118,4 +120,26 @@ public class SetItemsTypeVisitor extends CombinedVisitorAdapter {
         this.visitParameter((Parameter) node);
     }
 
+    /**
+     * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     */
+    @Override
+    public void visitPropertySchema(IAaiPropertySchema node) {
+        this.visitAaiSchema((AaiSchema) node);
+    }
+
+    private void visitAaiSchema(AaiSchema node) {
+        AaiSchema schema = (AaiSchema) node;
+        schema.items = schema.createItemsSchema();
+        if (ModelUtils.isDefined(this.type.of)) {
+            // TODO Handle the case where "items" is actually a List of schemas.
+            AaiSchema items = (AaiSchema) schema.items;
+            if (this.type.of.isRef()) {
+                items.$ref = this.type.of.type;
+            } else {
+                items.type = this.type.of.type;
+                items.format = this.type.of.as;
+            }
+        }
+    }
 }

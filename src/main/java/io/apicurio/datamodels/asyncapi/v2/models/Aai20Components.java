@@ -29,7 +29,7 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public class Aai20Components extends AaiComponents {
 
-    public Map<String, Aai20SchemaDefinition> schemas;
+    public Map<String, Aai20SchemaDefinition> schemas = new LinkedHashMap<>();
 
     /**
      * Constructor.
