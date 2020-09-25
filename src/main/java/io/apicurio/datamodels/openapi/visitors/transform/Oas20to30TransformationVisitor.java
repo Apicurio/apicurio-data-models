@@ -39,6 +39,7 @@ import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
@@ -707,7 +708,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(IDefinition node) {
+    public void visitSchemaDefinition(ISchemaDefinition node) {
         Oas20SchemaDefinition sd20 = (Oas20SchemaDefinition) node;
         
         Oas30Components parent30 = this.getOrCreateComponents();

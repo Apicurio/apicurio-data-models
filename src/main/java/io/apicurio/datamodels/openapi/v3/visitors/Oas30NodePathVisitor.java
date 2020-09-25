@@ -23,6 +23,7 @@ import io.apicurio.datamodels.core.models.common.ClientCredentialsOAuthFlow;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.ImplicitOAuthFlow;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.PasswordOAuthFlow;
@@ -66,7 +67,7 @@ public class Oas30NodePathVisitor extends OasNodePathVisitor implements IOas30Vi
      * @see io.apicurio.datamodels.core.visitors.NodePathVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(IDefinition node) {
+    public void visitSchemaDefinition(ISchemaDefinition node) {
         this.path.prependSegment(node.getName(), true);
         this.path.prependSegment(Constants.PROP_SCHEMAS, false);
     }

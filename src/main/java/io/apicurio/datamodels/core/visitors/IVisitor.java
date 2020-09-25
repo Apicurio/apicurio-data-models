@@ -22,6 +22,7 @@ import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.common.Contact;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -46,7 +47,7 @@ public interface IVisitor {
     void visitOperation(Operation node);
     void visitParameterDefinition(IDefinition node);
     void visitParameter(Parameter node);
-    void visitSchemaDefinition(IDefinition node);
+    void visitSchemaDefinition(ISchemaDefinition node);
     void visitSchema(Schema node);
     void visitSecurityRequirement(SecurityRequirement node);
     void visitSecurityScheme(SecurityScheme node);

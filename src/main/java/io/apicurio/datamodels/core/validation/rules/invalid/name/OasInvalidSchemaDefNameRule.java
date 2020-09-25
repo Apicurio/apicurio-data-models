@@ -18,7 +18,7 @@ package io.apicurio.datamodels.core.validation.rules.invalid.name;
 
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
@@ -39,7 +39,7 @@ public class OasInvalidSchemaDefNameRule extends OasInvalidPropertyNameRule {
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(IDefinition node) {
+    public void visitSchemaDefinition(ISchemaDefinition node) {
         this.reportIfInvalid(isValidDefinitionName(node.getName()), (Node) node, Constants.PROP_NAME, map());
     }
 

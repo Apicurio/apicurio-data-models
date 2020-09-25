@@ -24,6 +24,7 @@ import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
@@ -32,7 +33,7 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public abstract class AaiComponents extends Components {
 
-    public Map<String, AaiSchema> schemas;
+    public Map<String, ISchemaDefinition> schemas;
     public Map<String, AaiMessage> messages;
     public Map<String, AaiSecurityScheme> securitySchemes;
     public Map<String, AaiParameter> parameters;
@@ -108,7 +109,7 @@ public abstract class AaiComponents extends Components {
     }
     
 
-    public void addSchemaDefinition(String key, AaiSchema value) {
+    public void addSchemaDefinition(String key, ISchemaDefinition value) {
         if(schemas == null)
             schemas = new LinkedHashMap<>();
         schemas.put(key, value);
@@ -118,7 +119,7 @@ public abstract class AaiComponents extends Components {
      * Gets a single schema definition by name.
      * @param name
      */
-    public AaiSchema getSchemaDefinition(String name) {
+    public ISchemaDefinition getSchemaDefinition(String name) {
         return this.schemas.get(name);
     }
 
@@ -126,15 +127,15 @@ public abstract class AaiComponents extends Components {
      * Removes a single schema definition and returns it.  This may return null or undefined if none found.
      * @param name
      */
-    public AaiSchema removeSchemaDefinition(String name) {
+    public ISchemaDefinition removeSchemaDefinition(String name) {
         return this.schemas.remove(name);
     }
 
     /**
      * Gets a list of all schema definitions.
      */
-    public List<AaiSchema> getSchemaDefinitions() {
-        List<AaiSchema> rval = new ArrayList<>();
+    public List<ISchemaDefinition> getSchemaDefinitions() {
+        List<ISchemaDefinition> rval = new ArrayList<>();
         if (this.schemas != null) {
             rval.addAll(this.schemas.values());
         }

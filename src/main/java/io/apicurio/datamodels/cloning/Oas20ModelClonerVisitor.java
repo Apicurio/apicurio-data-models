@@ -20,6 +20,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Parameter;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -180,7 +181,7 @@ public class Oas20ModelClonerVisitor extends ModelClonerVisitor implements IOas2
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
     @Override
-    public void visitSchemaDefinition(IDefinition node) {
+    public void visitSchemaDefinition(ISchemaDefinition node) {
         this.clone = ((Oas20Document) ((Node) node).ownerDocument()).createDefinitions().createSchemaDefinition(node.getName());
     }
 

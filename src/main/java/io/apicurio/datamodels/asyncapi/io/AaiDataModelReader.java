@@ -55,6 +55,7 @@ import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.OAuthFlows;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.models.common.Schema;
@@ -383,8 +384,8 @@ public abstract class AaiDataModelReader extends DataModelReader {
         if (_jsonSchemas != null) {
             JsonCompat.keys(_jsonSchemas).forEach(key -> {
                 Object value = JsonCompat.consumeProperty(_jsonSchemas, key);
-                AaiSchema schemaModel = nodeFactory.createSchemaDefinition(node, key);
-                this.readSchema(value, schemaModel);
+                ISchemaDefinition schemaModel = nodeFactory.createSchemaDefinition(node, key);
+                this.readSchema(value, schemaModel.asSchema());
                 components.addSchemaDefinition(key, schemaModel);
             });
         }

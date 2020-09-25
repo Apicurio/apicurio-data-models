@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.type;
 
-import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -71,6 +71,6 @@ public abstract class OasInvalidPropertyTypeValidationRule extends ValidationRul
     @Override
     public void visitAdditionalPropertiesSchema(OasSchema node) { this.visitSchema(node); }
     @Override
-    public void visitSchemaDefinition(IDefinition node) { this.visitSchema((Schema) node); }
+    public void visitSchemaDefinition(ISchemaDefinition node) { this.visitSchema((Schema) node); }
 
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 Red Hat
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
 import java.util.LinkedHashMap;
@@ -27,8 +43,7 @@ import io.apicurio.datamodels.asyncapi.v2.models.Aai20ServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 
-public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocalizationStrategy implements IReferenceManipulationStrategy {
-
+public class Aai20ReferenceManipulationStrategy extends AbstractReferenceLocalizationStrategy implements IReferenceManipulationStrategy {
 
     @Override
     public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
@@ -141,7 +156,7 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
             throw new IllegalArgumentException("Aai20Document expected.");
         Aai20Document model = (Aai20Document) document;
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
-        Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();
+        Map<String, Node> res = new LinkedHashMap<>();
 
         if (model.components != null) {
             transform(model.components.messages, name -> PREFIX + "messages/" + name, res);
@@ -161,7 +176,7 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
             }
             */
             // However, we made them Nodes on Aai20Components, so now we can cat document and components,
-            // retrieve tham and treat them as regular nodes we're going to transform.
+            // retrieve them and treat them as regular nodes we're going to transform.
             Aai20Components components = (Aai20Components) ((Aai20Document) document).components;
             transform(components.schemas, name -> PREFIX + "schemas/" + name, res);
 

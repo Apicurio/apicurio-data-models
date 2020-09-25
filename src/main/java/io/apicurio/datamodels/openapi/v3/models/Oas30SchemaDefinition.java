@@ -16,13 +16,14 @@
 
 package io.apicurio.datamodels.openapi.v3.models;
 
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class Oas30SchemaDefinition extends Oas30Schema implements IDefinition {
+public class Oas30SchemaDefinition extends Oas30Schema implements ISchemaDefinition {
 
     private String _name;
 
@@ -56,6 +57,14 @@ public class Oas30SchemaDefinition extends Oas30Schema implements IDefinition {
     @Override
     public void accept(IVisitor visitor) {
         visitor.visitSchemaDefinition(this);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.ISchemaDefinition#asSchema()
+     */
+    @Override
+    public Schema asSchema() {
+        return this;
     }
 
 

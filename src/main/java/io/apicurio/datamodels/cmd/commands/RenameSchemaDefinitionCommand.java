@@ -27,8 +27,8 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
@@ -143,7 +143,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitSchemaDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
          */
         @Override
-        public void visitSchemaDefinition(IDefinition node) {
+        public void visitSchemaDefinition(ISchemaDefinition node) {
             this.processSchema((Schema) node);
         }
         

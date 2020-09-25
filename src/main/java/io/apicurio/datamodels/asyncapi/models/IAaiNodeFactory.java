@@ -1,6 +1,7 @@
 package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
 
 /**
  * Interface defining a factory for creating AsyncAPI model nodes.
@@ -48,6 +49,6 @@ public interface IAaiNodeFactory {
     AaiChannelBindingsDefinition createChannelBindingsDefinition(Node parent, String key);
     AaiOperationTraitDefinition createOperationTraitDefinition(Node parent, String key);
     AaiMessageTraitDefinition createMessageTraitDefinition(Node parent, String key);
-    AaiSchema createSchemaDefinition(Node parent, String key);
+    ISchemaDefinition createSchemaDefinition(Node parent, String key);
     
 }

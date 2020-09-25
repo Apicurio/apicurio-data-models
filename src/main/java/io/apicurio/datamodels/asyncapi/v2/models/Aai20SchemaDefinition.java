@@ -17,13 +17,14 @@
 package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.ISchemaDefinition;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author laurent.broudoux@gmail.com
  */
-public class Aai20SchemaDefinition extends Aai20Schema implements IDefinition {
+public class Aai20SchemaDefinition extends Aai20Schema implements ISchemaDefinition {
     
     private String _name;
     
@@ -61,6 +62,14 @@ public class Aai20SchemaDefinition extends Aai20Schema implements IDefinition {
     @Override
     public void rename(String newName) {
         this._name = newName;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.core.models.common.ISchemaDefinition#asSchema()
+     */
+    @Override
+    public Schema asSchema() {
+        return this;
     }
 
     /**
