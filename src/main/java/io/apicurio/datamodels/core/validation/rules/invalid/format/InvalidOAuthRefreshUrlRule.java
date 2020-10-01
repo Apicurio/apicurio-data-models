@@ -29,13 +29,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Invalid OAuth Refresh URL Rule
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidOAuthRefreshUrlRule extends ValidationRule {
+public class InvalidOAuthRefreshUrlRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidOAuthRefreshUrlRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidOAuthRefreshUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     

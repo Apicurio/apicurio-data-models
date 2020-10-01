@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.util.ReferenceUtil;
-import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
@@ -32,7 +31,7 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * Base class for all Invalid Property Value rules.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidPropertyValueRule extends ValidationRule {
+public class OasInvalidPropertyValueRule extends InvalidPropertyValueRule {
 
     /**
      * Constructor.

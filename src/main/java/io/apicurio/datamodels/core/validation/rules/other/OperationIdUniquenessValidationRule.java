@@ -21,7 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Operation;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -40,25 +43,45 @@ public class OperationIdUniquenessValidationRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    private Map<String, List<Operation>> indexedOperations = new HashMap<>();
+    private Map<String, List<Node>> indexedOperations = new HashMap<>();
+    
+    private void processOperationId(Node node, String operationId) {
+        if (hasValue(operationId)) {
+            List<Node> dupes = this.indexedOperations.get(operationId);
+            if (hasValue(dupes)) {
+                this.reportIfInvalid(dupes.size() > 1, dupes.get(0), Constants.PROP_OPERATION_ID, map("operationId", operationId));
+                this.report(node, Constants.PROP_OPERATION_ID, map("operationId", operationId));
+                dupes.add(node);
+            } else {
+                dupes = new ArrayList<>();
+                dupes.add(node);
+                this.indexedOperations.put(operationId, dupes);
+            }
+        }
+    }
     
     /**
      * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
      */
     @Override
     public void visitOperation(Operation node) {
-        if (hasValue(node.operationId)) {
-            List<Operation> dupes = this.indexedOperations.get(node.operationId);
-            if (hasValue(dupes)) {
-                this.reportIfInvalid(dupes.size() > 1, dupes.get(0), Constants.PROP_OPERATION_ID, map("operationId", node.operationId));
-                this.report(node, Constants.PROP_OPERATION_ID, map("operationId", node.operationId));
-                dupes.add(node);
-            } else {
-                dupes = new ArrayList<>();
-                dupes.add(node);
-                this.indexedOperations.put(node.operationId, dupes);
-            }
-        }
+        this.processOperationId(node, node.operationId);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperationTrait(io.apicurio.datamodels.asyncapi.models.AaiOperationTrait)
+     */
+    @Override
+    public void visitOperationTrait(AaiOperationTrait node) {
+        this.processOperationId(node, node.operationId);
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperationTraitDefinition(io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition)
+     */
+    @Override
+    public void visitOperationTraitDefinition(AaiOperationTraitDefinition node) {
+        super.visitOperationTrait(node);
     }
 
 }

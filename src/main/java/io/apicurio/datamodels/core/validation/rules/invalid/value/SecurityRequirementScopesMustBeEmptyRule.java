@@ -19,11 +19,12 @@ package io.apicurio.datamodels.core.validation.rules.invalid.value;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 
@@ -31,26 +32,38 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
  * Implements the Security Requirement Scopes Must Be Empty rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasSecurityRequirementScopesMustBeEmptyRule extends OasInvalidPropertyValueRule {
+public class SecurityRequirementScopesMustBeEmptyRule extends OasInvalidPropertyValueRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasSecurityRequirementScopesMustBeEmptyRule(ValidationRuleMetaData ruleInfo) {
+    public SecurityRequirementScopesMustBeEmptyRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    private SecurityScheme findSecurityScheme(OasDocument document, String schemeName) {
-        if (document.is2xDocument()) {
-            Oas20Document doc20 = (Oas20Document) document;
-            if (hasValue(doc20.securityDefinitions)) {
-                return doc20.securityDefinitions.getSecurityScheme(schemeName);
+    private SecurityScheme findSecurityScheme(Document document, String schemeName) {
+        switch (document.getDocumentType()) {
+            case asyncapi2: {
+                Aai20Document doc20 = (Aai20Document) document;
+                if (hasValue(doc20.components)) {
+                    return doc20.components.getSecurityScheme(schemeName);
+                }
+                break;
             }
-        } else {
-            Oas30Document doc30 = (Oas30Document) document;
-            if (hasValue(doc30.components)) {
-                return doc30.components.getSecurityScheme(schemeName);
+            case openapi2: {
+                Oas20Document doc20 = (Oas20Document) document;
+                if (hasValue(doc20.securityDefinitions)) {
+                    return doc20.securityDefinitions.getSecurityScheme(schemeName);
+                }
+                break;
+            }
+            case openapi3: {
+                Oas30Document doc30 = (Oas30Document) document;
+                if (hasValue(doc30.components)) {
+                    return doc30.components.getSecurityScheme(schemeName);
+                }
+                break;
             }
         }
 
@@ -65,13 +78,13 @@ public class OasSecurityRequirementScopesMustBeEmptyRule extends OasInvalidPrope
         List<String> allowedTypes = new ArrayList<>();
         allowedTypes.add("oauth2");
         String options = "\"oauth2\"";
-        if (node.ownerDocument().getDocumentType() == DocumentType.openapi3) {
+        if (node.ownerDocument().getDocumentType() == DocumentType.openapi3 || node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
             allowedTypes.add("openIdConnect");
             options = "\"oauth2\" or \"openIdConnect\"";
         }
         List<String> snames = node.getSecurityRequirementNames();
         for (String sname : snames) {
-            SecurityScheme scheme = findSecurityScheme((OasDocument) node.ownerDocument(), sname);
+            SecurityScheme scheme = findSecurityScheme(node.ownerDocument(), sname);
             if (hasValue(scheme)) {
                 if (allowedTypes.indexOf(scheme.type) == -1) {
                     List<String> scopes = node.getScopes(sname);

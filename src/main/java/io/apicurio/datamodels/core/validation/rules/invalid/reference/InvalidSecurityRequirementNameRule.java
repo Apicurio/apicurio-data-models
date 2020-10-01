@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
@@ -28,13 +29,13 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
  * Implements the Invalid Security Requirement Name rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecurityRequirementNameRule extends ValidationRule {
+public class InvalidSecurityRequirementNameRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidSecurityRequirementNameRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidSecurityRequirementNameRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -54,7 +55,8 @@ public class OasInvalidSecurityRequirementNameRule extends ValidationRule {
             Oas30Document doc30 = (Oas30Document) doc;
             return hasValue(doc30.components) && isDefined(doc30.components.getSecurityScheme(securityReqName));
         } else if (dt == DocumentType.asyncapi2) {
-            // TODO implement this
+            Aai20Document doc20 = (Aai20Document) doc;
+            return hasValue(doc20.components) && isDefined(doc20.components.getSecurityScheme(securityReqName));
         }
         return false;
     }

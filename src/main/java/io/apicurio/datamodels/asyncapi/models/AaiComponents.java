@@ -200,5 +200,17 @@ public abstract class AaiComponents extends Components {
             messageBindings = new LinkedHashMap<>();
         messageBindings.put(key, value);        
     }
-    
+
+    public AaiSecurityScheme getSecurityScheme(String name) {
+        if(securitySchemes == null)
+            return null;
+        return this.securitySchemes.get(name);
+    }
+
+    public AaiSecurityScheme removeSecurityScheme(String name) {
+        if(securitySchemes == null)
+            return null;
+        return this.securitySchemes.remove(name);
+    }
+
 }

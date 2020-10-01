@@ -16,35 +16,29 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
-import java.util.List;
-
-import io.apicurio.datamodels.compat.NodeCompat;
-import io.apicurio.datamodels.core.models.common.SecurityRequirement;
+import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
+ * Base class for all Invalid Property Value rules.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecurityReqScopesRule extends OasInvalidPropertyValueRule {
+public class InvalidPropertyValueRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidSecurityReqScopesRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidPropertyValueRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
+     * Returns true if the given media type name is multipart/* or application/x-www-form-urlencoded
+     * @param typeName
      */
-    @Override
-    public void visitSecurityRequirement(SecurityRequirement node) {
-        List<String> snames = node.getSecurityRequirementNames();
-        snames.forEach( sname -> {
-            List<String> scopes = node.getScopes(sname);
-            this.reportIfInvalid(hasValue(scopes) && NodeCompat.isList(scopes), node, sname, map("name", sname));
-        });
+    protected boolean isValidMultipartType(String typeName) {
+        return equals(typeName, "application/x-www-form-urlencoded") || typeName.indexOf("multipart") == 0;
     }
 
 }
