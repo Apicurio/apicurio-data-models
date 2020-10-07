@@ -1,0 +1,6 @@
+[
+  {
+    "__type": "DeleteOperationTraitDefinitionCommand",
+    "_name": "toDelete"
+  }
+]

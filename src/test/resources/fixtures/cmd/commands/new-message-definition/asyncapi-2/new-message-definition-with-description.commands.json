@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "NewMessageDefinitionCommand",
+    "_newName": "commonMessage",
+    "_newDescription": "This message is holding common headers for Messages"
+  }
+]

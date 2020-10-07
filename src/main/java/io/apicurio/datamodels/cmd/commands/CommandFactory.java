@@ -257,6 +257,15 @@ public class CommandFactory {
             case "DeleteChannelCommand":
             case "DeleteChannelCommand_Aai20":
             { return new DeleteChannelCommand(); }
+            case "DeleteMessageDefinitionCommand":
+            case "DeleteMessageDefinitionCommand_Aai20":
+            { return new DeleteMessageDefinitionCommand(); }
+            case "DeleteMessageTraitDefinitionCommand":
+            case "DeleteMessageTraitDefinitionCommand_Aai20":
+            { return new DeleteMessageTraitDefinitionCommand(); }
+            case "DeleteOperationTraitDefinitionCommand":
+            case "DeleteOperationTraitDefinitionCommand_Aai20":
+            { return new DeleteOperationTraitDefinitionCommand(); }
 
             /** New Commands **/
             
@@ -311,6 +320,15 @@ public class CommandFactory {
             { return new NewSchemaDefinitionCommand_Aai20(); }
             case "NewSchemaPropertyCommand_Aai20":
             { return new NewSchemaPropertyCommand_Aai20(); }
+            case "NewMessageDefinitionCommand":
+            case "NewMessageDefinitionCommand_Aai20":
+            { return new NewMessageDefinitionCommand(); }
+            case "NewMessageTraitDefinitionCommand":
+            case "NewMessageTraitDefinitionCommand_Aai20":
+            { return new NewMessageTraitDefinitionCommand(); }
+            case "NewOperationTraitDefinitionCommand":
+            case "NewOperationTraitDefinitionCommand_Aai20":
+            { return new NewOperationTraitDefinitionCommand(); }
 
             /** Rename Commands **/
             
@@ -332,6 +350,15 @@ public class CommandFactory {
             { return new RenameResponseDefinitionCommand_20(); }
             case "RenameResponseDefinitionCommand_30":
             { return new RenameResponseDefinitionCommand_30(); }
+            case "RenameMessageDefinitionCommand":
+            case "RenameMessageDefinitionCommand_Aai20":
+            { return new RenameMessageDefinitionCommand(); }
+            case "RenameMessageTraitDefinitionCommand":
+            case "RenameMessageTraitDefinitionCommand_Aai20":
+            { return new RenameMessageTraitDefinitionCommand(); }
+            case "RenameOperationTraitDefinitionCommand":
+            case "RenameOperationTraitDefinitionCommand_Aai20":
+            { return new RenameOperationTraitDefinitionCommand(); }
             
             /** Replace Commands **/
 
@@ -676,6 +703,18 @@ public class CommandFactory {
         return new DeleteChannelCommand(channelName);
     }
 
+    public static final ICommand createDeleteMessageDefinitionCommand(String name) {
+        return new DeleteMessageDefinitionCommand(name);
+    }
+
+    public static final ICommand createDeleteMessageTraitDefinitionCommand(String name) {
+        return new DeleteMessageTraitDefinitionCommand(name);
+    }
+
+    public static final ICommand createDeleteOperationTraitDefinitionCommand(String name) {
+        return new DeleteOperationTraitDefinitionCommand(name);
+    }
+
     /** New Commands **/
     
     public static final ICommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
@@ -769,6 +808,18 @@ public class CommandFactory {
     public static final ICommand createNewSchemaDefinitionCommand_Aai20(String name, Object example, String descriptioon) {
         return new NewSchemaDefinitionCommand_Aai20(name, example, descriptioon);
     }
+
+    public static final ICommand createNewMessageDefinitionCommand(String name, String description) {
+        return new NewMessageDefinitionCommand(name, description);
+    }
+
+    public static final ICommand createNewMessageTraitDefinitionCommand(String name, String description) {
+        return new NewMessageTraitDefinitionCommand(name, description);
+    }
+
+    public static final ICommand createNewOperationTraitDefinitionCommand(String name, String description) {
+        return new NewOperationTraitDefinitionCommand(name, description);
+    }
     
     /** Rename Commands **/
     
@@ -816,6 +867,18 @@ public class CommandFactory {
 
     public static final ICommand createRenameTagDefinitionCommand(String oldTag, String newTag) {
         return new RenameTagDefinitionCommand(oldTag, newTag);
+    }
+
+    public static final ICommand createRenameMessageDefinitionCommand(String oldName, String newName) {
+        return new RenameMessageDefinitionCommand(oldName, newName);
+    }
+
+    public static final ICommand createRenameMessageTraitDefinitionCommand(String oldName, String newName) {
+        return new RenameMessageTraitDefinitionCommand(oldName, newName);
+    }
+
+    public static final ICommand createRenameOperationTraitDefinitionCommand(String oldName, String newName) {
+        return new RenameOperationTraitDefinitionCommand(oldName, newName);
     }
 
     /* ***  Replace Commands  *** */

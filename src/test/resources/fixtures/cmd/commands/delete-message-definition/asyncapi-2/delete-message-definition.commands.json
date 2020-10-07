@@ -1,0 +1,6 @@
+[
+  {
+    "__type": "DeleteMessageDefinitionCommand",
+    "_name": "toDelete"
+  }
+]
