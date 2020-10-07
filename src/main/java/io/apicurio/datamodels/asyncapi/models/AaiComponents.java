@@ -119,7 +119,10 @@ public abstract class AaiComponents extends Components {
      * @param name
      */
     public AaiSchema getSchemaDefinition(String name) {
-        return this.schemas.get(name);
+        if (this.schemas != null) {
+            return this.schemas.get(name);
+        }
+        return null;
     }
 
     /**
@@ -147,6 +150,20 @@ public abstract class AaiComponents extends Components {
         messages.put(key, value);
     }
 
+    public AaiMessage getMessage(String name) {
+        if (messages != null) {
+            return messages.get(name);
+        }
+        return null;
+    }
+
+    public AaiMessage removeMessage(String name) {
+        if (messages != null) {
+            return messages.remove(name);
+        }
+        return null;
+    }
+
     public void addSecurityScheme(String key, AaiSecurityScheme value) {
         if(securitySchemes == null)
             securitySchemes = new LinkedHashMap<>();
@@ -170,11 +187,39 @@ public abstract class AaiComponents extends Components {
             messageTraits = new LinkedHashMap<>();
         messageTraits.put(key, value);        
     }
+
+    public AaiMessageTraitDefinition getMessageTraitDefinition(String name) {
+        if (messageTraits != null) {
+            return messageTraits.get(name);
+        }
+        return null;
+    }
+
+    public AaiMessageTraitDefinition removeMessageTraitDefinition(String name) {
+        if (messageTraits != null) {
+            return messageTraits.remove(name);
+        }
+        return null;
+    }
     
     public void addOperationTraitDefinition(String key, AaiOperationTraitDefinition value) {
         if(operationTraits == null)
             operationTraits = new LinkedHashMap<>();
         operationTraits.put(key, value);        
+    }
+
+    public AaiOperationTraitDefinition getOperationTraitDefinition(String name) {
+        if (operationTraits != null) {
+            return operationTraits.get(name);
+        }
+        return null;
+    }
+
+    public AaiOperationTraitDefinition removeOperationTraitDefinition(String name) {
+        if (operationTraits != null) {
+            return operationTraits.remove(name);
+        }
+        return null;
     }
     
     public void addServerBindingDefinition(String key, AaiServerBindingsDefinition value) {
