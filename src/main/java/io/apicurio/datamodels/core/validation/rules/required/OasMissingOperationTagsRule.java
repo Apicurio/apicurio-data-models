@@ -40,6 +40,10 @@ public class OasMissingOperationTagsRule extends RequiredPropertyValidationRule 
      */
     @Override
     public void visitOperation(Operation node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         OasOperation op = (OasOperation) node;
         if (NodeCompat.isNullOrUndefined(op.tags) || op.tags.size() == 0) {
             this.report(node, Constants.PROP_TAGS, map());

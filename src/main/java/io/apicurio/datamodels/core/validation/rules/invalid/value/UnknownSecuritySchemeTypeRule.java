@@ -25,13 +25,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Unknown Security Scheme Type rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasUnknownSecuritySchemeTypeRule extends OasInvalidPropertyValueRule {
+public class UnknownSecuritySchemeTypeRule extends OasInvalidPropertyValueRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasUnknownSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
+    public UnknownSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -41,13 +41,16 @@ public class OasUnknownSecuritySchemeTypeRule extends OasInvalidPropertyValueRul
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         if (hasValue(node.type)) {
+            String[] types = null;
             if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
-                this.reportIfInvalid(isValidEnumItem(node.type, array("apiKey", "basic", "oauth2")), node, 
-                        Constants.PROP_TYPE, map("options", "basic, apiKey, oauth2"));
-            } else {
-                this.reportIfInvalid(isValidEnumItem(node.type, array("apiKey", "http", "oauth2", "openIdConnect")), node,
-                        Constants.PROP_TYPE, map("options", "http, apiKey, oauth2, openIdConnect"));
+                types = array("apiKey", "basic", "oauth2");
+            } else if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
+                types = array("apiKey", "http", "oauth2", "openIdConnect");
+            } else if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
+                types = array("userPassword", "apiKey", "X509", "symmetricEncryption", "asymmetricEncryption", "httpApiKey", "http", "oauth2", "openIdConnect");
             }
+            this.reportIfInvalid(isValidEnumItem(node.type, types), node, 
+                    Constants.PROP_TYPE, map("options", String.join(",", types)));
         }
     }
 

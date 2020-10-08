@@ -19,6 +19,7 @@ package io.apicurio.datamodels.core.validation.rules.required;
 import java.util.Map;
 
 import io.apicurio.datamodels.compat.NodeCompat;
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -64,6 +65,10 @@ public abstract class RequiredPropertyValidationRule extends ValidationRule {
         if (NodeCompat.equals(dependentPropertyActualValue, dependentPropertyExpectedValue)) {
             this.requireProperty(node, propertyName, messageParams);
         }
+    }
+    
+    protected boolean is$Ref(Node node) {
+        return hasValue(NodeCompat.getProperty(node, Constants.PROP_$REF));
     }
 
 }

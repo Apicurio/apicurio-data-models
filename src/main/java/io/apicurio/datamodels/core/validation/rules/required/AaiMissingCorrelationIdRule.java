@@ -30,7 +30,9 @@ public class AaiMissingCorrelationIdRule extends RequiredPropertyValidationRule 
     }
 
     public void visitCorrelationId(Aai20CorrelationId node) {
-        this.requireProperty(node, Constants.PROP_CORRELATION_ID, map());
+        if (!is$Ref(node)) {
+            this.requireProperty(node, Constants.PROP_CORRELATION_ID, map());
+        }
     }
 
 }

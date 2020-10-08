@@ -38,7 +38,7 @@ public class OasMissingBodyParameterSchemaRule extends RequiredPropertyValidatio
      */
     @Override
     public void visitParameter(Parameter node) {
-        if (hasValue(node.$ref)) {
+        if (is$Ref(node)) {
             return;
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2020 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.required;
+package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.asyncapi.models.AaiParameter;
 import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
+import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
+ * Implements the Invalid Parameter Location Rule
  * @author eric.wittmann@gmail.com
  */
-public class MissingHttpSecuritySchemeTypeRule extends RequiredPropertyValidationRule {
+public class AaiInvalidParameterLocationRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public MissingHttpSecuritySchemeTypeRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidParameterLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
-
+    
     /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitAaiParameter(io.apicurio.datamodels.asyncapi.models.AaiParameter)
      */
     @Override
-    public void visitSecurityScheme(SecurityScheme node) {
-        if (is$Ref(node)) {
-            return;
+    public void visitAaiParameter(AaiParameter node) {
+        if (hasValue(node.location)) {
+            this.reportIfInvalid(this.isValidAsyncApiExpression(node.location), node, Constants.PROP_LOCATION, map(node.getName()));
         }
-
-        this.requirePropertyWhen(node, Constants.PROP_SCHEME, Constants.PROP_TYPE, "http", map());
     }
 
 }

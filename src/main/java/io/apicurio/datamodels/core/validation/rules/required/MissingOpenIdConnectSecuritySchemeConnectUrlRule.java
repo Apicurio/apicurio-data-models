@@ -38,6 +38,10 @@ public class MissingOpenIdConnectSecuritySchemeConnectUrlRule extends RequiredPr
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requirePropertyWhen(node, Constants.PROP_OPEN_ID_CONNECT_URL, Constants.PROP_TYPE, "openIdConnect", map());
     }
 

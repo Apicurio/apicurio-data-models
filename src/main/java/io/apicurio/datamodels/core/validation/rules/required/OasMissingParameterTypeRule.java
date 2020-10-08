@@ -38,9 +38,10 @@ public class OasMissingParameterTypeRule extends RequiredPropertyValidationRule 
      */
     @Override
     public void visitParameter(Parameter node) {
-        if (hasValue(node.$ref)) {
+        if (is$Ref(node)) {
             return;
         }
+
         OasParameter param = (OasParameter) node;
         if (!equals(param.in, "body")) {
             this.requireProperty(node, "type", map("name", node.name));

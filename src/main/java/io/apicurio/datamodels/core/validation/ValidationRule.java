@@ -175,6 +175,17 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
     protected boolean isPathWellFormed(String pathTemplate) {
         return RegexCompat.matches(pathTemplate, PATH_MATCH_REGEX);
     }
+    
+    /**
+     * Checks if the given location is a valid AsyncAPI expression.  See the spec:
+     *     https://www.asyncapi.com/docs/specifications/2.0.0#runtimeExpression
+     * 
+     * @param location
+     */
+    protected boolean isValidAsyncApiExpression(String location) {
+        // TODO must be a valid AsyncAPI "expression"
+        return false;
+    }
 
     /**
      * Finds all occurences of path segment patterns in a path template.

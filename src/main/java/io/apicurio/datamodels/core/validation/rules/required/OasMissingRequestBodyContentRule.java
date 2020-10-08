@@ -39,6 +39,10 @@ public class OasMissingRequestBodyContentRule extends RequiredPropertyValidation
      */
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requireProperty(node, Constants.PROP_CONTENT, map());
     }
     

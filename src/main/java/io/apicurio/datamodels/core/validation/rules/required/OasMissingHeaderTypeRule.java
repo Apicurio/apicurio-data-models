@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.core.validation.rules.required;
 
-import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.openapi.models.OasHeader;
@@ -39,9 +38,10 @@ public class OasMissingHeaderTypeRule extends RequiredPropertyValidationRule {
      */
     @Override
     public void visitHeader(OasHeader node) {
-        if (hasValue(NodeCompat.getProperty(node, Constants.PROP_$REF))) {
+        if (is$Ref(node)) {
             return;
         }
+
         this.requireProperty(node, Constants.PROP_TYPE, map());
     }
 

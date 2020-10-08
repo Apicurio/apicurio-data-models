@@ -38,6 +38,10 @@ public class OasMissingHeaderArrayInformationRule extends RequiredPropertyValida
      */
     @Override
     public void visitHeader(OasHeader node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requirePropertyWhen(node, Constants.PROP_ITEMS, Constants.PROP_TYPE, "array", map());
     }
 

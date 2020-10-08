@@ -40,6 +40,10 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
      */
     @Override
     public void visitSchema(Schema node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requirePropertyWhen(node, Constants.PROP_ITEMS, Constants.PROP_TYPE, "array", map());
     }
 

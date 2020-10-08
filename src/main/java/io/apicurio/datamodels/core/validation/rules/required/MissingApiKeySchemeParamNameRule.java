@@ -39,6 +39,10 @@ public class MissingApiKeySchemeParamNameRule extends RequiredPropertyValidation
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
             this.requirePropertyWhen(node, Constants.PROP_NAME, Constants.PROP_TYPE, "httpApiKey", map());
         } else {

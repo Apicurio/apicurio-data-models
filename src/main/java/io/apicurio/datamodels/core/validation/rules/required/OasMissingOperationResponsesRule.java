@@ -38,6 +38,10 @@ public class OasMissingOperationResponsesRule extends RequiredPropertyValidation
      */
     @Override
     public void visitOperation(Operation node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requireProperty(node, Constants.PROP_RESPONSES, map());
     }
 

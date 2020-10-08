@@ -28,9 +28,12 @@ import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidApi
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidChannelItemDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidChannelPathRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidCorrelationIdDescriptionRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidCorrelationIdLocationRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidMessageContentTypeRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidMessageDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidMessageTraitDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidOperationTraitDescriptionRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidParameterLocationRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.AaiInvalidSchemaDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidApiDescriptionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.format.InvalidContactEmailRule;
@@ -105,6 +108,8 @@ import io.apicurio.datamodels.core.validation.rules.invalid.reference.OasInvalid
 import io.apicurio.datamodels.core.validation.rules.invalid.reference.OasInvalidResponseReferenceRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.type.OasInvalidSchemaArrayItemsRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.type.OasInvalidSchemaTypeValueRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.value.AaiOperationIdOnTraitRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.value.AaiChannelParamNotFoundRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.InvalidSecurityReqScopesRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasAllowReservedNotAllowedForParamRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasAllowReservedNotAllowedRule;
@@ -157,7 +162,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownPara
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownParamTypeRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownPathParamStyleRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownQueryParamStyleRule;
-import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownSecuritySchemeTypeRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.value.UnknownSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.SecurityRequirementScopesMustBeEmptyRule;
 import io.apicurio.datamodels.core.validation.rules.mutex.OasBodyAndFormDataMutualExclusivityRule;
 import io.apicurio.datamodels.core.validation.rules.mutex.OasExampleValueMutualExclusivityRule;
@@ -297,6 +302,10 @@ public class ValidationRuleSet {
         this.rules.add(md("CORRID-001", "Invalid Correlation ID Description", "Invalid Property Format", "Correlation ID", new DocumentType[] { aai20 }, true, "Correlation ID Description is an incorrect format.", AaiInvalidCorrelationIdDescriptionRule.class));
         this.rules.add(md("R-010", "Invalid API ID Format", "Invalid Property Format", "API", new DocumentType[] { aai20 }, true, "The API's \"id\" must be a valid unique identifier URI as defined by RFC 3986.  It is recommended to use a URN to globally and uniquely identify the application.", AaiInvalidApiIdRule.class));
         this.rules.add(md("CHAN-003", "Invalid Channel Path", "Invalid Property Format", "Channel Item", new DocumentType[] { aai20 }, true, "The channel path is not valid.  All channel paths must be in the form of a RFC 6570 URI template, but without query parameters or fragments.", AaiInvalidChannelPathRule.class));
+        this.rules.add(md("PAR-033", "Invalid Parameter Location", "Invalid Property Format", "Parameter", new DocumentType[] { aai20 }, true, "The location of parameter \"${'name'}\" must be a valid runtime expression, for example something like \"$message.payload#/user/id\".  For details see https://www.asyncapi.com/docs/specifications/2.0.0/#runtimeExpression", AaiInvalidParameterLocationRule.class));
+        this.rules.add(md("MSG-003", "Invalid Message Content Type", "Invalid Property Format", "Message", new DocumentType[] { aai20 }, true, "The message content-type must be a valid media type, for example \"application/json\" or \"text/plain\".", AaiInvalidMessageContentTypeRule.class));
+        this.rules.add(md("CORRID-003", "Invalid Correlation ID Location", "Invalid Property Format", "Correlation ID", new DocumentType[] { aai20 }, true, "The location of correlation id \"${'name'}\" must be a valid runtime expression, for example something like \"$message.payload#/user/id\".  For details see https://www.asyncapi.com/docs/specifications/2.0.0/#runtimeExpression", AaiInvalidCorrelationIdLocationRule.class));
+
         /** Invalid Property Name **/
         this.rules.add(md("PATH-006", "Empty Path Segment", "Invalid Property Name", "Path Item", new DocumentType[] { oai20, oai30 }, true, "Path template \"${'path'}\" contains one or more empty segment.", OasEmptyPathSegmentRule.class));
         this.rules.add(md("PATH-007", "Duplicate Path Segment", "Invalid Property Name", "Path Item", new DocumentType[] { oai20, oai30 }, true, "Path template \"${'path'}\" contains duplicate variable names (${'duplicates'}).", OasDuplicatePathSegmentRule.class));
@@ -341,7 +350,7 @@ public class ValidationRuleSet {
         this.rules.add(md("HEAD-006", "Unexpected Usage of Header 'collectionFormat'", "Invalid Property Value", "Header", new DocumentType[] { oai20 }, true, "Header Collection Format is only allowed for \"array\" type headers.", OasUnexpectedHeaderCollectionFormatRule.class));
         this.rules.add(md("HEAD-007", "Unknown Header Collection Format", "Invalid Property Value", "Header", new DocumentType[] { oai20 }, true, "Header Collection Format must be one of: csv, ssv, tsv, pipes", OasUnknownHeaderCollectionFormatRule.class));
         this.rules.add(md("XML-002", "Unexpected Usage of XML Wrapping", "Invalid Property Value", "XML", new DocumentType[] { oai20, oai30 }, true, "XML Wrapped elements can only be used for \"array\" properties.", OasUnexpectedXmlWrappingRule.class));
-        this.rules.add(md("SS-008", "Unknown Security Scheme Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "Security Scheme Type must be one of: ${'options'}", OasUnknownSecuritySchemeTypeRule.class));
+        this.rules.add(md("SS-008", "Unknown Security Scheme Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20, oai30, aai20 }, true, "Security Scheme Type must be one of: ${'options'}", UnknownSecuritySchemeTypeRule.class));
         this.rules.add(md("SS-009", "Unknown API Key Location", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20, oai30 }, true, "API Key Security Scheme must be located \"in\" one of: ${'options'}", OasUnknownApiKeyLocationRule.class));
         this.rules.add(md("SS-010", "Unknown OAuth Flow Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme \"flow\" must be one of: implicit, password, application, accessCode", OasUnknownOauthFlowTypeRule.class));
         this.rules.add(md("SREQ-002", "Security Requirement Scopes Must Be Empty", "Invalid Property Value", "Security Requirement", new DocumentType[] { oai20, oai30, aai20 }, true, "Security Requirement '${'sname'}' scopes must be an empty array because the referenced Security Definition not ${'options'}.", SecurityRequirementScopesMustBeEmptyRule.class));
@@ -369,7 +378,9 @@ public class ValidationRuleSet {
         this.rules.add(md("SS-016", "Invalid HTTP Security Scheme Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai30 }, true, "HTTP Security Scheme must be one of: [\"basic\", \"bearer\", \"digest\", \"hoba\", \"mutual\", \"negotiate\", \"oauth\", \"vapid\", \"scram-sha-1\", \"scram-sha-256\"] (Found: '${'scheme'}')", OasInvalidHttpSecuritySchemeTypeRule.class));
         this.rules.add(md("SS-017", "Unexpected Usage of 'bearerFormat'", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai30 }, true, "Security Scheme \"Bearer Format\" only allowed for HTTP Bearer auth scheme.", OasUnexpectedUsageOfBearerTokenRule.class));
         this.rules.add(md("SREQ-004", "Invalid Security Requirement Scopes", "Invalid Property Value", "Security Requirement", new DocumentType[] { oai30, aai20 }, true, "Value (scopes) for Security Requirement \"${'name'}\" must be an array.", InvalidSecurityReqScopesRule.class));
-        this.rules.add(md("SVAR-003", "Server Variable Not Found in Template", "Invalid Property Value", "XXX", new DocumentType[] { oai30 }, true, "Server Variable \"${'name'}\" is not found in the server url template.", OasServerVarNotFoundInTemplateRule.class));
+        this.rules.add(md("SVAR-003", "Server Variable Not Found in Template", "Invalid Property Value", "Server Variable", new DocumentType[] { oai30 }, true, "Server Variable \"${'name'}\" is not found in the server url template.", OasServerVarNotFoundInTemplateRule.class));
+        this.rules.add(md("OTRAIT-003", "Operation ID Found on Operation Trait", "Invalid Property Value", "Operation Trait", new DocumentType[] { aai20 }, false, "Operation IDs should not be present on an Operation Trait Definition because Operation IDs should be unique across all operations.", AaiOperationIdOnTraitRule.class));
+        this.rules.add(md("PAR-032", "Channel Parameter Not Found", "Invalid Property Value", "Parameter", new DocumentType[] { aai20 }, true, "Parameter \"${'name'}\" must correspond to one of the variables defined in the channel template.  For example, if the channel template is \"user/{userId}/signup\", then the name of the parameter can only be \"userId\".", AaiChannelParamNotFoundRule.class));
         /** Invalid Reference **/
         this.rules.add(md("PAR-018", "Invalid Parameter Reference", "Invalid Reference", "Parameter", new DocumentType[] { oai20, oai30, aai20 }, true, "Parameter Reference must refer to a valid Parameter Definition.", InvalidParameterReferenceRule.class));
         this.rules.add(md("PATH-001", "Invalid Path Item Reference", "Invalid Reference", "Path Item", new DocumentType[] { oai20, oai30 }, true, "Path Item Reference must refer to a valid Path Item Definition.", OasInvalidPathItemReferenceRule.class));

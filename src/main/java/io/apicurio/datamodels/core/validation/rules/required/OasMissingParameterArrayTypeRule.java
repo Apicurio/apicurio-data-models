@@ -39,9 +39,10 @@ public class OasMissingParameterArrayTypeRule extends RequiredPropertyValidation
      */
     @Override
     public void visitParameter(Parameter node) {
-        if (hasValue(node.$ref)) {
+        if (is$Ref(node)) {
             return;
         }
+
         Oas20Parameter param = (Oas20Parameter) node;
         if (!equals(param.in, "body") && equals(param.type, "array")) {
             this.requirePropertyWhen(node, Constants.PROP_ITEMS, Constants.PROP_TYPE, "array", map("name", node.name));

@@ -39,6 +39,10 @@ public class OasMissingOAuthSchemeTokenUrlRule extends RequiredPropertyValidatio
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         if (equals(node.type, "oauth2")) {
             Oas20SecurityScheme scheme = (Oas20SecurityScheme) node;
             if ((equals(scheme.flow, Constants.PROP_PASSWORD) || equals(scheme.flow, "application") || equals(scheme.flow, "accessCode")) && !isDefined(scheme.tokenUrl)) {

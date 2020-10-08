@@ -39,9 +39,10 @@ public class OasMissingParameterLocationRule extends RequiredPropertyValidationR
      */
     @Override
     public void visitParameter(Parameter node) {
-        if (hasValue(node.$ref)) {
+        if (is$Ref(node)) {
             return;
         }
+
         this.requireProperty(node, Constants.PROP_IN, map());
     }
     

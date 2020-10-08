@@ -38,6 +38,10 @@ public class MissingOperationSummaryRule extends RequiredPropertyValidationRule 
      */
     @Override
     public void visitOperation(Operation node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requireProperty(node, Constants.PROP_SUMMARY, map());
     }
 

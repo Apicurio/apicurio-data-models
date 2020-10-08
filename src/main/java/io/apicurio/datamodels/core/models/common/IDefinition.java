@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.models.common;
 
 import io.apicurio.datamodels.core.models.IVisitable;
+import io.apicurio.datamodels.core.models.Node;
 
 /**
  * Any node model that represents a re-usable definition.  Examples include
@@ -27,5 +28,9 @@ import io.apicurio.datamodels.core.models.IVisitable;
  * @author eric.wittmann@gmail.com
  */
 public interface IDefinition extends INamed, IVisitable {
+    
+    default Node asNode() {
+        return (Node) this;
+    }
 
 }

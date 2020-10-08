@@ -38,6 +38,10 @@ public class OasMissingOAuthSchemeScopesRule extends RequiredPropertyValidationR
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         if (equals(node.type, "oauth2")) {
             this.requirePropertyWhen(node, Constants.PROP_SCOPES, Constants.PROP_TYPE, "oauth2", map());
         }

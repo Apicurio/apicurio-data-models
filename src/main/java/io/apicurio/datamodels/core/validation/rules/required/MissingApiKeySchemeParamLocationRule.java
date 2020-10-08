@@ -40,6 +40,10 @@ public class MissingApiKeySchemeParamLocationRule extends RequiredPropertyValida
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
             if (equals(node.type, "apiKey") || equals(node.type, "httpApiKey")) {
                 this.requireProperty(node, Constants.PROP_IN, map());

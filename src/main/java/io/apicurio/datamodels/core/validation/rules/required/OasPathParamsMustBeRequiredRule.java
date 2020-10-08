@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.core.validation.rules.required;
 
-import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.Parameter;
@@ -41,10 +40,10 @@ public class OasPathParamsMustBeRequiredRule extends RequiredPropertyValidationR
      */
     @Override
     public void visitParameter(Parameter node) {
-        String $ref = (String) NodeCompat.getProperty(node, Constants.PROP_$REF);
-        if (hasValue($ref)) {
+        if (is$Ref(node)) {
             return;
         }
+
         OasParameter param = (OasParameter) node;
         if (equals(param.in, "path") && !equals(param.required, true)) {
             this.report(node, Constants.PROP_REQUIRED, map("name", node.name));

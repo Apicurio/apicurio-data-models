@@ -38,6 +38,10 @@ public class OasMissingOAuthSchemeFlowTypeRule extends RequiredPropertyValidatio
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
+        if (is$Ref(node)) {
+            return;
+        }
+
         this.requirePropertyWhen(node, Constants.PROP_FLOW, Constants.PROP_TYPE, "oauth2", map());
     }
 
