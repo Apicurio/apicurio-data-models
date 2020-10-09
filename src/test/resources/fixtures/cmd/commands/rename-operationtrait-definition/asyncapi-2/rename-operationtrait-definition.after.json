@@ -1,0 +1,39 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Message Trait example",
+    "version": "1.0.0"
+  },
+  "channels" : {
+    "test": {
+      "subscribe": {
+        "operationId": "subscribeOp",
+        "traits": [
+          {
+            "$ref": "#/components/operationTraits/commonProperties"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "testMessages": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    },
+    "operationTraits": {
+      "commonProperties": {
+        "description": "This is a common description"
+      }
+    }
+  }
+}

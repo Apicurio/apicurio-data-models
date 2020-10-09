@@ -262,5 +262,17 @@
     { "name": "[AsyncAPI 2] {New Schema Def} - New Schema Definition", "test": "commands/new-schema-definition/asyncapi-2/new-schema-definition" },
     { "name": "[AsyncAPI 2] {New Schema Property} - New Schema Property Both", "test": "commands/new-schema-property/asyncapi-2/new-schema-property-both" },
     { "name": "[AsyncAPI 2] {New Schema Property} - New Schema Property", "test": "commands/new-schema-property/asyncapi-2/new-schema-property" },
+    { "name": "[AsyncAPI 2] {New Message Def} - New Message Definition", "test": "commands/new-message-definition/asyncapi-2/new-message-definition" },
+    { "name": "[AsyncAPI 2] {New Message Def} - New Message Definition With Description", "test": "commands/new-message-definition/asyncapi-2/new-message-definition-with-description" },
+    { "name": "[AsyncAPI 2] {New Message Trait Def} - New Message Trait Definition", "test": "commands/new-messagetrait-definition/asyncapi-2/new-messagetrait-definition" },
+    { "name": "[AsyncAPI 2] {New Message Trait Def} - New Message Trait Definition With Description", "test": "commands/new-messagetrait-definition/asyncapi-2/new-messagetrait-definition-with-description" },
+    { "name": "[AsyncAPI 2] {New Operation Trait Def} - New Operation Trait Definition", "test": "commands/new-operationtrait-definition/asyncapi-2/new-operationtrait-definition" },
+    { "name": "[AsyncAPI 2] {New Operation Trait Def} - New Operation Trait Definition With Description", "test": "commands/new-operationtrait-definition/asyncapi-2/new-operationtrait-definition-with-description" },
+    { "name": "[AsyncAPI 2] {Rename Message Def} - Rename Message Definition", "test": "commands/rename-message-definition/asyncapi-2/rename-message-definition" },
+    { "name": "[AsyncAPI 2] {Rename Message Trait Def} - Rename Message Trait Definition", "test": "commands/rename-messagetrait-definition/asyncapi-2/rename-messagetrait-definition" },
+    { "name": "[AsyncAPI 2] {Rename Operation Trait Def} - Rename Operation Trait Definition", "test": "commands/rename-operationtrait-definition/asyncapi-2/rename-operationtrait-definition" },
+    { "name": "[AsyncAPI 2] {Delete Message Def} - Delete Message Definition", "test": "commands/delete-message-definition/asyncapi-2/delete-message-definition" },
+    { "name": "[AsyncAPI 2] {Delete Message Trait Def} - Delete Message Trait Definition", "test": "commands/delete-messagetrait-definition/asyncapi-2/delete-messagetrait-definition" },
+    { "name": "[AsyncAPI 2] {Delete Operation Trait Def} - Delete Operation Trait Definition", "test": "commands/delete-operationtrait-definition/asyncapi-2/delete-operationtrait-definition" },
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" }
 ]
