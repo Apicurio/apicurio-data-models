@@ -30,7 +30,7 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Base class for all Invalid Property Name rules.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasInvalidPropertyNameRule extends ValidationRule {
+public class InvalidPropertyNameRule extends ValidationRule {
 
     private static final String DEFINITION_NAME_MATCH_REGEX = "^[a-zA-Z0-9\\.\\-_]+$";
     
@@ -38,7 +38,7 @@ public abstract class OasInvalidPropertyNameRule extends ValidationRule {
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidPropertyNameRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidPropertyNameRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 

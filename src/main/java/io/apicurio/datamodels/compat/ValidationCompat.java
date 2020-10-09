@@ -36,7 +36,7 @@ public class ValidationCompat {
             return (ValidationRule) constructor.newInstance(ruleInfo);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
                 | IllegalArgumentException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to instantiate rule: " + ruleInfo.name, e);
         }
     }
     

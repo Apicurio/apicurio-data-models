@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2020 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.validation.rules.invalid.name;
+package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Security Scheme Name Rule.
+ * Implements the Invalid Schema Discriminator rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecuritySchemeNameRule extends InvalidPropertyNameRule {
+public class AaiInvalidSchemaDiscriminatorRule extends InvalidPropertyValueRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidSecuritySchemeNameRule(ValidationRuleMetaData ruleInfo) {
+    public AaiInvalidSchemaDiscriminatorRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
-     */
-    @Override
-    public void visitSecurityScheme(SecurityScheme node) {
-        this.reportIfInvalid(isValidDefinitionName(node.getName()), node, Constants.PROP_NAME, map());
-    }
-
 }

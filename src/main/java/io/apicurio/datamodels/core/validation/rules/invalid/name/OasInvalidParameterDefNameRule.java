@@ -25,7 +25,7 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Invalid Parameter Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidParameterDefNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidParameterDefNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

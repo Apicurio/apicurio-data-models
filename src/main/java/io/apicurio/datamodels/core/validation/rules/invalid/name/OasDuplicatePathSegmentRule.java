@@ -26,7 +26,7 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * Implements the Duplicate Path Segment Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasDuplicatePathSegmentRule extends OasInvalidPropertyNameRule {
+public class OasDuplicatePathSegmentRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

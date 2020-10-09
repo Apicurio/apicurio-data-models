@@ -44,13 +44,13 @@ public class UnknownSecuritySchemeTypeRule extends OasInvalidPropertyValueRule {
             String[] types = null;
             if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
                 types = array("apiKey", "basic", "oauth2");
-            } else if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
+            } else if (node.ownerDocument().getDocumentType() == DocumentType.openapi3) {
                 types = array("apiKey", "http", "oauth2", "openIdConnect");
             } else if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
                 types = array("userPassword", "apiKey", "X509", "symmetricEncryption", "asymmetricEncryption", "httpApiKey", "http", "oauth2", "openIdConnect");
             }
             this.reportIfInvalid(isValidEnumItem(node.type, types), node, 
-                    Constants.PROP_TYPE, map("options", String.join(",", types)));
+                    Constants.PROP_TYPE, map("options", String.join(", ", types)));
         }
     }
 

@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
  * Implements the Invalid Header Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidHeaderDefinitionNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidHeaderDefinitionNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

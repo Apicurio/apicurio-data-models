@@ -35,7 +35,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Operation;
  * Implements the Unmatched Example Type Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasUnmatchedExampleTypeRule extends OasInvalidPropertyNameRule {
+public class OasUnmatchedExampleTypeRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

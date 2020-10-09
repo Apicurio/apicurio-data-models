@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
  * Implements the Invalid Request Body Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidRequestBodyDefinitionNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidRequestBodyDefinitionNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

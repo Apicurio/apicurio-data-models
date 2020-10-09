@@ -25,13 +25,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Unknown API-Key Location rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasUnknownApiKeyLocationRule extends OasInvalidPropertyValueRule {
+public class UnknownApiKeySecuritySchemaLocationRule extends OasInvalidPropertyValueRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasUnknownApiKeyLocationRule(ValidationRuleMetaData ruleInfo) {
+    public UnknownApiKeySecuritySchemaLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
@@ -44,9 +44,12 @@ public class OasUnknownApiKeyLocationRule extends OasInvalidPropertyValueRule {
             if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
                 this.reportIfInvalid(isValidEnumItem(node.in, array("query", "header")), node, Constants.PROP_IN, 
                         map("options", "query, header"));
-            } else {
+            } else if (node.ownerDocument().getDocumentType() == DocumentType.openapi3) {
                 this.reportIfInvalid(isValidEnumItem(node.in, array("query", "header", "cookie")), node, Constants.PROP_IN, 
                         map("options", "query, header, cookie"));
+            } else if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
+                this.reportIfInvalid(isValidEnumItem(node.in, array("user", "password")), node, Constants.PROP_IN, 
+                        map("options", "user, password"));
             }
         }
     }

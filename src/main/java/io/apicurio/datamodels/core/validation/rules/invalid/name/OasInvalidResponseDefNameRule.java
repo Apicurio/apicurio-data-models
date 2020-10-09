@@ -25,7 +25,7 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Invalid Response Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidResponseDefNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidResponseDefNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

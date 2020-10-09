@@ -38,7 +38,7 @@
 [SREQ-002] |medium| {/paths[/sreq-002]/get/security[0]->null} :: Security Requirement 'api_key' scopes must be an empty array because the referenced Security Definition not "oauth2" or "openIdConnect".
 [SVAR-003] |medium| {/servers[0]/variables[missingProperty]->null} :: Server Variable "missingProperty" is not found in the server url template.
 [XML-002] |medium| {/components/schemas[xml-002]/properties[name]/xml->wrapped} :: XML Wrapped elements can only be used for "array" properties.
-[SS-008] |medium| {/components/securitySchemes[ss-008]->type} :: Security Scheme Type must be one of: http, apiKey, oauth2, openIdConnect
+[SS-008] |medium| {/components/securitySchemes[ss-008]->type} :: Security Scheme Type must be one of: apiKey, http, oauth2, openIdConnect
 [SS-009] |medium| {/components/securitySchemes[ss-009]->in} :: API Key Security Scheme must be located "in" one of: query, header, cookie
 [SS-017] |medium| {/components/securitySchemes[ss-017]->bearerFormat} :: Security Scheme "Bearer Format" only allowed for HTTP Bearer auth scheme.
 [SS-016] |medium| {/components/securitySchemes[ss-016]->scheme} :: HTTP Security Scheme must be one of: ["basic", "bearer", "digest", "hoba", "mutual", "negotiate", "oauth", "vapid", "scram-sha-1", "scram-sha-256"] (Found: 'leveraged')

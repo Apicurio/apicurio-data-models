@@ -17,7 +17,6 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
-import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;

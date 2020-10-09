@@ -25,7 +25,7 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Invalid Schema Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSchemaDefNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidSchemaDefNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

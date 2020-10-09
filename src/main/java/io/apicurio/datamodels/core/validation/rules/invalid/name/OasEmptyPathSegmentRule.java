@@ -25,7 +25,7 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * Implements the Empty Path Segment Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasEmptyPathSegmentRule extends OasInvalidPropertyNameRule {
+public class OasEmptyPathSegmentRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

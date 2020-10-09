@@ -23,7 +23,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  * Implements the Invalid Http Response Code Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidHttpResponseCodeRule extends OasInvalidPropertyNameRule {
+public class OasInvalidHttpResponseCodeRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

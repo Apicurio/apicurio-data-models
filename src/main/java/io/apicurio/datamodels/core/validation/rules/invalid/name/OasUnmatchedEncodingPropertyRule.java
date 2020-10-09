@@ -25,7 +25,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
  * Implements the Unmatched Encoding Property Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasUnmatchedEncodingPropertyRule extends OasInvalidPropertyNameRule {
+public class OasUnmatchedEncodingPropertyRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

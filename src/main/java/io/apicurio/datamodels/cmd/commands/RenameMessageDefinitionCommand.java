@@ -28,8 +28,6 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
-import io.apicurio.datamodels.openapi.models.OasDocument;
-import io.apicurio.datamodels.openapi.models.OasResponse;
 
 import java.util.ArrayList;
 import java.util.List;

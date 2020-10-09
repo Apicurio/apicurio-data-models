@@ -29,7 +29,7 @@ import io.apicurio.datamodels.openapi.models.OasPaths;
  * Implements the Identical Path Template Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasIdenticalPathTemplateRule extends OasInvalidPropertyNameRule {
+public class OasIdenticalPathTemplateRule extends InvalidPropertyNameRule {
 
     Map<String, List<PathSegment>> indexedPathTemplates = new HashMap<>();
 

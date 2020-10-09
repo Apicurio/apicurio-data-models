@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30ExampleDefinition;
  * Implements the Invalid Example Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidExampleDefinitionNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidExampleDefinitionNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

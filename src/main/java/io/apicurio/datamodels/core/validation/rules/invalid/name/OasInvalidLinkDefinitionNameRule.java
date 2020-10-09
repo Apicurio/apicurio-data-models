@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkDefinition;
  * Implements the Invalid Link Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidLinkDefinitionNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidLinkDefinitionNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

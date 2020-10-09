@@ -24,7 +24,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
  * Implements the Invalid Callback Definition Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidCallbackDefinitionNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidCallbackDefinitionNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

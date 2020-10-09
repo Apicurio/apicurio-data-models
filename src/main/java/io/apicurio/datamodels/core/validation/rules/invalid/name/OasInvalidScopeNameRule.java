@@ -26,7 +26,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20Scopes;
  * Implements the Invalid Scope Name Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidScopeNameRule extends OasInvalidPropertyNameRule {
+public class OasInvalidScopeNameRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.

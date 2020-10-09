@@ -23,7 +23,7 @@ import io.apicurio.datamodels.openapi.models.OasPathItem;
  * Implements the Invalid Path Segment Rule.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidPathSegmentRule extends OasInvalidPropertyNameRule {
+public class OasInvalidPathSegmentRule extends InvalidPropertyNameRule {
 
     /**
      * Constructor.
