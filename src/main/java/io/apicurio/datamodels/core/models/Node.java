@@ -247,4 +247,8 @@ public abstract class Node implements IVisitable {
     	this._parent = parent;
 	}
 
+    public Node asNode() {
+        return (Node) this;
+    }
+
 }

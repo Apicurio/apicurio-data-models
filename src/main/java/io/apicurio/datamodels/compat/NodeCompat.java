@@ -123,10 +123,15 @@ public class NodeCompat {
     /**
      * Joins a list of strings into a single string with a given delimiter.
      * @param delim
-     * @param values
+     * @param values must be a String[] or List<String>
      */
-    public static String join(String delim, List<String> values) {
-        return String.join(delim, values);
+    @SuppressWarnings("unchecked")
+    public static String join(String delim, Object values) {
+        if (values instanceof List) {
+            return String.join(delim, (List<String>) values);
+        } else {
+            return String.join(delim, (String[])values);
+        }
     }
 
     /**

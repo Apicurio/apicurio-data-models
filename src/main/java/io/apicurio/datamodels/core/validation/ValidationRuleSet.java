@@ -166,7 +166,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownPath
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasUnknownQueryParamStyleRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.SecurityRequirementScopesMustBeEmptyRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.UnknownApiKeySecuritySchemaLocationRule;
-import io.apicurio.datamodels.core.validation.rules.invalid.value.UnknownHttpApiKeySecuritySchemaLocationRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.value.AaiUnknownHttpApiKeySecuritySchemaLocationRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.UnknownSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.mutex.OasBodyAndFormDataMutualExclusivityRule;
 import io.apicurio.datamodels.core.validation.rules.mutex.OasExampleValueMutualExclusivityRule;
@@ -358,7 +358,7 @@ public class ValidationRuleSet {
         this.rules.add(md("XML-002", "Unexpected Usage of XML Wrapping", "Invalid Property Value", "XML", new DocumentType[] { oai20, oai30 }, true, "XML Wrapped elements can only be used for \"array\" properties.", OasUnexpectedXmlWrappingRule.class));
         this.rules.add(md("SS-008", "Unknown Security Scheme Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20, oai30, aai20 }, true, "Security Scheme Type must be one of: ${'options'}", UnknownSecuritySchemeTypeRule.class));
         this.rules.add(md("SS-009", "Unknown API Key Location", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20, oai30, aai20 }, true, "API Key Security Scheme must be located \"in\" one of: ${'options'}", UnknownApiKeySecuritySchemaLocationRule.class));
-        this.rules.add(md("SS-022", "Unknown HTTP API Key Location", "Invalid Property Value", "Security Scheme", new DocumentType[] { aai20 }, true, "HTTP API Key Security Scheme must be located \"in\" one of: ${'options'}", UnknownHttpApiKeySecuritySchemaLocationRule.class));
+        this.rules.add(md("SS-022", "Unknown HTTP API Key Location", "Invalid Property Value", "Security Scheme", new DocumentType[] { aai20 }, true, "HTTP API Key Security Scheme must be located \"in\" one of: ${'options'}", AaiUnknownHttpApiKeySecuritySchemaLocationRule.class));
         this.rules.add(md("SS-010", "Unknown OAuth Flow Type", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai20 }, true, "OAuth Security Scheme \"flow\" must be one of: implicit, password, application, accessCode", OasUnknownOauthFlowTypeRule.class));
         this.rules.add(md("SREQ-002", "Security Requirement Scopes Must Be Empty", "Invalid Property Value", "Security Requirement", new DocumentType[] { oai20, oai30, aai20 }, true, "Security Requirement '${'sname'}' scopes must be an empty array because the referenced Security Definition not ${'options'}.", SecurityRequirementScopesMustBeEmptyRule.class));
         this.rules.add(md("SREQ-003", "Unexpected Security Requirement Scope(s)", "Invalid Property Value", "Security Requirement", new DocumentType[] { oai20 }, true, "Security Requirement '${'sname'}' scopes must be an array of values from the possible scopes defined by the referenced Security Definition.", OasUnexpectedSecurityRequirementScopesRule.class));

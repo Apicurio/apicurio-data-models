@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -40,7 +41,7 @@ public class UnknownApiKeySecuritySchemaLocationRule extends OasInvalidPropertyV
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        if (hasValue(node.in)) {
+        if (hasValue(node.in) && NodeCompat.equals(node.type, "apiKey")) {
             if (node.ownerDocument().getDocumentType() == DocumentType.openapi2) {
                 this.reportIfInvalid(isValidEnumItem(node.in, array("query", "header")), node, Constants.PROP_IN, 
                         map("options", "query, header"));

@@ -29,8 +29,6 @@ import io.apicurio.datamodels.core.models.Node;
  */
 public interface IDefinition extends INamed, IVisitable {
     
-    default Node asNode() {
-        return (Node) this;
-    }
+    public Node asNode();
 
 }

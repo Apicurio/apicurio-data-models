@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -50,7 +51,7 @@ public class UnknownSecuritySchemeTypeRule extends OasInvalidPropertyValueRule {
                 types = array("userPassword", "apiKey", "X509", "symmetricEncryption", "asymmetricEncryption", "httpApiKey", "http", "oauth2", "openIdConnect");
             }
             this.reportIfInvalid(isValidEnumItem(node.type, types), node, 
-                    Constants.PROP_TYPE, map("options", String.join(", ", types)));
+                    Constants.PROP_TYPE, map("options", NodeCompat.join(", ", types)));
         }
     }
 

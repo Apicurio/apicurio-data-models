@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.value;
 
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
@@ -25,13 +26,13 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * Implements the Unknown HTTP API-Key Location rule.
  * @author eric.wittmann@gmail.com
  */
-public class UnknownHttpApiKeySecuritySchemaLocationRule extends OasInvalidPropertyValueRule {
+public class AaiUnknownHttpApiKeySecuritySchemaLocationRule extends OasInvalidPropertyValueRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public UnknownHttpApiKeySecuritySchemaLocationRule(ValidationRuleMetaData ruleInfo) {
+    public AaiUnknownHttpApiKeySecuritySchemaLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
     
@@ -40,7 +41,7 @@ public class UnknownHttpApiKeySecuritySchemaLocationRule extends OasInvalidPrope
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        if (hasValue(node.in)) {
+        if (hasValue(node.in) && NodeCompat.equals(node.type, "httpApiKey")) {
             if (node.ownerDocument().getDocumentType() == DocumentType.asyncapi2) {
                 this.reportIfInvalid(isValidEnumItem(node.in, array("query", "header", "cookie")), node, Constants.PROP_IN, 
                         map("options", "query, header, cookie"));
