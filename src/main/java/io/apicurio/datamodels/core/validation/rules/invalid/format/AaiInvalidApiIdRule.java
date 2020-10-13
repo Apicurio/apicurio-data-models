@@ -48,7 +48,8 @@ public class AaiInvalidApiIdRule extends ValidationRule {
     }
 
     private boolean isValidId(String id) {
-        // TODO must be valid according to RFC 3986 - implement this via regex
+        // TODO (RULE): must be valid according to RFC 3986 - implement this via regex
+        // From the AsyncAPI spec:  https://www.asyncapi.com/docs/specifications/2.0.0#A2SIdString
         return false;
     }
 

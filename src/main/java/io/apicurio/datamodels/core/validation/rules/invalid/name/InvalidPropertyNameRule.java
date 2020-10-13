@@ -47,7 +47,6 @@ public class InvalidPropertyNameRule extends ValidationRule {
      * @param name
      */
     protected boolean isValidDefinitionName(String name) {
-        // TODO should this be different for OAS 2.0 vs. 3.x??  Only 3.x dictates the format to some extent (I think).
         return RegexCompat.matches(name, DEFINITION_NAME_MATCH_REGEX);
     }
 

@@ -44,7 +44,10 @@ public class AaiInvalidChannelPathRule extends ValidationRule {
     }
 
     private boolean isValidPath(String channelPath) {
-        // TODO implement this - path must be in the form of a RFC 6570 URI template
+        // TODO (RULE): implement this - path must be in the form of a RFC 6570 URI template
+        // From the AsyncApi spec:
+        //    The field name MUST be in the form of a RFC 6570 URI template. Query parameters 
+        //    and fragments SHALL NOT be used, instead use bindings to define them.
         return false;
     }
 

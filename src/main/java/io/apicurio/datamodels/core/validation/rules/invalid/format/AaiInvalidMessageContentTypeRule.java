@@ -69,7 +69,10 @@ public class AaiInvalidMessageContentTypeRule extends ValidationRule {
     }
 
     private boolean isValidContentType(String location) {
-        // TODO must be a valid content-type
+        // TODO (RULE): must be a valid content-type
+        // From the AsyncAPI specification:
+        //    The content type to use when encoding/decoding a message's payload. The value 
+        //    MUST be a specific media type (e.g. application/json).
         return false;
     }
 
