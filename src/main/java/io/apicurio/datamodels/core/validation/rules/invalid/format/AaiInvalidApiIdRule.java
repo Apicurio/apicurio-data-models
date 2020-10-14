@@ -47,6 +47,7 @@ public class AaiInvalidApiIdRule extends ValidationRule {
         }
     }
 
+    //this could be helpful https://rgxdb.com/r/2MQXJD5
     private boolean isValidId(String id) {
         // TODO (RULE): must be valid according to RFC 3986 - implement this via regex
         // From the AsyncAPI spec:  https://www.asyncapi.com/docs/specifications/2.0.0#A2SIdString

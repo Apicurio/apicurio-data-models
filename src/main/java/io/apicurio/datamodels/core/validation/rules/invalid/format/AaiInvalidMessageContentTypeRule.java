@@ -16,10 +16,13 @@
 
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
+import java.util.Arrays;
+
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
+import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
@@ -40,7 +43,7 @@ public class AaiInvalidMessageContentTypeRule extends ValidationRule {
     
     private void visitMessageBase(AaiMessageBase node) {
         if (hasValue(node.contentType)) {
-            this.reportIfInvalid(this.isValidContentType(node.contentType), node, Constants.PROP_CONTENT_TYPE, map());
+            this.reportIfInvalid(this.isValidMimeType(NodeCompat.asList(node.contentType)), node, Constants.PROP_CONTENT_TYPE, map());
         }
     }
 
@@ -66,14 +69,6 @@ public class AaiInvalidMessageContentTypeRule extends ValidationRule {
     @Override
     public void visitMessageTraitDefinition(AaiMessageTraitDefinition node) {
         visitMessageBase(node);
-    }
-
-    private boolean isValidContentType(String location) {
-        // TODO (RULE): must be a valid content-type
-        // From the AsyncAPI specification:
-        //    The content type to use when encoding/decoding a message's payload. The value 
-        //    MUST be a specific media type (e.g. application/json).
-        return false;
     }
 
 }

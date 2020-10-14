@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.compat.RegexCompat;
 import io.apicurio.datamodels.core.validation.ValidationRule;
 import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 
@@ -25,6 +26,8 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  * @author eric.wittmann@gmail.com
  */
 public class AaiInvalidChannelPathRule extends ValidationRule {
+
+    private static final String RFC_6570_URI_TEMPLATE = "^([^\\x00-\\x20\\x7f\"'%<>\\\\^`{|}]|%[0-9A-Fa-f]{2}|{[+#./;?&=,!@|]?((\\w|%[0-9A-Fa-f]{2})(\\.?(\\w|%[0-9A-Fa-f]{2}))*(:[1-9]\\d{0,3}|\\*)?)(,((\\w|%[0-9A-Fa-f]{2})(\\.?(\\w|%[0-9A-Fa-f]{2}))*(:[1-9]\\d{0,3}|\\*)?))*})*$";
 
     /**
      * Constructor.
@@ -43,12 +46,9 @@ public class AaiInvalidChannelPathRule extends ValidationRule {
         this.reportIfInvalid(isValidPath(channelPath), node, null, map());
     }
 
+    //TODO verify regexp is correct , extracted from here https://stackoverflow.com/questions/29494608/regex-for-uri-templates-rfc-6570-wanted
     private boolean isValidPath(String channelPath) {
-        // TODO (RULE): implement this - path must be in the form of a RFC 6570 URI template
-        // From the AsyncApi spec:
-        //    The field name MUST be in the form of a RFC 6570 URI template. Query parameters 
-        //    and fragments SHALL NOT be used, instead use bindings to define them.
-        return false;
+        return RegexCompat.matches(channelPath, RFC_6570_URI_TEMPLATE);
     }
 
 }

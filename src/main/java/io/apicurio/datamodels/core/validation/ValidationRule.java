@@ -252,6 +252,7 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
      * @param propertyValue
      */
     protected boolean isValidUrlTemplate(String propertyValue) {
+        // isn't this the same as AaiInvalidChannelPathRule#RFC_6570_URI_TEMPLATE
         // TODO is there a regular expression we can use to validate a URL template??
         return true;
     }
