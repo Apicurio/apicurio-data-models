@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
+import io.apicurio.datamodels.compat.RegexCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.validation.ValidationRule;
@@ -28,6 +29,8 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
  */
 public class AaiInvalidApiIdRule extends ValidationRule {
 
+    public static final String RFC3986_VALID_URI = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
+    
     /**
      * Constructor.
      * @param ruleInfo
@@ -47,10 +50,8 @@ public class AaiInvalidApiIdRule extends ValidationRule {
         }
     }
 
-    private boolean isValidId(String id) {
-        // TODO (RULE): must be valid according to RFC 3986 - implement this via regex
-        // From the AsyncAPI spec:  https://www.asyncapi.com/docs/specifications/2.0.0#A2SIdString
-        return false;
+    static boolean isValidId(String id) {
+        return RegexCompat.matches(id, RFC3986_VALID_URI);
     }
 
 }
