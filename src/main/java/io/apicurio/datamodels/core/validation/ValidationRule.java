@@ -332,9 +332,9 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
      * Turns a list of args into a map suitable for use as template arguments.  The args must come 
      * in pairs of "key, value".  For example:
      * 
-     *   map("key1", "value1", "key2", Boolean.TRUE);
+     *   map("key1", "value1", "key2", "true");
      *   
-     * That would return a {@link Map} two mappings.
+     * That would return a {@link Map} with two mappings.
      */
     protected Map<String, String> map(String ...args) {
         if (args == null || args.length < 2) {
@@ -342,7 +342,7 @@ public abstract class ValidationRule extends CombinedAllNodeVisitor implements I
         }
         Map<String, String> rval = new HashMap<>();
         for (int idx = 0; idx < args.length; idx+=2) {
-            String key = args[idx].toString();
+            String key = args[idx];
             String value = args[idx+1];
             rval.put(key, value);
         }
