@@ -1,22 +1,27 @@
 name: Release Workflow
 on:
-  pull_request:
-    branches: [master]
-    types: [closed]
-    paths:
-      - '.github/project.yaml'
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Version being released'
+        required: true
+      snapshot-version:
+        description: 'Next snapshot version'
+        required: true
+      branch:
+        description: 'Branch to release from'
+        required: true
+        default: 'master'
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.repository_owner == 'Apicurio'
+    if: github.repository_owner == 'Apicurio'
     steps:
-      - name: Retrieve Project Metadata
-        uses: radcortez/project-metadata-action@master
-        id: metadata
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          metadata-file-path: '.github/project.yaml'
+      - name: Log Metadata
+        run: |
+          echo "Releasing Apicurio Data Models version ${{ github.event.inputs.release-version }} from branch ${{ github.event.inputs.branch }}"
+          echo "Next Snapshot version will be ${{ github.event.inputs.snapshot-version }}"
       - name: Set up Node.js v12
         uses: actions/setup-node@v1
         with:
@@ -45,8 +50,8 @@ jobs:
           git config --global user.email "apicurio.ci@gmail.com"
           git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git fetch
-          git checkout master
-          git branch --set-upstream-to=origin/master
+          git checkout ${{ github.event.inputs.branch}}
+          git branch --set-upstream-to=origin/${{ github.event.inputs.branch}}
           git pull
           echo "#### Listing files after clone ####"
           find .
@@ -62,14 +67,14 @@ jobs:
           git checkout master
           git branch --set-upstream-to=origin/master
           git pull
-      - name: Update Release Version ${{steps.metadata.outputs.release-version}}
-        run: mvn versions:set -DnewVersion=${{steps.metadata.outputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+      - name: Update Release Version ${{ github.event.inputs.release-version}}
+        run: mvn versions:set -DnewVersion=${{ github.event.inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
       - name: Verify Build
         run: mvn clean install -Ptranspilation
       - name: Commit Release Version Change
         run: |
           git add .
-          git commit -m "Automated version update: ${{steps.metadata.outputs.release-version}}"
+          git commit -m "Automated version update: ${{ github.event.inputs.release-version}}"
           git push
       - name: Remove prefix '.Final' from package.json
         run: |
@@ -86,8 +91,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{steps.metadata.outputs.release-version}}       
-          release_name: ${{steps.metadata.outputs.release-version}}
+          tag_name: ${{ github.event.inputs.release-version}}       
+          release_name: ${{ github.event.inputs.release-version}}
       - name: Generate Release Notes
         run: gren release --token=${{ secrets.GITHUB_TOKEN }} --override --prefix=v             
       - name: Publish to Maven Central
@@ -101,15 +106,15 @@ jobs:
           maven_profiles: release   
       - name: Publish to NPM
         run: npm publish ./target/ts/dist/
-      - name: Update Snapshot version ${{steps.metadata.outputs.snapshot-version}}
-        run: mvn versions:set -DnewVersion=${{steps.metadata.outputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+      - name: Update Snapshot version ${{ github.event.inputs.snapshot-version}}
+        run: mvn versions:set -DnewVersion=${{ github.event.inputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
       - name: Commit Snapshot Version Change
         run: |
           git add .
           git restore --staged .npmrc    # can't commit, contains NPM token
-          git commit -m"Automated version update: ${{steps.metadata.outputs.snapshot-version}}"
+          git commit -m"Automated version update: ${{ github.event.inputs.snapshot-version}}"
           git push
-      - name: Updating Project Website for Release ${{steps.metadata.outputs.release-version}}
+      - name: Updating Project Website for Release ${{ github.event.inputs.release-version}}
         run: |
           cd website
           echo "********** Downloading Latest Release JSON File **********"
@@ -128,5 +133,5 @@ jobs:
           cd website
           git add .
           git add -f _data/datamodels/releases/$FILENAME.json    #ignored due to .gitignore config
-          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{steps.metadata.outputs.release-version}}"
+          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ github.event.inputs.release-version}}"
           git push
