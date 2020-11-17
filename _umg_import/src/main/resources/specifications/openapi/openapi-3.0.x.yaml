@@ -1,0 +1,80 @@
+specification: OpenAPI
+version: 3.0.x
+versions:
+  - 3.0.0
+  - 3.0.1
+  - 3.0.2
+  - 3.0.3
+name: OpenAPI 3.0.x
+prefix: Oai30x
+url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
+entities:
+  - name: Document
+    root: true
+    properties:
+      openapi:
+        type: string
+      info:
+        type: Info
+      servers:
+        type: '[Server]'
+      paths:
+        type: Paths
+      components:
+        type: Components
+      security:
+        type: '[SecurityRequirement]'
+      tags:
+        type: '[Tag]'
+      externalDocs:
+        type: ExternalDocumentation
+  - name: Info
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      termsOfService:
+        type: string
+      contact:
+        type: Contact
+      license:
+        type: License
+      version:
+        type: string
+  - name: Contact
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+      email:
+        type: string
+  - name: License
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+  - name: Server
+    properties: {}
+  - name: Paths
+    properties: {}
+  - name: Components
+    properties: {}
+  - name: SecurityRequirement
+    properties: {}
+  - name: Tag
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      externalDocs:
+        type: ExternalDocumentation
+  - name: ExternalDocumentation
+    properties:
+      description:
+        type: string
+      url:
+        type: string

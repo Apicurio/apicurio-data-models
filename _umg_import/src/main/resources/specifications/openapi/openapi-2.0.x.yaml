@@ -1,0 +1,87 @@
+specification: OpenAPI
+version: 2.0.x
+versions:
+  - 2.0.0
+name: OpenAPI 2.0.x
+prefix: Oai20x
+url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+entities:
+  - name: Document
+    root: true
+    properties:
+      swagger:
+        type: string
+      info:
+        type: Info
+      host:
+        type: string
+      basePath:
+        type: string
+      schemes:
+        type: '[string]'
+      consumes:
+        type: '[string]'
+      produces:
+        type: '[string]'
+      paths:
+        type: Paths
+      definitions:
+        type: Definitions
+#      parameters:
+#        type: ParameterDefinitions
+#      responses:
+#        type: ResponseDefinitions
+#      securityDefinitions:
+#        type: SecurityDefinitions
+#      security:
+#        type: [SecurityRequirement]
+      tags:
+        type: '[Tag]'
+      externalDocs:
+        type: ExternalDocumentation
+  - name: Info
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      termsOfService:
+        type: string
+      contact:
+        type: Contact
+      license:
+        type: License
+      version:
+        type: string
+  - name: Contact
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+      email:
+        type: string
+  - name: License
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+  - name: Paths
+    properties: {}
+  - name: Definitions
+    properties: {}
+  - name: Tag
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      externalDocs:
+        type: ExternalDocumentation
+  - name: ExternalDocumentation
+    properties:
+      description:
+        type: string
+      url:
+        type: string

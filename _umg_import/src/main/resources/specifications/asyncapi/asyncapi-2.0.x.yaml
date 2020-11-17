@@ -1,0 +1,75 @@
+specification: AsyncAPI
+version: 2.0.x
+versions:
+  - 2.0.0
+name: AsyncAPI 2.0.x
+prefix: Aai20x
+url: https://www.asyncapi.com/docs/specifications/2.0.0
+entities:
+  - name: Document
+    root: true
+    properties:
+      asyncapi:
+        type: string
+      id:
+        type: string
+      info:
+        type: Info
+      servers:
+        type: '[Server]'
+      channels:
+        type: Channels
+      components:
+        type: Components
+      tags:
+        type: '[Tag]'
+      externalDocs:
+        type: ExternalDocumentation
+  - name: Info
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      termsOfService:
+        type: string
+      contact:
+        type: Contact
+      license:
+        type: License
+      version:
+        type: string
+  - name: Contact
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+      email:
+        type: string
+  - name: License
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+  - name: Server
+    properties: {}
+  - name: Channels
+    properties: {}
+  - name: Components
+    properties: {}
+  - name: Tag
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      externalDocs:
+        type: ExternalDocumentation
+  - name: ExternalDocumentation
+    properties:
+      description:
+        type: string
+      url:
+        type: string
