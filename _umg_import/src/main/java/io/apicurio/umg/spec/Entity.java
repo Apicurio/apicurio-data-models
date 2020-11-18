@@ -25,6 +25,8 @@ public class Entity {
     
     private String name;
     private boolean root;
+    private boolean extensible;
+    private boolean referenceable;
     private Map<String, EntityProperty> properties;
     
     /**
@@ -73,6 +75,34 @@ public class Entity {
      */
     public void setProperties(Map<String, EntityProperty> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * @return the referenceable
+     */
+    public boolean isReferenceable() {
+        return referenceable;
+    }
+
+    /**
+     * @param referenceable the referenceable to set
+     */
+    public void setReferenceable(boolean referenceable) {
+        this.referenceable = referenceable;
+    }
+
+    /**
+     * @return the extensible
+     */
+    public boolean isExtensible() {
+        return extensible;
+    }
+
+    /**
+     * @param extensible the extensible to set
+     */
+    public void setExtensible(boolean extensible) {
+        this.extensible = extensible;
     }
 
 }

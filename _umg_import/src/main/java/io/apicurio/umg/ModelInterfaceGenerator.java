@@ -111,8 +111,13 @@ public class ModelInterfaceGenerator {
      * @param property
      * @param entityInterface
      */
-    private void addPropertyToInterface(String propertyName, EntityProperty property,
+    private void addPropertyToInterface(String propertyName, EntityProperty property, 
             JavaInterfaceSource entityInterface) {
+        if ("*".equals(propertyName)) {
+            // TODO handle this special case.
+            return;
+        }
+        
         Logger.info("    Adding property '%s' to interface %s", propertyName, entityInterface.getQualifiedName());
         String getterName = propertyGetter(propertyName, property);
         String setterName = propertySetter(propertyName, property);

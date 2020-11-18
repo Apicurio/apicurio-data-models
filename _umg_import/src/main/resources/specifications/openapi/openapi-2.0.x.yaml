@@ -8,6 +8,7 @@ url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 entities:
   - name: Document
     root: true
+    extensible: true
     properties:
       swagger:
         type: string
@@ -40,6 +41,7 @@ entities:
       externalDocs:
         type: ExternalDocumentation
   - name: Info
+    extensible: true
     properties:
       title:
         type: string
@@ -54,6 +56,7 @@ entities:
       version:
         type: string
   - name: Contact
+    extensible: true
     properties:
       name:
         type: string
@@ -62,13 +65,151 @@ entities:
       email:
         type: string
   - name: License
+    extensible: true
     properties:
       name:
         type: string
       url:
         type: string
   - name: Paths
-    properties: {}
+    extensible: true
+    properties:
+      '*':
+        type: PathItem
+  - name: PathItem
+    referenceable: true
+    extensible: true
+    properties:
+      get:
+        type: Operation
+      put:
+        type: Operation
+      post:
+        type: Operation
+      delete:
+        type: Operation
+      options:
+        type: Operation
+      head:
+        type: Operation
+      patch:
+        type: Operation
+      parameters:
+        type: '[Parameter]'
+  - name: Operation
+    extensible: true
+    properties:
+      tags:
+        type: '[string]'
+      summary:
+        type: string
+      description:
+        type: string
+      externalDocs:
+        type: ExternalDocumentation
+      operationId:
+        type: string
+      consumes:
+        type: '[string]'
+      produces:
+        type: '[string]'
+      parameters:
+        type: '[Parameter]'
+      responses:
+        type: Responses
+      schemes:
+        type: '[string]'
+      deprecated:
+        type: boolean
+      security:
+        type: '[SecurityRequirement]'
+  - name: Parameter
+    referenceable: true
+    extensible: true
+    properties:
+      name:
+        type: string
+      in:
+        type: string
+      description:
+        type: string
+      required:
+        type: boolean
+      schema:
+        type: Schema
+      type:
+        type: string
+      format:
+        type: string
+      allowEmptyValue:
+        type: boolean
+      items:
+        type: Items
+      collectionFormat:
+        type: string
+      default:
+        type: Object
+      maximum:
+        type: number
+      exclusiveMaximum:
+        type: boolean
+      minimum:
+        type: number
+      exclusiveMinimum:
+        type: boolean
+      maxLength:
+        type: integer
+      minLength:
+        type: integer
+      pattern:
+        type: string
+      maxItems:
+        type: integer
+      minItems:
+        type: integer
+      uniqueItems:
+        type: boolean
+      enum:
+        type: '[string]'
+      multipleOf:
+        type: number
+  - name: Items
+    extensible: true
+    properties:
+      type:
+        type: string
+      format:
+        type: string
+      items:
+        type: Items
+      collectionFormat:
+        type: string
+      default:
+        type: Object
+      maximum:
+        type: number
+      exclusiveMaximum:
+        type: boolean
+      minimum:
+        type: number
+      exclusiveMinimum:
+        type: boolean
+      maxLength:
+        type: integer
+      minLength:
+        type: integer
+      pattern:
+        type: string
+      maxItems:
+        type: integer
+      minItems:
+        type: integer
+      uniqueItems:
+        type: boolean
+      enum:
+        type: '[string]'
+      multipleOf:
+        type: number
   - name: Definitions
     properties: {}
   - name: Tag
