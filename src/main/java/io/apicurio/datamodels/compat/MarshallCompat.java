@@ -303,7 +303,7 @@ public class MarshallCompat {
         @Override
         public void serialize(List<ICommand> value, JsonGenerator gen, SerializerProvider serializers)
                 throws IOException {
-            gen.writeStartArray(value.size());
+            gen.writeStartArray(value, value.size());
             try {
                 for (ICommand command : value) {
                     Object c = MarshallCompat.marshallCommand(command);

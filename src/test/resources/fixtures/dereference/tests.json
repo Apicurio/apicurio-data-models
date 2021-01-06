@@ -83,6 +83,11 @@
         "name" : "[AsyncAPI 2] Kitchen Sink",
         "input" : "aai2/kitchen-sink.input.json",
         "expected" : "aai2/kitchen-sink.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Domino API (Issue 1366)",
+        "input" : "oai3/domino-issue-1366.json",
+        "expected" : "oai3/domino-issue-1366.expected.json"
     }
     
 ]

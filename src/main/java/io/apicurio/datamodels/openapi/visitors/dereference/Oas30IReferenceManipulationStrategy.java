@@ -1,6 +1,7 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
@@ -122,8 +123,9 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
 
     @Override
     public Map<String, io.apicurio.datamodels.core.models.Node> getExistingLocalComponents(Document document) {
-        if (!(document instanceof Oas30Document))
+        if (document.getDocumentType() != DocumentType.openapi3) {
             throw new IllegalArgumentException("Oas30Document expected.");
+        }
         Oas30Document model = (Oas30Document) document;
         // We could use a local resolver here theoretically, but the reverse approach should be easier and faster
         Map<String, io.apicurio.datamodels.core.models.Node> res = new LinkedHashMap<>();

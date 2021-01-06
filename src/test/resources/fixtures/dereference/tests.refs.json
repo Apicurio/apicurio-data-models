@@ -337,5 +337,30 @@
 				"Trailer": "\\r\\n"
 			}
 		}
-	}
+	},
+    "apicurio:39013#/components/schemas/Alert": {
+        "type": "object",
+        "properties": {
+            "foo": {
+                "type": "string"
+            },
+            "bar": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+            }
+        },
+        "required": [
+            "foo",
+            "bar"
+        ]
+    },
+    "apicurio:39013#/components/schemas/CalendarEvent": {
+        "type": "object",
+        "properties": {
+            "flerg": {
+                "type": "string"
+            }
+        }
+    }
 }
