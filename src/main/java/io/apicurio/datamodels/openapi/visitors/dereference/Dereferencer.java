@@ -111,21 +111,20 @@ public class Dereferencer {
 
                 // Reference to be resolved
                 Reference originalRef = new Reference(node.getReference());
-                Reference resolvedRef = originalRef;
 
                 // Attempt to resolve
-                if(item.parentRef != null && resolvedRef.isRelative()) {
-                    resolvedRef = resolvedRef.withAbsoluteFrom(new Reference(item.parentRef));
+                if(item.parentRef != null && originalRef.isRelative()) {
+                    originalRef = originalRef.withAbsoluteFrom(new Reference(item.parentRef));
                 }
 
                 // if we've already seen the resolved reference, just point to the existing one
                 // to avoid cycles
-                if (resolvedToLocalMap.containsKey(resolvedRef.getRef())) {
-                    node.setReference(resolvedToLocalMap.get(resolvedRef.getRef()));
+                if (resolvedToLocalMap.containsKey(originalRef.getRef())) {
+                    node.setReference(resolvedToLocalMap.get(originalRef.getRef()));
                     continue;
                 }
 
-                Node resolved = resolver.resolveRef(resolvedRef.getRef(), (Node) node);
+                Node resolved = resolver.resolveRef(originalRef.getRef(), (Node) node);
 
                 // if null keep the reference in an 'unresolvable' set to decide later
                 if (resolved == null) {
@@ -157,7 +156,7 @@ public class Dereferencer {
                         // add resolved node to processing queue
                         processQueue.add(new Context(originalRef.getRef(), localRef.getNode()));
                         // remember, to prevent cycles
-                        resolvedToLocalMap.put(resolvedRef.getRef(), localRef.getRef());
+                        resolvedToLocalMap.put(originalRef.getRef(), localRef.getRef());
                     }
                 }
             }
