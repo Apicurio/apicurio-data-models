@@ -362,5 +362,24 @@
                 "type": "string"
             }
         }
-    }
+    },
+	"apicurio:41205#/components/schemas/CalendarEvent": {
+		"type": "object",
+		"allOf": [
+			{
+				"$ref": "#/components/schemas/JSEvent"
+			}
+		]
+	},
+	"apicurio:41205#/components/schemas/JSCalendar": {
+		"type": "object"
+	},
+	"apicurio:41205#/components/schemas/JSEvent": {
+		"type": "object",
+		"allOf": [
+			{
+				"$ref": "#/components/schemas/JSCalendar"
+			}
+		]
+	}
 }
