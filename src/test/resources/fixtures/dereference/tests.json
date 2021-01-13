@@ -88,6 +88,10 @@
         "name" : "[OpenAPI 3] Domino API (Issue 1366)",
         "input" : "oai3/domino-issue-1366.json",
         "expected" : "oai3/domino-issue-1366.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] 3-level Dereference (Issue 1366)",
+        "input" : "oai3/3-level-dereference.input.json",
+        "expected" : "oai3/3-level-dereference.expected.json"
     }
-    
 ]
