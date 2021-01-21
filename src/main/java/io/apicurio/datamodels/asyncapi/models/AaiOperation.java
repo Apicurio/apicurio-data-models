@@ -56,7 +56,7 @@ public abstract class AaiOperation extends AaiOperationBase {
 
     /**
      * Adds a tag.
-     * @param tag
+     * @param trait
      */
     public void addTrait(AaiOperationTrait trait) {
         if(traits == null)

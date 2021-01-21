@@ -14,6 +14,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * Contains shared fields in {@link AaiMessage} and {@link AaiMessageTrait}
  *
  * @author Jakub Senko <jsenko@redhat.com>
+ * @author Laurent Broudoux <laurent.broudoux@gmail.com>
  */
 public abstract class AaiMessageBase extends ExtensibleNode implements IReferenceNode, INamed {
 
@@ -37,7 +38,7 @@ public abstract class AaiMessageBase extends ExtensibleNode implements IReferenc
     public AaiMessageBindings bindings;
 
     /**
-     * Represents `Map[string, any]` type.
+     * Represents `[Map[string, any]]` type.
      * <p>
      * Objects of `any` type are deserialized as follows:
      * In TypeScript, this field contains the raw JS object, in case of Java
@@ -45,7 +46,7 @@ public abstract class AaiMessageBase extends ExtensibleNode implements IReferenc
      *
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#schemaObject">AsyncAPI 2.0.0 spec</a>
      */
-    public Map<String, Object> examples;
+    public List<Map<String, Object>> examples;
     
     /**
      * Constructor.

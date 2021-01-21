@@ -41,7 +41,7 @@ public interface IReferenceManipulationStrategy {
      * Get a collection of local components/definitions, mapped by their local reference string.
      *
      * @param model
-     * @return
+     * @return A collection of local components/definitions
      */
     Map<String, Node> getExistingLocalComponents(Document model);
 

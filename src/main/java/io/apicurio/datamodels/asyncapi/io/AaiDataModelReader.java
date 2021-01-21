@@ -17,7 +17,9 @@
 package io.apicurio.datamodels.asyncapi.io;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindingsDefinition;
@@ -320,6 +322,14 @@ public abstract class AaiDataModelReader extends DataModelReader {
             AaiMessageBindings bindingsModel = nodeFactory.createMessageBindings(node);
             this.readMessageBindings(bindings, bindingsModel);
             node.bindings = bindingsModel;
+        }
+
+        // examples
+        List<Object> examples = JsonCompat.consumePropertyArray(json, Constants.PROP_EXAMPLES);
+        if (examples != null) {
+            List<Map<String, Object>> examplesList = new ArrayList<>();
+            this.readMessageExamples(examples, examplesList);
+            node.examples = examplesList;
         }
 
         this.readExtensions(json, node);
@@ -703,6 +713,22 @@ public abstract class AaiDataModelReader extends DataModelReader {
         node.redis = JsonCompat.consumeProperty(json, Constants.PROP_REDIS);
         
         this.readExtraProperties(json, node);
+    }
+
+    /**
+     * Reads a message examples map.
+     * @param examples
+     * @param examplesList
+     */
+    public void readMessageExamples(List<Object> examples, List<Map<String, Object>> examplesList) {
+        for (Object exampleJson : examples) {
+            Map<String, Object> example = new HashMap<>();
+            for (String key : JsonCompat.keys(exampleJson)) {
+                Object value = JsonCompat.getProperty(exampleJson, key);
+                example.put(key, value);
+            }
+            examplesList.add(example);
+        }
     }
     
     /**

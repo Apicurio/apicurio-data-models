@@ -1,0 +1,5 @@
+[{
+  "__type": "DeleteOperationCommand_Aai20",
+  "_property": "subscribe",
+  "_parentPath": "/channels[myChannel]"
+}]

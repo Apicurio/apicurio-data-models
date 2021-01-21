@@ -18,6 +18,8 @@ package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
@@ -87,6 +89,8 @@ public class CommandFactory {
             { return new AddExampleCommand_30(); }
             case "AddParameterExampleCommand_30":
             { return new AddParameterExampleCommand_30(); }
+            case "AddMessageExampleCommand_Aai20":
+            { return new AddMessageExampleCommand_Aai20(); }
             case "AddPathItemCommand":
             case "AddPathItemCommand_20":
             case "AddPathItemCommand_30":
@@ -159,9 +163,13 @@ public class CommandFactory {
             { return new ChangeSchemaTypeCommand(); }
             case "ChangeSchemaInheritanceCommand":
             { return new ChangeSchemaInheritanceCommand(); }
-            
+            case "ChangePayloadRefCommand_Aai20":
+            { return new ChangePayloadRefCommand_Aai20(); }
+            case "ChangeHeadersRefCommand_Aai20":
+            { return new ChangeHeadersRefCommand_Aai20(); }
+
             /** Delete Commands **/
-            case "DeleteContactCommand_20": 
+            case "DeleteContactCommand_20":
             case "DeleteContactCommand_30":
             case "DeleteContactCommand":
             { return new DeleteContactCommand(); }
@@ -171,6 +179,8 @@ public class CommandFactory {
             case "DeleteAllParameterExamplesCommand_30":
             case "DeleteAllParameterExamplesCommand":
             { return new DeleteAllParameterExamplesCommand(); }
+            case "DeleteAllMessageExamplesCommand_Aai20":
+            { return new DeleteAllMessageExamplesCommand_Aai20(); }
             case "DeleteAllOperationsCommand":
             { return new DeleteAllOperationsCommand(); }
             case "DeleteAllParametersCommand_20":
@@ -201,6 +211,8 @@ public class CommandFactory {
             { return new DeleteExampleCommand_30(); }
             case "DeleteParameterExampleCommand_30":
             { return new DeleteParameterExampleCommand_30(); }
+            case "DeleteMessageExampleCommand_Aai20":
+            { return new DeleteMessageExampleCommand_Aai20(); }
             case "DeleteExtensionCommand":
             { return new DeleteExtensionCommand(); }
             case "DeleteLicenseCommand":
@@ -213,6 +225,8 @@ public class CommandFactory {
             case "DeleteOperationCommand_20":
             case "DeleteOperationCommand_30":
             { return new DeleteOperationCommand(); }
+            case "DeleteOperationCommand_Aai20":
+            { return new DeleteOperationCommand_Aai20(); }
             case "DeleteParameterCommand":
             case "DeleteParameterCommand_20":
             case "DeleteParameterCommand_30":
@@ -275,6 +289,8 @@ public class CommandFactory {
             case "NewOperationCommand_20":
             case "NewOperationCommand_30":
             { return new NewOperationCommand(); }
+            case "NewOperationCommand_Aai20":
+            { return new NewOperationCommand_Aai20(); }
             case "NewParamCommand":
             case "NewParamCommand_20":
             case "NewParamCommand_30":
@@ -416,6 +432,10 @@ public class CommandFactory {
         return new AddParameterExampleCommand_30(parameter, example, exampleName, exampleSummary, exampleDescription);
     }
 
+    public static final ICommand createAddMessageExampleCommand_Aai20(AaiOperation operation, Object exampleValue) {
+        return new AddMessageExampleCommand_Aai20(operation, exampleValue);
+    }
+
     public static final ICommand createAddSchemaDefinitionCommand(DocumentType docType, 
             String definitionName, Object from) {
         if (docType == DocumentType.openapi2) {
@@ -549,6 +569,15 @@ public class CommandFactory {
         return new ChangeServerCommand(server);
     }
 
+    public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operation) {
+        return new ChangePayloadRefCommand_Aai20(payloadRef, operation);
+    }
+
+    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
+        return new ChangeHeadersRefCommand_Aai20(headersRef, operation);
+    }
+
+
     /* ***  Delete Commands  *** */
     
     public static final ICommand createDeleteContactCommand(Info info) {
@@ -565,6 +594,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllParameterExamplesCommand(Oas30Parameter parameter) {
         return new DeleteAllParameterExamplesCommand(parameter);
+    }
+
+    public static final ICommand createDeleteAllMessageExamplesCommand_Aai20(AaiOperation operation) {
+        return new DeleteAllMessageExamplesCommand_Aai20(operation);
     }
     
     public static final ICommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
@@ -616,6 +649,10 @@ public class CommandFactory {
     public static final ICommand createDeleteParameterExampleCommand(Oas30Example example) {
         return new DeleteParameterExampleCommand_30(example);
     }
+
+    public static final ICommand createDeleteMessageExampleCommand_Aai20(AaiOperation operation, Object exampleValue) {
+        return new DeleteMessageExampleCommand_Aai20(operation, exampleValue);
+    }
     
     public static final ICommand createDeleteExtensionCommand(Extension extension) {
         return new DeleteExtensionCommand(extension);
@@ -631,6 +668,10 @@ public class CommandFactory {
     
     public static final ICommand createDeleteOperationCommand(String opMethod, OasPathItem pathItem) {
         return new DeleteOperationCommand(opMethod, pathItem);
+    }
+
+    public static final ICommand createDeleteOperationCommand_Aai20(String opType, AaiChannelItem channelItem) {
+        return new DeleteOperationCommand_Aai20(opType, channelItem);
     }
     
     public static final ICommand createDeleteParameterCommand(OasParameter parameter) {
@@ -723,6 +764,10 @@ public class CommandFactory {
     
     public static final ICommand createNewOperationCommand(String path, String method) {
         return new NewOperationCommand(path, method);
+    }
+
+    public static final ICommand createNewOperationCommand_Aai20(String channel, String opType) {
+        return new NewOperationCommand_Aai20(channel, opType);
     }
     
     public static final ICommand createNewParamCommand(IOasParameterParent parent, String paramName, 

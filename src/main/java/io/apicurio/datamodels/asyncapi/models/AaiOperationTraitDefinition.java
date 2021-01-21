@@ -28,7 +28,7 @@ public abstract class AaiOperationTraitDefinition extends AaiOperationTrait impl
     
     /**
      * Constructor.
-     * @param parent
+     * @param name
      */
     public AaiOperationTraitDefinition(String name) {
         super(name);
