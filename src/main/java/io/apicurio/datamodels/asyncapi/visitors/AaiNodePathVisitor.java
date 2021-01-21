@@ -319,7 +319,7 @@ public class AaiNodePathVisitor extends NodePathVisitor implements IAaiVisitor {
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.core.models.common.IPropertySchema)
      */
     @Override
     public void visitPropertySchema(IPropertySchema node) {

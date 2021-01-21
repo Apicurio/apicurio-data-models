@@ -62,8 +62,8 @@ public class AddChannelItemCommand extends AbstractCommand {
          this._channelItemExists = true;
       } else {
          AaiChannelItem channelItem = doc.createChannelItem(this._newChannelItemName);
-         Library.readNode(this._newChannelItemObj, channelItem);
          doc.addChannelItem(channelItem);
+         Library.readNode(this._newChannelItemObj, channelItem);
          this._channelItemExists = false;
       }
    }

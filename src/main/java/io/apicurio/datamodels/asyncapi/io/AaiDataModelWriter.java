@@ -298,6 +298,8 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         JsonCompat.setPropertyNull(json, Constants.PROP_EXTERNAL_DOCS); // prop
         JsonCompat.setPropertyNull(json, Constants.PROP_BINDINGS); // map
 
+        JsonCompat.setProperty(json, Constants.PROP_EXAMPLES, node.examples);
+
         return json;
     }
 
@@ -784,7 +786,7 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
     }
 
     /**
-     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.asyncapi.models.IAaiPropertySchema)
+     * @see io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor#visitPropertySchema(io.apicurio.datamodels.core.models.common.IPropertySchema)
      */
     @Override
     public void visitPropertySchema(IPropertySchema node) {
@@ -879,7 +881,6 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
 
     /**
      * Writes a Server/Channel/Operation/Message Bindings model to JSON.
-     * @param node
      */
     protected Object writeNullBindings() {
         Object json = JsonCompat.objectNode();
