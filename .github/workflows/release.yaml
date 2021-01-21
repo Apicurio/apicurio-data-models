@@ -166,19 +166,11 @@ jobs:
           cd _data/datamodels
           rm latestRelease.json
           touch latestRelease.json && curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
-          
-          echo "********** Copying Latest Release JSON File **********"
-          PUBLISHED_AT=$(cat responsefile | jq '.tag_name' | sed 's/"//g')
-          cp latestRelease.json releases/$PUBLISHED_AT.json
-          
-          # setting up env variable to use in next step to force commit the file
-          echo "::set-env name=FILENAME::$PUBLISHED_AT"
 
 
       - name: Commit Project Website Changes
         run: |
           cd website
           git add .
-          git add -f _data/datamodels/releases/$FILENAME.json    #ignored due to .gitignore config
           git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ github.event.inputs.release-version}}"
           git push
