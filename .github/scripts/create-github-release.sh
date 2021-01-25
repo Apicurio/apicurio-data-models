@@ -21,5 +21,5 @@ EOF
 }
 
 echo "Creating github release '$RELEASE_VERSION' for Repo '$REPOSITORY' and Branch: '$BRANCH'"
-curl --data "$(generate_post_data)" "https://api.github.com/repos/$REPOSITORY/releases?access_token=$ACCESS_TOKEN"
+curl -H "Authorization: token $ACCESS_TOKEN" --data "$(generate_post_data)" "https://api.github.com/repos/$REPOSITORY/releases"
 echo "Github Release Created Successfully"
