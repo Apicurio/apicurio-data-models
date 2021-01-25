@@ -116,9 +116,10 @@ jobs:
         uses: crazy-max/ghaction-import-gpg@v1
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}      
+          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          
 
-      - name: Create GitHub release
+      - name: Create GitHub Release
         run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} ${{GITHUB_REPOSITORY}} ${{ secrets.GITHUB_TOKEN }}
 
 
