@@ -10,9 +10,6 @@
   "components": {
     "schemas": {
       "CalendarEvent": {
-        "$ref": "#/components/schemas/CalendarEvent1"
-      },
-      "CalendarEvent1": {
         "type": "object",
         "allOf": [
           {

@@ -32,17 +32,17 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  */
 public abstract class AaiComponents extends Components {
 
-    public Map<String, AaiSchema> schemas;
-    public Map<String, AaiMessage> messages;
-    public Map<String, AaiSecurityScheme> securitySchemes;
-    public Map<String, AaiParameter> parameters;
-    public Map<String, AaiCorrelationId> correlationIds;
-    public Map<String, AaiOperationTraitDefinition> operationTraits;
-    public Map<String, AaiMessageTraitDefinition> messageTraits;
-    public Map<String, AaiServerBindingsDefinition> serverBindings;
-    public Map<String, AaiChannelBindingsDefinition> channelBindings;
-    public Map<String, AaiOperationBindingsDefinition> operationBindings;
-    public Map<String, AaiMessageBindingsDefinition> messageBindings;
+    public Map<String, AaiSchema> schemas = new LinkedHashMap<>();
+    public Map<String, AaiMessage> messages = new LinkedHashMap<>();
+    public Map<String, AaiSecurityScheme> securitySchemes = new LinkedHashMap<>();
+    public Map<String, AaiParameter> parameters = new LinkedHashMap<>();
+    public Map<String, AaiCorrelationId> correlationIds = new LinkedHashMap<>();
+    public Map<String, AaiOperationTraitDefinition> operationTraits = new LinkedHashMap<>();
+    public Map<String, AaiMessageTraitDefinition> messageTraits = new LinkedHashMap<>();
+    public Map<String, AaiServerBindingsDefinition> serverBindings = new LinkedHashMap<>();
+    public Map<String, AaiChannelBindingsDefinition> channelBindings = new LinkedHashMap<>();
+    public Map<String, AaiOperationBindingsDefinition> operationBindings = new LinkedHashMap<>();
+    public Map<String, AaiMessageBindingsDefinition> messageBindings = new LinkedHashMap<>();
 
     /**
      * Constructor.

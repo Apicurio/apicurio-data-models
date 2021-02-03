@@ -3,6 +3,7 @@ package io.apicurio.datamodels.openapi.visitors.dereference;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.core.models.common.ModernSecurityScheme;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Callback;
 import io.apicurio.datamodels.openapi.v3.models.Oas30CallbackDefinition;
@@ -30,7 +31,7 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
 
 
     @Override
-    public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
+    public ReferenceAndNode attachAsComponent(Document document, String name, Node component) {
         // TODO visitor?
         if (!(document instanceof Oas30Document)) // TODO get documenttype
             throw new IllegalArgumentException("Oas30Document expected.");
@@ -141,5 +142,37 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
             transform(model.components.callbacks, name -> PREFIX + "callbacks/" + name, res);
         }
         return res;
+    }
+
+    @Override
+    public String getComponentName(Document document, Node component) {
+        if (component instanceof IDefinition)
+            return ((IDefinition) component).getName();
+        return null;
+    }
+
+    @Override
+    public boolean removeComponent(Document document, String name) {
+        if (document.getDocumentType() != DocumentType.openapi3) {
+            throw new IllegalArgumentException("Oas30Document expected.");
+        }
+        Oas30Document model = (Oas30Document) document;
+        IDefinition removed = model.components.schemas.remove(name);
+        if (removed != null) return true;
+        removed = model.components.responses.remove(name);
+        if (removed != null) return true;
+        removed = model.components.parameters.remove(name);
+        if (removed != null) return true;
+        removed = model.components.examples.remove(name);
+        if (removed != null) return true;
+        removed = model.components.requestBodies.remove(name);
+        if (removed != null) return true;
+        removed = model.components.headers.remove(name);
+        if (removed != null) return true;
+        removed = model.components.securitySchemes.remove(name);
+        if (removed != null) return true;
+        removed = model.components.links.remove(name);
+        if (removed != null) return true;
+        return model.components.callbacks.remove(name) != null;
     }
 }

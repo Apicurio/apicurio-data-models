@@ -1,7 +1,9 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
@@ -18,7 +20,7 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
     protected String PREFIX = "#/";
 
     @Override
-    public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
+    public ReferenceAndNode attachAsComponent(Document document, String name, Node component) {
         if (!(document instanceof Oas20Document))
             throw new IllegalArgumentException("Oas20Document expected.");
         Oas20Document model = (Oas20Document) document;
@@ -74,5 +76,25 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
         if (model.responses != null)
             transform(model.responses.items, name -> PREFIX + "responses/" + name, res);
         return res;
+    }
+
+    @Override
+    public String getComponentName(Document document, Node component) {
+        if (component instanceof IDefinition)
+            return ((IDefinition) component).getName();
+        return null;
+    }
+
+    @Override
+    public boolean removeComponent(Document document, String name) {
+        if (document.getDocumentType() != DocumentType.openapi3) {
+            throw new IllegalArgumentException("Oas20Document expected.");
+        }
+        Oas20Document model = (Oas20Document) document;
+        IDefinition removed = model.definitions.items.remove(name);
+        if (removed != null) return true;
+        removed = model.parameters.items.remove(name);
+        if (removed != null) return true;
+        return model.responses.items.remove(name) != null;
     }
 }
