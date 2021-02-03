@@ -34,7 +34,7 @@ public interface IReferenceManipulationStrategy {
      * @return new definition node with the new reference to it
      * @throws java.lang.IllegalArgumentException if there is a naming conflict. // TODO some better way?
      */
-    ReferenceAndNode attachAsDefinition(Document model, String name, Node component);
+    ReferenceAndNode attachAsComponent(Document model, String name, Node component);
 
 
     /**
@@ -44,6 +44,24 @@ public interface IReferenceManipulationStrategy {
      * @return A collection of local components/definitions
      */
     Map<String, Node> getExistingLocalComponents(Document model);
+
+    /**
+     * Get the name of the component.
+     *
+     * @param document
+     * @param component
+     * @return null if component with that name was not found.
+     */
+    String getComponentName(Document document, Node component);
+
+    /**
+     * Remove component with a given name.
+     *
+     * @param document
+     * @param name
+     * @return true if a component with that name was removed
+     */
+    boolean removeComponent(Document document, String name);
 
 
     class ReferenceAndNode {

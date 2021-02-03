@@ -115,15 +115,12 @@
 			}
 		},
 		"securitySchemes": {
-            "BASIC": {
-                "$ref": "#/components/securitySchemes/BASIC1"
-            },
             "APIKey": {
                 "type": "apiKey",
                 "name": "api_key",
                 "in": "header"
             },
-            "BASIC1": {
+            "BASIC": {
                 "scheme": "basic",
                 "type": "http"
             }

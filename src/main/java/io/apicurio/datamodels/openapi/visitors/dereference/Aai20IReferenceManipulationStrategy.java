@@ -1,10 +1,8 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import io.apicurio.datamodels.asyncapi.models.AaiChannelBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBindings;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationBindings;
@@ -25,20 +23,26 @@ import io.apicurio.datamodels.asyncapi.v2.models.Aai20Parameter;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20ServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IDefinition;
+import io.apicurio.datamodels.core.models.common.INamed;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocalizationStrategy implements IReferenceManipulationStrategy {
 
 
     @Override
-    public ReferenceAndNode attachAsDefinition(Document document, String name, Node component) {
+    public ReferenceAndNode attachAsComponent(Document document, String name, Node component) {
         if(!(document instanceof Aai20Document))
             throw new IllegalArgumentException("Aai20Document expected.");
-        
+
         Aai20Document model = (Aai20Document) document;
         if (model.components == null)
             model.components = model.createComponents();
-        
+
         // TODO reduce code repetition?
         if (component instanceof Aai20Message) {
             if (model.components.messages != null && model.components.messages.get(name) != null)
@@ -167,5 +171,47 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
 
         }
         return res;
+    }
+
+    @Override
+    public String getComponentName(Document document, Node component) {
+        if (component instanceof IDefinition)
+            return ((IDefinition) component).getName();
+        if (component instanceof AaiMessage)
+            return ((AaiMessage) component).getName();
+        if (component instanceof AaiParameter)
+            return ((AaiParameter) component).getName();
+        if (component instanceof AaiCorrelationId)
+            return ((AaiCorrelationId) component).getName();
+        return null;
+    }
+
+    @Override
+    public boolean removeComponent(Document document, String name) {
+        if (document.getDocumentType() != DocumentType.asyncapi2) {
+            throw new IllegalArgumentException("Aai20Document expected.");
+        }
+        Aai20Document model = (Aai20Document) document;
+        // Some components do not implement IDefinition, have to use INamed.
+        // See also .Aai20IReferenceManipulationStrategy#getComponentName(Document, Node)
+        INamed removed = model.components.messages.remove(name); // Does not implement IDefinition
+        if(removed != null) return true;
+        removed = model.components.securitySchemes.remove(name);
+        if(removed != null) return true;
+        removed = model.components.parameters.remove(name); // Does not implement IDefinition
+        if(removed != null) return true;
+        removed = model.components.correlationIds.remove(name); // Does not implement IDefinition
+        if(removed != null) return true;
+        removed = model.components.operationTraits.remove(name);
+        if(removed != null) return true;
+        removed = model.components.messageTraits.remove(name);
+        if(removed != null) return true;
+        removed = model.components.serverBindings.remove(name);
+        if(removed != null) return true;
+        removed = model.components.channelBindings.remove(name);
+        if(removed != null) return true;
+        removed = model.components.operationBindings.remove(name);
+        if(removed != null) return true;
+        return model.components.messageBindings.remove(name) != null;
     }
 }

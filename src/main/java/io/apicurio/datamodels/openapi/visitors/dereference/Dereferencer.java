@@ -132,17 +132,28 @@ public class Dereferencer {
                 } else {
                     IReferenceManipulationStrategy.ReferenceAndNode localRef = null;
 
+                    String name = originalRef.getName();
+
+                    // Remove the reference node so its name can be reused if possible.
+                    boolean nameReused = false;
+                    if(name.equals(strategy.getComponentName(clone, resolved))) {
+                        nameReused = strategy.removeComponent(clone, name);
+                    }
+
                     // try to attach
                     // repeat in case of name conflict
-                    String name = originalRef.getName();
                     for (int i = 0; i < Integer.MAX_VALUE; i++) {
                         if (i > 0)
                             name = originalRef.getName() + i;
                         try {
-                            localRef = strategy.attachAsDefinition(clone, name, resolved);
+                            localRef = strategy.attachAsComponent(clone, name, resolved);
                             break;
                         } catch (IllegalArgumentException ex) {
                             // try a different name
+                            // Assert we should be reusing the name
+                            if(nameReused)
+                                throw new IllegalStateException("Assertion error: " +
+                                        "Component with name '" + name + "' should be reused, but can't be attached.");
                             // TODO maybe avoid exceptions?
                         }
                     }
@@ -152,7 +163,9 @@ public class Dereferencer {
                     } else {
                         // success!
                         // rename the original reference
-                        node.setReference(localRef.getRef());
+                        if(!nameReused) {
+                            node.setReference(localRef.getRef());
+                        }
                         // add resolved node to processing queue
                         processQueue.add(new Context(originalRef.getRef(), localRef.getNode()));
                         // remember, to prevent cycles
