@@ -120,7 +120,7 @@ jobs:
           
 
       - name: Create GitHub Release
-        run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} ${{GITHUB_REPOSITORY}} ${{ secrets.GITHUB_TOKEN }}
+        run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Generate Release Notes
