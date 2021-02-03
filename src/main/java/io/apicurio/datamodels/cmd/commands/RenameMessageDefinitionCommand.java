@@ -88,7 +88,7 @@ public class RenameMessageDefinitionCommand extends AbstractCommand {
 
    protected boolean renameMessageDefinition(AaiDocument document, String fromName, String toName) {
       Aai20Document doc20 = (Aai20Document) document;
-      if (this.isNullOrUndefined(doc20.components) || this.isNullOrUndefined(doc20.components.operationTraits)) {
+      if (this.isNullOrUndefined(doc20.components) || this.isNullOrUndefined(doc20.components.messages)) {
          return false;
       }
       if (ModelUtils.isDefined(doc20.components.getMessage(toName))) {
