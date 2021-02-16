@@ -102,11 +102,11 @@ maven build process:
 ```
 git clone https://github.com/Apicurio/apicurio-data-models.git
 cd apicurio-data-models
-mvn clean package
+mvn clean package -Ptranspilation
 ```
 
 ### Test the Library
-All testing is integrated into the maven build, so the standard `mvn clean package` will also execute
+All testing is integrated into the maven build, so the standard `mvn clean package -Ptranspilation` will also execute
 all unit tests.  If the maven build succeeds, then you know everything worked!
 
 
