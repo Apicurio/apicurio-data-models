@@ -20,6 +20,7 @@
 	{ "name": "[OpenAPI 2.0] Valid Pet Store Document", "test": "openapi/2.0/valid-pet-store.json" },
     { "name": "[OpenAPI 2.0] Identical Path Template", "test": "openapi/2.0/identical-path-template.json" },
     { "name": "[OpenAPI 2.0] Security Requirement Uniqueness", "test": "openapi/2.0/security-requirement-uniqueness.json" }, 
+    { "name": "[OpenAPI 2.0] Japanese Characters", "test": "openapi/2.0/japanese-characters.json" },
 
 	{ "name": "[OpenAPI 3.0] Ignored Property Name", "test": "openapi/3.0/ignored-property-name.json" },
 	{ "name": "[OpenAPI 3.0] Document [Invalid Property Format]", "test": "openapi/3.0/invalid-property-format.json" },

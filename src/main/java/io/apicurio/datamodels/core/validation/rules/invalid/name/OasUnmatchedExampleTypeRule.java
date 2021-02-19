@@ -64,16 +64,18 @@ public class OasUnmatchedExampleTypeRule extends OasInvalidPropertyNameRule {
         Oas20Document doc = (Oas20Document) example20.ownerDocument();
         List<String> produces = doc.produces;
         Oas20Operation operation = (Oas20Operation) findParentOperation(example20);
-        if (hasValue(operation.produces)) {
-            produces = operation.produces;
-        }
-        if (!hasValue(produces)) {
-            produces = new ArrayList<>();
-        }
-
-        List<String> ctypes = example20.getExampleContentTypes();
-        for (String ct : ctypes) {
-            this.reportIfInvalid(produces.indexOf(ct) != -1, example20, Constants.PROP_PRODUCES, map("contentType", ct));
+        if (isDefined(operation)) {
+            if (hasValue(operation.produces)) {
+                produces = operation.produces;
+            }
+            if (!hasValue(produces)) {
+                produces = new ArrayList<>();
+            }
+    
+            List<String> ctypes = example20.getExampleContentTypes();
+            for (String ct : ctypes) {
+                this.reportIfInvalid(produces.indexOf(ct) != -1, example20, Constants.PROP_PRODUCES, map("contentType", ct));
+            }
         }
     }
 
