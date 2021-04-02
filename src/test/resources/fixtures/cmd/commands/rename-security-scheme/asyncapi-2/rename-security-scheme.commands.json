@@ -1,0 +1,5 @@
+[{
+    "__type": "RenameSecuritySchemeCommand_Aai20",
+    "_oldSchemeName": "myApiScheme",
+    "_newSchemeName": "myRenamedApiScheme"
+}]

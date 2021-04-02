@@ -1,0 +1,17 @@
+[
+    {
+        "__type": "ChangeServerCommand_Aai20",
+        "_serverName" : "my_server",
+        "_serverObj" : {
+            "url": "kafka.{env}.example.com",
+            "description": "my event railgun",
+            "variables": {
+                "env": {
+                    "default": "prod",
+                    "description": "staging, prod"
+                }
+            },
+            "protocol": "kafka"
+        }
+    }
+]

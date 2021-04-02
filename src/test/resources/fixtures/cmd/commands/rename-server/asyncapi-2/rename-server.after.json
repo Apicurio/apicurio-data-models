@@ -1,0 +1,17 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "example",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "my_renamed_server": {
+      "url": "kafka.prod.example.com",
+      "description": "my event railgun",
+      "protocol": "kafka"
+    }
+  },
+  "channels": {
+    "myevents": {}
+  }
+}

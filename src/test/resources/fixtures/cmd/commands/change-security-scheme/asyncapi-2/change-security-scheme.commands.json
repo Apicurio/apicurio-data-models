@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "ChangeSecuritySchemeCommand_Aai20",
+        "_schemeName": "myScheme",
+        "_schemeObj": {
+            "type": "apiKey",
+            "in": "header"
+        }
+    }
+]

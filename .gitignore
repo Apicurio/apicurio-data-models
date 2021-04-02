@@ -8,3 +8,6 @@
 .settings
 .classpath
 website
+# Intellij project files
+/.idea/
+*.iml

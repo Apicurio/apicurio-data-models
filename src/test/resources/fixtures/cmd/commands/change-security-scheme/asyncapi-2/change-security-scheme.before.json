@@ -1,0 +1,24 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Asyncapi test",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "test": {
+      "publish": {
+        "message": {
+          "$ref": "#/components/messages/testMessages"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "myScheme": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
