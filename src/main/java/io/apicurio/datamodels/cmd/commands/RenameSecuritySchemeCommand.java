@@ -18,16 +18,18 @@ package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
-import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
@@ -56,7 +58,7 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[RenameSecuritySchemeCommand] Executing.");
-        this._doSecuritySchemeRename((OasDocument) document, this._oldSchemeName, this._newSchemeName);
+        this._doSecuritySchemeRename(document, this._oldSchemeName, this._newSchemeName);
     }
     
     /**
@@ -65,7 +67,7 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[RenameSecuritySchemeCommand] Reverting.");
-        this._doSecuritySchemeRename((OasDocument) document, this._newSchemeName, this._oldSchemeName);
+        this._doSecuritySchemeRename(document, this._newSchemeName, this._oldSchemeName);
     }
 
     /**
@@ -75,11 +77,11 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
      * @param to
      * @private
      */
-    private void _doSecuritySchemeRename(OasDocument document, String from, String to) {
+    private void _doSecuritySchemeRename(Document document, String from, String to) {
         SecurityScheme scheme = null;
 
         // Different place to find the security scheme depending on the version.
-        if (document.is2xDocument()) {
+        if (document.getDocumentType() == DocumentType.openapi2) {
             Oas20Document doc20 = (Oas20Document) document;
             if (ModelUtils.isDefined(doc20.securityDefinitions)) {
                 // If the "to" scheme already exists, do nothing!
@@ -88,7 +90,7 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
                 }
                 scheme = doc20.securityDefinitions.removeSecurityScheme(from);
             }
-        } else {
+        } else if (document.getDocumentType() == DocumentType.openapi3) {
             Oas30Document doc30 = (Oas30Document) document;
             if (ModelUtils.isDefined(doc30.components)) {
                 // If the "to" scheme already exists, do nothing!
@@ -96,6 +98,15 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
                     return;
                 }
                 scheme = doc30.components.removeSecurityScheme(from);
+            }
+        } else {
+            Aai20Document aai20Document = (Aai20Document) document;
+            if (ModelUtils.isDefined(aai20Document.components)) {
+                // If the "to" scheme already exists, do nothing!
+                if (!this.isNullOrUndefined(aai20Document.components.getSecurityScheme(to))) {
+                    return;
+                }
+                scheme = aai20Document.components.removeSecurityScheme(from);
             }
         }
 
@@ -106,12 +117,15 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
 
         // Now we have the scheme - rename it!
         scheme.rename(to);
-        if (document.is2xDocument()) {
+        if (document.getDocumentType() == DocumentType.openapi2) {
             Oas20Document doc20 = (Oas20Document) document;
             doc20.securityDefinitions.addSecurityScheme(to, (Oas20SecurityScheme)scheme);
-        } else {
+        } else if (document.getDocumentType() == DocumentType.openapi3) {
             Oas30Document doc30 = (Oas30Document) document;
             doc30.components.addSecurityScheme(to, (Oas30SecurityScheme)scheme);
+        } else {
+            Aai20Document aai20Document = (Aai20Document) document;
+            aai20Document.components.addSecurityScheme(to, (Aai20SecurityScheme)scheme);
         }
 
         // Now find all security requirements that reference the scheme and change them too.

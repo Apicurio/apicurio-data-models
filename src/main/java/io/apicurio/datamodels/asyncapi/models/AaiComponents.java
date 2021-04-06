@@ -170,6 +170,18 @@ public abstract class AaiComponents extends Components {
         securitySchemes.put(key, value);
     }
 
+    public AaiSecurityScheme getSecurityScheme(String name) {
+        if(securitySchemes != null)
+            return securitySchemes.get(name);
+        return null;
+    }
+
+    public AaiSecurityScheme removeSecurityScheme(String name) {
+        if(securitySchemes != null)
+            return securitySchemes.remove(name);
+        return null;
+    }
+
     public void addParameter(String key, AaiParameter value) {
         if(parameters == null)
             parameters = new LinkedHashMap<>();

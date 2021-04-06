@@ -1,0 +1,10 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "example",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "myevents": {}
+  }
+}

@@ -21,6 +21,8 @@ import java.util.List;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Server;
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
@@ -157,8 +159,12 @@ public class CommandFactory {
             { return new ChangeSecuritySchemeCommand_20(); }
             case "ChangeSecuritySchemeCommand_30":
             { return new ChangeSecuritySchemeCommand_30(); }
+            case "ChangeSecuritySchemeCommand_Aai20":
+            { return new ChangeSecuritySchemeCommand_Aai20(); }
             case "ChangeServerCommand":
             { return new ChangeServerCommand(); }
+            case "ChangeServerCommand_Aai20":
+            { return new ChangeServerCommand_Aai20(); }
             case "ChangeSchemaTypeCommand":
             { return new ChangeSchemaTypeCommand(); }
             case "ChangeSchemaInheritanceCommand":
@@ -201,6 +207,8 @@ public class CommandFactory {
             { return new DeleteAllSecuritySchemesCommand(); }
             case "DeleteAllServersCommand":
             { return new DeleteAllServersCommand(); }
+            case "DeleteAllServersCommand_Aai20":
+            { return new DeleteAllServersCommand_Aai20(); }
             case "DeleteAllTagsCommand":
             { return new DeleteAllTagsCommand(); }
             case "DeleteAllChildSchemasCommand":
@@ -260,8 +268,12 @@ public class CommandFactory {
             { return new DeleteSecuritySchemeCommand_20(); }
             case "DeleteSecuritySchemeCommand_30":
             { return new DeleteSecuritySchemeCommand_30(); }
+            case "DeleteSecuritySchemeCommand_Aai20":
+            { return new DeleteSecuritySchemeCommand_Aai20(); }
             case "DeleteServerCommand":
             { return new DeleteServerCommand(); }
+            case "DeleteServerCommand_Aai20":
+            { return new DeleteServerCommand_Aai20(); }
             case "DeleteTagCommand":
             case "DeleteTagCommand_20":
             case "DeleteTagCommand_30":
@@ -319,8 +331,12 @@ public class CommandFactory {
             { return new NewSecuritySchemeCommand_20(); }
             case "NewSecuritySchemeCommand_30":
             { return new NewSecuritySchemeCommand_30(); }
+            case "NewSecuritySchemeCommand_Aai20":
+            { return new NewSecuritySchemeCommand_Aai20(); }
             case "NewServerCommand":
             { return new NewServerCommand(); }
+            case "NewServerCommand_Aai20":
+            { return new NewServerCommand_Aai20(); }
             case "NewTagCommand":
             case "NewTagCommand_20":
             case "NewTagCommand_30":
@@ -347,9 +363,11 @@ public class CommandFactory {
             { return new NewOperationTraitDefinitionCommand(); }
 
             /** Rename Commands **/
-            
+
             case "RenameParameterCommand":
             { return new RenameParameterCommand(); }
+            case "RenameChannelItemCommand":
+            { return new RenameChannelItemCommand(); }
             case "RenamePathItemCommand":
             { return new RenamePathItemCommand(); }
             case "RenamePropertyCommand":
@@ -360,6 +378,8 @@ public class CommandFactory {
             { return new RenameSchemaDefinitionCommand_30(); }
             case "RenameSecuritySchemeCommand":
             { return new RenameSecuritySchemeCommand(); }
+            case "RenameServerCommand_Aai20":
+            { return new RenameServerCommand_Aai20(); }
             case "RenameTagDefinitionCommand":
             { return new RenameTagDefinitionCommand(); }
             case "RenameResponseDefinitionCommand_20":
@@ -436,7 +456,7 @@ public class CommandFactory {
         return new AddMessageExampleCommand_Aai20(operation, exampleValue);
     }
 
-    public static final ICommand createAddSchemaDefinitionCommand(DocumentType docType, 
+    public static final ICommand createAddSchemaDefinitionCommand(DocumentType docType,
             String definitionName, Object from) {
         if (docType == DocumentType.openapi2) {
             return new AddSchemaDefinitionCommand_20(definitionName, from);
@@ -561,12 +581,18 @@ public class CommandFactory {
             return new ChangeSecuritySchemeCommand_20(scheme);
         } else if (docType == DocumentType.openapi3) {
             return new ChangeSecuritySchemeCommand_30(scheme);
+        } else if (docType == DocumentType.asyncapi2) {
+            return new ChangeSecuritySchemeCommand_Aai20(scheme);
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
     public static final ICommand createChangeServerCommand(Server server) {
         return new ChangeServerCommand(server);
+    }
+
+    public static final ICommand createChangeServerCommand_Aai20(Aai20Server server) {
+        return new ChangeServerCommand_Aai20(server);
     }
 
     public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operation) {
@@ -599,7 +625,7 @@ public class CommandFactory {
     public static final ICommand createDeleteAllMessageExamplesCommand_Aai20(AaiOperation operation) {
         return new DeleteAllMessageExamplesCommand_Aai20(operation);
     }
-    
+
     public static final ICommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
         return new DeleteAllOperationsCommand(pathItem);
     }
@@ -630,6 +656,10 @@ public class CommandFactory {
         return new DeleteAllServersCommand(parent);
     }
 
+    public static final ICommand createDeleteAllServersCommand_Aai20() {
+        return new DeleteAllServersCommand_Aai20();
+    }
+
     public static final ICommand createDeleteAllTagsCommand() {
         return new DeleteAllTagsCommand();
     }
@@ -653,7 +683,7 @@ public class CommandFactory {
     public static final ICommand createDeleteMessageExampleCommand_Aai20(AaiOperation operation, Object exampleValue) {
         return new DeleteMessageExampleCommand_Aai20(operation, exampleValue);
     }
-    
+
     public static final ICommand createDeleteExtensionCommand(Extension extension) {
         return new DeleteExtensionCommand(extension);
     }
@@ -673,7 +703,7 @@ public class CommandFactory {
     public static final ICommand createDeleteOperationCommand_Aai20(String opType, AaiChannelItem channelItem) {
         return new DeleteOperationCommand_Aai20(opType, channelItem);
     }
-    
+
     public static final ICommand createDeleteParameterCommand(OasParameter parameter) {
         return new DeleteParameterCommand(parameter);
     }
@@ -729,13 +759,20 @@ public class CommandFactory {
         if (docType == DocumentType.openapi3) {
             return new DeleteSecuritySchemeCommand_30(schemeName);
         }
+        if (docType == DocumentType.asyncapi2) {
+            return new DeleteSecuritySchemeCommand_Aai20(schemeName);
+        }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
     public static final ICommand createDeleteServerCommand(Server server) {
         return new DeleteServerCommand(server);
     }
-    
+
+    public static final ICommand createDeleteServerCommand_Aai20(Aai20Server server) {
+        return new DeleteServerCommand_Aai20(server);
+    }
+
     public static final ICommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
     }
@@ -769,7 +806,7 @@ public class CommandFactory {
     public static final ICommand createNewOperationCommand_Aai20(String channel, String opType) {
         return new NewOperationCommand_Aai20(channel, opType);
     }
-    
+
     public static final ICommand createNewParamCommand(IOasParameterParent parent, String paramName, 
             String paramType, String description, SimplifiedParameterType newType, boolean override) {
         return new NewParamCommand(parent, paramName, paramType, description, newType, override);
@@ -835,13 +872,20 @@ public class CommandFactory {
         if (docType == DocumentType.openapi3) {
             return new NewSecuritySchemeCommand_30(scheme);
         }
+        if (docType == DocumentType.asyncapi2) {
+            return new NewSecuritySchemeCommand_Aai20(scheme);
+        }
         throw new RuntimeException("Document type not supported by this command.");
     }
-    
+
     public static final ICommand createNewServerCommand(IServerParent parent, Server server) {
         return new NewServerCommand(parent, server);
     }
-    
+
+    public static final ICommand createNewServerCommand_Aai20(Aai20Document parent, Aai20Server server) {
+        return new NewServerCommand_Aai20(parent, server);
+    }
+
     public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
     }
@@ -871,6 +915,10 @@ public class CommandFactory {
     public static final ICommand createRenameParameterCommand(IOasParameterParent parent, 
             String oldParamName, String newParamName, String paramIn) {
         return new RenameParameterCommand(parent, oldParamName, newParamName, paramIn);
+    }
+
+    public static final ICommand createRenameChannelItemCommand(String oldChannelName, String newChannelName) {
+        return new RenameChannelItemCommand(oldChannelName, newChannelName);
     }
     
     public static final ICommand createRenamePathItemCommand(String oldPath, String newPath, 
@@ -905,9 +953,16 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    public static final ICommand createRenameSecuritySchemeCommand(String oldSchemeName, 
+    public static final ICommand createRenameSecuritySchemeCommand(String oldSchemeName,
             String newSchemeName) {
         return new RenameSecuritySchemeCommand(oldSchemeName, newSchemeName);
+    }
+
+    public static final ICommand createRenameServerCommand(DocumentType docType, String oldServerName, String newServerName) {
+        if (docType == DocumentType.asyncapi2) {
+            return new RenameServerCommand_Aai20(oldServerName, newServerName);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
     }
 
     public static final ICommand createRenameTagDefinitionCommand(String oldTag, String newTag) {
