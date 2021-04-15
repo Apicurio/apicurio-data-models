@@ -258,6 +258,7 @@
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example", "test": "commands/add-message-example/asyncapi-2/add-message-example" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example JSON", "test": "commands/add-message-example/asyncapi-2/add-message-example-json" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example Exists", "test": "commands/add-message-example/asyncapi-2/add-message-example-exists" },
+    { "name": "[AsyncAPI 2] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/asyncapi-2/add-security-requirement" },
     { "name": "[AsyncAPI 2] {Change Payload Ref} - Change Payload Ref", "test": "commands/change-payload-ref/asyncapi-2/change-payload-ref" },
     { "name": "[AsyncAPI 2] {Change Headers Ref} - Change Headers Ref", "test": "commands/change-headers-ref/asyncapi-2/change-headers-ref" },
     { "name": "[AsyncAPI 2] {Change Security Scheme} - Change Security Scheme", "test": "commands/change-security-scheme/asyncapi-2/change-security-scheme" },
@@ -265,12 +266,15 @@
     { "name": "[AsyncAPI 2] {Delete Channel} - Delete Channel", "test": "commands/delete-channel/asyncapi-2/delete-channel" },
     { "name": "[AsyncAPI 2] {Delete Operation} - Delete Operation", "test": "commands/delete-operation/asyncapi-2/delete-operation" },
     { "name": "[AsyncAPI 2] {Delete Security Scheme} - Delete Security Scheme", "test": "commands/delete-security-scheme/asyncapi-2/delete-security-scheme" },
+    { "name": "[AsyncAPI 2] {Delete Security Requirement} - Delete Security Requirement", "test": "commands/delete-security-requirement/asyncapi-2/delete-security-requirement" },
+    { "name": "[AsyncAPI 2] {Delete Security Requirement} - Delete Nonexistent Security Requirement", "test": "commands/delete-security-requirement/asyncapi-2/delete-security-requirement-unmatched" },
     { "name": "[AsyncAPI 2] {Delete Server} - Delete Server", "test": "commands/delete-server/asyncapi-2/delete-server" },
     { "name": "[AsyncAPI 2] {Delete Message Example} - Delete Message Example", "test": "commands/delete-message-example/asyncapi-2/delete-message-example" },
     { "name": "[AsyncAPI 2] {Delete Message Example} - Delete Message Example JSON", "test": "commands/delete-message-example/asyncapi-2/delete-message-example-json" },
     { "name": "[AsyncAPI 2] {Delete Message Example} - Delete Message Example Exists", "test": "commands/delete-message-example/asyncapi-2/delete-message-example-exists" },
     { "name": "[AsyncAPI 2] {Delete All Message Examples} - Delete All Message Examples", "test": "commands/delete-all-message-examples/asyncapi-2/delete-all-message-examples" },
     { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" },
+    { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" },
     { "name": "[AsyncAPI 2] {New Channel} - New Channel", "test": "commands/new-channel/asyncapi-2/new-channel" },
     { "name": "[AsyncAPI 2] {New Operation} - New Operation", "test": "commands/new-operation/asyncapi-2/new-operation" },
     { "name": "[AsyncAPI 2] {New Security Scheme} - New Security Scheme", "test": "commands/new-security-scheme/asyncapi-2/new-security-scheme" },
@@ -303,5 +307,6 @@
     { "name": "[AsyncAPI 2] {Delete Message Def} - Delete Message Definition", "test": "commands/delete-message-definition/asyncapi-2/delete-message-definition" },
     { "name": "[AsyncAPI 2] {Delete Message Trait Def} - Delete Message Trait Definition", "test": "commands/delete-messagetrait-definition/asyncapi-2/delete-messagetrait-definition" },
     { "name": "[AsyncAPI 2] {Delete Operation Trait Def} - Delete Operation Trait Definition", "test": "commands/delete-operationtrait-definition/asyncapi-2/delete-operationtrait-definition" },
-    { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" }
+    { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" },
+    { "name": "[AsyncAPI 2] {Replace Security Requirement} - Replace Security Requirement", "test": "commands/replace-security-requirement/asyncapi-2/replace-security-requirement" }
 ]

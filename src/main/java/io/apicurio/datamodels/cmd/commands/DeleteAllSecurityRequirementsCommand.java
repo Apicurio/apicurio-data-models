@@ -33,7 +33,6 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
-import io.apicurio.datamodels.openapi.models.OasSecurityRequirement;
 
 /**
  * A command used to delete all security requirements from a document or operation.
@@ -97,7 +96,7 @@ public class DeleteAllSecurityRequirementsCommand extends AbstractCommand {
             NodeCompat.setProperty(parent, Constants.PROP_SECURITY, requirements);
         }
         for (Object oldSecurityRequirement : this._oldSecurityRequirements) {
-            OasSecurityRequirement requirement = (OasSecurityRequirement) parent.createSecurityRequirement();
+            SecurityRequirement requirement = parent.createSecurityRequirement();
             Library.readNode(oldSecurityRequirement, requirement);
             requirements.add(requirement);
         }
