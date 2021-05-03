@@ -48,7 +48,7 @@ public class DeleteAllSecurityRequirementsCommand extends AbstractCommand {
     }
     
     DeleteAllSecurityRequirementsCommand(ISecurityRequirementParent parent) {
-        Library.createNodePath((Node) parent);
+        this._parentPath = Library.createNodePath((Node) parent);
     }
     
     /**
