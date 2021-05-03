@@ -275,6 +275,7 @@
     { "name": "[AsyncAPI 2] {Delete All Message Examples} - Delete All Message Examples", "test": "commands/delete-all-message-examples/asyncapi-2/delete-all-message-examples" },
     { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" },
     { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" },
+    { "name": "[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/asyncapi-2/delete-all-security-schemes" },
     { "name": "[AsyncAPI 2] {New Channel} - New Channel", "test": "commands/new-channel/asyncapi-2/new-channel" },
     { "name": "[AsyncAPI 2] {New Operation} - New Operation", "test": "commands/new-operation/asyncapi-2/new-operation" },
     { "name": "[AsyncAPI 2] {New Security Scheme} - New Security Scheme", "test": "commands/new-security-scheme/asyncapi-2/new-security-scheme" },

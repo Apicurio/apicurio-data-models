@@ -22,6 +22,9 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
@@ -78,6 +81,19 @@ public class DeleteAllSecuritySchemesCommand extends AbstractCommand {
                 });
             }
         }
+        
+        // Logic for an Aai 2.0 doc
+        if (document.getDocumentType() == DocumentType.asyncapi2) {
+            Aai20Document doc = (Aai20Document) document;
+            if (!this.isNullOrUndefined(doc.components)) {
+                doc.components.getSecuritySchemesList().forEach( scheme -> {
+                    Object savedScheme = Library.writeNode(scheme);
+                    JsonCompat.setPropertyString(savedScheme, "__name", scheme.getSchemeName());
+                    this._oldSecuritySchemes.add(savedScheme);
+                    doc.components.removeSecurityScheme(scheme.getSchemeName());
+                });
+            }
+        }
     }
     
     /**
@@ -113,6 +129,21 @@ public class DeleteAllSecuritySchemesCommand extends AbstractCommand {
             this._oldSecuritySchemes.forEach( savedScheme -> {
                 String name = JsonCompat.consumePropertyString(savedScheme, "__name");
                 Oas30SecurityScheme scheme = doc.components.createSecurityScheme(name);
+                Library.readNode(savedScheme, scheme);
+                doc.components.addSecurityScheme(name, scheme);
+            });
+        }
+
+        // Logic for an Aai 2.0 doc
+        if (document.getDocumentType() == DocumentType.asyncapi2) {
+            Aai20Document doc = (Aai20Document) document;
+            if (this.isNullOrUndefined(doc.components)) {
+                doc.components = doc.createComponents();
+            }
+            final Aai20NodeFactory nodeFactory = new Aai20NodeFactory();
+            this._oldSecuritySchemes.forEach( savedScheme -> {
+                String name = JsonCompat.consumePropertyString(savedScheme, "__name");
+                AaiSecurityScheme scheme = nodeFactory.createSecurityScheme(doc.components, name);
                 Library.readNode(savedScheme, scheme);
                 doc.components.addSecurityScheme(name, scheme);
             });
