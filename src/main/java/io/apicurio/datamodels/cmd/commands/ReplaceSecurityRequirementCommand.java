@@ -128,7 +128,20 @@ public class ReplaceSecurityRequirementCommand extends AbstractCommand {
         }
         boolean rval = true;
         for (String name1 : names1) {
-            if (names2.indexOf(name1) == -1) {
+            if (names2.indexOf(name1) == -1 || !areScopesEqual(req1.getScopes(name1), req2.getScopes(name1))) {
+                rval = false;
+            }
+        }
+        return rval;
+    }
+
+    protected boolean areScopesEqual(List<String> scopes1, List<String> scopes2) {
+        if(scopes1.size() != scopes2.size()) {
+            return false;
+        }
+        boolean rval = true;
+        for (String scope1 : scopes1) {
+            if (scopes2.indexOf(scope1) == -1) {
                 rval = false;
             }
         }

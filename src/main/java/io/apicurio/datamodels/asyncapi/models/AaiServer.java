@@ -22,6 +22,8 @@ import java.util.List;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
+import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
+import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -31,12 +33,12 @@ import io.apicurio.datamodels.core.visitors.IVisitor;
  * @author eric.wittmann@gmail.com
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiServer extends Server implements INamed {
+public abstract class AaiServer extends Server implements INamed, ISecurityRequirementParent {
 
     public String _name;
     public String protocol;
     public String protocolVersion;
-    public List<AaiSecurityRequirement> security;
+    public List<SecurityRequirement> security;
     public AaiServerBindings bindings;
 
     /**
@@ -97,17 +99,22 @@ public abstract class AaiServer extends Server implements INamed {
         this._name = newName;
     }
 
-
+    @Override
+    public List<SecurityRequirement> getSecurityRequirements() {
+        return this.security;
+    }
+    
     /**
      * Adds a security requirement child.
      *
      * @param securityRequirement
      */
-    public AaiSecurityRequirement addSecurityRequirement(AaiSecurityRequirement securityRequirement) {
+    @Override
+    public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement) {
         if (this.security == null) {
             this.security = new ArrayList<>();
         }
-        this.security.add(securityRequirement);
+        this.security.add(((AaiSecurityRequirement) securityRequirement));
         return securityRequirement;
     }
 }
