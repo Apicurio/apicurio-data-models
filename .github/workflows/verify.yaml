@@ -31,6 +31,9 @@ jobs:
           java-version: 1.8
       - name: Build Project
         run: |
+          echo "======================================================="
+          mvn --version
+          echo "======================================================="
           mvn -N io.takari:maven:wrapper -Dmaven=3.6.3
           echo "======================================================="
           ./mvnw --version
