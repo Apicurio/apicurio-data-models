@@ -273,6 +273,8 @@
     { "name": "[AsyncAPI 2] {Delete Message Example} - Delete Message Example JSON", "test": "commands/delete-message-example/asyncapi-2/delete-message-example-json" },
     { "name": "[AsyncAPI 2] {Delete Message Example} - Delete Message Example Exists", "test": "commands/delete-message-example/asyncapi-2/delete-message-example-exists" },
     { "name": "[AsyncAPI 2] {Delete All Message Examples} - Delete All Message Examples", "test": "commands/delete-all-message-examples/asyncapi-2/delete-all-message-examples" },
+    { "name": "[AsyncAPI 2] {Delete All Channel Operations} - Delete All Channel Operations", "test": "commands/delete-all-operations/asyncapi-2/delete-all-operations" },
+    { "name": "[AsyncAPI 2] {Delete All Channel Operations} - Delete All Channel Operations Only One Operation", "test": "commands/delete-all-operations/asyncapi-2/delete-all-operations-single-operation" },
     { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" },
     { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" },
     { "name": "[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/asyncapi-2/delete-all-security-schemes" },
