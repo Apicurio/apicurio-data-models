@@ -77,7 +77,7 @@
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
         <version.maven-javadoc-plugin>3.2.0</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
-        <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
+        <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.11.3</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.8</version.org.sonatype.plugins.nexus-staging-maven-plugin>
