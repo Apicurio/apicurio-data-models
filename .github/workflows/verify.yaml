@@ -20,7 +20,7 @@ on:
 jobs:
   build-verify:
     name: Verify Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.repository_owner == 'Apicurio'
     steps:
       - name: Checkout Code
