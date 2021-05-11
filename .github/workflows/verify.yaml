@@ -20,7 +20,7 @@ on:
 jobs:
   build-verify:
     name: Verify Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.repository_owner == 'Apicurio'
     steps:
       - name: Checkout Code
@@ -32,10 +32,12 @@ jobs:
       - name: Build Project
         run: |
           echo "======================================================="
+          echo "Java Home: $JAVA_HOME"
           mvn --version
           echo "======================================================="
           mvn -N io.takari:maven:wrapper -Dmaven=3.6.3
           echo "======================================================="
+          echo "Java Home: $JAVA_HOME"
           ./mvnw --version
           echo "======================================================="
           ./mvnw clean install -Ptranspilation
