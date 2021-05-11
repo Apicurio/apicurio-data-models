@@ -39,4 +39,7 @@ jobs:
       - name: Build Project
         run: |
           mvn -N io.takari:maven:wrapper -Dmaven=3.6.3
+          echo "======================================================="
+          ./mvnw --version
+          echo "======================================================="
           ./mvnw clean install -Ptranspilation
