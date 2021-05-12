@@ -25,19 +25,5 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - name: Build Project
-        run: |
-          echo "======================================================="
-          echo "Java Home: $JAVA_HOME"
-          mvn --version
-          echo "======================================================="
-          mvn -N io.takari:maven:wrapper -Dmaven=3.6.3
-          echo "======================================================="
-          echo "Java Home: $JAVA_HOME"
-          ./mvnw --version
-          echo "======================================================="
-          ./mvnw clean install -Ptranspilation
+        run: docker run -t --rm -v $(pwd)/:/home/ jimador/docker-jdk-8-maven-node bash -c 'cd /home && mvn clean install -Ptranspilation'

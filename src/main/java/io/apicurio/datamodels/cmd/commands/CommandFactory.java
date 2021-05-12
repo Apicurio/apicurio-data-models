@@ -189,6 +189,8 @@ public class CommandFactory {
             { return new DeleteAllMessageExamplesCommand_Aai20(); }
             case "DeleteAllOperationsCommand":
             { return new DeleteAllOperationsCommand(); }
+            case "DeleteAllOperationsCommand_Aai20":
+            { return new DeleteAllOperationsCommand_Aai20(); }
             case "DeleteAllParametersCommand_20":
             case "DeleteAllParametersCommand_30":
             case "DeleteAllParametersCommand":
@@ -628,6 +630,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllOperationsCommand(OasPathItem pathItem) {
         return new DeleteAllOperationsCommand(pathItem);
+    }
+
+    public static final ICommand createDeleteAllOperationsCommand_Aai20(AaiChannelItem pathItem) {
+        return new DeleteAllOperationsCommand_Aai20(pathItem);
     }
     
     public static final ICommand createDeleteAllParametersCommand(IOasParameterParent parent, 
