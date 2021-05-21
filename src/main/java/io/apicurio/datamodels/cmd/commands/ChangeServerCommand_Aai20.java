@@ -24,7 +24,6 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.Server;
 
 /**

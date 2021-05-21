@@ -26,7 +26,6 @@ import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.NodePath;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
