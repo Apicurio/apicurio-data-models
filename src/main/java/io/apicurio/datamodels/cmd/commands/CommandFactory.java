@@ -54,6 +54,7 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
+import io.apicurio.datamodels.openapi.v3.models.IOas30HttpHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
@@ -808,6 +809,10 @@ public class CommandFactory {
     
     public static final ICommand createNewMediaTypeCommand(IOas30MediaTypeParent parent, String newMediaType) {
         return new NewMediaTypeCommand(parent, newMediaType);
+    }
+
+    public static final ICommand createNewHttpHeaderCommand(IOas30HttpHeaderParent parent, String newResponseHttpHeader) {
+        return new NewHttpHeaderCommand(parent, newResponseHttpHeader);
     }
     
     public static final ICommand createNewOperationCommand(String path, String method) {
