@@ -21,14 +21,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 
 /**
  * Models an OpenAPI 3.0.x response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Response extends OasResponse implements IOas30MediaTypeParent {
+public class Oas30Response extends OasResponse implements IOas30MediaTypeParent, IOasHttpHeaderParent {
 
+    // header parameters
     public Map<String, Oas30Header> headers = new LinkedHashMap<>();
     public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
     public Map<String, Oas30Link> links = new LinkedHashMap<>();
@@ -183,4 +185,35 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent 
         return rval;
     }
 
+    /**
+     * Creates a http header.
+     * @param name
+     */
+    @Override
+    public OasHeader createHttpHeader(String name) {
+        Oas30Header rval = new Oas30Header(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    @Override
+    public void addHttpHeader(String name, OasHeader httpHeader) {
+        this.headers.put(name, (Oas30Header) httpHeader);
+    }
+
+    @Override
+    public OasHeader getHttpHeader(String name) {
+        return null;
+    }
+
+    @Override
+    public OasHeader removeHttpHeader(String name) {
+        return null;
+    }
+
+    @Override
+    public List<OasHeader> getHttpHeaders() {
+        return null;
+    }
 }

@@ -46,6 +46,7 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
 import io.apicurio.datamodels.openapi.models.IOasParameterParent;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
@@ -54,9 +55,10 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
-import io.apicurio.datamodels.openapi.v3.models.IOas30HttpHeaderParent;
+import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -140,6 +142,8 @@ public class CommandFactory {
             { return new ChangeLicenseCommand(); }
             case "ChangeMediaTypeTypeCommand":
             { return new ChangeMediaTypeTypeCommand(); }
+            case "ChangeHeaderCommand":
+            { return new ChangeHeaderCommand(); }
             case "ChangeParameterTypeCommand_20": 
             { return new ChangeParameterTypeCommand_20(); }
             case "ChangeParameterDefinitionTypeCommand_20": 
@@ -232,6 +236,8 @@ public class CommandFactory {
             { return new DeleteLicenseCommand(); }
             case "DeleteMediaTypeCommand":
             { return new DeleteMediaTypeCommand(); }
+            case "DeleteHeaderCommand":
+            { return new DeleteHeaderCommand(); }
             case "DeleteOperationCommand":
             case "DeleteOperationCommand_20":
             case "DeleteOperationCommand_30":
@@ -302,6 +308,8 @@ public class CommandFactory {
             
             case "NewMediaTypeCommand":
             { return new NewMediaTypeCommand(); }
+            case "NewHeaderCommand":
+            { return new NewHeaderCommand(); }
             case "NewOperationCommand":
             case "NewOperationCommand_20":
             case "NewOperationCommand_30":
@@ -635,6 +643,10 @@ public class CommandFactory {
         return new DeleteAllOperationsCommand(pathItem);
     }
 
+    public static final ICommand createDeleteAllHeadersCommand(IOasHttpHeaderParent header) {
+        return new DeleteAllHeadersCommand(header);
+    }
+
     public static final ICommand createDeleteAllOperationsCommand_Aai20(AaiChannelItem pathItem) {
         return new DeleteAllOperationsCommand_Aai20(pathItem);
     }
@@ -703,6 +715,10 @@ public class CommandFactory {
     
     public static final ICommand createDeleteMediaTypeCommand(Oas30MediaType mediaType) {
         return new DeleteMediaTypeCommand(mediaType);
+    }
+
+    public static final ICommand createDeleteHeaderCommand(OasHeader header) {
+        return new DeleteHeaderCommand(header);
     }
     
     public static final ICommand createDeleteOperationCommand(String opMethod, OasPathItem pathItem) {
@@ -811,8 +827,8 @@ public class CommandFactory {
         return new NewMediaTypeCommand(parent, newMediaType);
     }
 
-    public static final ICommand createNewHttpHeaderCommand(IOas30HttpHeaderParent parent, String newResponseHttpHeader) {
-        return new NewHttpHeaderCommand(parent, newResponseHttpHeader);
+    public static final ICommand createNewHeaderCommand(IOasHttpHeaderParent parent, String newResponseHeader) {
+        return new NewHeaderCommand(parent, newResponseHeader);
     }
     
     public static final ICommand createNewOperationCommand(String path, String method) {
