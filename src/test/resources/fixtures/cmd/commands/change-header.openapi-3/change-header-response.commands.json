@@ -1,0 +1,10 @@
+[
+	{
+		"__type": "ChangeHeaderCommand",
+        "_headerPath" : "/paths[/foo]/get/responses[200]",
+        "_headerName" : "X-RateLimit-Limit",
+        "_newHeader" : {
+          "X-RateLimit-Remaining": 0
+        }
+	}
+]

@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteHeaderCommand",
+    "_headerName": "X-RateLimit-Limit",
+    "_headerPath": "/paths[/foo]/get/responses[200]"
+}]

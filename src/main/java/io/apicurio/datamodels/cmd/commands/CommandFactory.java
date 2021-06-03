@@ -55,10 +55,9 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
-import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
+import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -643,7 +642,7 @@ public class CommandFactory {
         return new DeleteAllOperationsCommand(pathItem);
     }
 
-    public static final ICommand createDeleteAllHeadersCommand(IOasHttpHeaderParent header) {
+    public static final ICommand createDeleteAllHeadersCommand(IOasHeaderParent header) {
         return new DeleteAllHeadersCommand(header);
     }
 
@@ -827,8 +826,8 @@ public class CommandFactory {
         return new NewMediaTypeCommand(parent, newMediaType);
     }
 
-    public static final ICommand createNewHeaderCommand(IOasHttpHeaderParent parent, String newResponseHeader) {
-        return new NewHeaderCommand(parent, newResponseHeader);
+    public static final ICommand createNewHeaderCommand(IOasHeaderParent parent, OasHeader newHeader) {
+        return new NewHeaderCommand(parent, newHeader);
     }
     
     public static final ICommand createNewOperationCommand(String path, String method) {

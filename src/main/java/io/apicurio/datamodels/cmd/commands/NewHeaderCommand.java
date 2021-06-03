@@ -24,7 +24,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
+import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
 
 /**
  * A command used to create a new http header.
@@ -33,16 +33,18 @@ import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
 public class NewHeaderCommand extends AbstractCommand {
 
     public NodePath _nodePath;
-    public String _newHeader;
+    public String _name;
+    public Object _newHeader;
 
     public boolean _created;
 
     NewHeaderCommand() {
     }
 
-    NewHeaderCommand(IOasHttpHeaderParent parent, String newHttpHeader) {
+    NewHeaderCommand(IOasHeaderParent parent, OasHeader newHeader) {
         this._nodePath = Library.createNodePath((Node) parent);
-        this._newHeader = newHttpHeader;
+        this._newHeader = Library.writeNode(newHeader);
+        this._name = newHeader.getName();
     }
     
     /**
@@ -53,17 +55,17 @@ public class NewHeaderCommand extends AbstractCommand {
         LoggerCompat.info("[NewHttpHeaderCommand] Executing.");
         this._created = false;
 
-        IOasHttpHeaderParent node = (IOasHttpHeaderParent) this._nodePath.resolve(document);
+        IOasHeaderParent node = (IOasHeaderParent) this._nodePath.resolve(document);
         if (this.isNullOrUndefined(node)) {
             return;
         }
 
-        OasHeader httpHeader = node.getHttpHeader(this._newHeader);
+        OasHeader httpHeader = node.getHttpHeader(this._name);
         if (ModelUtils.isDefined(httpHeader)) {
             return;
         }
 
-        node.addHttpHeader(this._newHeader, node.createHttpHeader(this._newHeader));
+        node.addHttpHeader(this._name,node.createHttpHeader(this._name));
         this._created = true;
     }
     
@@ -78,12 +80,12 @@ public class NewHeaderCommand extends AbstractCommand {
             return;
         }
 
-        IOasHttpHeaderParent node = (IOasHttpHeaderParent) this._nodePath.resolve(document);
+        IOasHeaderParent node = (IOasHeaderParent) this._nodePath.resolve(document);
         if (this.isNullOrUndefined(node)) {
             return;
         }
 
-        node.removeHttpHeader(this._newHeader);
+        node.removeHttpHeader(this._name);
     }
 
 }

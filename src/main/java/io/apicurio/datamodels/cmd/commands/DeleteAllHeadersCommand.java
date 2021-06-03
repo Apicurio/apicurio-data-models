@@ -19,20 +19,13 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
-import io.apicurio.datamodels.compat.NodeCompat;
-import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.IOasParameterParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.models.OasOperation;
-import io.apicurio.datamodels.openapi.models.OasParameter;
-import io.apicurio.datamodels.openapi.models.OasPathItem;
-import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
+import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +45,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     DeleteAllHeadersCommand() {
     }
 
-    DeleteAllHeadersCommand(IOasHttpHeaderParent parent) {
+    DeleteAllHeadersCommand(IOasHeaderParent parent) {
         this._parentPath = Library.createNodePath((Node) parent);
     }
     
@@ -64,7 +57,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
         LoggerCompat.info("[DeleteAllHeadersCommand] Executing.");
         this._oldHeaders = new ArrayList<>();
 
-        IOasHttpHeaderParent parent = (IOasHttpHeaderParent) this._parentPath.resolve(document);
+        IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
         List<OasHeader> headers = parent.getHttpHeaders();
         if (this.isNullOrUndefined(parent) || this.isNullOrUndefined(headers) || headers.size() == 0) {
             return;
@@ -98,7 +91,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             return;
         }
 
-        IOasHttpHeaderParent parent = (IOasHttpHeaderParent) this._parentPath.resolve(document);
+        IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
         if (this.isNullOrUndefined(parent)) {
             return;
         }
