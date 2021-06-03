@@ -23,26 +23,26 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.v3.models.IOas30HttpHeaderParent;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
+import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.v3.models.IOasHttpHeaderParent;
 
 /**
  * A command used to create a new http header.
  * @author vvilerio
  */
-public class NewHttpHeaderCommand extends AbstractCommand {
+public class NewHeaderCommand extends AbstractCommand {
 
     public NodePath _nodePath;
-    public String _newHttpHeader;
+    public String _newHeader;
 
     public boolean _created;
 
-    NewHttpHeaderCommand() {
+    NewHeaderCommand() {
     }
 
-    NewHttpHeaderCommand(IOas30HttpHeaderParent parent, String newHttpHeader) {
+    NewHeaderCommand(IOasHttpHeaderParent parent, String newHttpHeader) {
         this._nodePath = Library.createNodePath((Node) parent);
-        this._newHttpHeader = newHttpHeader;
+        this._newHeader = newHttpHeader;
     }
     
     /**
@@ -53,17 +53,17 @@ public class NewHttpHeaderCommand extends AbstractCommand {
         LoggerCompat.info("[NewHttpHeaderCommand] Executing.");
         this._created = false;
 
-        IOas30HttpHeaderParent node = (IOas30HttpHeaderParent) this._nodePath.resolve(document);
+        IOasHttpHeaderParent node = (IOasHttpHeaderParent) this._nodePath.resolve(document);
         if (this.isNullOrUndefined(node)) {
             return;
         }
 
-        Oas30Header httpHeader = node.getHttpHeader(this._newHttpHeader);
+        OasHeader httpHeader = node.getHttpHeader(this._newHeader);
         if (ModelUtils.isDefined(httpHeader)) {
             return;
         }
 
-        node.addHttpHeader(this._newHttpHeader, node.createHttpHeader(this._newHttpHeader));
+        node.addHttpHeader(this._newHeader, node.createHttpHeader(this._newHeader));
         this._created = true;
     }
     
@@ -72,18 +72,18 @@ public class NewHttpHeaderCommand extends AbstractCommand {
      */
     @Override
     public void undo(Document document) {
-        LoggerCompat.info("[NewHttpHeaderCommand] Reverting.");
+        LoggerCompat.info("[NewHeaderCommand] Reverting.");
         if (!this._created) {
-            LoggerCompat.info("[NewHttpHeaderCommand] http header already existed, nothing done so no rollback necessary.");
+            LoggerCompat.info("[NewHeaderCommand] http header already existed, nothing done so no rollback necessary.");
             return;
         }
 
-        IOas30HttpHeaderParent node = (IOas30HttpHeaderParent) this._nodePath.resolve(document);
+        IOasHttpHeaderParent node = (IOasHttpHeaderParent) this._nodePath.resolve(document);
         if (this.isNullOrUndefined(node)) {
             return;
         }
 
-        node.removeHttpHeader(this._newHttpHeader);
+        node.removeHttpHeader(this._newHeader);
     }
 
 }
