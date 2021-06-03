@@ -7,11 +7,10 @@ import java.util.List;
 /**
  * @author vvilerio
  */
-public interface IOasHttpHeaderParent {
+public interface IOasHeaderParent {
 
    /**
     * Creates a http header.
-    * @param name
     */
    public OasHeader createHttpHeader(String name);
 

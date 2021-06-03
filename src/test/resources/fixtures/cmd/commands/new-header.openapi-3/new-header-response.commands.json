@@ -1,0 +1,7 @@
+[{
+    "__type": "NewHeaderCommand",
+    "_nodePath": "/paths[/foo]/get/responses[200]",
+    "_newHeader": {
+        "X-RateLimit-Remaining": 0
+    }
+}]

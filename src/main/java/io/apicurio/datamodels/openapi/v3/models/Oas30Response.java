@@ -28,7 +28,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  * Models an OpenAPI 3.0.x response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Response extends OasResponse implements IOas30MediaTypeParent, IOasHttpHeaderParent {
+public class Oas30Response extends OasResponse implements IOas30MediaTypeParent, IOasHeaderParent {
 
     // header parameters
     public Map<String, Oas30Header> headers = new LinkedHashMap<>();
@@ -202,18 +202,22 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
         this.headers.put(name, (Oas30Header) httpHeader);
     }
 
+
+
     @Override
     public OasHeader getHttpHeader(String name) {
-        return null;
+        return this.headers.get(name);
     }
 
     @Override
     public OasHeader removeHttpHeader(String name) {
-        return null;
+        return this.headers.remove(name);
     }
 
     @Override
     public List<OasHeader> getHttpHeaders() {
-        return null;
+        List<OasHeader> rval = new ArrayList<>();
+        rval.addAll(this.headers.values());
+        return rval;
     }
 }
