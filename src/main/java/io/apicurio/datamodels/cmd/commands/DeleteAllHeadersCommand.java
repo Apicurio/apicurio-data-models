@@ -25,7 +25,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
         this._oldHeaders = new ArrayList<>();
 
         IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
-        List<OasHeader> headers = parent.getHttpHeaders();
+        List<OasHeader> headers = parent.getHeaders();
         if (this.isNullOrUndefined(parent) || this.isNullOrUndefined(headers) || headers.size() == 0) {
             return;
         }
@@ -98,9 +98,9 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
 
         this._oldHeaders.forEach( header -> {
             final OasHeader tmpHeader = (OasHeader) header;
-            OasHeader h = parent.createHttpHeader(tmpHeader.getName());
+            OasHeader h = parent.createHeader(tmpHeader.getName());
             Library.readNode(header, h);
-            parent.addHttpHeader(tmpHeader.getName(),h);
+            parent.addHeader(tmpHeader.getName(),h);
         });
 
     }

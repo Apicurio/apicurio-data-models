@@ -17,13 +17,19 @@
 package io.apicurio.datamodels.openapi.v2.models;
 
 import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Models an OpenAPI 2.0 response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20Response extends OasResponse implements IExampleParent {
+public class Oas20Response extends OasResponse implements IExampleParent, IOasHeaderParent {
 
     public Oas20Headers headers;
     public Oas20Schema schema;
@@ -48,12 +54,63 @@ public class Oas20Response extends OasResponse implements IExampleParent {
     }
 
     /**
+     * Creates a http header.
+     * @param name
+     */
+    @Override
+    public Oas20Header createHeader(String name) {
+        Oas20Header rval = new Oas20Header(name);
+        rval._ownerDocument = this.ownerDocument();
+        rval._parent = this;
+        return rval;
+    }
+
+    /**
      * Creates an OAS 2.0 headers object.
      */
     public Oas20Headers createHeaders() {
         Oas20Headers rval = new Oas20Headers();
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
+        return rval;
+    }
+
+    /**
+     * Adds a header.
+     * @param name
+     * @param header
+     */
+    @Override
+    public void addHeader(String name, OasHeader header) {
+        this.headers.addHeader(name, (Oas20Header) header);
+    }
+
+    /**
+     * Gets a single header by name.
+     * @param name
+     */
+    @Override
+    public OasHeader getHeader(String name) {
+        return this.headers.getHeader(name);
+    }
+
+    /**
+     * Removes a single header and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
+    @Override
+    public OasHeader removeHeader(String name) {
+        return this.headers.removeHeader(name);
+    }
+
+    /**
+     * Gets a list of all headers.
+     * @return
+     */
+    @Override
+    public List<OasHeader> getHeaders() {
+        List<OasHeader> rval = new ArrayList<>();
+        rval.addAll(this.headers.getHeaders());
         return rval;
     }
 

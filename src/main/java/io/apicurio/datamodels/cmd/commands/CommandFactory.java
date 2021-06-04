@@ -55,7 +55,7 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
-import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
