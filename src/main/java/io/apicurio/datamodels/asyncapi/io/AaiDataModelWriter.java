@@ -390,8 +390,13 @@ public abstract class AaiDataModelWriter extends DataModelWriter implements IAai
         Object parent = this.lookupParentJson(node);
         Object json = this.writeOperationBase(aaiNode);
 
-        JsonCompat.setPropertyNull(json, Constants.PROP_TRAITS); // prop
-        JsonCompat.setPropertyNull(json, Constants.PROP_MESSAGE); // prop
+        JsonCompat.setPropertyNull(json, Constants.PROP_TRAITS);
+        if (aaiNode.message != null) {
+            Object messageJson = writeMessageBase(aaiNode.message);
+            JsonCompat.setProperty(json, Constants.PROP_MESSAGE, messageJson);
+        } else {
+            JsonCompat.setPropertyNull(json, Constants.PROP_MESSAGE);
+        }
         // PROCESS PARENT
         JsonCompat.setProperty(parent, node.getType(), json);
 

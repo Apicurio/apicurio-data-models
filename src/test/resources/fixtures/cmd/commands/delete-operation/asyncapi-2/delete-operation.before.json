@@ -8,7 +8,10 @@
     "myChannel": {
       "description": "This is myChannel description",
       "subscribe": {
-        "summary": "Subscribe summary"
+        "summary": "Subscribe summary",
+        "message": {
+          "name": "bullshit"
+        }
       }
     }
   }
