@@ -24,7 +24,7 @@ import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 
 /**
  * A command used to delete a single header .
@@ -62,7 +62,7 @@ public class DeleteHeaderCommand extends AbstractCommand {
         }
 
         IOasHeaderParent parent = (IOasHeaderParent) header.parent();
-        parent.removeHttpHeader(this._headerName);
+        parent.removeHeader(this._headerName);
 
         this._oldHeader = Library.writeNode(header);
     }
@@ -82,9 +82,9 @@ public class DeleteHeaderCommand extends AbstractCommand {
             return;
         }
 
-        OasHeader header = parent.createHttpHeader(this._headerName);
+        OasHeader header = parent.createHeader(this._headerName);
         Library.readNode(this._oldHeader, header);
-        parent.addHttpHeader(this._headerName, header);
+        parent.addHeader(this._headerName, header);
     }
 
 }

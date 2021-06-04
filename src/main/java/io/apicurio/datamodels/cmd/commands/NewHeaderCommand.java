@@ -24,7 +24,7 @@ import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.v3.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 
 /**
  * A command used to create a new http header.
@@ -60,12 +60,14 @@ public class NewHeaderCommand extends AbstractCommand {
             return;
         }
 
-        OasHeader httpHeader = node.getHttpHeader(this._name);
-        if (ModelUtils.isDefined(httpHeader)) {
+        OasHeader header = node.getHeader(this._name);
+        if (ModelUtils.isDefined(header)) {
             return;
         }
 
-        node.addHttpHeader(this._name,node.createHttpHeader(this._name));
+        OasHeader nodeHeader = node.createHeader(this._name);
+        Library.readNode(this._newHeader, nodeHeader);
+        node.addHeader(this._name, nodeHeader);
         this._created = true;
     }
     
@@ -76,7 +78,7 @@ public class NewHeaderCommand extends AbstractCommand {
     public void undo(Document document) {
         LoggerCompat.info("[NewHeaderCommand] Reverting.");
         if (!this._created) {
-            LoggerCompat.info("[NewHeaderCommand] http header already existed, nothing done so no rollback necessary.");
+            LoggerCompat.info("[NewHeaderCommand]  header already existed, nothing done so no rollback necessary.");
             return;
         }
 
@@ -85,7 +87,7 @@ public class NewHeaderCommand extends AbstractCommand {
             return;
         }
 
-        node.removeHttpHeader(this._name);
+        node.removeHeader(this._name);
     }
 
 }

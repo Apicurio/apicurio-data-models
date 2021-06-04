@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 
@@ -50,50 +51,7 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
         return this.getName();
     }
 
-    /**
-     * Creates a header.
-     * @param name
-     */
-    public Oas30Header createHeader(String name) {
-        Oas30Header rval = new Oas30Header(name);
-        rval._ownerDocument = this.ownerDocument();
-        rval._parent = this;
-        return rval;
-    }
 
-    /**
-     * Adds a header.
-     * @param name
-     * @param header
-     */
-    public void addHeader(String name, Oas30Header header) {
-        this.headers.put(name, header);
-    }
-
-    /**
-     * Gets a single header by name.
-     * @param name
-     */
-    public Oas30Header getHeader(String name) {
-        return this.headers.get(name);
-    }
-
-    /**
-     * Removes a single header and returns it.  This may return null or undefined if none found.
-     * @param name
-     */
-    public Oas30Header removeHeader(String name) {
-        return this.headers.remove(name);
-    }
-
-    /**
-     * Gets a list of all headers.
-     */
-    public List<Oas30Header> getHeaders() {
-        List<Oas30Header> rval = new ArrayList<>();
-        rval.addAll(this.headers.values());
-        return rval;
-    }
 
     /**
      * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#createMediaType(java.lang.String)
@@ -190,32 +148,47 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
      * @param name
      */
     @Override
-    public OasHeader createHttpHeader(String name) {
+    public Oas30Header createHeader(String name) {
         Oas30Header rval = new Oas30Header(name);
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
         return rval;
     }
 
+    /**
+     * Adds a header.
+     * @param name
+     * @param header
+     */
     @Override
-    public void addHttpHeader(String name, OasHeader httpHeader) {
-        this.headers.put(name, (Oas30Header) httpHeader);
+    public void addHeader(String name, OasHeader header) {
+        this.headers.put(name, (Oas30Header) header);
     }
 
-
-
+    /**
+     * Gets a single header by name.
+     * @param name
+     */
     @Override
-    public OasHeader getHttpHeader(String name) {
+    public OasHeader getHeader(String name) {
         return this.headers.get(name);
     }
 
+    /**
+     * Removes a single header and returns it.  This may return null or undefined if none found.
+     * @param name
+     */
     @Override
-    public OasHeader removeHttpHeader(String name) {
+    public OasHeader removeHeader(String name) {
         return this.headers.remove(name);
     }
 
+    /**
+     * Gets a list of all headers.
+     * @return
+     */
     @Override
-    public List<OasHeader> getHttpHeaders() {
+    public List<OasHeader> getHeaders() {
         List<OasHeader> rval = new ArrayList<>();
         rval.addAll(this.headers.values());
         return rval;
