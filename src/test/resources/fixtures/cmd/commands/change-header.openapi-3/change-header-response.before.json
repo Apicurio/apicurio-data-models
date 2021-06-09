@@ -6,7 +6,6 @@
         "responses": {
           "200": {
             "headers": {
-              "X-RateLimit-Limit": 0
             },
             "content": {
               "application/json": {

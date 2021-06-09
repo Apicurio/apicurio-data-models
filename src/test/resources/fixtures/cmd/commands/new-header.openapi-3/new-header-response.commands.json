@@ -1,12 +1,5 @@
 [{
     "__type": "NewHeaderCommand",
     "_nodePath": "/paths[/foo]/get/responses[200]",
-    "_name": "X-RateLimit-Remaining",
-    "_newHeader": {
-        "description": "Request limit per hour",
-        "schema": {
-            "type": "integer",
-            "description": "test"
-        }
-    }
+    "_name": "X-RateLimit-Remaining"
 }]
