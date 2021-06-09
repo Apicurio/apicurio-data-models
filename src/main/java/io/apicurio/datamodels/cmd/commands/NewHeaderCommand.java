@@ -41,10 +41,10 @@ public class NewHeaderCommand extends AbstractCommand {
     NewHeaderCommand() {
     }
 
-    NewHeaderCommand(IOasHeaderParent parent, OasHeader newHeader) {
+    NewHeaderCommand(IOasHeaderParent parent, String name) {
         this._nodePath = Library.createNodePath((Node) parent);
-        this._newHeader = Library.writeNode(newHeader);
-        this._name = newHeader.getName();
+//        this._newHeader = Library.writeNode(newHeader);
+        this._name = name;
     }
     
     /**
@@ -66,7 +66,7 @@ public class NewHeaderCommand extends AbstractCommand {
         }
 
         OasHeader nodeHeader = node.createHeader(this._name);
-        Library.readNode(this._newHeader, nodeHeader);
+//        Library.readNode(this._newHeader, nodeHeader);
         node.addHeader(this._name, nodeHeader);
         this._created = true;
     }

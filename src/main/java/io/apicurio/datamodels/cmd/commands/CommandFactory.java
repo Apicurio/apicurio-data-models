@@ -52,12 +52,14 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -141,8 +143,10 @@ public class CommandFactory {
             { return new ChangeLicenseCommand(); }
             case "ChangeMediaTypeTypeCommand":
             { return new ChangeMediaTypeTypeCommand(); }
-            case "ChangeHeaderCommand":
-            { return new ChangeHeaderCommand(); }
+            case "ChangeHeaderCommand_20":
+            { return new ChangeHeaderCommand_20(); }
+            case "ChangeHeaderCommand_30":
+            { return new ChangeHeaderCommand_30(); }
             case "ChangeParameterTypeCommand_20": 
             { return new ChangeParameterTypeCommand_20(); }
             case "ChangeParameterDefinitionTypeCommand_20": 
@@ -540,7 +544,17 @@ public class CommandFactory {
     public static final ICommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
     }
-    
+
+    public static final ICommand createChangeHeaderCommand_30(Oas30Header header, OasHeader newHeader,
+                                                              String name) {
+        return new ChangeHeaderCommand_30(header, newHeader, name);
+    }
+
+    public static final ICommand createChangeHeaderCommand_20(Oas20Header header, OasHeader newHeader,
+                                                              String name) {
+        return new ChangeHeaderCommand_20( header, newHeader, name);
+    }
+
     public static final ICommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 
             SimplifiedType newType) {
         return new ChangeMediaTypeTypeCommand(mediaType, newType);
@@ -826,8 +840,8 @@ public class CommandFactory {
         return new NewMediaTypeCommand(parent, newMediaType);
     }
 
-    public static final ICommand createNewHeaderCommand(IOasHeaderParent parent, OasHeader newHeader) {
-        return new NewHeaderCommand(parent, newHeader);
+    public static final ICommand createNewHeaderCommand(IOasHeaderParent parent, String name) {
+        return new NewHeaderCommand(parent, name);
     }
     
     public static final ICommand createNewOperationCommand(String path, String method) {
