@@ -33,7 +33,6 @@ import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 public class DeleteHeaderCommand extends AbstractCommand {
 
     public String _headerName;
-    public NodePath _headerPath;
     public NodePath _parentPath;
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
@@ -44,7 +43,6 @@ public class DeleteHeaderCommand extends AbstractCommand {
 
     DeleteHeaderCommand(OasHeader header) {
         this._headerName = header.getName();
-        this._headerPath = Library.createNodePath(header);
         this._parentPath = Library.createNodePath(header.parent());
     }
     
@@ -56,12 +54,12 @@ public class DeleteHeaderCommand extends AbstractCommand {
         LoggerCompat.info("[DeleteHeaderCommand] Executing.");
         this._oldHeader = null;
 
-        OasHeader header = (OasHeader) this._headerPath.resolve(document);
+        IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
+        OasHeader header = parent.getHeader(_headerName);
         if (this.isNullOrUndefined(header)) {
             return;
         }
 
-        IOasHeaderParent parent = (IOasHeaderParent) header.parent();
         parent.removeHeader(this._headerName);
 
         this._oldHeader = Library.writeNode(header);

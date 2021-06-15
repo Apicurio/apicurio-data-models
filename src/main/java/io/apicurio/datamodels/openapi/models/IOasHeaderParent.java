@@ -1,7 +1,5 @@
 package io.apicurio.datamodels.openapi.models;
 
-import io.apicurio.datamodels.openapi.models.OasHeader;
-
 import java.util.List;
 
 /**

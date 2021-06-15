@@ -16,14 +16,13 @@
 
 package io.apicurio.datamodels.openapi.v2.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Models an OpenAPI 2.0 response.

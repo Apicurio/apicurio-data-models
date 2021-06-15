@@ -45,6 +45,7 @@ import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Server;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.IOasParameterParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasOperation;
@@ -52,14 +53,11 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasSchema;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Header;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
-import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -143,10 +141,8 @@ public class CommandFactory {
             { return new ChangeLicenseCommand(); }
             case "ChangeMediaTypeTypeCommand":
             { return new ChangeMediaTypeTypeCommand(); }
-            case "ChangeHeaderCommand_20":
-            { return new ChangeHeaderCommand_20(); }
-            case "ChangeHeaderCommand_30":
-            { return new ChangeHeaderCommand_30(); }
+            case "ChangeHeaderCommand":
+            { return new ChangeHeaderCommand(); }
             case "ChangeParameterTypeCommand_20": 
             { return new ChangeParameterTypeCommand_20(); }
             case "ChangeParameterDefinitionTypeCommand_20": 
@@ -217,6 +213,8 @@ public class CommandFactory {
             { return new DeleteAllSecuritySchemesCommand(); }
             case "DeleteAllServersCommand":
             { return new DeleteAllServersCommand(); }
+            case "DeleteAllHeadersCommand":
+            { return new DeleteAllHeadersCommand(); }
             case "DeleteAllServersCommand_Aai20":
             { return new DeleteAllServersCommand_Aai20(); }
             case "DeleteAllTagsCommand":
@@ -380,6 +378,8 @@ public class CommandFactory {
 
             case "RenameParameterCommand":
             { return new RenameParameterCommand(); }
+            case "RenameHeaderCommand":
+            { return new RenameHeaderCommand(); }
             case "RenameChannelItemCommand":
             { return new RenameChannelItemCommand(); }
             case "RenamePathItemCommand":
@@ -543,14 +543,8 @@ public class CommandFactory {
         return new ChangeContactCommand(name, email, url);
     }
 
-    public static final ICommand createChangeHeaderCommand_30(Oas30Header header, OasHeader newHeader,
-                                                              String name) {
-        return new ChangeHeaderCommand_30(header, newHeader, name);
-    }
-
-    public static final ICommand createChangeHeaderCommand_20(Oas20Header header, OasHeader newHeader,
-                                                              String name) {
-        return new ChangeHeaderCommand_20( header, newHeader, name);
+    public static final ICommand createChangeHeaderCommand(OasHeader header, OasHeader newHeader) {
+        return new ChangeHeaderCommand(header, newHeader);
     }
 
     public static final ICommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 
@@ -955,6 +949,11 @@ public class CommandFactory {
     public static final ICommand createRenameParameterCommand(IOasParameterParent parent, 
             String oldParamName, String newParamName, String paramIn) {
         return new RenameParameterCommand(parent, oldParamName, newParamName, paramIn);
+    }
+
+    public static final ICommand createRenameHeaderCommand(OasHeader parent,
+                                                              String oldHeaderName, String newHeaderName) {
+        return new RenameHeaderCommand(parent, oldHeaderName, newHeaderName);
     }
 
     public static final ICommand createRenameChannelItemCommand(String oldChannelName, String newChannelName) {

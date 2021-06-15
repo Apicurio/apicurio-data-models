@@ -6,7 +6,7 @@
         "responses": {
           "200": {
             "headers": {
-              "X-RateLimit-Limit": {
+              "X-RateLimit-Remaining": {
                 "description": "The rate limit",
                 "schema": {
                   "type": "integer"

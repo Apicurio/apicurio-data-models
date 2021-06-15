@@ -17,38 +17,37 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
-import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 
 /**
  * @author vvilerio
  */
-public abstract class ChangeHeaderCommand extends AbstractCommand {
+public class ChangeHeaderCommand extends AbstractCommand {
 
-   public NodePath _headerPath;
+   public NodePath _parentPath;
    public String _headerName;
-   public OasHeader _newHeader;
+   @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
+   public Object _newHeader;
 
    public boolean _changed;
 
    @JsonDeserialize(using = NullableJsonNodeDeserializer.class)
    public Object _oldHeader;
-
    ChangeHeaderCommand() {
    }
 
-   ChangeHeaderCommand(OasHeader header, OasHeader newHeader, String name) {
-      this._headerName = name;
-      this._headerPath = Library.createNodePath(header);
-      this._newHeader = newHeader;
+   ChangeHeaderCommand(OasHeader header, OasHeader newHeader) {
+      this._headerName = header.getName();
+      this._parentPath = Library.createNodePath(header);
+      this._newHeader = Library.writeNode(newHeader);
    }
 
    /**
@@ -59,7 +58,11 @@ public abstract class ChangeHeaderCommand extends AbstractCommand {
       LoggerCompat.info("[ChangeHeaderCommand] Executing.");
       this._changed = false;
 
-      Oas30Header header = (Oas30Header) this._headerPath.resolve(document);
+      IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
+      if (this.isNullOrUndefined(parent)) {
+          return;
+      }
+      OasHeader header = (OasHeader) parent.getHeader(_headerName);
       if (this.isNullOrUndefined(header)) {
          return;
       }
@@ -67,9 +70,9 @@ public abstract class ChangeHeaderCommand extends AbstractCommand {
       // Save the old info (for later undo operation)
       this._oldHeader = Library.writeNode(header);
 
-      // Change the parameter type
-//      String pDescription = (String) NodeCompat.getProperty(header,"description");
-      this.doChangeHeader(document, header,  null, null);
+      OasHeader newHeader = parent.createHeader(_headerName);
+      Library.readNode(this._newHeader, newHeader);
+      this.doChangeHeader(header, newHeader);
       this._changed = true;
    }
 
@@ -83,33 +86,30 @@ public abstract class ChangeHeaderCommand extends AbstractCommand {
          return;
       }
 
-      OasHeader header = (OasHeader) this._headerPath.resolve(document);
+      IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
+      if (this.isNullOrUndefined(parent)) {
+          return;
+      }
+      OasHeader header = (OasHeader) parent.getHeader(_headerName);
       if (this.isNullOrUndefined(header)) {
          return;
       }
 
-      IOasHeaderParent parent = (IOasHeaderParent) header.parent();
-
       OasHeader oldHeader = parent.createHeader(this._headerName);
       Library.readNode(this._oldHeader, oldHeader);
-      this.doRestoreHeader(header, oldHeader);
+      this.doChangeHeader(header, oldHeader);
    }
-
 
    /**
     * doChangeHeader
     *
-    * @param document
-    * @param header
+    * @param from
+    * @param to
     */
-   protected abstract void doChangeHeader(Document document, OasHeader header,  String pDescription, String pExampleName);
-
-   /**
-    * doRestoreHeader
-    *
-    * @param header
-    * @param oldHeader
-    */
-   protected abstract void doRestoreHeader(OasHeader header, OasHeader oldHeader);
+   protected void doChangeHeader(OasHeader from, OasHeader to) {
+       IOasHeaderParent parent = (IOasHeaderParent) from.parent();
+       parent.removeHeader(_headerName);
+       parent.addHeader(_headerName, to);
+   }
 
 }
