@@ -1,0 +1,13 @@
+[
+	{
+		"__type": "ChangeHeaderCommand",
+		"_parentPath": "/paths[/foo]/get/responses[200]",
+		"_headerName": "X-RateLimit-Remaining",
+		"_newHeader": {
+			"description": "The number of allowed requests in the current period",
+			"schema": {
+				"type": "integer"
+			}
+		}
+	}
+]

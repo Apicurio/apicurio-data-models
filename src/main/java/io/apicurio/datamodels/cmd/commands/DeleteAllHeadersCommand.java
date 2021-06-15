@@ -26,9 +26,12 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A command used to delete all headers from a document.
@@ -40,7 +43,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     public NodePath _parentPath;
 
     @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
-    public List<Object> _oldHeaders;
+    public Map<String,Object> _oldHeaders;
 
     DeleteAllHeadersCommand() {
     }
@@ -55,7 +58,6 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[DeleteAllHeadersCommand] Executing.");
-        this._oldHeaders = new ArrayList<>();
 
         IOasHeaderParent parent = (IOasHeaderParent) this._parentPath.resolve(document);
         List<OasHeader> headers = parent.getHeaders();
@@ -63,10 +65,12 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             return;
         }
 
-        // Save the params we're about to delete for later undd
+        this._oldHeaders = new HashMap<>();
+
+        // Save the params we're about to delete for later undo
         List<OasHeader> headersToRemove = new ArrayList<>();
         for (OasHeader header : headers) {
-            this._oldHeaders.add(Library.writeNode(header));
+            this._oldHeaders.put(header.getName(),Library.writeNode(header));
             headersToRemove.add(header);
 
         }
@@ -76,8 +80,10 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
         }
 
         headersToRemove.forEach(headerToRemove -> {
-            headers.remove(headerToRemove);
+            parent.removeHeader(headerToRemove.getName());
+//            headers.remove(headerToRemove);
         });
+
     }
     
     /**
@@ -96,12 +102,11 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             return;
         }
 
-        this._oldHeaders.forEach( header -> {
-            final OasHeader tmpHeader = (OasHeader) header;
-            OasHeader h = parent.createHeader(tmpHeader.getName());
-            Library.readNode(header, h);
-            parent.addHeader(tmpHeader.getName(),h);
-        });
+        for (String k : this._oldHeaders.keySet()) {
+            OasHeader header = parent.createHeader(k);
+            Library.readNode(this._oldHeaders.get(k), header);
+            parent.addHeader(k,header);
+        }
 
     }
 

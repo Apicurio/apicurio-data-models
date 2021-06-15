@@ -6,7 +6,18 @@
         "responses": {
           "200": {
             "headers": {
-              "X-RateLimit-Remaining": 0
+              "X-RateLimit-Limit": {
+                "description": "The rate limit",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "The number of request",
+                "schema": {
+                  "type": "integer"
+                }
+              }
             },
             "content": {
               "application/json": {

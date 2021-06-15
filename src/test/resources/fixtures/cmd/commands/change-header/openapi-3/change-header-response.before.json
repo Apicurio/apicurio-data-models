@@ -6,10 +6,9 @@
         "responses": {
           "200": {
             "headers": {
-              "X-RateLimit-Limit": {
-                "description": "The rate limit",
+              "X-RateLimit-Remaining": {
                 "schema": {
-                  "type": "integer"
+                  "type": "string"
                 }
               }
             },
