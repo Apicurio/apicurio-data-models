@@ -265,6 +265,7 @@
     { "name": "[AsyncAPI 2] {Change Server} - Change Server", "test": "commands/change-server/asyncapi-2/change-server" },
     { "name": "[AsyncAPI 2] {Delete Channel} - Delete Channel", "test": "commands/delete-channel/asyncapi-2/delete-channel" },
     { "name": "[AsyncAPI 2] {Delete Operation} - Delete Operation", "test": "commands/delete-operation/asyncapi-2/delete-operation" },
+    { "name": "[AsyncAPI 2] {Delete Schema Def} - Delete Schema Definition", "test": "commands/delete-schema-definition/asyncapi-2/delete-schema-definition" },
     { "name": "[AsyncAPI 2] {Delete Security Scheme} - Delete Security Scheme", "test": "commands/delete-security-scheme/asyncapi-2/delete-security-scheme" },
     { "name": "[AsyncAPI 2] {Delete Security Requirement} - Delete Security Requirement", "test": "commands/delete-security-requirement/asyncapi-2/delete-security-requirement" },
     { "name": "[AsyncAPI 2] {Delete Security Requirement} - Delete Nonexistent Security Requirement", "test": "commands/delete-security-requirement/asyncapi-2/delete-security-requirement-unmatched" },
