@@ -260,6 +260,8 @@ public class CommandFactory {
             { return new DeleteSchemaDefinitionCommand_20(); }
             case "DeleteSchemaDefinitionCommand_30":
             { return new DeleteSchemaDefinitionCommand_30(); }
+            case "DeleteSchemaDefinitionCommand_Aai20":
+            { return new DeleteSchemaDefinitionCommand_Aai20(); }
             case "DeleteResponseDefinitionCommand_20":
             { return new DeleteResponseDefinitionCommand_20(); }
             case "DeleteResponseDefinitionCommand_30":
@@ -737,6 +739,9 @@ public class CommandFactory {
         }
         if (docType == DocumentType.openapi3) {
             return new DeleteSchemaDefinitionCommand_30(definitionName);
+        }
+        if (docType == DocumentType.asyncapi2) {
+            return new DeleteSchemaDefinitionCommand_Aai20(definitionName);
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
