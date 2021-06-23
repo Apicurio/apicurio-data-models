@@ -58,6 +58,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 import io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
@@ -141,6 +142,8 @@ public class CommandFactory {
             { return new ChangeLicenseCommand(); }
             case "ChangeMediaTypeTypeCommand":
             { return new ChangeMediaTypeTypeCommand(); }
+            case "ChangeHeaderTypeCommand":
+            { return new ChangeHeaderTypeCommand(); }
             case "ChangeHeaderCommand":
             { return new ChangeHeaderCommand(); }
             case "ChangeParameterTypeCommand_20": 
@@ -547,6 +550,11 @@ public class CommandFactory {
 
     public static final ICommand createChangeHeaderCommand(OasHeader header, OasHeader newHeader) {
         return new ChangeHeaderCommand(header, newHeader);
+    }
+
+    public static final ICommand createChangeHeaderTypeCommand(Oas30Header header,
+                                                               SimplifiedType newType) {
+        return new ChangeHeaderTypeCommand(header, newType);
     }
 
     public static final ICommand createChangeMediaTypeTypeCommand(Oas30MediaType mediaType, 

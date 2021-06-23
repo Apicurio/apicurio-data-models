@@ -56,6 +56,7 @@
     { "name": "[OpenAPI 3] {Change License} - Change License", "test": "commands/change-license/openapi-3/change-license" },
     { "name": "[OpenAPI 3] {Change Media Type Type} - Change Media Type Type", "test": "commands/change-media-type-type/openapi-3/change-media-type-type-enum" },
     { "name": "[OpenAPI 3] {Change Media Type Type} - Change Media Type Type Response", "test": "commands/change-media-type-type/openapi-3/change-media-type-type-response" },
+    { "name": "[OpenAPI 3] {Change Header Type} - Change Header Type Response", "test": "commands/change-header-type/openapi-3/change-header-type-response" },
     { "name": "[OpenAPI 3] {Change Header} - Change Header Response", "test": "commands/change-header/openapi-3/change-header-response" },
     { "name": "[OpenAPI 2] {Change Parameter Type} - Add Parameter Type", "test": "commands/change-parameter-type/openapi-2/add-parameter-type" },
     { "name": "[OpenAPI 2] {Change Parameter Type} - Change Parameter Definition Type", "test": "commands/change-parameter-type/openapi-2/change-parameter-definition-type" },
