@@ -25,6 +25,7 @@ import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 
 /**
@@ -53,6 +54,20 @@ public class AddExampleCommand_30 extends AbstractCommand {
     }
 
     AddExampleCommand_30(Oas30MediaType parent, Object example, String exampleName, String exampleSummary, String exampleDescription) {
+        this._parentPath = Library.createNodePath(parent);
+        this._newExampleValue = example;
+        this._newExampleName = exampleName;
+        this._newExampleSummary = exampleSummary;
+        this._newExampleDescription = exampleDescription;
+    }
+
+    AddExampleCommand_30(Oas30Header parent, Object example, String exampleName) {
+        this._parentPath = Library.createNodePath(parent);
+        this._newExampleValue = example;
+        this._newExampleName = exampleName;
+    }
+
+    AddExampleCommand_30(Oas30Header parent, Object example, String exampleName, String exampleSummary, String exampleDescription) {
         this._parentPath = Library.createNodePath(parent);
         this._newExampleValue = example;
         this._newExampleName = exampleName;
