@@ -464,6 +464,11 @@ public class CommandFactory {
         return new AddExampleCommand_30(mediaType, example, exampleName, exampleSummary, exampleDescription);
     }
 
+    public static final ICommand createAddExampleCommand(Oas30Header header, Object example,
+                                                         String exampleName, String exampleSummary, String exampleDescription) {
+        return new AddExampleCommand_30(header, example, exampleName, exampleSummary, exampleDescription);
+    }
+
     public static final ICommand createAddParameterExampleCommand(Oas30Parameter parameter, Object example, 
             String exampleName, String exampleSummary, String exampleDescription) {
         return new AddParameterExampleCommand_30(parameter, example, exampleName, exampleSummary, exampleDescription);
