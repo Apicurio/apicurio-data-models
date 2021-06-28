@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/diff": "5.0.0",
-    "@types/filesystem": "0.0.30",
+    "@types/filesystem": "0.0.31",
     "@types/jest": "26.0.23",
     "cpx": "1.5.0",
     "diff": "5.0.0",
