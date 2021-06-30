@@ -1,0 +1,52 @@
+name: Update Website
+on:
+  workflow_dispatch: {}
+  release:
+    types: [released]
+
+jobs:
+  release-images:
+    if: github.repository_owner == 'Apicurio'
+    runs-on: ubuntu-18.04 
+    steps:
+
+      - name: Apicurio Website Code Checkout
+        run: |
+          mkdir website
+          cd website
+          git init
+          git config --global user.name "apicurio-ci"
+          git config --global user.email "apicurio.ci@gmail.com"
+          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/Apicurio/apicurio.github.io.git"
+          git fetch
+          git checkout master
+          git branch --set-upstream-to=origin/master
+          git pull
+
+
+      - name: Updating Project Website for Release ${{ github.event.inputs.release-version}}
+        run: |
+          cd website
+          echo "********** Replacing Existing Latest Release JSON File **********"
+          cd _data/datamodels
+          rm latestRelease.json
+          touch latestRelease.json && curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
+          
+          echo "********** Saving a copy in the archieve **********"
+          cp latestRelease.json releases/${RELEASE_VERSION}.json
+
+
+      - name: Commit Project Website Changes
+        run: |
+          cd website
+          git add .
+          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ github.event.inputs.release-version}}"
+          git push
+
+      - name: Google Chat Notification
+        if: ${{ failure() }}
+        uses: Co-qn/google-chat-notification@releases/v1
+        with:
+          name: ${{ github.workflow }}
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: ${{ job.status }}
