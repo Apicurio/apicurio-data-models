@@ -18,9 +18,6 @@ jobs:
     runs-on: ubuntu-18.04
     if: github.repository_owner == 'Apicurio'
     steps:
-      # To avoid permission denied issues 
-      - name: Give full Permissions
-        run: chmod -R 777 $(pwd)
 
       - uses: actions/setup-java@v2
         with:
@@ -94,7 +91,12 @@ jobs:
           echo "#### Listing files after clone ####"
           find .
 
+      
+      # To avoid permission denied issues 
+      - name: Give full Permissions
+        run: chmod -R 777 $(pwd)
 
+        
       - name: Update Release Version ${{ github.event.inputs.release-version}}
         run: mvn versions:set -DnewVersion=${{ github.event.inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
 
