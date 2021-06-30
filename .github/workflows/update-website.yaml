@@ -23,8 +23,10 @@ jobs:
           git branch --set-upstream-to=origin/master
           git pull
 
+      - name: Fetch required Details
+        run: echo "RELEASE_VERSION=$(curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest | jq '.name' | sed 's/"//g')" >> $GITHUB_ENV
 
-      - name: Updating Project Website for Release ${{ github.event.inputs.release-version}}
+      - name: Updating Project Website for Release ${{ env.RELEASE_VERSION }}
         run: |
           cd website
           echo "********** Replacing Existing Latest Release JSON File **********"
@@ -33,6 +35,7 @@ jobs:
           touch latestRelease.json && curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
           
           echo "********** Saving a copy in the archieve **********"
+
           cp latestRelease.json releases/${RELEASE_VERSION}.json
 
 
@@ -40,7 +43,7 @@ jobs:
         run: |
           cd website
           git add .
-          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ github.event.inputs.release-version}}"
+          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ env.RELEASE_VERSION }}"
           git push
 
       - name: Google Chat Notification
