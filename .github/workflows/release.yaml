@@ -15,9 +15,13 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.repository_owner == 'Apicurio'
     steps:
+      # To avoid permission denied issues 
+      - name: Give full Permissions
+        run: chmod -R 777 $(pwd)
+
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
