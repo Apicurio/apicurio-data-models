@@ -1,0 +1,28 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "responses": {
+          "200": {
+            "headers": {
+              "X-RateLimit-Remaining": {
+                "description": "The rate limit",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
