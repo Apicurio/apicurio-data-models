@@ -15,9 +15,10 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.repository_owner == 'Apicurio'
     steps:
+
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -90,21 +91,12 @@ jobs:
           echo "#### Listing files after clone ####"
           find .
 
+      
+      # To avoid permission denied issues 
+      - name: Give full Permissions
+        run: chmod -R 777 $(pwd)
 
-      - name: Apicurio Website Code Checkout
-        run: |
-          mkdir website
-          cd website
-          git init
-          git config --global user.name "apicurio-ci"
-          git config --global user.email "apicurio.ci@gmail.com"
-          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/Apicurio/apicurio.github.io.git"
-          git fetch
-          git checkout master
-          git branch --set-upstream-to=origin/master
-          git pull
-
-
+        
       - name: Update Release Version ${{ github.event.inputs.release-version}}
         run: mvn versions:set -DnewVersion=${{ github.event.inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
 
@@ -145,9 +137,9 @@ jobs:
         run: |
           # Retry 3 times before the steps actually fails
           (echo "===== Maven Deploy Attempt: 1 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
-          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 30 minutes ====" && sleep 30m) || \
+          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 30 minutes ====" && sleep 30m) && \
           (echo "===== Maven Deploy Attempt: 2 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
-          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 4 hours ====" && sleep 4h) || \
+          (echo "===== Maven Deploy Attempt 2 Failed - Sleeping for 30 minutes ====" && sleep 30m) && \
           (echo "===== Maven Deploy Attempt: 3 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
           (echo "==== Maven Deploy Step Failed ====" && exit 1)
 
@@ -168,18 +160,10 @@ jobs:
           git push
 
 
-      - name: Updating Project Website for Release ${{ github.event.inputs.release-version}}
-        run: |
-          cd website
-          echo "********** Downloading Latest Release JSON File **********"
-          cd _data/datamodels
-          rm latestRelease.json
-          touch latestRelease.json && curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
-
-
-      - name: Commit Project Website Changes
-        run: |
-          cd website
-          git add .
-          git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ github.event.inputs.release-version}}"
-          git push
+      - name: Google Chat Notification
+        if: ${{ failure() }}
+        uses: Co-qn/google-chat-notification@releases/v1
+        with:
+          name: ${{ github.workflow }}
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: ${{ job.status }}
