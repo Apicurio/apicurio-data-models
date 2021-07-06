@@ -137,10 +137,8 @@ jobs:
         run: |
           # Retry 3 times before the steps actually fails
           (echo "===== Maven Deploy Attempt: 1 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
-          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 30 minutes ====" && sleep 30m) && \
-          (echo "===== Maven Deploy Attempt: 2 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
-          (echo "===== Maven Deploy Attempt 2 Failed - Sleeping for 30 minutes ====" && sleep 30m) && \
-          (echo "===== Maven Deploy Attempt: 3 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
+          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 30 minutes ====" && sleep 30m && echo "===== Maven Deploy Attempt: 2 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
+          (echo "===== Maven Deploy Attempt 2 Failed - Sleeping for 30 minutes ====" && sleep 30m && echo "===== Maven Deploy Attempt: 3 ====" && mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
           (echo "==== Maven Deploy Step Failed ====" && exit 1)
 
 
