@@ -18,16 +18,11 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.models.OasSchema;
-
-import java.util.List;
 
 /**
  * A command used to rename a schema header.
