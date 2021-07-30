@@ -18,7 +18,7 @@
     "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && rollup -c rollup.config.js"
   },
   "dependencies": {
-    "core-js": "3.15.2"
+    "core-js": "3.16.0"
   },
   "devDependencies": {
     "@types/diff": "5.0.1",
