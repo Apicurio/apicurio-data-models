@@ -26,7 +26,6 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 
 import java.util.ArrayList;
 import java.util.HashMap;

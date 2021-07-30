@@ -55,8 +55,8 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Node/Yarn Versions -->
         <version.node-js>10.22.1</version.node-js>
@@ -67,7 +67,7 @@
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
         <version.commons-io>2.10.0</version.commons-io>
         <version.junit>4.13.2</version.junit>
-        <version.org.jsweet>2.3.5</version.org.jsweet>
+        <version.org.jsweet>3.1.0</version.org.jsweet>
         <version.org.skyscreamer>1.5.0</version.org.skyscreamer>
         
         <!-- Plugin Versions -->
@@ -188,7 +188,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <source>8</source>
+                            <source>11</source>
                         </configuration>
                     </execution>
                 </executions>
@@ -449,9 +449,9 @@
             </build>
         </profile>
         <profile>
-            <id>java8</id>
+            <id>java11</id>
             <activation>
-                <jdk>[1.8,)</jdk>
+                <jdk>[11,)</jdk>
             </activation>
             <build>
                 <plugins>
