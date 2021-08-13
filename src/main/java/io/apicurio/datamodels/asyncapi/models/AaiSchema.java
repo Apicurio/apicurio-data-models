@@ -24,13 +24,14 @@ import java.util.Map;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
+import io.apicurio.datamodels.core.models.common.IPropertyParent;
 import io.apicurio.datamodels.core.models.common.Schema;
 
 /** 
  * Models and AsyncAPI schema.
  * @author laurent.broudoux@gmail.com
  */
-public abstract class AaiSchema extends Schema implements IExternalDocumentationParent {
+public abstract class AaiSchema extends Schema implements IExternalDocumentationParent, IPropertyParent {
 
     public String format;
     public String title;
@@ -114,13 +115,15 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     public abstract AaiSchema createAdditionalPropertiesSchema();
 
     /**
-     * Creates a child schema model.
+     * @see IPropertyParent#createPropertySchema(String)
      */
-    public abstract AaiSchema createPropertySchema(String propertyName);
+    @Override
+    public abstract Schema createPropertySchema(String propertyName);
 
     /**
-     * Gets a list of all property names.
+     * @see IPropertyParent#getPropertyNames() 
      */
+    @Override
     public List<String> getPropertyNames() {
         List<String> rval = new ArrayList<>();
         if (this.properties != null) {
@@ -130,10 +133,11 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     }
 
     /**
-     * Gets a list of all the properties.
+     * @see IPropertyParent#getProperties() 
      */
-    public List<AaiSchema> getProperties() {
-        List<AaiSchema> rval = new ArrayList<>();
+    @Override
+    public List<Schema> getProperties() {
+        List<Schema> rval = new ArrayList<>();
         if (this.properties != null) {
             rval.addAll(this.properties.values());
         }
@@ -141,23 +145,22 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     }
 
     /**
-     * Add a property.
-     * @param propertyName
-     * @param schema
+     * @see IPropertyParent#addProperty(String, Schema) 
      */
-    public AaiSchema addProperty(String propertyName, AaiSchema schema) {
+    @Override
+    public Schema addProperty(String propertyName, Schema schema) {
         if (this.properties == null) {
             this.properties = new LinkedHashMap<>();
         }
-        this.properties.put(propertyName, schema);
+        this.properties.put(propertyName, ((AaiSchema) schema));
         return schema;
     }
 
     /**
-     * Removes a property by name.
-     * @param propertyName
+     * @see IPropertyParent#removeProperty(String) 
      */
-    public AaiSchema removeProperty(String propertyName) {
+    @Override
+    public Schema removeProperty(String propertyName) {
         if (this.properties != null) {
             return this.properties.remove(propertyName);
         }
@@ -165,14 +168,63 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     }
 
     /**
-     * Gets a single property.
-     * @param propertyName
+     * @see IPropertyParent#getProperty(String) 
      */
-    public AaiSchema getProperty(String propertyName) {
+    @Override
+    public Schema getProperty(String propertyName) {
         if (this.properties != null) {
             return this.properties.get(propertyName);
         }
         return null;
+    }
+
+    /**
+     * @see IPropertyParent#getRequiredProperties()
+     */
+    @Override
+    public List<String> getRequiredProperties() {
+        List<String> rval = new ArrayList<>();
+        if (this.required != null) {
+            rval.addAll(this.required);
+        }
+        return rval;
+    }
+
+    /**
+     * @see IPropertyParent#isPropertyRequired(String)
+     */
+    @Override
+    public boolean isPropertyRequired(String propertyName) {
+        if (this.required != null) {
+            return this.required.contains(propertyName);
+        }
+        return false;
+    }
+
+    /**
+     * @see IPropertyParent#setPropertyRequired(String)
+     */
+    @Override
+    public void setPropertyRequired(String propertyName) {
+        if (this.required == null) {
+            this.required = new ArrayList<>();
+        }
+        if (!this.required.contains(propertyName)) {
+            this.required.add(propertyName);
+        }
+    }
+
+    /**
+     * @see IPropertyParent#unsetPropertyRequired(String)
+     */
+    @Override
+    public void unsetPropertyRequired(String propertyName) {
+        if (this.required != null) {
+            this.required.remove(propertyName);
+            if (this.required.isEmpty()) {
+                this.required = null;
+            }
+        }
     }
     
     /**

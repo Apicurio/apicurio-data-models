@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
-import io.apicurio.datamodels.openapi.models.OasDocument;
+import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 
@@ -42,10 +42,10 @@ public class RenameSchemaDefinitionCommand_20 extends RenameSchemaDefinitionComm
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.RenameSchemaDefinitionCommand#_renameSchemaDefinition(io.apicurio.datamodels.openapi.models.OasDocument, java.lang.String, java.lang.String)
+     * @see RenameSchemaDefinitionCommand#_renameSchemaDefinition(Document, String, String)
      */
     @Override
-    protected boolean _renameSchemaDefinition(OasDocument document, String fromName, String toName) {
+    protected boolean _renameSchemaDefinition(Document document, String fromName, String toName) {
         Oas20Document doc20 = (Oas20Document) document;
         if (this.isNullOrUndefined(doc20.definitions)) {
             return false;

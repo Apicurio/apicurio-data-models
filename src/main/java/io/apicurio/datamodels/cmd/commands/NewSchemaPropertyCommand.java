@@ -78,7 +78,7 @@ public class NewSchemaPropertyCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema property = schema.createPropertySchema(this._propertyName);
+        OasSchema property = (OasSchema) schema.createPropertySchema(this._propertyName);
         if (ModelUtils.isDefined(this._description)) {
             property.description = this._description;
         }

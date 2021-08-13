@@ -63,7 +63,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
     public void execute(Document document) {
         LoggerCompat.info("[RenameSchemaDefinitionCommand] Executing.");
         this._references = new ArrayList<>();
-        if (this._renameSchemaDefinition((OasDocument) document, this._oldName, this._newName)) {
+        if (this._renameSchemaDefinition(document, this._oldName, this._newName)) {
             String oldRef = this._nameToReference(this._oldName);
             String newRef = this._nameToReference(this._newName);
             SchemaRefFinder schemaFinder = new SchemaRefFinder(oldRef);
@@ -81,11 +81,11 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[RenameSchemaDefinitionCommand] Reverting.");
-        if (this._renameSchemaDefinition((OasDocument) document, this._newName, this._oldName)) {
+        if (this._renameSchemaDefinition(document, this._newName, this._oldName)) {
             String oldRef = this._nameToReference(this._oldName);
             if (ModelUtils.isDefined(this._references)) {
                 this._references.forEach( ref -> {
-                    OasSchema schema = (OasSchema) ref.resolve(document);
+                    Schema schema = (Schema) ref.resolve(document);
                     schema.$ref = oldRef;
                 });
             }
@@ -102,7 +102,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
      * Called to actually change the name of the schema definition.  This impl will vary
      * depending on the OAI data model version.  Returns true if the rename actually happened.
      */
-    protected abstract boolean _renameSchemaDefinition(OasDocument document, String fromName, String toName);
+    protected abstract boolean _renameSchemaDefinition(Document document, String fromName, String toName);
     
     private static class SchemaRefFinder extends CombinedVisitorAdapter {
 
