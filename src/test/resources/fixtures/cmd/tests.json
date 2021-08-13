@@ -261,6 +261,7 @@
     { "name": "[OpenAPI 3] {Set Extension} - Set Extension", "test": "commands/set-extension/openapi-3/set-extension" },
 
     { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item", "test": "commands/add-channel-item/asyncapi-2/add-channel-item" },
+    { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item With Conflict", "test": "commands/add-channel-item/asyncapi-2/add-channel-item-with-conflict" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example", "test": "commands/add-message-example/asyncapi-2/add-message-example" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example JSON", "test": "commands/add-message-example/asyncapi-2/add-message-example-json" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example Exists", "test": "commands/add-message-example/asyncapi-2/add-message-example-exists" },

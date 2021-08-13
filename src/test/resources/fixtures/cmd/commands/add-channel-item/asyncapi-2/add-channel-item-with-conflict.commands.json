@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "AddChannelItemCommand",
+    "_newChannelItemName": "alreadyExists",
+    "_newChannelItemObj": {}
+  }
+]

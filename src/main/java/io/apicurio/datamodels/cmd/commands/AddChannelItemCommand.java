@@ -57,8 +57,8 @@ public class AddChannelItemCommand extends AbstractCommand {
          this._emptyChannelItems = true;
       }
 
-      if (!this.isNullOrUndefined(doc.channels.get(this._newChannelItemObj))) {
-         LoggerCompat.info("[AddPathItemCommand] AddChannelItemCommand with name %s already exists.", this._newChannelItemName);
+      if (!this.isNullOrUndefined(doc.channels.get(this._newChannelItemName))) {
+         LoggerCompat.info("[AddChannelItemCommand] AddChannelItemCommand with name %s already exists.", this._newChannelItemName);
          this._channelItemExists = true;
       } else {
          AaiChannelItem channelItem = doc.createChannelItem(this._newChannelItemName);
