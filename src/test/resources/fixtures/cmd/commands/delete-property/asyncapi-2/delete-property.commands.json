@@ -1,0 +1,6 @@
+[{
+    "__type": "DeletePropertyCommand",
+    "_propertyName": "foo",
+    "_propertyPath": "/components/schemas[MySchema1]/properties[foo]",
+    "_schemaPath": "/components/schemas[MySchema1]"
+}]
