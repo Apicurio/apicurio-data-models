@@ -427,6 +427,8 @@ public class CommandFactory {
             case "ReplacePathItemCommand_30":
             case "ReplacePathItemCommand":
             { return new ReplacePathItemCommand(); }
+            case "ReplaceChannelItemCommand":
+            { return new ReplaceChannelItemCommand(); }
             case "ReplaceSchemaDefinitionCommand_20":
             { return new ReplaceSchemaDefinitionCommand_20(); }
             case "ReplaceSchemaDefinitionCommand_30":
@@ -1051,6 +1053,10 @@ public class CommandFactory {
     
     public static final ICommand createReplacePathItemCommand(OasPathItem old, OasPathItem replacement) {
         return new ReplacePathItemCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceChannelItemCommand(AaiChannelItem old, AaiChannelItem replacement) {
+        return new ReplaceChannelItemCommand(old, replacement);
     }
     
     public static final ICommand createReplaceSchemaDefinitionCommand(DocumentType docType,

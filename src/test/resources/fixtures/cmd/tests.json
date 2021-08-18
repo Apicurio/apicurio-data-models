@@ -261,6 +261,7 @@
     { "name": "[OpenAPI 3] {Set Extension} - Set Extension", "test": "commands/set-extension/openapi-3/set-extension" },
 
     { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item", "test": "commands/add-channel-item/asyncapi-2/add-channel-item" },
+    { "name": "[AsyncAPI 2] {Add Channel Item} - Add Channel Item With Conflict", "test": "commands/add-channel-item/asyncapi-2/add-channel-item-with-conflict" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example", "test": "commands/add-message-example/asyncapi-2/add-message-example" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example JSON", "test": "commands/add-message-example/asyncapi-2/add-message-example-json" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example Exists", "test": "commands/add-message-example/asyncapi-2/add-message-example-exists" },
@@ -318,5 +319,6 @@
     { "name": "[AsyncAPI 2] {Delete Message Trait Def} - Delete Message Trait Definition", "test": "commands/delete-messagetrait-definition/asyncapi-2/delete-messagetrait-definition" },
     { "name": "[AsyncAPI 2] {Delete Operation Trait Def} - Delete Operation Trait Definition", "test": "commands/delete-operationtrait-definition/asyncapi-2/delete-operationtrait-definition" },
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" },
-    { "name": "[AsyncAPI 2] {Replace Security Requirement} - Replace Security Requirement", "test": "commands/replace-security-requirement/asyncapi-2/replace-security-requirement" }
+    { "name": "[AsyncAPI 2] {Replace Security Requirement} - Replace Security Requirement", "test": "commands/replace-security-requirement/asyncapi-2/replace-security-requirement" },
+    { "name": "[AsyncAPI 2] {Replace Channel Item} - Replace Channel Item", "test": "commands/replace-channel-item/asyncapi-2/replace-channel-item" }
 ]
