@@ -16,7 +16,6 @@
 
 package io.apicurio.datamodels.cloning;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
@@ -26,15 +25,16 @@ import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.Info;
 import io.apicurio.datamodels.core.models.common.License;
 import io.apicurio.datamodels.core.models.common.Tag;
+import io.apicurio.datamodels.core.util.DocumentUtil;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public abstract class ModelClonerVisitor implements IVisitor {
-    
+
     protected Node clone;
-    
+
     public final Node getClone() {
         if (clone.ownerDocument() == null && clone.parent() != null) {
             clone._ownerDocument = clone.parent().ownerDocument();
@@ -55,7 +55,7 @@ public abstract class ModelClonerVisitor implements IVisitor {
      */
     @Override
     public final void visitDocument(Document node) {
-        this.clone = Library.createDocument(node.getDocumentType());
+        this.clone = DocumentUtil.createDocument(node.getDocumentType());
     }
 
     /**

@@ -66,18 +66,18 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Server;
  * @author eric.wittmann@gmail.com
  */
 public class Oas30DataModelReader extends OasDataModelReader {
-    
+
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readDocument(java.lang.Object, io.apicurio.datamodels.core.models.Document)
      */
     @Override
     public void readDocument(Object json, Document node) {
         Oas30Document doc = (Oas30Document) node;
-        
+
         String openapi = JsonCompat.consumePropertyString(json, Constants.PROP_OPENAPI);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
         Object components = JsonCompat.consumeProperty(json, Constants.PROP_COMPONENTS);
-        
+
         doc.openapi = openapi;
 
         if (servers != null) {
@@ -89,7 +89,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
             });
             doc.servers = serverModels;
         }
-        
+
         if (components != null) {
             doc.components = doc.createComponents();
             this.readComponents(components, doc.components);
@@ -113,7 +113,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object securitySchemes = JsonCompat.consumeProperty(json, Constants.PROP_SECURITY_SCHEMES);
         Object links = JsonCompat.consumeProperty(json, Constants.PROP_LINKS);
         Object callbacks = JsonCompat.consumeProperty(json, Constants.PROP_CALLBACKS);
-        
+
         if (schemas != null) {
             JsonCompat.keys(schemas).forEach(name -> {
                 Object schema = JsonCompat.consumeProperty(schemas, name);
@@ -199,20 +199,21 @@ public class Oas30DataModelReader extends OasDataModelReader {
     /**
      * @see io.apicurio.datamodels.core.io.DataModelReader#readSecurityScheme(java.lang.Object, io.apicurio.datamodels.core.models.common.SecurityScheme)
      */
+    @Override
     public void readSecurityScheme(Object json, SecurityScheme node) {
         Oas30SecurityScheme oasNode = (Oas30SecurityScheme) node;
-        
+
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         String scheme = JsonCompat.consumePropertyString(json, Constants.PROP_SCHEME);
         String bearerFormat = JsonCompat.consumePropertyString(json, Constants.PROP_BEARER_FORMAT);
         Object flows = JsonCompat.consumeProperty(json, Constants.PROP_FLOWS);
         String openIdConnectUrl = JsonCompat.consumePropertyString(json, Constants.PROP_OPEN_ID_CONNECT_URL);
-        
+
         oasNode.$ref = $ref;
         oasNode.scheme = scheme;
         oasNode.bearerFormat = bearerFormat;
         oasNode.openIdConnectUrl = openIdConnectUrl;
-        
+
         if (flows != null) {
             oasNode.flows = oasNode.createOAuthFlows();
             this.readOAuthFlows(flows, oasNode.flows);
@@ -227,20 +228,20 @@ public class Oas30DataModelReader extends OasDataModelReader {
     @Override
     public void readPathItem(Object json, OasPathItem node) {
         Oas30PathItem pi = (Oas30PathItem) node;
-        
+
         String summary = JsonCompat.consumePropertyString(json, Constants.PROP_SUMMARY);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object trace = JsonCompat.consumeProperty(json, Constants.PROP_TRACE);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
-        
+
         pi.summary = summary;
         pi.description = description;
-        
+
         if (trace != null) {
             pi.trace = (Oas30Operation) pi.createOperation(Constants.PROP_TRACE);
             this.readOperation(trace, pi.trace);
         }
-        
+
         if (servers != null) {
             servers.forEach(server -> {
                 Oas30Server serverModel = (Oas30Server) pi.createServer();
@@ -251,14 +252,14 @@ public class Oas30DataModelReader extends OasDataModelReader {
 
         super.readPathItem(json, node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readHeader(java.lang.Object, io.apicurio.datamodels.openapi.models.OasHeader)
      */
     @Override
     public void readHeader(Object json, OasHeader node) {
         Oas30Header header = (Oas30Header) node;
-        
+
         String $ref = JsonCompat.consumePropertyString(json, Constants.PROP_$REF);
         Boolean required = JsonCompat.consumePropertyBoolean(json, Constants.PROP_REQUIRED);
         Object schema = JsonCompat.consumeProperty(json, Constants.PROP_SCHEMA);
@@ -270,7 +271,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object example = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLE);
         Object examples = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLES);
         Object content = JsonCompat.consumeProperty(json, Constants.PROP_CONTENT);
-        
+
         header.$ref = $ref;
         header.required = required;
 
@@ -279,14 +280,14 @@ public class Oas30DataModelReader extends OasDataModelReader {
         header.style = style;
         header.explode = explode;
         header.allowReserved = allowReserved;
-        
+
         header.example = example;
 
         if (schema != null) {
             header.schema = header.createSchema();
             this.readSchema(schema, header.schema);
         }
-        
+
         if (examples != null) {
             JsonCompat.keys(examples).forEach(name -> {
                 Object exx = JsonCompat.consumeProperty(examples, name);
@@ -295,26 +296,26 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 header.addExample(exampleModel);
             });
         }
-        
+
         if (content != null) {
             JsonCompat.keys(content).forEach(name -> {
                 Object mediaType = JsonCompat.consumeProperty(content, name);
-                Oas30MediaType mediaTypeModel = header.createMediaType(name);
+                Oas30MediaType mediaTypeModel = (Oas30MediaType) header.createMediaType(name);
                 this.readMediaType(mediaType, mediaTypeModel);
                 header.addMediaType(name, mediaTypeModel);
             });
         }
-        
+
         super.readHeader(json, node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readParameter(java.lang.Object, io.apicurio.datamodels.core.models.common.Parameter)
      */
     @Override
     public void readParameter(Object json, Parameter node) {
         Oas30Parameter param = (Oas30Parameter) node;
-        
+
         Boolean deprecated = JsonCompat.consumePropertyBoolean(json, Constants.PROP_DEPRECATED);
         String style = JsonCompat.consumePropertyString(json, Constants.PROP_STYLE);
         Boolean explode = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXPLODE);
@@ -322,13 +323,13 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object example = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLE);
         Object examples = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLES);
         Object content = JsonCompat.consumeProperty(json, Constants.PROP_CONTENT);
-        
+
         param.deprecated = deprecated;
         param.style = style;
         param.explode = explode;
         param.allowReserved = allowReserved;
         param.example = example;
-        
+
         if (examples != null) {
             JsonCompat.keys(examples).forEach(name -> {
                 Object exx = JsonCompat.consumeProperty(examples, name);
@@ -337,7 +338,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 param.addExample(exampleModel);
             });
         }
-        
+
         if (content != null) {
             JsonCompat.keys(content).forEach(name -> {
                 Object mediaType = JsonCompat.consumeProperty(content, name);
@@ -346,10 +347,10 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 param.addMediaType(name, mediaTypeModel);
             });
         }
-        
+
         super.readParameter(json, node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readOperation(java.lang.Object, io.apicurio.datamodels.core.models.common.Operation)
      */
@@ -360,12 +361,12 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object requestBody = JsonCompat.consumeProperty(json, Constants.PROP_REQUEST_BODY);
         Object callbacks = JsonCompat.consumeProperty(json, Constants.PROP_CALLBACKS);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
-        
+
         if (requestBody != null) {
             operation.requestBody = operation.createRequestBody();
             this.readRequestBody(requestBody, operation.requestBody);
         }
-        
+
         if (callbacks != null) {
             JsonCompat.keys(callbacks).forEach(name -> {
                 Object callback = JsonCompat.consumeProperty(callbacks, name);
@@ -374,7 +375,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 operation.addCallback(name, callbackModel);
             });
         }
-        
+
         if (servers != null) {
             servers.forEach(server -> {
                 Oas30Server serverModel = (Oas30Server) operation.createServer();
@@ -382,7 +383,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 operation.addServer(serverModel);
             });
         }
-        
+
         super.readOperation(json, node);
     }
 
@@ -416,11 +417,11 @@ public class Oas30DataModelReader extends OasDataModelReader {
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object content = JsonCompat.consumeProperty(json, Constants.PROP_CONTENT);
         Boolean required = JsonCompat.consumePropertyBoolean(json, Constants.PROP_REQUIRED);
-        
+
         node.$ref = $ref;
         node.description = description;
         node.required = required;
-        
+
         if (content != null) {
             JsonCompat.keys(content).forEach(name -> {
                 Object mediaType = JsonCompat.consumeProperty(content, name);
@@ -444,14 +445,14 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object example = JsonCompat.consumePropertyObject(json, Constants.PROP_EXAMPLE);
         Object examples = JsonCompat.consumeProperty(json, Constants.PROP_EXAMPLES);
         Object encodings = JsonCompat.consumeProperty(json, Constants.PROP_ENCODING);
-        
+
         node.example = example;
-        
+
         if (schema != null) {
             node.schema = node.createSchema();
             this.readSchema(schema, node.schema);
         }
-        
+
         if (examples != null) {
             JsonCompat.keys(examples).forEach(name -> {
                 Object exx = JsonCompat.consumeProperty(examples, name);
@@ -460,7 +461,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 node.addExample(exampleModel);
             });
         }
-        
+
         if (encodings != null) {
             JsonCompat.keys(encodings).forEach(name -> {
                 Object encoding = JsonCompat.consumeProperty(encodings, name);
@@ -485,7 +486,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object value = JsonCompat.consumePropertyObject(json, Constants.PROP_VALUE);
         String externalValue = JsonCompat.consumePropertyString(json, Constants.PROP_EXTERNAL_VALUE);
-        
+
         node.$ref = $ref;
         node.summary = summary;
         node.description = description;
@@ -507,12 +508,12 @@ public class Oas30DataModelReader extends OasDataModelReader {
         String style = JsonCompat.consumePropertyString(json, Constants.PROP_STYLE);
         Boolean explode = JsonCompat.consumePropertyBoolean(json, Constants.PROP_EXPLODE);
         Boolean allowReserved = JsonCompat.consumePropertyBoolean(json, Constants.PROP_ALLOW_RESERVED);
-        
+
         node.contentType = contentType;
         node.style = style;
         node.explode = explode;
         node.allowReserved = allowReserved;
-        
+
         if (headers != null) {
             JsonCompat.keys(headers).forEach(name -> {
                 Object header = JsonCompat.consumeProperty(headers, name);
@@ -525,7 +526,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readResponse(java.lang.Object, io.apicurio.datamodels.openapi.models.OasResponse)
      */
@@ -562,7 +563,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 response.addLink(name, linkModel);
             });
         }
-        
+
         super.readResponse(json, node);
     }
 
@@ -579,39 +580,39 @@ public class Oas30DataModelReader extends OasDataModelReader {
         String requestBody = JsonCompat.consumePropertyString(json, Constants.PROP_REQUEST_BODY);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object server = JsonCompat.consumeProperty(json, Constants.PROP_SERVER);
-        
+
         node.$ref = $ref;
         node.operationRef = operationRef;
         node.operationId = operationId;
         node.description = description;
-        
+
         if (parameters != null) {
             JsonCompat.keys(parameters).forEach(name -> {
                 String expression = JsonCompat.consumePropertyString(parameters, name);
                 node.addLinkParameter(name, expression);
             });
         }
-        
+
         if (requestBody != null) {
             node.requestBody = node.createLinkRequestBodyExpression(requestBody);
         }
-        
+
         if (server != null) {
             node.server = node.createServer();
             this.readServer(server, node.server);
         }
-        
+
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.openapi.io.OasDataModelReader#readSchema(java.lang.Object, io.apicurio.datamodels.core.models.common.Schema)
      */
     @Override
     public void readSchema(Object json, Schema node) {
         Oas30Schema schema = (Oas30Schema) node;
-        
+
         List<Object> oneOf = JsonCompat.consumePropertyArray(json, Constants.PROP_ONE_OF);
         List<Object> anyOf = JsonCompat.consumePropertyArray(json, Constants.PROP_ANY_OF);
         Object not = JsonCompat.consumeProperty(json, Constants.PROP_NOT);
@@ -619,11 +620,11 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Boolean nullable = JsonCompat.consumePropertyBoolean(json, Constants.PROP_NULLABLE);
         Boolean writeOnly = JsonCompat.consumePropertyBoolean(json, Constants.PROP_WRITE_ONLY);
         Boolean deprecated = JsonCompat.consumePropertyBoolean(json, Constants.PROP_DEPRECATED);
-        
+
         schema.nullable = nullable;
         schema.writeOnly = writeOnly;
         schema.deprecated = deprecated;
-        
+
         if (oneOf != null) {
             oneOf.forEach(oneOfSchema -> {
                 Oas30OneOfSchema oneOfSchemaModel = schema.createOneOfSchema();
@@ -631,7 +632,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 schema.addOneOfSchema(oneOfSchemaModel);
             });
         }
-        
+
         if (anyOf != null) {
             anyOf.forEach(anyOfSchema -> {
                 Oas30AnyOfSchema anyOfSchemaModel = schema.createAnyOfSchema();
@@ -639,17 +640,17 @@ public class Oas30DataModelReader extends OasDataModelReader {
                 schema.addAnyOfSchema(anyOfSchemaModel);
             });
         }
-        
+
         if (not != null) {
             schema.not = schema.createNotSchema();
             this.readSchema(not, schema.not);
         }
-        
+
         if (discriminator != null) {
             schema.discriminator = schema.createDiscriminator();
             this.readDiscriminator(discriminator, schema.discriminator);
         }
-        
+
         super.readSchema(json, node);
     }
 
@@ -661,9 +662,9 @@ public class Oas30DataModelReader extends OasDataModelReader {
     public void readDiscriminator(Object json, Oas30Discriminator node) {
         String propertyName = JsonCompat.consumePropertyString(json, Constants.PROP_PROPERTY_NAME);
         Object mapping = JsonCompat.consumeProperty(json, Constants.PROP_MAPPING);
-        
+
         node.propertyName = propertyName;
-        
+
         if (mapping != null) {
             JsonCompat.keys(mapping).forEach(key -> {
                 String value = JsonCompat.consumePropertyString(mapping, key);

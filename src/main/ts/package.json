@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jest",
-    "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && rollup -c rollup.config.js"
+    "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && rollup dist/index.js --format umd --name ApicurioDM --file dist/bundles/apicurio-data-models.umd.js"
   },
   "dependencies": {
     "core-js": "3.16.3"
@@ -29,7 +29,7 @@
     "jest": "27.0.6",
     "mkdirp": "0.5.1",
     "rimraf": "3.0.2",
-    "rollup": "0.68.2",
+    "rollup": "2.56.3",
     "rollup-plugin-commonjs": "8.4.1",
     "ts-jest": "27.0.5",
     "typescript": "4.3.5"

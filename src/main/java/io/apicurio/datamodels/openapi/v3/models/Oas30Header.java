@@ -40,8 +40,8 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
     public Oas30Schema schema;
     public Object example;
     public Map<String, Oas30Example> examples = new LinkedHashMap<>();
-    public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
-    
+    public Map<String, IOas30MediaType> content = new LinkedHashMap<>();
+
     /**
      * Constructor.
      */
@@ -116,7 +116,7 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * Creates a media type.
      * @param name
      */
-    public Oas30MediaType createMediaType(String name) {
+    public IOas30MediaType createMediaType(String name) {
         Oas30MediaType rval = new Oas30MediaType(name);
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
@@ -128,7 +128,7 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * @param name
      * @param mediaType
      */
-    public void addMediaType(String name, Oas30MediaType mediaType) {
+    public void addMediaType(String name, IOas30MediaType mediaType) {
         this.content.put(name, mediaType);
     }
 
@@ -136,7 +136,7 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * Gets a single media type by name.
      * @param name
      */
-    public Oas30MediaType getMediaType(String name) {
+    public IOas30MediaType getMediaType(String name) {
         return this.content.get(name);
     }
 
@@ -144,15 +144,15 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * Removes a single media type and returns it.  This may return null or undefined if none found.
      * @param name
      */
-    public Oas30MediaType removeMediaType(String name) {
+    public IOas30MediaType removeMediaType(String name) {
         return this.content.remove(name);
     }
 
     /**
      * Gets a list of all media types.
      */
-    public List<Oas30MediaType> getMediaTypes() {
-        List<Oas30MediaType> rval = new ArrayList<>();
+    public List<IOas30MediaType> getMediaTypes() {
+        List<IOas30MediaType> rval = new ArrayList<>();
         rval.addAll(this.content.values());
         return rval;
     }

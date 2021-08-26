@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
@@ -48,7 +47,11 @@ import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.core.models.common.SecurityRequirement;
 import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.models.common.Tag;
+import io.apicurio.datamodels.core.util.DocumentUtil;
+import io.apicurio.datamodels.core.util.NodePathUtil;
+import io.apicurio.datamodels.core.util.NodeUtil;
 import io.apicurio.datamodels.core.util.ReferenceUtil;
+import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.ConsumesProducesFinder;
 import io.apicurio.datamodels.core.visitors.OperationFinder;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
@@ -115,7 +118,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30XML;
 public class Oas20to30TransformationVisitor implements IOas20Visitor {
 
     private Oas30Document doc30;
-    
+
     private Map<String, Node> _nodeMap = new HashMap<>();
     private List<Oas30Response> _postProcessResponses = new ArrayList<>();
     private boolean _postProcessingComplete = false;
@@ -135,7 +138,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
      */
     @Override
     public void visitDocument(Document node) {
-        this.doc30 = (Oas30Document) Library.createDocument(DocumentType.openapi3);
+        this.doc30 = (Oas30Document) DocumentUtil.createDocument(DocumentType.openapi3);
 
         Oas20Document doc20 = (Oas20Document) node;
         if (!NodeCompat.isNullOrUndefined(doc20.host)) {
@@ -250,9 +253,9 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
         operation30.operationId = op.operationId;
         operation30.deprecated = op.deprecated;
 
-        if (!NodeCompat.isNullOrUndefined(op.schemes) && 
-                op.schemes.size() > 0 && 
-                !NodeCompat.isNullOrUndefined(this.doc30.servers) && 
+        if (!NodeCompat.isNullOrUndefined(op.schemes) &&
+                op.schemes.size() > 0 &&
+                !NodeCompat.isNullOrUndefined(this.doc30.servers) &&
                 this.doc30.servers.size() > 0)
         {
             Oas30Server server30 = (Oas30Server) operation30.createServer();
@@ -287,7 +290,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
         if (NodeCompat.equals(param20.in, "body")) {
             Oas30Operation operation30 = (Oas30Operation) this.lookup(this.findParentOperation(param20));
             if (!NodeCompat.isNullOrUndefined(operation30)) {
-                Oas30RequestBody body30 = (Oas30RequestBody) operation30.createRequestBody();
+                Oas30RequestBody body30 = operation30.createRequestBody();
                 operation30.requestBody = body30;
 
                 body30.description = param20.description;
@@ -366,7 +369,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
                 // treat the param as though it is inlined (which will result in a requestBody model).
                 if (!NodeCompat.isNullOrUndefined(paramDef) && NodeCompat.equals(paramDef.in, "formData")) {
                     // Inline the parameter definition and then re-visit it.
-                    Library.readNode(Library.writeNode(paramDef), param20);
+                    NodeUtil.readNode(NodeUtil.writeNode(paramDef), param20);
                     param20.$ref = null;
                     this.visitParameter(param20);
                     return;
@@ -456,7 +459,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         Oas20SecurityRequirement req = (Oas20SecurityRequirement) node;
-        
+
         ISecurityRequirementParent parent30 = (ISecurityRequirementParent) this.lookup(req.parent());
         Oas30SecurityRequirement securityRequirement30 = (Oas30SecurityRequirement) parent30.createSecurityRequirement();
         parent30.addSecurityRequirement(securityRequirement30);
@@ -709,7 +712,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     @Override
     public void visitSchemaDefinition(IDefinition node) {
         Oas20SchemaDefinition sd20 = (Oas20SchemaDefinition) node;
-        
+
         Oas30Components parent30 = this.getOrCreateComponents();
         Oas30SchemaDefinition schemaDef30 = parent30.createSchemaDefinition(sd20.getName());
         parent30.addSchemaDefinition(sd20.getName(), schemaDef30);
@@ -725,7 +728,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     @Override
     public void visitPropertySchema(IPropertySchema node) {
         Oas20PropertySchema ps20 = (Oas20PropertySchema) node;
-        
+
         Oas30Schema parent30 = (Oas30Schema) this.lookup(ps20.parent());
         Oas30PropertySchema property30 = (Oas30PropertySchema) parent30.createPropertySchema(ps20.getPropertyName());
         parent30.addProperty(ps20.getPropertyName(), property30);
@@ -831,13 +834,13 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
     }
 
     private void mapNode(Node from, Node to) {
-        NodePath nodePath = Library.createNodePath(from);
+        NodePath nodePath = NodePathUtil.createNodePath(from);
         String mapIndex = nodePath.toString();
         this._nodeMap.put(mapIndex, to);
     }
 
     private Node lookup(Node node) {
-        NodePath nodePath = Library.createNodePath(node);
+        NodePath nodePath = NodePathUtil.createNodePath(node);
         String mapIndex = nodePath.toString();
         return this._nodeMap.get(mapIndex);
     }
@@ -868,7 +871,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
         Boolean uniqueItems = (Boolean) NodeCompat.getProperty(from, Constants.PROP_UNIQUE_ITEMS);
         List<String> enum_ = (List<String>) NodeCompat.getProperty(from, Constants.PROP_ENUM);
         Number multipleOf = (Number) NodeCompat.getProperty(from, Constants.PROP_MULTIPLE_OF);
-        
+
         schema30.type = type;
         schema30.format = format;
         if (NodeCompat.equals(type, "file")) {
@@ -905,7 +908,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
         if (isSchema) {
             Oas20Schema schema20 = (Oas20Schema) from;
             schema30.$ref = this.updateRef(schema20.$ref);
-            
+
             if (schema20.hasAdditionalPropertiesBoolean()) {
                 schema30.additionalProperties = schema20.additionalProperties;
             }
@@ -936,13 +939,13 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
 
     private Oas20Operation findParentOperation(Parameter node) {
         OperationFinder finder = new OperationFinder();
-        Library.visitTree(node, finder, TraverserDirection.up);
+        VisitorUtil.visitTree(node, finder, TraverserDirection.up);
         return (Oas20Operation) finder.found;
     }
 
     private List<String> findProduces(Node node) {
         ConsumesProducesFinder finder = new ConsumesProducesFinder();
-        Library.visitTree(node, finder, TraverserDirection.up);
+        VisitorUtil.visitTree(node, finder, TraverserDirection.up);
         List<String> produces = finder.produces;
         if (NodeCompat.isNullOrUndefined(produces) || produces.size() == 0) {
             produces = new ArrayList<>();
@@ -953,7 +956,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
 
     private List<String> findConsumes(Node node) {
         ConsumesProducesFinder finder = new ConsumesProducesFinder();
-        Library.visitTree(node, finder, TraverserDirection.up);
+        VisitorUtil.visitTree(node, finder, TraverserDirection.up);
         List<String> consumes = finder.consumes;
         if (NodeCompat.isNullOrUndefined(consumes) || consumes.size() == 0) {
             consumes = new ArrayList<>();
@@ -1040,7 +1043,7 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
             int largest = 0;
             Oas30MediaType srcMt = null;
             for (Oas30MediaType mt : response.getMediaTypes()) {
-                int size = JsonCompat.stringify(Library.writeNode(mt.schema)).length();
+                int size = JsonCompat.stringify(NodeUtil.writeNode(mt.schema)).length();
                 if (size > largest) {
                     largest = size;
                     srcMt = mt;
@@ -1049,8 +1052,8 @@ public class Oas20to30TransformationVisitor implements IOas20Visitor {
             // Now clone the contents of the largest media type into all the others.
             for (Oas30MediaType mt : response.getMediaTypes()) {
                 if (srcMt != mt) {
-                    Object src = Library.writeNode(srcMt.schema);
-                    Library.readNode(src, mt.schema);
+                    Object src = NodeUtil.writeNode(srcMt.schema);
+                    NodeUtil.readNode(src, mt.schema);
                 }
             }
         });

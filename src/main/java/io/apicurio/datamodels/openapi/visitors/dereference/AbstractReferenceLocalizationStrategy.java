@@ -3,9 +3,9 @@ package io.apicurio.datamodels.openapi.visitors.dereference;
 import java.util.Map;
 import java.util.function.Function;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.util.NodeUtil;
 
 public abstract class AbstractReferenceLocalizationStrategy {
 
@@ -19,7 +19,7 @@ public abstract class AbstractReferenceLocalizationStrategy {
     protected <T extends Node> T wrap(Node source, T target, Document model) {
         target._ownerDocument = model;
         target._parent = target;
-        return (T) Library.readNode(Library.writeNode(source), target);
+        return (T) NodeUtil.readNode(NodeUtil.writeNode(source), target);
     }
 
     protected void transform(Map<String, ? extends Node> source, Function<String, String> transformName, Map<String, Node> result) {

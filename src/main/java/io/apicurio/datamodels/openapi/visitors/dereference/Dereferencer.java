@@ -1,14 +1,5 @@
 package io.apicurio.datamodels.openapi.visitors.dereference;
 
-import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.IReferenceNode;
-import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.util.IReferenceResolver;
-import io.apicurio.datamodels.core.util.ReferenceResolverChain;
-import io.apicurio.datamodels.core.util.VisitorUtil;
-import io.apicurio.datamodels.core.visitors.TraverserDirection;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,6 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+
+import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.IReferenceNode;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.util.CloneUtil;
+import io.apicurio.datamodels.core.util.IReferenceResolver;
+import io.apicurio.datamodels.core.util.ReferenceResolverChain;
+import io.apicurio.datamodels.core.util.VisitorUtil;
+import io.apicurio.datamodels.core.visitors.TraverserDirection;
 
 /**
  * Given a {@link Document}, process its reference strings and attempt to dereference them
@@ -63,7 +63,7 @@ public class Dereferencer {
      * @throws java.lang.RuntimeException if strict and some references could not be dereferenced
      */
     public Document dereference() {
-        Document clone = Library.cloneDocument(source);
+        Document clone = CloneUtil.cloneDocument(source);
 
         IReferenceManipulationStrategy strategy = null;
         switch (clone.getDocumentType()) {

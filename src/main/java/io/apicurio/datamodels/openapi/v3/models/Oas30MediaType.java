@@ -31,7 +31,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
  * Models an OpenAPI 3.0.x media type.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30MediaType extends ExtensibleNode implements INamed, IExampleParent {
+public class Oas30MediaType extends ExtensibleNode implements IOas30MediaType, INamed, IExampleParent {
 
     private String _name;
 
@@ -39,7 +39,7 @@ public class Oas30MediaType extends ExtensibleNode implements INamed, IExamplePa
     public Object example;
     public Map<String, Oas30Example> examples = new LinkedHashMap<>();
     public Map<String, Oas30Encoding> encoding = new LinkedHashMap<>();
-    
+
     /**
      * Constructor.
      * @param name
@@ -47,7 +47,7 @@ public class Oas30MediaType extends ExtensibleNode implements INamed, IExamplePa
     public Oas30MediaType(String name) {
         this._name = name;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
@@ -55,7 +55,7 @@ public class Oas30MediaType extends ExtensibleNode implements INamed, IExamplePa
     public String getName() {
         return this._name;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
@@ -63,7 +63,7 @@ public class Oas30MediaType extends ExtensibleNode implements INamed, IExamplePa
     public void rename(String newName) {
         this._name = newName;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */

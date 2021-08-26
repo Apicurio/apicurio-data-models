@@ -18,21 +18,19 @@ package io.apicurio.datamodels;
 
 import java.util.List;
 
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.factories.DocumentFactory;
 import io.apicurio.datamodels.core.factories.VisitorFactory;
-import io.apicurio.datamodels.core.io.DataModelReader;
-import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
-import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.util.CloneUtil;
+import io.apicurio.datamodels.core.util.DocumentTypeUtil;
+import io.apicurio.datamodels.core.util.DocumentUtil;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
 import io.apicurio.datamodels.core.util.NodePathUtil;
+import io.apicurio.datamodels.core.util.NodeUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
@@ -54,7 +52,7 @@ import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30Transformation
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
-    
+
     /**
      * Adds a reference resolver to the library.  The resolver will be used whenever the library
      * needs to resolve a $ref reference.
@@ -66,24 +64,15 @@ public class Library {
     public static void removeReferenceResolver(IReferenceResolver resolver) {
         ReferenceResolverChain.getInstance().removeResolver(resolver);
     }
-    
+
     /**
      * Creates a new, empty document of the given type.
      * @param type
      */
     public static Document createDocument(DocumentType type) {
-        switch (type) {
-            case asyncapi2:
-                return new Aai20Document();
-            case openapi2:
-                return new Oas20Document();
-            case openapi3:
-                return new Oas30Document();
-            default:
-                throw new RuntimeException("Unknown document type: " + type);
-        }
+        return DocumentUtil.createDocument(type);
     }
-    
+
     /**
      * Called to create a node path for a given data model node.
      * @param node
@@ -100,7 +89,7 @@ public class Library {
     public static void visitNode(Node node, IVisitor visitor) {
         VisitorUtil.visitNode(node, visitor);
     }
-    
+
     /**
      * Convenience method for visiting a data model tree.  Supports traversing the data model either
      * up or down the tree.
@@ -124,34 +113,28 @@ public class Library {
         if (severityRegistry == null) {
             severityRegistry = new DefaultSeverityRegistry();
         }
-        
+
         // Clear/reset any problems that may have been found before.
         ValidationProblemsResetVisitor resetter = VisitorFactory.createValidationProblemsResetVisitor(node.ownerDocument());
         visitTree(node, resetter, TraverserDirection.down);
-        
+
         // Validate the data model.
         ValidationVisitor validator = VisitorFactory.createValidationVisitor(node.ownerDocument());
         validator.setSeverityRegistry(severityRegistry);
         visitTree(node, validator, TraverserDirection.down);
-        
+
         return validator.getValidationProblems();
     }
-    
+
     /**
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.
      * @param json
      */
     public static Document readDocument(Object json) {
-        // Clone the input because the reader is destructive to the source data.
-        Object clonedJson = JsonCompat.clone(json);
-        DocumentType type = discoverDocumentType(clonedJson);
-        DataModelReader reader = VisitorFactory.createDataModelReader(type);
-        Document document = DocumentFactory.create(type);
-        reader.readDocument(clonedJson, document);
-        return document;
+        return DocumentUtil.readDocument(json);
     }
-    
+
     /**
      * Reads an entire document from a JSON formatted string.  This will parse the given string into
      * JSON data and then call Library.readDocument.
@@ -161,35 +144,27 @@ public class Library {
         Object json = JsonCompat.parseJSON(jsonString);
         return readDocument(json);
     }
-    
+
     /**
-     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node 
+     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node
      * type and an empty instance of the property node class.  For example, you could read just an
-     * Operation by passing the JSON data for the operation along with an instance of e.g. 
+     * Operation by passing the JSON data for the operation along with an instance of e.g.
      * {@link Oas30Operation} and this will read the data and store it in the instance.
      * @param json
      * @param node
      */
     public static Node readNode(Object json, Node node) {
-        // Clone the input because the reader is destructive to the source data.
-        Object clonedJson = JsonCompat.clone(json);
-        DocumentType type = node.ownerDocument().getDocumentType();
-        DataModelReader reader = VisitorFactory.createDataModelReader(type);
-        DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, clonedJson, reader);
-        Library.visitNode(node, dispatcher);
-        return node;
+        return NodeUtil.readNode(json, node);
     }
-    
+
     /**
      * Called to serialize a given data model node to a JSON object.
      * @param node
      */
     public static Object writeNode(Node node) {
-        DataModelWriter writer = VisitorFactory.createDataModelWriter(node.ownerDocument());
-        visitTree(node, writer, TraverserDirection.down);
-        return writer.getResult();
+        return NodeUtil.writeNode(node);
     }
-    
+
     /**
      * Called to serialize a given data model to a JSON formatted string.
      * @param document
@@ -202,38 +177,18 @@ public class Library {
     /**
      * Called to discover what type of document the given JSON data represents.  This method
      * interrogates the following appropriate top level properties:
-     * 
+     *
      * - asyncapi
      * - openapi
      * - swagger
-     * 
+     *
      * Based on which property is defined, and the value of that property, the correct document
      * type is determined and returned.
-     * 
+     *
      * @param json
      */
     public static DocumentType discoverDocumentType(Object json) {
-        String asyncapi = JsonCompat.getPropertyString(json, Constants.PROP_ASYNCAPI);
-        String openapi = JsonCompat.getPropertyString(json, Constants.PROP_OPENAPI);
-        String swagger = JsonCompat.getPropertyString(json, Constants.PROP_SWAGGER);
-        if (asyncapi != null && asyncapi.startsWith("2.")) {
-            return DocumentType.asyncapi2;
-        }
-        if (openapi != null) {
-            if (openapi.startsWith("2.")) {
-                return DocumentType.openapi2;
-            }
-            if (openapi.startsWith("3.0")) {
-                return DocumentType.openapi3;
-            }
-        }
-        if (swagger != null) {
-            if (swagger.startsWith("2.")) {
-                return DocumentType.openapi2;
-            }
-        }
-        
-        throw new RuntimeException("Unknown data model type or version.");
+        return DocumentTypeUtil.discoverDocumentType(json);
     }
 
     /**
@@ -241,8 +196,7 @@ public class Library {
      * @param source
      */
     public static Document cloneDocument(Document source) {
-        Object jsObj = writeNode(source);
-        return readDocument(jsObj);
+        return CloneUtil.cloneDocument(source);
     }
 
     /**
