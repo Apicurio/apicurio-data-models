@@ -23,6 +23,10 @@ import io.apicurio.datamodels.core.models.IVisitable;
  * OpenAPI 2 and OpenAPI 3 example nodes are mutually exclusive.
  * @author eric.wittmann@gmail.com
  */
-public interface IExample extends IVisitable {
+public interface IExample extends IVisitable, INamed {
+
+    public Object getValue();
+
+    public void setValue(Object value);
 
 }

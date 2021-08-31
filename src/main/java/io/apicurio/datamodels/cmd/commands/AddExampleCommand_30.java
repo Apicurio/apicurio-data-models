@@ -24,6 +24,7 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
@@ -74,7 +75,7 @@ public class AddExampleCommand_30 extends AbstractCommand {
         this._newExampleSummary = exampleSummary;
         this._newExampleDescription = exampleDescription;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -83,22 +84,22 @@ public class AddExampleCommand_30 extends AbstractCommand {
         LoggerCompat.info("[AddExampleCommand_30] Executing.");
         this._exampleAdded = false;
 
-        Oas30MediaType mediaType = (Oas30MediaType) this._parentPath.resolve(document);
-        if (this.isNullOrUndefined(mediaType)) {
+        IExamplesParent examplesParent = (IExamplesParent) this._parentPath.resolve(document);
+        if (this.isNullOrUndefined(examplesParent)) {
             return;
         }
-        if (!this.isNullOrUndefined(mediaType.getExample(this._newExampleName))) {
+        if (!this.isNullOrUndefined(examplesParent.getExample(this._newExampleName))) {
             return;
         }
 
-        Oas30Example example = mediaType.createExample(this._newExampleName);
+        Oas30Example example = (Oas30Example) examplesParent.createExample(this._newExampleName);
         example.summary = this._newExampleSummary;
         example.description = this._newExampleDescription;
         example.value = this._newExampleValue;
-        mediaType.addExample(example);
+        examplesParent.addExample(example);
         this._exampleAdded = true;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */

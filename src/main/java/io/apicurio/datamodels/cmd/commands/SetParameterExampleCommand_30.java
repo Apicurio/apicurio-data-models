@@ -31,12 +31,12 @@ public class SetParameterExampleCommand_30 extends SetExampleCommand {
 
     SetParameterExampleCommand_30() {
     }
-    
+
     SetParameterExampleCommand_30(Oas30Parameter parent, Object example, String exampleName) {
         super(parent, example);
         this._newExampleName = exampleName;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -56,15 +56,15 @@ public class SetParameterExampleCommand_30 extends SetExampleCommand {
                 parameter.addExample(parameter.createExample(this._newExampleName));
                 this._nullExample = true;
             } else {
-                this._oldValue = parameter.getExample(this._newExampleName).value;
+                this._oldValue = parameter.getExample(this._newExampleName).getValue();
             }
-            parameter.getExample(this._newExampleName).value = this._newExample;
+            parameter.getExample(this._newExampleName).setValue(this._newExample);
         } else {
-            this._oldValue = parameter.example;
-            parameter.example = this._newExample;
+            this._oldValue = parameter.getExample();
+            parameter.setExample(this._newExample);
         }
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */
@@ -80,12 +80,12 @@ public class SetParameterExampleCommand_30 extends SetExampleCommand {
             if (this._nullExample) {
                 parameter.removeExample(this._newExampleName);
             } else {
-                parameter.getExample(this._newExampleName).value = this._oldValue;
+                parameter.getExample(this._newExampleName).setValue(this._oldValue);
             }
         } else {
-            parameter.example = this._oldValue;
+            parameter.setExample(this._oldValue);
             this._oldValue = null;
         }
     }
-    
+
 }

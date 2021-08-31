@@ -36,7 +36,7 @@ public class Oas30Example extends ExtensibleNode implements IReferenceNode, INam
     public String description;
     public Object value;
     public String externalValue;
-    
+
     /**
      * Constructor.
      * @param name
@@ -44,7 +44,7 @@ public class Oas30Example extends ExtensibleNode implements IReferenceNode, INam
     public Oas30Example(String name) {
         this._name = name;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#getName()
      */
@@ -52,7 +52,7 @@ public class Oas30Example extends ExtensibleNode implements IReferenceNode, INam
     public String getName() {
         return this._name;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
      */
@@ -69,6 +69,16 @@ public class Oas30Example extends ExtensibleNode implements IReferenceNode, INam
     @Override
     public void setReference(String reference) {
         $ref = reference;
+    }
+
+    @Override
+    public Object getValue() {
+        return this.value;
+    }
+
+    @Override
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     /**

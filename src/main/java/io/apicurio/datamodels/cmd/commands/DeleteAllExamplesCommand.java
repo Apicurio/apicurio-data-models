@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -27,9 +26,10 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
-import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
+import io.apicurio.datamodels.core.models.common.IExample;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 
 /**
  * A command used to delete a single mediaType from an operation.
@@ -37,18 +37,18 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
  */
 public class DeleteAllExamplesCommand extends AbstractCommand {
 
-    public NodePath _mediaTypePath;
+    public NodePath _mediaTypePath; // Note: this is actually a parent path, but we can't change the name without breaking backward compatibility
 
     @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
     public Map<String, Object> _oldExamples;
-    
+
     DeleteAllExamplesCommand() {
     }
-    
-    DeleteAllExamplesCommand(Oas30MediaType mediaType) {
-        this._mediaTypePath = Library.createNodePath(mediaType);
+
+    DeleteAllExamplesCommand(IExamplesParent parent) {
+        this._mediaTypePath = Library.createNodePath((Node) parent);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -66,20 +66,20 @@ public class DeleteAllExamplesCommand extends AbstractCommand {
             return;
         }
 
-        Oas30MediaType mediaType = (Oas30MediaType) this._mediaTypePath.resolve(document);
+        IExamplesParent parent = (IExamplesParent) this._mediaTypePath.resolve(document);
 
-        if (this.isNullOrUndefined(mediaType)) {
+        if (this.isNullOrUndefined(parent)) {
             LoggerCompat.debug("[DeleteAllExamplesCommand] Media type not found.");
             return;
         }
 
         this._oldExamples = new HashMap<>();
-        mediaType.getExamples().forEach(e -> {
-            this._oldExamples.put(e.getName(), Library.writeNode(e));
+        parent.getExamples().forEach(e -> {
+            this._oldExamples.put(e.getName(), Library.writeNode((Node) e));
         });
-        mediaType.examples = new LinkedHashMap<>();
+        parent.clearExamples();
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */
@@ -97,8 +97,8 @@ public class DeleteAllExamplesCommand extends AbstractCommand {
 
         LoggerCompat.info("[DeleteAllExamplesCommand] Reverting.");
 
-        Oas30MediaType mediaType = (Oas30MediaType) this._mediaTypePath.resolve(document);
-        if (this.isNullOrUndefined(mediaType)) {
+        IExamplesParent parent = (IExamplesParent) this._mediaTypePath.resolve(document);
+        if (this.isNullOrUndefined(parent)) {
             LoggerCompat.info("[DeleteAllExamplesCommand] No media type found.");
             return;
         }
@@ -109,9 +109,9 @@ public class DeleteAllExamplesCommand extends AbstractCommand {
         }
 
         for (String k : this._oldExamples.keySet()) {
-            Oas30Example example = mediaType.createExample(k);
-            Library.readNode(this._oldExamples.get(k), example);
-            mediaType.addExample(example);
+            IExample example = parent.createExample(k);
+            Library.readNode(this._oldExamples.get(k), (Node) example);
+            parent.addExample(example);
         }
     }
 

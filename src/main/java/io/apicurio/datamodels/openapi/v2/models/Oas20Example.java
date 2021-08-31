@@ -31,15 +31,15 @@ import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
  * @author eric.wittmann@gmail.com
  */
 public class Oas20Example extends Node implements IExample {
-    
+
     private Map<String, Object> items = new LinkedHashMap<>();
-    
+
     /**
      * Constructor.
      */
     public Oas20Example() {
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.models.Node#accept(io.apicurio.datamodels.core.visitors.IVisitor)
      */
@@ -82,7 +82,7 @@ public class Oas20Example extends Node implements IExample {
     public Object removeExample(String contentType) {
         return this.items.remove(contentType);
     }
-    
+
     /**
      * Gets the examples.
      */
@@ -90,6 +90,38 @@ public class Oas20Example extends Node implements IExample {
         List<Object> rval = new ArrayList<>();
         rval.addAll(this.items.values());
         return rval;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#getName()
+     */
+    @Override
+    public String getName() {
+        throw new RuntimeException("Operation not supported.");
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.INamed#rename(java.lang.String)
+     */
+    @Override
+    public void rename(String newName) {
+        throw new RuntimeException("Operation not supported.");
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExample#getValue()
+     */
+    @Override
+    public Object getValue() {
+        throw new RuntimeException("Operation not supported.");
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExample#setValue(java.lang.Object)
+     */
+    @Override
+    public void setValue(Object value) {
+        throw new RuntimeException("Operation not supported.");
     }
 
 }

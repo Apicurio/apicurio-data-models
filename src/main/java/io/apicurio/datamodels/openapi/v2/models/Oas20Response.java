@@ -28,7 +28,7 @@ import io.apicurio.datamodels.openapi.models.OasResponse;
  * Models an OpenAPI 2.0 response.
  * @author eric.wittmann@gmail.com
  */
-public class Oas20Response extends OasResponse implements IExampleParent, IOasHeaderParent {
+public class Oas20Response extends OasResponse implements IOasHeaderParent, IExampleParent {
 
     public Oas20Headers headers;
     public Oas20Schema schema;
@@ -121,6 +121,22 @@ public class Oas20Response extends OasResponse implements IExampleParent, IOasHe
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
         return rval;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExampleParent#setExample(java.lang.Object)
+     */
+    @Override
+    public void setExample(Object example) {
+        throw new RuntimeException("Operation not supported.");
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExampleParent#getExample()
+     */
+    @Override
+    public Object getExample() {
+        throw new RuntimeException("Operation not supported.");
     }
 
 }

@@ -21,4 +21,8 @@ package io.apicurio.datamodels.core.models.common;
  */
 public interface IExampleParent {
 
+    public void setExample(Object example);
+
+    public Object getExample();
+
 }

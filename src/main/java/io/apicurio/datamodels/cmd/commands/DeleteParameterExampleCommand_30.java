@@ -23,7 +23,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
 
@@ -38,15 +40,15 @@ public class DeleteParameterExampleCommand_30 extends AbstractCommand {
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
-    
+
     DeleteParameterExampleCommand_30() {
     }
-    
+
     DeleteParameterExampleCommand_30(Oas30Example example) {
         this._exampleName = example.getName();
         this._parameterPath = Library.createNodePath(example.parent());
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -61,10 +63,10 @@ public class DeleteParameterExampleCommand_30 extends AbstractCommand {
             return;
         }
 
-        Oas30Example example = parameter.removeExample(this._exampleName);
-        this._oldExample = Library.writeNode(example);
+        IExample example = parameter.removeExample(this._exampleName);
+        this._oldExample = Library.writeNode((Node) example);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */

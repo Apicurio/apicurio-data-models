@@ -24,6 +24,7 @@ import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 
 /**
  * A command used to set the Example for a 3.0 MediaType or a 2.0 Response.
@@ -40,9 +41,14 @@ public abstract class SetExampleCommand extends AbstractCommand {
 
     SetExampleCommand() {
     }
-    
-    SetExampleCommand(IExampleParent parent, Object example) {
-        this._parentPath = Library.createNodePath((Node) parent);
+
+    /**
+     * Constructor.
+     * @param parent should be either {@link IExampleParent} or {@link IExamplesParent}
+     * @param example
+     */
+    SetExampleCommand(Node parent, Object example) {
+        this._parentPath = Library.createNodePath(parent);
         this._newExample = example;
     }
 

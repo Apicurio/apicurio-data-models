@@ -18,7 +18,9 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -31,12 +33,17 @@ public class SetExampleCommand_30 extends SetExampleCommand {
 
     SetExampleCommand_30() {
     }
-    
-    SetExampleCommand_30(Oas30MediaType parent, Object example, String exampleName) {
-        super(parent, example);
+
+    SetExampleCommand_30(IExamplesParent parent, Object example, String exampleName) {
+        super((Node) parent, example);
         this._newExampleName = exampleName;
     }
-    
+
+    SetExampleCommand_30(IExampleParent parent, Object example, String exampleName) {
+        super((Node) parent, example);
+        this._newExampleName = exampleName;
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -46,46 +53,55 @@ public class SetExampleCommand_30 extends SetExampleCommand {
         this._oldValue = null;
         this._nullExample = false;
 
-        Oas30MediaType mediaType = (Oas30MediaType) this._parentPath.resolve(document);
-        if (this.isNullOrUndefined(mediaType)) {
-            return;
-        }
-
         if (!this.isNullOrUndefined(this._newExampleName)) {
-            if (this.isNullOrUndefined(mediaType.getExample(this._newExampleName))) {
-                mediaType.addExample(mediaType.createExample(this._newExampleName));
+            IExamplesParent parent = (IExamplesParent) this._parentPath.resolve(document);
+            if (this.isNullOrUndefined(parent)) {
+                return;
+            }
+
+            if (this.isNullOrUndefined(parent.getExample(this._newExampleName))) {
+                parent.addExample(parent.createExample(this._newExampleName));
                 this._nullExample = true;
             } else {
-                this._oldValue = mediaType.getExample(this._newExampleName).value;
+                this._oldValue = parent.getExample(this._newExampleName).getValue();
             }
-            mediaType.getExample(this._newExampleName).value = this._newExample;
+            parent.getExample(this._newExampleName).setValue(this._newExample);
         } else {
-            this._oldValue = mediaType.example;
-            mediaType.example = this._newExample;
+            IExampleParent parent = (IExampleParent) this._parentPath.resolve(document);
+            if (this.isNullOrUndefined(parent)) {
+                return;
+            }
+
+            this._oldValue = parent.getExample();
+            parent.setExample(this._newExample);
         }
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */
     @Override
     public void undo(Document document) {
         LoggerCompat.info("[SetExampleCommand_30] Reverting.");
-        Oas30MediaType mediaType = (Oas30MediaType) this._parentPath.resolve(document);
-        if (this.isNullOrUndefined(mediaType)) {
-            return;
-        }
 
         if (!this.isNullOrUndefined(this._newExampleName)) {
+            IExamplesParent parent = (IExamplesParent) this._parentPath.resolve(document);
+            if (this.isNullOrUndefined(parent)) {
+                return;
+            }
             if (this._nullExample) {
-                mediaType.removeExample(this._newExampleName);
+                parent.removeExample(this._newExampleName);
             } else {
-                mediaType.getExample(this._newExampleName).value = this._oldValue;
+                parent.getExample(this._newExampleName).setValue(this._oldValue);
             }
         } else {
-            mediaType.example = this._oldValue;
+            IExampleParent parent = (IExampleParent) this._parentPath.resolve(document);
+            if (this.isNullOrUndefined(parent)) {
+                return;
+            }
+            parent.setExample(this._oldValue);
             this._oldValue = null;
         }
     }
-    
+
 }

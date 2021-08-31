@@ -23,7 +23,10 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IExample;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Example;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 
@@ -34,19 +37,19 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
 public class DeleteExampleCommand_30 extends AbstractCommand {
 
     public String _exampleName;
-    public NodePath _mediaTypePath;
+    public NodePath _mediaTypePath; // TODO note that this is actually "parentPath" but we can't rename it for legacy reasons
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
-    
+
     DeleteExampleCommand_30() {
     }
-    
+
     DeleteExampleCommand_30(Oas30Example example) {
         this._exampleName = example.getName();
         this._mediaTypePath = Library.createNodePath(example.parent());
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
@@ -55,16 +58,16 @@ public class DeleteExampleCommand_30 extends AbstractCommand {
         LoggerCompat.info("[DeleteExampleCommand] Executing.");
         this._oldExample = null;
 
-        Oas30MediaType mediaType = (Oas30MediaType) this._mediaTypePath.resolve(document);
-        if (this.isNullOrUndefined(mediaType) || this.isNullOrUndefined(mediaType.getExample(this._exampleName))) {
+        IExamplesParent parent = (IExamplesParent) this._mediaTypePath.resolve(document);
+        if (this.isNullOrUndefined(parent) || this.isNullOrUndefined(parent.getExample(this._exampleName))) {
             LoggerCompat.debug("[DeleteExampleCommand] No example named: " + this._exampleName);
             return;
         }
 
-        Oas30Example example = mediaType.removeExample(this._exampleName);
-        this._oldExample = Library.writeNode(example);
+        IExample example = parent.removeExample(this._exampleName);
+        this._oldExample = Library.writeNode((Node) example);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
      */
@@ -81,8 +84,8 @@ public class DeleteExampleCommand_30 extends AbstractCommand {
             return;
         }
 
-        Oas30Example example = mediaType.createExample(this._exampleName);
-        Library.readNode(this._oldExample, example);
+        IExample example = mediaType.createExample(this._exampleName);
+        Library.readNode(this._oldExample, (Node) example);
         mediaType.addExample(example);
     }
 

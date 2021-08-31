@@ -22,13 +22,16 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.core.models.IReferenceNode;
+import io.apicurio.datamodels.core.models.common.IExample;
+import io.apicurio.datamodels.core.models.common.IExampleParent;
+import io.apicurio.datamodels.core.models.common.IExamplesParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 
 /**
  * Models an OpenAPI 3.0.x header.
  * @author eric.wittmann@gmail.com
  */
-public class Oas30Header extends OasHeader implements IReferenceNode {
+public class Oas30Header extends OasHeader implements IReferenceNode, IExampleParent, IExamplesParent {
 
     public String $ref;
     public Boolean required;
@@ -39,9 +42,9 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
     public Boolean allowReserved;
     public Oas30Schema schema;
     public Object example;
-    public Map<String, Oas30Example> examples = new LinkedHashMap<>();
+    public Map<String, IExample> examples = new LinkedHashMap<>();
     public Map<String, Oas30MediaType> content = new LinkedHashMap<>();
-    
+
     /**
      * Constructor.
      */
@@ -72,6 +75,7 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
     /**
      * Creates a child Example model.
      */
+    @Override
     public Oas30Example createExample(String name) {
         Oas30Example rval = new Oas30Example(name);
         rval._ownerDocument = this.ownerDocument();
@@ -83,15 +87,25 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * Adds the Example to the map of examples.
      * @param example
      */
-    public void addExample(Oas30Example example) {
+    @Override
+    public void addExample(IExample example) {
         this.examples.put(example.getName(), example);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExampleParent#setExample(java.lang.Object)
+     */
+    @Override
+    public void setExample(Object example) {
+        this.example = example;
     }
 
     /**
      * Removes an Example and returns it.
      * @param name
      */
-    public Oas30Example removeExample(String name) {
+    @Override
+    public IExample removeExample(String name) {
         return this.examples.remove(name);
     }
 
@@ -99,17 +113,35 @@ public class Oas30Header extends OasHeader implements IReferenceNode {
      * Gets a single example by name.
      * @param name
      */
-    public Oas30Example getExample(String name) {
+    @Override
+    public IExample getExample(String name) {
         return this.examples.get(name);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExampleParent#getExample()
+     */
+    @Override
+    public Object getExample() {
+        return this.example;
     }
 
     /**
      * Gets all examples.
      */
-    public List<Oas30Example> getExamples() {
-        List<Oas30Example> rval = new ArrayList<>();
+    @Override
+    public List<IExample> getExamples() {
+        List<IExample> rval = new ArrayList<>();
         rval.addAll(this.examples.values());
         return rval;
+    }
+
+    /**
+     * @see io.apicurio.datamodels.core.models.common.IExamplesParent#clearExamples()
+     */
+    @Override
+    public void clearExamples() {
+        this.examples = new LinkedHashMap<>();
     }
 
     /**
