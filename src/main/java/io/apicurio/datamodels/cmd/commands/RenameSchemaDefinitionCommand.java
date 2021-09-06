@@ -203,31 +203,49 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitAllOfSchema(AaiSchema node) {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitOneOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitOneOfSchema(AaiSchema node) {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAnyOfSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitAnyOfSchema(AaiSchema node) {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitNotSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitNotSchema(AaiSchema node) {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitItemsSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitItemsSchema(AaiSchema node) {
             this.processSchema(node);
         }
 
+        /**
+         * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAdditionalPropertiesSchema(io.apicurio.datamodels.asyncapi.models.AaiSchema)
+         */
         @Override
         public void visitAdditionalPropertiesSchema(AaiSchema node) {
             this.processSchema(node);
