@@ -16,29 +16,29 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 
 /**
- * @author eric.wittmann@gmail.com
+ * @author c.desc2@gmail.com
  */
-public class RenameSchemaDefinitionCommand_20 extends RenameSchemaDefinitionCommand {
+public class RenameSchemaDefinitionCommand_Aai20 extends RenameSchemaDefinitionCommand {
 
-    RenameSchemaDefinitionCommand_20() {
+    RenameSchemaDefinitionCommand_Aai20() {
     }
     
-    RenameSchemaDefinitionCommand_20(String oldName, String newName) {
+    RenameSchemaDefinitionCommand_Aai20(String oldName, String newName) {
         super(oldName, newName);
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.RenameSchemaDefinitionCommand#_nameToReference(java.lang.String)
+     * @see RenameSchemaDefinitionCommand#_nameToReference(String)
      */
     @Override
     protected String _nameToReference(String name) {
-        return "#/definitions/" + name;
+        return "#/components/schemas/" + name;
     }
     
     /**
@@ -46,16 +46,16 @@ public class RenameSchemaDefinitionCommand_20 extends RenameSchemaDefinitionComm
      */
     @Override
     protected boolean _renameSchemaDefinition(Document document, String fromName, String toName) {
-        Oas20Document doc20 = (Oas20Document) document;
-        if (this.isNullOrUndefined(doc20.definitions)) {
+        Aai20Document aai20Document = (Aai20Document) document;
+        if (this.isNullOrUndefined(aai20Document.components) || this.isNullOrUndefined(aai20Document.components.schemas)) {
             return false;
         }
-        if (ModelUtils.isDefined(doc20.definitions.getDefinition(toName))) {
+        if (ModelUtils.isDefined(aai20Document.components.getSchemaDefinition(toName))) {
             return false;
         }
-        Oas20SchemaDefinition schemaDef = doc20.definitions.removeDefinition(fromName);
+        Aai20SchemaDefinition schemaDef = (Aai20SchemaDefinition) aai20Document.components.removeSchemaDefinition(fromName);
         schemaDef.rename(toName);
-        doc20.definitions.addDefinition(toName, schemaDef);
+        aai20Document.components.addSchemaDefinition(toName, schemaDef);
         return true;
     }
 

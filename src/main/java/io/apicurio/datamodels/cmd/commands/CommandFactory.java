@@ -395,6 +395,8 @@ public class CommandFactory {
             { return new RenameSchemaDefinitionCommand_20(); }
             case "RenameSchemaDefinitionCommand_30":
             { return new RenameSchemaDefinitionCommand_30(); }
+            case "RenameSchemaDefinitionCommand_Aai20":
+            { return new RenameSchemaDefinitionCommand_Aai20(); }
             case "RenameSecuritySchemeCommand":
             { return new RenameSecuritySchemeCommand(); }
             case "RenameServerCommand_Aai20":
@@ -997,6 +999,9 @@ public class CommandFactory {
         }
         if (docType == DocumentType.openapi3) {
             return new RenameSchemaDefinitionCommand_30(oldName, newName);
+        }
+        if (docType == DocumentType.asyncapi2) {
+            return new RenameSchemaDefinitionCommand_Aai20(oldName, newName);
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
