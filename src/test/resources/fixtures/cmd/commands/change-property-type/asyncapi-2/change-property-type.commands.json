@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangePropertyTypeCommand",
+        "__type": "ChangePropertyTypeCommand_Aai20",
         "_propPath": "/components/schemas[Group]/properties[persons]",
         "_propName": "persons",
         "_newType": {

@@ -16,34 +16,29 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.cmd.util.SimplifiedTypeUtil;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
-import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IPropertyParent;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
-import io.apicurio.datamodels.openapi.models.OasSchema;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A command used to modify the type of a property of a schema.
  * @author eric.wittmann@gmail.com
  */
-public class ChangePropertyTypeCommand extends AbstractCommand { // TODO (the aai counterpart is needed)
+public abstract class ChangePropertyTypeCommand extends AbstractCommand {
     
     public NodePath _propPath;
     public String _propName;
@@ -121,11 +116,7 @@ public class ChangePropertyTypeCommand extends AbstractCommand { // TODO (the aa
         Library.readNode(this._oldProperty, oldProp);
 
         // Restore the schema attributes
-        if (DocumentType.asyncapi2.equals(document.getDocumentType())) {
-            restoreAaiSchemaInternalProperties((AaiSchema) prop, (AaiSchema) oldProp);
-        } else {
-            restoreOasSchemaInternalProperties((OasSchema) prop, (OasSchema) oldProp);
-        }
+        restoreSchemaInternalProperties((Schema) prop, oldProp);
         // Restore the "required" flag
         if (!this.isNullOrUndefined(this._newType.required)) {
             if (this._nullRequired) {
@@ -143,44 +134,9 @@ public class ChangePropertyTypeCommand extends AbstractCommand { // TODO (the aa
         }
     }
 
-    private void restoreOasSchemaInternalProperties(OasSchema prop, OasSchema oldProp) {
-        prop.$ref = null;
-        prop.type = null;
-        prop.enum_ = null;
-        prop.format = null;
-        prop.items = null;
-        if (ModelUtils.isDefined(oldProp)) {
-            prop.$ref = oldProp.$ref;
-            prop.type = oldProp.type;
-            prop.enum_ = oldProp.enum_;
-            prop.format = oldProp.format;
-            prop.items = oldProp.items;
-            if (ModelUtils.isDefined(prop.items) && !NodeCompat.isList(prop.items)) {
-                Node itemsNode = (Node) prop.items;
-                itemsNode._parent = prop;
-                itemsNode._ownerDocument = prop.ownerDocument();
-            }
-        }
-    }
-
-    private void restoreAaiSchemaInternalProperties(AaiSchema prop, AaiSchema oldProp) {
-        prop.$ref = null;
-        prop.type = null;
-        prop.enum_ = null;
-        prop.format = null;
-        prop.items = null;
-        if (ModelUtils.isDefined(oldProp)) {
-            prop.$ref = oldProp.$ref;
-            prop.type = oldProp.type;
-            prop.enum_ = oldProp.enum_;
-            prop.format = oldProp.format;
-            prop.items = oldProp.items;
-            if (ModelUtils.isDefined(prop.items) && !NodeCompat.isList(prop.items)) {
-                Node itemsNode = (Node) prop.items;
-                itemsNode._parent = prop;
-                itemsNode._ownerDocument = prop.ownerDocument();
-            }
-        }
-    }
+    /**
+     * Restores document type dependent fields in the schema
+     */
+    protected abstract void restoreSchemaInternalProperties(Schema toSchema, Schema fromSchema);
 
 }

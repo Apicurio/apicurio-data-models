@@ -155,9 +155,12 @@ public class CommandFactory {
             case "ChangeParameterDefinitionTypeCommand_30":
             { return new ChangeParameterDefinitionTypeCommand_30(); }
             case "ChangePropertyTypeCommand":
+            case "ChangePropertyTypeCommand_Oas":
             case "ChangePropertyTypeCommand_20":
             case "ChangePropertyTypeCommand_30":
-            { return new ChangePropertyTypeCommand(); }
+            { return new ChangePropertyTypeCommand_Oas(); }
+            case "ChangePropertyTypeCommand_Aai20":
+            { return new ChangePropertyTypeCommand_Aai20(); }
             case "ChangeResponseTypeCommand":
             case "ChangeResponseTypeCommand_20":
             case "ChangeResponseDefinitionTypeCommand_20":
@@ -591,9 +594,26 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
+    /**
+     * @deprecated Prefer the {@link CommandFactory#createChangePropertyTypeCommand(DocumentType, IPropertySchema, SimplifiedPropertyType)} 
+     * alternative that handles non Oas document types
+     */
+    @Deprecated
     public static final ICommand createChangePropertyTypeCommand(IPropertySchema property,
-            SimplifiedPropertyType newType) {
-        return new ChangePropertyTypeCommand(property, newType);
+                                                                 SimplifiedPropertyType newType) {
+        return new ChangePropertyTypeCommand_Oas(property, newType);
+    }
+    
+    public static final ICommand createChangePropertyTypeCommand(DocumentType docType,
+                                                                 IPropertySchema property,
+                                                                 SimplifiedPropertyType newType) {
+        if (docType == DocumentType.openapi2 || docType == DocumentType.openapi3) {
+            return new ChangePropertyTypeCommand_Oas(property, newType);
+        }
+        if (docType == DocumentType.asyncapi2) {
+            return new ChangePropertyTypeCommand_Aai20(property, newType);
+        }
+        throw new RuntimeException("Document type not supported by this command.");
     }
 
     public static final ICommand createChangeSchemaTypeCommand(OasSchema schema, SimplifiedType newType) {
