@@ -58,9 +58,14 @@ public interface IPropertyParent {
     public Schema getProperty(String propertyName);
 
     /**
-     * Gets a copy of the required properties.
+     * Gets the required properties list.
      */
     public List<String> getRequiredProperties();
+
+    /**
+     * Sets the required properties list.
+     */
+    public void setRequiredProperties(List<String> requiredProperties);
 
     /**
      * Returns true if the property is required.

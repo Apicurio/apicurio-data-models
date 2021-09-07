@@ -166,11 +166,15 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public List<String> getRequiredProperties() {
-        List<String> rval = new ArrayList<>();
-        if (this.required != null) {
-            rval.addAll(this.required);
-        }
-        return rval;
+        return this.required;
+    }
+
+    /**
+     * @see IPropertyParent#setRequiredProperties(List)
+     */
+    @Override
+    public void setRequiredProperties(List<String> requiredProperties) {
+        this.required = requiredProperties;
     }
     
     /**
