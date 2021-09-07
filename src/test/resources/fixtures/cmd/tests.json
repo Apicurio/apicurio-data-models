@@ -270,6 +270,7 @@
     { "name": "[AsyncAPI 2] {Change Headers Ref} - Change Headers Ref", "test": "commands/change-headers-ref/asyncapi-2/change-headers-ref" },
     { "name": "[AsyncAPI 2] {Change Security Scheme} - Change Security Scheme", "test": "commands/change-security-scheme/asyncapi-2/change-security-scheme" },
     { "name": "[AsyncAPI 2] {Change Server} - Change Server", "test": "commands/change-server/asyncapi-2/change-server" },
+    { "name": "[AsyncAPI 2] {Change Property Type} - Change Property Type", "test": "commands/change-property-type/asyncapi-2/change-property-type" },
     { "name": "[AsyncAPI 2] {Delete Channel} - Delete Channel", "test": "commands/delete-channel/asyncapi-2/delete-channel" },
     { "name": "[AsyncAPI 2] {Delete Operation} - Delete Operation", "test": "commands/delete-operation/asyncapi-2/delete-operation" },
     { "name": "[AsyncAPI 2] {Delete Property} - Delete Property Required", "test": "commands/delete-property/asyncapi-2/delete-property-required" },

@@ -1,0 +1,19 @@
+[
+    {
+        "__type": "ChangePropertyTypeCommand",
+        "_propPath": "/components/schemas[Group]/properties[persons]",
+        "_propName": "persons",
+        "_newType": {
+            "type": "array",
+            "enum": null,
+            "of": {
+                "type": "#/components/schemas/Person",
+                "enum": null,
+                "of": null,
+                "as": null
+            },
+            "as": null,
+            "required": false
+        }
+    }
+]

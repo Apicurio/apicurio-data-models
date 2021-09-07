@@ -39,7 +39,7 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
  * A command used to modify the type of a property of a schema.
  * @author eric.wittmann@gmail.com
  */
-public class ChangePropertyTypeCommand extends AbstractCommand { // TODO check if an aai counterpart is needed
+public class ChangePropertyTypeCommand extends AbstractCommand { // TODO (the aai counterpart is needed)
     
     public NodePath _propPath;
     public String _propName;
