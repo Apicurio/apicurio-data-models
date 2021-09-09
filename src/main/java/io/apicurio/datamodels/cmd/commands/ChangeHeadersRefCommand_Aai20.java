@@ -20,6 +20,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
@@ -51,7 +52,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
       AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
       this._changed = false;
 
-      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message)) {
+      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message) || !isValidRef(this._headersRef)) {
          return;
       }
 
@@ -85,5 +86,10 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
       } else {
          headerItem.$ref = null;
       }
+   }
+
+   private boolean isValidRef(String refCandidate) {
+      return ModelUtils.isDefined(refCandidate)
+              && refCandidate.startsWith("#/");
    }
 }

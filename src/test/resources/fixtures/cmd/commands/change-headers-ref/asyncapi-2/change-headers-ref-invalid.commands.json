@@ -1,5 +1,5 @@
 [{
   "__type": "ChangeHeadersRefCommand_Aai20",
-  "_headersRef": "#/components/schema/UserSignedUpHeaders",
+  "_headersRef": "NotAReference",
   "_operationPath": "/channels[myChannel]/subscribe"
 }]
