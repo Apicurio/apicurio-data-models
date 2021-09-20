@@ -10,7 +10,7 @@
       "subscribe": {
         "message":{
           "payload": {
-            "$ref": "#components/schema/UserSignedUpEvent"
+            "$ref": "#/components/schema/UserSignedUpEvent"
           }
         }
       }

@@ -167,17 +167,17 @@ public class SimplifiedTypeTest {
 
         definition = doc.definitions.getDefinition("Examples");
         // Array
-        OasSchema property = definition.getProperty("array-property");
+        OasSchema property = (OasSchema) definition.getProperty("array-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         assertSimplifiedType(simplifiedType, false, true, false, false, false, "array", null, null);
         Assert.assertNotNull(simplifiedType.of);
         Assert.assertEquals("string", simplifiedType.of.type);
         // Boolean
-        property = definition.getProperty("boolean-property");
+        property = (OasSchema) definition.getProperty("boolean-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         assertSimplifiedType(simplifiedType, false, false, false, false, true, "boolean", null, null);
         // Enum
-        property = definition.getProperty("enum-property");
+        property = (OasSchema) definition.getProperty("enum-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         List<Object> vals = new ArrayList<>(3);
         vals.add("val1");
@@ -185,15 +185,15 @@ public class SimplifiedTypeTest {
         vals.add("val3");
         assertSimplifiedType(simplifiedType, false, false, true, false, true, "string", null, vals);
         // Number
-        property = definition.getProperty("number-property");
+        property = (OasSchema) definition.getProperty("number-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         assertSimplifiedType(simplifiedType, false, false, false, false, true, "number", null, null);
         // Ref
-        property = definition.getProperty("ref-property");
+        property = (OasSchema) definition.getProperty("ref-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         assertSimplifiedType(simplifiedType, true, false, false, false, false, "#/definitions/ExampleObject", null, null);
         // String
-        property = definition.getProperty("string-property");
+        property = (OasSchema) definition.getProperty("string-property");
         simplifiedType = SimplifiedType.fromSchema(property);
         assertSimplifiedType(simplifiedType, false, false, false, false, true, "string", null, null);
     }

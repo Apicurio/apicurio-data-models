@@ -9,10 +9,7 @@
       "description": "This is myChannel description",
       "subscribe": {
         "message":{
-          "payload": {},
-          "headers": {
-            "$ref": "#/components/schema/UserSignedUpHeaders"
-          }
+          "payload": {}
         }
       }
     }

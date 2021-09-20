@@ -624,7 +624,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
             List<String> propertyNames = JsonCompat.keys(properties);
             for (String propertyName : propertyNames) {
                 Object propertySchema = JsonCompat.consumeProperty(properties, propertyName);
-                AaiSchema propertySchemaModel = schema.createPropertySchema(propertyName);
+                Schema propertySchemaModel = schema.createPropertySchema(propertyName);
                 this.readSchema(propertySchema, propertySchemaModel);
                 schema.addProperty(propertyName, propertySchemaModel);
             }

@@ -29,8 +29,10 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.core.models.common.IPropertyParent;
+import io.apicurio.datamodels.core.models.common.Schema;
 
 /**
  * A command used to delete all properties from a schema.
@@ -46,8 +48,8 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
     DeleteAllPropertiesCommand() {
     }
     
-    DeleteAllPropertiesCommand(OasSchema schema) {
-        this._schemaPath = Library.createNodePath(schema);
+    DeleteAllPropertiesCommand(IPropertyParent schema) {
+        this._schemaPath = Library.createNodePath((Node) schema);
     }
     
     /**
@@ -58,7 +60,7 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
         LoggerCompat.info("[DeleteAllPropertiesCommand] Executing.");
         this._oldProperties = new ArrayList<>();
 
-        OasSchema schema = (OasSchema) this._schemaPath.resolve(document);
+        IPropertyParent schema = (IPropertyParent) this._schemaPath.resolve(document);
 
         if (this.isNullOrUndefined(schema)) {
             return;
@@ -68,10 +70,10 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
             Object data = JsonCompat.objectNode();
             JsonCompat.setPropertyString(data, Constants.PROP_NAME, pname);
             JsonCompat.setProperty(data, Constants.PROP_SCHEMA, Library.writeNode(schema.removeProperty(pname)));
-            JsonCompat.setPropertyBoolean(data, Constants.PROP_REQUIRED, this.isPropertyRequired(schema, pname));
+            JsonCompat.setPropertyBoolean(data, Constants.PROP_REQUIRED, schema.isPropertyRequired(pname));
+            schema.unsetPropertyRequired(pname);
             this._oldProperties.add(data);
         });
-        schema.required = null;
     }
     
     /**
@@ -84,13 +86,9 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema schema = (OasSchema) this._schemaPath.resolve(document);
+        IPropertyParent schema = (IPropertyParent) this._schemaPath.resolve(document);
         if (this.isNullOrUndefined(schema)) {
             return;
-        }
-
-        if (this.isNullOrUndefined(schema.required)) {
-            schema.required = new ArrayList<>();
         }
 
         this._oldProperties.forEach( oldProp -> {
@@ -98,22 +96,14 @@ public class DeleteAllPropertiesCommand extends AbstractCommand {
             Object schemaObj = JsonCompat.getProperty(oldProp, Constants.PROP_SCHEMA);
             Boolean required = JsonCompat.getPropertyBoolean(oldProp, Constants.PROP_REQUIRED);
             
-            OasSchema prop = schema.createPropertySchema(name);
+            Schema prop = schema.createPropertySchema(name);
             Library.readNode(schemaObj, prop);
             schema.addProperty(name, prop);
             if (ModelUtils.isDefined(required) && required == Boolean.TRUE) {
-                schema.required.add(name);
+                schema.setPropertyRequired(name);
             }
         });        
     }
 
-    /**
-     * Returns true if the property is required.
-     * @param schema
-     * @param propertyName
-     */
-    private boolean isPropertyRequired(OasSchema schema, String propertyName) {
-        return ModelUtils.isDefined(schema.required) && schema.required.indexOf(propertyName) != -1;
-    }
 
 }

@@ -16,11 +16,7 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedPropertyType;
@@ -28,18 +24,21 @@ import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.cmd.util.SimplifiedTypeUtil;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
-import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IPropertyParent;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
-import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.core.models.common.Schema;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A command used to modify the type of a property of a schema.
  * @author eric.wittmann@gmail.com
  */
-public class ChangePropertyTypeCommand extends AbstractCommand {
+public abstract class ChangePropertyTypeCommand extends AbstractCommand {
     
     public NodePath _propPath;
     public String _propName;
@@ -69,29 +68,29 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
         if (this.isNullOrUndefined(prop)) {
             return;
         }
-        
-        OasSchema parent = (OasSchema) ((Node) prop).parent();
-        List<String> required = parent.required;
+
+        IPropertyParent parent = (IPropertyParent) ((Node) prop).parent();
+        List<String> required = parent.getRequiredProperties();
 
         // Save the old info (for later undo operation)
         this._oldProperty = Library.writeNode((Node) prop);
         this._oldRequired = ModelUtils.isDefined(required) && required.size() > 0 && required.indexOf(prop.getPropertyName()) != -1;
 
         // Update the schema's type
-        SimplifiedTypeUtil.setSimplifiedType((OasSchema) prop, this._newType);
+        SimplifiedTypeUtil.setSimplifiedType((Schema) prop, this._newType);
 
         if (!this.isNullOrUndefined(this._newType.required)) {
             // Going from optional to required
-            if (this._newType.required && !this._oldRequired) {
+            if (Boolean.TRUE.equals(this._newType.required) && !this._oldRequired) {
                 if (this.isNullOrUndefined(required)) {
                     required = new ArrayList<>();
-                    parent.required = required;
+                    parent.setRequiredProperties(required);
                     this._nullRequired = true;
                 }
                 required.add(prop.getPropertyName());
             }
             // Going from required to optional - remove property name from required list.
-            if (!this._newType.required && this._oldRequired) {
+            if (Boolean.FALSE.equals(this._newType.required) && this._oldRequired) {
                 required.remove(required.indexOf(prop.getPropertyName()));
             }
         }
@@ -108,38 +107,20 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema parent = (OasSchema) ((Node) prop).parent();
-        List<String> required = parent.required;
+        IPropertyParent parent = (IPropertyParent) ((Node) prop).parent();
+        List<String> required = parent.getRequiredProperties();
 
         boolean wasRequired = ModelUtils.isDefined(required) && required.size() > 0 && required.indexOf(prop.getPropertyName()) != -1;
 
-        OasSchema oldProp = parent.createPropertySchema(this._propName);
+        Schema oldProp = parent.createPropertySchema(this._propName);
         Library.readNode(this._oldProperty, oldProp);
 
         // Restore the schema attributes
-        OasSchema sprop = (OasSchema) prop;
-        sprop.$ref = null;
-        sprop.type = null;
-        sprop.enum_ = null;
-        sprop.format = null;
-        sprop.items = null;
-        if (ModelUtils.isDefined(oldProp)) {
-            sprop.$ref = oldProp.$ref;
-            sprop.type = oldProp.type;
-            sprop.enum_ = oldProp.enum_;
-            sprop.format = oldProp.format;
-            sprop.items = oldProp.items;
-            if (ModelUtils.isDefined(sprop.items) && !NodeCompat.isList(sprop.items)) {
-                Node itemsNode = (Node) sprop.items;
-                itemsNode._parent = sprop;
-                itemsNode._ownerDocument = sprop.ownerDocument();
-            }
-        }
-
+        restoreSchemaInternalProperties((Schema) prop, oldProp);
         // Restore the "required" flag
         if (!this.isNullOrUndefined(this._newType.required)) {
             if (this._nullRequired) {
-                parent.required = null;
+                parent.setRequiredProperties(null);
             } else {
                 // Restoring optional from required
                 if (wasRequired && !this._oldRequired) {
@@ -152,5 +133,10 @@ public class ChangePropertyTypeCommand extends AbstractCommand {
             }
         }
     }
+
+    /**
+     * Restores document type dependent fields in the schema
+     */
+    protected abstract void restoreSchemaInternalProperties(Schema toSchema, Schema fromSchema);
 
 }

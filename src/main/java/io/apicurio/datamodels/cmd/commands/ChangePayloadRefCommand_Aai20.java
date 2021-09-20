@@ -18,6 +18,7 @@ package io.apicurio.datamodels.cmd.commands;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
@@ -39,7 +40,7 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
    }
 
    ChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operationNode) {
-      this._operationPath = Library.createNodePath(operationNode);;
+      this._operationPath = Library.createNodePath(operationNode);
       this._payloadRef = payloadRef;
    }
 
@@ -50,7 +51,7 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
       AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
       this._changed = false;
 
-      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message)) {
+      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message) || !isValidRef(this._payloadRef)) {
          return;
       }
 
@@ -83,5 +84,10 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
       } else {
          JsonCompat.consumeProperty(payload, "$ref");
       }
+   }
+   
+   private boolean isValidRef(String refCandidate) {
+      return ModelUtils.isDefined(refCandidate)
+              && refCandidate.startsWith("#/");
    }
 }

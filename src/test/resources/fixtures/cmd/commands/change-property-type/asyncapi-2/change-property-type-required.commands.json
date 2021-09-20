@@ -1,0 +1,11 @@
+[
+    {
+        "__type": "ChangePropertyTypeCommand_Aai20",
+        "_propPath": "/components/schemas[Person]/properties[name]",
+        "_propName": "name",
+        "_newType": {
+            "type": "string",
+            "required": false
+        }
+    }
+]
