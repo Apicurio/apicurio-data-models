@@ -594,19 +594,9 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    /**
-     * @deprecated Prefer the {@link CommandFactory#createChangePropertyTypeCommand(DocumentType, IPropertySchema, SimplifiedPropertyType)} 
-     * alternative that handles non Oas document types
-     */
-    @Deprecated
     public static final ICommand createChangePropertyTypeCommand(IPropertySchema property,
                                                                  SimplifiedPropertyType newType) {
-        return new ChangePropertyTypeCommand_Oas(property, newType);
-    }
-    
-    public static final ICommand createChangePropertyTypeCommand(DocumentType docType,
-                                                                 IPropertySchema property,
-                                                                 SimplifiedPropertyType newType) {
+        DocumentType docType = ((Node) property).ownerDocument().getDocumentType();
         if (docType == DocumentType.openapi2 || docType == DocumentType.openapi3) {
             return new ChangePropertyTypeCommand_Oas(property, newType);
         }
