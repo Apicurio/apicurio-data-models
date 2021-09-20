@@ -112,7 +112,7 @@ public class AaiSchemaFactory {
          schema.type = "object";
          List<String> keys = JsonCompat.keys(object);
          for (String propName : keys) {
-            AaiSchema pschema = schema.createPropertySchema(propName);
+            AaiSchema pschema = (AaiSchema) schema.createPropertySchema(propName);
             schema.addProperty(propName, pschema);
             Object propValue = JsonCompat.getProperty(object, propName);
             resolveAll(propValue, pschema);

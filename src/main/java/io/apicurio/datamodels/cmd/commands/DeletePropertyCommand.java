@@ -16,17 +16,15 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.ArrayList;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.IPropertyParent;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
-import io.apicurio.datamodels.openapi.models.OasSchema;
+import io.apicurio.datamodels.core.models.common.Schema;
 
 /**
  * A command used to delete a single property from a schema.
@@ -63,11 +61,12 @@ public class DeletePropertyCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema schema = (OasSchema) ((Node) property).parent();
+        IPropertyParent schema = (IPropertyParent) ((Node) property).parent();
         this._oldProperty = Library.writeNode(schema.removeProperty(this._propertyName));
-        this._oldRequired = ModelUtils.isDefined(schema.required) && schema.required.indexOf(this._propertyName) != -1;
+        
+        this._oldRequired = schema.isPropertyRequired(this._propertyName);
         if (this._oldRequired) {
-            schema.required.remove(schema.required.indexOf(this._propertyName));
+            schema.unsetPropertyRequired(this._propertyName);
         }
     }
     
@@ -81,19 +80,16 @@ public class DeletePropertyCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema schema = (OasSchema) this._schemaPath.resolve(document);
+        IPropertyParent schema = (IPropertyParent) this._schemaPath.resolve(document);
         if (this.isNullOrUndefined(schema)) {
             return;
         }
 
-        OasSchema propSchema = schema.createPropertySchema(this._propertyName);
+        Schema propSchema = schema.createPropertySchema(this._propertyName);
         Library.readNode(this._oldProperty, propSchema);
         schema.addProperty(this._propertyName, propSchema);
         if (this._oldRequired) {
-            if (this.isNullOrUndefined(schema.required)) {
-                schema.required = new ArrayList<>();
-            }
-            schema.required.add(this._propertyName);
+            schema.setPropertyRequired(this._propertyName);
         }
     }
 

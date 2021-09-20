@@ -21,16 +21,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
+import io.apicurio.datamodels.core.models.common.IPropertyParent;
 import io.apicurio.datamodels.core.models.common.Schema;
 
 /**
  * Models an OpenAPI schema.
  * @author eric.wittmann@gmail.com
  */
-public abstract class OasSchema extends Schema implements IExternalDocumentationParent {
+public abstract class OasSchema extends Schema implements IExternalDocumentationParent, IPropertyParent {
 
     public String format;
     public String title;
@@ -97,67 +99,122 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
     public abstract OasSchema createAdditionalPropertiesSchema();
 
     /**
-     * Creates a child schema model.
+     * @see IPropertyParent#createPropertySchema(String) 
      */
-    public abstract OasSchema createPropertySchema(String propertyName);
+    @Override
+    public abstract Schema createPropertySchema(String propertyName);
 
     /**
-     * Gets a list of all property names.
+     * @see IPropertyParent#getPropertyNames() 
      */
+    @Override
     public List<String> getPropertyNames() {
         List<String> rval = new ArrayList<>();
-        if (this.properties != null) {
+        if (ModelUtils.isDefined(this.properties)) {
             rval.addAll(this.properties.keySet());
         }
         return rval;
     }
 
     /**
-     * Gets a list of all the properties.
+     * @see IPropertyParent#getProperties() 
      */
-    public List<OasSchema> getProperties() {
-        List<OasSchema> rval = new ArrayList<>();
-        if (this.properties != null) {
+    @Override
+    public List<Schema> getProperties() {
+        List<Schema> rval = new ArrayList<>();
+        if (ModelUtils.isDefined(this.properties)) {
             rval.addAll(this.properties.values());
         }
         return rval;
     }
 
     /**
-     * Add a property.
-     * @param propertyName
-     * @param schema
+     * @see IPropertyParent#addProperty(String, Schema) 
      */
-    public OasSchema addProperty(String propertyName, OasSchema schema) {
-        if (this.properties == null) {
+    @Override
+    public Schema addProperty(String propertyName, Schema schema) {
+        if (ModelUtils.isNullOrUndefined(this.properties)) {
             this.properties = new LinkedHashMap<>();
         }
-        this.properties.put(propertyName, schema);
+        this.properties.put(propertyName, (OasSchema) schema);
         return schema;
     }
 
     /**
-     * Removes a property by name.
-     * @param propertyName
+     * @see IPropertyParent#removeProperty(String) 
      */
-    public OasSchema removeProperty(String propertyName) {
-        if (this.properties != null) {
+    @Override
+    public Schema removeProperty(String propertyName) {
+        if (ModelUtils.isDefined(this.properties)) {
             return this.properties.remove(propertyName);
         }
         return null;
     }
 
     /**
-     * Gets a single property.
-     * @param propertyName
+     * @see IPropertyParent#getProperty(String) 
      */
-    public OasSchema getProperty(String propertyName) {
-        if (this.properties != null) {
+    @Override
+    public Schema getProperty(String propertyName) {
+        if (ModelUtils.isDefined(this.properties)) {
             return this.properties.get(propertyName);
         }
         return null;
     }
+
+    /**
+     * @see IPropertyParent#getRequiredProperties() 
+     */
+    @Override
+    public List<String> getRequiredProperties() {
+        return this.required;
+    }
+
+    /**
+     * @see IPropertyParent#setRequiredProperties(List)
+     */
+    @Override
+    public void setRequiredProperties(List<String> requiredProperties) {
+        this.required = requiredProperties;
+    }
     
+    /**
+     * @see IPropertyParent#isPropertyRequired(String) 
+     */
+    @Override
+    public boolean isPropertyRequired(String propertyName) {
+        if (ModelUtils.isDefined(this.required)) {
+            return this.required.contains(propertyName);
+        }
+        return false;
+    }
+
+    /**
+     * @see IPropertyParent#setPropertyRequired(String)
+     */
+    @Override
+    public void setPropertyRequired(String propertyName) {
+        if (ModelUtils.isNullOrUndefined(this.required)) {
+            this.required = new ArrayList<>();
+        }
+        if (!this.required.contains(propertyName)) {
+            this.required.add(propertyName);
+        }
+    }
+
+    /**
+     * @see IPropertyParent#unsetPropertyRequired(String)
+     */
+    @Override
+    public void unsetPropertyRequired(String propertyName) {
+        if (ModelUtils.isDefined(this.required)) {
+            this.required.remove(propertyName);
+            if (this.required.isEmpty()) {
+                this.required = null;
+            }
+        }
+    }
+
     /**
      * Returns true if there is a single items schema.
      */

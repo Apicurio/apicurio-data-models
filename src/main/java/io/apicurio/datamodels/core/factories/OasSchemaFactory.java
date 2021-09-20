@@ -118,7 +118,7 @@ public class OasSchemaFactory {
             schema.type = "object";
             List<String> keys = JsonCompat.keys(object);
             for (String propName : keys) {
-                OasSchema pschema = schema.createPropertySchema(propName);
+                OasSchema pschema = (OasSchema) schema.createPropertySchema(propName);
                 schema.addProperty(propName, pschema);
                 Object propValue = JsonCompat.getProperty(object, propName);
                 resolveAll(propValue, pschema);

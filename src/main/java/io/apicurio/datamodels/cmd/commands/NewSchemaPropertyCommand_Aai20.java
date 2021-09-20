@@ -63,7 +63,7 @@ public class NewSchemaPropertyCommand_Aai20 extends NewSchemaPropertyCommand {
             return;
         }
 
-        AaiSchema property = schema.createPropertySchema(this._propertyName);
+        AaiSchema property = (AaiSchema) schema.createPropertySchema(this._propertyName);
         if (ModelUtils.isDefined(this._description)) {
             property.description = this._description;
         }
