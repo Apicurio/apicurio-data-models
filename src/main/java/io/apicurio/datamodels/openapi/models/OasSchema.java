@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IExternalDocumentationParent;
@@ -109,7 +110,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
     @Override
     public List<String> getPropertyNames() {
         List<String> rval = new ArrayList<>();
-        if (this.properties != null) {
+        if (ModelUtils.isDefined(this.properties)) {
             rval.addAll(this.properties.keySet());
         }
         return rval;
@@ -121,7 +122,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
     @Override
     public List<Schema> getProperties() {
         List<Schema> rval = new ArrayList<>();
-        if (this.properties != null) {
+        if (ModelUtils.isDefined(this.properties)) {
             rval.addAll(this.properties.values());
         }
         return rval;
@@ -132,7 +133,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public Schema addProperty(String propertyName, Schema schema) {
-        if (this.properties == null) {
+        if (ModelUtils.isNullOrUndefined(this.properties)) {
             this.properties = new LinkedHashMap<>();
         }
         this.properties.put(propertyName, (OasSchema) schema);
@@ -144,7 +145,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public Schema removeProperty(String propertyName) {
-        if (this.properties != null) {
+        if (ModelUtils.isDefined(this.properties)) {
             return this.properties.remove(propertyName);
         }
         return null;
@@ -155,7 +156,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public Schema getProperty(String propertyName) {
-        if (this.properties != null) {
+        if (ModelUtils.isDefined(this.properties)) {
             return this.properties.get(propertyName);
         }
         return null;
@@ -182,7 +183,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public boolean isPropertyRequired(String propertyName) {
-        if (this.required != null) {
+        if (ModelUtils.isDefined(this.required)) {
             return this.required.contains(propertyName);
         }
         return false;
@@ -193,7 +194,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public void setPropertyRequired(String propertyName) {
-        if (this.required == null) {
+        if (ModelUtils.isNullOrUndefined(this.required)) {
             this.required = new ArrayList<>();
         }
         if (!this.required.contains(propertyName)) {
@@ -206,7 +207,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
      */
     @Override
     public void unsetPropertyRequired(String propertyName) {
-        if (this.required != null) {
+        if (ModelUtils.isDefined(this.required)) {
             this.required.remove(propertyName);
             if (this.required.isEmpty()) {
                 this.required = null;
