@@ -2,5 +2,6 @@
     "__type": "RenameSchemaDefinitionCommand_20",
     "_oldName": "Pet",
     "_newName": "Kangaroo",
-    "_references": []
+    "_references": [],
+    "_messageReferences": []
 }]

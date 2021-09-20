@@ -320,6 +320,7 @@
     { "name": "[AsyncAPI 2] {Rename Message Def} - Rename Message Definition", "test": "commands/rename-message-definition/asyncapi-2/rename-message-definition" },
     { "name": "[AsyncAPI 2] {Rename Message Trait Def} - Rename Message Trait Definition", "test": "commands/rename-messagetrait-definition/asyncapi-2/rename-messagetrait-definition" },
     { "name": "[AsyncAPI 2] {Rename Operation Trait Def} - Rename Operation Trait Definition", "test": "commands/rename-operationtrait-definition/asyncapi-2/rename-operationtrait-definition" },
+    { "name": "[AsyncAPI 2] {Rename Schema Definition} - Rename Schema Definition", "test": "commands/rename-schema-definition/asyncapi-2/rename-schema-definition" },
     { "name": "[AsyncAPI 2] {Rename Security Scheme} - Rename Security Scheme", "test": "commands/rename-security-scheme/asyncapi-2/rename-security-scheme" },
     { "name": "[AsyncAPI 2] {Rename Server} - Rename Server", "test": "commands/rename-server/asyncapi-2/rename-server" },
     { "name": "[AsyncAPI 2] {Rename Server} - Rename Server Exists", "test": "commands/rename-server/asyncapi-2/rename-server-exists" },
