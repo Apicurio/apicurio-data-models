@@ -2,6 +2,6 @@
     "__type": "RenameSchemaDefinitionCommand_30",
     "_oldName": "User",
     "_newName": "Dude",
-    "_directReferences": [],
+    "_references": [],
     "_messageReferences": []
 }]

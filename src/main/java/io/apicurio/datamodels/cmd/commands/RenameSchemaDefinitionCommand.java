@@ -48,7 +48,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
 
     public String _oldName;
     public String _newName;
-    public List<NodePath> _directReferences;
+    public List<NodePath> _references;
     public List<NodePath> _messageReferences;
     
     RenameSchemaDefinitionCommand() {
@@ -65,7 +65,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[RenameSchemaDefinitionCommand] Executing.");
-        this._directReferences = new ArrayList<>();
+        this._references = new ArrayList<>();
         this._messageReferences = new ArrayList<>();
         if (this._renameSchemaDefinition(document, this._oldName, this._newName)) {
             String oldRef = this._nameToReference(this._oldName);
@@ -73,7 +73,7 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
             SchemaRefFinder schemaFinder = new SchemaRefFinder(oldRef);
             SchemaRefFinder.ReferenceHolder referenceHolder = schemaFinder.findIn(document);
             for (Schema schema : referenceHolder.getSchemas()) {
-                this._directReferences.add(Library.createNodePath(schema));
+                this._references.add(Library.createNodePath(schema));
                 schema.$ref = newRef;
             }
             for (AaiMessage aaiMessage : referenceHolder.getMessages()) {
@@ -91,8 +91,8 @@ public abstract class RenameSchemaDefinitionCommand extends AbstractCommand {
         LoggerCompat.info("[RenameSchemaDefinitionCommand] Reverting.");
         if (this._renameSchemaDefinition(document, this._newName, this._oldName)) {
             String oldRef = this._nameToReference(this._oldName);
-            if (ModelUtils.isDefined(this._directReferences)) {
-                this._directReferences.forEach(ref -> {
+            if (ModelUtils.isDefined(this._references)) {
+                this._references.forEach(ref -> {
                     Schema schema = (Schema) ref.resolve(document);
                     schema.$ref = oldRef;
                 });

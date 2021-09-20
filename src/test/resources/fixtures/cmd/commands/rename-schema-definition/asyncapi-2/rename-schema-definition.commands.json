@@ -2,6 +2,6 @@
     "__type": "RenameSchemaDefinitionCommand_Aai20",
     "_oldName": "Person",
     "_newName": "RealPerson",
-    "_directReferences": [],
+    "_references": [],
     "_messageReferences": []
 }]
