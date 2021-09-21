@@ -5,7 +5,7 @@ on:
     types: [released]
 
 jobs:
-  release-images:
+  update-website:
     if: github.repository_owner == 'Apicurio'
     runs-on: ubuntu-18.04 
     steps:
