@@ -20,6 +20,7 @@ import io.apicurio.datamodels.asyncapi.v2.models.Aai20MessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationBindingsDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20OperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Parameter;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20ServerBindingsDefinition;
 import io.apicurio.datamodels.core.models.Document;
@@ -61,6 +62,15 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
             definition.attachToParent(model.components);
             model.components.addSecurityScheme(definition.getName(), definition);
             return new ReferenceAndNode(PREFIX + "securitySchemes/" + name, definition);
+        }
+        if (component instanceof Aai20SchemaDefinition) {
+            if (model.components.schemas != null && model.components.schemas.get(name) != null)
+                throw new IllegalArgumentException("Definition with that name already exists: " + name);
+
+            Aai20SchemaDefinition definition = wrap(component, new Aai20SchemaDefinition(name), model);
+            definition.attachToParent(model.components);
+            model.components.addSchemaDefinition(definition.getName(), definition);
+            return new ReferenceAndNode(PREFIX + "schemas/" + name, definition);
         }
         if (component instanceof AaiParameter) {
             if (model.components.parameters != null && model.components.parameters.get(name) != null)
@@ -197,6 +207,8 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
         INamed removed = model.components.messages.remove(name); // Does not implement IDefinition
         if(removed != null) return true;
         removed = model.components.securitySchemes.remove(name);
+        if(removed != null) return true;
+        removed = (Aai20SchemaDefinition) model.components.schemas.remove(name);
         if(removed != null) return true;
         removed = model.components.parameters.remove(name); // Does not implement IDefinition
         if(removed != null) return true;

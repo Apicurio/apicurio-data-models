@@ -42,6 +42,9 @@
 		"schemas": {
 			"dimLightPayload": {
 				"type": "string"
+			},
+			"lightMeasuredPayload": {
+				"$ref": "https://asyncapi.example.com/common#/components/schemas/lightMeasuredPayload"
 			}
 		},
 		"messages": {
