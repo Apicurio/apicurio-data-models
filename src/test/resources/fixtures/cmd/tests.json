@@ -325,6 +325,7 @@
     { "name": "[AsyncAPI 2] {Rename Server} - Rename Server", "test": "commands/rename-server/asyncapi-2/rename-server" },
     { "name": "[AsyncAPI 2] {Rename Server} - Rename Server Exists", "test": "commands/rename-server/asyncapi-2/rename-server-exists" },
     { "name": "[AsyncAPI 2] {Delete Message Def} - Delete Message Definition", "test": "commands/delete-message-definition/asyncapi-2/delete-message-definition" },
+    { "name": "[AsyncAPI 2] {Delete OneOf Message} - Delete OneOf Message", "test": "commands/delete-oneof-message/asyncapi-2/delete-oneof-message" },
     { "name": "[AsyncAPI 2] {Delete Message Trait Def} - Delete Message Trait Definition", "test": "commands/delete-messagetrait-definition/asyncapi-2/delete-messagetrait-definition" },
     { "name": "[AsyncAPI 2] {Delete Operation Trait Def} - Delete Operation Trait Definition", "test": "commands/delete-operationtrait-definition/asyncapi-2/delete-operationtrait-definition" },
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" },

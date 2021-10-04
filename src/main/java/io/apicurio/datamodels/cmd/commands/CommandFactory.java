@@ -19,6 +19,7 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
@@ -307,6 +308,8 @@ public class CommandFactory {
             case "DeleteMessageTraitDefinitionCommand":
             case "DeleteMessageTraitDefinitionCommand_Aai20":
             { return new DeleteMessageTraitDefinitionCommand(); }
+            case "DeleteOneOfMessageCommand":
+            { return new DeleteOneOfMessageCommand(); }
             case "DeleteOperationTraitDefinitionCommand":
             case "DeleteOperationTraitDefinitionCommand_Aai20":
             { return new DeleteOperationTraitDefinitionCommand(); }
@@ -773,6 +776,10 @@ public class CommandFactory {
 
     public static final ICommand createDeletePropertyCommand(IPropertySchema property) {
         return new DeletePropertyCommand(property);
+    }
+
+    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message) {
+        return new DeleteOneOfMessageCommand(message);
     }
 
     public static final ICommand createDeleteRequestBodyCommand(Oas30Operation operation) {

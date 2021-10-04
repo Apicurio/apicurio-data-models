@@ -1,0 +1,6 @@
+[
+  {
+    "__type": "DeleteOneOfMessageCommand",
+    "_oneOfPath": "/channels[999.test.test.99]/publish/message/oneOf[0]"
+  }
+]
