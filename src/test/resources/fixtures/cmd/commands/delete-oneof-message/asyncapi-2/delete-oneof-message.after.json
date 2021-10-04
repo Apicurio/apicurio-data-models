@@ -11,9 +11,6 @@
         "message": {
           "oneOf": [
             {
-              "$ref": "#/components/messages/EmailChanged"
-            },
-            {
               "$ref": "#/components/messages/PhoneNumberChanged"
             },
             {

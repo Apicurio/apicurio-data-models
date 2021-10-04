@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels.core.models.common;
 
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public interface IMessageParent {
     /**
      * Creates a child schema model.
      */
-    public Schema createOneOfMessage(String oneOfMessageName);
+    public AaiMessage createOneOfMessage(String oneOfMessageName);
 
     /**
      * Gets a list of all message names.
@@ -36,7 +38,7 @@ public interface IMessageParent {
     /**
      * Gets a list of all the properties.
      */
-    public List<Schema> getMessages();
+    public List<AaiMessage> getMessages();
 
     /**
      * Add a message.
@@ -49,13 +51,13 @@ public interface IMessageParent {
      * Removes a message by name.
      * @param messageName
      */
-    public Schema removeMessage(String messageName);
+    public AaiMessage removeMessage(String messageName);
 
     /**
      * Gets a single message.
      * @param messageName
      */
-    public Schema getMessage(String messageName);
+    public AaiMessage getMessage(String messageName);
 
     /**
      * Gets the required properties list.

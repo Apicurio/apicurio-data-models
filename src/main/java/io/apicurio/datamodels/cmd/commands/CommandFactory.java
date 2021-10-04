@@ -778,8 +778,8 @@ public class CommandFactory {
         return new DeletePropertyCommand(property);
     }
 
-    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message) {
-        return new DeleteOneOfMessageCommand(message);
+    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message,int idc) {
+        return new DeleteOneOfMessageCommand(message,idc);
     }
 
     public static final ICommand createDeleteRequestBodyCommand(Oas30Operation operation) {

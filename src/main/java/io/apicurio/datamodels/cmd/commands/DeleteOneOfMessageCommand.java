@@ -16,25 +16,15 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.common.IMessageParent;
-import io.apicurio.datamodels.core.models.common.IMessageSchema;
-import io.apicurio.datamodels.core.models.common.IPropertyParent;
-import io.apicurio.datamodels.core.models.common.IPropertySchema;
-import io.apicurio.datamodels.core.models.common.Schema;
-import io.apicurio.datamodels.core.util.NodePathUtil;
-import io.apicurio.datamodels.core.visitors.NodePathVisitor;
-
-import java.util.List;
 
 /**
  * A command used to delete a single oneOf from a message.
@@ -42,27 +32,26 @@ import java.util.List;
  */
 public class DeleteOneOfMessageCommand extends AbstractCommand {
 
+    public int _oneOfIdc;
+    public  NodePath _parentPath;
     public AaiMessage _oneOf;
-    public String _oneOfName;
-    public NodePath _oneOfPath;
     public NodePath _schemaPath;
 
-    public Object _oldOneOf;
+
     public boolean _oldRequired;
+
+    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
+    public Object _oldOneOf;
 
     DeleteOneOfMessageCommand() {
     }
 
-    DeleteOneOfMessageCommand(AaiMessage message) {
-        if(message._isOneOfMessage){
-            LoggerCompat.info("[DeleteOneOfMessageCommand] The is a _isOneOfMessage.");
-        }
+    DeleteOneOfMessageCommand(final AaiMessage message, final int oneOfIdc) {
+        this._parentPath = Library.createNodePath(message.parent());
+        this._oneOfIdc = oneOfIdc;
 
+//
         this._oneOf = message;
-        this._oneOfName = message._name;
-        this._oneOfPath = Library.createNodePath((Node) message);
-        LoggerCompat.debug("_oneOfPath : ",this._oneOfPath);
-        this._schemaPath = Library.createNodePath(((Node) message).parent());
     }
     
     /**
@@ -71,20 +60,17 @@ public class DeleteOneOfMessageCommand extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[DeleteOneOfMessageCommand] Executing.");
-        this._oldOneOf = null;
 
-        IMessageSchema onOfMessage = (IMessageSchema) this._oneOfPath.resolve(document);
-        if (this.isNullOrUndefined(onOfMessage)) {
+        IMessageParent parent = (IMessageParent) this._parentPath.resolve(document);
+        AaiMessage oneOf = parent.getMessage(null);
+
+        if (this.isNullOrUndefined(oneOf)) {
             return;
         }
 
-        IMessageParent schema = (IMessageParent) ((Node) onOfMessage).parent();
-        this._oldOneOf = Library.writeNode(schema.removeMessage(this._oneOfName));
+        oneOf.deleteOneOfMessage(this._oneOf);
 
-        this._oldRequired = schema.isMessageRequired(this._oneOfName);
-        if (this._oldRequired) {
-            schema.unsetMessageRequired(this._oneOfName);
-        }
+        this._oldOneOf = Library.writeNode(oneOf);
     }
     
     /**
@@ -97,15 +83,14 @@ public class DeleteOneOfMessageCommand extends AbstractCommand {
             return;
         }
 
-//        Aai20Document doc20 = (Aai20Document) document;
-//        if (ModelUtils.isDefined(doc20.channels)) {
-//            Aai20NodeFactory factory = new Aai20NodeFactory();
-//            AaiMessage msgDef = factory.createMessage(doc20.channels, _oneOfName);
-//            Library.readNode(_oldOneOf, msgDef);
-//            doc20.channels.addMessage(_oneOfName, msgDef);
-//        }
+        IMessageParent parent = (IMessageParent) this._parentPath.resolve(document);
+        if (this.isNullOrUndefined(parent)) {
+            return;
+        }
 
-
+//        OasHeader header = parent.createOneOfMessage(null);
+//        Library.readNode(this._oldOneOf, header);
+//        parent.addMessage("oneOf", schema);
     }
 
 }

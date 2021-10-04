@@ -75,6 +75,16 @@ public abstract class AaiMessage extends AaiMessageBase {
     }
 
     /**
+     * Delete a oneOf message.
+     * @param item
+     */
+    public void deleteOneOfMessage(AaiMessage item) {
+        if (oneOf == null)
+            oneOf = new LinkedList<>();
+        oneOf.remove(item);
+    }
+
+    /**
      * @see io.apicurio.datamodels.asyncapi.models.AaiMessageBase#addTag(io.apicurio.datamodels.asyncapi.models.AaiTag)
      */
     @Override

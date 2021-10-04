@@ -1,6 +1,21 @@
 [
   {
     "__type": "DeleteOneOfMessageCommand",
-    "_oneOfPath": "/channels[999.test.test.99]/publish/message/oneOf[0]"
+    "_oneOfIdc": 0,
+    "_parentPath": {
+      "message": {
+        "oneOf": [
+          {
+            "$ref": "#/components/messages/EmailChanged"
+          },
+          {
+            "$ref": "#/components/messages/PhoneNumberChanged"
+          },
+          {
+            "$ref": "#/components/messages/AddressChanged"
+          }
+        ]
+      }
+    }
   }
 ]
