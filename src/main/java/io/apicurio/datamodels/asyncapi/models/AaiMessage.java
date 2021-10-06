@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
@@ -18,6 +19,7 @@ public abstract class AaiMessage extends AaiMessageBase {
      * @see <a href="https://www.asyncapi.com/docs/specifications/2.0.0/#a-name-operationobject-a-operation-object">AsyncAPI 2.0.0 spec</a>
      */
     public List<AaiMessage> oneOf;
+
     public boolean _isOneOfMessage = false;
 
     /**
@@ -67,21 +69,31 @@ public abstract class AaiMessage extends AaiMessageBase {
     /**
      * Add a oneOf message.
      * @param item
+     * @return
      */
-    public void addOneOfMessage(AaiMessage item) {
+    public AaiMessage addOneOfMessage(final AaiMessage item, final Integer index) {
         if (oneOf == null)
             oneOf = new LinkedList<>();
-        oneOf.add(item);
+
+        if(ModelUtils.isNullOrUndefined(index)){
+            oneOf.add(item);
+        }else{
+            oneOf.add(index,item);
+        }
+
+        return item;
     }
 
     /**
      * Delete a oneOf message.
-     * @param item
+     * @param index
+     * @return
      */
-    public void deleteOneOfMessage(AaiMessage item) {
-        if (oneOf == null)
-            oneOf = new LinkedList<>();
-        oneOf.remove(item);
+    public AaiMessage deleteOneOfMessage(int index) {
+        if (oneOf != null)
+            return oneOf.remove(index);
+
+        return null;
     }
 
     /**
@@ -103,5 +115,10 @@ public abstract class AaiMessage extends AaiMessageBase {
         }
         traits.add(traitModel);
         
+    }
+
+
+    public void setIsOneOfMessage(final boolean _isOneOfMessage) {
+        this._isOneOfMessage = _isOneOfMessage;
     }
 }

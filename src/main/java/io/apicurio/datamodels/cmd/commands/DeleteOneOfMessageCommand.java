@@ -19,78 +19,81 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20Message;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.common.IMessageParent;
 
 /**
  * A command used to delete a single oneOf from a message.
+ *
  * @author vvilerio
  */
 public class DeleteOneOfMessageCommand extends AbstractCommand {
 
-    public int _oneOfIdc;
-    public  NodePath _parentPath;
-    public AaiMessage _oneOf;
-    public NodePath _schemaPath;
+   public int _oneOfIdc;
+   public NodePath _parentPath;
 
 
-    public boolean _oldRequired;
+//    public boolean _oldRequired;
 
-    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
-    public Object _oldOneOf;
+   @JsonDeserialize(using = MarshallCompat.NullableJsonNodeDeserializer.class)
+   public Object _oldMessage;
 
-    DeleteOneOfMessageCommand() {
-    }
+   DeleteOneOfMessageCommand() {
+   }
 
-    DeleteOneOfMessageCommand(final AaiMessage message, final int oneOfIdc) {
-        this._parentPath = Library.createNodePath(message.parent());
-        this._oneOfIdc = oneOfIdc;
+   DeleteOneOfMessageCommand(final AaiMessage message, final int oneOfIdc) {
+      //oneOfIdc, beware of competition problems
+      this._parentPath = Library.createNodePath(message);
+      this._oneOfIdc = oneOfIdc;
+   }
 
-//
-        this._oneOf = message;
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.ICommand#execute(Document)
-     */
-    @Override
-    public void execute(Document document) {
-        LoggerCompat.info("[DeleteOneOfMessageCommand] Executing.");
+   /**
+    * @see io.apicurio.datamodels.cmd.ICommand#execute(Document)
+    */
+   @Override
+   public void execute(final Document document) {
+      LoggerCompat.info("[DeleteOneOfMessageCommand] Executing.");
 
-        IMessageParent parent = (IMessageParent) this._parentPath.resolve(document);
-        AaiMessage oneOf = parent.getMessage(null);
+      final AaiMessage parent = (AaiMessage) this._parentPath.resolve(document);
 
-        if (this.isNullOrUndefined(oneOf)) {
-            return;
-        }
+      final AaiMessage res = parent.deleteOneOfMessage(this._oneOfIdc);
+      boolean isOneOfMessage = res._isOneOfMessage;
 
-        oneOf.deleteOneOfMessage(this._oneOf);
+      if (!isOneOfMessage) {
+         return;
+      }
 
-        this._oldOneOf = Library.writeNode(oneOf);
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
-     */
-    @Override
-    public void undo(Document document) {
-        LoggerCompat.info("[DeleteOneOfMessageCommand] Reverting.");
-        if (this.isNullOrUndefined(this._oldOneOf)) {
-            return;
-        }
+      if (!this.isNullOrUndefined(res)) {
+         this._oldMessage = Library.writeNode(res);
 
-        IMessageParent parent = (IMessageParent) this._parentPath.resolve(document);
-        if (this.isNullOrUndefined(parent)) {
-            return;
-        }
+      }
 
-//        OasHeader header = parent.createOneOfMessage(null);
-//        Library.readNode(this._oldOneOf, header);
-//        parent.addMessage("oneOf", schema);
-    }
+   }
+
+   /**
+    * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
+    */
+   @Override
+   public void undo(final Document document) {
+      LoggerCompat.info("[DeleteOneOfMessageCommand] Reverting.");
+      if (this.isNullOrUndefined(this._oldMessage)) {
+         return;
+      }
+
+      final AaiMessage parent = (AaiMessage) this._parentPath.resolve(document);
+      if (this.isNullOrUndefined(parent)) {
+         return;
+      }
+
+      AaiMessage message = new Aai20Message(parent);
+      Library.readNode(this._oldMessage, message);
+      message.setIsOneOfMessage(true);
+      parent.addOneOfMessage(message, this._oneOfIdc);
+
+   }
 
 }

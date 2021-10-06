@@ -5,7 +5,7 @@
     "version": "0.1.0"
   },
   "channels": {
-    "999.test.test.99": {
+    "999testtest99": {
       "publish": {
         "summary": "All updates about the user",
         "message": {

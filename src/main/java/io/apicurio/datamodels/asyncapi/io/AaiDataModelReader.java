@@ -269,7 +269,7 @@ public abstract class AaiDataModelReader extends DataModelReader {
                 AaiMessage item = nodeFactory.createMessage(node, null);
                 this.readMessage(itemJson, item);
                 item._isOneOfMessage = true;
-                node.addOneOfMessage(item);
+                node.addOneOfMessage(item,null);
             }
         }
 
