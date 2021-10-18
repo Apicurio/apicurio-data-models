@@ -103,6 +103,8 @@ public class CommandFactory {
             { return new AddPathItemCommand(); }
             case "AddSecurityRequirementCommand":
             { return new AddSecurityRequirementCommand(); }
+            case "AddOneOfInMessageCommand":
+            { return new AddOneOfInMessageCommand(); }
             case "AddResponseDefinitionCommand_20":
             { return new AddResponseDefinitionCommand_20(); }
             case "AddResponseDefinitionCommand_30":
@@ -481,6 +483,10 @@ public class CommandFactory {
         return new AddExampleCommand_30(header, example, exampleName, exampleSummary, exampleDescription);
     }
 
+    public static final ICommand createAddOneOfInMessageCommand(AaiMessage message) {
+        return new AddOneOfInMessageCommand(message);
+    }
+
     public static final ICommand createAddParameterExampleCommand(Oas30Parameter parameter, Object example,
             String exampleName, String exampleSummary, String exampleDescription) {
         return new AddParameterExampleCommand_30(parameter, example, exampleName, exampleSummary, exampleDescription);
@@ -778,8 +784,8 @@ public class CommandFactory {
         return new DeletePropertyCommand(property);
     }
 
-    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message,int idc) {
-        return new DeleteOneOfMessageCommand(message,idc);
+    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message, int idx) {
+        return new DeleteOneOfMessageCommand(message,idx);
     }
 
     public static final ICommand createDeleteRequestBodyCommand(Oas30Operation operation) {

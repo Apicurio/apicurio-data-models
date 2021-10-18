@@ -16,12 +16,15 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Components;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat;
 import io.apicurio.datamodels.core.models.Document;
 
 /**
@@ -33,6 +36,10 @@ public class NewMessageDefinitionCommand extends AbstractCommand {
    public String _newName;
    public String _newDescription;
 
+   @JsonDeserialize(using = MarshallCompat.NullableJsonNodeDeserializer.class)
+   public Object _newPayload;
+
+
    public boolean _nullComponents;
    public boolean _defExisted;
 
@@ -42,6 +49,15 @@ public class NewMessageDefinitionCommand extends AbstractCommand {
    public NewMessageDefinitionCommand(String newName, String newDescription) {
       this._newName = newName;
       this._newDescription = newDescription;
+
+      //default value for the HMI/UX
+      if(this._newPayload == null){
+         LoggerCompat.info("[NewMessageDefinitionCommand] _newPayload is null, empty payload created.");
+         this._newPayload = JsonCompat.objectNode();
+         JsonCompat.setProperty(this._newPayload, "$ref", "");
+         LoggerCompat.info("_newPayload : ", JsonCompat.stringify(this._newPayload ));
+      }
+
    }
 
    @Override

@@ -265,6 +265,7 @@
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example", "test": "commands/add-message-example/asyncapi-2/add-message-example" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example JSON", "test": "commands/add-message-example/asyncapi-2/add-message-example-json" },
     { "name": "[AsyncAPI 2] {Add Message Example} - Add Message Example Exists", "test": "commands/add-message-example/asyncapi-2/add-message-example-exists" },
+    { "name": "[AsyncAPI 2] {Add OneOf value in Message} - Add OneOf value in Message", "test": "commands/add-oneof-message/asyncapi-2/add-oneof-message" },
     { "name": "[AsyncAPI 2] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/asyncapi-2/add-security-requirement" },
     { "name": "[AsyncAPI 2] {Change Payload Ref} - Change Payload Ref", "test": "commands/change-payload-ref/asyncapi-2/change-payload-ref" },
     { "name": "[AsyncAPI 2] {Change Payload Ref} - Change Payload Ref Invalid", "test": "commands/change-payload-ref/asyncapi-2/change-payload-ref-invalid" },

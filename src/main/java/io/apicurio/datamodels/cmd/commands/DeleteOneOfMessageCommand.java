@@ -37,8 +37,6 @@ public class DeleteOneOfMessageCommand extends AbstractCommand {
    public NodePath _parentPath;
 
 
-//    public boolean _oldRequired;
-
    @JsonDeserialize(using = MarshallCompat.NullableJsonNodeDeserializer.class)
    public Object _oldMessage;
 

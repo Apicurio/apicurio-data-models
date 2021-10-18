@@ -71,7 +71,7 @@ public abstract class AaiMessage extends AaiMessageBase {
      * @param item
      * @return
      */
-    public AaiMessage addOneOfMessage(final AaiMessage item, final Integer index) {
+    public void addOneOfMessage(final AaiMessage item, final Integer index) {
         if (oneOf == null)
             oneOf = new LinkedList<>();
 
@@ -80,8 +80,6 @@ public abstract class AaiMessage extends AaiMessageBase {
         }else{
             oneOf.add(index,item);
         }
-
-        return item;
     }
 
     /**
