@@ -42,6 +42,26 @@
 		"schemas": {
 			"dimLightPayload": {
 				"type": "string"
+			},
+			"lightMeasuredPayload": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Id of the streetlight."
+					},
+					"lumens": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Light intensity measured in lumens."
+					},
+					"sentAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Date and time when the message was sent."
+					}
+				}
 			}
 		},
 		"messages": {

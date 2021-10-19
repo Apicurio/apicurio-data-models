@@ -92,7 +92,7 @@ public class Aai20ModelClonerVisitor extends ModelClonerVisitor implements IAai2
      */
     @Override
     public void visitSchemaDefinition(IDefinition node) {
-        // Note: should never happen because AsyncAPI doesn't have schema definitions
+        this.clone = factory.createSchemaDefinition(((Node) node).parent(), node.getName());
     }
 
     /**

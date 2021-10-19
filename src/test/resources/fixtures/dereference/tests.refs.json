@@ -297,6 +297,26 @@
 			"$ref": "#/components/schemas/lightMeasuredPayload"
 		}
 	},
+	"https://asyncapi.example.com/common#/components/schemas/lightMeasuredPayload": {
+		"type": "object",
+		"properties": {
+			"id": {
+				"type": "integer",
+				"minimum": 0,
+				"description": "Id of the streetlight."
+			},
+			"lumens": {
+				"type": "integer",
+				"minimum": 0,
+				"description": "Light intensity measured in lumens."
+			},
+			"sentAt": {
+				"type": "string",
+				"format": "date-time",
+				"description": "Date and time when the message was sent."
+			}
+		}
+	},
 	"https://asyncapi.example.com/common#/components/securitySchemes/token": {
 		"type": "http",
 		"scheme": "bearer"
