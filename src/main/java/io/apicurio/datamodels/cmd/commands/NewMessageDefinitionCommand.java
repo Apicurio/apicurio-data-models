@@ -16,12 +16,15 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Components;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat;
 import io.apicurio.datamodels.core.models.Document;
 
 /**

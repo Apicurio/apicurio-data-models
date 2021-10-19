@@ -19,6 +19,7 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
@@ -102,6 +103,8 @@ public class CommandFactory {
             { return new AddPathItemCommand(); }
             case "AddSecurityRequirementCommand":
             { return new AddSecurityRequirementCommand(); }
+            case "AddOneOfInMessageCommand":
+            { return new AddOneOfInMessageCommand(); }
             case "AddResponseDefinitionCommand_20":
             { return new AddResponseDefinitionCommand_20(); }
             case "AddResponseDefinitionCommand_30":
@@ -307,6 +310,8 @@ public class CommandFactory {
             case "DeleteMessageTraitDefinitionCommand":
             case "DeleteMessageTraitDefinitionCommand_Aai20":
             { return new DeleteMessageTraitDefinitionCommand(); }
+            case "DeleteOneOfMessageCommand":
+            { return new DeleteOneOfMessageCommand(); }
             case "DeleteOperationTraitDefinitionCommand":
             case "DeleteOperationTraitDefinitionCommand_Aai20":
             { return new DeleteOperationTraitDefinitionCommand(); }
@@ -476,6 +481,10 @@ public class CommandFactory {
     public static final ICommand createAddExampleCommand(Oas30Header header, Object example,
                                                          String exampleName, String exampleSummary, String exampleDescription) {
         return new AddExampleCommand_30(header, example, exampleName, exampleSummary, exampleDescription);
+    }
+
+    public static final ICommand createAddOneOfInMessageCommand(AaiMessage message) {
+        return new AddOneOfInMessageCommand(message);
     }
 
     public static final ICommand createAddParameterExampleCommand(Oas30Parameter parameter, Object example,
@@ -773,6 +782,10 @@ public class CommandFactory {
 
     public static final ICommand createDeletePropertyCommand(IPropertySchema property) {
         return new DeletePropertyCommand(property);
+    }
+
+    public static final ICommand createDeleteOneOfMessageCommand(AaiMessage message, int idx) {
+        return new DeleteOneOfMessageCommand(message,idx);
     }
 
     public static final ICommand createDeleteRequestBodyCommand(Oas30Operation operation) {
