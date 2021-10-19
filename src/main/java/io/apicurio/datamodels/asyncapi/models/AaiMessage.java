@@ -75,9 +75,9 @@ public abstract class AaiMessage extends AaiMessageBase {
         if (oneOf == null)
             oneOf = new LinkedList<>();
 
-        if(ModelUtils.isNullOrUndefined(index)){
+        if(ModelUtils.isNullOrUndefined(index)) {
             oneOf.add(item);
-        }else{
+        } else {
             oneOf.add(index,item);
         }
     }
@@ -99,8 +99,9 @@ public abstract class AaiMessage extends AaiMessageBase {
      */
     @Override
     public void addTag(AaiTag tag) {
-        if (tags == null)
+        if (tags == null) {
             tags = new LinkedList<>();
+        }
         tags.add(tag);
     }
 
@@ -114,7 +115,6 @@ public abstract class AaiMessage extends AaiMessageBase {
         traits.add(traitModel);
         
     }
-
 
     public void setIsOneOfMessage(final boolean _isOneOfMessage) {
         this._isOneOfMessage = _isOneOfMessage;
