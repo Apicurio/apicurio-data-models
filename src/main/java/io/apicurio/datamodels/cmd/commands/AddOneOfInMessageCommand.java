@@ -30,9 +30,9 @@ public class AddOneOfInMessageCommand extends AbstractCommand {
    AddOneOfInMessageCommand() {
    }
 
-   AddOneOfInMessageCommand(AaiMessage message) {
-      this._parentPath = Library.createNodePath(message);
-      this._newOneOf = message;
+   AddOneOfInMessageCommand(AaiMessage message, AaiMessage parentMessage) {
+      this._parentPath = Library.createNodePath(parentMessage);
+      this._newOneOf = Library.writeNode(message);
    }
 
 
