@@ -246,6 +246,7 @@
     { "name": "[OpenAPI 3] {Replace Path Item} - Replace Path Item", "test": "commands/replace-path-item/openapi-3/replace-path-item" },
     { "name": "[OpenAPI 2] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/openapi-2/replace-schema-definition" },
     { "name": "[OpenAPI 3] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/openapi-3/replace-schema-definition" },
+    { "name": "[AsyncApi 2] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/asyncapi-2/replace-schema-definition" },
     { "name": "[OpenAPI 2] {Replace Response Definition} - Replace Response Definition", "test": "commands/replace-response-definition/openapi-2/replace-response-definition" },
     { "name": "[OpenAPI 3] {Replace Response Definition} - Replace Response Definition", "test": "commands/replace-response-definition/openapi-3/replace-response-definition" },
     { "name": "[OpenAPI 3] {Replace Security Requirement} - Replace Security Requirement", "test": "commands/replace-security-requirement/openapi-3/replace-security-requirement" },

@@ -15,16 +15,17 @@
  */
 package io.apicurio.datamodels.asyncapi.models;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Components;
 import io.apicurio.datamodels.core.visitors.IVisitor;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Models an AsyncAPI Components.
@@ -257,5 +258,15 @@ public abstract class AaiComponents extends Components {
             messageBindings = new LinkedHashMap<>();
         messageBindings.put(key, value);        
     }
-    
+
+    /**
+     * Creates a schema definition.
+     * @param name
+     */
+    public Aai20SchemaDefinition createSchemaDefinition(String name) {
+        Aai20SchemaDefinition rval = new Aai20SchemaDefinition(name);
+        rval._ownerDocument = this._ownerDocument;
+        rval._parent = this;
+        return rval;
+    }
 }

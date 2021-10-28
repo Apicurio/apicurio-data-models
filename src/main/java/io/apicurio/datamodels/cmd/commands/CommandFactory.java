@@ -23,6 +23,7 @@ import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Server;
 import io.apicurio.datamodels.cmd.ICommand;
 import io.apicurio.datamodels.cmd.models.SimplifiedParameterType;
@@ -443,6 +444,8 @@ public class CommandFactory {
             { return new ReplaceSchemaDefinitionCommand_20(); }
             case "ReplaceSchemaDefinitionCommand_30":
             { return new ReplaceSchemaDefinitionCommand_30(); }
+            case "ReplaceSchemaDefinitionCommand_Aai20":
+            { return new ReplaceSchemaDefinitionCommand_Aai20(); }
             case "ReplaceSecurityRequirementCommand":
             { return new ReplaceSecurityRequirementCommand(); }
             case "ReplaceResponseDefinitionCommand_20":
@@ -483,8 +486,8 @@ public class CommandFactory {
         return new AddExampleCommand_30(header, example, exampleName, exampleSummary, exampleDescription);
     }
 
-    public static final ICommand createAddOneOfInMessageCommand(AaiMessage message) {
-        return new AddOneOfInMessageCommand(message);
+    public static final ICommand createAddOneOfInMessageCommand(AaiMessage message, AaiMessage parentMessage) {
+        return new AddOneOfInMessageCommand(message, parentMessage);
     }
 
     public static final ICommand createAddParameterExampleCommand(Oas30Parameter parameter, Object example,
@@ -1094,6 +1097,9 @@ public class CommandFactory {
         }
         if (docType == DocumentType.openapi3) {
             return new ReplaceSchemaDefinitionCommand_30((Oas30SchemaDefinition) old, (Oas30SchemaDefinition) replacement);
+        }
+        if (docType == DocumentType.asyncapi2) {
+            return new ReplaceSchemaDefinitionCommand_Aai20((Aai20SchemaDefinition) old, (Aai20SchemaDefinition) replacement);
         }
         throw new RuntimeException("Document type not supported by this command.");
     }
