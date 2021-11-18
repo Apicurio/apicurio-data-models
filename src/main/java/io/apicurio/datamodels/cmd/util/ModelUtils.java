@@ -19,8 +19,6 @@ package io.apicurio.datamodels.cmd.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
@@ -65,15 +63,14 @@ public class ModelUtils {
     }
 
     public static Object marshalExtension(Extension extension) {
-        ObjectNode wrapper = JsonCompat.objectNode();
+        Object wrapper = JsonCompat.objectNode();
         JsonCompat.setProperty(wrapper, extension.name, extension.value);
         return wrapper;
     }
 
     public static void unmarshalExtension(Object oldExtension, Extension extension) {
-        ObjectNode wrapper = (ObjectNode) oldExtension;
-        String name = JsonCompat.keys(wrapper).get(0);
-        Object value = JsonCompat.getPropertyObject(wrapper, name);
+        String name = JsonCompat.keys(oldExtension).get(0);
+        Object value = JsonCompat.getPropertyObject(oldExtension, name);
         extension.name = name;
         extension.value = value;
     }
