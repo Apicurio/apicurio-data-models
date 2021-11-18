@@ -189,6 +189,8 @@ public class CommandFactory {
             { return new ChangeHeadersRefCommand_Aai20(); }
 
             /** Delete Commands **/
+            case "DeleteAllExtensionsCommand":
+            { return new DeleteAllExtensionsCommand(); }
             case "DeleteContactCommand_20":
             case "DeleteContactCommand_30":
             case "DeleteContactCommand":
@@ -387,6 +389,8 @@ public class CommandFactory {
             case "NewOperationTraitDefinitionCommand":
             case "NewOperationTraitDefinitionCommand_Aai20":
             { return new NewOperationTraitDefinitionCommand(); }
+            case "NewExtensionCommand":
+            { return new NewExtensionCommand(); }
 
             /** Rename Commands **/
 
@@ -671,6 +675,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteChildSchemaCommand(OasSchema schema) {
         return new DeleteChildSchemaCommand(schema);
+    }
+
+    public static final ICommand createDeleteAllExtensionsCommand(ExtensibleNode fromNode) {
+        return new DeleteAllExtensionsCommand(fromNode);
     }
 
     public static final ICommand createDeleteAllExamplesCommand(Oas30MediaType mediaType) {
@@ -970,6 +978,10 @@ public class CommandFactory {
 
     public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
+    }
+
+    public static final ICommand createNewExtensionCommand(ExtensibleNode parent, String name, Object value) {
+        return new NewExtensionCommand(parent, name, value);
     }
 
     public static final ICommand createNewChannelCommand(String name) {

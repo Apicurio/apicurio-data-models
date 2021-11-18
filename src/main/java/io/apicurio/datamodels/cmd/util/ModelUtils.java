@@ -19,8 +19,12 @@ package io.apicurio.datamodels.cmd.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.compat.RegexCompat;
+import io.apicurio.datamodels.core.models.Extension;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -35,7 +39,7 @@ public class ModelUtils {
     public static boolean isNullOrUndefined(Object object) {
         return NodeCompat.isNullOrUndefined(object);
     }
-    
+
     /**
      * The opposite of isNullOrUndefined.
      * @param object
@@ -60,4 +64,17 @@ public class ModelUtils {
         return paramNames;
     }
 
+    public static Object marshalExtension(Extension extension) {
+        ObjectNode wrapper = JsonCompat.objectNode();
+        JsonCompat.setProperty(wrapper, extension.name, extension.value);
+        return wrapper;
+    }
+
+    public static void unmarshalExtension(Object oldExtension, Extension extension) {
+        ObjectNode wrapper = (ObjectNode) oldExtension;
+        String name = JsonCompat.keys(wrapper).get(0);
+        Object value = JsonCompat.getPropertyObject(wrapper, name);
+        extension.name = name;
+        extension.value = value;
+    }
 }

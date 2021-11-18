@@ -38,7 +38,6 @@ import java.util.Map;
  */
 public class DeleteAllHeadersCommand extends AbstractCommand {
 
-
     public NodePath _parentPath;
 
     @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
