@@ -32,10 +32,14 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
+
+import static jsweet.util.Lang.await;
+
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
+import io.apicurio.datamodels.core.validation.IValidationExtension;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
@@ -46,6 +50,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
+import jsweet.lang.Async;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -136,7 +141,29 @@ public class Library {
         
         return validator.getValidationProblems();
     }
-    
+
+    /**
+     * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
+     * of validation problems found during validation is returned.  In addition, validation problems will be
+     * reported on the individual nodes themselves.  Validation problem severity is determined by checking
+     * with the included severity registry.  If the severity registry is null, a default registry is used.
+     * Provides ability to supply custom validators with additional rules.
+     * @param node
+     * @param severityRegistry
+     * @param extensions
+     */
+    @Async
+    public static List<ValidationProblem> validateWithExtensions(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
+        List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
+
+        for (IValidationExtension validationExtension : extensions) {
+            List<ValidationProblem> extensionResults = await(validationExtension.validate(node));
+            validationProblems.addAll(extensionResults);
+        }
+
+        return validationProblems;
+    }
+
     /**
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.

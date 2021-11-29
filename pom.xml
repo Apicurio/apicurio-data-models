@@ -97,6 +97,12 @@
             <version>${version.com.fasterxml.jackson}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jsweet</groupId>
+            <artifactId>jsweet-core</artifactId>
+            <version>6.3.0</version>
+        </dependency>
+
         <!-- Test Only Deps -->
         <dependency>
             <groupId>junit</groupId>
@@ -246,6 +252,12 @@
                     <name>plugins-release</name>
                     <url>https://repository.jsweet.org/artifactory/plugins-release-local</url>
                 </pluginRepository>
+                <pluginRepository>
+                    <snapshots />
+                    <id>jsweet-plugins-snapshots</id>
+                    <name>plugins-snapshot</name>
+                    <url>http://repository.jsweet.org/artifactory/plugins-snapshot-local</url>
+                </pluginRepository>
             </pluginRepositories>
 
             <repositories>
@@ -253,6 +265,12 @@
                     <id>jsweet-central</id>
                     <name>libs-release</name>
                     <url>http://repository.jsweet.org/artifactory/libs-release-local</url>
+                </repository>
+                <repository>
+                    <snapshots />
+                    <id>jsweet-snapshots</id>
+                    <name>libs-snapshot</name>
+                    <url>http://repository.jsweet.org/artifactory/libs-snapshot-local</url>
                 </repository>
             </repositories>
 
@@ -451,4 +469,3 @@
         </profile>
     </profiles>
 </project>
-
