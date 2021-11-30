@@ -156,9 +156,11 @@ public class Library {
     public static List<ValidationProblem> validateWithExtensions(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
         List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
 
+        if (extensions != null) {
         for (IValidationExtension validationExtension : extensions) {
             List<ValidationProblem> extensionResults = await(validationExtension.validate(node));
             validationProblems.addAll(extensionResults);
+        }
         }
 
         return validationProblems;
