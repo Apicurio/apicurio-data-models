@@ -17,6 +17,7 @@
 package io.apicurio.datamodels;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
@@ -151,19 +152,20 @@ public class Library {
      * @param node
      * @param severityRegistry
      * @param extensions
+     * @return
      */
     @Async
-    public static List<ValidationProblem> validateWithExtensions(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
+    public static CompletableFuture<List<ValidationProblem>> validateWithExtensions(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
         List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
 
         if (extensions != null) {
-        for (IValidationExtension validationExtension : extensions) {
-            List<ValidationProblem> extensionResults = await(validationExtension.validate(node));
-            validationProblems.addAll(extensionResults);
-        }
+            for (IValidationExtension validationExtension : extensions) {
+                CompletableFuture<List<ValidationProblem>> extensionResults = validationExtension.validate(node);
+                extensionResults.thenAccept(r -> r.forEach(p -> validationProblems.add(p)));
+            }
         }
 
-        return validationProblems;
+        return CompletableFuture.completedFuture(validationProblems);
     }
 
     /**
