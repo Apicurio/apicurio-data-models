@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels;
 
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
@@ -121,7 +122,7 @@ public class LibraryTest {
 class TestValidationExtension implements IValidationExtension {
 
     @Override
-    public <T> CompletableFuture<List<ValidationProblem>> validate(T document) {
+    public CompletableFuture<List<ValidationProblem>> validate(Node document) {
         List<ValidationProblem> fakeProblems = new ArrayList<>();
         fakeProblems.add(new ValidationProblem(
                 "TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low
