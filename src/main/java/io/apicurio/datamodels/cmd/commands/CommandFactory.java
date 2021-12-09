@@ -19,6 +19,7 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
+import io.apicurio.datamodels.asyncapi.models.AaiComponents;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
@@ -169,6 +170,8 @@ public class CommandFactory {
             case "ChangeResponseTypeCommand_20":
             case "ChangeResponseDefinitionTypeCommand_20":
             { return new ChangeResponseTypeCommand(); }
+            case "ChangeRefSeveralMessagesCommand":
+            { return new ChangeRefSeveralMessagesCommand(); }
             case "ChangeSecuritySchemeCommand_20":
             { return new ChangeSecuritySchemeCommand_20(); }
             case "ChangeSecuritySchemeCommand_30":
@@ -552,6 +555,10 @@ public class CommandFactory {
         return new ChangePropertyCommand<T>(node, property, newValue);
     }
 
+    public static final ICommand createChangeRefSeveralMessagesCommand(AaiMessage message, String reference){
+        return new ChangeRefSeveralMessagesCommand(message, reference);
+    }
+
     public static final ICommand createChangeTitleCommand(String newTitle) {
         return new ChangeTitleCommand(newTitle);
     }
@@ -660,6 +667,10 @@ public class CommandFactory {
 
     public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operation) {
         return new ChangePayloadRefCommand_Aai20(payloadRef, operation);
+    }
+
+    public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiComponents component, String keyMap) {
+        return new ChangePayloadRefCommand_Aai20(payloadRef, component, keyMap);
     }
 
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {

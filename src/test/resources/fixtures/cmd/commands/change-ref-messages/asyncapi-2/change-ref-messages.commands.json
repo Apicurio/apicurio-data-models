@@ -1,0 +1,8 @@
+[
+  {
+    "__type": "ChangeRefSeveralMessagesCommand",
+    "_newReference": "#/components/messages/AddressChanged",
+    "_oldReference": "#/components/messages/EmailChanged",
+    "_parentPath": "/channels[999testtest99]/publish/message"
+  }
+]

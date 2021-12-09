@@ -95,6 +95,7 @@
     { "name": "[OpenAPI 2] {Change Title} - Change Title", "test": "commands/change-title/openapi-2/change-title" },
     { "name": "[OpenAPI 3] {Change Title} - Add Title", "test": "commands/change-title/openapi-3/add-title" },
     { "name": "[OpenAPI 3] {Change Title} - Change Title", "test": "commands/change-title/openapi-3/change-title" },
+    { "name": "[OpenAPI 2] {Change ref Message} - Change ref Message", "test": "commands/change-ref-messages/asyncapi-2/change-ref-messages" },
     { "name": "[OpenAPI 2] {Change Version} - Add Version", "test": "commands/change-version/openapi-2/add-version" },
     { "name": "[OpenAPI 2] {Change Version} - Change Version", "test": "commands/change-version/openapi-2/change-version" },
     { "name": "[OpenAPI 3] {Change Version} - Add Version", "test": "commands/change-version/openapi-3/add-version" },
