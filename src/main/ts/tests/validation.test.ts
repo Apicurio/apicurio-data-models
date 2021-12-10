@@ -26,9 +26,10 @@ import {ReferenceUtil} from "../src/io/apicurio/datamodels/core/util/ReferenceUt
 import {ModelCloner} from "../src/io/apicurio/datamodels/cloning/ModelCloner";
 import {readJSON} from "./util/tutils";
 import {readTXT} from "./util/tutils";
-import {normalize} from "./util/tutils";
 import {formatProblems} from "./util/tutils";
 import {readSeverity} from "./util/tutils";
+import { IValidationExtension } from "../src/io/apicurio/datamodels/core/validation/IValidationExtension";
+import { NodePath } from "../src/io/apicurio/datamodels/core/models/NodePath";
 
 
 interface TestSpec {
@@ -36,7 +37,6 @@ interface TestSpec {
     test: string;
     severity?: string;
 }
-
 
 class CustomSeverityRegistry implements IValidationSeverityRegistry {
 
@@ -47,7 +47,6 @@ class CustomSeverityRegistry implements IValidationSeverityRegistry {
     }
 
 }
-
 
 class ValidationTestReferenceResolver implements IReferenceResolver {
     
@@ -91,7 +90,7 @@ Library.addReferenceResolver(new ValidationTestReferenceResolver());
 
 let allTests: TestSpec[] = readJSON("tests/fixtures/validation/tests.json");
 allTests.forEach(spec => {
-    test(spec.name, () => {
+    test(spec.name, async () => {
         // Read the source JSON file
         let testPath: string = "tests/fixtures/validation/" + spec.test;
         let json: any = readJSON(testPath);
@@ -105,7 +104,7 @@ allTests.forEach(spec => {
         if (spec.severity) {
             severityRegistry = new CustomSeverityRegistry(readSeverity(spec.severity));
         }
-        let problems: ValidationProblem[] = await Library.validate(document, severityRegistry);
+        let problems: ValidationProblem[] = await Library.validateWithExtensions(document, severityRegistry, null);
         
         // Format the list of problems into a string for comparison with the expected value
         let actual: string[] = formatProblems(problems);
@@ -119,4 +118,29 @@ allTests.forEach(spec => {
         }
         expect(actual).toEqual(expected);
     });
+});
+
+class CustomValidationExtension implements IValidationExtension {
+    validate(_: Node): Promise<ValidationProblem[]>{
+        const testProblems: ValidationProblem[] = [
+           new ValidationProblem("TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low)
+        ];
+
+        return Promise.resolve(testProblems);
+    }
+}
+
+test.only("Custom Validator", async () => {
+    // Read the source JSON file
+    let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
+    let json: any = readJSON(testPath);
+    expect(json).not.toBeNull();
+    
+    // Parse/read the document
+    let document: Document = Library.readDocument(json);
+
+    const testCustomValidator = new CustomValidationExtension();
+    const problems = await Library.validateWithExtensions(document, null, [testCustomValidator]);
+    expect(problems).toHaveLength(1);
+    expect(problems[0].errorCode).toBe("TEST-001");
 });
