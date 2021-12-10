@@ -104,7 +104,7 @@ allTests.forEach(spec => {
         if (spec.severity) {
             severityRegistry = new CustomSeverityRegistry(readSeverity(spec.severity));
         }
-        let problems: ValidationProblem[] = Library.validate(document, severityRegistry, null);
+        let problems: ValidationProblem[] = Library.validate(document, severityRegistry);
         
         // Format the list of problems into a string for comparison with the expected value
         let actual: string[] = formatProblems(problems);
