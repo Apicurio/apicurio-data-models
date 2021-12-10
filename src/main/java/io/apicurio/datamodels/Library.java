@@ -34,8 +34,6 @@ import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
 
-import static jsweet.util.Lang.await;
-
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
@@ -119,6 +117,10 @@ public class Library {
     }
 
     /**
+     * @deprecated
+     * This method has been deprecated. It will continue to be supported but will be removed in a future release.
+     * <p> Use {@link Library#validateDocument(node, severityRegistry, extensions)} instead.
+     * 
      * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
      * of validation problems found during validation is returned.  In addition, validation problems will be
      * reported on the individual nodes themselves.  Validation problem severity is determined by checking
@@ -148,19 +150,19 @@ public class Library {
      * of validation problems found during validation is returned.  In addition, validation problems will be
      * reported on the individual nodes themselves.  Validation problem severity is determined by checking
      * with the included severity registry.  If the severity registry is null, a default registry is used.
-     * Provides ability to supply custom validators with additional rules.
-     * @param node
-     * @param severityRegistry
-     * @param extensions
-     * @return
+     * Custom validators can be passed to provide additional validation rules beyond what this Library offers out of the box.
+     *
+     * @param node The document to be validated
+     * @param severityRegistry Supply a custom severity registry. If nothing is passed, the default severity registry will be used
+     * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
+     * @return full list of the validation problems found in the document
      */
-    @Async
-    public static CompletableFuture<List<ValidationProblem>> validateWithExtensions(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
+    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
         List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
 
-        if (extensions != null) {
-            for (IValidationExtension validationExtension : extensions) {
-                CompletableFuture<List<ValidationProblem>> extensionResults = validationExtension.validate(node);
+        if (extensions != null && extensions.size() > 0) {
+            for (IValidationExtension extension : extensions) {
+                CompletableFuture<List<ValidationProblem>> extensionResults = extension.validate(node);
                 extensionResults.thenAccept(r -> r.forEach(p -> validationProblems.add(p)));
             }
         }

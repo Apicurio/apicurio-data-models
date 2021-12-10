@@ -93,7 +93,7 @@ public class LibraryTest {
     private final CountDownLatch lock = new CountDownLatch(1);
 
     @Test
-    public void testValidateWithExtensions() {
+    public void testvalidateDocument() {
         String jsonString = "{\r\n" +
                 "    \"openapi\": \"3.0.2\",\r\n" +
                 "    \"info\": {\r\n" +
@@ -106,7 +106,7 @@ public class LibraryTest {
         List<IValidationExtension> extensions = new ArrayList<>();
         extensions.add(new TestValidationExtension());
 
-        CompletableFuture<List<ValidationProblem>> problems = Library.validateWithExtensions(doc, null, extensions);
+        CompletableFuture<List<ValidationProblem>> problems = Library.validateDocument(doc, null, extensions);
         List<ValidationProblem> receivedProblems = new ArrayList<>();
         problems.whenCompleteAsync((pList, done) -> {
             receivedProblems.addAll(new ArrayList<>(pList));

@@ -90,7 +90,7 @@ Library.addReferenceResolver(new ValidationTestReferenceResolver());
 
 let allTests: TestSpec[] = readJSON("tests/fixtures/validation/tests.json");
 allTests.forEach(spec => {
-    test(spec.name, async () => {
+    test(spec.name, () => {
         // Read the source JSON file
         let testPath: string = "tests/fixtures/validation/" + spec.test;
         let json: any = readJSON(testPath);
@@ -104,7 +104,7 @@ allTests.forEach(spec => {
         if (spec.severity) {
             severityRegistry = new CustomSeverityRegistry(readSeverity(spec.severity));
         }
-        let problems: ValidationProblem[] = await Library.validateWithExtensions(document, severityRegistry, null);
+        let problems: ValidationProblem[] = Library.validate(document, severityRegistry, null);
         
         // Format the list of problems into a string for comparison with the expected value
         let actual: string[] = formatProblems(problems);
@@ -140,7 +140,7 @@ test.only("Custom Validator", async () => {
     let document: Document = Library.readDocument(json);
 
     const testCustomValidator = new CustomValidationExtension();
-    const problems = await Library.validateWithExtensions(document, null, [testCustomValidator]);
+    const problems = await Library.validateDocument(document, null, [testCustomValidator]);
     expect(problems).toHaveLength(1);
     expect(problems[0].errorCode).toBe("TEST-001");
 });
