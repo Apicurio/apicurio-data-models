@@ -49,7 +49,6 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
-import jsweet.lang.Async;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
