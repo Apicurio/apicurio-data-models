@@ -20,7 +20,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
-import io.apicurio.datamodels.core.validation.IValidateDocumentExtension;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -102,7 +102,7 @@ public class LibraryTest {
                 "}";
         Document doc = Library.readDocumentFromJSONString(jsonString);
 
-        List<IValidateDocumentExtension> extensions = new ArrayList<>();
+        List<IDocumentValidatorExtension> extensions = new ArrayList<>();
         extensions.add(new TestValidationExtension());
 
         CompletableFuture<List<ValidationProblem>> problems = Library.validateDocument(doc, null, extensions);
@@ -118,7 +118,7 @@ public class LibraryTest {
     }
 }
 
-class TestValidationExtension implements IValidateDocumentExtension {
+class TestValidationExtension implements IDocumentValidatorExtension {
 
     @Override
     public CompletableFuture<List<ValidationProblem>> validateDocument(Node document) {

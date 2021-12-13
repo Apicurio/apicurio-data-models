@@ -38,7 +38,7 @@ import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
-import io.apicurio.datamodels.core.validation.IValidateDocumentExtension;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
@@ -118,7 +118,7 @@ public class Library {
     /**
      * @deprecated
      * This method has been deprecated. It will continue to be supported but will be removed in a future release.
-     * <p> Use {@link Library#validateDocument(node, severityRegistry, extensions)} instead.
+     * <p> Use {@link Library#validateDocument(Node, IValidationSeverityRegistry, List)} instead.
      * 
      * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
      * of validation problems found during validation is returned.  In addition, validation problems will be
@@ -156,17 +156,17 @@ public class Library {
      * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
      * @return full list of the validation problems found in the document
      */
-    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IValidateDocumentExtension> extensions) {
-        List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
+    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
+        List<ValidationProblem> totalValidationProblems = Library.validate(node, severityRegistry);
 
         if (extensions != null && extensions.size() > 0) {
-            for (IValidateDocumentExtension extension : extensions) {
-                CompletableFuture<List<ValidationProblem>> extensionResults = extension.validateDocument(node);
-                extensionResults.thenAccept(r -> r.forEach(p -> validationProblems.add(p)));
+            for (IDocumentValidatorExtension extension : extensions) {
+                CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
+                extensionValidationProblems.thenAccept(p -> totalValidationProblems.addAll(p));
             }
         }
 
-        return CompletableFuture.completedFuture(validationProblems);
+        return CompletableFuture.completedFuture(totalValidationProblems);
     }
 
     /**

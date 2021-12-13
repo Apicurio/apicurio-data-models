@@ -28,7 +28,7 @@ import {readJSON} from "./util/tutils";
 import {readTXT} from "./util/tutils";
 import {formatProblems} from "./util/tutils";
 import {readSeverity} from "./util/tutils";
-import { IValidationExtension } from "../src/io/apicurio/datamodels/core/validation/IValidationExtension";
+import { IDocumentValidatorExtension } from "../src/io/apicurio/datamodels/core/validation/IDocumentValidatorExtension";
 import { NodePath } from "../src/io/apicurio/datamodels/core/models/NodePath";
 
 
@@ -120,8 +120,8 @@ allTests.forEach(spec => {
     });
 });
 
-class CustomValidationExtension implements IValidationExtension {
-    validate(_: Node): Promise<ValidationProblem[]>{
+class CustomValidationExtension implements IDocumentValidatorExtension {
+    validateDocument(_: Node): Promise<ValidationProblem[]>{
         const testProblems: ValidationProblem[] = [
            new ValidationProblem("TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low)
         ];

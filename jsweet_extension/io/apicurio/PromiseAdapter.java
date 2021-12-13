@@ -62,8 +62,10 @@ public class PromiseAdapter extends PrinterAdapter {
                         printMacroName(invocation.getMethodName());
                         print(invocation.getTargetExpression()).print(".then(").print(invocation.getArgument(0)).print(")");
                         return true;
-                    // TODO: map `addAll` to `push` in JavaScript
-                    // case "addAll":
+                     case "addAll":
+                         printMacroName(invocation.getMethodName());
+                         print(invocation.getTargetExpression()).print(".concat(").print(invocation.getArguments().toString()).print(")");
+                         return true;
                 }
             }
         }

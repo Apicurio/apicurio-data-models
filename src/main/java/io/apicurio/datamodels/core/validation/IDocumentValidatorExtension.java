@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
  * Interface which defines a way to extend the basic document validation rules with additional rules.
  * Validation problems can be custom, or adapted from other validation libraries such as <a href="https://stoplight.io/open-source/spectral/"></a>
  */
-public interface IValidateDocumentExtension {
+public interface IDocumentValidatorExtension {
     /**
      * This method should implement the validation of the document and return a list of validation problems.
      * @param document The document which will be validated.
