@@ -20,7 +20,7 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
-import io.apicurio.datamodels.core.validation.IValidationExtension;
+import io.apicurio.datamodels.core.validation.IValidateDocumentExtension;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,7 +34,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.stream.Collectors;
 
 /**
  * Tests for the {@link Library} class.
@@ -93,7 +92,7 @@ public class LibraryTest {
     private final CountDownLatch lock = new CountDownLatch(1);
 
     @Test
-    public void testvalidateDocument() {
+    public void testValidateDocument() {
         String jsonString = "{\r\n" +
                 "    \"openapi\": \"3.0.2\",\r\n" +
                 "    \"info\": {\r\n" +
@@ -103,7 +102,7 @@ public class LibraryTest {
                 "}";
         Document doc = Library.readDocumentFromJSONString(jsonString);
 
-        List<IValidationExtension> extensions = new ArrayList<>();
+        List<IValidateDocumentExtension> extensions = new ArrayList<>();
         extensions.add(new TestValidationExtension());
 
         CompletableFuture<List<ValidationProblem>> problems = Library.validateDocument(doc, null, extensions);
@@ -119,10 +118,10 @@ public class LibraryTest {
     }
 }
 
-class TestValidationExtension implements IValidationExtension {
+class TestValidationExtension implements IValidateDocumentExtension {
 
     @Override
-    public CompletableFuture<List<ValidationProblem>> validate(Node document) {
+    public CompletableFuture<List<ValidationProblem>> validateDocument(Node document) {
         List<ValidationProblem> fakeProblems = new ArrayList<>();
         fakeProblems.add(new ValidationProblem(
                 "TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low

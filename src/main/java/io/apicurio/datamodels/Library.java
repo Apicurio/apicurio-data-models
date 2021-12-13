@@ -38,7 +38,7 @@ import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
-import io.apicurio.datamodels.core.validation.IValidationExtension;
+import io.apicurio.datamodels.core.validation.IValidateDocumentExtension;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
@@ -156,12 +156,12 @@ public class Library {
      * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
      * @return full list of the validation problems found in the document
      */
-    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IValidationExtension> extensions) {
+    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IValidateDocumentExtension> extensions) {
         List<ValidationProblem> validationProblems = Library.validate(node, severityRegistry);
 
         if (extensions != null && extensions.size() > 0) {
-            for (IValidationExtension extension : extensions) {
-                CompletableFuture<List<ValidationProblem>> extensionResults = extension.validate(node);
+            for (IValidateDocumentExtension extension : extensions) {
+                CompletableFuture<List<ValidationProblem>> extensionResults = extension.validateDocument(node);
                 extensionResults.thenAccept(r -> r.forEach(p -> validationProblems.add(p)));
             }
         }
