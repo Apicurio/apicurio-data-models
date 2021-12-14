@@ -21,7 +21,7 @@ jobs:
   build-verify:
     name: Verify Build
     runs-on: ubuntu-18.04
-    # if: github.repository_owner == 'Apicurio'
+    if: github.repository_owner == 'Apicurio'
     steps:
       - uses: actions/setup-java@v2
         with:
@@ -43,4 +43,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Project
-        run: mvn clean install -Ptranspilation -X -e
+        run: mvn clean install -Ptranspilation
