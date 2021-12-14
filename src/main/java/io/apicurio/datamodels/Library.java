@@ -162,7 +162,10 @@ public class Library {
         if (extensions != null && extensions.size() > 0) {
             for (IDocumentValidatorExtension extension : extensions) {
                 CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
-                extensionValidationProblems.thenAccept(p -> totalValidationProblems.addAll(p));
+                extensionValidationProblems.thenAccept(problems -> problems.forEach(p -> {
+                    totalValidationProblems.add(p);
+                    node.ownerDocument().addValidationProblem(p.errorCode, p.nodePath, p.property, p.message, p.severity);
+                }));
             }
         }
 

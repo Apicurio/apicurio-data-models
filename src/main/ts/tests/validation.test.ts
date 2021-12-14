@@ -185,7 +185,7 @@ describe("validateDocument()", () => {
         expect(problems).toHaveLength(0);
     });
 
-    test.only("return validation problems from both ApicurioDM validation and external validation extensions", async () => {
+    test("return validation problems from both ApicurioDM validation and external validation extensions", async () => {
         // Read the source JSON file
         const openapiData = {
             openapi: "3.0.2",

@@ -23,7 +23,6 @@ import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
 import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runners.Parameterized.Parameters;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
@@ -31,13 +30,10 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Tests for the {@link Library} class.
@@ -98,9 +94,10 @@ public class LibraryTest {
     @Test
     public void testValidateDocumentWithCustomExtension() {
         String jsonString = "{\r\n" +
-                "    \"openapi\": \"3.0.2\",\r\n" +
+                "    \"openapi\": \"3.0.9\",\r\n" +
                 "    \"info\": {\r\n" +
                 "        \"title\": \"Very Simple API\",\r\n" +
+                "        \"version\": \"1.0.0\"\r\n" +
                 "    }\r\n" +
                 "}";
         Document doc = Library.readDocumentFromJSONString(jsonString);
@@ -115,15 +112,14 @@ public class LibraryTest {
             lock.countDown();
         });
 
-        Optional<ValidationProblem> openApiProblem = receivedProblems.stream().
-            filter(p -> Objects.equals(p.errorCode, "INF-002")).
-            findFirst();
-        Assert.assertNotNull(openApiProblem.get());
+        List<String> expectedErrorCodes = Arrays.asList("R-003", "TEST-001");
 
-        Optional<ValidationProblem> extensionProblem = receivedProblems.stream().
-                filter(p -> Objects.equals(p.errorCode, "TEST-001")).
-                findFirst();
-        Assert.assertNotNull(extensionProblem.get());
+        List<String> documentErrorCodes = doc.getValidationProblemCodes();
+        Assert.assertEquals(expectedErrorCodes, documentErrorCodes);
+
+
+        List<String> problemErrorCodes = receivedProblems.stream().map(p -> p.errorCode).collect(Collectors.toList());
+        Assert.assertEquals(expectedErrorCodes, problemErrorCodes);
     }
 }
 
