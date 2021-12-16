@@ -1,5 +1,0 @@
-[{
-  "__type": "ChangePayloadRefCommand_Aai20",
-  "_payloadRef": "notAReference",
-  "_operationPath": "/channels[myChannel]/subscribe"
-}]

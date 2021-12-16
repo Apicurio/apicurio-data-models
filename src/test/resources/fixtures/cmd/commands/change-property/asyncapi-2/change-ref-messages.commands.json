@@ -1,0 +1,9 @@
+[
+  {
+    "__type": "ChangePropertyCommand",
+    
+    "_nodePath": "/channels[999testtest99]/publish/message/oneOf[0]",
+    "_property": "$ref",
+    "_newValue": "#/components/messages/AddressChanged"
+  }
+]

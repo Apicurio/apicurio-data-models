@@ -658,8 +658,17 @@ public class CommandFactory {
         return new ChangeServerCommand_Aai20(server);
     }
 
+    /**
+     * @deprecated Use the AaiMessage variant
+     * @param payloadRef
+     * @param operation
+     */
+    @Deprecated
     public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operation) {
         return new ChangePayloadRefCommand_Aai20(payloadRef, operation);
+    }
+    public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiMessage message) {
+        return new ChangePayloadRefCommand_Aai20(payloadRef, message);
     }
 
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
