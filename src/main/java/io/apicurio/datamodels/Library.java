@@ -159,7 +159,7 @@ public class Library {
     public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
         List<ValidationProblem> totalValidationProblems = Library.validate(node, severityRegistry);
 
-        if (extensions != null && extensions.size() > 0) {
+        if (extensions != null && !extensions.isEmpty()) {
             for (IDocumentValidatorExtension extension : extensions) {
                 CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
                 extensionValidationProblems.thenAccept(problems -> problems.forEach(p -> {
