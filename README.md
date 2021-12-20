@@ -99,7 +99,7 @@ This library is written using Java, but is then [transpiled from Java into Types
 and then compiled and bundled using typescript and rollup.  All of this is done as part of the standard
 maven build process:
 
-```
+```bash
 git clone https://github.com/Apicurio/apicurio-data-models.git
 cd apicurio-data-models
 mvn clean package -Ptranspilation
