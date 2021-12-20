@@ -159,19 +159,6 @@ describe("validateDocument()", () => {
         expect(problems).toHaveLength(0);
     });
 
-    test("return no validation problems when validation extensions is null", async () => {
-        // Read the source JSON file
-        let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
-        let json: any = readJSON(testPath);
-        expect(json).not.toBeNull();
-
-        // Parse/read the document
-        let document: Document = Library.readDocument(json);
-
-        const problems = await Library.validateDocument(document, null, null);
-        expect(problems).toHaveLength(0);
-    });
-
     test("return no validation problems when validation extensions list is empty", async () => {
         // Read the source JSON file
         let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
@@ -199,6 +186,22 @@ describe("validateDocument()", () => {
         const testCustomValidator = new CustomValidationExtension();
         const problems = await Library.validateDocument(document, null, [testCustomValidator]);
         expect(problems.find((p => p.errorCode === "TEST-001"))).toBeDefined();
+        expect(problems.find((p => p.errorCode === "INF-002"))).toBeDefined();
+        expect(problems.find((p => p.errorCode === "R-003"))).toBeDefined();
+    });
+
+    test("return validation problems from ApicurioDM validation", async () => {
+        // Read the source JSON file
+        const openapiData = {
+            openapi: "3.0.2",
+            info: {
+                title: "Very Simple API",
+            }
+        };
+
+        const document = Library.readDocument(openapiData);
+
+        const problems = await Library.validateDocument(document, null, null);
         expect(problems.find((p => p.errorCode === "INF-002"))).toBeDefined();
         expect(problems.find((p => p.errorCode === "R-003"))).toBeDefined();
     });
