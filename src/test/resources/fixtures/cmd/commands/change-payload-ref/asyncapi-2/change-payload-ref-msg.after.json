@@ -9,7 +9,9 @@
       "description": "This is myChannel description",
       "subscribe": {
         "message":{
-          "payload": {}
+          "payload": {
+            "$ref": "#/components/schema/UserSignedUpEvent"
+          }
         }
       }
     }

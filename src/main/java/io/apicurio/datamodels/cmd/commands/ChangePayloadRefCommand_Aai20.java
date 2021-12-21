@@ -16,9 +16,9 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.models.Document;
@@ -30,7 +30,8 @@ import io.apicurio.datamodels.core.models.NodePath;
  */
 public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
 
-   public NodePath _operationPath;
+   public NodePath _operationPath; // deprecated
+   public NodePath _messagePath;
    public String _payloadRef;
    public String _oldPayloadRef = null;
 
@@ -39,23 +40,49 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
    ChangePayloadRefCommand_Aai20() {
    }
 
+   /**
+    * Constructor.
+    * @deprecated Use the AaiMessage variant instead
+    * @param payloadRef
+    * @param operationNode
+    */
+   @Deprecated
    ChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operationNode) {
       this._operationPath = Library.createNodePath(operationNode);
       this._payloadRef = payloadRef;
    }
 
+   ChangePayloadRefCommand_Aai20(String payloadRef, AaiMessage messageNode) {
+       this._messagePath = Library.createNodePath(messageNode);
+       this._payloadRef = payloadRef;
+    }
+
    @Override
    public void execute(Document document) {
       LoggerCompat.info("[ChangePayloadRefCommand_Aai20] Executing.");
 
-      AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
       this._changed = false;
 
-      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message) || !isValidRef(this._payloadRef)) {
-         return;
+      AaiMessage message;
+
+      // Legacy: lookup from operation path
+      if (!this.isNullOrUndefined(this._operationPath)) {
+          AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
+
+          if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message)) {
+             return;
+          }
+
+          message = operation.message;
+      } else {
+          message = (AaiMessage) this._messagePath.resolve(document);
       }
 
-      Object payload = operation.message.payload;
+      if (this.isNullOrUndefined(message)) {
+          return;
+      }
+
+      Object payload = message.payload;
       if (payload == null) {
          payload = JsonCompat.objectNode();
       }
@@ -71,23 +98,32 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
    public void undo(Document document) {
       LoggerCompat.info("[ChangePayloadRefCommand_Aai20] Reverting.");
 
-      AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
-
-      if (!this._changed || this.isNullOrUndefined(operation)
-            || this.isNullOrUndefined(operation.message)) {
-         return;
+      if (!this._changed) {
+          return;
       }
 
-      Object payload = operation.message.payload;
+      AaiMessage message;
+
+      if (!this.isNullOrUndefined(this._operationPath)) {
+          AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
+          if (this.isNullOrUndefined(operation)) {
+              return;
+          }
+          message = operation.message;
+      } else {
+          message = (AaiMessage) this._messagePath.resolve(document);
+      }
+
+      if (this.isNullOrUndefined(message)) {
+          return;
+      }
+
+      Object payload = message.payload;
       if (this._oldPayloadRef != null) {
          JsonCompat.setProperty(payload, "$ref", this._oldPayloadRef);
       } else {
          JsonCompat.consumeProperty(payload, "$ref");
       }
    }
-   
-   private boolean isValidRef(String refCandidate) {
-      return ModelUtils.isDefined(refCandidate)
-              && refCandidate.startsWith("#/");
-   }
+
 }

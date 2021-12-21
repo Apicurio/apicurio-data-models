@@ -22,7 +22,7 @@ import { SimplifiedType } from '../cmd/models/SimplifiedType';
 
 const pathKeys: string[] = [
     "_mediaTypePath", "_responsePath", "_responsesPath", "_parentPath", "_schemaPath", "_parameterPath", "_operationPath",
-    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath"
+    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath"
 ];
 const pathListKeys: string[] = [ "_references" ];
 const typeKeys: string[] = [ "_newType" ];
