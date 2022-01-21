@@ -32,6 +32,6 @@
     "rollup": "0.68.2",
     "rollup-plugin-commonjs": "8.4.1",
     "ts-jest": "27.1.2",
-    "typescript": "4.5.4"
+    "typescript": "4.5.5"
   }
 }
