@@ -260,12 +260,41 @@ public class Library {
      * Dereferences a document - this will take all external references ($ref) found in
      * the document and pull them into this document.  It will then update any external
      * reference to instead point to the local copy.  The result is a functionally
-     * equivalent document with no external references.
+     * equivalent document with all resolvable external references removed.
      *
-     * @param source
+     * @param source the source document
      */
     public static Document dereferenceDocument(Document source) {
         Dereferencer rl = new Dereferencer(source);
+        return rl.dereference();
+    }
+
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with all resolvable external references removed.
+     *
+     * @param source the source document
+     * @param strict if true, throws an exception if unresolvable references remain
+     */
+    public static Document dereferenceDocument(Document source, boolean strict) {
+        Dereferencer rl = new Dereferencer(source, ReferenceResolverChain.getInstance(), strict);
+        return rl.dereference();
+    }
+
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with all resolvable external references removed.
+     *
+     * @param source the source document
+     * @param resolver a custom reference resolver to use on this dereference operation
+     * @param strict if true, throws an exception if unresolvable references remain
+     */
+    public static Document dereferenceDocument(Document source, IReferenceResolver resolver, boolean strict) {
+        Dereferencer rl = new Dereferencer(source, resolver, strict);
         return rl.dereference();
     }
 }
