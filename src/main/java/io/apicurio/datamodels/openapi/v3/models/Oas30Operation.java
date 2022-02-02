@@ -39,6 +39,7 @@ public class Oas30Operation extends OasOperation implements IServerParent {
     public Oas30RequestBody requestBody;
     public Map<String, Oas30Callback> callbacks = new LinkedHashMap<>();
     public List<Server> servers;
+    public String path;
     
     /**
      * Constructor.

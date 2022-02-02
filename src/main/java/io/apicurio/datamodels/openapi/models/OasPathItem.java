@@ -25,6 +25,14 @@ import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
+import static io.apicurio.datamodels.core.Constants.PROP_DELETE;
+import static io.apicurio.datamodels.core.Constants.PROP_GET;
+import static io.apicurio.datamodels.core.Constants.PROP_HEAD;
+import static io.apicurio.datamodels.core.Constants.PROP_OPTIONS;
+import static io.apicurio.datamodels.core.Constants.PROP_PATCH;
+import static io.apicurio.datamodels.core.Constants.PROP_POST;
+import static io.apicurio.datamodels.core.Constants.PROP_PUT;
+
 /**
  * Models an OpenAPI path item.
  * @author eric.wittmann@gmail.com
@@ -149,6 +157,26 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
         return null;
     }
 
+    public OasOperation getOperation(String method) {
+        switch (method) {
+            case PROP_GET:
+                return get;
+            case PROP_POST:
+                return post;
+            case PROP_PUT:
+                return put;
+            case PROP_DELETE:
+                return delete;
+            case PROP_HEAD:
+                return head;
+            case PROP_PATCH:
+                return patch;
+            case PROP_OPTIONS:
+                return options;
+        }
+        return null;
+    }
+
     /**
      * Sets the given operation on this path item.
      * @param operation
@@ -170,5 +198,4 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
             options = operation;
         }
     }
-
 }

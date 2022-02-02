@@ -1,0 +1,59 @@
+{
+  "name":"apicurio:oas",
+  "rules":{
+    "paths":{
+      "rules": {
+        "PATH_ADDED":{
+          "severity":"NON_BREAKING",
+          "message":"Path added"
+        },
+        "PATH_REMOVED":{
+          "severity":"BREAKING",
+          "message":"Path removed. Hint: consider deprecating this path instead"
+        }
+      },
+      "pathItem":{
+        "rules": {
+          "PATH_VARIABLE_MODIFIED":{
+            "severity":"NON_BREAKING",
+            "message":"Path variable `${{old}}` changed to `${{new}}`"
+          }
+        },
+        "operation":{
+          "rules": {
+            "PATH_OPERATION_ADDED":{
+              "severity":"NON_BREAKING",
+              "message":"Operation '${{operation}}' added"
+            },
+            "PATH_OPERATION_REMOVED":{
+              "severity":"BREAKING",
+              "message":"Operation '${{operation}}' removed"
+            }
+          },
+          "requestBody":{
+            "rules": {
+              "REQUEST_BODY_ADDED":{
+                "severity":"NON_BREAKING",
+                "message":"Request body added"
+              },
+              "REQUEST_BODY_REMOVED":{
+                "severity":"BREAKING",
+                "message":"Request body removed"
+              }
+            },
+            "mediaType": {
+              "REQUEST_BODY_MEDIA_TYPE_ADDED":{
+                "severity":"NON_BREAKING",
+                "message":"Media type '${{mediaType}}' added"
+              },
+              "REQUEST_BODY_MEDIA_TYPE_REMOVED":{
+                "severity":"BREAKING",
+                "message":"Media type '${{mediaType}}' removed"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
