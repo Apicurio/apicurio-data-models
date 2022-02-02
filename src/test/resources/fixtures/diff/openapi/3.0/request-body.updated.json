@@ -10,27 +10,13 @@
         "description": "Add a new test",
         "requestBody": {
           "content": {
-            "application/json": {
+            "text/plain": {
               "schema": {
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
+                "type": "string"
               }
             }
           }
         },
-        "responses": {
-          "default": {
-            "description": "..."
-          }
-        }
-      }
-    },
-    "/classes": {
-      "get": {
-        "description": "Get list of classes",
         "responses": {
           "default": {
             "description": "..."

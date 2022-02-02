@@ -16,11 +16,17 @@
 
 package io.apicurio.datamodels.cmd;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.cmd.ot.OtCommand;
+import io.apicurio.datamodels.cmd.ot.OtEngine;
+import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat;
+import io.apicurio.datamodels.core.Constants;
+import io.apicurio.datamodels.core.models.Document;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.junit.Assert;
@@ -31,18 +37,10 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
-import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.cmd.ot.OtCommand;
-import io.apicurio.datamodels.cmd.ot.OtEngine;
-import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.compat.LoggerCompat;
-import io.apicurio.datamodels.compat.MarshallCompat;
-import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.models.Document;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com

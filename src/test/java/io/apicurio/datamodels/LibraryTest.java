@@ -16,6 +16,17 @@
 
 package io.apicurio.datamodels;
 
+import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -5,19 +5,18 @@
     "title": "Swagger Petstore"
   },
   "paths": {
-    "/tests": {
-      "get": {
-        "description": "Get list of tests",
-        "responses": {
-          "default": {
-            "description": "..."
-          }
-        }
-      }
-    },
     "/tests/{id}": {
       "put": {
         "description": "Update test",
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "responses": {
           "default": {
             "description": "..."
