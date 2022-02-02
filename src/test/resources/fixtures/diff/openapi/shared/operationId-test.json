@@ -1,0 +1,27 @@
+{
+	"openapi": "3.0.2",
+	"info": {
+	  "version": "1.0.0",
+	  "title": "Swagger Petstore"
+	},
+	"paths": {
+		"/tests": {
+			"get": {
+				"description": "Get list of tests",
+				"responses": {
+					"default": {
+						"description": "..."
+					}
+				}
+			},
+			"post": {
+				"operationId": "createTest"
+			}
+		},
+		"/tests/{id}": {
+			"put": {
+				"operationId": "updateTest"
+			}
+		}
+	}
+}

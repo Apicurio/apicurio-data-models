@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Path Added/Removed",
+    "original": "openapi/shared/path-item.json",
+    "updated": "openapi/shared/path-item.updated.json"
+  },
+  {
+    "name": "Operation Added/Removed",
+    "original": "openapi/shared/operation-test.json",
+    "updated": "openapi/shared/operation-test.updated.json"
+  },
+  {
+    "name": "Operation ID Added/Removed",
+    "original": "openapi/shared/operationId-test.json",
+    "updated": "openapi/shared/operationId-test.updated.json"
+  },
+  {
+    "name": "Request Body Added/Removed",
+    "original": "openapi/3.0/operation-request-body.json",
+    "updated": "openapi/3.0/operation-request-body.updated.json"
+  },
+  {
+    "name": "Media type added/removed",
+    "original": "openapi/3.0/request-body-media-type.json",
+    "updated": "openapi/3.0/request-body-media-type.updated.json"
+  }
+]

@@ -6,17 +6,18 @@
   },
   "paths": {
     "/tests": {
-      "post": {
-        "description": "Add a new test",
-        "requestBody": {
-          "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            }
+      "get": {
+        "description": "Get list of tests",
+        "responses": {
+          "default": {
+            "description": "..."
           }
-        },
+        }
+      }
+    },
+    "/classes": {
+      "get": {
+        "description": "Get list of classes",
         "responses": {
           "default": {
             "description": "..."

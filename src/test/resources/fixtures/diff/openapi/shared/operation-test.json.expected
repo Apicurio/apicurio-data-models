@@ -1,2 +1,1 @@
-[PATH_ADDED] |NON_BREAKING| :: Path '/tests/{id}' added
-[PATH_REMOVED] |BREAKING_CHANGE| :: Path '/classes' removed
+[PATH_OPERATION_ADDED] |NON_BREAKING| :: Operation added | /paths[/tests]/post

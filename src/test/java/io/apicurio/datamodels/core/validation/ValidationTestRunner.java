@@ -155,7 +155,7 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
     }
 
     /**
-     * @param expected
+     * @param
      */
     protected String normalize(String value) {
         return value.trim().replace("\r\n", "\n");
