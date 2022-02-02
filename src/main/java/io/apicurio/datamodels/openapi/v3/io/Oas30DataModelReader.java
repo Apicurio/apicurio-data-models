@@ -361,6 +361,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
         Object requestBody = JsonCompat.consumeProperty(json, Constants.PROP_REQUEST_BODY);
         Object callbacks = JsonCompat.consumeProperty(json, Constants.PROP_CALLBACKS);
         List<Object> servers = JsonCompat.consumePropertyArray(json, Constants.PROP_SERVERS);
+//        String path = JsonCompat.consumePropertyString(json, Con)
 
         if (requestBody != null) {
             operation.requestBody = operation.createRequestBody();
