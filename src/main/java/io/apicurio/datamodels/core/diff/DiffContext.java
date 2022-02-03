@@ -3,6 +3,8 @@ package io.apicurio.datamodels.core.diff;
 import java.util.HashSet;
 import java.util.Set;
 
+import io.apicurio.datamodels.core.diff.change.Change;
+import io.apicurio.datamodels.core.diff.change.ChangeType;
 import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
 import io.apicurio.datamodels.core.diff.ruleset.Ruleset;
 import io.apicurio.datamodels.core.models.NodePath;
@@ -46,6 +48,10 @@ public class DiffContext {
     public void addDifference(DiffType diffType, ChangeType severity, String message, NodePath path) {
         Difference difference = new Difference(diffType, severity, message, path);
         diff.add(difference);
+    }
+
+    public void addDifference(DiffType diffType, Change change, NodePath path) {
+        this.addDifference(diffType, change.getType(), change.getMessage(), path);
     }
 
     public void addDifference(Difference difference) {

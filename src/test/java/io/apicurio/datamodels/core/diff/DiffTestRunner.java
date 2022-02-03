@@ -125,7 +125,7 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
             builder.append("[")
                     .append(diff.getCode())
                     .append("] |")
-                    .append(diff.getSeverity())
+                    .append(diff.getChangeType())
                     .append("| :: ")
                     .append(diff.getMessage())
                     .append(" | ")

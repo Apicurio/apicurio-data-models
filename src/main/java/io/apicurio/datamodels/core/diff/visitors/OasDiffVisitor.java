@@ -1,5 +1,9 @@
-package io.apicurio.datamodels.core.diff;
+package io.apicurio.datamodels.core.diff.visitors;
 
+import io.apicurio.datamodels.core.diff.DiffContext;
+import io.apicurio.datamodels.core.diff.DiffType;
+import io.apicurio.datamodels.core.diff.DiffUtil;
+import io.apicurio.datamodels.core.diff.change.Change;
 import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;

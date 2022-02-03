@@ -1,4 +1,4 @@
-package io.apicurio.datamodels.core.diff;
+package io.apicurio.datamodels.core.diff.change;
 
 public class BreakingChange extends Change {
     public BreakingChange(String message) {
