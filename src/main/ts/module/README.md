@@ -1,4 +1,6 @@
-A typescript library for reading, manipulating, and writing OpenAPI and AsyncAPI documents.
+# Apicurio Datamodels
+
+A Typescript library for reading, manipulating, and writing OpenAPI and AsyncAPI documents.
 
 Install with `npm install apicurio-data-models`.
 
@@ -29,19 +31,19 @@ _Typescript:_
 
 ```Typescript
 // Get the OpenAPI document from somewhere
-let openApiData: string = ...;
+const openApiData: string = ...;
 
 // Use the library util to create a data model instance from the given
 // data.  This will convert from the source string into an instance of 
 // the OpenAPI data model.
-let document: Document = Library.readDocumentFromJSONString(openApiData);
+const document: Document = Library.readDocumentFromJSONString(openApiData);
 
-// Here you can anayze or manipulate the model.
+// Here you can analyze or manipulate the model.
 document.info.version = "1.7";
 document.info.description = "Made some changes to the OpenAPI document!";
 
 // Validate that your changes are OK.
-let problems: ValidationProblem[] = Library.validate(document, null);
+const problems = Library.validateDocument(document, null);
 
 // And now write the node back out as a JSON string
 let modifiedOpenApiData: string = Library.writeDocumentToJSONString(document);
@@ -57,7 +59,7 @@ var document = ApicurioDM.Library.readDocumentFromJSONString(openApiData);
 document.info.version = "1.1";
 document.info.description = "Made some changes to the OpenAPI document!";
 
-var problems = ApicurioDM.Library.validate(document, null);
+var problems = await ApicurioDM.Library.validateDocument(document, null);
 
 var modifiedOpenApiData = JSON.stringify(ApicurioDM.Library.writeDocumentToJSONString(document));
 ```
@@ -65,6 +67,7 @@ var modifiedOpenApiData = JSON.stringify(ApicurioDM.Library.writeDocumentToJSONS
 ## API
 
 ### Library Util Class
+
 The library comes with a util class that makes certain common tasks easier.
 These tasks include:
 
@@ -76,15 +79,17 @@ These tasks include:
 * Visiting a model
 
 #### Create Document
-`Library::createDocument(DocumentType): Document`
+
+`Library.createDocument(DocumentType): Document`
 
 Use this method to create an empty OpenAPI or AsyncAPI document (data model).  You
 must pass one of the values of the DocumentType enum to indicate what sort of
 document you want (OpenAPI 2, OpenAPI 3, AsyncAPI 2, etc).
 
 #### Read Document
-`Library::readDocument(any): Document`
-`Library::readDocumentFromJSONString(string): Document`
+
+`Library.readDocument(any): Document`
+`Library.readDocumentFromJSONString(string): Document`
 
 These two methods allow you to parse a document either from a JS object or from a 
 string and turn it into a Document.  The correct type of document will automatically
@@ -92,19 +97,21 @@ be figured out based on the content passed (by interrogating the `openapi` or `a
 properties).
 
 #### Write Node
-`Library::writeNode(Node): any`
-`Library::readDocumentFromJSONString(Document): string`
+
+`Library.writeNode(Node): any`
+`Library.readDocumentFromJSONString(Document): string`
 
 Use these method to convert from a data model instance back to a JS object or
-string.  You can pass any node from the data model tree into the `writeNode` method 
-and the appropriate JS object will be returned.  If you pass in the root document node, then the 
+string.  You can pass any node from the data model tree into the `writeNode` method
+and the appropriate JS object will be returned.  If you pass in the root document node, then the
 full OpenAPI JS object will be returned.  If, for example, you pass in only the
 `document.info` child node, then a JS object representing on that portion of the
 data model will be returned.  The `readDocumentFromJSONString` method must be
 sent a full Document, and will return a stringified object.
 
 ### Resolve External References
-`Library::addReferenceResolver(resolver: IReferenceResolver): void`
+
+`Library.addReferenceResolver(resolver: IReferenceResolver): void`
 
 The OpenAPI specification allows references across documents (in various places)
 using the `$ref` property.  The library itself cannot resolve external references,
@@ -115,7 +122,8 @@ method.  Multiple reference resolvers can be installed - the first resolver that
 can successfully resolve a reference will win.  The library has one default resolver
 that is capable of resolving internal references - for example `#!/components/schemas/Widget`.
 
-#### Validate
+#### Validate (deprecated)
+
 `Library::validate(Node, IValidationSeverityRegistry): ValidationProblem[]`
 
 Use this method to validate a document (or subsection of the document).  The
@@ -149,16 +157,17 @@ let problems: ValidationProblem[] = node.getValidationProblemsFor('description')
 if (problems && problems.length > 0) {
     // The node failed validation!
 }
-````
-
+```
 
 #### Create a Node Path
+
 `Library::createNodePath(Node): NodePath`
 
 For more information about node paths, see the "Node Paths" section below.
 
 
 ### The Data Model
+
 This library has data model classes representing each of the objects defined
 by the OpenAPI and AsyncAPI specifications.  Overall, an instance of a data model is simply
 a tree of nodes corresponding to the appropriate specification.  Each node in the
@@ -201,6 +210,7 @@ let path: NodePath = Library.createNodePath(node);
 
 
 ### Visiting the Data Model
+
 In addition to basic reading and writing of a data model, this library also
 includes an implementation of the visitor pattern (useful for more advanced
 analysis or transformation of the data model).
@@ -211,6 +221,7 @@ the model (which will visit just that one node) or else traverse the entire
 model (either up or down).  Some examples are below.
 
 #### Visit a Single Node
+
 ```Typescript
 let document: Document = getOrCreateDocument();
 let visitor: IVisitor = new MyCustomVisitor();
@@ -227,6 +238,7 @@ Library.visitTree(document, visitor, TraverserDirection.down);
 ```
 
 #### Visit a Node And Its Parents
+
 ```Typescript
 let document: Document = getOrCreateDocument();
 let visitor: IVisitor = new MyCustomVisitor();
