@@ -1,24 +1,33 @@
 package io.apicurio.datamodels.core.diff;
 
+import io.apicurio.datamodels.core.diff.change.Change;
+import io.apicurio.datamodels.core.diff.change.ChangeType;
 import io.apicurio.datamodels.core.models.NodePath;
 
 public class Difference {
     private DiffType code;
-    private ChangeType severity;
+    private ChangeType changeType;
+    private Change change;
     private String message;
     private NodePath nodePath;
     private String property;
 
     public Difference(DiffType code, ChangeType sev, String message, NodePath path) {
         this.code = code;
-        this.severity = sev;
+        this.changeType = sev;
         this.message = message;
+        this.nodePath = path;
+    }
+
+    public Difference(DiffType code, Change change, NodePath path) {
+        this.code = code;
+        this.change = change;
         this.nodePath = path;
     }
 
     public Difference(DiffType code, ChangeType sev, String message, NodePath path, String property) {
         this.code = code;
-        this.severity = sev;
+        this.changeType = sev;
         this.message = message;
         this.nodePath = path;
         this.property = property;
@@ -40,12 +49,12 @@ public class Difference {
         this.code = code;
     }
 
-    public ChangeType getSeverity() {
-        return severity;
+    public ChangeType getChangeType() {
+        return changeType;
     }
 
-    public void setSeverity(ChangeType severity) {
-        this.severity = severity;
+    public void setChangeType(ChangeType changeType) {
+        this.changeType = changeType;
     }
 
     public String getMessage() {
@@ -62,5 +71,13 @@ public class Difference {
 
     public void setProperty(String property) {
         this.property = property;
+    }
+
+    public Change getChange() {
+        return change;
+    }
+
+    public void setChange(Change change) {
+        this.change = change;
     }
 }

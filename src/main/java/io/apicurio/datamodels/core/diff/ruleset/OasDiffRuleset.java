@@ -3,11 +3,11 @@ package io.apicurio.datamodels.core.diff.ruleset;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.apicurio.datamodels.core.diff.BreakingChange;
-import io.apicurio.datamodels.core.diff.Change;
-import io.apicurio.datamodels.core.diff.DangerousChange;
+import io.apicurio.datamodels.core.diff.change.BreakingChange;
+import io.apicurio.datamodels.core.diff.change.Change;
+import io.apicurio.datamodels.core.diff.change.DangerousChange;
 import io.apicurio.datamodels.core.diff.DiffType;
-import io.apicurio.datamodels.core.diff.NonBreakingChange;
+import io.apicurio.datamodels.core.diff.change.NonBreakingChange;
 
 public class OasDiffRuleset extends Ruleset {
 
@@ -82,10 +82,6 @@ public class OasDiffRuleset extends Ruleset {
 
     public Map<DiffType, Change> getPathsRules() {
         return paths;
-    }
-
-    public void setPaths(Map<DiffType, Change> paths) {
-        this.paths = paths;
     }
 
     public Map<DiffType, Change> getPathItemRules() {
