@@ -1,21 +1,21 @@
 package io.apicurio.datamodels.core.diff;
 
-public class DiffRule {
-    private ChangeSeverity changeSeverity;
+public abstract class Change {
+    private ChangeType type;
     private String message;
     private Boolean disabled;
 
-    public DiffRule(ChangeSeverity severity, String message) {
-        this.changeSeverity = severity;
+    public Change(ChangeType severity, String message) {
+        this.type = severity;
         this.message = message;
     }
 
-    public ChangeSeverity getChangeSeverity() {
-        return changeSeverity;
+    public ChangeType getType() {
+        return type;
     }
 
-    public void setChangeSeverity(ChangeSeverity changeSeverity) {
-        this.changeSeverity = changeSeverity;
+    public void setType(ChangeType type) {
+        this.type = type;
     }
 
     public String getMessage() {

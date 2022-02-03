@@ -38,12 +38,12 @@ public class DiffContext {
         return createRootContext("");
     }
 
-    public void addDifference(DiffType diffType, ChangeSeverity severity, String message, NodePath path, String property) {
+    public void addDifference(DiffType diffType, ChangeType severity, String message, NodePath path, String property) {
         Difference difference = new Difference(diffType, severity, message, path, property);
         diff.add(difference);
     }
 
-    public void addDifference(DiffType diffType, ChangeSeverity severity, String message, NodePath path) {
+    public void addDifference(DiffType diffType, ChangeType severity, String message, NodePath path) {
         Difference difference = new Difference(diffType, severity, message, path);
         diff.add(difference);
     }

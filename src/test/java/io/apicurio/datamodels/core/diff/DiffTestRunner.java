@@ -3,6 +3,7 @@ package io.apicurio.datamodels.core.diff;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,9 +23,9 @@ import io.apicurio.datamodels.core.util.IReferenceResolver;
 
 public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IReferenceResolver {
 
-    private Class<?> testClass;
-    private List<DiffTestCase> children;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final Class<?> testClass;
+    private final List<DiffTestCase> children;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public DiffTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
@@ -101,22 +102,17 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
                 Document updatedDoc = Library.readDocument(updatedParsed);
 
                 DiffContext diffContext = Library.diff(originalDoc, updatedDoc);
-                String actual = formatDiffContext(diffContext);
+                List<String> actual = Arrays.asList(formatDiffContext(diffContext).split("\\r?\\n"));
                 String expectedCP = "fixtures/diff/" + child.getOriginal() + ".expected";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
-                String expected = loadResource(expectedUrl);
+                String[] expectedItems = loadResource(expectedUrl).split("\\r?\\n");
 
-                Assert.assertEquals(normalize(expected), normalize(actual));
+                for (String expectedLine : expectedItems) {
+                    Assert.assertTrue("Expected line '" + expectedLine + "' to be defined in '" + expectedCP + "'", actual.contains(expectedLine));
+                }
             }
         };
         runLeaf(statement, description, notifier);
-    }
-
-    /**
-     * @param
-     */
-    protected String normalize(String value) {
-        return value.trim().replace("\r\n", "\n");
     }
 
     /**

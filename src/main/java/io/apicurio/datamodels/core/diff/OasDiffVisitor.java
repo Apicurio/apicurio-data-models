@@ -22,6 +22,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -30,15 +31,16 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class UpdatedOasDiffVisitor implements IOasVisitor {
-    private DiffContext ctx;
-    private OasDocument original;
-    private OasDiffRuleset ruleSet;
+public abstract class OasDiffVisitor implements IOasVisitor {
+    private final DiffContext ctx;
+    private final OasDocument original;
+    private final OasDiffRuleset ruleSet;
 
-    public UpdatedOasDiffVisitor(DiffContext ctx, Node original) {
+    public OasDiffVisitor(DiffContext ctx, Node original) {
         this.ctx = ctx;
         this.original = (OasDocument) original;
         this.ruleSet = (OasDiffRuleset) ctx.ruleSet;
@@ -76,35 +78,31 @@ public abstract class UpdatedOasDiffVisitor implements IOasVisitor {
 
     @Override
     public void visitOperation(Operation node) {
-        Map<DiffType, DiffRule> rules = ruleSet.getOperationRules();
-        OasPathItem pi = (OasPathItem) node.parent();
-
-        OasPathItem originalPi = original.paths.getPathItem(pi.getPath());
-        if (originalPi == null) {
+        OasPathItem parent = (OasPathItem)node.parent();
+        OasPathItem originalPathItem = original.paths.getPathItem(parent.getPath());
+        if (originalPathItem == null) {
+            return;
+        }
+        OasOperation originalOperation = originalPathItem.getOperation(node.getType());
+        if (originalOperation == null) {
             return;
         }
 
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
-        DiffRule operationAddedRuleConfig = rules.get(DiffType.PATH_OPERATION_ADDED);
-
-        Operation originalOperation = originalPi.getOperation(node.getType());
-        if (originalOperation == null) {
-            this.ctx.addDifference(DiffType.PATH_OPERATION_ADDED, operationAddedRuleConfig.getChangeSeverity(), "Operation added", nodePath);
-            return;
-        }
+        Map<DiffType, Change> rules = ruleSet.getOperationRules();
 
         boolean originalIdIsNull = Objects.equals(originalOperation.operationId, null);
         boolean newIdIsNull = Objects.equals(node.operationId, null);
         if (originalIdIsNull && !newIdIsNull) {
-            DiffRule operationIdAddedRuleConfig = rules.get(DiffType.OPERATION_ID_ADDED);
-            ctx.addDifference(DiffType.OPERATION_ID_ADDED, operationIdAddedRuleConfig.getChangeSeverity(), operationIdAddedRuleConfig.getMessage(), nodePath);
+            Change operationIdAddedRuleConfig = rules.get(DiffType.OPERATION_ID_ADDED);
+            ctx.addDifference(DiffType.OPERATION_ID_ADDED, operationIdAddedRuleConfig.getType(), operationIdAddedRuleConfig.getMessage(), nodePath);
         } else if (!originalIdIsNull && newIdIsNull) {
-            DiffRule operationIdRemovedRuleConfig = rules.get(DiffType.OPERATION_ID_REMOVED);
-            ctx.addDifference(DiffType.OPERATION_ID_REMOVED, operationIdRemovedRuleConfig.getChangeSeverity(), operationIdRemovedRuleConfig.getMessage(), nodePath);
+            Change operationIdRemovedRuleConfig = rules.get(DiffType.OPERATION_ID_REMOVED);
+            ctx.addDifference(DiffType.OPERATION_ID_REMOVED, operationIdRemovedRuleConfig.getType(), operationIdRemovedRuleConfig.getMessage(), nodePath);
         } else if (!originalIdIsNull && !Objects.equals(originalOperation.operationId, node.operationId)) {
-            DiffRule operationIdChangedRuleConfig = rules.get(DiffType.OPERATION_ID_MODIFIED);
-            ctx.addDifference(DiffType.OPERATION_ID_MODIFIED, operationIdChangedRuleConfig.getChangeSeverity(), operationIdChangedRuleConfig.getMessage(), nodePath);
+            Change operationIdChangedRuleConfig = rules.get(DiffType.OPERATION_ID_MODIFIED);
+            ctx.addDifference(DiffType.OPERATION_ID_MODIFIED, operationIdChangedRuleConfig.getType(), operationIdChangedRuleConfig.getMessage(), nodePath);
         }
     }
 
@@ -150,20 +148,55 @@ public abstract class UpdatedOasDiffVisitor implements IOasVisitor {
 
     @Override
     public void visitPaths(OasPaths node) {
+        Map<DiffType, Change> rules = ruleSet.getPathsRules();
+        NodePath nodePath = NodePathUtil.createNodePath(node);
 
+        Change pathAddedRuleConfig = rules.get(DiffType.PATH_ADDED);
+        Change pathRemovedRuleConfig = rules.get(DiffType.PATH_REMOVED);
+
+        OasPaths originalPaths = original.paths;
+
+        for (OasPathItem pathItem : node.getPathItems()) {
+            if (DiffUtil.isNodeAdded(originalPaths.getPathItem(pathItem.getPath()), node)) {
+               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig.getType(), pathAddedRuleConfig.getMessage(), nodePath);
+            }
+        }
+        for (OasPathItem pathItem : originalPaths.getPathItems()) {
+            if (DiffUtil.isNodeRemoved(pathItem, node.getPathItem(pathItem.getPath()))) {
+                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig.getType(), pathRemovedRuleConfig.getMessage(), nodePath);
+            }
+        }
     }
 
     @Override
     public void visitPathItem(OasPathItem node) {
-        Map<DiffType, DiffRule> rules = ruleSet.getPathsRules();
-
-        OasPaths originalPaths = this.original.paths;
-
+        Map<DiffType, Change> rules = ruleSet.getPathItemRules();
         NodePath nodePath = NodePathUtil.createNodePath(node);
-        DiffRule pathAddedRuleConfig = rules.get(DiffType.PATH_ADDED);
-        String path = node.getPath();
-        if (originalPaths.getPathItem(path) == null) {
-            ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig.getChangeSeverity(), pathAddedRuleConfig.getMessage(), nodePath);
+
+        OasPathItem originalPathItem = original.paths.getPathItem(node.getPath());
+
+        if (originalPathItem == null) {
+            return;
+        }
+
+        List<String> methods = node.getMethods();
+        Change operationAddedRuleConfig = rules.get(DiffType.PATH_OPERATION_ADDED);
+
+        for (String method : methods) {
+            OasOperation operation = node.getOperation(method);
+            if (DiffUtil.isNodeAdded(originalPathItem.getOperation(method), operation)) {
+                ctx.addDifference(DiffType.PATH_OPERATION_ADDED, operationAddedRuleConfig.getType(), operationAddedRuleConfig.getMessage(), nodePath);
+            }
+        }
+
+        List<String> originalMethods = originalPathItem.getMethods();
+        Change operationRemovedRuleConfig = rules.get(DiffType.PATH_OPERATION_REMOVED);
+
+        for (String method : originalMethods) {
+            OasOperation operation = originalPathItem.getOperation(method);
+            if (DiffUtil.isNodeRemoved(operation, node.getOperation(method))) {
+                ctx.addDifference(DiffType.PATH_OPERATION_REMOVED, operationRemovedRuleConfig.getType(), operationRemovedRuleConfig.getMessage(), nodePath);
+            }
         }
     }
 

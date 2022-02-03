@@ -1,1 +1,2 @@
-[PATH_OPERATION_ADDED] |NON_BREAKING| :: Operation added | /paths[/tests]/post
+[PATH_OPERATION_REMOVED] |BREAKING| :: Path operation removed | /paths[/tests]
+[PATH_OPERATION_ADDED] |NON_BREAKING| :: Path operation added | /paths[/tests]

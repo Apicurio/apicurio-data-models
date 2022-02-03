@@ -17,7 +17,9 @@
 package io.apicurio.datamodels.openapi.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
@@ -49,7 +51,7 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
     public OasOperation head;
     public OasOperation patch;
     public List<OasParameter> parameters;
-    
+
     /**
      * Constructor.
      * @param path
@@ -175,6 +177,29 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
                 return options;
         }
         return null;
+    }
+
+    public List<String> getMethods() {
+        List<String> methods = new ArrayList<>();
+        if (get != null) {
+            methods.add(PROP_GET);
+        }
+        if (post != null) {
+            methods.add(PROP_POST);
+        }
+        if (put != null) {
+            methods.add(PROP_PUT);
+        }
+        if (delete != null) {
+            methods.add(PROP_DELETE);
+        }
+        if (head != null) {
+            methods.add(PROP_HEAD);
+        }
+        if (patch != null) {
+            methods.add(PROP_OPTIONS);
+        }
+        return methods;
     }
 
     /**
