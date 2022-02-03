@@ -100,13 +100,13 @@ public abstract class OasDiffVisitor implements IOasVisitor {
         boolean newIdIsNull = Objects.equals(node.operationId, null);
         if (originalIdIsNull && !newIdIsNull) {
             Change operationIdAddedRuleConfig = rules.get(DiffType.OPERATION_ID_ADDED);
-            ctx.addDifference(DiffType.OPERATION_ID_ADDED, operationIdAddedRuleConfig.getType(), operationIdAddedRuleConfig.getMessage(), nodePath);
+            ctx.addDifference(DiffType.OPERATION_ID_ADDED, operationIdAddedRuleConfig, nodePath);
         } else if (!originalIdIsNull && newIdIsNull) {
             Change operationIdRemovedRuleConfig = rules.get(DiffType.OPERATION_ID_REMOVED);
-            ctx.addDifference(DiffType.OPERATION_ID_REMOVED, operationIdRemovedRuleConfig.getType(), operationIdRemovedRuleConfig.getMessage(), nodePath);
+            ctx.addDifference(DiffType.OPERATION_ID_REMOVED, operationIdRemovedRuleConfig, nodePath);
         } else if (!originalIdIsNull && !Objects.equals(originalOperation.operationId, node.operationId)) {
             Change operationIdChangedRuleConfig = rules.get(DiffType.OPERATION_ID_MODIFIED);
-            ctx.addDifference(DiffType.OPERATION_ID_MODIFIED, operationIdChangedRuleConfig.getType(), operationIdChangedRuleConfig.getMessage(), nodePath);
+            ctx.addDifference(DiffType.OPERATION_ID_MODIFIED, operationIdChangedRuleConfig, nodePath);
         }
     }
 
@@ -162,12 +162,12 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
         for (OasPathItem pathItem : node.getPathItems()) {
             if (DiffUtil.isNodeAdded(originalPaths.getPathItem(pathItem.getPath()), node)) {
-               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig.getType(), pathAddedRuleConfig.getMessage(), nodePath);
+               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig, nodePath);
             }
         }
         for (OasPathItem pathItem : originalPaths.getPathItems()) {
             if (DiffUtil.isNodeRemoved(pathItem, node.getPathItem(pathItem.getPath()))) {
-                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig.getType(), pathRemovedRuleConfig.getMessage(), nodePath);
+                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig, nodePath);
             }
         }
     }
@@ -189,7 +189,7 @@ public abstract class OasDiffVisitor implements IOasVisitor {
         for (String method : methods) {
             OasOperation operation = node.getOperation(method);
             if (DiffUtil.isNodeAdded(originalPathItem.getOperation(method), operation)) {
-                ctx.addDifference(DiffType.PATH_OPERATION_ADDED, operationAddedRuleConfig.getType(), operationAddedRuleConfig.getMessage(), nodePath);
+                ctx.addDifference(DiffType.PATH_OPERATION_ADDED, operationAddedRuleConfig, nodePath);
             }
         }
 
@@ -199,7 +199,7 @@ public abstract class OasDiffVisitor implements IOasVisitor {
         for (String method : originalMethods) {
             OasOperation operation = originalPathItem.getOperation(method);
             if (DiffUtil.isNodeRemoved(operation, node.getOperation(method))) {
-                ctx.addDifference(DiffType.PATH_OPERATION_REMOVED, operationRemovedRuleConfig.getType(), operationRemovedRuleConfig.getMessage(), nodePath);
+                ctx.addDifference(DiffType.PATH_OPERATION_REMOVED, operationRemovedRuleConfig, nodePath);
             }
         }
     }

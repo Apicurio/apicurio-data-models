@@ -40,18 +40,8 @@ public class DiffContext {
         return createRootContext("");
     }
 
-    public void addDifference(DiffType diffType, ChangeType severity, String message, NodePath path, String property) {
-        Difference difference = new Difference(diffType, severity, message, path, property);
-        diff.add(difference);
-    }
-
-    public void addDifference(DiffType diffType, ChangeType severity, String message, NodePath path) {
-        Difference difference = new Difference(diffType, severity, message, path);
-        diff.add(difference);
-    }
-
     public void addDifference(DiffType diffType, Change change, NodePath path) {
-        this.addDifference(diffType, change.getType(), change.getMessage(), path);
+        diff.add(new Difference(diffType, change, path));
     }
 
     public void addDifference(Difference difference) {
