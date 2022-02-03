@@ -171,7 +171,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
                     Oas30RequestBody originalRequestBody = originalOp.requestBody;
 
                     if (originalRequestBody == null) {
-                        ctx.addDifference(DiffType.REQUEST_BODY_ADDED, bodyAddedRuleConfig.getType(), bodyAddedRuleConfig.getMessage(), nodePath);
+                        ctx.addDifference(DiffType.REQUEST_BODY_ADDED, bodyAddedRuleConfig, nodePath);
                     }
                 }
             }

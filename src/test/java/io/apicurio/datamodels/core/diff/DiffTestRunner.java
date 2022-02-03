@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.apicurio.datamodels.core.diff.change.Change;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.runner.Description;
@@ -122,12 +123,13 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
     protected String formatDiffContext(DiffContext diffContext) {
         StringBuilder builder = new StringBuilder();
         diffContext.getDifferences().forEach(diff -> {
+            Change change = diff.getChange();
             builder.append("[")
                     .append(diff.getCode())
                     .append("] |")
-                    .append(diff.getChangeType())
+                    .append(change.getType())
                     .append("| :: ")
-                    .append(diff.getMessage())
+                    .append(change.getMessage())
                     .append(" | ")
                     .append(diff.getPath().toString())
                     .append("\n");
