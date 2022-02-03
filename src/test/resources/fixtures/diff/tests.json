@@ -1,10 +1,5 @@
 [
   {
-    "name": "Path Added/Removed",
-    "original": "openapi/shared/path-item.json",
-    "updated": "openapi/shared/path-item.updated.json"
-  },
-  {
     "name": "Operation Added/Removed",
     "original": "openapi/shared/operation-test.json",
     "updated": "openapi/shared/operation-test.updated.json"

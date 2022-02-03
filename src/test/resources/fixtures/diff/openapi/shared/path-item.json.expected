@@ -1,1 +1,2 @@
-[PATH_ADDED] |NON_BREAKING| :: Path added | /paths[/tests/{id}]
+[PATH_REMOVED] |BREAKING| :: Path removed | /paths
+[PATH_ADDED] |NON_BREAKING| :: Path added | /paths

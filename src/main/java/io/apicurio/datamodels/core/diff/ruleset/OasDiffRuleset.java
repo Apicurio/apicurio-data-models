@@ -1,103 +1,106 @@
 package io.apicurio.datamodels.core.diff.ruleset;
 
-import io.apicurio.datamodels.core.diff.ChangeSeverity;
-import io.apicurio.datamodels.core.diff.DiffRule;
-import io.apicurio.datamodels.core.diff.DiffType;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import io.apicurio.datamodels.core.diff.BreakingChange;
+import io.apicurio.datamodels.core.diff.Change;
+import io.apicurio.datamodels.core.diff.DangerousChange;
+import io.apicurio.datamodels.core.diff.DiffType;
+import io.apicurio.datamodels.core.diff.NonBreakingChange;
+
 public class OasDiffRuleset extends Ruleset {
 
-    private Map<DiffType, DiffRule> paths;
-    private Map<DiffType, DiffRule> pathItem;
-    private Map<DiffType, DiffRule> operation;
-    private Map<DiffType, DiffRule> requestBody;
-    private Map<DiffType, DiffRule> mediaType;
+    private Map<DiffType, Change> paths;
+    private Map<DiffType, Change> pathItem;
+    private Map<DiffType, Change> operation;
+    private Map<DiffType, Change> requestBody;
+    private Map<DiffType, Change> mediaType;
 
     public OasDiffRuleset() {
-        this.paths = (new HashMap<DiffType, DiffRule>()
+        this.paths = (new HashMap<DiffType, Change>()
         {
             {
-                put(DiffType.PATH_ADDED, new DiffRule(ChangeSeverity.NON_BREAKING, "Path added"));
+                put(DiffType.PATH_ADDED, new NonBreakingChange("Path added"));
             }
             {
-                put(DiffType.PATH_REMOVED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Path removed"));
+                put(DiffType.PATH_REMOVED, new BreakingChange("Path removed"));
             }
         });
-        this.operation = (new HashMap<DiffType, DiffRule>()
-        {
-            // TODO: Move to pathItem rules
-            {
-                put(DiffType.PATH_OPERATION_ADDED, new DiffRule(ChangeSeverity.NON_BREAKING, "Path operation added"));
-            }
-            // TODO: Move to pathItem rules
-            {
-                put(DiffType.PATH_OPERATION_REMOVED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Path operation removed"));
-            }
-            {
-                put(DiffType.REQUEST_BODY_ADDED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Request body added"));
-            }
-            {
-                put(DiffType.REQUEST_BODY_REMOVED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Request body removed"));
-            }
-            {
-                put(DiffType.OPERATION_ID_ADDED, new DiffRule(ChangeSeverity.NON_BREAKING, "Operation ID added"));
-            }
-            {
-                put(DiffType.OPERATION_ID_MODIFIED, new DiffRule(ChangeSeverity.DANGEROUS_CHANGE, "Operation ID modified"));
-            }
-            {
-                put(DiffType.OPERATION_ID_REMOVED, new DiffRule(ChangeSeverity.DANGEROUS_CHANGE, "Operation ID removed"));
-            }
-        });
-        this.requestBody = (new HashMap<DiffType, DiffRule>()
+        this.operation = (new HashMap<DiffType, Change>()
         {
             {
-                put(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Request body has been set to required"));
+                put(DiffType.REQUEST_BODY_ADDED, new BreakingChange("Request body added"));
             }
             {
-                put(DiffType.REQUEST_BODY_REQUIRED_FIELD_REMOVED, new DiffRule(ChangeSeverity.NON_BREAKING, "Request body has been set to not required"));
+                put(DiffType.REQUEST_BODY_REMOVED, new BreakingChange("Request body removed"));
             }
             {
-                put(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, new DiffRule(ChangeSeverity.NON_BREAKING, "Media type added to request body"));
+                put(DiffType.OPERATION_ID_ADDED, new NonBreakingChange("Operation ID added"));
             }
             {
-                put(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Media type removed from request body"));
+                put(DiffType.OPERATION_ID_MODIFIED, new DangerousChange("Operation ID modified"));
+            }
+            {
+                put(DiffType.OPERATION_ID_REMOVED, new DangerousChange("Operation ID removed"));
             }
         });
-        this.mediaType = (new HashMap<DiffType, DiffRule>()
+        this.requestBody = (new HashMap<DiffType, Change>()
         {
             {
-                put(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, new DiffRule(ChangeSeverity.NON_BREAKING, "Media type added"));
+                put(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED, new BreakingChange("Request body has been set to required"));
             }
             {
-                put(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, new DiffRule(ChangeSeverity.BREAKING_CHANGE, "Media type added"));
+                put(DiffType.REQUEST_BODY_REQUIRED_FIELD_REMOVED, new NonBreakingChange("Request body has been set to not required"));
+            }
+            {
+                put(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, new NonBreakingChange("Media type added to request body"));
+            }
+            {
+                put(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, new BreakingChange("Media type removed from request body"));
             }
         });
+        this.mediaType = (new HashMap<DiffType, Change>()
+        {
+            {
+                put(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, new NonBreakingChange("Media type added"));
+            }
+            {
+                put(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, new BreakingChange("Media type added"));
+            }
+        });
+        this.pathItem = new HashMap<DiffType, Change>()
+        {
+            {
+                put(DiffType.PATH_OPERATION_ADDED, new NonBreakingChange("Path operation added"));
+            }
+            {
+                put(DiffType.PATH_OPERATION_REMOVED, new BreakingChange("Path operation removed"));
+            }
+        };
     }
 
-    public Map<DiffType, DiffRule> getPathsRules() {
+    public Map<DiffType, Change> getPathsRules() {
         return paths;
     }
 
-    public void setPaths(Map<DiffType, DiffRule> paths) {
+    public void setPaths(Map<DiffType, Change> paths) {
         this.paths = paths;
     }
 
-    public Map<DiffType, DiffRule> getPathItemRules() {
+    public Map<DiffType, Change> getPathItemRules() {
         return pathItem;
     }
 
-    public Map<DiffType, DiffRule> getOperationRules() {
+    public Map<DiffType, Change> getOperationRules() {
         return operation;
     }
 
-    public Map<DiffType, DiffRule> getRequestBodyRules() {
+    public Map<DiffType, Change> getRequestBodyRules() {
         return requestBody;
     }
 
-    public Map<DiffType, DiffRule> getMediaTypeRules() {
+    public Map<DiffType, Change> getMediaTypeRules() {
         return mediaType;
     }
 }

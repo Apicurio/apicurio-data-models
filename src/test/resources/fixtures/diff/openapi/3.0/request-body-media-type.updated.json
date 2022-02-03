@@ -10,11 +10,6 @@
         "description": "Add a new test",
         "requestBody": {
           "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            },
             "application/json": {
               "schema": {
                 "type": "object"

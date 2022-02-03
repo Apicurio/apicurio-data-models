@@ -1,5 +1,6 @@
 package io.apicurio.datamodels.core.diff;
 
+import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
@@ -28,7 +29,6 @@ import io.apicurio.datamodels.core.models.common.ServerVariable;
 import io.apicurio.datamodels.core.models.common.Tag;
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.openapi.models.OasHeader;
-import io.apicurio.datamodels.openapi.models.OasPaths;
 import io.apicurio.datamodels.openapi.models.OasResponse;
 import io.apicurio.datamodels.openapi.models.OasResponses;
 import io.apicurio.datamodels.openapi.models.OasSchema;
@@ -47,20 +47,25 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30LinkParameterExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkRequestBodyExpression;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkServer;
 import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30PathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
-public class OriginalOas30DiffVisitor extends OriginalOasDiffVisitor implements IOas30Visitor {
-    private DiffContext ctx;
-    private Oas30Document updated;
+import java.util.Map;
 
-    public OriginalOas30DiffVisitor(DiffContext ctx, Node updated) {
-        super(ctx, updated);
+public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
+    private final OasDiffRuleset ruleSet;
+    private DiffContext ctx;
+    private Oas30Document original;
+
+    public Oas30DiffVisitor(DiffContext ctx, Node original) {
+        super(ctx, original);
         this.ctx = ctx;
-        this.updated = (Oas30Document) updated;
+        this.original = (Oas30Document) original;
+        this.ruleSet = (OasDiffRuleset) ctx.ruleSet;
     }
 
     @Override
@@ -90,24 +95,6 @@ public class OriginalOas30DiffVisitor extends OriginalOasDiffVisitor implements 
     @Override
     public void visitLicense(License node) {
 
-    }
-
-    @Override
-    public void visitOperation(Operation node) {
-        Oas30PathItem pi = (Oas30PathItem) node.parent();
-        if (updated.paths == null) {
-            return;
-        }
-        Oas30PathItem originalPi = (Oas30PathItem) updated.paths.getPathItem(pi.getPath());
-        if (originalPi == null) {
-            return;
-        }
-
-        NodePath path = NodePathUtil.createNodePath(node);
-        Operation originalOperation = originalPi.getOperation(node.getType());
-        if (originalOperation == null) {
-            this.ctx.addDifference(DiffType.PATH_OPERATION_REMOVED, ChangeSeverity.BREAKING_CHANGE, "Operation removed", path);
-        }
     }
 
     @Override
@@ -151,10 +138,6 @@ public class OriginalOas30DiffVisitor extends OriginalOasDiffVisitor implements 
     }
 
     @Override
-    public void visitPaths(OasPaths node) {
-    }
-
-    @Override
     public void visitResponse(OasResponse node) {
 
     }
@@ -162,6 +145,35 @@ public class OriginalOas30DiffVisitor extends OriginalOasDiffVisitor implements 
     @Override
     public void visitResponses(OasResponses node) {
 
+    }
+
+    @Override
+    public void visitOperation(Operation node) {
+        Map<DiffType, Change> rules = ruleSet.getOperationRules();
+        Change bodyAddedRuleConfig = rules.get(DiffType.REQUEST_BODY_ADDED);
+
+        Oas30Operation operation = (Oas30Operation)node;
+
+        NodePath nodePath = NodePathUtil.createNodePath(node);
+
+        Oas30PathItem pi = (Oas30PathItem) node.parent();
+        Oas30PathItem originalPathItem = (Oas30PathItem) original.paths.getPathItem(pi.getPath());
+        Oas30Operation oas3Operation = (Oas30Operation) node;
+        if (oas3Operation.requestBody != null) {
+
+            if (originalPathItem != null) {
+                Oas30Operation originalOp = (Oas30Operation) originalPathItem.getOperation(operation.getMethod());
+                if (originalOp != null) {
+                    Oas30RequestBody originalRequestBody = originalOp.requestBody;
+
+                    if (originalRequestBody == null) {
+                        ctx.addDifference(DiffType.REQUEST_BODY_ADDED, bodyAddedRuleConfig.getType(), bodyAddedRuleConfig.getMessage(), nodePath);
+                    }
+                }
+            }
+        }
+
+        super.visitOperation(node);
     }
 
     @Override
@@ -286,17 +298,47 @@ public class OriginalOas30DiffVisitor extends OriginalOasDiffVisitor implements 
 
     @Override
     public void visitHeaderDefinition(Oas30HeaderDefinition node) {
-
     }
 
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
+        Map<DiffType, Change> requestBodyRules = ruleSet.getRequestBodyRules();
 
+        Oas30Operation op = (Oas30Operation) node.parent();
+        Oas30PathItem pi = (Oas30PathItem) op.parent();
+
+        Oas30Operation originalOp = (Oas30Operation) original.paths.getPathItem(pi.getPath()).getOperation(op.getMethod());
+        Oas30RequestBody originalRequestBody = originalOp.requestBody;
+        if (originalRequestBody == null) {
+            return;
+        }
+
+        NodePath nodePath = NodePathUtil.createNodePath(node);
+
+        Change mediaTypeAddedRuleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED);
+        Map<String, Oas30MediaType> content = node.content;
+        Map<String, Oas30MediaType> originalContent = originalRequestBody.content;
+        nodePath.appendSegment("content");
+        for (Oas30MediaType mediaType : content.values()) {
+            String name = mediaType.getName();
+            Oas30MediaType originalMediaType = originalContent.get(name);
+            if (DiffUtil.isNodeAdded(originalMediaType, mediaType)) {
+                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, mediaTypeAddedRuleConfig.getType(), mediaTypeAddedRuleConfig.getMessage(), nodePath);
+            }
+        }
+
+        Change mediaTypeRemovedRuleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED);
+        for (Oas30MediaType originalMediaType : originalContent.values()) {
+            String name = originalMediaType.getName();
+            Oas30MediaType mediaType = content.get(name);
+            if (DiffUtil.isNodeRemoved(originalMediaType, mediaType)) {
+                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, mediaTypeRemovedRuleConfig.getType(), mediaTypeRemovedRuleConfig.getMessage(), nodePath);
+            }
+        }
     }
 
     @Override
     public void visitRequestBodyDefinition(Oas30RequestBodyDefinition node) {
-
     }
 
     @Override
