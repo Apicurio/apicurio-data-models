@@ -6,13 +6,15 @@ import io.apicurio.datamodels.core.models.NodePath;
 
 public class Difference {
     private DiffType code;
-    private Change change;
+    private ChangeType changeType;
     private NodePath nodePath;
     private String property;
+    private String message;
 
-    public Difference(DiffType code, Change change, NodePath path) {
+    public Difference(DiffType code, ChangeType changeType, NodePath path, String message) {
         this.code = code;
-        this.change = change;
+        this.changeType = changeType;
+        this.message = message;
         this.nodePath = path;
     }
 
@@ -40,11 +42,15 @@ public class Difference {
         this.property = property;
     }
 
-    public Change getChange() {
-        return change;
+    public ChangeType getChangeType() {
+        return changeType;
     }
 
-    public void setChange(Change change) {
-        this.change = change;
+    public void setChangeType(ChangeType changeType) {
+        this.changeType = changeType;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

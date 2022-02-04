@@ -1,2 +1,2 @@
-[REQUEST_BODY_MEDIA_TYPE_ADDED] |NON_BREAKING| :: Media type added to request body | /paths[/tests]/post/requestBody/content
-[REQUEST_BODY_MEDIA_TYPE_REMOVED] |BREAKING| :: Media type removed from request body | /paths[/tests]/post/requestBody/content
+[REQUEST_BODY_MEDIA_TYPE_REMOVED] |BREAKING| :: Media type 'text/plain' removed | /paths[/tests]/post/requestBody/content
+[REQUEST_BODY_MEDIA_TYPE_ADDED] |NON_BREAKING| :: Media type 'application/json' added | /paths[/tests]/post/requestBody/content

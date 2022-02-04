@@ -35,6 +35,8 @@ import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.models.OasXML;
 import io.apicurio.datamodels.openapi.visitors.IOasVisitor;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -162,12 +164,12 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
         for (OasPathItem pathItem : node.getPathItems()) {
             if (DiffUtil.isNodeAdded(originalPaths.getPathItem(pathItem.getPath()), node)) {
-               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig, nodePath);
+               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig, Map.of("Path", pathItem.getPath()), nodePath);
             }
         }
         for (OasPathItem pathItem : originalPaths.getPathItems()) {
             if (DiffUtil.isNodeRemoved(pathItem, node.getPathItem(pathItem.getPath()))) {
-                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig, nodePath);
+                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig, Map.of("Path", pathItem.getPath()), nodePath);
             }
         }
     }
