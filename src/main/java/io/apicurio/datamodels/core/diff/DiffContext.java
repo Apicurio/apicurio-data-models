@@ -55,6 +55,10 @@ public class DiffContext {
         return this.diff;
     }
 
+    public Set<Difference> getBreakingChanges() {
+        return this.diff.stream().filter(d -> d.getChangeType() == ChangeType.BREAKING).collect(Collectors.toSet());
+    }
+
     private String interpolateTemplateLiterals(String messageTemplate, Map<String, String> templateEntries) {
         for (Map.Entry<String, String> templateEntry : templateEntries.entrySet()) {
             String templateLiteral = "${" + templateEntry.getKey() + "}";
