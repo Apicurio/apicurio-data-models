@@ -1,4 +1,4 @@
-[![Verify Build Workflow](https://github.com/Apicurio/apicurio-data-models/workflows/Verify%20Build%20Workflow/badge.svg)](https://github.com/Apicurio/apicurio-data-models/actions?query=workflow%3A%22Verify+Build+Workflow%22)
+[![Verify Build Workflow](https://github.com/Apicurio/apicurio-data-models/actions/workflows/verify.yaml/badge.svg)](https://github.com/Apicurio/apicurio-data-models/actions/workflows/verify.yaml?query=branch%3Amaster)
 [![Automated Release Notes by gren](https://img.shields.io/badge/%F0%9F%A4%96-release%20notes-00B2EE.svg)](https://github-tools.github.io/github-release-notes/)
 
 # Apicurio Data Models Library (Java & Typescript)
