@@ -103,14 +103,12 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
                 Document updatedDoc = Library.readDocument(updatedParsed);
 
                 DiffContext diffContext = Library.diff(originalDoc, updatedDoc);
-                List<String> actual = Arrays.asList(formatDiffContext(diffContext).split("\\r?\\n"));
+                String actual = formatDiffContext(diffContext).trim();
                 String expectedCP = "fixtures/diff/" + child.getOriginal() + ".expected";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
-                String[] expectedItems = loadResource(expectedUrl).split("\\r?\\n");
+                String expected = loadResource(expectedUrl).trim();
 
-                for (String expectedLine : expectedItems) {
-                    Assert.assertTrue("Expected line '" + expectedLine + "' to be defined in '" + expectedCP + "'", actual.contains(expectedLine));
-                }
+                Assert.assertEquals(expected, actual);
             }
         };
         runLeaf(statement, description, notifier);
@@ -123,13 +121,12 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
     protected String formatDiffContext(DiffContext diffContext) {
         StringBuilder builder = new StringBuilder();
         diffContext.getDifferences().forEach(diff -> {
-            Change change = diff.getChange();
             builder.append("[")
                     .append(diff.getCode())
                     .append("] |")
-                    .append(change.getType())
+                    .append(diff.getChangeType())
                     .append("| :: ")
-                    .append(change.getMessage())
+                    .append(diff.getMessage())
                     .append(" | ")
                     .append(diff.getPath().toString())
                     .append("\n");

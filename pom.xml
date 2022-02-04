@@ -176,8 +176,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.maven-compiler-plugin}</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>9</source>
+                    <target>9</target>
                     <fork>true</fork>
                 </configuration>
             </plugin>

@@ -1,7 +1,9 @@
 package io.apicurio.datamodels.core.diff;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.apicurio.datamodels.core.diff.change.Change;
 import io.apicurio.datamodels.core.diff.change.ChangeType;
@@ -40,15 +42,26 @@ public class DiffContext {
         return createRootContext("");
     }
 
-    public void addDifference(DiffType diffType, Change change, NodePath path) {
-        diff.add(new Difference(diffType, change, path));
+    public void addDifference(DiffType diffType, Change change, Map<String, String> templateEntries, NodePath path) {
+        diff.add(new Difference(diffType, change.getType(), path, interpolateTemplateLiterals(change.getMessage(), templateEntries)));
     }
 
-    public void addDifference(Difference difference) {
-        diff.add(difference);
+    // TODO: Remove this once message variables have been applied
+    public void addDifference(DiffType diffType, Change change, NodePath path) {
+        diff.add(new Difference(diffType, change.getType(), path, change.getMessage()));
     }
 
     public Set<Difference> getDifferences() {
         return this.diff;
+    }
+
+    private String interpolateTemplateLiterals(String messageTemplate, Map<String, String> templateEntries) {
+        for (Map.Entry<String, String> templateEntry : templateEntries.entrySet()) {
+            String templateLiteral = "${" + templateEntry.getKey() + "}";
+            if (messageTemplate.contains(templateLiteral)) {
+                messageTemplate = messageTemplate.replace(templateLiteral, templateEntry.getValue());
+            }
+        }
+        return messageTemplate;
     }
 }
