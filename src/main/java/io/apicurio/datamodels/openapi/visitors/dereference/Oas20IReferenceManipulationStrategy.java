@@ -87,7 +87,7 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
 
     @Override
     public boolean removeComponent(Document document, String name) {
-        if (document.getDocumentType() != DocumentType.openapi3) {
+        if (document.getDocumentType() != DocumentType.openapi2) {
             throw new IllegalArgumentException("Oas20Document expected.");
         }
         Oas20Document model = (Oas20Document) document;
