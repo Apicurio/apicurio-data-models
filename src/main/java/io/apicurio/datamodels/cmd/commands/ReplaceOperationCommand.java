@@ -42,25 +42,16 @@ public class ReplaceOperationCommand extends ReplaceNodeCommand<OasOperation> {
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#removeNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void removeNode(Document doc, OasOperation node) {
+    protected void replaceNode(Document doc, OasOperation oldNode,
+            OasOperation newNode) {
         OasDocument odoc = (OasDocument) doc;
         OasPathItem path = odoc.paths.getPathItem(this._path);
-        NodeCompat.setProperty(path, node.getMethod(), null);
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#addNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, OasOperation node) {
-        OasDocument odoc = (OasDocument) doc;
-        OasPathItem path = odoc.paths.getPathItem(this._path);
-        node._parent = path;
-        node._ownerDocument = path.ownerDocument();
-        NodeCompat.setProperty(path, node.getMethod(), node);
+        newNode._parent = path;
+        newNode._ownerDocument = path.ownerDocument();
+        NodeCompat.setProperty(path, newNode.getMethod(), newNode);
     }
     
     /**

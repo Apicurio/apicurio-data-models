@@ -38,23 +38,21 @@ public class ReplaceSchemaDefinitionCommand_20 extends ReplaceNodeCommand<Oas20S
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#removeNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void removeNode(Document doc, Oas20SchemaDefinition node) {
+    protected void replaceNode(Document doc, Oas20SchemaDefinition oldNode,
+            Oas20SchemaDefinition newNode) {
         Oas20Document doc20 = (Oas20Document) doc;
-        doc20.definitions.removeDefinition(node.getName());
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#addNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, Oas20SchemaDefinition node) {
-        Oas20Document doc20 = (Oas20Document) doc;
-        node._ownerDocument = doc20;
-        node._parent = doc20.definitions;
-        doc20.definitions.addDefinition(node.getName(), node);
+
+        if (!oldNode.getName().equals(newNode.getName())) {
+            // TODO: Can this even happen?
+            doc20.definitions.removeDefinition(oldNode.getName());
+        }
+
+        newNode._ownerDocument = doc20;
+        newNode._parent = doc20.definitions;
+        doc20.definitions.addDefinition(newNode.getName(), newNode);
     }
     
     /**

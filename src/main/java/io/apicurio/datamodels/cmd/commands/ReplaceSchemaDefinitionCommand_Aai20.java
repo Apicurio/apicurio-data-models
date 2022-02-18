@@ -39,23 +39,21 @@ public class ReplaceSchemaDefinitionCommand_Aai20 extends ReplaceNodeCommand<Aai
     }
     
     /**
-     * @see ReplaceNodeCommand#removeNode(Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void removeNode(Document doc, Aai20SchemaDefinition node) {
+    protected void replaceNode(Document doc, Aai20SchemaDefinition oldNode,
+            Aai20SchemaDefinition newNode) {
         Aai20Document doc20 = (Aai20Document) doc;
-        doc20.components.removeSchemaDefinition(node.getName());
-    }
-    
-    /**
-     * @see ReplaceNodeCommand#addNode(Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, Aai20SchemaDefinition node) {
-        Aai20Document doc20 = (Aai20Document) doc;
-        node._ownerDocument = doc;
-        node._parent = doc20.components;
-        doc20.components.addSchemaDefinition(node.getName(), node);
+
+        if (!oldNode.getName().equals(newNode.getName())) {
+            // TODO: Can this even happen?
+            doc20.components.removeSchemaDefinition(oldNode.getName());
+        }
+
+        newNode._ownerDocument = doc20;
+        newNode._parent = doc20.components;
+        doc20.components.addSchemaDefinition(newNode.getName(), newNode);
     }
     
     /**

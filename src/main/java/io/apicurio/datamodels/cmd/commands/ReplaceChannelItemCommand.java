@@ -39,24 +39,21 @@ public class ReplaceChannelItemCommand extends ReplaceNodeCommand<AaiChannelItem
     }
     
     /**
-     * @see ReplaceNodeCommand#removeNode(Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void removeNode(Document doc, AaiChannelItem node) {
+    protected void replaceNode(Document doc, AaiChannelItem oldNode,
+            AaiChannelItem newNode) {
         AaiDocument aaiDocument = (AaiDocument) doc;
-        aaiDocument.channels.remove(node.getName());
-    }
-    
-    /**
-     * @see ReplaceNodeCommand#addNode(Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, AaiChannelItem node) {
-        final AaiDocument aaiDocument = (AaiDocument) doc;
 
-        node._ownerDocument = aaiDocument;
-        node._parent = aaiDocument;
-        aaiDocument.channels.put(this._channelName, node);
+        if (!oldNode.getName().equals(newNode.getName())) {
+            // TODO: Can this even happen?
+            aaiDocument.channels.remove(oldNode.getName());
+        }
+
+        newNode._ownerDocument = aaiDocument;
+        newNode._parent = aaiDocument;
+        aaiDocument.channels.put(this._channelName, newNode);
     }
     
     /**

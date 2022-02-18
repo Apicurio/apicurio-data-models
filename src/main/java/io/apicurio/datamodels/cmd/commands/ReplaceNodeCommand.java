@@ -52,7 +52,7 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
      */
     @Override
     public void execute(Document document) {
-        LoggerCompat.info("[AbstractReplaceNodeCommand] Executing.");
+        LoggerCompat.info("[ReplaceNodeCommand] Executing.");
         this._old = null;
 
         @SuppressWarnings("unchecked")
@@ -62,10 +62,8 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
         }
 
         this._old = Library.writeNode(oldNode);
-        this.removeNode(document, oldNode);
-
         T newNode = this.readNode(document, this._new);
-        this.addNode(document, newNode);
+        this.replaceNode(document, oldNode, newNode);
     }
 
     /**
@@ -73,7 +71,7 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
      */
     @Override
     public void undo(Document document) {
-        LoggerCompat.info("[AbstractReplaceNodeCommand] Reverting.");
+        LoggerCompat.info("[ReplaceNodeCommand] Reverting.");
         if (this.isNullOrUndefined(this._old)) {
             return;
         }
@@ -84,21 +82,14 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
             return;
         }
 
-        this.removeNode(document, node);
-
         T restoreNode = this.readNode(document, this._old);
-        this.addNode(document, restoreNode);
+        this.replaceNode(document, node, restoreNode);
     }
 
     /**
-     * Removes the given node from the data model.
+     * Replaces the the old node with the new node in the data model.
      */
-    protected abstract void removeNode(Document doc, T node);
-
-    /**
-     * Adds the given node to the data model.
-     */
-    protected abstract void addNode(Document doc, T node);
+    protected abstract void replaceNode(Document doc, T oldNode, T newNode);
 
     /**
      * Unmarshalls a node into the appropriate type.
