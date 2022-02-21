@@ -18,7 +18,7 @@ public class OasDiffRuleset extends Ruleset {
     private Map<DiffType, Change> mediaType;
 
     public OasDiffRuleset() {
-        this.paths = (new HashMap<>() {
+        this.paths = (new HashMap<DiffType, Change>() {
             {
                 put(DiffType.PATH_ADDED, new NonBreakingChange("Path '${Path}' added"));
             }
@@ -27,7 +27,7 @@ public class OasDiffRuleset extends Ruleset {
                 put(DiffType.PATH_REMOVED, new BreakingChange("Path '${Path}' removed"));
             }
         });
-        this.operation = (new HashMap<>() {
+        this.operation = (new HashMap<DiffType, Change>() {
             {
                 put(DiffType.REQUEST_BODY_ADDED, new BreakingChange("Request body added"));
             }
