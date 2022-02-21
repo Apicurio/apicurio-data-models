@@ -58,6 +58,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
@@ -319,10 +320,10 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
 
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
-        if (!originalRequestBody.required && node.required) {
+        if ((originalRequestBody.required == null || !originalRequestBody.required) && node.required != null && node.required) {
             Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED);
             ctx.addDifference(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED, ruleConfig, nodePath);
-        } else if (originalRequestBody.required && !node.required) {
+        } else if (originalRequestBody.required != null && originalRequestBody.required && (node.required == null || !node.required)) {
             Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED);
             ctx.addDifference(DiffType.REQUEST_BODY_REQUIRED_FIELD_REMOVED, ruleConfig, nodePath);
         }
@@ -335,7 +336,10 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
             String name = mediaType.getName();
             Oas30MediaType originalMediaType = originalContent.get(name);
             if (DiffUtil.isNodeAdded(originalMediaType, mediaType)) {
-                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, mediaTypeAddedRuleConfig, Map.of("MediaType", name), nodePath);
+                Map<String, String> templateVars = new HashMap<String, String>() {{
+                    put("MediaType", name);
+                }};
+                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, mediaTypeAddedRuleConfig, templateVars, nodePath);
             }
         }
 
@@ -344,7 +348,10 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
             String name = originalMediaType.getName();
             Oas30MediaType mediaType = content.get(name);
             if (DiffUtil.isNodeRemoved(originalMediaType, mediaType)) {
-                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, mediaTypeRemovedRuleConfig, Map.of("MediaType", name), nodePath);
+                Map<String, String> templateVars = new HashMap<String, String>() {{
+                    put("MediaType", name);
+                }};
+                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, mediaTypeRemovedRuleConfig, templateVars, nodePath);
             }
         }
     }

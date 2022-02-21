@@ -420,7 +420,7 @@ public class Oas30DataModelReader extends OasDataModelReader {
 
         node.$ref = $ref;
         node.description = description;
-        node.required = required != null && required;
+        node.required = required;
 
         if (content != null) {
             JsonCompat.keys(content).forEach(name -> {

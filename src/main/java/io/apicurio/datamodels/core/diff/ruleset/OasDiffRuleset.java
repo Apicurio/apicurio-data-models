@@ -48,7 +48,7 @@ public class OasDiffRuleset extends Ruleset {
                 put(DiffType.OPERATION_ID_REMOVED, new DangerousChange("Operation ID removed"));
             }
         });
-        this.requestBody = (new HashMap<>() {
+        this.requestBody = (new HashMap<DiffType, Change>() {
             {
                 put(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED, new BreakingChange("Request body has been set to required"));
             }
@@ -62,7 +62,7 @@ public class OasDiffRuleset extends Ruleset {
                 put(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, new BreakingChange("Media type '${MediaType}' removed"));
             }
         });
-        this.pathItem = new HashMap<>() {
+        this.pathItem = new HashMap<DiffType, Change>() {
             {
                 put(DiffType.PATH_OPERATION_ADDED, new NonBreakingChange("Path operation added"));
             }

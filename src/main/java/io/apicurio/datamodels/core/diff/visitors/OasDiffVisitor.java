@@ -164,12 +164,18 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
         for (OasPathItem pathItem : node.getPathItems()) {
             if (DiffUtil.isNodeAdded(originalPaths.getPathItem(pathItem.getPath()), node)) {
-               ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig, Map.of("Path", pathItem.getPath()), nodePath);
+                Map<String, String> templateVars = new HashMap<String, String>() {{
+                    put("Path", pathItem.getPath());
+                }};
+                ctx.addDifference(DiffType.PATH_ADDED, pathAddedRuleConfig, templateVars, nodePath);
             }
         }
         for (OasPathItem pathItem : originalPaths.getPathItems()) {
             if (DiffUtil.isNodeRemoved(pathItem, node.getPathItem(pathItem.getPath()))) {
-                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig, Map.of("Path", pathItem.getPath()), nodePath);
+                Map<String, String> templateVars = new HashMap<String, String>() {{
+                    put("Path", pathItem.getPath());
+                }};
+                ctx.addDifference(DiffType.PATH_REMOVED, pathRemovedRuleConfig, templateVars, nodePath);
             }
         }
     }
