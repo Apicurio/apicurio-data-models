@@ -89,8 +89,6 @@ public class LibraryTest {
         Assert.assertTrue(problems.size() > 0);
     }
 
-    private final CountDownLatch lock = new CountDownLatch(1);
-
     @Test
     public void testValidateDocumentWithCustomExtension() {
         String jsonString = "{\r\n" +
@@ -106,20 +104,15 @@ public class LibraryTest {
         extensions.add(new TestValidationExtension());
 
         CompletableFuture<List<ValidationProblem>> problems = Library.validateDocument(doc, null, extensions);
-        List<ValidationProblem> receivedProblems = new ArrayList<>();
-        problems.whenCompleteAsync((pList, done) -> {
-            receivedProblems.addAll(new ArrayList<>(pList));
-            lock.countDown();
+        problems.whenCompleteAsync((validationProblems, done) -> {
+            List<String> expectedErrorCodes = Arrays.asList("R-003", "TEST-001");
+
+            List<String> documentErrorCodes = doc.getValidationProblemCodes();
+            Assert.assertEquals(expectedErrorCodes, documentErrorCodes);
+
+            List<String> problemErrorCodes = validationProblems.stream().map(p -> p.errorCode).collect(Collectors.toList());
+            Assert.assertEquals(expectedErrorCodes, problemErrorCodes);
         });
-
-        List<String> expectedErrorCodes = Arrays.asList("R-003", "TEST-001");
-
-        List<String> documentErrorCodes = doc.getValidationProblemCodes();
-        Assert.assertEquals(expectedErrorCodes, documentErrorCodes);
-
-
-        List<String> problemErrorCodes = receivedProblems.stream().map(p -> p.errorCode).collect(Collectors.toList());
-        Assert.assertEquals(expectedErrorCodes, problemErrorCodes);
     }
 }
 
