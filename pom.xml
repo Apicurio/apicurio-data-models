@@ -74,14 +74,14 @@
         <!-- Plugin Versions -->
         <version.org.eclipse.m2e.lifecycle-mapping>1.0.0</version.org.eclipse.m2e.lifecycle-mapping>
         <version.org.apache.felix.maven-bundle-plugin>5.1.4</version.org.apache.felix.maven-bundle-plugin>
-        <version.maven-compiler-plugin>3.9.0</version.maven-compiler-plugin>
+        <version.maven-compiler-plugin>3.10.0</version.maven-compiler-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
-        <version.maven-javadoc-plugin>3.3.1</version.maven-javadoc-plugin>
+        <version.maven-javadoc-plugin>3.3.2</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
-        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.8</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.11</version.org.sonatype.plugins.nexus-staging-maven-plugin>
         
     </properties>
 
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-core</artifactId>
-            <version>6.3.0</version>
+            <version>6.3.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jsweet/jsweet-transpiler -->
