@@ -28,7 +28,9 @@ import io.apicurio.datamodels.core.models.NodePath;
 /**
  * A command used to change the $ref inside an AsyncAPI message headers.
  * @author laurent.broudoux@gmail.com
+ * @deprecated Use {@link ChangePropertyCommand} instead.
  */
+@Deprecated
 public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
 
    public NodePath _operationPath;
