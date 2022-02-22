@@ -1,0 +1,3 @@
+{
+  "adapters": ["io.apicurio.PromiseAdapter"]
+}

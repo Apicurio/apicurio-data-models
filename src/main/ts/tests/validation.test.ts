@@ -26,9 +26,10 @@ import {ReferenceUtil} from "../src/io/apicurio/datamodels/core/util/ReferenceUt
 import {ModelCloner} from "../src/io/apicurio/datamodels/cloning/ModelCloner";
 import {readJSON} from "./util/tutils";
 import {readTXT} from "./util/tutils";
-import {normalize} from "./util/tutils";
 import {formatProblems} from "./util/tutils";
 import {readSeverity} from "./util/tutils";
+import { IDocumentValidatorExtension } from "../src/io/apicurio/datamodels/core/validation/IDocumentValidatorExtension";
+import { NodePath } from "../src/io/apicurio/datamodels/core/models/NodePath";
 
 
 interface TestSpec {
@@ -36,7 +37,6 @@ interface TestSpec {
     test: string;
     severity?: string;
 }
-
 
 class CustomSeverityRegistry implements IValidationSeverityRegistry {
 
@@ -47,7 +47,6 @@ class CustomSeverityRegistry implements IValidationSeverityRegistry {
     }
 
 }
-
 
 class ValidationTestReferenceResolver implements IReferenceResolver {
     
@@ -118,5 +117,92 @@ allTests.forEach(spec => {
             expected = expectedStr.split(/\r?\n/);
         }
         expect(actual).toEqual(expected);
+    });
+});
+
+class CustomValidationExtension implements IDocumentValidatorExtension {
+    validateDocument(_: Node): Promise<ValidationProblem[]>{
+        const testProblems: ValidationProblem[] = [
+           new ValidationProblem("TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low)
+        ];
+
+        return Promise.resolve(testProblems);
+    }
+}
+
+describe("validateDocument()", () => {
+    test("return custom validation problem defined by the extension", async () => {
+        // Read the source JSON file
+        let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
+        let json: any = readJSON(testPath);
+        expect(json).not.toBeNull();
+
+        // Parse/read the document
+        let document: Document = Library.readDocument(json);
+
+        const testCustomValidator = new CustomValidationExtension();
+        const problems = await Library.validateDocument(document, null, [testCustomValidator]);
+        expect(problems).toHaveLength(1);
+        expect(problems[0].errorCode).toBe("TEST-001");
+    });
+
+    test("return no validation problems when validation extensions is null", async () => {
+        // Read the source JSON file
+        let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
+        let json: any = readJSON(testPath);
+        expect(json).not.toBeNull();
+
+        // Parse/read the document
+        let document: Document = Library.readDocument(json);
+
+        const problems = await Library.validateDocument(document, null, null);
+        expect(problems).toHaveLength(0);
+    });
+
+    test("return no validation problems when validation extensions list is empty", async () => {
+        // Read the source JSON file
+        let testPath: string = "tests/fixtures/validation/openapi/3.0/valid-pet-store.json";
+        let json: any = readJSON(testPath);
+        expect(json).not.toBeNull();
+
+        // Parse/read the document
+        let document: Document = Library.readDocument(json);
+
+        const problems = await Library.validateDocument(document, null, []);
+        expect(problems).toHaveLength(0);
+    });
+
+    test("return validation problems from both ApicurioDM validation and external validation extensions", async () => {
+        // Read the source JSON file
+        const openapiData = {
+            openapi: "3.0.2",
+            info: {
+                title: "Very Simple API",
+            }
+        };
+
+        const document = Library.readDocument(openapiData);
+
+        const testCustomValidator = new CustomValidationExtension();
+        const problems = await Library.validateDocument(document, null, [testCustomValidator]);
+        expect(problems.find((p => p.errorCode === "TEST-001"))).toBeDefined();
+        expect(problems.find((p => p.errorCode === "INF-002"))).toBeDefined();
+        expect(problems.find((p => p.errorCode === "R-003"))).toBeDefined();
+    });
+
+    test("return validation problems from ApicurioDM validation", async () => {
+        // Read the source JSON file
+        const openapiData = {
+            openapi: "3.0.2",
+            info: {
+                title: "Very Simple API",
+            }
+        };
+
+        const document = Library.readDocument(openapiData);
+
+        const problems = await Library.validateDocument(document, null, null);
+        expect(problems.find((p => p.errorCode === "INF-002"))).toBeDefined();
+        expect(problems.find((p => p.errorCode === "R-003"))).toBeDefined();
     });
 });

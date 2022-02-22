@@ -16,12 +16,24 @@
 
 package io.apicurio.datamodels;
 
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
 import org.junit.Assert;
 import org.junit.Test;
 
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 /**
  * Tests for the {@link Library} class.
@@ -62,4 +74,64 @@ public class LibraryTest {
         Assert.assertEquals("3.0.2", ((Oas30Document) doc).openapi);
     }
 
+    @Test
+    public void testValidate() {
+        String jsonString = "{\r\n" +
+                "    \"openapi\": \"3.0.9\",\r\n" +
+                "    \"info\": {\r\n" +
+                "        \"title\": \"Very Simple API\",\r\n" +
+                "        \"version\": \"1.0.0\"\r\n" +
+                "    }\r\n" +
+                "}";
+        Document doc = Library.readDocumentFromJSONString(jsonString);
+
+        List<ValidationProblem> problems = Library.validate(doc, null);
+        Assert.assertTrue(problems.size() > 0);
+    }
+
+    private final CountDownLatch lock = new CountDownLatch(1);
+
+    @Test
+    public void testValidateDocumentWithCustomExtension() {
+        String jsonString = "{\r\n" +
+                "    \"openapi\": \"3.0.9\",\r\n" +
+                "    \"info\": {\r\n" +
+                "        \"title\": \"Very Simple API\",\r\n" +
+                "        \"version\": \"1.0.0\"\r\n" +
+                "    }\r\n" +
+                "}";
+        Document doc = Library.readDocumentFromJSONString(jsonString);
+
+        List<IDocumentValidatorExtension> extensions = new ArrayList<>();
+        extensions.add(new TestValidationExtension());
+
+        CompletableFuture<List<ValidationProblem>> problems = Library.validateDocument(doc, null, extensions);
+        List<ValidationProblem> receivedProblems = new ArrayList<>();
+        problems.whenCompleteAsync((pList, done) -> {
+            receivedProblems.addAll(new ArrayList<>(pList));
+            lock.countDown();
+        });
+
+        List<String> expectedErrorCodes = Arrays.asList("R-003", "TEST-001");
+
+        List<String> documentErrorCodes = doc.getValidationProblemCodes();
+        Assert.assertEquals(expectedErrorCodes, documentErrorCodes);
+
+
+        List<String> problemErrorCodes = receivedProblems.stream().map(p -> p.errorCode).collect(Collectors.toList());
+        Assert.assertEquals(expectedErrorCodes, problemErrorCodes);
+    }
+}
+
+class TestValidationExtension implements IDocumentValidatorExtension {
+
+    @Override
+    public CompletableFuture<List<ValidationProblem>> validateDocument(Node document) {
+        List<ValidationProblem> fakeProblems = new ArrayList<>();
+        fakeProblems.add(new ValidationProblem(
+                "TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low
+        ));
+
+        return CompletableFuture.completedFuture(fakeProblems);
+    }
 }
