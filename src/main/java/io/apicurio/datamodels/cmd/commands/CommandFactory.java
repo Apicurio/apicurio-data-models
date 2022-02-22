@@ -79,7 +79,7 @@ public class CommandFactory {
      * Called to create a command of a given type.
      * @param cmdType
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "deprecation" })
     public static ICommand create(String cmdType) {
         switch (cmdType) {
 
@@ -660,8 +660,6 @@ public class CommandFactory {
 
     /**
      * @deprecated Use the AaiMessage variant
-     * @param payloadRef
-     * @param operation
      */
     @Deprecated
     public static final ICommand createChangePayloadRefCommand_Aai20(String payloadRef, AaiOperation operation) {
@@ -671,6 +669,10 @@ public class CommandFactory {
         return new ChangePayloadRefCommand_Aai20(payloadRef, message);
     }
 
+    /**
+     * @deprecated Use createChangePropertyCommand instead
+     */
+    @Deprecated
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, operation);
     }
