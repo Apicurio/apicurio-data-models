@@ -18,6 +18,7 @@ updates:
   - dependency-name: com.github.eirslett:frontend-maven-plugin
     versions:
     - 1.11.2
+  - dependency-name: org.jsweet:jsweet-core
 - package-ecosystem: npm
   directory: "/src/main/ts"
   schedule:
