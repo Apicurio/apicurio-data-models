@@ -1,6 +1,5 @@
 {
   "paths": {
-    "disabled": true,
     "rules": {
       "PATH_ADDED": {
         "type": "NON_BREAKING",
@@ -8,7 +7,63 @@
       },
       "PATH_REMOVED": {
         "type": "BREAKING",
-        "message": "Path '${Path} removed"
+        "message": "Path '${Path}' removed"
+      }
+    }
+  },
+  "pathItem": {
+    "rules": {
+      "PATH_OPERATION_ADDED": {
+        "type": "NON_BREAKING",
+        "message": "Path operation '${Method}' added"
+      },
+      "PATH_OPERATION_REMOVED": {
+        "type": "BREAKING",
+        "message": "Path operation '${Method}' removed"
+      }
+    }
+  },
+  "operation": {
+    "rules": {
+      "REQUEST_BODY_MEDIA_TYPE_ADDED": {
+        "type": "BREAKING",
+        "message": "Request body added"
+      },
+      "REQUEST_BODY_MEDIA_TYPE_REMOVED": {
+        "type": "BREAKING",
+        "message": "Request body removed"
+      },
+      "OPERATION_ID_ADDED": {
+        "type": "NON_BREAKING",
+        "message": "Operation ID '${OperationID}' added"
+      },
+      "OPERATION_ID_REMOVED": {
+        "type": "DANGEROUS",
+        "message": "Operation ID '${OperationID}' removed"
+      },
+      "OPERATION_ID_MODIFIED": {
+        "type": "DANGEROUS",
+        "message": "Operation ID changed from '${OldOperationID}' to '${NewOperationID}'"
+      }
+    }
+  },
+  "requestBody": {
+    "rules": {
+      "REQUEST_BODY_REQUIRED_TRUE": {
+        "type": "BREAKING",
+        "message": "Request body has been set to required"
+      },
+      "REQUEST_BODY_REQUIRED_FALSE": {
+        "type": "NON_BREAKING",
+        "message": "Request body has been set to non-required"
+      },
+      "REQUEST_BODY_MEDIA_TYPE_ADDED": {
+        "type": "NON_BREAKING",
+        "message": "Media type '${MediaType}' added"
+      },
+      "REQUEST_BODY_MEDIA_TYPE_REMOVED": {
+        "type": "BREAKING",
+        "message": "Media type '${MediaType}' removed"
       }
     }
   }

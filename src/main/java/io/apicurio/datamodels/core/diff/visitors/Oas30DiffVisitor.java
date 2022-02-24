@@ -5,6 +5,7 @@ import io.apicurio.datamodels.core.diff.DiffType;
 import io.apicurio.datamodels.core.diff.DiffUtil;
 import io.apicurio.datamodels.core.diff.change.Change;
 import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
+import io.apicurio.datamodels.core.diff.ruleset.RuleGroup;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
@@ -154,8 +155,8 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
 
     @Override
     public void visitOperation(Operation node) {
-        Map<DiffType, Change> rules = ruleSet.getOperationRules();
-        Change bodyAddedRuleConfig = rules.get(DiffType.REQUEST_BODY_ADDED);
+        RuleGroup rules = ruleSet.getOperationRules();
+        Change bodyAddedRuleConfig = rules.get(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED);
 
         Oas30Operation operation = (Oas30Operation)node;
 
@@ -172,7 +173,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
                     Oas30RequestBody originalRequestBody = originalOp.requestBody;
 
                     if (originalRequestBody == null) {
-                        ctx.addDifference(DiffType.REQUEST_BODY_ADDED, bodyAddedRuleConfig, nodePath);
+                        ctx.addDifferenceIfEnabled(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, bodyAddedRuleConfig, null, nodePath);
                     }
                 }
             }
@@ -307,7 +308,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
 
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
-        Map<DiffType, Change> requestBodyRules = ruleSet.getRequestBodyRules();
+        RuleGroup requestBodyRules = ruleSet.getRequestBodyRules();
 
         Oas30Operation op = (Oas30Operation) node.parent();
         Oas30PathItem pi = (Oas30PathItem) op.parent();
@@ -321,11 +322,11 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
         if ((originalRequestBody.required == null || !originalRequestBody.required) && node.required != null && node.required) {
-            Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED);
-            ctx.addDifference(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED, ruleConfig, nodePath);
+            Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_TRUE);
+            ctx.addDifferenceIfEnabled(DiffType.REQUEST_BODY_REQUIRED_TRUE, ruleConfig, null, nodePath);
         } else if (originalRequestBody.required != null && originalRequestBody.required && (node.required == null || !node.required)) {
-            Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_FIELD_ADDED);
-            ctx.addDifference(DiffType.REQUEST_BODY_REQUIRED_FIELD_REMOVED, ruleConfig, nodePath);
+            Change ruleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_REQUIRED_TRUE);
+            ctx.addDifferenceIfEnabled(DiffType.REQUEST_BODY_REQUIRED_FALSE, ruleConfig, null, nodePath);
         }
 
         Change mediaTypeAddedRuleConfig = requestBodyRules.get(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED);
@@ -339,7 +340,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
                 Map<String, String> templateVars = new HashMap<String, String>() {{
                     put("MediaType", name);
                 }};
-                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, mediaTypeAddedRuleConfig, templateVars, nodePath);
+                ctx.addDifferenceIfEnabled(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED, mediaTypeAddedRuleConfig, templateVars, nodePath);
             }
         }
 
@@ -351,7 +352,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
                 Map<String, String> templateVars = new HashMap<String, String>() {{
                     put("MediaType", name);
                 }};
-                ctx.addDifference(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, mediaTypeRemovedRuleConfig, templateVars, nodePath);
+                ctx.addDifferenceIfEnabled(DiffType.REQUEST_BODY_MEDIA_TYPE_REMOVED, mediaTypeRemovedRuleConfig, templateVars, nodePath);
             }
         }
     }
