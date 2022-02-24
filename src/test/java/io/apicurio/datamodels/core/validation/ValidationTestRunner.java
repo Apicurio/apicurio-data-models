@@ -18,6 +18,7 @@ package io.apicurio.datamodels.core.validation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -61,7 +62,7 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
         this.testClass = testClass;
         this.children = loadTests();
     }
-    
+
     /**
      * @see org.junit.runners.ParentRunner#run(org.junit.runner.notification.RunNotifier)
      */
@@ -123,10 +124,10 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
                 Assert.assertNotNull(original);
                 // Parse into a Json object
                 Object originalParsed = mapper.readTree(original);
-                
+
                 // Parse into a data model
                 Document doc = Library.readDocument(originalParsed);
-                
+
                 // Validate the document
                 IValidationSeverityRegistry severityRegistry = null;
                 if (child.getSeverity() != null) {
@@ -138,15 +139,15 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
                         }
                     };
                 }
-                List<ValidationProblem> problems = Library.validate(doc, severityRegistry);
-                
+                List<ValidationProblem> problems = Library.validateDocument(doc, severityRegistry, Collections.emptyList()).get();
+
                 // Now compare with expected
                 String actual = formatProblems(problems);
                 String expectedCP = testCP + ".expected";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
                 Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
                 String expected = loadResource(expectedUrl);
-                
+
                 Assert.assertEquals(normalize(expected), normalize(actual));
             }
         };

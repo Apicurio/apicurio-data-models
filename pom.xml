@@ -20,7 +20,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -269,7 +269,7 @@
                 <repository>
                     <id>jsweet-central</id>
                     <name>libs-release</name>
-                    <url>http://repository.jsweet.org/artifactory/libs-release-local</url>
+                    <url>https://repository.jsweet.org/artifactory/libs-release-local</url>
                 </repository>
             </repositories>
 
