@@ -1,17 +1,5 @@
 package io.apicurio.datamodels.core.diff.ruleset;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.core.diff.change.BreakingChange;
-import io.apicurio.datamodels.core.diff.change.Change;
-import io.apicurio.datamodels.core.diff.change.ChangeType;
-import io.apicurio.datamodels.core.diff.change.DangerousChange;
-import io.apicurio.datamodels.core.diff.DiffType;
-import io.apicurio.datamodels.core.diff.change.NonBreakingChange;
-
 public class OasDiffRuleset extends Ruleset {
 
     private RuleGroup paths;
