@@ -131,6 +131,7 @@ public class Constants {
     public static final String PROP_TITLE = "title";
     public static final String PROP_COMPONENTS = "components";
     public static final String PROP_PATHS = "paths";
+    public static final String PROP_PATH_ITEM = "pathItem";
     public static final String PROP_TAGS = "tags";
     public static final String PROP_SECURITY = "security";
     public static final String PROP_SERVERS = "servers";
@@ -148,6 +149,7 @@ public class Constants {
     public static final String PROP_METHOD = "method";
     public static final String PROP_CALLBACK_URL_EXPRESSION = "callbackUrlExpression";
     public static final String PROP_OPERATIONS = "operations";
+    public static final String PROP_OPERATION = "operation";
     public static final String PROP_EXTENSIONS = "extensions";
     public static final String PROP_EXPRESSION = "expression";
     public static final String PROP_HIDDEN = "hidden";
@@ -213,5 +215,4 @@ public class Constants {
     public static final String PROP_SQS = "sqs";
     public static final String PROP_STOMP = "stomp";
     public static final String PROP_REDIS = "redis";
-
 }

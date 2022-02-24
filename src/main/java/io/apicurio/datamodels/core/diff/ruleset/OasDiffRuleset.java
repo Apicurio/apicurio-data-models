@@ -1,61 +1,42 @@
 package io.apicurio.datamodels.core.diff.ruleset;
 
+import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.diff.DiffRuleConfigGroup;
 
 public class OasDiffRuleset extends Ruleset {
 
-    private DiffRuleConfigGroup paths;
-    private DiffRuleConfigGroup pathItem;
-    private DiffRuleConfigGroup operation;
-    private DiffRuleConfigGroup requestBody;
-    private DiffRuleConfigGroup mediaType;
+    private final DiffRuleConfigGroup paths;
+    private final DiffRuleConfigGroup pathItem;
+    private final DiffRuleConfigGroup operation;
+    private final DiffRuleConfigGroup requestBody;
+    private final DiffRuleConfigGroup mediaType;
 
     public OasDiffRuleset(Object rules) {
         super(rules);
-        this.setPathsRules();
-        this.setPathItemRules();
-        this.setOperationRules();
-        this.setMediaTypeRules();
-        this.setRequestBodyRules();
+        this.paths = loadRules(Constants.PROP_PATHS);
+        this.pathItem = loadRules(Constants.PROP_PATH_ITEM);
+        this.operation = loadRules(Constants.PROP_OPERATION);
+        this.requestBody = loadRules(Constants.PROP_REQUEST_BODY);
+        this.mediaType = loadRules(Constants.PROP_MEDIA_TYPE);
     }
 
-    private void setPathsRules() {
-        this.paths = loadRules("paths");
-    }
-
-    private void setPathItemRules() {
-        this.pathItem = loadRules("pathItem");
-    }
-
-    private void setOperationRules() {
-        this.operation = loadRules("operation");
-    }
-
-    private void setRequestBodyRules() {
-        this.requestBody = loadRules("requestBody");
-    }
-
-    private void setMediaTypeRules() {
-        this.mediaType = loadRules("mediaType");
-    }
-
-    public DiffRuleConfigGroup getPathsRules() {
+    public DiffRuleConfigGroup getPathsRuleConfig() {
         return paths;
     }
 
-    public DiffRuleConfigGroup getPathItemRules() {
+    public DiffRuleConfigGroup getPathItemRuleConfig() {
         return pathItem;
     }
 
-    public DiffRuleConfigGroup getOperationRules() {
+    public DiffRuleConfigGroup getOperationRuleConfig() {
         return operation;
     }
 
-    public DiffRuleConfigGroup getRequestBodyRules() {
+    public DiffRuleConfigGroup getRequestBodyRuleConfig() {
         return requestBody;
     }
 
-    public DiffRuleConfigGroup getMediaTypeRules() {
+    public DiffRuleConfigGroup getMediaTypeRuleConfig() {
         return mediaType;
     }
 }
