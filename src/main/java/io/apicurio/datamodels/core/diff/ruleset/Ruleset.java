@@ -2,8 +2,9 @@ package io.apicurio.datamodels.core.diff.ruleset;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.diff.DiffType;
-import io.apicurio.datamodels.core.diff.change.Change;
-import io.apicurio.datamodels.core.diff.change.ChangeType;
+import io.apicurio.datamodels.core.diff.DiffRuleConfig;
+import io.apicurio.datamodels.core.diff.ChangeType;
+import io.apicurio.datamodels.core.diff.DiffRuleConfigGroup;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,9 +46,9 @@ public abstract class Ruleset {
         return null;
     }
 
-    protected RuleGroup loadRules(String groupName) {
-        RuleGroup ruleGroup = new RuleGroup(groupName);
-        Map<DiffType, Change> ruleConfigMap = new HashMap<>();
+    protected DiffRuleConfigGroup loadRules(String groupName) {
+        DiffRuleConfigGroup ruleGroup = new DiffRuleConfigGroup(groupName);
+        Map<DiffType, DiffRuleConfig> ruleConfigMap = new HashMap<>();
 
         Object ruleGroupConfig = JsonCompat.getProperty(this.rulesConfig, groupName);
         if (ruleGroupConfig == null) {
@@ -74,7 +75,7 @@ public abstract class Ruleset {
                 ruleDisabled = false;
             }
 
-            ruleConfigMap.put(id, new Change(id, changeType, message, ruleDisabled));
+            ruleConfigMap.put(id, new DiffRuleConfig(id, changeType, message, ruleDisabled));
         });
         ruleGroup.setRules(ruleConfigMap);
 

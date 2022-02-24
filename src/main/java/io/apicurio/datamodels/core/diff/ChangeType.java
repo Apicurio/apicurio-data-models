@@ -1,4 +1,4 @@
-package io.apicurio.datamodels.core.diff.change;
+package io.apicurio.datamodels.core.diff;
 
 public enum ChangeType {
     BREAKING("BREAKING"),

@@ -1,16 +1,16 @@
-package io.apicurio.datamodels.core.diff.ruleset;
+package io.apicurio.datamodels.core.diff;
 
 import io.apicurio.datamodels.core.diff.DiffType;
-import io.apicurio.datamodels.core.diff.change.Change;
+import io.apicurio.datamodels.core.diff.DiffRuleConfig;
 
 import java.util.Map;
 
-public class RuleGroup {
+public class DiffRuleConfigGroup {
     private final String groupName;
     private Boolean disabled = false;
-    private Map<DiffType, Change> rules;
+    private Map<DiffType, DiffRuleConfig> rules;
 
-    RuleGroup(String groupName) {
+    public DiffRuleConfigGroup(String groupName) {
         this.groupName = groupName;
     }
 
@@ -22,16 +22,15 @@ public class RuleGroup {
         this.disabled = disabled;
     }
 
-    public Map<DiffType, Change> getRules() {
+    public Map<DiffType, DiffRuleConfig> getRules() {
         return rules;
     }
 
-    public void setRules(Map<DiffType, Change> rules) {
+    public void setRules(Map<DiffType, DiffRuleConfig> rules) {
         this.rules = rules;
     }
 
-    public Change get(DiffType diffType) {
-        // TODO: Throw an exception when rule does not exist??
+    public DiffRuleConfig getRuleConfig(DiffType diffType) {
         return rules.get(diffType);
     }
 }

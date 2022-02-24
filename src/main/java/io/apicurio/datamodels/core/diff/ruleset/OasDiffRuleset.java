@@ -1,12 +1,14 @@
 package io.apicurio.datamodels.core.diff.ruleset;
 
+import io.apicurio.datamodels.core.diff.DiffRuleConfigGroup;
+
 public class OasDiffRuleset extends Ruleset {
 
-    private RuleGroup paths;
-    private RuleGroup pathItem;
-    private RuleGroup operation;
-    private RuleGroup requestBody;
-    private RuleGroup mediaType;
+    private DiffRuleConfigGroup paths;
+    private DiffRuleConfigGroup pathItem;
+    private DiffRuleConfigGroup operation;
+    private DiffRuleConfigGroup requestBody;
+    private DiffRuleConfigGroup mediaType;
 
     public OasDiffRuleset(Object rules) {
         super(rules);
@@ -37,23 +39,23 @@ public class OasDiffRuleset extends Ruleset {
         this.mediaType = loadRules("mediaType");
     }
 
-    public RuleGroup getPathsRules() {
+    public DiffRuleConfigGroup getPathsRules() {
         return paths;
     }
 
-    public RuleGroup getPathItemRules() {
+    public DiffRuleConfigGroup getPathItemRules() {
         return pathItem;
     }
 
-    public RuleGroup getOperationRules() {
+    public DiffRuleConfigGroup getOperationRules() {
         return operation;
     }
 
-    public RuleGroup getRequestBodyRules() {
+    public DiffRuleConfigGroup getRequestBodyRules() {
         return requestBody;
     }
 
-    public RuleGroup getMediaTypeRules() {
+    public DiffRuleConfigGroup getMediaTypeRules() {
         return mediaType;
     }
 }

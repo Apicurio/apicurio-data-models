@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.apicurio.datamodels.core.diff.change.Change;
-import io.apicurio.datamodels.core.diff.change.ChangeType;
 import io.apicurio.datamodels.core.diff.ruleset.Ruleset;
 import io.apicurio.datamodels.core.models.NodePath;
+
+import static io.apicurio.datamodels.core.diff.DiffUtil.interpolateTemplateLiterals;
 
 public class DiffContext {
 
@@ -46,15 +46,15 @@ public class DiffContext {
         return createRootContext("");
     }
 
-    public void addDifferenceIfEnabled(DiffType diffType, Change change, Map<String, String> templateEntries, NodePath path) {
+    public void addDifferenceIfEnabled(DiffRuleConfig change, Map<String, String> templateEntries, NodePath path) {
         if (change.isDisabled()) {
             return;
         }
-        String finalMessage = change.getMessage();
+        String message = change.getMessageTemplate();
         if (templateEntries != null) {
-            finalMessage = interpolateTemplateLiterals(change.getMessage(), templateEntries);
+            message = interpolateTemplateLiterals(message, templateEntries);
         }
-        diff.add(new Difference(diffType, change.getChangeType(), path, finalMessage));
+        diff.add(new Difference(change.getCode(), change.getChangeType(), path, message));
     }
 
     public Set<Difference> getDifferences() {
@@ -63,15 +63,5 @@ public class DiffContext {
 
     public Set<Difference> getBreakingChanges() {
         return this.diff.stream().filter(d -> d.getChangeType() == ChangeType.BREAKING).collect(Collectors.toSet());
-    }
-
-    private String interpolateTemplateLiterals(String messageTemplate, Map<String, String> templateEntries) {
-        for (Map.Entry<String, String> templateEntry : templateEntries.entrySet()) {
-            String templateLiteral = "${" + templateEntry.getKey() + "}";
-            if (messageTemplate.contains(templateLiteral)) {
-                messageTemplate = messageTemplate.replace(templateLiteral, templateEntry.getValue());
-            }
-        }
-        return messageTemplate;
     }
 }
