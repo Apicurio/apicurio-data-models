@@ -46,16 +46,19 @@ public abstract class Ruleset {
     }
 
     protected RuleGroup loadRules(String groupName) {
-        RuleGroup ruleGroup = new RuleGroup();
+        RuleGroup ruleGroup = new RuleGroup(groupName);
         Map<DiffType, Change> ruleConfigMap = new HashMap<>();
 
-        Object pathsConfig = JsonCompat.getProperty(this.rulesConfig, groupName);
+        Object ruleGroupConfig = JsonCompat.getProperty(this.rulesConfig, groupName);
+        if (ruleGroupConfig == null) {
+            return null;
+        }
 
-        Boolean disabled = JsonCompat.getPropertyBoolean(pathsConfig, "disabled");
+        Boolean disabled = JsonCompat.getPropertyBoolean(ruleGroupConfig, "disabled");
         if (disabled != null && disabled) {
             ruleGroup.setDisabled(true);
         }
-        Object rules = JsonCompat.getProperty(pathsConfig, "rules");
+        Object rules = JsonCompat.getProperty(ruleGroupConfig, "rules");
 
         List<String> keys = JsonCompat.keys(rules);
         keys.forEach(key -> {
@@ -65,7 +68,7 @@ public abstract class Ruleset {
             ChangeType changeType = ChangeType.valueOf(JsonCompat.getPropertyString(ruleConfig, "type"));
             Boolean ruleDisabled = JsonCompat.getPropertyBoolean(ruleConfig, "disabled");
 
-            if (disabled) {
+            if (disabled != null && disabled) {
                 ruleDisabled = true;
             } else if (ruleDisabled == null) {
                 ruleDisabled = false;

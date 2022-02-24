@@ -37,8 +37,12 @@ public class Change {
         this.message = message;
     }
 
-    public Boolean getDisabled() {
+    public Boolean isDisabled() {
         return disabled;
+    }
+
+    public Boolean isEnabled() {
+        return !this.isDisabled();
     }
 
     public void setDisabled(Boolean disabled) {

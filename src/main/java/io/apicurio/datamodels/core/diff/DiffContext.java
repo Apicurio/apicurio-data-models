@@ -46,13 +46,15 @@ public class DiffContext {
         return createRootContext("");
     }
 
-    public void addDifference(DiffType diffType, Change change, Map<String, String> templateEntries, NodePath path) {
-        diff.add(new Difference(diffType, change.getChangeType(), path, interpolateTemplateLiterals(change.getMessage(), templateEntries)));
-    }
-
-    // TODO: Remove this once message variables have been applied
-    public void addDifference(DiffType diffType, Change change, NodePath path) {
-        diff.add(new Difference(diffType, change.getChangeType(), path, change.getMessage()));
+    public void addDifferenceIfEnabled(DiffType diffType, Change change, Map<String, String> templateEntries, NodePath path) {
+        if (change.isDisabled()) {
+            return;
+        }
+        String finalMessage = change.getMessage();
+        if (templateEntries != null) {
+            finalMessage = interpolateTemplateLiterals(change.getMessage(), templateEntries);
+        }
+        diff.add(new Difference(diffType, change.getChangeType(), path, finalMessage));
     }
 
     public Set<Difference> getDifferences() {

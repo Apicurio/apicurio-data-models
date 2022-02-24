@@ -6,10 +6,12 @@ import io.apicurio.datamodels.core.diff.change.Change;
 import java.util.Map;
 
 public class RuleGroup {
-    private Boolean disabled;
+    private final String groupName;
+    private Boolean disabled = false;
     private Map<DiffType, Change> rules;
 
-    RuleGroup() {
+    RuleGroup(String groupName) {
+        this.groupName = groupName;
     }
 
     public Boolean isDisabled() {
@@ -28,7 +30,8 @@ public class RuleGroup {
         this.rules = rules;
     }
 
-    public Change getRuleConfig(DiffType diffType) {
+    public Change get(DiffType diffType) {
+        // TODO: Throw an exception when rule does not exist??
         return rules.get(diffType);
     }
 }
