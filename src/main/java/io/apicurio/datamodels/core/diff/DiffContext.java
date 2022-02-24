@@ -1,5 +1,6 @@
 package io.apicurio.datamodels.core.diff;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -7,7 +8,6 @@ import java.util.stream.Collectors;
 
 import io.apicurio.datamodels.core.diff.change.Change;
 import io.apicurio.datamodels.core.diff.change.ChangeType;
-import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
 import io.apicurio.datamodels.core.diff.ruleset.Ruleset;
 import io.apicurio.datamodels.core.models.NodePath;
 
@@ -21,7 +21,11 @@ public class DiffContext {
     public DiffContext(DiffContext rootContext, DiffContext parentContext, String pathUpdated) {
         this.rootContext = rootContext;
         this.parentContext = parentContext;
-        this.ruleSet = new OasDiffRuleset();
+        try {
+            this.ruleSet = Ruleset.loadRuleset("oas");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initRootContext(DiffContext rootContext) {
@@ -43,12 +47,12 @@ public class DiffContext {
     }
 
     public void addDifference(DiffType diffType, Change change, Map<String, String> templateEntries, NodePath path) {
-        diff.add(new Difference(diffType, change.getType(), path, interpolateTemplateLiterals(change.getMessage(), templateEntries)));
+        diff.add(new Difference(diffType, change.getChangeType(), path, interpolateTemplateLiterals(change.getMessage(), templateEntries)));
     }
 
     // TODO: Remove this once message variables have been applied
     public void addDifference(DiffType diffType, Change change, NodePath path) {
-        diff.add(new Difference(diffType, change.getType(), path, change.getMessage()));
+        diff.add(new Difference(diffType, change.getChangeType(), path, change.getMessage()));
     }
 
     public Set<Difference> getDifferences() {

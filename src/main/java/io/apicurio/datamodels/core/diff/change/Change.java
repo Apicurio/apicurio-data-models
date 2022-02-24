@@ -1,21 +1,32 @@
 package io.apicurio.datamodels.core.diff.change;
 
-public abstract class Change {
-    private ChangeType type;
+import io.apicurio.datamodels.core.diff.DiffType;
+
+public class Change {
+    private DiffType id;
+    private ChangeType changeType;
     private String message;
     private Boolean disabled;
 
-    public Change(ChangeType severity, String message) {
-        this.type = severity;
+    public Change(DiffType id, ChangeType severity, String message) {
+        this.id = id;
+        this.changeType = severity;
         this.message = message;
     }
 
-    public ChangeType getType() {
-        return type;
+    public Change(DiffType id, ChangeType severity, String message, Boolean disabled) {
+        this.id = id;
+        this.changeType = severity;
+        this.message = message;
+        this.disabled = disabled;
     }
 
-    public void setType(ChangeType type) {
-        this.type = type;
+    public ChangeType getChangeType() {
+        return changeType;
+    }
+
+    public void setChangeType(ChangeType changeType) {
+        this.changeType = changeType;
     }
 
     public String getMessage() {
@@ -32,5 +43,13 @@ public abstract class Change {
 
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public DiffType getId() {
+        return id;
+    }
+
+    public void setId(DiffType id) {
+        this.id = id;
     }
 }

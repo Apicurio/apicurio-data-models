@@ -3,12 +3,16 @@ package io.apicurio.datamodels.core.diff;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.apicurio.datamodels.core.diff.change.Change;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.runner.Description;
@@ -103,24 +107,27 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
                 Document updatedDoc = Library.readDocument(updatedParsed);
 
                 DiffContext diffContext = Library.diff(originalDoc, updatedDoc);
-                String actual = formatDiffContext(diffContext).trim();
+                String actual = formatDifferences(diffContext);
                 String expectedCP = "fixtures/diff/" + child.getOriginal() + ".expected";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
-                String expected = loadResource(expectedUrl).trim();
+                Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
+                String expected = loadResource(expectedUrl);
 
-                Assert.assertEquals(expected, actual);
+                Assert.assertEquals(expected.trim(), actual.trim());
             }
         };
         runLeaf(statement, description, notifier);
     }
 
     /**
-     * Format the list of problems as a string.
+     * Format the list of differences as a string.
      * @param diffContext
      */
-    protected String formatDiffContext(DiffContext diffContext) {
+    protected String formatDifferences(DiffContext diffContext) {
         StringBuilder builder = new StringBuilder();
-        diffContext.getDifferences().forEach(diff -> {
+        List<Difference> differences = new ArrayList<>(diffContext.getDifferences());
+        differences.sort(Comparator.comparing(Difference::getCode));
+        differences.forEach(diff -> {
             builder.append("[")
                     .append(diff.getCode())
                     .append("] |")
