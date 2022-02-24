@@ -96,7 +96,7 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
-        DiffRuleConfigGroup rules = ruleSet.getOperationRules();
+        DiffRuleConfigGroup rules = ruleSet.getOperationRuleConfig();
 
         boolean originalIdIsNull = Objects.equals(originalOperation.operationId, null);
         boolean newIdIsNull = Objects.equals(node.operationId, null);
@@ -166,7 +166,7 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
     @Override
     public void visitPaths(OasPaths node) {
-        DiffRuleConfigGroup rules = ruleSet.getPathsRules();
+        DiffRuleConfigGroup rules = ruleSet.getPathsRuleConfig();
         if (rules.isDisabled()) {
             return;
         }
@@ -198,7 +198,7 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
     @Override
     public void visitPathItem(OasPathItem node) {
-        DiffRuleConfigGroup rules = ruleSet.getPathItemRules();
+        DiffRuleConfigGroup rules = ruleSet.getPathItemRuleConfig();
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
         OasPathItem originalPathItem = original.paths.getPathItem(node.getPath());

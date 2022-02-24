@@ -155,7 +155,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
 
     @Override
     public void visitOperation(Operation node) {
-        DiffRuleConfigGroup rules = ruleSet.getOperationRules();
+        DiffRuleConfigGroup rules = ruleSet.getOperationRuleConfig();
         DiffRuleConfig bodyAddedRuleConfig = rules.getRuleConfig(DiffType.REQUEST_BODY_MEDIA_TYPE_ADDED);
 
         Oas30Operation operation = (Oas30Operation)node;
@@ -308,7 +308,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
 
     @Override
     public void visitRequestBody(Oas30RequestBody node) {
-        DiffRuleConfigGroup requestBodyRules = ruleSet.getRequestBodyRules();
+        DiffRuleConfigGroup requestBodyRules = ruleSet.getRequestBodyRuleConfig();
 
         Oas30Operation op = (Oas30Operation) node.parent();
         Oas30PathItem pi = (Oas30PathItem) op.parent();
