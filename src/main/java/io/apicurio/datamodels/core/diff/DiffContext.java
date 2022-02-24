@@ -61,7 +61,8 @@ public class DiffContext {
         return this.diff;
     }
 
-    public Set<Difference> getBreakingChanges() {
-        return this.diff.stream().filter(d -> d.getChangeType() == ChangeType.BREAKING).collect(Collectors.toSet());
-    }
+    // TODO: Get this to transpile to TypeScript
+//    public Set<Difference> getBreakingChanges() {
+//        return this.diff.stream().filter(d -> d.getChangeType() == ChangeType.BREAKING).collect(Collectors.toSet());
+//    }
 }
