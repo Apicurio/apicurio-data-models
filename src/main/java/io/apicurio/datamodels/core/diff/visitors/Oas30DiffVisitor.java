@@ -62,7 +62,7 @@ import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Oas30DiffVisitor extends OasDiffVisitor implements IOas30Visitor {
+public class Oas30DiffVisitor extends OasDiffVisitor {
     private final OasDiffRuleset ruleSet;
     private DiffContext ctx;
     private Oas30Document original;
