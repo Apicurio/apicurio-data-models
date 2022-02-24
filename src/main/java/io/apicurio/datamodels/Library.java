@@ -26,6 +26,7 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.diff.DiffContext;
 import io.apicurio.datamodels.core.diff.visitors.Oas30DiffVisitor;
+import io.apicurio.datamodels.core.diff.visitors.OasDiffVisitor;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
 import io.apicurio.datamodels.core.factories.VisitorFactory;
 import io.apicurio.datamodels.core.io.DataModelReader;
@@ -185,7 +186,8 @@ public class Library {
 
     public static DiffContext diff(Node original, Node updated) {
        DiffContext rootContext = DiffContext.createRootContext();
-       Oas30DiffVisitor diffVisitor = new Oas30DiffVisitor(rootContext, original);
+       // TODO: How to do a diff when old and new document are on different major versions??
+       OasDiffVisitor diffVisitor = new Oas30DiffVisitor(rootContext, original);
        visitTree(updated, diffVisitor, TraverserDirection.down);
        return rootContext;
     }

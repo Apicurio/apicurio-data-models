@@ -1,5 +1,6 @@
 package io.apicurio.datamodels.core.diff.visitors;
 
+import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
 import io.apicurio.datamodels.core.diff.DiffContext;
 import io.apicurio.datamodels.core.diff.DiffType;
 import io.apicurio.datamodels.core.diff.DiffUtil;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class OasDiffVisitor implements IOasVisitor {
+public abstract class OasDiffVisitor extends CombinedAllNodeVisitor {
     private final DiffContext ctx;
     private final OasDocument original;
     private final OasDiffRuleset ruleSet;
