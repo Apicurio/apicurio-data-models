@@ -5,6 +5,7 @@ import io.apicurio.datamodels.core.diff.DiffType;
 import io.apicurio.datamodels.core.diff.DiffUtil;
 import io.apicurio.datamodels.core.diff.change.Change;
 import io.apicurio.datamodels.core.diff.ruleset.OasDiffRuleset;
+import io.apicurio.datamodels.core.diff.ruleset.RuleGroup;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
 import io.apicurio.datamodels.core.models.Node;
@@ -154,11 +155,15 @@ public abstract class OasDiffVisitor implements IOasVisitor {
 
     @Override
     public void visitPaths(OasPaths node) {
-        Map<DiffType, Change> rules = ruleSet.getPathsRules();
+        RuleGroup rules = ruleSet.getPathsRules();
+        if (rules.isDisabled()) {
+            return;
+        }
+
         NodePath nodePath = NodePathUtil.createNodePath(node);
 
-        Change pathAddedRuleConfig = rules.get(DiffType.PATH_ADDED);
-        Change pathRemovedRuleConfig = rules.get(DiffType.PATH_REMOVED);
+        Change pathAddedRuleConfig = rules.getRuleConfig(DiffType.PATH_ADDED);
+        Change pathRemovedRuleConfig = rules.getRuleConfig(DiffType.PATH_REMOVED);
 
         OasPaths originalPaths = original.paths;
 

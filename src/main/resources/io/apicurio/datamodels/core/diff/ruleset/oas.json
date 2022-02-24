@@ -1,0 +1,15 @@
+{
+  "paths": {
+    "disabled": true,
+    "rules": {
+      "PATH_ADDED": {
+        "type": "NON_BREAKING",
+        "message": "Path '${Path}' added"
+      },
+      "PATH_REMOVED": {
+        "type": "BREAKING",
+        "message": "Path '${Path} removed"
+      }
+    }
+  }
+}
