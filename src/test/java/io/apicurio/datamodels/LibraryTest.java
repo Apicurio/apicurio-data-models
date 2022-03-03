@@ -16,18 +16,6 @@
 
 package io.apicurio.datamodels;
 
-import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.ValidationProblem;
-import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
-import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
-import org.junit.Assert;
-import org.junit.Test;
-
-import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +23,24 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.ValidationProblem;
+import io.apicurio.datamodels.core.models.ValidationProblemSeverity;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
+
 /**
  * Tests for the {@link Library} class.
  * @author eric.wittmann@gmail.com
  */
 public class LibraryTest {
-    
+
     @Test
     public void testCreateAndCloneDocument() {
         DocumentType[] values = DocumentType.values();
@@ -59,15 +59,15 @@ public class LibraryTest {
         Assert.assertEquals(document.getDocumentType(), clone.getDocumentType());
         Assert.assertFalse(document == clone);
     }
-    
+
     @Test
     public void testReadDocumentFromJSONString() {
-        String jsonString = "{\r\n" + 
-                "    \"openapi\": \"3.0.2\",\r\n" + 
-                "    \"info\": {\r\n" + 
-                "        \"title\": \"Very Simple API\",\r\n" + 
-                "        \"version\": \"1.0.0\"\r\n" + 
-                "    }\r\n" + 
+        String jsonString = "{\r\n" +
+                "    \"openapi\": \"3.0.2\",\r\n" +
+                "    \"info\": {\r\n" +
+                "        \"title\": \"Very Simple API\",\r\n" +
+                "        \"version\": \"1.0.0\"\r\n" +
+                "    }\r\n" +
                 "}";
         Document doc = Library.readDocumentFromJSONString(jsonString);
         Assert.assertEquals(DocumentType.openapi3, doc.getDocumentType());
@@ -75,7 +75,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void testValidate() {
+    public void testValidate() throws Exception {
         String jsonString = "{\r\n" +
                 "    \"openapi\": \"3.0.9\",\r\n" +
                 "    \"info\": {\r\n" +
@@ -85,7 +85,7 @@ public class LibraryTest {
                 "}";
         Document doc = Library.readDocumentFromJSONString(jsonString);
 
-        List<ValidationProblem> problems = Library.validate(doc, null);
+        List<ValidationProblem> problems = Library.validateDocument(doc, null, null).get();
         Assert.assertTrue(problems.size() > 0);
     }
 
