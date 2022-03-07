@@ -1,0 +1,53 @@
+{
+	"extends": ["github>Apicurio/apicurio-configs/renovate"],
+	"packageRules": [
+		{
+			"groupName": "Java dependencies",
+			"matchManagers": ["maven"],
+			"matchPackagePatterns": ["^com.fasterxml.jackson.core:"],
+			"allowedVersions": "2.12.3",
+			"enabled": false
+		},
+		{
+			"groupName": "Java dependencies",
+			"matchManagers": ["maven"],
+			"matchPackagePatterns": ["org.jsweet:jsweet-maven-plugin"],
+			"allowedVersions": "3.0.0",
+			"enabled": false
+		},
+		{
+			"groupName": "Java dependencies",
+			"matchManagers": ["maven"],
+			"matchPackagePatterns": ["com.github.eirslett:frontend-maven-plugin"],
+			"allowedVersions": "1.11.2",
+			"enabled": false
+		},
+		{
+			"groupName": "Java dependencies",
+			"matchManagers": ["maven"],
+			"matchPackagePatterns": ["org.jsweet:jsweet-core"],
+			"enabled": false
+		},
+		{
+			"groupName": "JavaScript dependencies",
+			"matchManagers": ["npm"],
+			"matchPackagePatterns": ["mkdirp"],
+			"allowedVersions": "> 0.5.1",
+			"enabled": false
+		},
+		{
+			"groupName": "JavaScript dependencies",
+			"matchManagers": ["npm"],
+			"matchPackagePatterns": ["rollup"],
+			"allowedVersions": ">= 1.a",
+			"enabled": false
+		},
+		{
+			"groupName": "JavaScript dependencies",
+			"matchManagers": ["npm"],
+			"matchPackagePatterns": ["rollup-plugin-commonjs"],
+			"allowedVersions": ">= 9.a",
+			"enabled": false
+		}
+	]
+}
