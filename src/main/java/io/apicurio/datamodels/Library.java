@@ -17,6 +17,7 @@
 package io.apicurio.datamodels;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
@@ -32,10 +33,12 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
+
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
+import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
 import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
@@ -113,6 +116,10 @@ public class Library {
     }
 
     /**
+     * @deprecated
+     * This method has been deprecated. It will continue to be supported but will be removed in a future release.
+     * <p> Use {@link Library#validateDocument(Node, IValidationSeverityRegistry, List)} instead.
+     * 
      * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
      * of validation problems found during validation is returned.  In addition, validation problems will be
      * reported on the individual nodes themselves.  Validation problem severity is determined by checking
@@ -136,7 +143,35 @@ public class Library {
         
         return validator.getValidationProblems();
     }
-    
+
+    /**
+     * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
+     * of validation problems found during validation is returned.  In addition, validation problems will be
+     * reported on the individual nodes themselves.  Validation problem severity is determined by checking
+     * with the included severity registry.  If the severity registry is null, a default registry is used.
+     * Custom validators can be passed to provide additional validation rules beyond what this Library offers out of the box.
+     *
+     * @param node The document to be validated
+     * @param severityRegistry Supply a custom severity registry. If nothing is passed, the default severity registry will be used
+     * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
+     * @return full list of the validation problems found in the document
+     */
+    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
+        List<ValidationProblem> totalValidationProblems = Library.validate(node, severityRegistry);
+
+        if (extensions != null && !extensions.isEmpty()) {
+            for (IDocumentValidatorExtension extension : extensions) {
+                CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
+                extensionValidationProblems.thenAccept(problems -> problems.forEach(p -> {
+                    totalValidationProblems.add(p);
+                    node.ownerDocument().addValidationProblem(p.errorCode, p.nodePath, p.property, p.message, p.severity);
+                }));
+            }
+        }
+
+        return CompletableFuture.completedFuture(totalValidationProblems);
+    }
+
     /**
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.
