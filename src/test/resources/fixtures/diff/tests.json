@@ -1,5 +1,15 @@
 [
   {
+    "name": "Throw exception when two documents are of a different type",
+    "original": "openapi/uncategorized/different-document-types.json",
+    "updated": "openapi/uncategorized/different-document-types.updated.json"
+  },
+  {
+    "name": "Throw exception for unsupported document types",
+    "original": "openapi/uncategorized/asyncapi-unsupported-type.json",
+    "updated": "openapi/uncategorized/asyncapi-unsupported-type.json"
+  },
+  {
     "name": "Path Added/Removed",
     "original": "openapi/shared/path-added-removed.json",
     "updated": "openapi/shared/path-added-removed.updated.json"

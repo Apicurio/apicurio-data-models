@@ -106,8 +106,15 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
                 Document originalDoc = Library.readDocument(originalParsed);
                 Document updatedDoc = Library.readDocument(updatedParsed);
 
-                DiffContext diffContext = Library.diff(originalDoc, updatedDoc);
-                String actual = formatDifferences(diffContext);
+                DiffContext diffContext;
+                String actual;
+                try {
+                    diffContext = Library.diff(originalDoc, updatedDoc);
+                    actual = formatDifferences(diffContext);
+                } catch (Exception e) {
+                    actual = formatException(e);
+                }
+
                 String expectedCP = "fixtures/diff/" + child.getOriginal() + ".expected";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
                 Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
@@ -139,6 +146,10 @@ public class DiffTestRunner extends ParentRunner<DiffTestCase> implements IRefer
                     .append("\n");
         });
         return builder.toString();
+    }
+
+    protected String formatException(Exception e) {
+        return String.format("EXCEPTION => %s :: %s", e.getClass(), e.getMessage());
     }
 
     /**

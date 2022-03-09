@@ -1,0 +1,1 @@
+EXCEPTION => class java.lang.RuntimeException :: Original document (openapi2) and updated document (openapi3) have different types and cannot be compared

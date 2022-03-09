@@ -20,11 +20,16 @@ import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReader;
 import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelReaderDispatcher;
 import io.apicurio.datamodels.asyncapi.v2.io.Aai20DataModelWriter;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
+import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
+import io.apicurio.datamodels.core.diff.DiffContext;
+import io.apicurio.datamodels.core.diff.visitors.DiffVisitor;
+import io.apicurio.datamodels.core.diff.visitors.Oas30DiffVisitor;
 import io.apicurio.datamodels.core.io.DataModelReader;
 import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
 import io.apicurio.datamodels.core.io.DataModelWriter;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
 import io.apicurio.datamodels.core.validation.ValidationVisitor;
 import io.apicurio.datamodels.openapi.v2.io.Oas20DataModelReader;
@@ -89,4 +94,12 @@ public class VisitorFactory {
         }
     }
 
+    public static DiffVisitor createDiffVisitor(DiffContext rootContext, Node originalNode) {
+        DocumentType documentType = originalNode.ownerDocument().getDocumentType();
+
+        if (documentType == DocumentType.openapi3) {
+            return new Oas30DiffVisitor(rootContext, originalNode);
+        }
+        throw new RuntimeException(String.format("Diff Visitor does not support the document type '%s'", documentType));
+    }
 }

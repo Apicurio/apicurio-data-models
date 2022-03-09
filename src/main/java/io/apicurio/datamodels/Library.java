@@ -21,10 +21,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.diff.DiffContext;
+import io.apicurio.datamodels.core.diff.visitors.DiffVisitor;
 import io.apicurio.datamodels.core.diff.visitors.Oas30DiffVisitor;
 import io.apicurio.datamodels.core.diff.visitors.OasDiffVisitor;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
@@ -184,14 +186,26 @@ public class Library {
         return CompletableFuture.completedFuture(node.getValidationProblems());
     }
 
+    /**
+     * Compare an old and updated document and return a list of the different changes between both.
+     * Return the severity of the change: BREAKING, NON_BREAKING and DANGEROUS
+     *
+     * @param original The original/old document
+     * @param updated The updated/new document
+     * @return List of differences between the two documents
+     */
     public static DiffContext diff(Node original, Node updated) {
        DiffContext rootContext = DiffContext.createRootContext();
-       // TODO: How to do a diff when old and new document are on different major versions??
-       OasDiffVisitor diffVisitor = new Oas30DiffVisitor(rootContext, original);
+
+       if (!compareDocumentTypes(original, updated)) {
+           throw new RuntimeException(String.format("Original document (%s) and updated document (%s) have different types and cannot be compared", original.ownerDocument().getDocumentType(), updated.ownerDocument().getDocumentType()));
+       }
+
+       DiffVisitor diffVisitor = VisitorFactory.createDiffVisitor(rootContext,  original);
        visitTree(updated, diffVisitor, TraverserDirection.down);
        return rootContext;
     }
-    
+
     /**
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.
@@ -325,6 +339,7 @@ public class Library {
     }
 
     /**
+<<<<<<< HEAD
      * Dereferences a document - this will take all external references ($ref) found in
      * the document and pull them into this document.  It will then update any external
      * reference to instead point to the local copy.  The result is a functionally
@@ -351,5 +366,20 @@ public class Library {
     public static Document dereferenceDocument(Document source, IReferenceResolver resolver, boolean strict) {
         Dereferencer rl = new Dereferencer(source, resolver, strict);
         return rl.dereference();
+    }
+
+    /*
+     * Compares the document type of two documents and returns false if they are not
+     * an exact match
+     *
+     * @param documentA
+     * @param documentB
+     * @return
+     */
+    private static boolean compareDocumentTypes(Node documentA, Node documentB) {
+        DocumentType originalDocType = documentA.ownerDocument().getDocumentType();
+        DocumentType updatedDocType = documentB.ownerDocument().getDocumentType();
+
+        return originalDocType == updatedDocType;
     }
 }
