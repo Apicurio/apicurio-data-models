@@ -1,0 +1,1 @@
+EXCEPTION => class java.lang.RuntimeException :: Diff Visitor does not support the document type 'asyncapi2'

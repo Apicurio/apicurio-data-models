@@ -1,0 +1,19 @@
+{
+  "swagger": "2.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Petstore"
+  },
+  "paths": {
+    "/tests": {
+      "get": {
+        "description": "Get list of tests",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    }
+  }
+}

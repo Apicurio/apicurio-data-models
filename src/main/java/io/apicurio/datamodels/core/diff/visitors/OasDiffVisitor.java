@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class OasDiffVisitor extends CombinedAllNodeVisitor {
+public abstract class OasDiffVisitor extends DiffVisitor {
     private final DiffContext ctx;
     private final OasDocument original;
     private final OasDiffRuleset ruleSet;
