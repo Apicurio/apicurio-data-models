@@ -6,7 +6,7 @@
     <groupId>io.apicurio</groupId>
     <artifactId>apicurio-data-models</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.23</version>
+    <version>1.1.24-SNAPSHOT</version>
     <name>apicurio-data-models</name>
 
     <url>https://www.apicur.io/</url>
@@ -103,7 +103,7 @@
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-core</artifactId>
             <version>${version.org.jsweet-core}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jsweet/jsweet-transpiler -->
@@ -111,7 +111,7 @@
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-transpiler</artifactId>
             <version>${version.org.jsweet-transpiler}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test Only Deps -->
