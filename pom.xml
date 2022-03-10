@@ -83,7 +83,6 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.12</version.org.sonatype.plugins.nexus-staging-maven-plugin>
-        
     </properties>
 
     <dependencies>
@@ -104,14 +103,15 @@
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-core</artifactId>
             <version>${version.org.jsweet-core}</version>
+            <scope>compile</scope>
         </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/org.jsweet/jsweet-transpiler -->
         <dependency>
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-transpiler</artifactId>
             <version>${version.org.jsweet-transpiler}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Test Only Deps -->
