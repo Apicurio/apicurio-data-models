@@ -265,14 +265,6 @@
                 </pluginRepository>
             </pluginRepositories>
 
-            <repositories>
-                <repository>
-                    <id>jsweet-central</id>
-                    <name>libs-release</name>
-                    <url>https://repository.jsweet.org/artifactory/libs-release-local</url>
-                </repository>
-            </repositories>
-
             <build>
                 <plugins>
                     <!-- Generate TS from Java -->
