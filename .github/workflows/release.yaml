@@ -143,7 +143,7 @@ jobs:
 
 
       - name: Publish to NPM
-        run: npm publish ./target/ts/dist/
+        run: npm publish ./target/ts/core/dist/
 
 
       - name: Update Snapshot version ${{ github.event.inputs.snapshot-version}}

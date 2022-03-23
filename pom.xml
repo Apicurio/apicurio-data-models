@@ -282,7 +282,7 @@
                         <version>${version.org.jsweet}</version>
                         <configuration>
                             <verbose>true</verbose>
-                            <tsOut>target/ts/src</tsOut>
+                            <tsOut>target/ts/core/src</tsOut>
                             <targetVersion>ES6</targetVersion>
                             <module>umd</module>
                             <moduleResolution>classic</moduleResolution>
@@ -314,11 +314,11 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${basedir}/target/ts</outputDirectory>
+                                    <outputDirectory>${basedir}/target/ts/core</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${basedir}/src/main/ts</directory>
+                                            <directory>${basedir}/src/main/ts/core</directory>
                                             <filtering>true</filtering>
                                         </resource>
                                     </resources>
@@ -332,7 +332,7 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${basedir}/target/ts/tests/fixtures</outputDirectory>
+                                    <outputDirectory>${basedir}/target/ts/core/tests/fixtures</outputDirectory>
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
@@ -361,7 +361,7 @@
                         <configuration>
                             <mainClass>io.apicurio.datamodels._build.GenerateCoreTs</mainClass>
                             <arguments>
-                                <argument>${basedir}/target/ts/src</argument>
+                                <argument>${basedir}/target/ts/core/src</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -379,7 +379,7 @@
                                 </goals>
                                 <phase>generate-sources</phase>
                                 <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <workingDirectory>${basedir}/target/ts/core</workingDirectory>
                                     <nodeVersion>v${version.node-js}</nodeVersion>
                                     <yarnVersion>v${version.yarn}</yarnVersion>
                                 </configuration>
@@ -392,7 +392,7 @@
                                 </goals>
                                 <phase>generate-sources</phase>
                                 <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <workingDirectory>${basedir}/target/ts/core</workingDirectory>
                                     <arguments>install</arguments>
                                 </configuration>
                             </execution>
@@ -404,7 +404,7 @@
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <workingDirectory>${basedir}/target/ts/core</workingDirectory>
                                     <arguments>test</arguments>
                                 </configuration>
                             </execution>
@@ -416,7 +416,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <workingDirectory>${basedir}/target/ts/core</workingDirectory>
                                     <arguments>package</arguments>
                                 </configuration>
                             </execution>
