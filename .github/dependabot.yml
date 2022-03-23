@@ -20,7 +20,7 @@ updates:
     - 1.11.2
   - dependency-name: org.jsweet:jsweet-core
 - package-ecosystem: npm
-  directory: "/src/main/ts/core"
+  directory: "/src/main/ts/packages/core"
   schedule:
     interval: daily
   open-pull-requests-limit: 10
