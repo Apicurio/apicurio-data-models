@@ -33,7 +33,6 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
-
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
@@ -57,7 +56,7 @@ import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30Transformation
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
-    
+
     /**
      * Adds a reference resolver to the library.  The resolver will be used whenever the library
      * needs to resolve a $ref reference.
@@ -69,7 +68,7 @@ public class Library {
     public static void removeReferenceResolver(IReferenceResolver resolver) {
         ReferenceResolverChain.getInstance().removeResolver(resolver);
     }
-    
+
     /**
      * Creates a new, empty document of the given type.
      * @param type
@@ -86,7 +85,7 @@ public class Library {
                 throw new RuntimeException("Unknown document type: " + type);
         }
     }
-    
+
     /**
      * Called to create a node path for a given data model node.
      * @param node
@@ -103,7 +102,7 @@ public class Library {
     public static void visitNode(Node node, IVisitor visitor) {
         VisitorUtil.visitNode(node, visitor);
     }
-    
+
     /**
      * Convenience method for visiting a data model tree.  Supports traversing the data model either
      * up or down the tree.
@@ -119,7 +118,7 @@ public class Library {
      * @deprecated
      * This method has been deprecated. It will continue to be supported but will be removed in a future release.
      * <p> Use {@link Library#validateDocument(Node, IValidationSeverityRegistry, List)} instead.
-     * 
+     *
      * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
      * of validation problems found during validation is returned.  In addition, validation problems will be
      * reported on the individual nodes themselves.  Validation problem severity is determined by checking
@@ -127,20 +126,21 @@ public class Library {
      * @param node
      * @param severityRegistry
      */
+    @Deprecated
     public static List<ValidationProblem> validate(Node node, IValidationSeverityRegistry severityRegistry) {
         if (severityRegistry == null) {
             severityRegistry = new DefaultSeverityRegistry();
         }
-        
+
         // Clear/reset any problems that may have been found before.
         ValidationProblemsResetVisitor resetter = VisitorFactory.createValidationProblemsResetVisitor(node.ownerDocument());
         visitTree(node, resetter, TraverserDirection.down);
-        
+
         // Validate the data model.
         ValidationVisitor validator = VisitorFactory.createValidationVisitor(node.ownerDocument());
         validator.setSeverityRegistry(severityRegistry);
         visitTree(node, validator, TraverserDirection.down);
-        
+
         return validator.getValidationProblems();
     }
 
@@ -157,19 +157,23 @@ public class Library {
      * @return full list of the validation problems found in the document
      */
     public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
-        List<ValidationProblem> totalValidationProblems = Library.validate(node, severityRegistry);
+        List<ValidationProblem> problems = Library.validate(node, severityRegistry);
+        CompletableFuture<List<ValidationProblem>> main = CompletableFuture.completedFuture(problems);
 
-        if (extensions != null && !extensions.isEmpty()) {
-            for (IDocumentValidatorExtension extension : extensions) {
-                CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
-                extensionValidationProblems.thenAccept(problems -> problems.forEach(p -> {
-                    totalValidationProblems.add(p);
-                    node.ownerDocument().addValidationProblem(p.errorCode, p.nodePath, p.property, p.message, p.severity);
-                }));
-            }
+        if (extensions == null || extensions.isEmpty()) {
+            return main;
         }
 
-        return CompletableFuture.completedFuture(totalValidationProblems);
+        CompletableFuture<List<ValidationProblem>> rval = main;
+        for (IDocumentValidatorExtension extension : extensions) {
+            CompletableFuture<List<ValidationProblem>> extFuture = extension.validateDocument(node);
+            rval = rval.thenCombine(extFuture, (problems1, problems2) -> {
+                problems1.addAll(problems2);
+                return problems1;
+            });
+        }
+
+        return rval;
     }
 
     /**
@@ -186,7 +190,7 @@ public class Library {
         reader.readDocument(clonedJson, document);
         return document;
     }
-    
+
     /**
      * Reads an entire document from a JSON formatted string.  This will parse the given string into
      * JSON data and then call Library.readDocument.
@@ -196,11 +200,11 @@ public class Library {
         Object json = JsonCompat.parseJSON(jsonString);
         return readDocument(json);
     }
-    
+
     /**
-     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node 
+     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node
      * type and an empty instance of the property node class.  For example, you could read just an
-     * Operation by passing the JSON data for the operation along with an instance of e.g. 
+     * Operation by passing the JSON data for the operation along with an instance of e.g.
      * {@link Oas30Operation} and this will read the data and store it in the instance.
      * @param json
      * @param node
@@ -214,7 +218,7 @@ public class Library {
         Library.visitNode(node, dispatcher);
         return node;
     }
-    
+
     /**
      * Called to serialize a given data model node to a JSON object.
      * @param node
@@ -224,7 +228,7 @@ public class Library {
         visitTree(node, writer, TraverserDirection.down);
         return writer.getResult();
     }
-    
+
     /**
      * Called to serialize a given data model to a JSON formatted string.
      * @param document
@@ -237,14 +241,14 @@ public class Library {
     /**
      * Called to discover what type of document the given JSON data represents.  This method
      * interrogates the following appropriate top level properties:
-     * 
+     *
      * - asyncapi
      * - openapi
      * - swagger
-     * 
+     *
      * Based on which property is defined, and the value of that property, the correct document
      * type is determined and returned.
-     * 
+     *
      * @param json
      */
     public static DocumentType discoverDocumentType(Object json) {
@@ -267,7 +271,7 @@ public class Library {
                 return DocumentType.openapi2;
             }
         }
-        
+
         throw new RuntimeException("Unknown data model type or version.");
     }
 
