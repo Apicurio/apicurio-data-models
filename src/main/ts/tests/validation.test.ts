@@ -121,14 +121,17 @@ allTests.forEach(spec => {
 });
 
 class CustomValidationExtension implements IDocumentValidatorExtension {
-    validateDocument(_: Node): Promise<ValidationProblem[]>{
+    // @ts-ignore
+    async validateDocument(_: Node): Promise<ValidationProblem[]>{
         const testProblems: ValidationProblem[] = [
            new ValidationProblem("TEST-001", new NodePath("testpath"), "test", "Test problem", ValidationProblemSeverity.low)
         ];
-
+        await delay(3000);
         return Promise.resolve(testProblems);
     }
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 describe("validateDocument()", () => {
     test("return custom validation problem defined by the extension", async () => {
