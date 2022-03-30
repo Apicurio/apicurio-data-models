@@ -19,7 +19,6 @@ import java.util.List;
 import org.jsweet.transpiler.extension.PrinterAdapter;
 import org.jsweet.transpiler.model.MethodInvocationElement;
 import org.jsweet.transpiler.model.NewClassElement;
-
 import java.util.concurrent.CompletableFuture;
 
 import javax.lang.model.element.Element;
@@ -66,6 +65,10 @@ public class PromiseAdapter extends PrinterAdapter {
                          printMacroName(invocation.getMethodName());
                          print(invocation.getTargetExpression()).print(".concat(").print(invocation.getArguments().toString()).print(")");
                          return true;
+                    case "get": // transpiles a <CompletableFuture>.get() invocation into an ES6 await
+                        printMacroName(invocation.getMethodName());
+                        print("await ").print(invocation.getTargetExpression());
+                        return true;
                 }
             }
         }

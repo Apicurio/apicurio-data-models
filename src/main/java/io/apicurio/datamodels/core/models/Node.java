@@ -169,6 +169,17 @@ public abstract class Node implements IVisitable {
         this._validationProblems.put(errorCode, problem);
         return problem;
     }
+
+	/**
+	 * Bulk add validation problems to the data model.
+	 *
+	 * @param problems
+	 */
+	public void addValidationProblems(List<ValidationProblem>  problems) {
+		for (ValidationProblem problem : problems) {
+			this.addValidationProblem(problem.errorCode, problem.nodePath, problem.property, problem.message, problem.severity);
+		}
+	}
 	
     /**
      * Deletes all validation problems previously discovered for this node.  Typically called by

@@ -18,9 +18,11 @@ package io.apicurio.datamodels;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.compat.JsonCompat;
+import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.factories.DocumentFactory;
 import io.apicurio.datamodels.core.factories.VisitorFactory;
@@ -33,7 +35,6 @@ import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.core.models.ValidationProblem;
 import io.apicurio.datamodels.core.util.IReferenceResolver;
-
 import io.apicurio.datamodels.core.util.NodePathUtil;
 import io.apicurio.datamodels.core.util.ReferenceResolverChain;
 import io.apicurio.datamodels.core.util.VisitorUtil;
@@ -49,6 +50,9 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
 import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
+import jsweet.lang.Async;
+
+import static jsweet.util.Lang.await;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -156,20 +160,25 @@ public class Library {
      * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
      * @return full list of the validation problems found in the document
      */
+    @Async
     public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
-        List<ValidationProblem> totalValidationProblems = Library.validate(node, severityRegistry);
+        List<ValidationProblem> problems = Library.validate(node, severityRegistry);
+        node.addValidationProblems(problems);
 
-        if (extensions != null && !extensions.isEmpty()) {
-            for (IDocumentValidatorExtension extension : extensions) {
-                CompletableFuture<List<ValidationProblem>> extensionValidationProblems = extension.validateDocument(node);
-                extensionValidationProblems.thenAccept(problems -> problems.forEach(p -> {
-                    totalValidationProblems.add(p);
-                    node.ownerDocument().addValidationProblem(p.errorCode, p.nodePath, p.property, p.message, p.severity);
-                }));
+        if (extensions == null || extensions.isEmpty()) {
+            return CompletableFuture.completedFuture(problems);
+        }
+
+        for (IDocumentValidatorExtension extension : extensions) {
+            try {
+                List<ValidationProblem> extProblems = extension.validateDocument(node).get();
+                node.addValidationProblems(extProblems);
+            } catch (Exception e) {
+                LoggerCompat.info("Error occurred in validation extension '%o': %o", extension.getClass().getName(), e.getMessage());
             }
         }
 
-        return CompletableFuture.completedFuture(totalValidationProblems);
+        return CompletableFuture.completedFuture(node.getValidationProblems());
     }
 
     /**
