@@ -18,6 +18,7 @@ package io.apicurio.datamodels.openapi.v2.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
@@ -100,6 +101,11 @@ public class Oas20Response extends OasResponse implements IOasHeaderParent, IExa
     @Override
     public OasHeader removeHeader(String name) {
         return this.headers.removeHeader(name);
+    }
+    
+    @Override
+    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
+        this.headers.renameHeader(from, to, headerConsumer);
     }
 
     /**

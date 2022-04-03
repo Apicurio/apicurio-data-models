@@ -18,7 +18,6 @@ package io.apicurio.datamodels.cmd.commands;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
@@ -95,9 +94,7 @@ public class RenameOperationTraitDefinitionCommand extends AbstractCommand {
       if (ModelUtils.isDefined(doc20.components.getOperationTraitDefinition(toName))) {
          return false;
       }
-      AaiOperationTraitDefinition traitDef = doc20.components.removeOperationTraitDefinition(fromName);
-      traitDef.rename(toName);
-      doc20.components.addOperationTraitDefinition(toName, traitDef);
+      doc20.components.renameOperationTraitDefinition(fromName, toName, traitDef -> traitDef.rename(toName));
       return true;
    }
 

@@ -96,7 +96,7 @@ public class ModelUtils {
      */
     public static <K, V> Map<K, V> renameMapKey(K oldKey, K newKey, Map<K, V> map, Consumer<V> valueConsumer) {
         // If the old key isn't present, or the new key is present, then return without modification.
-        if (!map.containsKey(oldKey) || map.containsKey(newKey)) {
+        if (!isDefined(map) || !map.containsKey(oldKey) || map.containsKey(newKey)) {
             return map;
         }
         if (!(map instanceof LinkedHashMap)){
@@ -143,7 +143,7 @@ public class ModelUtils {
      */
     public static <K, V> Map<K, V> restoreMapEntry(int position, K key, V value, Map<K, V> map) {
         // If the new key is present, then return without modification.
-        if (map.containsKey(key)) {
+        if (!isDefined(map) || map.containsKey(key)) {
             return map;
         }
         if (!(map instanceof LinkedHashMap) || position >= map.size()){

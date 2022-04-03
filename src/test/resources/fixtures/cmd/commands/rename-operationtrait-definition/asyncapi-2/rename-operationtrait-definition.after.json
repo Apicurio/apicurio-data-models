@@ -31,9 +31,11 @@
       }
     },
     "operationTraits": {
+      "another": {},
       "commonProperties": {
         "description": "This is a common description"
-      }
+      },
+      "other": {}
     }
   }
 }

@@ -16,15 +16,12 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.stream.Collectors;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.common.INamed;
 
 /**
  * @author c.desc2@gmail.com

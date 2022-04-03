@@ -138,8 +138,7 @@ public abstract class AaiComponents extends Components {
      * @param toName
      */
     public void renameSchemaDefinition(String fromName, String toName, Consumer<AaiSchema> schemaConsumer) {
-        this.schemas = ModelUtils.renameMapKey(fromName, toName, this.schemas,
-                schemaConsumer);
+        this.schemas = ModelUtils.renameMapKey(fromName, toName, this.schemas, schemaConsumer);
     }
     
     /**
@@ -148,8 +147,7 @@ public abstract class AaiComponents extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index,
-            String name, AaiSchema schemaDef) {
+    public void restoreSchemaDefinition(int index, String name, AaiSchema schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -211,6 +209,11 @@ public abstract class AaiComponents extends Components {
             return messages.remove(name);
         }
         return null;
+    }
+    
+
+    public void renameMessage(String fromName, String toName, Consumer<AaiMessage> messageConsumer) {
+        this.messages = ModelUtils.renameMapKey(fromName, toName, this.messages, messageConsumer);
     }
 
     public void addSecurityScheme(String key, AaiSecurityScheme value) {
@@ -301,6 +304,14 @@ public abstract class AaiComponents extends Components {
             return operationTraits.remove(name);
         }
         return null;
+    }
+    
+    public void renameOperationTraitDefinition(String fromName, String toName, Consumer<AaiOperationTraitDefinition> traitConsumer) {
+        this.operationTraits = ModelUtils.renameMapKey(fromName, toName, this.operationTraits, traitConsumer);
+    }
+    
+    public void renameMessageTraitDefinition(String fromName, String toName, Consumer<AaiMessageTraitDefinition> traitConsumer) {
+        this.messageTraits = ModelUtils.renameMapKey(fromName, toName, this.messageTraits, traitConsumer);
     }
     
     public void addServerBindingDefinition(String key, AaiServerBindingsDefinition value) {

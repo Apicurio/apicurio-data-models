@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
 
 /**
  * Models an OpenAPI 2.0 responses.
@@ -80,6 +80,16 @@ public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20
         // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
         addResponse(newResponse.getName(), newResponse);
         return newResponse;
+    }
+    
+    /**
+     * Renames a response without modifying the order of the responses.
+     * @param fromName
+     * @param toName
+     * @param responseConsumer
+     */
+    public void renameResponse(String fromName, String toName, Consumer<Oas20ResponseDefinition> responseConsumer) {
+        this.items = ModelUtils.renameMapKey(fromName, toName, this.items, responseConsumer);
     }
 
     /**

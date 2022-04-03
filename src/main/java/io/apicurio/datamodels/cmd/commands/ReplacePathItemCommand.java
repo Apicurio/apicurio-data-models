@@ -45,8 +45,7 @@ public class ReplacePathItemCommand extends ReplaceNodeCommand<OasPathItem> {
 		OasDocument odoc = (OasDocument) doc;
 		newNode._ownerDocument = odoc;
 		newNode._parent = odoc.paths;
-		// As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
-		odoc.paths.addPathItem(this._pathName, newNode);
+		odoc.paths.replacePathItem(this._pathName, newNode);
 	}
     
     /**

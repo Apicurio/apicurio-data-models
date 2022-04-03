@@ -89,6 +89,16 @@ public class Oas30Components extends Components {
     }
 
     /**
+     * Renames a single schema definition without modifying the ordering of the schemas.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSchemaDefinition(String oldName, String newName, Consumer<Oas30SchemaDefinition> schemaConsumer) {
+        this.schemas = ModelUtils.renameMapKey(oldName, newName, this.schemas, schemaConsumer::accept);
+    }
+
+    /**
      * Restore a deleted schema definition in its original place.
      * @param index
      * @param name
@@ -151,6 +161,14 @@ public class Oas30Components extends Components {
     public void replaceResponseDefinition(Oas30ResponseDefinition newResponseDefinition) {
         // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
         addResponseDefinition(newResponseDefinition.getName(), newResponseDefinition);
+    }
+
+    /**
+     * Renames a response without modifying the order of the responses.
+     * @param newResponseDefinition
+     */
+    public void renameResponseDefinition(String oldName, String newName, Consumer<Oas30ResponseDefinition> responseConsumer) {
+        this.responses = ModelUtils.renameMapKey(oldName, newName, this.responses, responseConsumer);
     }
 
     /**

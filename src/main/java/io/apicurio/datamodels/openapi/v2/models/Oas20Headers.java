@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
+import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 
 /**
@@ -91,6 +94,16 @@ public class Oas20Headers extends Node implements IIndexedNode<Oas20Header> {
      */
     public Oas20Header removeHeader(String headerName) {
         return this.items.remove(headerName);
+    }
+    
+    /**
+     * Renames a single header.
+     * @param from
+     * @param to
+     * @param headerConsumer
+     */
+    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
+        this.items = ModelUtils.renameMapKey(from, to, this.items, headerConsumer::accept);
     }
 
     /**
