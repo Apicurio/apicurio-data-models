@@ -19,7 +19,6 @@ package io.apicurio.datamodels.cmd.commands;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
 
 /**
  * @author eric.wittmann@gmail.com

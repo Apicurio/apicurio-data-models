@@ -75,20 +75,13 @@ public class RenameChannelItemCommand extends AbstractCommand {
             this._channelExisted = false;
         }
         
-        AaiChannelItem aaiChannel = aai20Document.channels.remove(this._oldChannelName);
-
-        // If we didn't find a aaiChannel with the "from" name, then nothing to do.
-        if (this.isNullOrUndefined(aaiChannel)) {
-            return;
-        }
-
-        // Now we have the aaiChannel - rename it!
-        aaiChannel.rename(this._newChannelName);
-        aai20Document.channels.put(this._newChannelName, aaiChannel);
-        
-        // Update the channel parameters
-        this._nullParams = ModelUtils.isNullOrUndefined(aaiChannel.parameters);
-        this._doParametersRename(aaiChannel, this._oldChannelName, this._newChannelName);
+        aai20Document.channels = ModelUtils.renameMapKey(this._oldChannelName, this._newChannelName, aai20Document.channels, aaiChannel -> {
+            aaiChannel.rename(this._newChannelName);
+            
+            // Update the channel parameters
+            this._nullParams = ModelUtils.isNullOrUndefined(aaiChannel.parameters);
+            this._doParametersRename(aaiChannel, this._oldChannelName, this._newChannelName);
+        });
     }
 
     /**
@@ -104,23 +97,17 @@ public class RenameChannelItemCommand extends AbstractCommand {
         if (this._channelExisted) {
             return;
         }
-        AaiChannelItem aaiChannel = aai20Document.channels.remove(this._newChannelName);
-
-        // If we didn't find a aaiChannel with the "from" name, then nothing to do.
-        if (this.isNullOrUndefined(aaiChannel)) {
-            return;
-        }
-
-        // Now we have the aaiChannel - rename it!
-        aaiChannel.rename(this._oldChannelName);
-        aai20Document.channels.put(this._oldChannelName, aaiChannel);
         
-        if (this._nullParams) {
-            NodeCompat.setProperty(aaiChannel, Constants.PROP_PARAMETERS, null);
-        } else {
-            // Update the channel parameters
-            this._doParametersRename(aaiChannel, this._newChannelName, this._oldChannelName);
-        }
+        aai20Document.channels = ModelUtils.renameMapKey(this._newChannelName, this._oldChannelName, aai20Document.channels, aaiChannel -> {
+            aaiChannel.rename(this._oldChannelName);
+            
+            if (this._nullParams) {
+                NodeCompat.setProperty(aaiChannel, Constants.PROP_PARAMETERS, null);
+            } else {
+                // Update the channel parameters
+                this._doParametersRename(aaiChannel, this._newChannelName, this._oldChannelName);
+            }
+        });
     }
 
     /**
@@ -229,13 +216,7 @@ public class RenameChannelItemCommand extends AbstractCommand {
      * @param toParamName
      */
     private void _renameChannelParameter(AaiChannelItem channel, String fromParamName, String toParamName) {
-        if (ModelUtils.isDefined(channel.parameters)) {
-            final AaiParameter param = channel.parameters.remove(fromParamName);
-            if (ModelUtils.isDefined(param)) {
-                param.rename(toParamName);
-                channel.addParameter(toParamName, param);
-            }
-        }
+        channel.renameParameter(fromParamName, toParamName);
     }
 
     /**

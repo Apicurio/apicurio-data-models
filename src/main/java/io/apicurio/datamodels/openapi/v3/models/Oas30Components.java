@@ -202,6 +202,15 @@ public class Oas30Components extends Components {
     public Oas30ParameterDefinition removeParameterDefinition(String name) {
         return this.parameters.remove(name);
     }
+    
+    /**
+     * Replaces a parameter without modifying ordering of parameters.
+     * @param parameter
+     */
+    public void replaceParameterDefinition(Oas30ParameterDefinition parameter) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addParameterDefinition(parameter.getName(), parameter);
+    }
 
     /**
      * Gets a list of all parameter definitions.

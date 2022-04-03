@@ -70,6 +70,17 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
         this._pathItems.put(name, pathItem);
         return pathItem;
     }
+    
+    /**
+     * Restores a path item at its original position
+     * @param index
+     * @param name
+     * @param pathItem
+     * @return
+     */
+    public void restorePathItem(int index, String name, OasPathItem pathItem) {
+        this._pathItems = ModelUtils.restoreMapEntry(index, name, pathItem, this._pathItems);
+    }
 
     /**
      * Replaces a path item without modifying the order of the path items.

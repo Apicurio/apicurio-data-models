@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
+
 /**
  * All data models that can be extended using the "x-*" approach to adding vendor extension 
  * properties must extend this class.
@@ -100,6 +102,17 @@ public abstract class ExtensibleNode extends Node {
         if (this._extensions != null) {
             this._extensions.clear();
         }
+    }
+
+    /**
+     * Restore a removed extension in its original position
+     * @param oldPosition
+     * @param name
+     * @param ext
+     */
+    public void restoreExtension(int oldPosition, String name,
+            Extension ext) {
+        this._extensions = ModelUtils.restoreMapEntry(oldPosition, name, ext, this._extensions);
     }
     
 }

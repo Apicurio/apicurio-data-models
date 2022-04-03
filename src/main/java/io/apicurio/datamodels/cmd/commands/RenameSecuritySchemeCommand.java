@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
@@ -32,9 +31,7 @@ import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
 
 /**
  * A command used to rename a security scheme, along with all references to it.

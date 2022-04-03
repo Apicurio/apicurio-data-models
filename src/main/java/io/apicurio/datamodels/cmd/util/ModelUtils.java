@@ -99,7 +99,7 @@ public class ModelUtils {
         if (!map.containsKey(oldKey) || map.containsKey(newKey)) {
             return map;
         }
-        if (!(map instanceof LinkedHashMap) ){
+        if (!(map instanceof LinkedHashMap)){
             final V value = map.remove(oldKey);
             if (valueConsumer != null) {
                 valueConsumer.accept(value);
@@ -108,7 +108,7 @@ public class ModelUtils {
             return map;
         }
         
-        final LinkedHashMap<K, V> newMap = new LinkedHashMap<K, V>();
+        final LinkedHashMap<K, V> newMap = new LinkedHashMap<>();
         // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,
         // create a new instance and populate it in insertion order
         for (Entry<K, V> entry : map.entrySet()) {
@@ -122,6 +122,45 @@ public class ModelUtils {
                 }
             }
             newMap.put(key, value);
+        }
+        return newMap;
+    }
+    
+    /**
+     * If the provided map is a {@link LinkedHashMap} then this method will
+     * restore the specified key at the specified position order by creating a new
+     * {@link LinkedHashMap} with the updated key. If the map is not a
+     * {@link LinkedHashMap} then the update will simply update the provided map with
+     * the new entry, which will not maintain ordering.
+     * 
+     * @param <K> Key type
+     * @param <V> Value type
+     * @param key Old key instance
+     * @param newKey New key instance
+     * @param map Old Map
+     * @param valueConsumer An optional function to apply to the value of the map entry
+     * @return A {@link Map} with the update applied, which may be the provided map or a new instance.
+     */
+    public static <K, V> Map<K, V> restoreMapEntry(int position, K key, V value, Map<K, V> map) {
+        // If the new key is present, then return without modification.
+        if (map.containsKey(key)) {
+            return map;
+        }
+        if (!(map instanceof LinkedHashMap) || position >= map.size()){
+            map.put(key, value);
+            return map;
+        }
+        
+
+        final LinkedHashMap<K, V> newMap = new LinkedHashMap<>();
+        // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,
+        // create a new instance and populate it in insertion order
+        int index = 0; 
+        for (Entry<K, V> entry : map.entrySet()) {
+            if (index++ == position) {
+                newMap.put(key, value);
+            }
+            newMap.put(entry.getKey(), entry.getValue());
         }
         return newMap;
     }
