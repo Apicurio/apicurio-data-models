@@ -17,7 +17,11 @@
 package io.apicurio.datamodels.cmd.util;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.NodeCompat;
@@ -73,5 +77,52 @@ public class ModelUtils {
         Object value = JsonCompat.getPropertyObject(oldExtension, name);
         extension.name = name;
         extension.value = value;
+    }
+
+    /**
+     * If the provided map is a {@link LinkedHashMap} then this method will
+     * rename the specified key and maintain insertion order by creating a new
+     * {@link LinkedHashMap} with the updated key. If the map is not a
+     * {@link LinkedHashMap} then the update will simply update the provided map with
+     * the new entry, which will not maintain ordering.
+     * 
+     * @param <K> Key type
+     * @param <V> Value type
+     * @param oldKey Old key instance
+     * @param newKey New key instance
+     * @param map Old Map
+     * @param valueConsumer An optional function to apply to the value of the map entry
+     * @return A {@link Map} with the update applied, which may be the provided map or a new instance.
+     */
+    public static <K, V> Map<K, V> renameMapKey(K oldKey, K newKey, Map<K, V> map, Consumer<V> valueConsumer) {
+        // If the old key isn't present, or the new key is present, then return without modification.
+        if (!map.containsKey(oldKey) || map.containsKey(newKey)) {
+            return map;
+        }
+        if (!(map instanceof LinkedHashMap) ){
+            final V value = map.remove(oldKey);
+            if (valueConsumer != null) {
+                valueConsumer.accept(value);
+            }
+            map.put(newKey, value);
+            return map;
+        }
+        
+        final LinkedHashMap<K, V> newMap = new LinkedHashMap<K, V>();
+        // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,
+        // create a new instance and populate it in insertion order
+        for (Entry<K, V> entry : map.entrySet()) {
+            // Remap the key
+            K key = entry.getKey();
+            V value = entry.getValue();
+            if (key.equals(oldKey)) {
+                key = newKey;
+                if (valueConsumer != null) {
+                    valueConsumer.accept(value);
+                }
+            }
+            newMap.put(key, value);
+        }
+        return newMap;
     }
 }

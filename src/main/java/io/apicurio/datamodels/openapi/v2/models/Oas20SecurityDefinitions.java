@@ -20,9 +20,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
 
@@ -69,6 +72,16 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
             return this.items.get(name);
         }
         return null;
+    }
+    
+    /**
+     * Renames a single security scheme without modifying the ordering of the schemes.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
+        this.items = ModelUtils.renameMapKey(oldName, newName, this.items, schemeConsumer::accept);
     }
 
     /**

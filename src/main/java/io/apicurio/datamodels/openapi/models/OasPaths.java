@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -96,6 +97,17 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
      */
     public OasPathItem removePathItem(String path) {
         return this._pathItems.remove(path);
+    }
+    
+    /**
+     * Rename a single path item child model, without changing the order of the items.
+     * @param fromName
+     * @param toName
+     * @return
+     */
+    public OasPathItem renamePathItem(String fromName, String toName) {
+        this._pathItems = ModelUtils.renameMapKey(fromName, toName, this._pathItems, path -> path.rename(toName));
+        return this._pathItems.get(toName);
     }
 
     /**

@@ -53,9 +53,7 @@ public class RenameSchemaDefinitionCommand_20 extends RenameSchemaDefinitionComm
         if (ModelUtils.isDefined(doc20.definitions.getDefinition(toName))) {
             return false;
         }
-        Oas20SchemaDefinition schemaDef = doc20.definitions.removeDefinition(fromName);
-        schemaDef.rename(toName);
-        doc20.definitions.addDefinition(toName, schemaDef);
+        doc20.definitions.renameDefinition(fromName, toName, schemaDef -> schemaDef.rename(toName));
         return true;
     }
 

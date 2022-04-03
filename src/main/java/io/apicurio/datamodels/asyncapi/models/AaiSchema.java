@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
@@ -166,6 +167,13 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
             return this.properties.remove(propertyName);
         }
         return null;
+    }
+    
+    @Override
+    public void renameProperty(String oldPropertyName, String newPropertyName,
+            Consumer<Schema> propertyConsumer) {
+        this.properties = ModelUtils.renameMapKey(oldPropertyName,
+                newPropertyName, this.properties, propertyConsumer::accept);
     }
 
     /**

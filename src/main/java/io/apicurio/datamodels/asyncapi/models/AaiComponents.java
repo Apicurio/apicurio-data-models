@@ -17,15 +17,18 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Models an AsyncAPI Components.
@@ -130,6 +133,16 @@ public abstract class AaiComponents extends Components {
     }
 
     /**
+     * Rename a schema definition without modifying the order of the definitions.
+     * @param fromName
+     * @param toName
+     */
+    public void renameSchemaDefinition(String fromName, String toName, Consumer<AaiSchema> schemaConsumer) {
+        this.schemas = ModelUtils.renameMapKey(fromName, toName, this.schemas,
+                schemaConsumer);
+    }
+
+    /**
      * Gets a single schema definition by name.
      * @param name
      */
@@ -195,6 +208,16 @@ public abstract class AaiComponents extends Components {
         if(securitySchemes != null)
             return securitySchemes.remove(name);
         return null;
+    }
+    
+    /**
+     * Renames a single security scheme without modifying the ordering of the schemes.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
     }
 
     public void addParameter(String key, AaiParameter value) {

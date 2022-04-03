@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
@@ -380,6 +383,16 @@ public class Oas30Components extends Components {
         return this.securitySchemes.remove(name);
     }
 
+    /**
+     * Renames a single security scheme without modifying the ordering of the schemes.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
+    }
+    
     /**
      * Gets a list of all security scheme definitions.
      */

@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.core.models.common;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author c.desc2@gmail.com
@@ -50,6 +51,12 @@ public interface IPropertyParent {
      * @param propertyName
      */
     public Schema removeProperty(String propertyName);
+    
+    /**
+     * Rename a property.
+     * @param oldPropertyName
+     */
+    public void renameProperty(String oldPropertyName, String newPropertyName, Consumer<Schema> propertyConsumer);
 
     /**
      * Gets a single property.
