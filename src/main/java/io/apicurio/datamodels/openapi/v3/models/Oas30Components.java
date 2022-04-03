@@ -89,6 +89,17 @@ public class Oas30Components extends Components {
     }
 
     /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(int index,
+            String name, Oas30SchemaDefinition schemaDef) {
+        this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
+    }
+
+    /**
      * Gets a single schema definition by name.
      * @param name
      */
@@ -157,6 +168,16 @@ public class Oas30Components extends Components {
     public Oas30ResponseDefinition removeResponseDefinition(String name) {
         return this.responses.remove(name);
     }
+    
+    /**
+     * Restore a deleted response definition in its previous position.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreResponseDefinition(int index, String name, Oas30ResponseDefinition schemaDef) {
+        this.responses = ModelUtils.restoreMapEntry(index, name, schemaDef, this.responses);
+    }
 
     /**
      * Gets a list of all response definitions.
@@ -164,6 +185,15 @@ public class Oas30Components extends Components {
     public List<Oas30ResponseDefinition> getResponseDefinitions() {
         List<Oas30ResponseDefinition> rval = new ArrayList<>();
         rval.addAll(this.responses.values());
+        return rval;
+    }
+    
+    /**
+     * Gets a list of all response definition names.
+     */
+    public List<String> getResponseDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.responses.keySet());
         return rval;
     }
 
@@ -400,6 +430,16 @@ public class Oas30Components extends Components {
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
+    }
+
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param scheme
+     */
+    public void restoreSecurityScheme(int index, String name, Oas30SecurityScheme scheme) {
+        this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
     
     /**

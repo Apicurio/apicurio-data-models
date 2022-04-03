@@ -141,6 +141,17 @@ public abstract class AaiComponents extends Components {
         this.schemas = ModelUtils.renameMapKey(fromName, toName, this.schemas,
                 schemaConsumer);
     }
+    
+    /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(int index,
+            String name, AaiSchema schemaDef) {
+        this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
+    }
 
     /**
      * Gets a single schema definition by name.
@@ -168,6 +179,16 @@ public abstract class AaiComponents extends Components {
         List<AaiSchema> rval = new ArrayList<>();
         if (this.schemas != null) {
             rval.addAll(this.schemas.values());
+        }
+        return rval;
+    }
+    /**
+     * Gets a list of all schema definitions.
+     */
+    public List<String> getSchemaDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        if (this.schemas != null) {
+            rval.addAll(this.schemas.keySet());
         }
         return rval;
     }
@@ -218,6 +239,16 @@ public abstract class AaiComponents extends Components {
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
+    }
+
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param scheme
+     */
+    public void restoreSecurityScheme(int index, String name, AaiSecurityScheme scheme) {
+        this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
 
     public void addParameter(String key, AaiParameter value) {

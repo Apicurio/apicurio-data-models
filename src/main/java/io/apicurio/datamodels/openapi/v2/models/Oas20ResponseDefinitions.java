@@ -21,10 +21,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v2.visitors.IOas20Visitor;
+import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
 
 /**
  * Models an OpenAPI 2.0 responses.
@@ -86,6 +88,16 @@ public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20
      */
     public Oas20ResponseDefinition removeResponse(String name) {
         return this.items.remove(name);
+    }
+    
+    /**
+     * Restore a deleted response definition in its previous position.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreResponseDefinition(int index, String name, Oas20ResponseDefinition schemaDef) {
+        this.items = ModelUtils.restoreMapEntry(index, name, schemaDef, this.items);
     }
 
     /**

@@ -323,6 +323,7 @@
     { "name": "[AsyncAPI 2] {Rename Channel Item} - Rename Channel Item Rename Params", "test": "commands/rename-channel-item/asyncapi-2/rename-channel-item-with-params" },
     { "name": "[AsyncAPI 2] {Rename Channel Item} - Rename Channel Item Remove Empty Params", "test": "commands/rename-channel-item/asyncapi-2/rename-channel-item-remove-params" },
     { "name": "[AsyncAPI 2] {Rename Channel Item} - Rename Channel Item Remove Params Keep Not Empty", "test": "commands/rename-channel-item/asyncapi-2/rename-channel-item-remove-some-params" },
+    { "name": "[AsyncAPI 2] {Rename Channel Item} - Rename Channel Item With Many Params", "test": "commands/rename-channel-item/asyncapi-2/rename-channel-item-with-many-params" },
     { "name": "[AsyncAPI 2] {Rename Message Def} - Rename Message Definition", "test": "commands/rename-message-definition/asyncapi-2/rename-message-definition" },
     { "name": "[AsyncAPI 2] {Rename Message Trait Def} - Rename Message Trait Definition", "test": "commands/rename-messagetrait-definition/asyncapi-2/rename-messagetrait-definition" },
     { "name": "[AsyncAPI 2] {Rename Operation Trait Def} - Rename Operation Trait Definition", "test": "commands/rename-operationtrait-definition/asyncapi-2/rename-operationtrait-definition" },

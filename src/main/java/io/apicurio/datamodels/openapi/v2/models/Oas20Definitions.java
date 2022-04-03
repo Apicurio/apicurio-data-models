@@ -97,6 +97,17 @@ public class Oas20Definitions extends Node implements IIndexedNode<Oas20SchemaDe
     public void renameDefinition(String fromName, String toName, Consumer<Oas20SchemaDefinition> valueConsumer) {
         this.items = ModelUtils.renameMapKey(fromName, toName, this.items, valueConsumer);
     }
+    
+    /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(int index,
+            String name, Oas20SchemaDefinition schemaDef) {
+        this.items = ModelUtils.restoreMapEntry(index, name, schemaDef, this.items);
+    }
 
     /**
      * Removes a definition by name.

@@ -53,6 +53,14 @@ public interface IPropertyParent {
     public Schema removeProperty(String propertyName);
     
     /**
+     * Restore a deleted property in its original position
+     * @param index
+     * @param propertyName
+     * @param schema
+     */
+    public void restoreProperty(int index, String propertyName, Schema schema);
+    
+    /**
      * Rename a property.
      * @param oldPropertyName
      */

@@ -175,6 +175,11 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
         this.properties = ModelUtils.renameMapKey(oldPropertyName,
                 newPropertyName, this.properties, propertyConsumer::accept);
     }
+    
+    @Override
+    public void restoreProperty(int index, String propertyName, Schema schema) {
+        this.properties = ModelUtils.restoreMapEntry(index, propertyName, (AaiSchema) schema, this.properties);
+    }
 
     /**
      * @see IPropertyParent#getProperty(String) 

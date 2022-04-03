@@ -16,18 +16,23 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
+import java.util.stream.Collectors;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiSecurityScheme;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
+import io.apicurio.datamodels.core.models.common.INamed;
 
 /**
  * A command used to delete a security scheme from an aaidocument.
  * @author c.desc2@gmail.com
  */
 public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeCommand {
+
+    public int _oldSchemeIndex;
 
     DeleteSecuritySchemeCommand_Aai20() {
     }
@@ -43,6 +48,7 @@ public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeComma
     protected Object doDeleteScheme(Document document) {
         Aai20Document aai20Document = (Aai20Document) document;
         if (ModelUtils.isDefined(aai20Document.components)) {
+            this._oldSchemeIndex = aai20Document.components.getSecuritySchemesList().stream().map(INamed::getName).collect(Collectors.toList()).indexOf(this._schemeName);
             return Library.writeNode(aai20Document.components.removeSecurityScheme(this._schemeName));
         } else {
             return null;
@@ -58,7 +64,7 @@ public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeComma
         if (ModelUtils.isDefined(aai20Document.components)) {
             AaiSecurityScheme scheme = new Aai20NodeFactory().createSecurityScheme(aai20Document.components, this._schemeName);
             Library.readNode(oldScheme, scheme);
-            aai20Document.components.addSecurityScheme(this._schemeName, scheme);
+            aai20Document.components.restoreSecurityScheme(this._oldSchemeIndex, this._schemeName, scheme);
         }
     }
     
