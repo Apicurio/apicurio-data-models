@@ -16,8 +16,6 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.stream.Collectors;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
@@ -45,9 +43,7 @@ public class DeleteSecuritySchemeCommand_30 extends DeleteSecuritySchemeCommand 
     protected Object doDeleteScheme(Document document) {
         Oas30Document doc30 = (Oas30Document) document;
         if (ModelUtils.isDefined(doc30.components)) {
-            this._oldSchemeIndex = doc30.components.getSecuritySchemes().stream()
-                    .map(Oas30SecurityScheme::getName)
-                    .collect(Collectors.toList()).indexOf(this._schemeName);
+            this._oldSchemeIndex = doc30.components.getSecuritySchemeNames().indexOf(this._schemeName);
             return Library.writeNode(doc30.components.removeSecurityScheme(this._schemeName));
         } else {
             return null;

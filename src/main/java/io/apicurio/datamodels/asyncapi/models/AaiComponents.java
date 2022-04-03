@@ -78,6 +78,10 @@ public abstract class AaiComponents extends Components {
     public List<AaiSecurityScheme> getSecuritySchemesList() {
         return JsonCompat.mapToList(securitySchemes);
     }
+    
+    public List<String> getSecuritySchemesNames() {
+        return new ArrayList<String>(securitySchemes.keySet());
+    }
 
     public List<AaiParameter> getParametersList() {
         return JsonCompat.mapToList(parameters);
@@ -241,7 +245,7 @@ public abstract class AaiComponents extends Components {
      * @return
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
-        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
     }
 
     /**

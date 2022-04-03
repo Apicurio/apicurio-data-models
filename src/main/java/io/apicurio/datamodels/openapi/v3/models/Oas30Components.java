@@ -95,7 +95,7 @@ public class Oas30Components extends Components {
      * @return
      */
     public void renameSchemaDefinition(String oldName, String newName, Consumer<Oas30SchemaDefinition> schemaConsumer) {
-        this.schemas = ModelUtils.renameMapKey(oldName, newName, this.schemas, schemaConsumer::accept);
+        this.schemas = ModelUtils.renameMapKey(oldName, newName, this.schemas, schemaConsumer);
     }
 
     /**
@@ -104,8 +104,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index,
-            String name, Oas30SchemaDefinition schemaDef) {
+    public void restoreSchemaDefinition(int index, String name, Oas30SchemaDefinition schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -131,6 +130,15 @@ public class Oas30Components extends Components {
     public List<Oas30SchemaDefinition> getSchemaDefinitions() {
         List<Oas30SchemaDefinition> rval = new ArrayList<>();
         rval.addAll(this.schemas.values());
+        return rval;
+    }
+    
+    /**
+     * Gets a list of all schema definition names.
+     */
+    public List<String> getSchemaDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.schemas.keySet());
         return rval;
     }
 
@@ -447,7 +455,7 @@ public class Oas30Components extends Components {
      * @return
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
-        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer::accept);
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
     }
 
     /**
@@ -466,6 +474,16 @@ public class Oas30Components extends Components {
     public List<Oas30SecurityScheme> getSecuritySchemes() {
         List<Oas30SecurityScheme> rval = new ArrayList<>();
         rval.addAll(this.securitySchemes.values());
+        return rval;
+    }
+    
+    
+    /**
+     * Gets a list of all security scheme definition names.
+     */
+    public List<String> getSecuritySchemeNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.securitySchemes.keySet());
         return rval;
     }
 

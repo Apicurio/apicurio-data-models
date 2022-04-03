@@ -86,17 +86,17 @@ public class ModelUtils {
      * {@link LinkedHashMap} then the update will simply update the provided map with
      * the new entry, which will not maintain ordering.
      * 
-     * @param <K> Key type
      * @param <V> Value type
+     * @param <T> Bounding type for V
      * @param oldKey Old key instance
      * @param newKey New key instance
      * @param map Old Map
      * @param valueConsumer An optional function to apply to the value of the map entry
      * @return A {@link Map} with the update applied, which may be the provided map or a new instance.
      */
-    public static <K, V> Map<K, V> renameMapKey(K oldKey, K newKey, Map<K, V> map, Consumer<V> valueConsumer) {
+    public static <V extends T, T> Map<String, V> renameMapKey(String oldKey, String newKey, Map<String, V> map, Consumer<T> valueConsumer) {
         // If the old key isn't present, or the new key is present, then return without modification.
-        if (!isDefined(map) || !map.containsKey(oldKey) || map.containsKey(newKey)) {
+        if (!NodeCompat.isDefined(map) || !map.containsKey(oldKey) || map.containsKey(newKey)) {
             return map;
         }
         if (!(map instanceof LinkedHashMap)){
@@ -108,12 +108,12 @@ public class ModelUtils {
             return map;
         }
         
-        final LinkedHashMap<K, V> newMap = new LinkedHashMap<>();
+        final LinkedHashMap<String, V> newMap = new LinkedHashMap<>();
         // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,
         // create a new instance and populate it in insertion order
-        for (Entry<K, V> entry : map.entrySet()) {
+        for (Entry<String, V> entry : map.entrySet()) {
             // Remap the key
-            K key = entry.getKey();
+            String key = entry.getKey();
             V value = entry.getValue();
             if (key.equals(oldKey)) {
                 key = newKey;
@@ -133,7 +133,6 @@ public class ModelUtils {
      * {@link LinkedHashMap} then the update will simply update the provided map with
      * the new entry, which will not maintain ordering.
      * 
-     * @param <K> Key type
      * @param <V> Value type
      * @param key Old key instance
      * @param newKey New key instance
@@ -141,9 +140,9 @@ public class ModelUtils {
      * @param valueConsumer An optional function to apply to the value of the map entry
      * @return A {@link Map} with the update applied, which may be the provided map or a new instance.
      */
-    public static <K, V> Map<K, V> restoreMapEntry(int position, K key, V value, Map<K, V> map) {
+    public static <V> Map<String, V> restoreMapEntry(int position, String key, V value, Map<String, V> map) {
         // If the new key is present, then return without modification.
-        if (!isDefined(map) || map.containsKey(key)) {
+        if (!NodeCompat.isDefined(map) || map.containsKey(key)) {
             return map;
         }
         if (!(map instanceof LinkedHashMap) || position >= map.size()){
@@ -152,11 +151,11 @@ public class ModelUtils {
         }
         
 
-        final LinkedHashMap<K, V> newMap = new LinkedHashMap<>();
+        final LinkedHashMap<String, V> newMap = new LinkedHashMap<>();
         // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,
         // create a new instance and populate it in insertion order
         int index = 0; 
-        for (Entry<K, V> entry : map.entrySet()) {
+        for (Entry<String, V> entry : map.entrySet()) {
             if (index++ == position) {
                 newMap.put(key, value);
             }

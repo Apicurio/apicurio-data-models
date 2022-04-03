@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
@@ -82,7 +81,7 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
      * @return
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
-        this.items = ModelUtils.renameMapKey(oldName, newName, this.items, schemeConsumer::accept);
+        this.items = ModelUtils.renameMapKey(oldName, newName, this.items, schemeConsumer);
     }
 
     /**
@@ -161,7 +160,11 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
      */
     @Override
     public List<String> getItemNames() {
-        return getItems().stream().map(Oas20SecurityScheme::getName).collect(Collectors.toList());
+        final List<String> itemNames = new ArrayList<String>();
+        for (Oas20SecurityScheme scheme : getItems()) {
+            itemNames.add(scheme.getName());
+        }
+        return itemNames;
     }
 
     /**

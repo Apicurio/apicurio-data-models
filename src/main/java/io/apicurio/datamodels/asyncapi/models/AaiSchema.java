@@ -172,8 +172,7 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     @Override
     public void renameProperty(String oldPropertyName, String newPropertyName,
             Consumer<Schema> propertyConsumer) {
-        this.properties = ModelUtils.renameMapKey(oldPropertyName,
-                newPropertyName, this.properties, propertyConsumer::accept);
+        this.properties = ModelUtils.renameMapKey(oldPropertyName, newPropertyName, this.properties, propertyConsumer);
     }
     
     @Override

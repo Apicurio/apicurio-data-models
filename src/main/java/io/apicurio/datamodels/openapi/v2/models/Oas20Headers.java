@@ -103,7 +103,7 @@ public class Oas20Headers extends Node implements IIndexedNode<Oas20Header> {
      * @param headerConsumer
      */
     public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
-        this.items = ModelUtils.renameMapKey(from, to, this.items, headerConsumer::accept);
+        this.items = ModelUtils.renameMapKey(from, to, this.items, headerConsumer);
     }
 
     /**

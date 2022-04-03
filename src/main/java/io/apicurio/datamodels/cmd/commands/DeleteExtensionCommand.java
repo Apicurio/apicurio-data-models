@@ -16,8 +16,6 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.apicurio.datamodels.Library;
@@ -74,8 +72,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
             this._hasOldValue = true;
             this._oldValue = extension.value;
 
-            _oldValueIndex = parent.getExtensions().stream().map(e -> e.name)
-                    .collect(Collectors.toList()).indexOf(this._name);
+            _oldValueIndex = parent.getExtensionNames().indexOf(this._name);
             parent.removeExtension(this._name);
         } else {
             this._hasOldValue = false;

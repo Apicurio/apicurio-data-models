@@ -16,12 +16,9 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.stream.Collectors;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30SchemaDefinition;
 
@@ -46,9 +43,7 @@ public class DeleteSchemaDefinitionCommand_30 extends DeleteSchemaDefinitionComm
     protected Object doDeleteSchemaDefinition(Document document) {
         Oas30Document doc30 = (Oas30Document) document;
         if (ModelUtils.isDefined(doc30.components)) {
-            this._oldDefinitionIndex = doc30.components.getSchemaDefinitions()
-                    .stream().map(INamed::getName).collect(Collectors.toList())
-                    .indexOf(this._definitionName);
+            this._oldDefinitionIndex = doc30.components.getSchemaDefinitionNames().indexOf(this._definitionName);
             Oas30SchemaDefinition oldDef = doc30.components.removeSchemaDefinition(this._definitionName);
             return Library.writeNode(oldDef);
         }
