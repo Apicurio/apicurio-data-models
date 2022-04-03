@@ -75,6 +75,15 @@ public class Oas30Components extends Components {
     public void addSchemaDefinition(String name, Oas30SchemaDefinition schemaDefinition) {
         this.schemas.put(name, schemaDefinition);
     }
+    
+    /**
+     * Replaces a schema definition without modifying the order of the definitions.
+     * @param newSchemaDefinition
+     */
+    public void replaceSchemaDefinition(Oas30SchemaDefinition newSchemaDefinition) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addSchemaDefinition(newSchemaDefinition.getName(), newSchemaDefinition);
+    }
 
     /**
      * Gets a single schema definition by name.
@@ -119,6 +128,15 @@ public class Oas30Components extends Components {
      */
     public void addResponseDefinition(String name, Oas30ResponseDefinition responseDefinition) {
         this.responses.put(name, responseDefinition);
+    }
+
+    /**
+     * Replaces a response without modifying the order of the responses.
+     * @param newResponseDefinition
+     */
+    public void replaceResponseDefinition(Oas30ResponseDefinition newResponseDefinition) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addResponseDefinition(newResponseDefinition.getName(), newResponseDefinition);
     }
 
     /**

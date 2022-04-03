@@ -75,6 +75,16 @@ public class Oas20Definitions extends Node implements IIndexedNode<Oas20SchemaDe
         this.items.put(name, schema);
         return schema;
     }
+    
+    /**
+     * Replaces a definition without modifying the order of the definitions.
+     * @param newSchema
+     */
+    public Oas20SchemaDefinition replaceDefinition(Oas20SchemaDefinition newSchema) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addDefinition(newSchema.getName(), newSchema);
+        return newSchema;
+    }
 
     /**
      * Removes a definition by name.

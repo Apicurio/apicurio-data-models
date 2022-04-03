@@ -39,20 +39,14 @@ public class ReplaceChannelItemCommand extends ReplaceNodeCommand<AaiChannelItem
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void replaceNode(Document doc, AaiChannelItem oldNode,
-            AaiChannelItem newNode) {
+    protected void replaceNode(Document doc, AaiChannelItem newNode) {
         AaiDocument aaiDocument = (AaiDocument) doc;
-
-        if (!oldNode.getName().equals(newNode.getName())) {
-            // TODO: Can this even happen?
-            aaiDocument.channels.remove(oldNode.getName());
-        }
-
         newNode._ownerDocument = aaiDocument;
         newNode._parent = aaiDocument;
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
         aaiDocument.channels.put(this._channelName, newNode);
     }
     

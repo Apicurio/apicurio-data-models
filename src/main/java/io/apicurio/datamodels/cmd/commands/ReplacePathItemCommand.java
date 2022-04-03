@@ -38,20 +38,14 @@ public class ReplacePathItemCommand extends ReplaceNodeCommand<OasPathItem> {
     }
     
 	/**
-	 * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
+	 * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
 	 */
 	@Override
-	protected void replaceNode(Document doc, OasPathItem oldNode,
-			OasPathItem newNode) {
+	protected void replaceNode(Document doc, OasPathItem newNode) {
 		OasDocument odoc = (OasDocument) doc;
-
-		if (!oldNode.getPath().equals(newNode.getPath())) {
-			// TODO: Can this even happen?
-			odoc.paths.removePathItem(oldNode.getPath());
-		}
-
 		newNode._ownerDocument = odoc;
 		newNode._parent = odoc.paths;
+		// As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
 		odoc.paths.addPathItem(this._pathName, newNode);
 	}
     

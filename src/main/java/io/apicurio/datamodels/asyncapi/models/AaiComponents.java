@@ -108,11 +108,25 @@ public abstract class AaiComponents extends Components {
         return JsonCompat.mapToList(messageBindings);
     }
     
-
+    /**
+     * Add a schema definition
+     * @param key
+     * @param value
+     */
     public void addSchemaDefinition(String key, AaiSchema value) {
         if(schemas == null)
             schemas = new LinkedHashMap<>();
         schemas.put(key, value);
+    }
+
+    /**
+     * Replaces a schema definition without modifying the order of the definitions.
+     * @param key
+     * @param value
+     */
+    public void replaceSchemaDefinition(String key, AaiSchema value) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addSchemaDefinition(key, value);
     }
 
     /**

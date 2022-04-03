@@ -39,21 +39,14 @@ public class ReplaceResponseDefinitionCommand_30 extends ReplaceNodeCommand<Oas3
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void replaceNode(Document doc, Oas30ResponseDefinition oldNode,
-            Oas30ResponseDefinition newNode) {
+    protected void replaceNode(Document doc, Oas30ResponseDefinition newNode) {
         Oas30Document doc30 = (Oas30Document) doc;
-
-        if (!oldNode.getName().equals(newNode.getName())) {
-            // TODO: Can this even happen?
-            doc30.components.removeResponseDefinition(oldNode.getName());
-        }
-
         newNode._ownerDocument = doc;
         newNode._parent = doc30.components;
-        doc30.components.addResponseDefinition(newNode.getName(), newNode);
+        doc30.components.replaceResponseDefinition(newNode);
     }
     
     /**

@@ -71,6 +71,17 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
     }
 
     /**
+     * Replaces a path item without modifying the order of the path items.
+     * @param name
+     * @param pathItem
+     */
+    public OasPathItem replacePathItem(String name, OasPathItem pathItem) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addPathItem(name, pathItem);
+        return pathItem;
+    }
+
+    /**
      * Gets a list of all the path names.
      */
     public List<String> getPathItemNames() {

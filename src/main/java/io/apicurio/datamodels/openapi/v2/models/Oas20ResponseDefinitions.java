@@ -71,6 +71,16 @@ public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20
     }
 
     /**
+     * Replaces a response without modifying the order of the responses.
+     * @param newResponse
+     */
+    public Oas20ResponseDefinition replaceResponse(Oas20ResponseDefinition newResponse) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addResponse(newResponse.getName(), newResponse);
+        return newResponse;
+    }
+
+    /**
      * Removes a response by name.
      * @param name
      */

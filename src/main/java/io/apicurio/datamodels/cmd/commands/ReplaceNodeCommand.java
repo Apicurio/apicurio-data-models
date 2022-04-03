@@ -63,7 +63,7 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
 
         this._old = Library.writeNode(oldNode);
         T newNode = this.readNode(document, this._new);
-        this.replaceNode(document, oldNode, newNode);
+        this.replaceNode(document, newNode);
     }
 
     /**
@@ -83,13 +83,13 @@ public abstract class ReplaceNodeCommand<T extends Node> extends AbstractCommand
         }
 
         T restoreNode = this.readNode(document, this._old);
-        this.replaceNode(document, node, restoreNode);
+        this.replaceNode(document, restoreNode);
     }
 
     /**
-     * Replaces the the old node with the new node in the data model.
+     * Replaces the old node entry with the new node in the data model, without changing the order of the nodes.
      */
-    protected abstract void replaceNode(Document doc, T oldNode, T newNode);
+    protected abstract void replaceNode(Document doc, T newNode);
 
     /**
      * Unmarshalls a node into the appropriate type.

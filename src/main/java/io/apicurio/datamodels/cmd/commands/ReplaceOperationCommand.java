@@ -42,11 +42,10 @@ public class ReplaceOperationCommand extends ReplaceNodeCommand<OasOperation> {
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void replaceNode(Document doc, OasOperation oldNode,
-            OasOperation newNode) {
+    protected void replaceNode(Document doc, OasOperation newNode) {
         OasDocument odoc = (OasDocument) doc;
         OasPathItem path = odoc.paths.getPathItem(this._path);
         newNode._parent = path;
