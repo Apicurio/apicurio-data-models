@@ -30,7 +30,7 @@ import io.apicurio.datamodels.core.models.NodePath;
  * @author eric.wittmann@gmail.com
  */
 public class SetExtensionCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
     public NodePath _parentPath;
     public String _name;
     public Object _value;

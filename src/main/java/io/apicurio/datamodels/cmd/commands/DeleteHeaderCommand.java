@@ -31,7 +31,7 @@ import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
  * @author vvilerio
  */
 public class DeleteHeaderCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
     public String _headerName;
     public NodePath _parentPath;
 

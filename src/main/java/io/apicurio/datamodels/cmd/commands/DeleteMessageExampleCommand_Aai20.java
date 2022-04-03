@@ -34,6 +34,7 @@ import java.util.Map;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteMessageExampleCommand_Aai20 extends AbstractCommand {
+    // TODO: Ordering on undo
 
    public NodePath _parentPath;
 

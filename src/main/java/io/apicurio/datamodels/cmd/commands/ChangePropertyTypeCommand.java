@@ -39,7 +39,7 @@ import java.util.List;
  * @author eric.wittmann@gmail.com
  */
 public abstract class ChangePropertyTypeCommand extends AbstractCommand {
-    
+    // TODO: Ordering on undo
     public NodePath _propPath;
     public String _propName;
     public SimplifiedPropertyType _newType;

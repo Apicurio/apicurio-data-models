@@ -35,7 +35,7 @@ import java.util.Map;
  * @author c.desc2@gmail.com
  */
 public class DeleteServerCommand_Aai20 extends AbstractCommand {
-
+ // TODO: Ordering on undo
     public String _serverName;
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
