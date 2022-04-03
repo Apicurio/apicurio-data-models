@@ -259,7 +259,16 @@ public class CommandTestRunner extends ParentRunner<CommandTestCase> {
      * @throws JSONException
      */
     static void assertJsonEquals(String expected, String actual) throws JSONException {
-        JSONAssert.assertEquals(expected, actual, true);
+        // JSONAssert provides understandable validation of the equality of the JSON structure, but it doesn't currently
+        // support verification of strict ordering of entries - https://github.com/skyscreamer/JSONassert/issues/81
+        final boolean strict = true;
+        JSONAssert.assertEquals(expected, actual, strict);
+        
+        // If the JSONAssert assertion passes, then the two JSON objects are strictly equivalent, though may have different
+        // ordering. Round tripping the expected JSON with the same pretty printer used for the actual document allows for
+        // a reasonable exact string comparison to be made. 
+        final String expectedString = Library.writeDocumentToJSONString(Library.readDocumentFromJSONString(expected));
+        Assert.assertEquals("Expected exact match for JSON string representations", expectedString, actual);
     }
     
     private static enum TestDirectiveType {
