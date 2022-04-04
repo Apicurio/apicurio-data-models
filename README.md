@@ -18,7 +18,7 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 For details on how to use the library, see the documentation included with the library on
 npmjs.com:
 
-  [https://www.npmjs.com/package/apicurio-data-models](https://www.npmjs.com/package/apicurio-data-models)
+  [https://www.npmjs.com/package/@apicurio/data-models](https://www.npmjs.com/package/@apicurio/data-models)
 
 This documentation can also be found in this repository here:
 
