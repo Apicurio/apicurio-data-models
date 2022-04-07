@@ -2,7 +2,7 @@
 
 A Typescript library for reading, manipulating, and writing OpenAPI and AsyncAPI documents.
 
-Install with `npm install apicurio-data-models`.
+Install with `npm install @apicurio/data-models`.
 
 ## Overview
 
