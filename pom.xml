@@ -60,7 +60,7 @@
 
         <!-- Node/Yarn Versions -->
         <version.node-js>16.4.2</version.node-js>
-        <version.yarn>1.22.5</version.yarn>
+        <version.yarn>1.22.17</version.yarn>
 
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
