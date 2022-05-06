@@ -107,6 +107,11 @@ public class Oas20Response extends OasResponse implements IOasHeaderParent, IExa
     public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
         this.headers.renameHeader(from, to, headerConsumer);
     }
+    
+    @Override
+    public void restoreHeader(Integer index, String headerName, OasHeader header) {
+        this.headers.restoreHeader(index, headerName, (Oas20Header) header);
+    }
 
     /**
      * Gets a list of all headers.

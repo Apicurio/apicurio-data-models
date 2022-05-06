@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
 import io.apicurio.datamodels.core.models.common.Operation;
@@ -108,6 +109,14 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
         }
         this.parameters.add(parameter);
         return parameter;
+    }
+    
+    /**
+     * @see IOasParameterParent#restoreParameter(Integer, OasParameter) 
+     */
+    @Override
+    public void restoreParameter(Integer index, OasParameter parameter) {
+        this.parameters = ModelUtils.restoreListEntry(index, parameter, this.parameters);
     }
 
     /**

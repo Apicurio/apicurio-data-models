@@ -32,7 +32,7 @@ import io.apicurio.datamodels.openapi.models.OasResponses;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteResponseCommand extends AbstractCommand {
-    // TODO: Ordering on undo
+    // TODO: Ordering on undo needs to be preserved
     
     public String _responseCode;
     public NodePath _responsePath;

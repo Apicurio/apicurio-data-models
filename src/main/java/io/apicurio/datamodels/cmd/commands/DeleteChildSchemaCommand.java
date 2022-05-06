@@ -34,7 +34,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30OneOfSchema;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
-    // TODO: Ordering on undo
+    // TODO: Ordering on undo - this will lose the position of the schema in the list
     public NodePath _schemaPath;
     public NodePath _parentPath;
 

@@ -27,6 +27,14 @@ public interface IOasHeaderParent {
     * @param object
     */
    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer);
+   
+   /**
+    * Restore a deleted header in its original position
+    * @param index
+    * @param headerName
+    * @param header
+    */
+   public void restoreHeader(Integer index, String headerName, OasHeader header);
 
    /**
     * Gets a single  header by name.

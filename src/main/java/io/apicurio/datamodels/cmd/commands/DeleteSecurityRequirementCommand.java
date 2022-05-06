@@ -35,7 +35,7 @@ import io.apicurio.datamodels.core.models.common.SecurityRequirement;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteSecurityRequirementCommand extends AbstractCommand {
-    // TODO: Ordering
+    // TODO: Ordering on undo needs to be preserved
 
     public NodePath _parentPath;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)

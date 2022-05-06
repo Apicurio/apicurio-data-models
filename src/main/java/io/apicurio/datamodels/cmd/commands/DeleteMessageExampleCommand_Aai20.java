@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat;
@@ -34,7 +35,6 @@ import java.util.Map;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteMessageExampleCommand_Aai20 extends AbstractCommand {
-    // TODO: Ordering on undo
 
    public NodePath _parentPath;
 
@@ -42,6 +42,8 @@ public class DeleteMessageExampleCommand_Aai20 extends AbstractCommand {
    public Object _exampleValue;
 
    public boolean _exampleRemoved;
+   
+   public Integer _oldExampleIndex; // nullable for backwards compatibility
 
    public DeleteMessageExampleCommand_Aai20() {
    }
@@ -99,6 +101,9 @@ public class DeleteMessageExampleCommand_Aai20 extends AbstractCommand {
       }
       if (elementIndex != -1) {
          operation.message.examples.remove(elementIndex);
+         this._oldExampleIndex = elementIndex;
+      } else {
+         this._oldExampleIndex = null;
       }
 
       this._exampleRemoved = true;
@@ -118,6 +123,6 @@ public class DeleteMessageExampleCommand_Aai20 extends AbstractCommand {
       for (String key : JsonCompat.keys(this._exampleValue)) {
          newExample.put(key, JsonCompat.getProperty(this._exampleValue, key));
       }
-      operation.message.examples.add(newExample);
+      ModelUtils.restoreListEntry(this._oldExampleIndex, newExample, operation.message.examples);
    }
 }

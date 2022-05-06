@@ -40,7 +40,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Server;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteAllServersCommand extends AbstractCommand {
-    // TODO: Ordering on undo
+
     public NodePath _parentPath;
     @JsonDeserialize(contentUsing=NullableJsonNodeDeserializer.class)
     public List<Object> _oldServers;

@@ -215,6 +215,15 @@ public abstract class AaiComponents extends Components {
         return null;
     }
     
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param message
+     */
+    public void restoreMessage(Integer index, String name, AaiMessage message) {
+        this.messages = ModelUtils.restoreMapEntry(index, name, message, this.messages);
+    }
 
     public void renameMessage(String fromName, String toName, Consumer<AaiMessage> messageConsumer) {
         this.messages = ModelUtils.renameMapKey(fromName, toName, this.messages, messageConsumer);

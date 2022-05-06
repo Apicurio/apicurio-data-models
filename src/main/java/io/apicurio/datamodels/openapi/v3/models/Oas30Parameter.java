@@ -104,6 +104,14 @@ public class Oas30Parameter extends OasParameter implements IOas30MediaTypeParen
     }
 
     /**
+     * see {@link io.apicurio.datamodels.core.models.common.IExamplesParent#restoreExample(Integer, String, IExample)}
+     */
+    @Override
+    public void restoreExample(Integer index, String name, IExample example) {
+        this.examples = ModelUtils.restoreMapEntry(index, name, example, this.examples);
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.models.common.IExamplesParent#clearExamples()
      */
     @Override

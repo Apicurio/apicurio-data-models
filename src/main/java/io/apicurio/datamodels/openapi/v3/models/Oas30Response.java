@@ -197,6 +197,11 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
     public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
         this.headers = ModelUtils.renameMapKey(from, to, this.headers, headerConsumer);
     }
+    
+    @Override
+    public void restoreHeader(Integer index, String headerName, OasHeader header) {
+        this.headers = ModelUtils.restoreMapEntry(index, headerName, (Oas30Header) header, this.headers);
+    }
 
     /**
      * Gets a list of all headers.

@@ -171,4 +171,28 @@ public class ModelUtils {
         }
         return newMap;
     }
+
+    /**
+     * Restore a list entry at a certain position. If the provided list is
+     * <code>null</code> a new list will be returned.
+     * 
+     * @param <V> Value type
+     * @param position The position, may be <code>null</code>.
+     * @param value The value
+     * @param list The list
+     * @return A list with the value, which may be the original list or a new instance.
+     */
+    public static <V> List<V> restoreListEntry(Integer position, V value, List<V> list) {
+        if (!NodeCompat.isDefined(list)) {
+            final ArrayList<V> newList = new ArrayList<V>();
+            newList.add(value);
+            return newList;
+        }
+        if (!NodeCompat.isDefined(position) || position >= list.size()) {
+            list.add(value);
+        } else {
+            list.add(position, value);
+        }
+        return list;
+    }
 }

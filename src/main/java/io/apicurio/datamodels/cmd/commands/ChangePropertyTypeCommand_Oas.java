@@ -9,7 +9,7 @@ import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 
 public class ChangePropertyTypeCommand_Oas extends ChangePropertyTypeCommand {
-    // TODO: Ordering on undo
+
     public ChangePropertyTypeCommand_Oas() {
     }
 

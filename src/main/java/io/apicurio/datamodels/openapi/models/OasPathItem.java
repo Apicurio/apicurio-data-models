@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
@@ -131,6 +132,14 @@ public abstract class OasPathItem extends ExtensibleNode implements IOasParamete
         return param;
     }
 
+    /**
+     * @see IOasParameterParent#restoreParameter(Integer, OasParameter) 
+     */
+    @Override
+    public void restoreParameter(Integer index, OasParameter parameter) {
+        this.parameters = ModelUtils.restoreListEntry(index, parameter, this.parameters);
+    }
+    
     /**
      * Returns a single, unique parameter identified by "in" and "name" (which are the two
      * properties that uniquely identify a parameter).  Returns null if no parameter is found.
