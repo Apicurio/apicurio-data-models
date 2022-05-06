@@ -6,7 +6,7 @@
     <groupId>io.apicurio</groupId>
     <artifactId>apicurio-data-models</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.25</version>
+    <version>1.1.26</version>
     <name>apicurio-data-models</name>
 
     <url>https://www.apicur.io/</url>
@@ -59,8 +59,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Node/Yarn Versions -->
-        <version.node-js>10.22.1</version.node-js>
-        <version.yarn>1.22.5</version.yarn>
+        <version.node-js>16.4.2</version.node-js>
+        <version.yarn>1.22.17</version.yarn>
 
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
@@ -74,15 +74,15 @@
         
         <!-- Plugin Versions -->
         <version.org.eclipse.m2e.lifecycle-mapping>1.0.0</version.org.eclipse.m2e.lifecycle-mapping>
-        <version.org.apache.felix.maven-bundle-plugin>5.1.4</version.org.apache.felix.maven-bundle-plugin>
+        <version.org.apache.felix.maven-bundle-plugin>5.1.5</version.org.apache.felix.maven-bundle-plugin>
         <version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
-        <version.maven-javadoc-plugin>3.3.2</version.maven-javadoc-plugin>
+        <version.maven-javadoc-plugin>3.4.0</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
         <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
-        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.12</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
     </properties>
 
     <dependencies>
