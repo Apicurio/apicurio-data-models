@@ -90,7 +90,7 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, Oas20SecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, Oas20SecurityScheme scheme) {
         this.items = ModelUtils.restoreMapEntry(index, name, scheme, this.items);
     }
 

@@ -28,7 +28,7 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class DeleteSchemaDefinitionCommand_Aai20 extends DeleteSchemaDefinitionCommand {
 
-    public int _oldDefinitionIndex;
+    public Integer _oldDefinitionIndex; // nullable for backwards compatibility
 
     DeleteSchemaDefinitionCommand_Aai20() {
     }

@@ -106,7 +106,7 @@ public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20
      * @param name
      * @param schemaDef
      */
-    public void restoreResponseDefinition(int index, String name, Oas20ResponseDefinition schemaDef) {
+    public void restoreResponseDefinition(Integer index, String name, Oas20ResponseDefinition schemaDef) {
         this.items = ModelUtils.restoreMapEntry(index, name, schemaDef, this.items);
     }
 

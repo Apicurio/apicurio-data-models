@@ -104,7 +104,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index, String name, Oas30SchemaDefinition schemaDef) {
+    public void restoreSchemaDefinition(Integer index, String name, Oas30SchemaDefinition schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -201,7 +201,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreResponseDefinition(int index, String name, Oas30ResponseDefinition schemaDef) {
+    public void restoreResponseDefinition(Integer index, String name, Oas30ResponseDefinition schemaDef) {
         this.responses = ModelUtils.restoreMapEntry(index, name, schemaDef, this.responses);
     }
 
@@ -464,7 +464,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, Oas30SecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, Oas30SecurityScheme scheme) {
         this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
     

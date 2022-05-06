@@ -60,6 +60,6 @@ public interface IOas30MediaTypeParent {
      * @param name
      * @param mediaType
      */
-    public void restoreMediaType(int index, String name, Oas30MediaType mediaType);
+    public void restoreMediaType(Integer index, String name, Oas30MediaType mediaType);
 
 }

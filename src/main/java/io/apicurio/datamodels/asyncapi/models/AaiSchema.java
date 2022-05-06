@@ -176,7 +176,7 @@ public abstract class AaiSchema extends Schema implements IExternalDocumentation
     }
     
     @Override
-    public void restoreProperty(int index, String propertyName, Schema schema) {
+    public void restoreProperty(Integer index, String propertyName, Schema schema) {
         this.properties = ModelUtils.restoreMapEntry(index, propertyName, (AaiSchema) schema, this.properties);
     }
 

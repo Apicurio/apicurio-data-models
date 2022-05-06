@@ -131,7 +131,7 @@ public class Oas20Example extends Node implements IExample {
      * @param oldKey
      * @param oldValue
      */
-    public void restoreExample(int oldPosition, String oldKey, Object oldValue) {
+    public void restoreExample(Integer oldPosition, String oldKey, Object oldValue) {
         this.items = ModelUtils.restoreMapEntry(oldPosition, oldKey, oldValue, this.items);
     }
 

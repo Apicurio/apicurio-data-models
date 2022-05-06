@@ -27,7 +27,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
  */
 public class DeleteSecuritySchemeCommand_20 extends DeleteSecuritySchemeCommand {
 
-    public int _oldSchemeIndex;
+    public Integer _oldSchemeIndex; // nullable for backwards compatibility
 
     DeleteSecuritySchemeCommand_20() {
     }

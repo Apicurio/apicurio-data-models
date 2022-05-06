@@ -134,22 +134,30 @@ public class ModelUtils {
      * the new entry, which will not maintain ordering.
      * 
      * @param <V> Value type
-     * @param key Old key instance
-     * @param newKey New key instance
-     * @param map Old Map
-     * @param valueConsumer An optional function to apply to the value of the map entry
+     * @param position The position, may be <code>null</code>.
+     * @param key The map entry key
+     * @param value The map entry value
+     * @param map The map to update, may be <code>null</code>.
      * @return A {@link Map} with the update applied, which may be the provided map or a new instance.
      */
-    public static <V> Map<String, V> restoreMapEntry(int position, String key, V value, Map<String, V> map) {
+    public static <V> Map<String, V> restoreMapEntry(Integer position, String key, V value, Map<String, V> map) {
+        // Create a new map if not defined.
+        if (!NodeCompat.isDefined(map)) {
+            final LinkedHashMap<String, V> newMap = new LinkedHashMap<>();
+            newMap.put(key, value);
+            return newMap;
+        }
         // If the new key is present, then return without modification.
-        if (!NodeCompat.isDefined(map) || map.containsKey(key)) {
+        if (map.containsKey(key)) {
             return map;
         }
-        if (!(map instanceof LinkedHashMap) || position >= map.size()){
+        // If the map isn't an LHM then ordering can't be maintained anyway
+        // If the position is null then we're trying to undo a command that was persisted prior to this functionality being added
+        // If the position is >= the map size it has to go at the end anyway
+        if (!(map instanceof LinkedHashMap) || !NodeCompat.isDefined(position) || position >= map.size()){
             map.put(key, value);
             return map;
         }
-        
 
         final LinkedHashMap<String, V> newMap = new LinkedHashMap<>();
         // In order to maintain ordering of the elements when replacing a key in a LinkedHashMap,

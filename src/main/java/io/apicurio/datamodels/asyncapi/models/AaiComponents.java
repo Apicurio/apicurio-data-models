@@ -151,7 +151,7 @@ public abstract class AaiComponents extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index, String name, AaiSchema schemaDef) {
+    public void restoreSchemaDefinition(Integer index, String name, AaiSchema schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -254,7 +254,7 @@ public abstract class AaiComponents extends Components {
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, AaiSecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, AaiSecurityScheme scheme) {
         this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
 

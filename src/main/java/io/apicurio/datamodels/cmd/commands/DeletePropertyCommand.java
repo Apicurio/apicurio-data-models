@@ -38,7 +38,7 @@ public class DeletePropertyCommand extends AbstractCommand {
 
     public Object _oldProperty;
     public boolean _oldRequired;
-    public int _oldPropertyIndex;
+    public Integer _oldPropertyIndex; // nullable for backwards compatibility
     
     DeletePropertyCommand() {
     }

@@ -122,7 +122,7 @@ public abstract class ExtensibleNode extends Node {
      * @param name
      * @param ext
      */
-    public void restoreExtension(int oldPosition, String name, Extension ext) {
+    public void restoreExtension(Integer oldPosition, String name, Extension ext) {
         this._extensions = ModelUtils.restoreMapEntry(oldPosition, name, ext, this._extensions);
     }
     

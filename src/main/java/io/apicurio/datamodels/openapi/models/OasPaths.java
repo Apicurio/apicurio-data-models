@@ -78,7 +78,7 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
      * @param pathItem
      * @return
      */
-    public void restorePathItem(int index, String name, OasPathItem pathItem) {
+    public void restorePathItem(Integer index, String name, OasPathItem pathItem) {
         this._pathItems = ModelUtils.restoreMapEntry(index, name, pathItem, this._pathItems);
     }
 

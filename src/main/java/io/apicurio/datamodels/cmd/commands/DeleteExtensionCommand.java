@@ -38,7 +38,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
     public String _name;
 
     public boolean _hasOldValue;
-    public int _oldValueIndex;
+    public Integer _oldValueIndex; // nullable for backwards compatibility
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldValue;
     
