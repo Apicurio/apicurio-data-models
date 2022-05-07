@@ -109,6 +109,12 @@ public class Oas20Response extends OasResponse implements IOasHeaderParent, IExa
     }
     
     @Override
+    public void replaceHeader(String name, OasHeader header) {
+        // As long as this is backed by a LinkedHashMap ordering will be preserved.
+        addHeader(name, header);
+    }
+    
+    @Override
     public void restoreHeader(Integer index, String headerName, OasHeader header) {
         this.headers.restoreHeader(index, headerName, (Oas20Header) header);
     }

@@ -21,6 +21,13 @@ public interface IOasHeaderParent {
    public void addHeader(String name, OasHeader header);
    
    /**
+    * Replace the definition of a header.
+    * @param name
+    * @param header
+    */
+   public void replaceHeader(String name, OasHeader header);
+   
+   /**
     * Renames a header
     * @param from
     * @param to

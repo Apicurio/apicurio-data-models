@@ -199,6 +199,12 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
     }
     
     @Override
+    public void replaceHeader(String name, OasHeader header) {
+        // As long as this is backed by a LinkedHashMap ordering will be preserved.
+        addHeader(name, header);
+    }
+    
+    @Override
     public void restoreHeader(Integer index, String headerName, OasHeader header) {
         this.headers = ModelUtils.restoreMapEntry(index, headerName, (Oas30Header) header, this.headers);
     }

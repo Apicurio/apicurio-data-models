@@ -108,8 +108,7 @@ public class ChangeHeaderCommand extends AbstractCommand {
     */
    protected void doChangeHeader(OasHeader from, OasHeader to) {
        IOasHeaderParent parent = (IOasHeaderParent) from.parent();
-       parent.removeHeader(_headerName);
-       parent.addHeader(_headerName, to);
+       parent.replaceHeader(_headerName, to);
    }
 
 }
