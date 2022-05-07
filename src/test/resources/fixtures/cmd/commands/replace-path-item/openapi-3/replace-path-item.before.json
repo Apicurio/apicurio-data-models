@@ -15,6 +15,7 @@
         "operationId": "listPets",
         "deprecated": false
       }
-    }
+    },
+    "/bar":{}
   }
 }

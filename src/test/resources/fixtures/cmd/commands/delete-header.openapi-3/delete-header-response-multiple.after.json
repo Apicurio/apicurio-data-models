@@ -6,15 +6,8 @@
         "responses": {
           "200": {
             "headers": {
-              "Other-Header": {
-              },
-              "X-RateLimit-Remaining": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "A-Header": {
-              }
+              "zheader":{},
+              "other": {}
             },
             "content": {
               "application/json": {

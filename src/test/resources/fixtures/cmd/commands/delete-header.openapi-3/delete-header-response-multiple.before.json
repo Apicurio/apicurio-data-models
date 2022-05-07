@@ -6,15 +6,14 @@
         "responses": {
           "200": {
             "headers": {
-              "Other-Header": {
-              },
-              "X-RateLimit-Remaining": {
+              "zheader":{},
+              "X-RateLimit-Limit": {
+                "description": "The rate limit",
                 "schema": {
-                  "type": "string"
+                  "type": "integer"
                 }
               },
-              "A-Header": {
-              }
+              "other": {}
             },
             "content": {
               "application/json": {

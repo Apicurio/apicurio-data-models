@@ -1,18 +1,8 @@
 {
   "asyncapi": "2.0.0",
   "info": {
-    "title": "Channel example",
+    "title": "Message Trait example",
     "version": "1.0.0"
-  },
-  "channels": {
-    "toRemove": {},
-    "test": {
-      "publish": {
-        "message": {
-          "$ref": "#/components/messages/testMessages"
-        }
-      }
-    }
   },
   "components": {
     "messages": {
@@ -27,6 +17,9 @@
           }
         }
       }
+    },
+    "operationTraits":{
+      "other":{}
     }
   }
 }
