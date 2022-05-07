@@ -33,7 +33,7 @@ import io.apicurio.datamodels.openapi.models.IOasParameterParent;
  * @author eric.wittmann@gmail.com
  */
 public abstract class ChangeParameterTypeCommand extends AbstractCommand {
-
+    
     public NodePath _paramPath;
     public SimplifiedParameterType _newType;
 
