@@ -76,7 +76,6 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
      * @param index
      * @param name
      * @param pathItem
-     * @return
      */
     public void restorePathItem(Integer index, String name, OasPathItem pathItem) {
         this._pathItems = ModelUtils.restoreMapEntry(index, name, pathItem, this._pathItems);
@@ -114,7 +113,7 @@ public abstract class OasPaths extends ExtensibleNode implements IIndexedNode<Oa
      * Rename a single path item child model, without changing the order of the items.
      * @param fromName
      * @param toName
-     * @return
+     * @return the item
      */
     public OasPathItem renamePathItem(String fromName, String toName) {
         this._pathItems = ModelUtils.renameMapKey(fromName, toName, this._pathItems, path -> path.rename(toName));

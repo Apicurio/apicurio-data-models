@@ -251,7 +251,6 @@ public abstract class AaiComponents extends Components {
      * Renames a single security scheme without modifying the ordering of the schemes.
      * @param oldName
      * @param newName
-     * @return
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);

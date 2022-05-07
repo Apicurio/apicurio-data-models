@@ -31,7 +31,7 @@ public interface IOasHeaderParent {
     * Renames a header
     * @param from
     * @param to
-    * @param object
+    * @param headerConsumer
     */
    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer);
    
