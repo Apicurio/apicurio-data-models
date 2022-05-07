@@ -32,12 +32,12 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteOperationTraitDefinitionCommand extends AbstractCommand {
-  // TODO: Ordering on undo needs to be preserved
 
    public String _name;
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
    public Object _oldDefinition;
+   public Integer _oldDefinitionIndex; // nullable for backwards compatibility
 
    public DeleteOperationTraitDefinitionCommand() {
    }
@@ -52,7 +52,9 @@ public class DeleteOperationTraitDefinitionCommand extends AbstractCommand {
 
       Aai20Document doc20 = (Aai20Document) document;
       if (ModelUtils.isDefined(doc20.components)) {
-         AaiOperationTraitDefinition traitDef = doc20.components.removeOperationTraitDefinition(_name);
+         AaiOperationTraitDefinition traitDef = doc20.components.getOperationTraitDefinition(_name);
+         this._oldDefinitionIndex = doc20.components.getOperationTraitDefinitionsList().indexOf(traitDef);
+         doc20.components.removeOperationTraitDefinition(_name);
          this._oldDefinition = Library.writeNode(traitDef);
       }
    }
@@ -69,7 +71,7 @@ public class DeleteOperationTraitDefinitionCommand extends AbstractCommand {
          Aai20NodeFactory factory = new Aai20NodeFactory();
          AaiOperationTraitDefinition traitDef = factory.createOperationTraitDefinition(doc20.components, _name);
          Library.readNode(_oldDefinition, traitDef);
-         doc20.components.addOperationTraitDefinition(_name, traitDef);
+         doc20.components.restoreOperationTraitDefinition(_oldDefinitionIndex, _name, traitDef);
       }
    }
 }

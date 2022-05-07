@@ -275,4 +275,12 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
         }
     }
     
+    /**
+     * Restores a deleted allOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreAllOfSchema(Integer index, OasSchema schema) {
+        this.allOf = ModelUtils.restoreListEntry(index, schema, this.allOf);
+    }
+    
 }

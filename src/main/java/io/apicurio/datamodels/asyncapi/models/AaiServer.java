@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
@@ -116,5 +117,13 @@ public abstract class AaiServer extends Server implements INamed, ISecurityRequi
         }
         this.security.add(((AaiSecurityRequirement) securityRequirement));
         return securityRequirement;
+    }
+    
+    /**
+     * see {@link io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#restoreSecurityRequirement(Integer, SecurityRequirement)}
+     */
+    @Override
+    public void restoreSecurityRequirement(Integer index, SecurityRequirement securityRequirement) {
+        this.security = ModelUtils.restoreListEntry(index, securityRequirement, this.security);
     }
 }

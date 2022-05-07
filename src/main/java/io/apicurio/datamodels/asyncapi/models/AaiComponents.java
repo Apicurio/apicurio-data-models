@@ -326,6 +326,14 @@ public abstract class AaiComponents extends Components {
     public void renameMessageTraitDefinition(String fromName, String toName, Consumer<AaiMessageTraitDefinition> traitConsumer) {
         this.messageTraits = ModelUtils.renameMapKey(fromName, toName, this.messageTraits, traitConsumer);
     }
+
+    public void restoreOperationTraitDefinition(Integer index, String name, AaiOperationTraitDefinition value) {
+        this.operationTraits = ModelUtils.restoreMapEntry(index, name, value, this.operationTraits);
+    }
+    
+    public void restoreMessageTraitDefinition(Integer index, String name, AaiMessageTraitDefinition value) {
+        this.messageTraits = ModelUtils.restoreMapEntry(index, name, value, this.messageTraits);
+    }
     
     public void addServerBindingDefinition(String key, AaiServerBindingsDefinition value) {
         if(serverBindings == null)

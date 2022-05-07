@@ -32,7 +32,6 @@ import io.apicurio.datamodels.openapi.models.OasResponses;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteResponseCommand extends AbstractCommand {
-    // TODO: Ordering on undo needs to be preserved
     
     public String _responseCode;
     public NodePath _responsePath;
@@ -40,6 +39,7 @@ public class DeleteResponseCommand extends AbstractCommand {
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldResponse;
+    public Integer _oldResponseIndex; // nullable for backwards compatibility
     
     DeleteResponseCommand() {
     }
@@ -66,7 +66,9 @@ public class DeleteResponseCommand extends AbstractCommand {
         OasResponses responses = (OasResponses) response.parent();
         if (this.isNullOrUndefined(this._responseCode)) {
             responses.default_ = null;
+            this._oldResponseIndex = 0;
         } else {
+            this._oldResponseIndex = responses.getResponses().indexOf(response);
             responses.removeResponse(this._responseCode);
         }
 
@@ -90,11 +92,7 @@ public class DeleteResponseCommand extends AbstractCommand {
 
         OasResponse response = responses.createResponse(this._responseCode);
         Library.readNode(this._oldResponse, response);
-        if (this.isNullOrUndefined(this._responseCode)) {
-            responses.default_ = response;
-        } else {
-            responses.addResponse(this._responseCode, response);
-        }
+        responses.restoreResponse(this._oldResponseIndex, this._responseCode, response);
     }
 
 }

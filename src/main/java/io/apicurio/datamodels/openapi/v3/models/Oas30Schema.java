@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.v3.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
@@ -193,6 +194,21 @@ public class Oas30Schema extends OasSchema {
         }
     }
     
+    /**
+     * Restores a deleted anyOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreAnyOfSchema(Integer index, OasSchema schema) {
+        this.anyOf = ModelUtils.restoreListEntry(index, schema, this.anyOf);
+    }
+    
+    /**
+     * Restores a deleted oneOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreOneOfSchema(Integer index, OasSchema schema) {
+        this.oneOf = ModelUtils.restoreListEntry(index, schema, this.oneOf);
+    }
     
     /* ************************************************************************
      * Schema subclasses.

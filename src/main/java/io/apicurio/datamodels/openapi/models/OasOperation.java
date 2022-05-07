@@ -149,5 +149,13 @@ public abstract class OasOperation extends Operation implements IOasParameterPar
     public List<SecurityRequirement> getSecurityRequirements() {
         return this.security;
     }
+    
+    /**
+     * see {@link io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#restoreSecurityRequirement(Integer, SecurityRequirement)}
+     */
+    @Override
+    public void restoreSecurityRequirement(Integer index, SecurityRequirement securityRequirement) {
+        this.security = ModelUtils.restoreListEntry(index, securityRequirement, this.security);
+    }
 
 }

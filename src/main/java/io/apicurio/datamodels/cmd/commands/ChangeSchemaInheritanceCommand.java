@@ -48,7 +48,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
  * @author eric.wittmann@gmail.com
  */
 public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
-    // TODO: Ordering on undo - check whether undo restores old schemas in correct order
+
     public NodePath _schemaPath;
     public String _newInheritanceType;
     public String _oldInheritanceType;

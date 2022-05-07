@@ -39,7 +39,7 @@ import java.util.List;
  * @author eric.wittmann@gmail.com
  */
 public abstract class ChangePropertyTypeCommand extends AbstractCommand {
-    // TODO: Ordering on undo - this may mutate the order of required fields on parent
+
     public NodePath _propPath;
     public String _propName;
     public SimplifiedPropertyType _newType;
@@ -48,6 +48,7 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
     public Object _oldProperty;
     public boolean _oldRequired;
     public boolean _nullRequired;
+    public Integer _oldRequiredIndex; // nullable for backwards compatibility
     
     ChangePropertyTypeCommand() {
     }
@@ -74,7 +75,12 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
 
         // Save the old info (for later undo operation)
         this._oldProperty = Library.writeNode((Node) prop);
-        this._oldRequired = ModelUtils.isDefined(required) && required.size() > 0 && required.indexOf(prop.getPropertyName()) != -1;
+        final boolean hasRequired = ModelUtils.isDefined(required) && required.size() > 0;
+        if (hasRequired) {
+            final int indexOf = required.indexOf(prop.getPropertyName());
+            this._oldRequired = indexOf != -1;
+            this._oldRequiredIndex = indexOf;
+        }
 
         // Update the schema's type
         SimplifiedTypeUtil.setSimplifiedType((Schema) prop, this._newType);
@@ -91,7 +97,7 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
             }
             // Going from required to optional - remove property name from required list.
             if (Boolean.FALSE.equals(this._newType.required) && this._oldRequired) {
-                required.remove(required.indexOf(prop.getPropertyName()));
+                required.remove(this._oldRequiredIndex.intValue());
             }
         }
     }
@@ -110,7 +116,7 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
         IPropertyParent parent = (IPropertyParent) ((Node) prop).parent();
         List<String> required = parent.getRequiredProperties();
 
-        boolean wasRequired = ModelUtils.isDefined(required) && required.size() > 0 && required.indexOf(prop.getPropertyName()) != -1;
+        boolean currentlyRequired = ModelUtils.isDefined(required) && required.size() > 0 && required.indexOf(prop.getPropertyName()) != -1;
 
         Schema oldProp = parent.createPropertySchema(this._propName);
         Library.readNode(this._oldProperty, oldProp);
@@ -123,12 +129,12 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
                 parent.setRequiredProperties(null);
             } else {
                 // Restoring optional from required
-                if (wasRequired && !this._oldRequired) {
+                if (currentlyRequired && !this._oldRequired) {
                     required.remove(required.indexOf(prop.getPropertyName()));
                 }
                 // Restoring required from optional
-                if (!wasRequired && this._oldRequired) {
-                    required.add(prop.getPropertyName());
+                if (!currentlyRequired && this._oldRequired) {
+                    ModelUtils.restoreListEntry(this._oldRequiredIndex, prop.getPropertyName(), required);
                 }
             }
         }

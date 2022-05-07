@@ -190,6 +190,8 @@ public class ModelUtils {
         }
         if (!NodeCompat.isDefined(position) || position >= list.size()) {
             list.add(value);
+        } else if (position < 0) {
+            list.add(0, value);
         } else {
             list.add(position, value);
         }

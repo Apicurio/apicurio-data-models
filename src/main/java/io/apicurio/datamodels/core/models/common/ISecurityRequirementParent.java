@@ -39,4 +39,11 @@ public interface ISecurityRequirementParent {
      */
     public SecurityRequirement addSecurityRequirement(SecurityRequirement securityRequirement);
 
+    /**
+     * Restore a deleted security requirement child at the position it was deleted from.
+     * @param index
+     * @param securityRequirement
+     */
+    public void restoreSecurityRequirement(Integer index, SecurityRequirement securityRequirement);
+
 }

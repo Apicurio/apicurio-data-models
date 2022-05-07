@@ -32,12 +32,12 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteMessageTraitDefinitionCommand extends AbstractCommand {
-   // TODO: Ordering on undo needs to be preserved
 
    public String _name;
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
    public Object _oldDefinition;
+   public Integer _oldDefinitionIndex; // nullable for backwards compatibility
 
    public DeleteMessageTraitDefinitionCommand() {
    }
@@ -52,7 +52,9 @@ public class DeleteMessageTraitDefinitionCommand extends AbstractCommand {
 
       Aai20Document doc20 = (Aai20Document) document;
       if (ModelUtils.isDefined(doc20.components)) {
-         AaiMessageTraitDefinition traitDef = doc20.components.removeMessageTraitDefinition(_name);
+         AaiMessageTraitDefinition traitDef = doc20.components.getMessageTraitDefinition(_name);
+         this._oldDefinitionIndex = doc20.components.getMessageTraitDefinitionsList().indexOf(traitDef);
+         doc20.components.removeMessageTraitDefinition(_name);
          this._oldDefinition = Library.writeNode(traitDef);
       }
    }
@@ -69,7 +71,7 @@ public class DeleteMessageTraitDefinitionCommand extends AbstractCommand {
          Aai20NodeFactory factory = new Aai20NodeFactory();
          AaiMessageTraitDefinition traitDef = factory.createMessageTraitDefinition(doc20.components, _name);
          Library.readNode(_oldDefinition, traitDef);
-         doc20.components.addMessageTraitDefinition(_name, traitDef);
+         doc20.components.restoreMessageTraitDefinition(_oldDefinitionIndex, _name, traitDef);
       }
    }
 }
