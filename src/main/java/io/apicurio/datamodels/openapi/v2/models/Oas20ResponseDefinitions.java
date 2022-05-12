@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -71,11 +73,41 @@ public class Oas20ResponseDefinitions extends Node implements IIndexedNode<Oas20
     }
 
     /**
+     * Replaces a response without modifying the order of the responses.
+     * @param newResponse
+     */
+    public Oas20ResponseDefinition replaceResponse(Oas20ResponseDefinition newResponse) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addResponse(newResponse.getName(), newResponse);
+        return newResponse;
+    }
+    
+    /**
+     * Renames a response without modifying the order of the responses.
+     * @param fromName
+     * @param toName
+     * @param responseConsumer
+     */
+    public void renameResponse(String fromName, String toName, Consumer<Oas20ResponseDefinition> responseConsumer) {
+        this.items = ModelUtils.renameMapKey(fromName, toName, this.items, responseConsumer);
+    }
+
+    /**
      * Removes a response by name.
      * @param name
      */
     public Oas20ResponseDefinition removeResponse(String name) {
         return this.items.remove(name);
+    }
+    
+    /**
+     * Restore a deleted response definition in its previous position.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreResponseDefinition(int index, String name, Oas20ResponseDefinition schemaDef) {
+        this.items = ModelUtils.restoreMapEntry(index, name, schemaDef, this.items);
     }
 
     /**

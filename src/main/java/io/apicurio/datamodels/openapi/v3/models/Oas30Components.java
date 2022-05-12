@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 import io.apicurio.datamodels.openapi.v3.visitors.IOas30Visitor;
 
@@ -75,6 +78,35 @@ public class Oas30Components extends Components {
     public void addSchemaDefinition(String name, Oas30SchemaDefinition schemaDefinition) {
         this.schemas.put(name, schemaDefinition);
     }
+    
+    /**
+     * Replaces a schema definition without modifying the order of the definitions.
+     * @param newSchemaDefinition
+     */
+    public void replaceSchemaDefinition(Oas30SchemaDefinition newSchemaDefinition) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addSchemaDefinition(newSchemaDefinition.getName(), newSchemaDefinition);
+    }
+
+    /**
+     * Renames a single schema definition without modifying the ordering of the schemas.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSchemaDefinition(String oldName, String newName, Consumer<Oas30SchemaDefinition> schemaConsumer) {
+        this.schemas = ModelUtils.renameMapKey(oldName, newName, this.schemas, schemaConsumer);
+    }
+
+    /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(int index, String name, Oas30SchemaDefinition schemaDef) {
+        this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
+    }
 
     /**
      * Gets a single schema definition by name.
@@ -100,6 +132,15 @@ public class Oas30Components extends Components {
         rval.addAll(this.schemas.values());
         return rval;
     }
+    
+    /**
+     * Gets a list of all schema definition names.
+     */
+    public List<String> getSchemaDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.schemas.keySet());
+        return rval;
+    }
 
     /**
      * Creates a response definition.
@@ -122,6 +163,23 @@ public class Oas30Components extends Components {
     }
 
     /**
+     * Replaces a response without modifying the order of the responses.
+     * @param newResponseDefinition
+     */
+    public void replaceResponseDefinition(Oas30ResponseDefinition newResponseDefinition) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addResponseDefinition(newResponseDefinition.getName(), newResponseDefinition);
+    }
+
+    /**
+     * Renames a response without modifying the order of the responses.
+     * @param newResponseDefinition
+     */
+    public void renameResponseDefinition(String oldName, String newName, Consumer<Oas30ResponseDefinition> responseConsumer) {
+        this.responses = ModelUtils.renameMapKey(oldName, newName, this.responses, responseConsumer);
+    }
+
+    /**
      * Gets a single response definition by name.
      * @param name
      */
@@ -136,6 +194,16 @@ public class Oas30Components extends Components {
     public Oas30ResponseDefinition removeResponseDefinition(String name) {
         return this.responses.remove(name);
     }
+    
+    /**
+     * Restore a deleted response definition in its previous position.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreResponseDefinition(int index, String name, Oas30ResponseDefinition schemaDef) {
+        this.responses = ModelUtils.restoreMapEntry(index, name, schemaDef, this.responses);
+    }
 
     /**
      * Gets a list of all response definitions.
@@ -143,6 +211,15 @@ public class Oas30Components extends Components {
     public List<Oas30ResponseDefinition> getResponseDefinitions() {
         List<Oas30ResponseDefinition> rval = new ArrayList<>();
         rval.addAll(this.responses.values());
+        return rval;
+    }
+    
+    /**
+     * Gets a list of all response definition names.
+     */
+    public List<String> getResponseDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.responses.keySet());
         return rval;
     }
 
@@ -180,6 +257,15 @@ public class Oas30Components extends Components {
      */
     public Oas30ParameterDefinition removeParameterDefinition(String name) {
         return this.parameters.remove(name);
+    }
+    
+    /**
+     * Replaces a parameter without modifying ordering of parameters.
+     * @param parameter
+     */
+    public void replaceParameterDefinition(Oas30ParameterDefinition parameter) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addParameterDefinition(parameter.getName(), parameter);
     }
 
     /**
@@ -363,11 +449,41 @@ public class Oas30Components extends Components {
     }
 
     /**
+     * Renames a single security scheme without modifying the ordering of the schemes.
+     * @param oldName
+     * @param newName
+     * @return
+     */
+    public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
+    }
+
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param scheme
+     */
+    public void restoreSecurityScheme(int index, String name, Oas30SecurityScheme scheme) {
+        this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
+    }
+    
+    /**
      * Gets a list of all security scheme definitions.
      */
     public List<Oas30SecurityScheme> getSecuritySchemes() {
         List<Oas30SecurityScheme> rval = new ArrayList<>();
         rval.addAll(this.securitySchemes.values());
+        return rval;
+    }
+    
+    
+    /**
+     * Gets a list of all security scheme definition names.
+     */
+    public List<String> getSecuritySchemeNames() {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(this.securitySchemes.keySet());
         return rval;
     }
 

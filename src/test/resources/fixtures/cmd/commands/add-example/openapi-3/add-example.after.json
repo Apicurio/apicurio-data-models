@@ -11,15 +11,6 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "bar": {
-                    "summary": "Bar Example",
-                    "description": "The bar example!",
-                    "value": {
-                      "property1": "hello",
-                      "property2": "world",
-                      "property3": true
-                    }
-                  },
                   "foo": {
                     "value": {
                       "versions": [
@@ -46,6 +37,15 @@
                           ]
                         }
                       ]
+                    }
+                  },
+                  "bar": {
+                    "summary": "Bar Example",
+                    "description": "The bar example!",
+                    "value": {
+                      "property1": "hello",
+                      "property2": "world",
+                      "property3": true
                     }
                   }
                 }

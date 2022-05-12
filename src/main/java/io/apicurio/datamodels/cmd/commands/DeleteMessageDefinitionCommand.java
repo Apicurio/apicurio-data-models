@@ -32,7 +32,7 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteMessageDefinitionCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
    public String _name;
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)

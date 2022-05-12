@@ -32,6 +32,7 @@ import io.apicurio.datamodels.core.models.NodePath;
  * @author vvilerio
  */
 public class DeleteOneOfMessageCommand extends AbstractCommand {
+    // TODO: Ordering on undo
 
    public int _oneOfIdc;
    public NodePath _parentPath;

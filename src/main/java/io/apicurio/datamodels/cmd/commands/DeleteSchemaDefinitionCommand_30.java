@@ -27,6 +27,8 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30SchemaDefinition;
  */
 public class DeleteSchemaDefinitionCommand_30 extends DeleteSchemaDefinitionCommand {
 
+    public int _oldDefinitionIndex;
+
     DeleteSchemaDefinitionCommand_30() {
     }
     
@@ -41,6 +43,7 @@ public class DeleteSchemaDefinitionCommand_30 extends DeleteSchemaDefinitionComm
     protected Object doDeleteSchemaDefinition(Document document) {
         Oas30Document doc30 = (Oas30Document) document;
         if (ModelUtils.isDefined(doc30.components)) {
+            this._oldDefinitionIndex = doc30.components.getSchemaDefinitionNames().indexOf(this._definitionName);
             Oas30SchemaDefinition oldDef = doc30.components.removeSchemaDefinition(this._definitionName);
             return Library.writeNode(oldDef);
         }
@@ -56,7 +59,7 @@ public class DeleteSchemaDefinitionCommand_30 extends DeleteSchemaDefinitionComm
         if (ModelUtils.isDefined(doc30.components)) {
             Oas30SchemaDefinition schemaDef = doc30.components.createSchemaDefinition(this._definitionName);
             Library.readNode(oldDefinition, schemaDef);
-            doc30.components.addSchemaDefinition(this._definitionName, schemaDef);
+            doc30.components.restoreSchemaDefinition(this._oldDefinitionIndex, this._definitionName, schemaDef);
         }
     }
 }

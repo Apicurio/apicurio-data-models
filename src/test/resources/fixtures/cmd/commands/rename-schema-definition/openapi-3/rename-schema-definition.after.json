@@ -225,7 +225,8 @@
             "$ref": "#/definitions/Address"
           }
         }
-      }
+      },
+      "OtherType": {}
     },
     "securitySchemes": {
       "Basic": {

@@ -30,7 +30,7 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteChannelCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
    public String _channel;
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)

@@ -65,7 +65,7 @@ public class RenamePropertyCommand extends AbstractCommand {
     }
 
     /**
-     * Does the work of renaming a path from one name to another.
+     * Does the work of renaming a property from one name to another.
      * @param document
      * @param from
      * @param to
@@ -82,18 +82,13 @@ public class RenamePropertyCommand extends AbstractCommand {
             return;
         }
 
-        OasSchema property = (OasSchema) parent.removeProperty(from);
-        if (this.isNullOrUndefined(property)) {
-            return;
-        }
-        
-        ((IPropertySchema) property).rename(to);
-        parent.addProperty(to, property);
-
-        List<String> required = parent.required;
-        int reqIdx = ModelUtils.isDefined(required) ? required.indexOf(from) : -1;
-        if (reqIdx != -1) {
-            parent.required.set(reqIdx, to);
-        }
+        parent.renameProperty(from, to, property -> {
+            ((IPropertySchema) property).rename(to);
+            List<String> required = parent.required;
+            int reqIdx = ModelUtils.isDefined(required) ? required.indexOf(from) : -1;
+            if (reqIdx != -1) {
+                parent.required.set(reqIdx, to);
+            }
+        });
     }
 }

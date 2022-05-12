@@ -26,6 +26,7 @@
     },
     "components": {
         "responses": {
+        	"Another": {},
             "Failure": {
                 "content": {
                     "application/json": {
@@ -38,7 +39,8 @@
                     }
                 },
                 "description": "The error response."
-            }
+            },
+            "Other": {}
         }
     }
 }

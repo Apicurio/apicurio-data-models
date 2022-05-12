@@ -37,7 +37,8 @@ import io.apicurio.datamodels.openapi.models.OasParameter;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteParameterCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
+    
     public NodePath _parameterPath;
     public NodePath _parentPath;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)

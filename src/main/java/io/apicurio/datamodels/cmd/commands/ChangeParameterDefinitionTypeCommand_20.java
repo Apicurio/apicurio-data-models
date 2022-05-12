@@ -50,12 +50,9 @@ public class ChangeParameterDefinitionTypeCommand_20 extends ChangeParameterType
 
         Oas20Document doc20 = (Oas20Document) document;
         
-        // Remove the old/updated parameter.
-        doc20.parameters.removeParameter(param.getName());
-
         // Restore the parameter from before the command executed.
         Oas20ParameterDefinition oldParam = doc20.parameters.createParameter(param.getName());
         Library.readNode(this._oldParameter, oldParam);
-        doc20.parameters.addParameter(param.getName(), oldParam);
+        doc20.parameters.replaceParameter(oldParam);
     }
 }

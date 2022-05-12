@@ -32,6 +32,7 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteMessageTraitDefinitionCommand extends AbstractCommand {
+    // TODO: Ordering on undo
 
    public String _name;
 

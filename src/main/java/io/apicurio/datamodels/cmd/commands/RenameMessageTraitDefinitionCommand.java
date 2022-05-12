@@ -18,7 +18,6 @@ package io.apicurio.datamodels.cmd.commands;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
-import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
@@ -95,9 +94,7 @@ public class RenameMessageTraitDefinitionCommand extends AbstractCommand {
       if (ModelUtils.isDefined(doc20.components.getMessageTraitDefinition(toName))) {
          return false;
       }
-      AaiMessageTraitDefinition traitDef = doc20.components.removeMessageTraitDefinition(fromName);
-      traitDef.rename(toName);
-      doc20.components.addMessageTraitDefinition(toName, traitDef);
+      doc20.components.renameMessageTraitDefinition(fromName, toName, traitDef -> traitDef.rename(toName));
       return true;
    }
 

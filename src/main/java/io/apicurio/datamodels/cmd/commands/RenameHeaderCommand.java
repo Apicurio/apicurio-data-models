@@ -79,13 +79,6 @@ public class RenameHeaderCommand extends AbstractCommand {
             return;
         }
 
-        OasHeader header = (OasHeader) parent.removeHeader(from);
-        if (this.isNullOrUndefined(header)) {
-            return;
-        }
-
-        header.rename(to);
-        parent.addHeader(to, header);
-
+        parent.renameHeader(from, to, header -> header.rename(to));
     }
 }

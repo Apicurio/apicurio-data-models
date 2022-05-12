@@ -105,14 +105,13 @@ public class RenamePathItemCommand extends AbstractCommand {
             LoggerCompat.warn("Renaming a path with %o parameters to a new value that has %o parameters!", 
                     fromPathParamNames.size(), toPathParamNames.size());
         }
+        
         // First, rename the path itself
-        OasPathItem path = document.paths.removePathItem(from);
+        OasPathItem path = document.paths.renamePathItem(from, to);
         // If we can't find the path, just return.
         if (NodeCompat.isNullOrUndefined(path)) {
             return;
         }
-        path.rename(to);
-        document.paths.addPathItem(to, path);
 
         // Next, rename all of the path params (if necessary)
         for (int idx = 0; idx < fromPathParamNames.size(); idx++) {

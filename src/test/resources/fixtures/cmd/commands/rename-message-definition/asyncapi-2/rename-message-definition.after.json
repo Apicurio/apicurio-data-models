@@ -19,7 +19,8 @@
       },
       "commonMessage": {
         "description": "This is a description"
-      }
+      },
+      "other": {}
     }
   }
 }

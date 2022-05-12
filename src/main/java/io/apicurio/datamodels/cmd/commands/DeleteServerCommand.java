@@ -37,7 +37,7 @@ import io.apicurio.datamodels.core.models.common.Server;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteServerCommand extends AbstractCommand {
-
+ // TODO: Ordering on undo
     public String _serverUrl;
     public NodePath _parentPath;
 
