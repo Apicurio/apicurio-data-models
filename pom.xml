@@ -59,8 +59,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Node/Yarn Versions -->
-        <version.node-js>16.4.2</version.node-js>
-        <version.yarn>1.22.17</version.yarn>
+        <version.node-js>16.15.0</version.node-js>
+        <version.yarn>1.22.18</version.yarn>
 
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
