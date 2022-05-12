@@ -33,7 +33,7 @@ import io.apicurio.datamodels.openapi.models.OasOperation;
 import io.apicurio.datamodels.openapi.models.OasPathItem;
 
 /**
- * A command used to delete all servers from a document.
+ * A command used to delete all operations from a path
  * @author eric.wittmann@gmail.com
  */
 public class DeleteAllOperationsCommand extends AbstractCommand {

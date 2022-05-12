@@ -37,26 +37,16 @@ public class ReplacePathItemCommand extends ReplaceNodeCommand<OasPathItem> {
         this._pathName = replacement.getPath();
     }
     
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#removeNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void removeNode(Document doc, OasPathItem node) {
-        OasDocument odoc = (OasDocument) doc;
-        odoc.paths.removePathItem(node.getPath());
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#addNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, OasPathItem node) {
-        OasDocument odoc = (OasDocument) doc;
-
-        node._ownerDocument = odoc;
-        node._parent = odoc.paths;
-        odoc.paths.addPathItem(this._pathName, node);
-    }
+	/**
+	 * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
+	 */
+	@Override
+	protected void replaceNode(Document doc, OasPathItem newNode) {
+		OasDocument odoc = (OasDocument) doc;
+		newNode._ownerDocument = odoc;
+		newNode._parent = odoc.paths;
+		odoc.paths.replacePathItem(this._pathName, newNode);
+	}
     
     /**
      * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#readNode(io.apicurio.datamodels.core.models.Document, java.lang.Object)

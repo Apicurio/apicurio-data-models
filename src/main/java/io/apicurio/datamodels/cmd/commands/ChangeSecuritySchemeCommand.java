@@ -30,7 +30,7 @@ import io.apicurio.datamodels.core.models.common.SecurityScheme;
  * @author eric.wittmann@gmail.com
  */
 public abstract class ChangeSecuritySchemeCommand extends AbstractCommand {
-
+    // TODO: Ordering on undo
     public String _schemeName;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _schemeObj;

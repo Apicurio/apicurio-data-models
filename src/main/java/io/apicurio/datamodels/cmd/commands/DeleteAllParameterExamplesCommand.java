@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -73,7 +73,8 @@ public class DeleteAllParameterExamplesCommand extends AbstractCommand {
             return;
         }
 
-        this._oldExamples = new HashMap<>();
+        // Preserve insertion order with LinkedHashMap
+        this._oldExamples = new LinkedHashMap<>();
         parameter.getExamples().forEach(e -> {
             this._oldExamples.put(e.getName(), Library.writeNode((Node) e));
         });

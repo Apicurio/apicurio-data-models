@@ -19,7 +19,10 @@ package io.apicurio.datamodels.core.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 
 /**
  * All data models that can be extended using the "x-*" approach to adding vendor extension 
@@ -72,6 +75,17 @@ public abstract class ExtensibleNode extends Node {
     }
     
     /**
+     * Returns the names all of the extensions defined on this node.
+     */
+    public List<String> getExtensionNames() {
+        if (this._extensions != null) {
+            return new ArrayList<>(this._extensions.keySet());
+        } else {
+            return null;
+        }
+    }
+    
+    /**
      * Gets a single extension by name.
      * @param name
      */
@@ -100,6 +114,16 @@ public abstract class ExtensibleNode extends Node {
         if (this._extensions != null) {
             this._extensions.clear();
         }
+    }
+
+    /**
+     * Restore a removed extension in its original position
+     * @param oldPosition
+     * @param name
+     * @param ext
+     */
+    public void restoreExtension(int oldPosition, String name, Extension ext) {
+        this._extensions = ModelUtils.restoreMapEntry(oldPosition, name, ext, this._extensions);
     }
     
 }

@@ -35,7 +35,7 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteExampleCommand_30 extends AbstractCommand {
-
+    // TODO: Ordering on undo
     public String _exampleName;
     public NodePath _mediaTypePath; // TODO note that this is actually "parentPath" but we can't rename it for legacy reasons
 

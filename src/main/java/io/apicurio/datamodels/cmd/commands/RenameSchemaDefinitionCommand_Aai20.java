@@ -53,9 +53,8 @@ public class RenameSchemaDefinitionCommand_Aai20 extends RenameSchemaDefinitionC
         if (ModelUtils.isDefined(aai20Document.components.getSchemaDefinition(toName))) {
             return false;
         }
-        Aai20SchemaDefinition schemaDef = (Aai20SchemaDefinition) aai20Document.components.removeSchemaDefinition(fromName);
-        schemaDef.rename(toName);
-        aai20Document.components.addSchemaDefinition(toName, schemaDef);
+        
+        aai20Document.components.renameSchemaDefinition(fromName, toName, schemaDef -> ((Aai20SchemaDefinition) schemaDef).rename(toName));
         return true;
     }
 

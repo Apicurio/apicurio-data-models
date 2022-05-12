@@ -26,6 +26,8 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteSecuritySchemeCommand_30 extends DeleteSecuritySchemeCommand {
+    
+    public int _oldSchemeIndex;
 
     DeleteSecuritySchemeCommand_30() {
     }
@@ -41,6 +43,7 @@ public class DeleteSecuritySchemeCommand_30 extends DeleteSecuritySchemeCommand 
     protected Object doDeleteScheme(Document document) {
         Oas30Document doc30 = (Oas30Document) document;
         if (ModelUtils.isDefined(doc30.components)) {
+            this._oldSchemeIndex = doc30.components.getSecuritySchemeNames().indexOf(this._schemeName);
             return Library.writeNode(doc30.components.removeSecurityScheme(this._schemeName));
         } else {
             return null;
@@ -56,7 +59,7 @@ public class DeleteSecuritySchemeCommand_30 extends DeleteSecuritySchemeCommand 
         if (ModelUtils.isDefined(doc30.components)) {
             Oas30SecurityScheme scheme = doc30.components.createSecurityScheme(this._schemeName);
             Library.readNode(oldScheme, scheme);
-            doc30.components.addSecurityScheme(this._schemeName, scheme);
+            doc30.components.restoreSecurityScheme(this._oldSchemeIndex, this._schemeName, scheme);
         }
     }
     

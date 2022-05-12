@@ -33,9 +33,11 @@
       }
     },
     "messageTraits": {
+      "other": {},
       "commonHeaders": {
         "description": "This is a description"
-      }
+      },
+      "another": {}
     }
   }
 }

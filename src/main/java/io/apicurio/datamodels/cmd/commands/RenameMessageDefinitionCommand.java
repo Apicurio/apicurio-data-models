@@ -94,9 +94,7 @@ public class RenameMessageDefinitionCommand extends AbstractCommand {
       if (ModelUtils.isDefined(doc20.components.getMessage(toName))) {
          return false;
       }
-      AaiMessage msgDef = doc20.components.removeMessage(fromName);
-      msgDef.rename(toName);
-      doc20.components.addMessage(toName, msgDef);
+      doc20.components.renameMessage(fromName, toName, msgDef -> msgDef.rename(toName));
       return true;
    }
 

@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -122,6 +123,16 @@ public class Oas20Example extends Node implements IExample {
     @Override
     public void setValue(Object value) {
         throw new RuntimeException("Operation not supported.");
+    }
+
+    /**
+     * Restore a removed example in its original position
+     * @param oldPosition
+     * @param oldKey
+     * @param oldValue
+     */
+    public void restoreExample(int oldPosition, String oldKey, Object oldValue) {
+        this.items = ModelUtils.restoreMapEntry(oldPosition, oldKey, oldValue, this.items);
     }
 
 }

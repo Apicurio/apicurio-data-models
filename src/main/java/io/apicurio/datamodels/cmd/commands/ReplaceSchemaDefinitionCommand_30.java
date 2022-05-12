@@ -39,23 +39,14 @@ public class ReplaceSchemaDefinitionCommand_30 extends ReplaceNodeCommand<Oas30S
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#removeNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#replaceNode(Document, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    protected void removeNode(Document doc, Oas30SchemaDefinition node) {
+    protected void replaceNode(Document doc, Oas30SchemaDefinition newNode) {
         Oas30Document doc30 = (Oas30Document) doc;
-        doc30.components.removeSchemaDefinition(node.getName());
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#addNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, Oas30SchemaDefinition node) {
-        Oas30Document doc30 = (Oas30Document) doc;
-        node._ownerDocument = doc;
-        node._parent = doc30.components;
-        doc30.components.addSchemaDefinition(node.getName(), node);
+        newNode._ownerDocument = doc;
+        newNode._parent = doc30.components;
+        doc30.components.replaceSchemaDefinition(newNode);
     }
     
     /**

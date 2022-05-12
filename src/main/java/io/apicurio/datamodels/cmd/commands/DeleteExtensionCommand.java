@@ -38,6 +38,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
     public String _name;
 
     public boolean _hasOldValue;
+    public int _oldValueIndex;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldValue;
     
@@ -71,6 +72,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
             this._hasOldValue = true;
             this._oldValue = extension.value;
 
+            _oldValueIndex = parent.getExtensionNames().indexOf(this._name);
             parent.removeExtension(this._name);
         } else {
             this._hasOldValue = false;
@@ -100,7 +102,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
             Extension ext = parent.createExtension();
             ext.name = this._name;
             ext.value = this._oldValue;
-            parent.addExtension(this._name, ext);
+            parent.restoreExtension(this._oldValueIndex, this._name, ext);
         }
     }
 
