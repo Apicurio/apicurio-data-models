@@ -58,7 +58,7 @@ public interface IPropertyParent {
      * @param propertyName
      * @param schema
      */
-    public void restoreProperty(int index, String propertyName, Schema schema);
+    public void restoreProperty(Integer index, String propertyName, Schema schema);
     
     /**
      * Rename a property.

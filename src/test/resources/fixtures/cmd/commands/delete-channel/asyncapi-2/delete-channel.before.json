@@ -5,14 +5,14 @@
     "version": "1.0.0"
   },
   "channels": {
+    "toRemove": {},
     "test": {
       "publish": {
         "message": {
           "$ref": "#/components/messages/testMessages"
         }
       }
-    },
-    "toRemove": {}
+    }
   },
   "components": {
     "messages": {

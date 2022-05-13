@@ -37,12 +37,13 @@ import io.apicurio.datamodels.core.models.common.Server;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteServerCommand extends AbstractCommand {
- // TODO: Ordering on undo
+
     public String _serverUrl;
     public NodePath _parentPath;
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldServer;
+    public Integer _oldServerIndex; // nullable for backwards compatibility
     
     DeleteServerCommand() {
     }
@@ -71,7 +72,9 @@ public class DeleteServerCommand extends AbstractCommand {
         }
         
         List<Server> servers = parent.getServers();
-        servers.remove(servers.indexOf(server));
+        final int indexOf = servers.indexOf(server);
+        servers.remove(indexOf);
+        this._oldServerIndex = indexOf;
         if (servers.size() == 0) {
             NodeCompat.setProperty(parent, Constants.PROP_SERVERS, null);
         }
@@ -102,7 +105,7 @@ public class DeleteServerCommand extends AbstractCommand {
             servers = new ArrayList<>();
             NodeCompat.setProperty(parent, Constants.PROP_SERVERS, servers);
         }
-        servers.add(server);
+        parent.restoreServer(this._oldServerIndex, server);
     }
 
 }

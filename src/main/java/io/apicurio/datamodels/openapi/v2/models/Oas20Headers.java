@@ -105,6 +105,16 @@ public class Oas20Headers extends Node implements IIndexedNode<Oas20Header> {
     public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
         this.items = ModelUtils.renameMapKey(from, to, this.items, headerConsumer);
     }
+    
+    /**
+     * Restore a deleted header in its original position.
+     * @param index
+     * @param headerName
+     * @param header
+     */
+    public void restoreHeader(Integer index, String headerName, Oas20Header header) {
+        this.items = ModelUtils.restoreMapEntry(index, headerName, header, this.items);
+    }
 
     /**
      * Adds a header.

@@ -9,7 +9,7 @@ import io.apicurio.datamodels.core.models.common.IPropertySchema;
 import io.apicurio.datamodels.core.models.common.Schema;
 
 public class ChangePropertyTypeCommand_Aai20 extends ChangePropertyTypeCommand {
-    // TODO: Ordering on undo
+
     public ChangePropertyTypeCommand_Aai20() {
     }
 

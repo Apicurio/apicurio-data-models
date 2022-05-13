@@ -35,12 +35,13 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30MediaType;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteExampleCommand_30 extends AbstractCommand {
-    // TODO: Ordering on undo
+
     public String _exampleName;
     public NodePath _mediaTypePath; // TODO note that this is actually "parentPath" but we can't rename it for legacy reasons
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
+    public Integer _oldExampleIndex; // nullable for backwards compatibility
 
     DeleteExampleCommand_30() {
     }
@@ -63,8 +64,10 @@ public class DeleteExampleCommand_30 extends AbstractCommand {
             LoggerCompat.debug("[DeleteExampleCommand] No example named: " + this._exampleName);
             return;
         }
-
-        IExample example = parent.removeExample(this._exampleName);
+        
+        IExample example = parent.getExample(this._exampleName);
+        this._oldExampleIndex = parent.getExamples().indexOf(example);
+        parent.removeExample(this._exampleName);
         this._oldExample = Library.writeNode((Node) example);
     }
 
@@ -86,7 +89,7 @@ public class DeleteExampleCommand_30 extends AbstractCommand {
 
         IExample example = mediaType.createExample(this._exampleName);
         Library.readNode(this._oldExample, (Node) example);
-        mediaType.addExample(example);
+        mediaType.restoreExample(this._oldExampleIndex, this._exampleName, example);
     }
 
 }

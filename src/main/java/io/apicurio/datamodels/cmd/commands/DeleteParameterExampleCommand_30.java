@@ -34,13 +34,13 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteParameterExampleCommand_30 extends AbstractCommand {
-    // TODO: Ordering on undo
 
     public String _exampleName;
     public NodePath _parameterPath;
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
+    public Integer _oldExampleIndex; // nullable for backwards compatibility
 
     DeleteParameterExampleCommand_30() {
     }
@@ -64,7 +64,9 @@ public class DeleteParameterExampleCommand_30 extends AbstractCommand {
             return;
         }
 
-        IExample example = parameter.removeExample(this._exampleName);
+        IExample example = parameter.getExample(this._exampleName);
+        this._oldExampleIndex = parameter.getExamples().indexOf(example);
+        parameter.removeExample(this._exampleName);
         this._oldExample = Library.writeNode((Node) example);
     }
 
@@ -86,7 +88,7 @@ public class DeleteParameterExampleCommand_30 extends AbstractCommand {
 
         Oas30Example example = parameter.createExample(this._exampleName);
         Library.readNode(this._oldExample, example);
-        parameter.addExample(example);
+        parameter.restoreExample(this._oldExampleIndex, this._exampleName, example);
     }
 
 }

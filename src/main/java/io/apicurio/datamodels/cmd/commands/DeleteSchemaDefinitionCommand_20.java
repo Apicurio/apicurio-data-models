@@ -27,7 +27,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
  */
 public class DeleteSchemaDefinitionCommand_20 extends DeleteSchemaDefinitionCommand {
     
-    public int _oldDefinitionIndex;
+    public Integer _oldDefinitionIndex; // nullable for backwards compatibility
 
     DeleteSchemaDefinitionCommand_20() {
     }

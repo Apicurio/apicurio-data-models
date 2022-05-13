@@ -45,4 +45,11 @@ public interface IServerParent {
      */
     public List<Server> getServers();
 
+    /**
+     * Restore a deleted server in its original position.
+     * @param index
+     * @param server
+     */
+    public void restoreServer(Integer index, Server server);
+
 }

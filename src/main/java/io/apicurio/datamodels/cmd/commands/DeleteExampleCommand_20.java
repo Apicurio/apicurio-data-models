@@ -38,7 +38,7 @@ public class DeleteExampleCommand_20 extends AbstractCommand {
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
     
-    public int _oldExampleIndex;
+    public Integer _oldExampleIndex; // nullable for backwards compatibility
 
     DeleteExampleCommand_20() {
     }

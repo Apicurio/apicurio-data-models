@@ -21,12 +21,27 @@ public interface IOasHeaderParent {
    public void addHeader(String name, OasHeader header);
    
    /**
+    * Replace the definition of a header.
+    * @param name
+    * @param header
+    */
+   public void replaceHeader(String name, OasHeader header);
+   
+   /**
     * Renames a header
     * @param from
     * @param to
-    * @param object
+    * @param headerConsumer
     */
    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer);
+   
+   /**
+    * Restore a deleted header in its original position
+    * @param index
+    * @param headerName
+    * @param header
+    */
+   public void restoreHeader(Integer index, String headerName, OasHeader header);
 
    /**
     * Gets a single  header by name.

@@ -16,13 +16,7 @@
 
 package io.apicurio.datamodels.cmd.commands;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.compat.LoggerCompat;
@@ -30,8 +24,13 @@ import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
+import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A command used to delete all headers from a document.

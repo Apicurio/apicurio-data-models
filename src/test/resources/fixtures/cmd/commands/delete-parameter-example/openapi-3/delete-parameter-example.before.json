@@ -16,18 +16,18 @@
                     "in": "query",
                     "required": true,
                     "examples": {
-                        "foo": {
-                            "summary": "Foo Example",
-                            "description": "The foo example!",
+                        "bar": {
+                            "summary": "Bar Example",
+                            "description": "The bar example!",
                             "value": {
                                 "property1": "hello",
                                 "property2": "world",
                                 "property3": true
                             }
                         },
-                        "bar": {
-                            "summary": "Bar Example",
-                            "description": "The bar example!",
+                        "foo": {
+                            "summary": "Foo Example",
+                            "description": "The foo example!",
                             "value": {
                                 "property1": "hello",
                                 "property2": "world",

@@ -212,7 +212,7 @@ public class RenameChannelItemCommand extends AbstractCommand {
         Object restorable = _paramBin.remove(paramName);
         if (ModelUtils.isDefined(restorable)) {
             Library.readNode(restorable, parameter);
-            final Integer paramIndex = _paramIndexes.remove(paramName);
+            final Integer paramIndex = _paramIndexes.remove(paramName); // nullable for backwards compatibility
             channel.parameters = ModelUtils.restoreMapEntry(paramIndex, paramName, parameter, channel.parameters);
             NodeCompat.setProperty(channel, Constants.PROP_PARAMETERS, channel.parameters);
         } else {

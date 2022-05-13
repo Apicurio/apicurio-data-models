@@ -109,10 +109,10 @@ public class Oas30RequestBody extends ExtensibleNode implements IReferenceNode, 
     }
 
     /**
-     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#restoreMediaType(int, String, Oas30MediaType)
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#restoreMediaType(Integer, String, Oas30MediaType)
      */
     @Override
-    public void restoreMediaType(int index, String name, Oas30MediaType mediaType) {
+    public void restoreMediaType(Integer index, String name, Oas30MediaType mediaType) {
         this.content = ModelUtils.restoreMapEntry(index, name, mediaType, this.content);
     }
     

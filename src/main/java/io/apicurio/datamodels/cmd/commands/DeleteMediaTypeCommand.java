@@ -37,7 +37,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
     public NodePath _mediaTypePath;
     public NodePath _parentPath;
 
-    public int _oldMediaTypeIndex;
+    public Integer _oldMediaTypeIndex; // nullable for backwards compatibility
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldMediaType;
     

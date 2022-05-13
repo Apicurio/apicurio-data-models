@@ -78,7 +78,7 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
      * Renames a single security scheme without modifying the ordering of the schemes.
      * @param oldName
      * @param newName
-     * @return
+     * @param schemeConsumer
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.items = ModelUtils.renameMapKey(oldName, newName, this.items, schemeConsumer);
@@ -90,7 +90,7 @@ public class Oas20SecurityDefinitions extends Node implements IIndexedNode<Oas20
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, Oas20SecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, Oas20SecurityScheme scheme) {
         this.items = ModelUtils.restoreMapEntry(index, name, scheme, this.items);
     }
 

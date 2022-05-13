@@ -52,4 +52,11 @@ public interface IOasParameterParent {
      */
     public OasParameter getParameter(String _in, String name);
 
+    /**
+     * Restore a deleted parameter in its original position.
+     * @param index
+     * @param parameter
+     */
+    public void restoreParameter(Integer index, OasParameter parameter);
+
 }

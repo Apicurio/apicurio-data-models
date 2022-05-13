@@ -17,6 +17,7 @@
         ],
         "deprecated": false
       }
-    }
+    },
+    "/bar":{}
   }
 }

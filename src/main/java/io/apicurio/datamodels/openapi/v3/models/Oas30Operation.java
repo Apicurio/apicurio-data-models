@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.IServerParent;
@@ -167,6 +168,14 @@ public class Oas30Operation extends OasOperation implements IServerParent {
             this.servers = new ArrayList<>();
         }
         this.servers.add((Oas30Server) server);
+    }
+    
+    /**
+     * @see IServerParent#restoreServer(Integer, Server)
+     */
+    @Override
+    public void restoreServer(Integer index, Server server) {
+        this.servers = ModelUtils.restoreListEntry(index, server, this.servers);
     }
 
     /**

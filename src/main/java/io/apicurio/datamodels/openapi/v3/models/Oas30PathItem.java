@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.v3.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.common.IServerParent;
 import io.apicurio.datamodels.core.models.common.Server;
@@ -87,6 +88,14 @@ public class Oas30PathItem extends OasPathItem implements IServerParent {
             this.servers = new ArrayList<>();
         }
         this.servers.add(server);
+    }
+    
+    /**
+     * @see IServerParent#restoreServer(Integer, Server)
+     */
+    @Override
+    public void restoreServer(Integer index, Server server) {
+        this.servers = ModelUtils.restoreListEntry(index, server, this.servers);
     }
     
     /**

@@ -31,7 +31,7 @@ import io.apicurio.datamodels.core.models.common.Server;
  * @author c.desc2@gmail.com
  */
 public class ChangeServerCommand_Aai20 extends AbstractCommand {
-    // TODO: Ordering on undo
+
     public String _serverName;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _serverObj;

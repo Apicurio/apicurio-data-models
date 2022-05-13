@@ -5,11 +5,6 @@
       "get": {
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "$/components/schemas/Foo"
-              }
-            },
             "multipart/mixed": {
               "schema": {
                 "type": "object",
@@ -30,6 +25,11 @@
                     "format": "binary"
                   }
                 }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "$/components/schemas/Foo"
               }
             }
           }

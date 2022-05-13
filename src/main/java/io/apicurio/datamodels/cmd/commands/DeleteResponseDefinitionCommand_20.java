@@ -28,7 +28,7 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinitions;
  */
 public class DeleteResponseDefinitionCommand_20 extends DeleteResponseDefinitionCommand {
     
-    public int _oldResponseIndex;
+    public Integer _oldResponseIndex; // nullable for backwards compatibility
 
     DeleteResponseDefinitionCommand_20() {
     }

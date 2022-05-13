@@ -92,7 +92,7 @@ public class Oas30Components extends Components {
      * Renames a single schema definition without modifying the ordering of the schemas.
      * @param oldName
      * @param newName
-     * @return
+     * @param schemaConsumer
      */
     public void renameSchemaDefinition(String oldName, String newName, Consumer<Oas30SchemaDefinition> schemaConsumer) {
         this.schemas = ModelUtils.renameMapKey(oldName, newName, this.schemas, schemaConsumer);
@@ -104,7 +104,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index, String name, Oas30SchemaDefinition schemaDef) {
+    public void restoreSchemaDefinition(Integer index, String name, Oas30SchemaDefinition schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -173,7 +173,9 @@ public class Oas30Components extends Components {
 
     /**
      * Renames a response without modifying the order of the responses.
-     * @param newResponseDefinition
+     * @param oldName
+     * @param newName
+     * @param responseConsumer
      */
     public void renameResponseDefinition(String oldName, String newName, Consumer<Oas30ResponseDefinition> responseConsumer) {
         this.responses = ModelUtils.renameMapKey(oldName, newName, this.responses, responseConsumer);
@@ -201,7 +203,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreResponseDefinition(int index, String name, Oas30ResponseDefinition schemaDef) {
+    public void restoreResponseDefinition(Integer index, String name, Oas30ResponseDefinition schemaDef) {
         this.responses = ModelUtils.restoreMapEntry(index, name, schemaDef, this.responses);
     }
 
@@ -452,7 +454,7 @@ public class Oas30Components extends Components {
      * Renames a single security scheme without modifying the ordering of the schemes.
      * @param oldName
      * @param newName
-     * @return
+     * @param schemeConsumer
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
@@ -464,7 +466,7 @@ public class Oas30Components extends Components {
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, Oas30SecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, Oas30SecurityScheme scheme) {
         this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
     

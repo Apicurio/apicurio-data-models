@@ -29,7 +29,7 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeCommand {
 
-    public int _oldSchemeIndex;
+    public Integer _oldSchemeIndex; // nullable for backwards compatibility
 
     DeleteSecuritySchemeCommand_Aai20() {
     }

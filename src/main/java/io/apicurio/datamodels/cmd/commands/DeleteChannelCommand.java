@@ -21,6 +21,7 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat;
 import io.apicurio.datamodels.core.models.Document;
@@ -30,11 +31,13 @@ import io.apicurio.datamodels.core.models.Document;
  * @author laurent.broudoux@gmail.com
  */
 public class DeleteChannelCommand extends AbstractCommand {
-    // TODO: Ordering on undo
+
    public String _channel;
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
    public Object _oldChannel;
+   
+   public Integer _oldChannelIndex; // nullable for backwards compatibility
 
    DeleteChannelCommand() {
    }
@@ -52,6 +55,8 @@ public class DeleteChannelCommand extends AbstractCommand {
          return;
       }
 
+      final AaiChannelItem theChannel = doc.channels.get(this._channel);
+      this._oldChannelIndex = doc.getChannels().indexOf(theChannel);
       this._oldChannel = Library.writeNode(doc.channels.remove(this._channel));
    }
 
@@ -65,6 +70,6 @@ public class DeleteChannelCommand extends AbstractCommand {
 
       AaiChannelItem channelItem = doc.createChannelItem(this._channel);
       Library.readNode(this._oldChannel, channelItem);
-      doc.addChannelItem(channelItem);
+      doc.channels = ModelUtils.restoreMapEntry(this._oldChannelIndex, this._channel, channelItem, doc.channels);
    }
 }

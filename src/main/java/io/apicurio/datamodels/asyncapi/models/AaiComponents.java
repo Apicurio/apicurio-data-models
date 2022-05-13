@@ -151,7 +151,7 @@ public abstract class AaiComponents extends Components {
      * @param name
      * @param schemaDef
      */
-    public void restoreSchemaDefinition(int index, String name, AaiSchema schemaDef) {
+    public void restoreSchemaDefinition(Integer index, String name, AaiSchema schemaDef) {
         this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
@@ -215,6 +215,15 @@ public abstract class AaiComponents extends Components {
         return null;
     }
     
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param message
+     */
+    public void restoreMessage(Integer index, String name, AaiMessage message) {
+        this.messages = ModelUtils.restoreMapEntry(index, name, message, this.messages);
+    }
 
     public void renameMessage(String fromName, String toName, Consumer<AaiMessage> messageConsumer) {
         this.messages = ModelUtils.renameMapKey(fromName, toName, this.messages, messageConsumer);
@@ -242,7 +251,6 @@ public abstract class AaiComponents extends Components {
      * Renames a single security scheme without modifying the ordering of the schemes.
      * @param oldName
      * @param newName
-     * @return
      */
     public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
         this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
@@ -254,7 +262,7 @@ public abstract class AaiComponents extends Components {
      * @param name
      * @param scheme
      */
-    public void restoreSecurityScheme(int index, String name, AaiSecurityScheme scheme) {
+    public void restoreSecurityScheme(Integer index, String name, AaiSecurityScheme scheme) {
         this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
 
@@ -316,6 +324,14 @@ public abstract class AaiComponents extends Components {
     
     public void renameMessageTraitDefinition(String fromName, String toName, Consumer<AaiMessageTraitDefinition> traitConsumer) {
         this.messageTraits = ModelUtils.renameMapKey(fromName, toName, this.messageTraits, traitConsumer);
+    }
+
+    public void restoreOperationTraitDefinition(Integer index, String name, AaiOperationTraitDefinition value) {
+        this.operationTraits = ModelUtils.restoreMapEntry(index, name, value, this.operationTraits);
+    }
+    
+    public void restoreMessageTraitDefinition(Integer index, String name, AaiMessageTraitDefinition value) {
+        this.messageTraits = ModelUtils.restoreMapEntry(index, name, value, this.messageTraits);
     }
     
     public void addServerBindingDefinition(String key, AaiServerBindingsDefinition value) {

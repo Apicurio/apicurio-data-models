@@ -31,12 +31,13 @@ import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
  * @author vvilerio
  */
 public class DeleteHeaderCommand extends AbstractCommand {
-    // TODO: Ordering on undo
+
     public String _headerName;
     public NodePath _parentPath;
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldHeader;
+    public Integer _oldHeaderIndex; // nullable for backwards compatibility
 
     DeleteHeaderCommand() {
     }
@@ -60,6 +61,7 @@ public class DeleteHeaderCommand extends AbstractCommand {
             return;
         }
 
+        this._oldHeaderIndex = parent.getHeaders().indexOf(header);
         parent.removeHeader(this._headerName);
 
         this._oldHeader = Library.writeNode(header);
@@ -82,7 +84,7 @@ public class DeleteHeaderCommand extends AbstractCommand {
 
         OasHeader header = parent.createHeader(this._headerName);
         Library.readNode(this._oldHeader, header);
-        parent.addHeader(this._headerName, header);
+        parent.restoreHeader(this._oldHeaderIndex, this._headerName, header);
     }
 
 }

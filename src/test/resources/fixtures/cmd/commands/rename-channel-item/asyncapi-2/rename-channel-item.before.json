@@ -9,7 +9,8 @@
       "parameters": {
         "dummy": {}
       }
-    }
+    },
+    "other":{}
   },
   "components": {
   }

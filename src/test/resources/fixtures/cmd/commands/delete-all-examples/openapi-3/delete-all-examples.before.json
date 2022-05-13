@@ -48,14 +48,14 @@
             "content": {
               "application/json": {
                 "examples": {
+                  "error3": {
+                    "value": {"code": "42", "message": "Error 3"}
+                  },
                   "error1": {
                     "value": {"code": "1", "message": "Error 1"}
                   },
                   "error2": {
                     "value": {"code": "2", "message": "Error 2"}
-                  },
-                  "error3": {
-                    "value": {"code": "42", "message": "Error 3"}
                   }
                 }
               }

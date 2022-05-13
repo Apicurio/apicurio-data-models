@@ -158,7 +158,7 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
     }
     
     @Override
-    public void restoreProperty(int index, String propertyName, Schema schema) {
+    public void restoreProperty(Integer index, String propertyName, Schema schema) {
         this.properties = ModelUtils.restoreMapEntry(index, propertyName, (OasSchema) schema, this.properties);
     }
 
@@ -273,6 +273,14 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
         if (this.allOf != null) {
             this.allOf.remove(schema);
         }
+    }
+    
+    /**
+     * Restores a deleted allOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreAllOfSchema(Integer index, OasSchema schema) {
+        this.allOf = ModelUtils.restoreListEntry(index, schema, this.allOf);
     }
     
 }

@@ -35,7 +35,7 @@ public class DeletePathCommand extends AbstractCommand {
 
     public String _path;
 
-    public int _oldValueIndex;
+    public Integer _oldValueIndex; // nullable for backwards compatibility
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldPath;
     

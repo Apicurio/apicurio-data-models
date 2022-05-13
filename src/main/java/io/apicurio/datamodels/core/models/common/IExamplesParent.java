@@ -39,6 +39,14 @@ public interface IExamplesParent {
      * @param name
      */
     public IExample removeExample(String name);
+    
+    /**
+     * Restore a deleted example in its original position.
+     * @param index
+     * @param name
+     * @param example
+     */
+    public void restoreExample(Integer index, String name, IExample example);
 
     /**
      * Gets a single example by name.

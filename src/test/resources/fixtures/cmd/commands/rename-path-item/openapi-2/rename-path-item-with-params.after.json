@@ -12,45 +12,6 @@
     "application/json"
   ],
   "paths": {
-    "/examples": {
-      "get": {
-        "summary": "List All Examples",
-        "description": "Gets a list of all `Example` entities.",
-        "operationId": "getExamples",
-        "responses": {
-          "200": {
-            "description": "Successful response - returns an array of `Example` entities.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Example"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a Example",
-        "description": "Creates a new instance of a `Example`.",
-        "operationId": "createExample",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "A new `Example` to be created.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Example"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful response."
-          }
-        }
-      }
-    },
     "/foos/{fooId}": {
       "get": {
         "summary": "Get a Example",
@@ -105,6 +66,45 @@
           "type": "string"
         }
       ]
+    },
+        "/examples": {
+      "get": {
+        "summary": "List All Examples",
+        "description": "Gets a list of all `Example` entities.",
+        "operationId": "getExamples",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns an array of `Example` entities.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Example"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a Example",
+        "description": "Creates a new instance of a `Example`.",
+        "operationId": "createExample",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "A new `Example` to be created.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful response."
+          }
+        }
+      }
     }
   },
   "definitions": {

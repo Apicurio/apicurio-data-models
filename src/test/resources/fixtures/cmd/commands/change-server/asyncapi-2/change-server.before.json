@@ -5,11 +5,13 @@
     "version": "1.0.0"
   },
   "servers": {
+    "x_server": {},
     "my_server": {
       "url": "kafka.prod.example.com",
       "description": "my event railgun",
       "protocol": "kafka"
-    }
+    },
+    "other_server": {}
   },
   "channels": {
     "myevents": {}
