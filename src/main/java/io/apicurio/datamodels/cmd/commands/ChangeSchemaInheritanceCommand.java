@@ -198,9 +198,11 @@ public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
         to.properties = from.properties;
         from.properties = null;
         // Update the "parent" setting for all the property schemas
-        to.properties.values().forEach(pschema -> {
-            pschema._parent = to;
-        });
+        if (!this.isNullOrUndefined(to.properties)) {
+            to.properties.values().forEach(pschema -> {
+                pschema._parent = to;
+            });
+        }
         
         to.required = from.required;
         from.required = null;
