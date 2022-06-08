@@ -68,28 +68,33 @@ public class DeleteAllChildSchemasCommand extends AbstractSchemaInhCommand {
         List<OasSchema> schemas = new ArrayList<>();
         if (NodeCompat.equals(TYPE_ALL_OF, this._childSchemaType)) {
             schemas = schema.allOf;
-            schema.allOf = new ArrayList<>();
+            addOldSchemas(schemas);
+            for (int i = schema.allOf.size() - 1; i >= 0; i--) {
+                if (!this.isNullOrUndefined(schema.allOf.get(i).$ref)) {
+                    schema.allOf.remove(i);
+                }
+            }
         }
         if (NodeCompat.equals(TYPE_ANY_OF, this._childSchemaType)) {
             Oas30Schema schema30 = (Oas30Schema) schema;
             schemas = schema30.anyOf;
-            schema30.anyOf = new ArrayList<>();
+            addOldSchemas(schemas);
+            for (int i = schema30.anyOf.size() - 1; i >= 0; i--) {
+                if (!this.isNullOrUndefined(schema30.anyOf.get(i).$ref)) {
+                    schema30.anyOf.remove(i);
+                }
+            }
         }
         if (NodeCompat.equals(TYPE_ONE_OF, this._childSchemaType)) {
             Oas30Schema schema30 = (Oas30Schema) schema;
             schemas = schema30.oneOf;
-            schema30.oneOf = new ArrayList<>();
+            addOldSchemas(schemas);
+            for (int i = schema30.oneOf.size() - 1; i >= 0; i--) {
+                if (!this.isNullOrUndefined(schema30.oneOf.get(i).$ref)) {
+                    schema30.oneOf.remove(i);
+                }
+            }
         }
-
-        if (this.isNullOrUndefined(schemas)) {
-            return;
-        }
-
-        // Save the schemas we're about to delete for later undo
-        this._oldSchemas = new ArrayList<>(schemas.size());
-        schemas.forEach(oldSchema -> {
-            this._oldSchemas.add(Library.writeNode(oldSchema));
-        });
     }
     
     /**
@@ -108,6 +113,30 @@ public class DeleteAllChildSchemasCommand extends AbstractSchemaInhCommand {
             return;
         }
 
+        if (NodeCompat.equals(TYPE_ALL_OF, this._childSchemaType)) {
+            schema.allOf = new ArrayList<>();
+        }
+        if (NodeCompat.equals(TYPE_ANY_OF, this._childSchemaType)) {
+            Oas30Schema schema30 = (Oas30Schema) schema;
+            schema30.anyOf = new ArrayList<>();
+        }
+        if (NodeCompat.equals(TYPE_ONE_OF, this._childSchemaType)) {
+            Oas30Schema schema30 = (Oas30Schema) schema;
+            schema30.oneOf = new ArrayList<>();
+        }
+
         this.copySchemaJsTo(_oldSchemas, schema, _childSchemaType);
+    }
+
+    private void addOldSchemas(List<OasSchema> schemas) {
+        if (this.isNullOrUndefined(schemas)) {
+            return;
+        }
+
+        // Save the schemas we're about to delete for later undo
+        this._oldSchemas = new ArrayList<>(schemas.size());
+        schemas.forEach(oldSchema -> {
+            this._oldSchemas.add(Library.writeNode(oldSchema));
+        });
     }
 }
