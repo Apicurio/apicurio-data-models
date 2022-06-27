@@ -69,6 +69,10 @@ public class PromiseAdapter extends PrinterAdapter {
                         printMacroName(invocation.getMethodName());
                         print("await ").print(invocation.getTargetExpression());
                         return true;
+                    case "completeExceptionally":
+                        printMacroName(invocation.getMethodName());
+                        print(invocation.getTargetExpression()).print(" = ").print("Promise.reject(").print(invocation.getArgument(0)).print(")");
+                        return true;
                 }
             }
         }

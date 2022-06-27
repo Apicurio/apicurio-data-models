@@ -198,7 +198,7 @@ public class Library {
        DiffContext rootContext = DiffContext.createRootContext();
 
        if (!compareDocumentTypes(original, updated)) {
-           throw new RuntimeException(String.format("Original document (%s) and updated document (%s) have different types and cannot be compared", original.ownerDocument().getDocumentType(), updated.ownerDocument().getDocumentType()));
+           throw new RuntimeException("Original document (" + original.ownerDocument().getDocumentType() + ") and updated document (" + updated.ownerDocument().getDocumentType() + ") have different types and cannot be compared");
        }
 
        DiffVisitor diffVisitor = VisitorFactory.createDiffVisitor(rootContext,  original);
@@ -339,7 +339,6 @@ public class Library {
     }
 
     /**
-<<<<<<< HEAD
      * Dereferences a document - this will take all external references ($ref) found in
      * the document and pull them into this document.  It will then update any external
      * reference to instead point to the local copy.  The result is a functionally

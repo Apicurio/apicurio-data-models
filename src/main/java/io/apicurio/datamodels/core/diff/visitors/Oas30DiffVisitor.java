@@ -71,7 +71,7 @@ public class Oas30DiffVisitor extends OasDiffVisitor {
         super(ctx, original);
         this.ctx = ctx;
         this.original = (Oas30Document) original;
-        this.ruleSet = (OasDiffRuleset) ctx.ruleSet;
+        this.ruleSet = (OasDiffRuleset) ctx.getRuleSet();
     }
 
     @Override
@@ -337,9 +337,8 @@ public class Oas30DiffVisitor extends OasDiffVisitor {
             String name = mediaType.getName();
             Oas30MediaType originalMediaType = originalContent.get(name);
             if (DiffUtil.isNodeAdded(originalMediaType, mediaType)) {
-                Map<String, String> templateVars = new HashMap<String, String>() {{
-                    put("MediaType", name);
-                }};
+                Map<String, String> templateVars = new HashMap<>();
+                templateVars.put("MediaType", name);
                 ctx.addDifferenceIfEnabled(mediaTypeAddedRuleConfig, templateVars, nodePath);
             }
         }
@@ -349,9 +348,8 @@ public class Oas30DiffVisitor extends OasDiffVisitor {
             String name = originalMediaType.getName();
             Oas30MediaType mediaType = content.get(name);
             if (DiffUtil.isNodeRemoved(originalMediaType, mediaType)) {
-                Map<String, String> templateVars = new HashMap<String, String>() {{
-                    put("MediaType", name);
-                }};
+                Map<String, String> templateVars = new HashMap<>();
+                templateVars.put("MediaType", name);
                 ctx.addDifferenceIfEnabled(mediaTypeRemovedRuleConfig, templateVars, nodePath);
             }
         }

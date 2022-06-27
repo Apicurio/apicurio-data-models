@@ -1,22 +1,20 @@
 package io.apicurio.datamodels.core.diff.ruleset;
 
+import io.apicurio.datamodels.compat.FilesystemCompat;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.diff.DiffType;
 import io.apicurio.datamodels.core.diff.DiffRuleConfig;
 import io.apicurio.datamodels.core.diff.ChangeType;
 import io.apicurio.datamodels.core.diff.DiffRuleConfigGroup;
+import jsweet.lang.Async;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-public abstract class Ruleset {
+public class Ruleset {
     protected Object rulesConfig;
 
     Ruleset(Object rulesConfig) {
@@ -26,24 +24,20 @@ public abstract class Ruleset {
     /**
      * Loads the ruleset configuration from a JSON file
      */
-    public static Ruleset loadRuleset(String name) throws IOException {
-        InputStream is = Ruleset.class.getResourceAsStream(name + ".json");
-        if (is == null) {
-            throw new FileNotFoundException("Compatibility rule config file '" + name + "' does not exist");
-        }
-        int bufferSize = 1024;
-        char[] buffer = new char[bufferSize];
-        StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(is, StandardCharsets.UTF_8);
-        for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
-            out.append(buffer, 0, numRead);
-        }
-        Object ruleConfig = JsonCompat.parseJSON(out.toString());
+//    @Async
+    public static CompletableFuture<Ruleset> loadRuleset(String name) {
+        // TODO: load rulesets from a static location embedded in the library
+         String pathToFile = "/Users/ephelan/code/src/github.com/Apicurio/apicurio-data-models/src/main" + "/resources/io/apicurio/datamodels/core/diff/ruleset/" + name + ".json";
+         String fileContents;
+         try {
+             fileContents = FilesystemCompat.readFileSync(pathToFile).get();
+             Object ruleConfig = JsonCompat.parseJSON(fileContents);
 
-        if ("oas".equals(name)) {
-            return new OasDiffRuleset(ruleConfig);
-        }
-        return null;
+             Ruleset rs = new OasDiffRuleset(ruleConfig);
+             return CompletableFuture.completedFuture(rs);
+         } catch (InterruptedException | ExecutionException e) {
+             throw new RuntimeException(e);
+         }
     }
 
     protected DiffRuleConfigGroup loadRules(String groupName) {

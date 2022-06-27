@@ -1,6 +1,6 @@
 {
   "name": "@apicurio/data-models",
-  "version": "${project.version}",
+  "version": "0.0.0",
   "description": "A library to read, write, and manipulate OpenAPI and AsyncAPI content.",
   "license": "Apache-2.0",
   "repository": {
