@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import io.apicurio.datamodels.core.diff.ruleset.Ruleset;
 import io.apicurio.datamodels.core.models.NodePath;
+import jsweet.lang.Async;
 
 import static io.apicurio.datamodels.core.diff.DiffUtil.interpolateTemplateLiterals;
 
@@ -16,14 +18,18 @@ public class DiffContext {
     private final Set<Difference> diff = new HashSet<>();
     private DiffContext rootContext;
     private DiffContext parentContext;
-    public Ruleset ruleSet;
+    private Ruleset ruleSet;
 
     public DiffContext(DiffContext rootContext, DiffContext parentContext, String pathUpdated) {
         this.rootContext = rootContext;
         this.parentContext = parentContext;
+    }
+
+    @Async
+    public void loadAndSetRuleset() {
         try {
-            this.ruleSet = Ruleset.loadRuleset("oas");
-        } catch (IOException e) {
+            this.ruleSet = Ruleset.loadRuleset("oas").get();
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -38,6 +44,7 @@ public class DiffContext {
 
     public static DiffContext createRootContext(String basePathFragmentedUpdated) {
         DiffContext rootContext = new DiffContext(null, null, basePathFragmentedUpdated);
+        rootContext.loadAndSetRuleset();
         rootContext.initRootContext(rootContext);
         return rootContext;
     }
@@ -59,6 +66,10 @@ public class DiffContext {
 
     public Set<Difference> getDifferences() {
         return this.diff;
+    }
+
+    public Ruleset getRuleSet() {
+        return this.ruleSet;
     }
 
     // TODO: Get this to transpile to TypeScript

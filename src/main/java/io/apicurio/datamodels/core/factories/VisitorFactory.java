@@ -100,6 +100,6 @@ public class VisitorFactory {
         if (documentType == DocumentType.openapi3) {
             return new Oas30DiffVisitor(rootContext, originalNode);
         }
-        throw new RuntimeException(String.format("Diff Visitor does not support the document type '%s'", documentType));
+        throw new RuntimeException("Diff Visitor does not support the document type '" + documentType + "'");
     }
 }
