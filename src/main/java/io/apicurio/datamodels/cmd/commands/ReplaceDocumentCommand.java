@@ -19,11 +19,17 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
+import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
+import io.apicurio.datamodels.compat.LoggerCompat;
+import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
+import io.apicurio.datamodels.core.models.NodePath;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
@@ -32,20 +38,61 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
  * A command used to replace a path item with a newer version.
  * @author eric.wittmann@gmail.com
  */
-public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
+public class ReplaceDocumentCommand extends AbstractCommand {
+    
+    public NodePath _nodePath;
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
+    public Object _new;
 
+    @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
+    public Object _old;
+    
     ReplaceDocumentCommand() {
     }
     
     ReplaceDocumentCommand(Document old, Document replacement) {
-        super(old, replacement);
+        this._nodePath = Library.createNodePath(old);
+        this._new = Library.writeNode(replacement);
     }
     
     /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#removeNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
+     * @see io.apicurio.datamodels.cmd.ICommand#execute(io.apicurio.datamodels.core.models.Document)
      */
     @Override
-    protected void removeNode(Document doc, Document node) {
+    public void execute(Document document) {
+        LoggerCompat.info("[ReplaceDocumentCommand] Executing.");
+        this._old = null;
+
+        Document oldNode = (Document) this._nodePath.resolve(document);
+        if (this.isNullOrUndefined(oldNode)) {
+            return;
+        }
+
+        this._old = Library.writeNode(oldNode);
+        this.removeNode(document, oldNode);
+        this.readNode(document, this._new);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.cmd.ICommand#undo(io.apicurio.datamodels.core.models.Document)
+     */
+    @Override
+    public void undo(Document document) {
+        LoggerCompat.info("[ReplaceDocumentCommand] Reverting.");
+        if (this.isNullOrUndefined(this._old)) {
+            return;
+        }
+
+        Document node = (Document) this._nodePath.resolve(document);
+        if (this.isNullOrUndefined(node)) {
+            return;
+        }
+
+        this.removeNode(document, node);
+        this.readNode(document, this._old);
+    }
+    
+    private void removeNode(Document doc, Document node) {
         switch (node.getDocumentType()) {
             case asyncapi2:
                 this.resetAai2xDocument((Aai20Document) node);
@@ -61,19 +108,7 @@ public class ReplaceDocumentCommand extends ReplaceNodeCommand<Document> {
         }
     }
     
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#addNode(io.apicurio.datamodels.core.models.Document, io.apicurio.datamodels.core.models.Node)
-     */
-    @Override
-    protected void addNode(Document doc, Document node) {
-        // Do nothing - the node being "added" is the root document node.
-    }
-    
-    /**
-     * @see io.apicurio.datamodels.cmd.commands.ReplaceNodeCommand#readNode(io.apicurio.datamodels.core.models.Document, java.lang.Object)
-     */
-    @Override
-    protected Document readNode(Document doc, Object node) {
+    private Document readNode(Document doc, Object node) {
         Library.readNode(node, doc);
         return (Document) doc;
     }

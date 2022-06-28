@@ -27,6 +27,8 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
  */
 public class DeleteResponseDefinitionCommand_30 extends DeleteResponseDefinitionCommand {
 
+    public Integer _oldDefinitionIndex; // nullable for backwards compatibility
+
     DeleteResponseDefinitionCommand_30() {
     }
     
@@ -41,6 +43,7 @@ public class DeleteResponseDefinitionCommand_30 extends DeleteResponseDefinition
     protected Object doDeleteResponseDefinition(Document document) {
         Oas30Document doc30 = (Oas30Document) document;
         if (ModelUtils.isDefined(doc30.components) && ModelUtils.isDefined(doc30.components.getResponseDefinition(this._definitionName))) {
+            this._oldDefinitionIndex = doc30.components.getResponseDefinitionNames().indexOf(this._definitionName);
             Oas30ResponseDefinition oldDef = doc30.components.removeResponseDefinition(this._definitionName);
             return Library.writeNode(oldDef);
         }
@@ -56,7 +59,7 @@ public class DeleteResponseDefinitionCommand_30 extends DeleteResponseDefinition
         if (ModelUtils.isDefined(doc30.components)) {
             Oas30ResponseDefinition schemaDef = doc30.components.createResponseDefinition(this._definitionName);
             Library.readNode(oldDefinition, schemaDef);
-            doc30.components.addResponseDefinition(this._definitionName, schemaDef);
+            doc30.components.restoreResponseDefinition(this._oldDefinitionIndex, this._definitionName, schemaDef);
         }
     }
 }

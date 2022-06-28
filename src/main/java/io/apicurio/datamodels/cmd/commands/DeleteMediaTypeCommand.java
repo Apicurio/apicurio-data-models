@@ -37,6 +37,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
     public NodePath _mediaTypePath;
     public NodePath _parentPath;
 
+    public Integer _oldMediaTypeIndex; // nullable for backwards compatibility
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldMediaType;
     
@@ -63,6 +64,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
         }
 
         IOas30MediaTypeParent parent = (IOas30MediaTypeParent) mediaType.parent();
+        this._oldMediaTypeIndex = parent.getMediaTypes().indexOf(mediaType);
         parent.removeMediaType(this._mediaTypeName);
 
         this._oldMediaType = Library.writeNode(mediaType);
@@ -85,7 +87,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         Oas30MediaType mediaType = parent.createMediaType(this._mediaTypeName);
         Library.readNode(this._oldMediaType, mediaType);
-        parent.addMediaType(this._mediaTypeName, mediaType);
+        parent.restoreMediaType(this._oldMediaTypeIndex, this._mediaTypeName, mediaType);
     }
 
 }

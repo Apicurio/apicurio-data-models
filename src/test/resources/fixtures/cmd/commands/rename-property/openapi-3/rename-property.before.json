@@ -5,13 +5,13 @@
       "MySchema1" : {
         "type": "object",
         "required": [
-          "name", "description", "address"
+          "description", "name", "address"
         ],
         "properties": {
-          "name": {
+          "description": {
             "type": "string"
           },
-          "description": {
+          "name": {
             "type": "string"
           },
           "address": {

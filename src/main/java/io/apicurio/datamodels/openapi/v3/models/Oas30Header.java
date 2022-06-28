@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IReferenceNode;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
@@ -107,6 +108,14 @@ public class Oas30Header extends OasHeader implements IReferenceNode, IExamplePa
     @Override
     public IExample removeExample(String name) {
         return this.examples.remove(name);
+    }
+    
+    /**
+     * see {@link io.apicurio.datamodels.core.models.common.IExamplesParent#restoreExample(Integer, String, IExample)}
+     */
+    @Override
+    public void restoreExample(Integer index, String name, IExample example) {
+        this.examples = ModelUtils.restoreMapEntry(index, name, example, this.examples);
     }
 
     /**

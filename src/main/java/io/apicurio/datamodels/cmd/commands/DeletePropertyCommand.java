@@ -38,6 +38,7 @@ public class DeletePropertyCommand extends AbstractCommand {
 
     public Object _oldProperty;
     public boolean _oldRequired;
+    public Integer _oldPropertyIndex; // nullable for backwards compatibility
     
     DeletePropertyCommand() {
     }
@@ -62,6 +63,7 @@ public class DeletePropertyCommand extends AbstractCommand {
         }
 
         IPropertyParent schema = (IPropertyParent) ((Node) property).parent();
+        this._oldPropertyIndex = schema.getPropertyNames().indexOf(this._propertyName);
         this._oldProperty = Library.writeNode(schema.removeProperty(this._propertyName));
         
         this._oldRequired = schema.isPropertyRequired(this._propertyName);
@@ -87,7 +89,7 @@ public class DeletePropertyCommand extends AbstractCommand {
 
         Schema propSchema = schema.createPropertySchema(this._propertyName);
         Library.readNode(this._oldProperty, propSchema);
-        schema.addProperty(this._propertyName, propSchema);
+        schema.restoreProperty(this._oldPropertyIndex, this._propertyName, propSchema);
         if (this._oldRequired) {
             schema.setPropertyRequired(this._propertyName);
         }

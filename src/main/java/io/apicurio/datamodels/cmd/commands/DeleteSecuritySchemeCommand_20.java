@@ -27,6 +27,8 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
  */
 public class DeleteSecuritySchemeCommand_20 extends DeleteSecuritySchemeCommand {
 
+    public Integer _oldSchemeIndex; // nullable for backwards compatibility
+
     DeleteSecuritySchemeCommand_20() {
     }
     
@@ -45,6 +47,7 @@ public class DeleteSecuritySchemeCommand_20 extends DeleteSecuritySchemeCommand 
             return null;
         }
 
+        this._oldSchemeIndex = definitions.getItemNames().indexOf(this._schemeName);
         return Library.writeNode(definitions.removeSecurityScheme(this._schemeName));
     }
 
@@ -61,7 +64,7 @@ public class DeleteSecuritySchemeCommand_20 extends DeleteSecuritySchemeCommand 
 
         Oas20SecurityScheme scheme = definitions.createSecurityScheme(this._schemeName);
         Library.readNode(oldScheme, scheme);
-        definitions.addSecurityScheme(this._schemeName, scheme);
+        definitions.restoreSecurityScheme(this._oldSchemeIndex, this._schemeName, scheme);
     }
 
 }

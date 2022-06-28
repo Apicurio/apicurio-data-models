@@ -49,6 +49,7 @@ public class DeleteAllServersCommand_Aai20 extends AbstractCommand {
     @Override
     public void execute(Document document) {
         LoggerCompat.info("[DeleteAllServersCommand_Aai20] Executing.");
+        // Preserve insertion order with LinkedHashMap
         this._oldServers = new LinkedHashMap<>();
 
         Aai20Document parent = (Aai20Document) document;

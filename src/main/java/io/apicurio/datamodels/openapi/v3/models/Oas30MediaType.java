@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
@@ -167,6 +168,14 @@ public class Oas30MediaType extends ExtensibleNode implements INamed, IExamplePa
         return this.examples.remove(name);
     }
 
+    /**
+     * see {@link io.apicurio.datamodels.core.models.common.IExamplesParent#restoreExample(Integer, String, IExample)}
+     */
+    @Override
+    public void restoreExample(Integer index, String name, IExample example) {
+        this.examples = ModelUtils.restoreMapEntry(index, name, example, this.examples);
+    }
+    
     /**
      * @see io.apicurio.datamodels.core.models.common.IExamplesParent#clearExamples()
      */

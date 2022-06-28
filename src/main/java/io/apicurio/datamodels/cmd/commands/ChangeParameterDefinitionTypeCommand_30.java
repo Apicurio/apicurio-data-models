@@ -51,13 +51,10 @@ public class ChangeParameterDefinitionTypeCommand_30 extends ChangeParameterType
 
         Oas30Document doc30 = (Oas30Document) document;
         
-        // Remove the old/updated parameter.
-        doc30.components.removeParameterDefinition(param.getName());
-
         // Restore the parameter from before the command executed.
         Oas30ParameterDefinition oldParam = doc30.components.createParameterDefinition(param.getName());
         Library.readNode(this._oldParameter, oldParam);
-        doc30.components.addParameterDefinition(param.getName(), oldParam);
+        doc30.components.replaceParameterDefinition(oldParam);
     }
 
 }

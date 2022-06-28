@@ -19,7 +19,6 @@ package io.apicurio.datamodels.cmd.commands;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.openapi.models.OasDocument;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30ResponseDefinition;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -53,9 +52,7 @@ public class RenameResponseDefinitionCommand_30 extends RenameResponseDefinition
         if (ModelUtils.isDefined(doc30.components.getResponseDefinition(toName))) {
             return false;
         }
-        Oas30ResponseDefinition responseDef = doc30.components.removeResponseDefinition(fromName);
-        responseDef.rename(toName);
-        doc30.components.addResponseDefinition(toName, responseDef);
+        doc30.components.renameResponseDefinition(fromName, toName, responseDef -> responseDef.rename(toName));
         return true;
     }
 

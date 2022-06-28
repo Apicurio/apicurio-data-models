@@ -37,6 +37,7 @@ public class DeleteMessageDefinitionCommand extends AbstractCommand {
 
    @JsonDeserialize(using= MarshallCompat.NullableJsonNodeDeserializer.class)
    public Object _oldDefinition;
+   public Integer _oldDefinitionIndex; // nullable for backwards compatibility
 
    public DeleteMessageDefinitionCommand() {
    }
@@ -51,7 +52,9 @@ public class DeleteMessageDefinitionCommand extends AbstractCommand {
 
       Aai20Document doc20 = (Aai20Document) document;
       if (ModelUtils.isDefined(doc20.components)) {
-         AaiMessage msgDef = doc20.components.removeMessage(_name);
+         AaiMessage msgDef = doc20.components.getMessage(_name);
+         this._oldDefinitionIndex = doc20.components.getMessagesList().indexOf(msgDef);
+         doc20.components.removeMessage(_name);
          this._oldDefinition = Library.writeNode(msgDef);
       }
    }
@@ -68,7 +71,7 @@ public class DeleteMessageDefinitionCommand extends AbstractCommand {
          Aai20NodeFactory factory = new Aai20NodeFactory();
          AaiMessage msgDef = factory.createMessage(doc20.components, _name);
          Library.readNode(_oldDefinition, msgDef);
-         doc20.components.addMessage(_name, msgDef);
+         doc20.components.restoreMessage(this._oldDefinitionIndex, _name, msgDef);
       }
    }
 }

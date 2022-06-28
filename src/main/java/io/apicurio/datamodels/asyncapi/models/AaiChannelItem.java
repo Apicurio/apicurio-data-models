@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
 import io.apicurio.datamodels.core.models.IReferenceNode;
@@ -89,6 +90,15 @@ public abstract class AaiChannelItem extends ExtensibleNode implements IReferenc
             this.parameters = new LinkedHashMap<>();
         }
         this.parameters.put(paramName, param);
+    }
+    
+    /**
+     * Rename a parameter without affecting ordering.
+     * @param fromParamName
+     * @param toParamName
+     */
+    public void renameParameter(String fromParamName, String toParamName) {
+        this.parameters = ModelUtils.renameMapKey(fromParamName, toParamName, this.parameters, param -> param.rename(toParamName));
     }
 
     public List<AaiParameter> getParameterlist() {

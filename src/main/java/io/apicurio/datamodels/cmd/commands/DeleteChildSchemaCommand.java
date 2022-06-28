@@ -41,6 +41,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldSchema;
     public String _oldSchemaType;
+    public Integer _oldSchemaIndex; // nullable for backwards compatibility
     
     DeleteChildSchemaCommand() {
     }
@@ -69,6 +70,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
 
         this._oldSchema = Library.writeNode(childSchema);
         this._oldSchemaType = schemaRemover.type;
+        this._oldSchemaIndex = schemaRemover.index;
     }
     
     /**
@@ -91,7 +93,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         Library.readNode(this._oldSchema, schema);
         
         // Add the schema back to the parent
-        SchemaAdderVisitor schemaAdder = new SchemaAdderVisitor();
+        SchemaAdderVisitor schemaAdder = new SchemaAdderVisitor(this._oldSchemaIndex);
         Library.visitNode(schema, schemaAdder);
     }
 
@@ -102,6 +104,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
     private static class SchemaRemoverVisitor extends CombinedVisitorAdapter {
         
         public String type;
+        public int index; 
         
         /**
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
@@ -109,6 +112,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         @Override
         public void visitAllOfSchema(OasSchema node) {
             OasSchema parentSchema = (OasSchema) node.parent();
+            this.index = parentSchema.allOf.indexOf(node);
             parentSchema.removeAllOfSchema(node);
             this.type = TYPE_ALL_OF;
         }
@@ -119,6 +123,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         @Override
         public void visitAnyOfSchema(Oas30AnyOfSchema node) {
             Oas30Schema parentSchema = (Oas30Schema) node.parent();
+            this.index = parentSchema.anyOf.indexOf(node);
             parentSchema.removeAnyOfSchema(node);
             this.type = TYPE_ANY_OF;
         }
@@ -129,6 +134,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         @Override
         public void visitOneOfSchema(Oas30OneOfSchema node) {
             Oas30Schema parentSchema = (Oas30Schema) node.parent();
+            this.index = parentSchema.oneOf.indexOf(node);
             parentSchema.removeOneOfSchema(node);
             this.type = TYPE_ONE_OF;
         }
@@ -142,13 +148,19 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
      */
     private static class SchemaAdderVisitor extends CombinedVisitorAdapter {
         
+        private Integer index;
+
+        SchemaAdderVisitor(Integer index) {
+            this.index = index;
+        }
+        
         /**
          * @see io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter#visitAllOfSchema(io.apicurio.datamodels.openapi.models.OasSchema)
          */
         @Override
         public void visitAllOfSchema(OasSchema node) {
             OasSchema parentSchema = (OasSchema) node.parent();
-            parentSchema.addAllOfSchema(node);
+            parentSchema.restoreAllOfSchema(this.index, node);
         }
         
         /**
@@ -157,7 +169,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         @Override
         public void visitAnyOfSchema(Oas30AnyOfSchema node) {
             Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.addAnyOfSchema(node);
+            parentSchema.restoreAnyOfSchema(this.index, node);
         }
         
         /**
@@ -166,7 +178,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         @Override
         public void visitOneOfSchema(Oas30OneOfSchema node) {
             Oas30Schema parentSchema = (Oas30Schema) node.parent();
-            parentSchema.addOneOfSchema(node);
+            parentSchema.restoreOneOfSchema(this.index, node);
         }
         
     }

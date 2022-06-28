@@ -25,6 +25,7 @@
         }
     },
     "responses": {
+		"Another": {},
         "Failure": {
             "description": "The error response.",
             "schema": {
@@ -33,6 +34,7 @@
                     "type": "string"
                 }
             }
-        }
+        },
+        "Other": {}
     }
 }

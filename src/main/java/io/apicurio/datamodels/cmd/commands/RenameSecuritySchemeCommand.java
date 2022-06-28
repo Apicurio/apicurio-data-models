@@ -17,9 +17,9 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20SecurityScheme;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.combined.visitors.CombinedVisitorAdapter;
@@ -31,9 +31,7 @@ import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.util.VisitorUtil;
 import io.apicurio.datamodels.core.visitors.TraverserDirection;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v2.models.Oas20SecurityScheme;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30SecurityScheme;
 
 /**
  * A command used to rename a security scheme, along with all references to it.
@@ -78,65 +76,38 @@ public class RenameSecuritySchemeCommand extends AbstractCommand {
      * @private
      */
     private void _doSecuritySchemeRename(Document document, String from, String to) {
-        SecurityScheme scheme = null;
-
+        final Consumer<SecurityScheme> schemeUpdater = scheme -> {
+            scheme.rename(to);
+            
+            // Now find all security requirements that reference the scheme and change them too.
+            VisitorUtil.visitTree(document, new CombinedVisitorAdapter() {
+                @Override
+                public void visitSecurityRequirement(SecurityRequirement node) {
+                    List<String> scopes = node.removeSecurityRequirementItem(from);
+                    if (ModelUtils.isDefined(scopes)) {
+                        node.addSecurityRequirementItem(to, scopes);
+                    }
+                }
+            }, TraverserDirection.down);
+        };
+        
         // Different place to find the security scheme depending on the version.
         if (document.getDocumentType() == DocumentType.openapi2) {
             Oas20Document doc20 = (Oas20Document) document;
+            
             if (ModelUtils.isDefined(doc20.securityDefinitions)) {
-                // If the "to" scheme already exists, do nothing!
-                if (ModelUtils.isDefined(doc20.securityDefinitions.getSecurityScheme(to))) {
-                    return;
-                }
-                scheme = doc20.securityDefinitions.removeSecurityScheme(from);
+                doc20.securityDefinitions.renameSecurityScheme(from, to, schemeUpdater);
             }
         } else if (document.getDocumentType() == DocumentType.openapi3) {
             Oas30Document doc30 = (Oas30Document) document;
             if (ModelUtils.isDefined(doc30.components)) {
-                // If the "to" scheme already exists, do nothing!
-                if (!this.isNullOrUndefined(doc30.components.getSecurityScheme(to))) {
-                    return;
-                }
-                scheme = doc30.components.removeSecurityScheme(from);
+                doc30.components.renameSecurityScheme(from, to, schemeUpdater);
             }
         } else {
             Aai20Document aai20Document = (Aai20Document) document;
             if (ModelUtils.isDefined(aai20Document.components)) {
-                // If the "to" scheme already exists, do nothing!
-                if (!this.isNullOrUndefined(aai20Document.components.getSecurityScheme(to))) {
-                    return;
-                }
-                scheme = aai20Document.components.removeSecurityScheme(from);
+                aai20Document.components.renameSecurityScheme(from, to, schemeUpdater);
             }
         }
-
-        // If we didn't find a scheme with the "from" name, then nothing to do.
-        if (this.isNullOrUndefined(scheme)) {
-            return;
-        }
-
-        // Now we have the scheme - rename it!
-        scheme.rename(to);
-        if (document.getDocumentType() == DocumentType.openapi2) {
-            Oas20Document doc20 = (Oas20Document) document;
-            doc20.securityDefinitions.addSecurityScheme(to, (Oas20SecurityScheme)scheme);
-        } else if (document.getDocumentType() == DocumentType.openapi3) {
-            Oas30Document doc30 = (Oas30Document) document;
-            doc30.components.addSecurityScheme(to, (Oas30SecurityScheme)scheme);
-        } else {
-            Aai20Document aai20Document = (Aai20Document) document;
-            aai20Document.components.addSecurityScheme(to, (Aai20SecurityScheme)scheme);
-        }
-
-        // Now find all security requirements that reference the scheme and change them too.
-        VisitorUtil.visitTree(document, new CombinedVisitorAdapter() {
-            @Override
-            public void visitSecurityRequirement(SecurityRequirement node) {
-                List<String> scopes = node.removeSecurityRequirementItem(from);
-                if (ModelUtils.isDefined(scopes)) {
-                    node.addSecurityRequirementItem(to, scopes);
-                }
-            }
-        }, TraverserDirection.down);
     }
 }

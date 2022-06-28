@@ -13,16 +13,19 @@
                 "anyOf": [
                     {
                         "required": [
-                            "property-1"
+                            "property-3", "property-1"
                         ],
                         "type": "object",
                         "properties": {
-                            "property-1": {
+                            "property-2": {
                                 "description": "",
                                 "type": "string"
                             },
-                            "property-2": {
+                            "property-1": {
                                 "description": "",
+                                "type": "integer"
+                            },
+                            "property-3": {
                                 "type": "integer"
                             }
                         }

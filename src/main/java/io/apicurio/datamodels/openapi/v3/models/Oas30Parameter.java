@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.common.IExample;
 import io.apicurio.datamodels.core.models.common.IExampleParent;
 import io.apicurio.datamodels.core.models.common.IExamplesParent;
@@ -103,6 +104,14 @@ public class Oas30Parameter extends OasParameter implements IOas30MediaTypeParen
     }
 
     /**
+     * see {@link io.apicurio.datamodels.core.models.common.IExamplesParent#restoreExample(Integer, String, IExample)}
+     */
+    @Override
+    public void restoreExample(Integer index, String name, IExample example) {
+        this.examples = ModelUtils.restoreMapEntry(index, name, example, this.examples);
+    }
+    
+    /**
      * @see io.apicurio.datamodels.core.models.common.IExamplesParent#clearExamples()
      */
     @Override
@@ -180,6 +189,14 @@ public class Oas30Parameter extends OasParameter implements IOas30MediaTypeParen
         List<Oas30MediaType> rval = new ArrayList<>();
         rval.addAll(this.content.values());
         return rval;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#restoreMediaType(Integer, String, Oas30MediaType)
+     */
+    @Override
+    public void restoreMediaType(Integer index, String name, Oas30MediaType mediaType) {
+        this.content = ModelUtils.restoreMapEntry(index, name, mediaType, this.content);
     }
 
 }

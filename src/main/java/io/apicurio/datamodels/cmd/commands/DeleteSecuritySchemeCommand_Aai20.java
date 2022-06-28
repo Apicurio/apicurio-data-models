@@ -29,6 +29,8 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeCommand {
 
+    public Integer _oldSchemeIndex; // nullable for backwards compatibility
+
     DeleteSecuritySchemeCommand_Aai20() {
     }
 
@@ -43,6 +45,7 @@ public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeComma
     protected Object doDeleteScheme(Document document) {
         Aai20Document aai20Document = (Aai20Document) document;
         if (ModelUtils.isDefined(aai20Document.components)) {
+            this._oldSchemeIndex = aai20Document.components.getSecuritySchemesNames().indexOf(this._schemeName);
             return Library.writeNode(aai20Document.components.removeSecurityScheme(this._schemeName));
         } else {
             return null;
@@ -58,7 +61,7 @@ public class DeleteSecuritySchemeCommand_Aai20 extends DeleteSecuritySchemeComma
         if (ModelUtils.isDefined(aai20Document.components)) {
             AaiSecurityScheme scheme = new Aai20NodeFactory().createSecurityScheme(aai20Document.components, this._schemeName);
             Library.readNode(oldScheme, scheme);
-            aai20Document.components.addSecurityScheme(this._schemeName, scheme);
+            aai20Document.components.restoreSecurityScheme(this._oldSchemeIndex, this._schemeName, scheme);
         }
     }
     

@@ -83,6 +83,15 @@ public class Oas20ParameterDefinitions extends Node implements IIndexedNode<Oas2
     public Oas20ParameterDefinition removeParameter(String name) {
         return this.items.remove(name);
     }
+    
+    /**
+     * Replaces a parameter without modifying ordering of parameters.
+     * @param parameter
+     */
+    public void replaceParameter(Oas20ParameterDefinition parameter) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addParameter(parameter.getName(), parameter);
+    }
 
     /**
      * Gets a list of all the parameter names.

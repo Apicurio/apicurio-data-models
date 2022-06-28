@@ -54,4 +54,12 @@ public interface IOas30MediaTypeParent {
      */
     public List<Oas30MediaType> getMediaTypes();
 
+    /**
+     * Restore a removed media type at its old position
+     * @param index
+     * @param name
+     * @param mediaType
+     */
+    public void restoreMediaType(Integer index, String name, Oas30MediaType mediaType);
+
 }

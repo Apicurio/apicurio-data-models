@@ -42,6 +42,7 @@ public class DeleteSecurityRequirementCommand extends AbstractCommand {
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldRequirement;
+    public Integer _oldRequirementIndex; // nullable for backwards compatibility
     
     DeleteSecurityRequirementCommand() {
     }
@@ -70,6 +71,7 @@ public class DeleteSecurityRequirementCommand extends AbstractCommand {
         List<SecurityRequirement> requirements = parent.getSecurityRequirements();
         int idx = this.indexOfRequirement(requirements, requirement);
         if (idx != -1) {
+            this._oldRequirementIndex = idx;
             this._oldRequirement = Library.writeNode(requirements.get(idx));
             requirements.remove(idx);
         }
@@ -92,7 +94,7 @@ public class DeleteSecurityRequirementCommand extends AbstractCommand {
 
         SecurityRequirement restoredRequirement = parent.createSecurityRequirement();
         Library.readNode(this._oldRequirement, restoredRequirement);
-        parent.addSecurityRequirement(restoredRequirement);
+        parent.restoreSecurityRequirement(this._oldRequirementIndex, restoredRequirement);
     }
 
     protected int indexOfRequirement(List<SecurityRequirement> requirements, SecurityRequirement requirement) {

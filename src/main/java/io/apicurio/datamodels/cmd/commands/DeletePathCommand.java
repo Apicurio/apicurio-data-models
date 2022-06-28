@@ -35,6 +35,7 @@ public class DeletePathCommand extends AbstractCommand {
 
     public String _path;
 
+    public Integer _oldValueIndex; // nullable for backwards compatibility
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldPath;
     
@@ -58,6 +59,7 @@ public class DeletePathCommand extends AbstractCommand {
             return;
         }
 
+        this._oldValueIndex = paths.getItemNames().indexOf(this._path);
         this._oldPath = Library.writeNode(paths.removePathItem(this._path));
     }
     
@@ -75,7 +77,7 @@ public class DeletePathCommand extends AbstractCommand {
 
         OasPathItem pathItem = paths.createPathItem(this._path);
         Library.readNode(this._oldPath, pathItem);
-        paths.addPathItem(this._path, pathItem);
+        paths.restorePathItem(this._oldValueIndex, this._path, pathItem);
     }
 
 }

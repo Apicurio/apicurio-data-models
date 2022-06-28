@@ -42,6 +42,7 @@ public class DeleteParameterCommand extends AbstractCommand {
     public NodePath _parentPath;
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldParameter;
+    public Integer _oldParameterIndex; // nullable for backwards compatibility
     
     DeleteParameterCommand() {
     }
@@ -98,7 +99,7 @@ public class DeleteParameterCommand extends AbstractCommand {
 
         OasParameter param = parent.createParameter();
         Library.readNode(this._oldParameter, param);
-        parent.addParameter(param);
+        parent.restoreParameter(this._oldParameterIndex,  param);
     }
 
 }

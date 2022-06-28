@@ -1,6 +1,7 @@
 package io.apicurio.datamodels.openapi.models;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author vvilerio
@@ -8,16 +9,39 @@ import java.util.List;
 public interface IOasHeaderParent {
 
    /**
-    * Creates a  header.
+    * Creates a header.
     */
    public OasHeader createHeader(String name);
 
    /**
-    * Adds a  header.
+    * Adds a header.
     * @param name
     * @param header
     */
    public void addHeader(String name, OasHeader header);
+   
+   /**
+    * Replace the definition of a header.
+    * @param name
+    * @param header
+    */
+   public void replaceHeader(String name, OasHeader header);
+   
+   /**
+    * Renames a header
+    * @param from
+    * @param to
+    * @param headerConsumer
+    */
+   public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer);
+   
+   /**
+    * Restore a deleted header in its original position
+    * @param index
+    * @param headerName
+    * @param header
+    */
+   public void restoreHeader(Integer index, String headerName, OasHeader header);
 
    /**
     * Gets a single  header by name.

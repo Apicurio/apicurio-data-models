@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
@@ -150,6 +151,16 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
         }
         return null;
     }
+    
+    @Override
+    public void renameProperty(String oldPropertyName, String newPropertyName, Consumer<Schema> propertyConsumer) {
+        this.properties = ModelUtils.renameMapKey(oldPropertyName, newPropertyName, this.properties, propertyConsumer);
+    }
+    
+    @Override
+    public void restoreProperty(Integer index, String propertyName, Schema schema) {
+        this.properties = ModelUtils.restoreMapEntry(index, propertyName, (OasSchema) schema, this.properties);
+    }
 
     /**
      * @see IPropertyParent#getProperty(String) 
@@ -262,6 +273,14 @@ public abstract class OasSchema extends Schema implements IExternalDocumentation
         if (this.allOf != null) {
             this.allOf.remove(schema);
         }
+    }
+    
+    /**
+     * Restores a deleted allOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreAllOfSchema(Integer index, OasSchema schema) {
+        this.allOf = ModelUtils.restoreListEntry(index, schema, this.allOf);
     }
     
 }

@@ -1,0 +1,35 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "DeletePropertyCommand test",
+    "version": "1.0.1"
+  },
+  "components": {
+    "schemas": {
+      "MySchema1": {
+        "title": "Root Type for MySchema1",
+        "description": "test",
+        "required": [
+          "bar", "baz"
+        ],
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          },
+          "baz": {
+            "description": "",
+            "type": "integer"
+          },
+          "bar": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "foo": "some text",
+          "baz": 19
+        }
+      }
+    }
+  }
+}

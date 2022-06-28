@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.OasResponse;
@@ -96,6 +98,14 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
         List<Oas30MediaType> rval = new ArrayList<>();
         rval.addAll(this.content.values());
         return rval;
+    }
+    
+    /**
+     * @see io.apicurio.datamodels.openapi.v3.models.IOas30MediaTypeParent#restoreMediaType(Integer, String, Oas30MediaType)
+     */
+    @Override
+    public void restoreMediaType(Integer index, String name, Oas30MediaType mediaType) {
+        this.content = ModelUtils.restoreMapEntry(index, name, mediaType, this.content);
     }
 
     /**
@@ -181,6 +191,22 @@ public class Oas30Response extends OasResponse implements IOas30MediaTypeParent,
     @Override
     public OasHeader removeHeader(String name) {
         return this.headers.remove(name);
+    }
+    
+    @Override
+    public void renameHeader(String from, String to, Consumer<OasHeader> headerConsumer) {
+        this.headers = ModelUtils.renameMapKey(from, to, this.headers, headerConsumer);
+    }
+    
+    @Override
+    public void replaceHeader(String name, OasHeader header) {
+        // As long as this is backed by a LinkedHashMap ordering will be preserved.
+        addHeader(name, header);
+    }
+    
+    @Override
+    public void restoreHeader(Integer index, String headerName, OasHeader header) {
+        this.headers = ModelUtils.restoreMapEntry(index, headerName, (Oas30Header) header, this.headers);
     }
 
     /**

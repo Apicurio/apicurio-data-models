@@ -28,6 +28,8 @@ import io.apicurio.datamodels.core.models.Document;
  */
 public class DeleteSchemaDefinitionCommand_Aai20 extends DeleteSchemaDefinitionCommand {
 
+    public Integer _oldDefinitionIndex; // nullable for backwards compatibility
+
     DeleteSchemaDefinitionCommand_Aai20() {
     }
     
@@ -42,6 +44,8 @@ public class DeleteSchemaDefinitionCommand_Aai20 extends DeleteSchemaDefinitionC
     protected Object doDeleteSchemaDefinition(Document document) {
         Aai20Document aai20Document = (Aai20Document) document;
         if (ModelUtils.isDefined(aai20Document.components)) {
+            this._oldDefinitionIndex = aai20Document.components.getSchemaDefinitionNames()
+                    .indexOf(this._definitionName);
             AaiSchema oldDef = aai20Document.components.removeSchemaDefinition(this._definitionName);
             return Library.writeNode(oldDef);
         }
@@ -57,7 +61,7 @@ public class DeleteSchemaDefinitionCommand_Aai20 extends DeleteSchemaDefinitionC
         if (ModelUtils.isDefined(aai20Document.components)) {
             AaiSchema schemaDef = new Aai20NodeFactory().createSchemaDefinition(aai20Document.components, this._definitionName);
             Library.readNode(oldDefinition, schemaDef);
-            aai20Document.components.addSchemaDefinition(this._definitionName, schemaDef);
+            aai20Document.components.restoreSchemaDefinition(this._oldDefinitionIndex, this._definitionName, schemaDef);
         }
     }
 }

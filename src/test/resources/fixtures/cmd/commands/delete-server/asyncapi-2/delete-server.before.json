@@ -5,14 +5,14 @@
     "version": "1.0.0"
   },
   "servers": {
+     "my_other_server": {
+      "url": "kafka2.prod.example.com",
+      "description": "my newer event railgun",
+      "protocol": "kafka"
+    },
     "my_server": {
       "url": "kafka.prod.example.com",
       "description": "my event railgun",
-      "protocol": "kafka"
-    },
-    "my_other_server": {
-      "url": "kafka2.prod.example.com",
-      "description": "my newer event railgun",
       "protocol": "kafka"
     }
   },

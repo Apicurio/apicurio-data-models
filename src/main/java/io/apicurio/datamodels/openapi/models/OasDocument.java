@@ -19,6 +19,7 @@ package io.apicurio.datamodels.openapi.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
 import io.apicurio.datamodels.core.models.common.ISecurityRequirementParent;
@@ -62,6 +63,14 @@ public abstract class OasDocument extends Document implements ISecurityRequireme
     @Override
     public List<SecurityRequirement> getSecurityRequirements() {
         return this.security;
+    }
+
+    /**
+     * see {@link io.apicurio.datamodels.core.models.common.ISecurityRequirementParent#restoreSecurityRequirement(Integer, SecurityRequirement)}
+     */
+    @Override
+    public void restoreSecurityRequirement(Integer index, SecurityRequirement securityRequirement) {
+        this.security = ModelUtils.restoreListEntry(index, securityRequirement, this.security);
     }
 
     /**

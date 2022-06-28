@@ -15,13 +15,13 @@
   },
   "components": {
     "securitySchemes": {
-      "myScheme": {
-        "type": "http",
-        "scheme": "basic"
-      },
       "myApiScheme": {
         "type": "apiKey",
         "in": "header"
+      },
+      "myScheme": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }

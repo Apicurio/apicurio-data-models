@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.IIndexedNode;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.visitors.IVisitor;
@@ -74,6 +76,36 @@ public class Oas20Definitions extends Node implements IIndexedNode<Oas20SchemaDe
     public Oas20SchemaDefinition addDefinition(String name, Oas20SchemaDefinition schema) {
         this.items.put(name, schema);
         return schema;
+    }
+    
+    /**
+     * Replaces a definition without modifying the order of the definitions.
+     * @param newSchema
+     */
+    public Oas20SchemaDefinition replaceDefinition(Oas20SchemaDefinition newSchema) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addDefinition(newSchema.getName(), newSchema);
+        return newSchema;
+    }
+
+    /**
+     * Rename a defintion without modifying the order of the definitions.
+     * @param fromName
+     * @param toName
+     * @param valueConsumer
+     */
+    public void renameDefinition(String fromName, String toName, Consumer<Oas20SchemaDefinition> valueConsumer) {
+        this.items = ModelUtils.renameMapKey(fromName, toName, this.items, valueConsumer);
+    }
+    
+    /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(Integer index, String name, Oas20SchemaDefinition schemaDef) {
+        this.items = ModelUtils.restoreMapEntry(index, name, schemaDef, this.items);
     }
 
     /**

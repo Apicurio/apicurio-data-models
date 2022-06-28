@@ -27,6 +27,8 @@ import io.apicurio.datamodels.openapi.v2.models.Oas20SchemaDefinition;
  */
 public class DeleteSchemaDefinitionCommand_20 extends DeleteSchemaDefinitionCommand {
     
+    public Integer _oldDefinitionIndex; // nullable for backwards compatibility
+
     DeleteSchemaDefinitionCommand_20() {
     }
     
@@ -44,6 +46,7 @@ public class DeleteSchemaDefinitionCommand_20 extends DeleteSchemaDefinitionComm
         if (this.isNullOrUndefined(definitions)) {
             return null;
         }
+        this._oldDefinitionIndex = definitions.getDefinitionNames().indexOf(this._definitionName);
         Oas20SchemaDefinition schemaDef = definitions.removeDefinition(this._definitionName);
         return Library.writeNode(schemaDef);
     }
@@ -61,7 +64,7 @@ public class DeleteSchemaDefinitionCommand_20 extends DeleteSchemaDefinitionComm
 
         Oas20SchemaDefinition definition = doc20.definitions.createSchemaDefinition(this._definitionName);
         Library.readNode(oldDefinition, definition);
-        definitions.addDefinition(this._definitionName, definition);
+        definitions.restoreSchemaDefinition(this._oldDefinitionIndex, this._definitionName, definition);
     }
 
 }

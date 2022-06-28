@@ -37,6 +37,7 @@ import java.util.Map;
 public class DeleteServerCommand_Aai20 extends AbstractCommand {
 
     public String _serverName;
+    public Integer _oldServerIndex; // nullable for backwards compatibility
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldServer;
@@ -66,6 +67,7 @@ public class DeleteServerCommand_Aai20 extends AbstractCommand {
             return;
         }
         
+        this._oldServerIndex = parent.getServers().indexOf(server);
         Map<String, AaiServer> servers = parent.servers;
         servers.remove(_serverName);
         if (servers.size() == 0) {
@@ -98,7 +100,7 @@ public class DeleteServerCommand_Aai20 extends AbstractCommand {
             servers = new LinkedHashMap<>();
             NodeCompat.setProperty(parent, Constants.PROP_SERVERS, servers);
         }
-        servers.put(_serverName, server);
+        parent.restoreServer(this._oldServerIndex, this._serverName, server);
     }
 
 }

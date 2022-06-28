@@ -18,6 +18,7 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiDocument;
 import io.apicurio.datamodels.asyncapi.models.AaiServer;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.DocumentType;
@@ -86,6 +87,16 @@ public class Aai20Document extends AaiDocument {
         server.url = url;
         server.description = description;
         return server;
+    }
+    
+    /**
+     * Restore a deleted server at its original position
+     * @param index
+     * @param name
+     * @param server
+     */
+    public void restoreServer(Integer index, String name, AaiServer server) {
+        this.servers = ModelUtils.restoreMapEntry(index, name, server, this.servers);
     }
 
     @Override

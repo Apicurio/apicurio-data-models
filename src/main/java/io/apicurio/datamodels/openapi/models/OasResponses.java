@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.Constants;
 import io.apicurio.datamodels.core.models.ExtensibleNode;
@@ -92,6 +93,20 @@ public abstract class OasResponses extends ExtensibleNode implements IIndexedNod
         }
         this._responses.put(statusCode, response);
         return response;
+    }
+    
+    /**
+     * Restore a deleted response at its original position.
+     * @param index
+     * @param statusCode
+     * @param response
+     */
+    public void restoreResponse(Integer index, String statusCode, OasResponse response) {
+        if (NodeCompat.isNullOrUndefined(statusCode) || NodeCompat.equals(statusCode, Constants.PROP_DEFAULT)) {
+            this.default_ = response;
+        } else {
+            this._responses = ModelUtils.restoreMapEntry(index, statusCode, response, this._responses);
+        }
     }
 
     /**

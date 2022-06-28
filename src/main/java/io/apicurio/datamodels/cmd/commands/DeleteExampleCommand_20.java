@@ -37,6 +37,8 @@ public class DeleteExampleCommand_20 extends AbstractCommand {
 
     @JsonDeserialize(using=NullableJsonNodeDeserializer.class)
     public Object _oldExample;
+    
+    public Integer _oldExampleIndex; // nullable for backwards compatibility
 
     DeleteExampleCommand_20() {
     }
@@ -62,6 +64,7 @@ public class DeleteExampleCommand_20 extends AbstractCommand {
             return;
         }
 
+        this._oldExampleIndex = response.examples.getExampleContentTypes().indexOf(this._exampleContentType);
         this._oldExample = response.examples.removeExample(this._exampleContentType);
     }
     
@@ -84,6 +87,6 @@ public class DeleteExampleCommand_20 extends AbstractCommand {
             response.examples = response.createExample();
         }
 
-        response.examples.addExample(this._exampleContentType, this._oldExample);
+        response.examples.restoreExample(this._oldExampleIndex, this._exampleContentType, this._oldExample);
     }
 }

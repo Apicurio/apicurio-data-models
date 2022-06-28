@@ -17,15 +17,18 @@ package io.apicurio.datamodels.asyncapi.models;
 
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.JsonCompat;
 import io.apicurio.datamodels.core.models.Node;
 import io.apicurio.datamodels.core.models.common.Components;
+import io.apicurio.datamodels.core.models.common.SecurityScheme;
 import io.apicurio.datamodels.core.visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Models an AsyncAPI Components.
@@ -75,6 +78,10 @@ public abstract class AaiComponents extends Components {
     public List<AaiSecurityScheme> getSecuritySchemesList() {
         return JsonCompat.mapToList(securitySchemes);
     }
+    
+    public List<String> getSecuritySchemesNames() {
+        return new ArrayList<String>(securitySchemes.keySet());
+    }
 
     public List<AaiParameter> getParametersList() {
         return JsonCompat.mapToList(parameters);
@@ -108,11 +115,44 @@ public abstract class AaiComponents extends Components {
         return JsonCompat.mapToList(messageBindings);
     }
     
-
+    /**
+     * Add a schema definition
+     * @param key
+     * @param value
+     */
     public void addSchemaDefinition(String key, AaiSchema value) {
         if(schemas == null)
             schemas = new LinkedHashMap<>();
         schemas.put(key, value);
+    }
+
+    /**
+     * Replaces a schema definition without modifying the order of the definitions.
+     * @param key
+     * @param value
+     */
+    public void replaceSchemaDefinition(String key, AaiSchema value) {
+        // As long as this is backed by a LinkedHashMap, this will preserve the ordering of the entries within
+        addSchemaDefinition(key, value);
+    }
+
+    /**
+     * Rename a schema definition without modifying the order of the definitions.
+     * @param fromName
+     * @param toName
+     */
+    public void renameSchemaDefinition(String fromName, String toName, Consumer<AaiSchema> schemaConsumer) {
+        this.schemas = ModelUtils.renameMapKey(fromName, toName, this.schemas, schemaConsumer);
+    }
+    
+    /**
+     * Restore a deleted schema definition in its original place.
+     * @param index
+     * @param name
+     * @param schemaDef
+     */
+    public void restoreSchemaDefinition(Integer index, String name, AaiSchema schemaDef) {
+        this.schemas = ModelUtils.restoreMapEntry(index, name, schemaDef, this.schemas);
     }
 
     /**
@@ -144,6 +184,16 @@ public abstract class AaiComponents extends Components {
         }
         return rval;
     }
+    /**
+     * Gets a list of all schema definitions.
+     */
+    public List<String> getSchemaDefinitionNames() {
+        List<String> rval = new ArrayList<>();
+        if (this.schemas != null) {
+            rval.addAll(this.schemas.keySet());
+        }
+        return rval;
+    }
 
     public void addMessage(String key, AaiMessage value) {
         if(messages == null)
@@ -164,6 +214,20 @@ public abstract class AaiComponents extends Components {
         }
         return null;
     }
+    
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param message
+     */
+    public void restoreMessage(Integer index, String name, AaiMessage message) {
+        this.messages = ModelUtils.restoreMapEntry(index, name, message, this.messages);
+    }
+
+    public void renameMessage(String fromName, String toName, Consumer<AaiMessage> messageConsumer) {
+        this.messages = ModelUtils.renameMapKey(fromName, toName, this.messages, messageConsumer);
+    }
 
     public void addSecurityScheme(String key, AaiSecurityScheme value) {
         if(securitySchemes == null)
@@ -181,6 +245,25 @@ public abstract class AaiComponents extends Components {
         if(securitySchemes != null)
             return securitySchemes.remove(name);
         return null;
+    }
+    
+    /**
+     * Renames a single security scheme without modifying the ordering of the schemes.
+     * @param oldName
+     * @param newName
+     */
+    public void renameSecurityScheme(String oldName, String newName, Consumer<SecurityScheme> schemeConsumer) {
+        this.securitySchemes = ModelUtils.renameMapKey(oldName, newName, this.securitySchemes, schemeConsumer);
+    }
+
+    /**
+     * Restore a deleted security scheme in its old position
+     * @param index
+     * @param name
+     * @param scheme
+     */
+    public void restoreSecurityScheme(Integer index, String name, AaiSecurityScheme scheme) {
+        this.securitySchemes = ModelUtils.restoreMapEntry(index, name, scheme, this.securitySchemes);
     }
 
     public void addParameter(String key, AaiParameter value) {
@@ -233,6 +316,22 @@ public abstract class AaiComponents extends Components {
             return operationTraits.remove(name);
         }
         return null;
+    }
+    
+    public void renameOperationTraitDefinition(String fromName, String toName, Consumer<AaiOperationTraitDefinition> traitConsumer) {
+        this.operationTraits = ModelUtils.renameMapKey(fromName, toName, this.operationTraits, traitConsumer);
+    }
+    
+    public void renameMessageTraitDefinition(String fromName, String toName, Consumer<AaiMessageTraitDefinition> traitConsumer) {
+        this.messageTraits = ModelUtils.renameMapKey(fromName, toName, this.messageTraits, traitConsumer);
+    }
+
+    public void restoreOperationTraitDefinition(Integer index, String name, AaiOperationTraitDefinition value) {
+        this.operationTraits = ModelUtils.restoreMapEntry(index, name, value, this.operationTraits);
+    }
+    
+    public void restoreMessageTraitDefinition(Integer index, String name, AaiMessageTraitDefinition value) {
+        this.messageTraits = ModelUtils.restoreMapEntry(index, name, value, this.messageTraits);
     }
     
     public void addServerBindingDefinition(String key, AaiServerBindingsDefinition value) {

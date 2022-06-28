@@ -19,7 +19,7 @@
         }
       },
       "required": [
-        "newName", "description", "address"
+        "description", "newName", "address"
       ],
       "example": {
         "name": "Puma",

@@ -28,7 +28,7 @@ import io.apicurio.datamodels.openapi.models.OasHeader;
 import io.apicurio.datamodels.openapi.models.IOasHeaderParent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +63,8 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             return;
         }
 
-        this._oldHeaders = new HashMap<>();
+        // Preserve insertion order with LinkedHashMap
+        this._oldHeaders = new LinkedHashMap<>();
 
         // Save the params we're about to delete for later undo
         List<OasHeader> headersToRemove = new ArrayList<>();
