@@ -89,8 +89,7 @@ In order to build the library you will need to install the following tools:
 
 * Java 8 (versions of Java greater than 8 can be used when **running** the library, but not for building it)
 * Maven 3.5+
-* Node.js 8.11+
-* Yarn 1.15+
+* Node.js 16+
 
 ### Clone and Configure
 The first thing to do (obviously) is clone the repository.  Once you've cloned the git repository,

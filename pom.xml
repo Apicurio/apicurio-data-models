@@ -58,9 +58,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <!-- Node/Yarn Versions -->
-        <version.node-js>16.15.0</version.node-js>
-        <version.yarn>1.22.18</version.yarn>
+        <!-- Node Versions -->
+        <version.node-js>16.16.0</version.node-js>
 
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
@@ -371,24 +370,23 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <version>${version.com.github.eirslett.frontend-maven-plugin}</version>
                         <executions>
-                            <!-- Install Node and Yarn -->
+                            <!-- Install Node -->
                             <execution>
-                                <id>install node and yarn</id>
+                                <id>install node</id>
                                 <goals>
-                                    <goal>install-node-and-yarn</goal>
+                                    <goal>install-node-and-npm</goal>
                                 </goals>
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
                                     <nodeVersion>v${version.node-js}</nodeVersion>
-                                    <yarnVersion>v${version.yarn}</yarnVersion>
                                 </configuration>
                             </execution>
-                            <!-- Install npm/yarn dependencies -->
+                            <!-- Install npm dependencies -->
                             <execution>
-                                <id>yarn install</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-sources</phase>
                                 <configuration>
@@ -400,7 +398,7 @@
                             <execution>
                                 <id>ng test</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
@@ -412,7 +410,7 @@
                             <execution>
                                 <id>ng build</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
