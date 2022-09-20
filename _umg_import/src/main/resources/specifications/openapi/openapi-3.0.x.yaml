@@ -1,80 +1,106 @@
 specification: OpenAPI
 version: 3.0.x
 versions:
-  - 3.0.0
-  - 3.0.1
-  - 3.0.2
-  - 3.0.3
+  - version: 3.0.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md
+  - version: 3.0.1
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
+  - version: 3.0.2
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
+  - version: 3.0.3
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
 name: OpenAPI 3.0.x
 prefix: Oai30x
-url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
+package: io.apicurio.datamodels.openapi.v30
 entities:
   - name: Document
     root: true
+    extensible: true
     properties:
-      openapi:
+      - name: openapi
         type: string
-      info:
+      - name: info
         type: Info
-      servers:
+      - name: servers
         type: '[Server]'
-      paths:
+      - name: paths
         type: Paths
-      components:
+      - name: components
         type: Components
-      security:
+      - name: security
         type: '[SecurityRequirement]'
-      tags:
+      - name: tags
         type: '[Tag]'
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
   - name: Info
+    extensible: true
     properties:
-      title:
+      - name: title
         type: string
-      description:
+      - name: description
         type: string
-      termsOfService:
+      - name: termsOfService
         type: string
-      contact:
+      - name: contact
         type: Contact
-      license:
+      - name: license
         type: License
-      version:
+      - name: version
         type: string
   - name: Contact
+    extensible: true
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
-      email:
+      - name: email
         type: string
   - name: License
+    extensible: true
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
   - name: Server
-    properties: {}
-  - name: Paths
-    properties: {}
+    extensible: true
+    properties:
+      - name: url
+        type: string
+      - name: description
+        type: string
+      - name: variables
+        type: '{ServerVariable}'
+  - name: ServerVariable
+    extensible: true
+    properties:
+      - name: enum
+        type: '[string]'
+      - name: default
+        type: string
+      - name: description
+        type: string
   - name: Components
-    properties: {}
+    properties: []
+  - name: Paths
+    properties:
+      - name: '*'
+        type: PathItem
   - name: SecurityRequirement
-    properties: {}
+    properties: []
   - name: Tag
     properties:
-      name:
+      - name: name
         type: string
-      description:
+      - name: description
         type: string
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
   - name: ExternalDocumentation
     properties:
-      description:
+      - name: description
         type: string
-      url:
+      - name: url
         type: string

@@ -1,0 +1,159 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Unified Model API",
+        "version": "1.0.0",
+        "description": "Data models for the Apicurio Unified Model Generator.",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "paths": {},
+    "components": {
+        "schemas": {
+            "Specification": {
+                "title": "Root Type for Specification",
+                "description": "",
+                "required": [
+                    "entities",
+                    "package"
+                ],
+                "type": "object",
+                "properties": {
+                    "specification": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "versions": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SpecVersion"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "prefix": {
+                        "type": "string"
+                    },
+                    "entities": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Entity"
+                        }
+                    },
+                    "package": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "specification": "OpenAPI",
+                    "version": "2.0.x",
+                    "versions": [
+                        {
+                            "version": "2.0",
+                            "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
+                        }
+                    ],
+                    "name": "OpenAPI 2.0.x",
+                    "package": "io.apicurio.datamodels.openapi",
+                    "prefix": "Oai20x",
+                    "entities": []
+                }
+            },
+            "SpecVersion": {
+                "title": "Root Type for SpecVersion",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "version": "2.0",
+                    "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
+                }
+            },
+            "Property": {
+                "title": "Root Type for Property",
+                "description": "",
+                "required": [
+                    "name",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "host",
+                    "type": "string"
+                }
+            },
+            "Entity": {
+                "title": "Root Type for SpecificationEntity",
+                "description": "",
+                "required": [
+                    "properties",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "extensible": {
+                        "type": "boolean"
+                    },
+                    "root": {
+                        "type": "boolean"
+                    },
+                    "properties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Property"
+                        }
+                    },
+                    "referenceable": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                },
+                "example": {
+                    "name": "Info",
+                    "extensible": true,
+                    "root": false,
+                    "properties": [
+                        {
+                            "name": "title",
+                            "type": "string"
+                        },
+                        {
+                            "name": "description",
+                            "type": "string"
+                        },
+                        {
+                            "name": "unique",
+                            "type": "boolean"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

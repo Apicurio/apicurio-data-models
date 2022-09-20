@@ -16,28 +16,20 @@
 
 package io.apicurio.umg.main;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
+import io.apicurio.umg.UnifiedModelGenerator;
+import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.io.SpecificationLoader;
+import io.apicurio.umg.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-import io.apicurio.umg.UnifiedModelGenerator;
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.spec.Specification;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class Main {
-
-    private static final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     /**
      * Main entry point.  Runs the unified model generator.
@@ -56,36 +48,26 @@ public class Main {
         File baseSrc = new File("src/main/base");
         FileUtils.copyDirectory(baseSrc, outputDir);
 
+        // Load the specs
         List<Specification> specs = loadSpecs();
+        // Create a unified model generator
         UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
+        // Generate the source code into the target output directory.
         generator.generateInto(outputDir);
         Logger.info("Model generated successfully!");
     }
 
+    /**
+     * Loads all the specification files (as resources).
+     */
     private static List<Specification> loadSpecs() {
         Logger.info("Loading specifications.");
         List<Specification> specs = new LinkedList<>();
-        specs.add(loadSpec("specifications/openapi/openapi-2.0.x.yaml"));
-        specs.add(loadSpec("specifications/openapi/openapi-3.0.x.yaml"));
-        specs.add(loadSpec("specifications/openapi/openapi-3.1.x.yaml"));
-        specs.add(loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml"));
+        specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-2.0.x.yaml"));
+        specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.0.x.yaml"));
+        specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.1.x.yaml"));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml"));
         return specs;
     }
 
-    private static Specification loadSpec(String specPath) {
-        Logger.info("Loading specification from: %s", specPath);
-        try {
-            URL resource = Main.class.getClassLoader().getResource(specPath);
-            if (resource == null) {
-                throw new NullPointerException("Specification not found: " + specPath);
-            }
-            Specification spec = mapper.readValue(resource, Specification.class);
-            Logger.info("Specification '%s' loaded with %d entities.", spec.getName(), 
-                    Optional.ofNullable(spec.getEntities()).orElse(Collections.emptyList()).size());
-            return spec;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
-    }
-    
 }

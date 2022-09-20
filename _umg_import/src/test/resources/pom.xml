@@ -1,14 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.apicurio</groupId>
-    <artifactId>apicurio-unified-model-generator</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>apicurio-unified-model-generator</name>
+    <artifactId>apicurio-data-models</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <name>apicurio-data-models</name>
 
     <url>https://www.apicur.io/</url>
-    <description>Tool to generator Apicurio Data Models classes from a meta-model</description>
+    <description>Open Source data model library supporting OpenAPI and AsyncAPI</description>
 
     <organization>
         <name>Red Hat</name>
@@ -25,13 +26,13 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/apicurio/apicurio-unified-model-generator/issues</url>
+        <url>https://github.com/apicurio/apicurio-data-models/issues</url>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:apicurio/apicurio-unified-model-generator.git</connection>
-        <developerConnection>scm:git:git@github.com:apicurio/apicurio-unified-model-generator.git</developerConnection>
-        <url>scm:git:git@github.com:apicurio/apicurio-unified-model-generator.git</url>
+        <connection>scm:git:git@github.com:apicurio/apicurio-data-models.git</connection>
+        <developerConnection>scm:git:git@github.com:apicurio/apicurio-data-models.git</developerConnection>
+        <url>scm:git:git@github.com:apicurio/apicurio-data-models.git</url>
     </scm>
 
     <developers>
@@ -56,52 +57,34 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <!-- Dependency Versions -->
-        <version.com.fasterxml.jackson>2.11.2</version.com.fasterxml.jackson>
-        <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
-        <version.commons-io>2.8.0</version.commons-io>
-        <version.commons-beanutils>1.8.3</version.commons-beanutils>
-        <version.commons-lang3>3.11</version.commons-lang3>
-        <version.commons-collections4>4.4</version.commons-collections4>
-        <version.roaster>2.26.0.Final</version.roaster>
-        <version.junit>4.13</version.junit>
+        <!-- Node/Yarn Versions -->
+        <version.node-js>10.22.1</version.node-js>
+        <version.yarn>1.22.5</version.yarn>
 
+        <!-- Dependency Versions -->
+        <version.com.fasterxml.jackson>2.12.4</version.com.fasterxml.jackson>
+        <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
+        <version.commons-io>2.11.0</version.commons-io>
+        <version.junit>4.13.2</version.junit>
+        <version.org.jsweet>3.1.0</version.org.jsweet>
+        <version.org.skyscreamer>1.5.0</version.org.skyscreamer>
+        
         <!-- Plugin Versions -->
         <version.org.eclipse.m2e.lifecycle-mapping>1.0.0</version.org.eclipse.m2e.lifecycle-mapping>
+        <version.org.apache.felix.maven-bundle-plugin>5.1.2</version.org.apache.felix.maven-bundle-plugin>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
-        <version.maven-javadoc-plugin>3.2.0</version.maven-javadoc-plugin>
+        <version.maven-javadoc-plugin>3.3.0</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
-        <version.com.github.eirslett.frontend-maven-plugin>1.10.0</version.com.github.eirslett.frontend-maven-plugin>
+        <version.com.github.eirslett.frontend-maven-plugin>1.12.0</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.8</version.org.sonatype.plugins.nexus-staging-maven-plugin>
-        <version.apicurio-codegen-maven-plugin>1.0.12.Final</version.apicurio-codegen-maven-plugin>
-
+        
     </properties>
 
     <dependencies>
         <!-- Third Party Deps -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${version.commons-io}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils-core</artifactId>
-            <version>${version.commons-beanutils}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${version.commons-lang3}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>${version.commons-collections4}</version>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -112,28 +95,24 @@
             <artifactId>jackson-databind</artifactId>
             <version>${version.com.fasterxml.jackson}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${version.com.fasterxml.jackson}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.forge.roaster</groupId>
-            <artifactId>roaster-api</artifactId>
-            <version>${version.roaster}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.forge.roaster</groupId>
-            <artifactId>roaster-jdt</artifactId>
-            <version>${version.roaster}</version>
-            <scope>runtime</scope>
-        </dependency>
 
         <!-- Test Only Deps -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${version.commons-io}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${version.org.skyscreamer}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -176,45 +155,6 @@
                         <configuration>
                             <source>11</source>
                             <doclint>none</doclint>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.apicurio</groupId>
-                <artifactId>apicurio-codegen-maven-plugin</artifactId>
-                <version>${version.apicurio-codegen-maven-plugin}</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <projectSettings>
-                                <javaPackage>io.apicurio.umg.beans</javaPackage>
-                            </projectSettings>
-                            <inputSpec>src/main/resources/openapi.json</inputSpec>
-                            <outputDir>${project.build.directory}/apicurio</outputDir>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/base</source>
-                                <source>${project.build.directory}/apicurio</source>
-                            </sources>
                         </configuration>
                     </execution>
                 </executions>

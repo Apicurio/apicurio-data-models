@@ -1,75 +1,76 @@
 specification: AsyncAPI
 version: 2.0.x
 versions:
-  - 2.0.0
+  - version: 2.0.0
+    url: https://www.asyncapi.com/docs/specifications/2.0.0
 name: AsyncAPI 2.0.x
 prefix: Aai20x
-url: https://www.asyncapi.com/docs/specifications/2.0.0
+package: io.apicurio.datamodels.asyncapi.v20
 entities:
   - name: Document
     root: true
     properties:
-      asyncapi:
+      - name: asyncapi
         type: string
-      id:
+      - name: id
         type: string
-      info:
+      - name: info
         type: Info
-      servers:
+      - name: servers
         type: '[Server]'
-      channels:
+      - name: channels
         type: Channels
-      components:
+      - name: components
         type: Components
-      tags:
+      - name: tags
         type: '[Tag]'
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
   - name: Info
     properties:
-      title:
+      - name: title
         type: string
-      description:
+      - name: description
         type: string
-      termsOfService:
+      - name: termsOfService
         type: string
-      contact:
+      - name: contact
         type: Contact
-      license:
+      - name: license
         type: License
-      version:
+      - name: version
         type: string
   - name: Contact
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
-      email:
+      - name: email
         type: string
   - name: License
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
   - name: Server
-    properties: {}
+    properties: []
   - name: Channels
-    properties: {}
+    properties: []
   - name: Components
-    properties: {}
+    properties: []
   - name: Tag
     properties:
-      name:
+      - name: name
         type: string
-      description:
+      - name: description
         type: string
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
   - name: ExternalDocumentation
     properties:
-      description:
+      - name: description
         type: string
-      url:
+      - name: url
         type: string

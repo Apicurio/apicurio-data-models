@@ -1,228 +1,409 @@
 specification: OpenAPI
 version: 2.0.x
 versions:
-  - 2.0.0
+  - version: 2.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 name: OpenAPI 2.0.x
 prefix: Oai20x
-url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+package: io.apicurio.datamodels.openapi.v20
 entities:
   - name: Document
     root: true
     extensible: true
     properties:
-      swagger:
+      - name: swagger
         type: string
-      info:
+      - name: info
         type: Info
-      host:
+      - name: host
         type: string
-      basePath:
+      - name: basePath
         type: string
-      schemes:
+      - name: schemes
         type: '[string]'
-      consumes:
+      - name: consumes
         type: '[string]'
-      produces:
+      - name: produces
         type: '[string]'
-      paths:
+      - name: paths
         type: Paths
-      definitions:
+      - name: definitions
         type: Definitions
-#      parameters:
-#        type: ParameterDefinitions
-#      responses:
-#        type: ResponseDefinitions
-#      securityDefinitions:
-#        type: SecurityDefinitions
-#      security:
-#        type: [SecurityRequirement]
-      tags:
+      - name: parameters
+        type: ParameterDefinitions
+      - name: responses
+        type: ResponseDefinitions
+      - name: securityDefinitions
+        type: SecurityDefinitions
+      - name: security
+        type: '[SecurityRequirement]'
+      - name: tags
         type: '[Tag]'
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
   - name: Info
     extensible: true
     properties:
-      title:
+      - name: title
         type: string
-      description:
+      - name: description
         type: string
-      termsOfService:
+      - name: termsOfService
         type: string
-      contact:
+      - name: contact
         type: Contact
-      license:
+      - name: license
         type: License
-      version:
+      - name: version
         type: string
   - name: Contact
     extensible: true
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
-      email:
+      - name: email
         type: string
   - name: License
     extensible: true
     properties:
-      name:
+      - name: name
         type: string
-      url:
+      - name: url
         type: string
   - name: Paths
     extensible: true
     properties:
-      '*':
+      - name: '*'
         type: PathItem
   - name: PathItem
     referenceable: true
     extensible: true
     properties:
-      get:
+      - name: get
         type: Operation
-      put:
+      - name: put
         type: Operation
-      post:
+      - name: post
         type: Operation
-      delete:
+      - name: delete
         type: Operation
-      options:
+      - name: options
         type: Operation
-      head:
+      - name: head
         type: Operation
-      patch:
+      - name: patch
         type: Operation
-      parameters:
+      - name: parameters
         type: '[Parameter]'
   - name: Operation
     extensible: true
     properties:
-      tags:
+      - name: tags
         type: '[string]'
-      summary:
+      - name: summary
         type: string
-      description:
+      - name: description
         type: string
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
-      operationId:
+      - name: operationId
         type: string
-      consumes:
+      - name: consumes
         type: '[string]'
-      produces:
+      - name: produces
         type: '[string]'
-      parameters:
+      - name: parameters
         type: '[Parameter]'
-      responses:
+      - name: responses
         type: Responses
-      schemes:
+      - name: schemes
         type: '[string]'
-      deprecated:
+      - name: deprecated
         type: boolean
-      security:
+      - name: security
         type: '[SecurityRequirement]'
+  - name: ExternalDocumentation
+    extensible: true
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
   - name: Parameter
     referenceable: true
     extensible: true
     properties:
-      name:
+      - name: name
         type: string
-      in:
+      - name: in
         type: string
-      description:
+      - name: description
         type: string
-      required:
+      - name: required
         type: boolean
-      schema:
+      - name: schema
         type: Schema
-      type:
+      - name: type
         type: string
-      format:
+      - name: format
         type: string
-      allowEmptyValue:
+      - name: allowEmptyValue
         type: boolean
-      items:
+      - name: items
         type: Items
-      collectionFormat:
+      - name: collectionFormat
         type: string
-      default:
-        type: Object
-      maximum:
+      - name: default
+        type: object
+      - name: maximum
         type: number
-      exclusiveMaximum:
+      - name: exclusiveMaximum
         type: boolean
-      minimum:
+      - name: minimum
         type: number
-      exclusiveMinimum:
+      - name: exclusiveMinimum
         type: boolean
-      maxLength:
+      - name: maxLength
         type: integer
-      minLength:
+      - name: minLength
         type: integer
-      pattern:
+      - name: pattern
         type: string
-      maxItems:
+      - name: maxItems
         type: integer
-      minItems:
+      - name: minItems
         type: integer
-      uniqueItems:
+      - name: uniqueItems
         type: boolean
-      enum:
+      - name: enum
         type: '[string]'
-      multipleOf:
+      - name: multipleOf
         type: number
   - name: Items
     extensible: true
     properties:
-      type:
+      - name: type
         type: string
-      format:
+      - name: format
         type: string
-      items:
+      - name: items
         type: Items
-      collectionFormat:
+      - name: collectionFormat
         type: string
-      default:
-        type: Object
-      maximum:
+      - name: default
+        type: object
+      - name: maximum
         type: number
-      exclusiveMaximum:
+      - name: exclusiveMaximum
         type: boolean
-      minimum:
+      - name: minimum
         type: number
-      exclusiveMinimum:
+      - name: exclusiveMinimum
         type: boolean
-      maxLength:
+      - name: maxLength
         type: integer
-      minLength:
+      - name: minLength
         type: integer
-      pattern:
+      - name: pattern
         type: string
-      maxItems:
+      - name: maxItems
         type: integer
-      minItems:
+      - name: minItems
         type: integer
-      uniqueItems:
+      - name: uniqueItems
         type: boolean
-      enum:
+      - name: enum
         type: '[string]'
-      multipleOf:
+      - name: multipleOf
         type: number
-  - name: Definitions
-    properties: {}
+  - name: Responses
+    extensible: true
+    properties: 
+      - name: default
+        type: Response
+      - name: '*'
+        type: Response
+  - name: Response
+    extensible: true
+    properties:
+      - name: description
+        type: string
+      - name: schema
+        type: Schema
+      - name: headers
+        type: Headers
+      - name: examples
+        type: Example
+  - name: Headers
+    properties:
+      - name: '*'
+        type: Header
+  - name: Example
+    properties:
+      - name: '*'
+        type: Header
+  - name: Header
+    extensible: true
+    properties:
+      - name: description
+        type: string
+      - name: type
+        type: string
+      - name: format
+        type: string
+      - name: items
+        type: Items
+      - name: collectionFormat
+        type: string
+      - name: default
+        type: object
+      - name: maximum
+        type: number
+      - name: exclusiveMaximum
+        type: boolean
+      - name: minimum
+        type: number
+      - name: exclusiveMinimum
+        type: boolean
+      - name: maxLength
+        type: integer
+      - name: minLength
+        type: integer
+      - name: pattern
+        type: string
+      - name: maxItems
+        type: integer
+      - name: minItems
+        type: integer
+      - name: uniqueItems
+        type: boolean
+      - name: enum
+        type: '[string]'
+      - name: multipleOf
+        type: number
   - name: Tag
     properties:
-      name:
+      - name: name
         type: string
-      description:
+      - name: description
         type: string
-      externalDocs:
+      - name: externalDocs
         type: ExternalDocumentation
-  - name: ExternalDocumentation
+  - name: Schema
+    extensible: true
     properties:
-      description:
+      - name: format
         type: string
-      url:
+      - name: title
         type: string
+      - name: description
+        type: string
+      - name: default
+        type: object
+      - name: maximum
+        type: number
+      - name: exclusiveMaximum
+        type: boolean
+      - name: minimum
+        type: number
+      - name: exclusiveMinimum
+        type: boolean
+      - name: maxLength
+        type: integer
+      - name: minLength
+        type: integer
+      - name: pattern
+        type: string
+      - name: maxItems
+        type: integer
+      - name: minItems
+        type: integer
+      - name: uniqueItems
+        type: boolean
+      - name: maxProperties
+        type: integer
+      - name: minProperties
+        type: integer
+      - name: required
+        type: boolean
+      - name: enum
+        type: '[string]'
+      - name: type
+        type: string
+      - name: items
+        type: Items
+      - name: allOf
+        type: '[Schema]'
+      - name: properties
+        type: '{Schema}'
+      - name: additionalProperties
+        type: boolean|Schema
+      - name: discriminator
+        type: string
+      - name: readOnly
+        type: boolean
+      - name: xml
+        type: Xml
+      - name: externalDocs
+        type: ExternalDocumentation
+      - name: example
+        type: object
+  - name: Xml
+    extensible: true
+    properties:
+      - name: name
+        type: string
+      - name: namespace
+        type: string
+      - name: prefix
+        type: string
+      - name: attribute
+        type: boolean
+      - name: wrapped
+        type: boolean
+  - name: Definitions
+    properties:
+      - name: '*'
+        type: Schema
+  - name: ParameterDefinitions
+    properties:
+      - name: '*'
+        type: Parameter
+  - name: ResponseDefinitions
+    properties:
+      - name: '*'
+        type: Response
+  - name: SecurityDefinitions
+    properties:
+      - name: '*'
+        type: SecurityScheme
+  - name: SecurityScheme
+    extensible: true
+    properties:
+      - name: type
+        type: string
+      - name: description
+        type: string
+      - name: name
+        type: string
+      - name: in
+        type: string
+      - name: flow
+        type: string
+      - name: authorizationUrl
+        type: string
+      - name: tokenUrl
+        type: string
+      - name: scopes
+        type: string
+  - name: Scopes
+    extensible: true
+    properties:
+      - name: '*'
+        type: string
+  - name: SecurityRequirement
+    properties:
+      - name: '*'
+        type: '[string]'

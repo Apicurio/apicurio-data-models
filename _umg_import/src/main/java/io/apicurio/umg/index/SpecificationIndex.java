@@ -25,82 +25,80 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import io.apicurio.umg.Spec;
-import io.apicurio.umg.SpecVersion;
-import io.apicurio.umg.spec.Entity;
-import io.apicurio.umg.spec.Specification;
+import io.apicurio.umg.beans.beans.Entity;
+import io.apicurio.umg.beans.beans.Specification;
 
 /**
  * Maintains an index of all specifications.
- * 
+ *
  * @author eric.wittmann@gmail.com
  */
 public class SpecificationIndex {
 
-    private List<Specification> specifications = new LinkedList<>();
-    private Map<Spec, List<Specification>> specificationsByType = new HashMap<>();
-    private Map<SpecVersion, Specification> specificationBySpecVersion = new HashMap<>();
-    private Map<Spec, Set<String>> entitiesBySpecType = new HashMap<>();
-    private Map<SpecVersion, Set<Entity>> entitiesBySpecVersion = new HashMap<>();
-
-    /**
-     * Called to index a single specification.
-     * @param specification
-     */
-    public void index(Specification specification) {
-        specifications.add(specification);
-        specificationsByType.compute(specification.getSpecification(), (k,v) -> {
-            if (v == null) {
-                v = new LinkedList<Specification>();
-            }
-            v.add(specification);
-            return v;
-        });
-        specificationBySpecVersion.put(specification.specVersion(), specification);
-        
-        Optional.ofNullable(specification.getEntities()).orElse(Collections.emptyList()).forEach(entity -> indexEntity(entity, specification));
-    }
-
-    /**
-     * Indexes the given entity.
-     * @param entity
-     * @param specification
-     */
-    private void indexEntity(Entity entity, Specification specification) {
-        entitiesBySpecType.compute(specification.getSpecification(), (k,v) -> {
-            if (v == null) {
-                v = new HashSet<String>();
-                v.add(entity.getName());
-            }
-            return v;
-        });
-        entitiesBySpecVersion.compute(specification.specVersion(), (k,v) -> {
-            if (v == null) {
-                v = new HashSet<Entity>();
-                v.add(entity);
-            }
-            return v;
-        });
-    }
-    
-    public Specification getSpecification(SpecVersion specVer) {
-        return this.specificationBySpecVersion.get(specVer);
-    }
-    
-    public Set<Spec> getSpecificationTypes() {
-        return this.specificationsByType.keySet();
-    }
-    
-    public Set<SpecVersion> getSpecificationVersions() {
-        return this.specificationBySpecVersion.keySet();
-    }
-    
-    public Set<Entity> getEntities(SpecVersion specVer) {
-        return this.entitiesBySpecVersion.get(specVer);
-    }
-    
-    public Set<String> getEntityNames(Spec spec) {
-        return this.entitiesBySpecType.get(spec);
-    }
+//    private List<Specification> specifications = new LinkedList<>();
+//    private Map<String, List<Specification>> specificationsByType = new HashMap<>();
+//    private Map<SpecVersion, Specification> specificationBySpecVersion = new HashMap<>();
+//    private Map<String, Set<String>> entitiesBySpecType = new HashMap<>();
+//    private Map<SpecVersion, Set<Entity>> entitiesBySpecVersion = new HashMap<>();
+//
+//    /**
+//     * Called to index a single specification.
+//     * @param specification
+//     */
+//    public void index(Specification specification) {
+//        specifications.add(specification);
+//        specificationsByType.compute(specification.getSpecification(), (k,v) -> {
+//            if (v == null) {
+//                v = new LinkedList<Specification>();
+//            }
+//            v.add(specification);
+//            return v;
+//        });
+//        specificationBySpecVersion.put(SpecVersion.fromSpecification(specification), specification);
+//
+//        Optional.ofNullable(specification.getEntities()).orElse(Collections.emptySet()).forEach(entity -> indexEntity(entity, specification));
+//    }
+//
+//    /**
+//     * Indexes the given entity.
+//     * @param entity
+//     * @param specification
+//     */
+//    private void indexEntity(Entity entity, Specification specification) {
+//        entitiesBySpecType.compute(specification.getSpecification(), (k,v) -> {
+//            if (v == null) {
+//                v = new HashSet<String>();
+//                v.add(entity.getName());
+//            }
+//            return v;
+//        });
+//        entitiesBySpecVersion.compute(SpecVersion.fromSpecification(specification), (k,v) -> {
+//            if (v == null) {
+//                v = new HashSet<Entity>();
+//                v.add(entity);
+//            }
+//            return v;
+//        });
+//    }
+//
+//    public Specification getSpecification(SpecVersion specVer) {
+//        return this.specificationBySpecVersion.get(specVer);
+//    }
+//
+//    public Set<String> getSpecificationTypes() {
+//        return this.specificationsByType.keySet();
+//    }
+//
+//    public Set<SpecVersion> getSpecificationVersions() {
+//        return this.specificationBySpecVersion.keySet();
+//    }
+//
+//    public Set<Entity> getEntities(SpecVersion specVer) {
+//        return this.entitiesBySpecVersion.get(specVer);
+//    }
+//
+//    public Set<String> getEntityNames(String spec) {
+//        return this.entitiesBySpecType.get(spec);
+//    }
 
 }

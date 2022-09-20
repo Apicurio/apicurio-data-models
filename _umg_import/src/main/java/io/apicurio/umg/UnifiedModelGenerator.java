@@ -16,101 +16,223 @@
 
 package io.apicurio.umg;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import io.apicurio.umg.beans.beans.Entity;
+import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.index.SpecificationIndex;
+import io.apicurio.umg.index.ModelIndex;
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.spec.Specification;
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.FieldModel;
+import io.apicurio.umg.models.PackageModel;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class UnifiedModelGenerator {
-    
+
     public static UnifiedModelGenerator create(List<Specification> specifications) {
         UnifiedModelGenerator generator = new UnifiedModelGenerator();
         generator.setSpecifications(specifications);
         return generator;
     }
-    
-    private List<Specification> specifications;
-    private SpecificationIndex index;
 
-    private Map<String, UnifiedModel> models = new HashMap<>();
+    private List<Specification> specifications;
+    // TODO need this? remove if not
+    private SpecificationIndex specIndex = new SpecificationIndex();;
+    private ModelIndex modelIndex = new ModelIndex();
+
+    private PackageModel basePackage;
+    private PackageModel coreModelPackage;
+    private ClassModel nodeClass;
+    private ClassModel extensibleNodeClass;
+    private ClassModel documentClass;
 
     /**
      * Constructor.
      */
     private UnifiedModelGenerator() {
     }
-    
+
     /**
      * Generates the output from the given list of specifications.
      */
     public void generateInto(File outputDirectory) throws Exception {
         Logger.info("Output directory: %s", outputDirectory.getAbsolutePath());
-        
-        // Index the specifications for easy lookup when needed
-        index = new SpecificationIndex();
-        getSpecifications().forEach(specification -> index.index(specification));
 
-        // Build the set of unified models from the entities described in the specifications
-        this.buildUnifiedModels();
-        
-        // Normalize the models (this e.g. detects property commonalities across specversions)
-        this.normalizeUnifiedModels();
+        // Create the base packages
+        basePackage = new PackageModel();
+        basePackage.setName("io.apicurio.datamodels");
+        modelIndex.indexPackage(basePackage);
 
-        // Generate unified model interfaces
-        this.generateModelInterfaces(outputDirectory);
-        
-        // Generate model impl classes
-        
+        coreModelPackage = new PackageModel();
+        coreModelPackage.setName("io.apicurio.datamodels.core.models");
+        modelIndex.indexPackage(coreModelPackage);
+
+        // Create some common base classes
+        nodeClass = new ClassModel();
+        nodeClass.setName("Node");
+        nodeClass.setPackage(coreModelPackage);
+        nodeClass.setCore(true);
+        coreModelPackage.getClasses().put(nodeClass.getName(), nodeClass);
+        modelIndex.indexClass(nodeClass);
+
+        extensibleNodeClass = new ClassModel();
+        extensibleNodeClass.setName("ExtensibleNode");
+        extensibleNodeClass.setPackage(coreModelPackage);
+        extensibleNodeClass.setCore(true);
+        coreModelPackage.getClasses().put(extensibleNodeClass.getName(), extensibleNodeClass);
+        modelIndex.indexClass(extensibleNodeClass);
+
+        documentClass = new ClassModel();
+        documentClass.setName("Document");
+        documentClass.setPackage(coreModelPackage);
+        documentClass.setCore(true);
+        coreModelPackage.getClasses().put(documentClass.getName(), documentClass);
+        modelIndex.indexClass(documentClass);
+
+        // Now process each specification to create their respective models (packages, classes, fields)
+        getSpecifications().forEach(specification -> this.createModelsForSpecification(specification));
+
+        // Normalize the models (this e.g. detects property commonalities across specifications and versions)
+        this.normalizeModels();
+
+        // Generate model classes
+        this.generateModelClassFiles(outputDirectory);
+
         // Generate visitor interfaces
-        
+
+        // Generate traversers
+
+        // Generate readers/writers
+
+
+        // Debug output
+        // TODO remove this
+        if (Boolean.TRUE) {
+            return;
+        }
+        System.out.println("---");
+        modelIndex.findPackages("io.apicurio").forEach(pkg -> {
+            System.out.println("Package: " + pkg.getName());
+            pkg.getClasses().values().forEach(clss -> {
+                System.out.println("    Class: " + clss.getName());
+                clss.getFields().values().forEach(field -> {
+                    System.out.println("        Field: " + field.getName() + " (" + field.getType() + ")");
+                });
+            });
+        });
+        System.out.println("---");
+
     }
 
     /**
-     * Analyze the specifications to produce a collection of all entities across all versions of every
-     * specification.  If an entity exists in multiple specifications, this phase is responsible for 
-     * figuring that out and including it only once in the collection.
+     * Create the package, class, and field models for all elements of the provided specification.
+     * Uses the existing basePackage as the default root node.
+     * @param specification
      */
-    private void buildUnifiedModels() {
-        this.specifications.forEach(spec -> {
-            if (spec.getEntities() != null) {
-                spec.getEntities().forEach(entity -> {
-                    Logger.info("  Analyzing entity %s :: %s", spec.getName(), entity.getName());
-                    if (!this.models.containsKey(entity.getName())) {
-                        UnifiedModel modelEntity = UnifiedModel.create(entity, spec);
-                        this.models.put(entity.getName(), modelEntity);
-                    } else {
-                        this.models.get(entity.getName()).merge(entity, spec);
-                    }
-                });
+    private void createModelsForSpecification(Specification specification) {
+        String specPackageName = specification.getPackage();
+        PackageModel specPackage = this.mkpkgs(specPackageName);
+        this.createClassModels(specification, specPackage);
+    }
+
+    /**
+     * Creates the package for the given name, and also ensures that packages exist for all parents
+     * up until the base/root package.
+     * @param specPackageName
+     */
+    private PackageModel mkpkgs(String specPackageName) {
+        PackageModel rval = new PackageModel();
+        rval.setName(specPackageName);
+
+        boolean done = false;
+        PackageModel _package = rval;
+        while (!done) {
+            String packageName = _package.getName();
+            String parentPackageName = this.parentpkg(packageName);
+            PackageModel parentPackage = modelIndex.lookupPackage(parentPackageName, (_t) -> {
+                PackageModel model = new PackageModel();
+                model.setName(parentPackageName);
+                return model;
+            });
+            parentPackage.getChildren().put(packageName, _package);
+            _package.setParent(parentPackage);
+
+            // Only done once we reach the base package
+            done = parentPackage == basePackage;
+            _package = parentPackage;
+        }
+
+        modelIndex.indexPackage(rval);
+        return rval;
+    }
+
+    /**
+     * Determine the parent package name from a package name.
+     * @param packageName
+     */
+    private String parentpkg(String packageName) {
+        int idx = packageName.lastIndexOf(".");
+        return packageName.substring(0, idx);
+    }
+
+    /**
+     * Creates class models for all of the entities in a specification.
+     * @param specification
+     * @param specPackage
+     */
+    private void createClassModels(Specification specification, PackageModel specPackage) {
+        specification.getEntities().forEach(entity -> {
+            ClassModel model = new ClassModel();
+            model.setName(entity.getName());
+            model.setPackage(specPackage);
+            model.setAbstract(false);
+            if (entity.getExtensible() != null && entity.getExtensible()) {
+                model.setParent(extensibleNodeClass);
+            } else {
+                model.setParent(nodeClass);
+            }
+            specPackage.getClasses().put(model.getName(), model);
+
+            this.modelIndex.indexClass(model);
+            this.createFieldModels(entity, model);
+        });
+    }
+
+    /**
+     * Creates a FieldModel for each property in the entity.
+     * @param entity
+     * @param model
+     */
+    private void createFieldModels(Entity entity, ClassModel model) {
+        entity.getProperties().forEach(property -> {
+            FieldModel field = new FieldModel();
+            field.setName(property.getName());
+            field.setType(property.getType());
+            model.getFields().put(property.getName(), field);
+        });
+    }
+
+    /**
+     * Generate the class files for all data models.
+     */
+    private void generateModelClassFiles(File outputDirectory) {
+        modelIndex.findClasses("").forEach(classModel -> {
+            if (!classModel.isCore()) {
+                ClassModelGenerator classModelGenerator = new ClassModelGenerator(specIndex, modelIndex, classModel);
+                classModelGenerator.generateInto(outputDirectory);
             }
         });
     }
 
     /**
-     * Normalizes the models.
+     * Find common base classes across specifications and versions of specifications.
      */
-    private void normalizeUnifiedModels() {
-        this.models.values().forEach(model -> model.normalize());
-    }
-
-    /**
-     * Generates the model interfaces.  To do this we go through all of the model entities we've 
-     * built and generate appropriate interfaces.  Depending on the entity, multiple interfaces
-     * may be created.
-     * @param outputDirectory 
-     */
-    private void generateModelInterfaces(File outputDirectory) {
-        this.models.values().forEach(entity -> {
-            ModelInterfaceGenerator miGenerator = new ModelInterfaceGenerator(index, entity);
-            miGenerator.generateInto(outputDirectory);
-        });
+    private void normalizeModels() {
+        // FIXME todo
     }
 
     /**

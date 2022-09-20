@@ -1,7 +1,9 @@
 specification: OpenAPI
 version: 3.1.x
 versions:
-  - 3.1.0
+  - version: 3.1.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
 name: OpenAPI 3.1.x
 prefix: Oai31x
-url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+package: io.apicurio.datamodels.openapi.v31
+entities: []
