@@ -11,7 +11,6 @@ public class ClassModel {
     private Map<String, FieldModel> fields = new HashMap<>();
     private boolean _abstract;
     private boolean core;
-    private boolean includeAccept;
 
     public ClassModel() {
     }
@@ -68,11 +67,7 @@ public class ClassModel {
         this.core = core;
     }
 
-    public boolean isIncludeAccept() {
-        return includeAccept;
-    }
-
-    public void setIncludeAccept(boolean includeAccept) {
-        this.includeAccept = includeAccept;
+    public void addField(FieldModel fieldModel) {
+        this.getFields().put(fieldModel.getName(), fieldModel);
     }
 }

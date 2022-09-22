@@ -26,6 +26,7 @@ import io.apicurio.umg.models.FieldModel;
 import io.apicurio.umg.models.PackageModel;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -82,6 +85,7 @@ public class UnifiedModelGenerator {
         nodeClass.setName("Node");
         nodeClass.setPackage(coreModelPackage);
         nodeClass.setCore(true);
+        nodeClass.setAbstract(true);
         coreModelPackage.getClasses().put(nodeClass.getName(), nodeClass);
         modelIndex.indexClass(nodeClass);
 
@@ -89,14 +93,15 @@ public class UnifiedModelGenerator {
         extensibleNodeClass.setName("ExtensibleNode");
         extensibleNodeClass.setPackage(coreModelPackage);
         extensibleNodeClass.setCore(true);
+        extensibleNodeClass.setAbstract(true);
         coreModelPackage.getClasses().put(extensibleNodeClass.getName(), extensibleNodeClass);
         modelIndex.indexClass(extensibleNodeClass);
 
         documentClass = new ClassModel();
         documentClass.setName("Document");
         documentClass.setPackage(coreModelPackage);
+        documentClass.setAbstract(true);
         documentClass.setCore(true);
-        documentClass.setIncludeAccept(true);
         coreModelPackage.getClasses().put(documentClass.getName(), documentClass);
         modelIndex.indexClass(documentClass);
 
@@ -105,6 +110,7 @@ public class UnifiedModelGenerator {
 
         // Normalize the models (this e.g. detects property commonalities across specifications and versions)
         this.normalizeModels();
+        this.normalizeFields();
 
         // Generate model classes
         this.generateModelClassFiles(outputDirectory);
@@ -197,7 +203,6 @@ public class UnifiedModelGenerator {
             model.setName(entity.getName());
             model.setPackage(specPackage);
             model.setAbstract(false);
-            model.setIncludeAccept(true);
             if (entity.getExtensible() != null && entity.getExtensible()) {
                 model.setParent(extensibleNodeClass);
             } else {
@@ -280,7 +285,40 @@ public class UnifiedModelGenerator {
                 }
             }
         }
+    }
 
+    /**
+     * Fields will be pulled up the model class hierarchy as appropriate.  For any given parent
+     * class, the parent will pull up all fields that are shared across all subclasses.
+     */
+    private void normalizeFields() {
+        List<ClassModel> abstractClasses = modelIndex.findClasses("").stream().filter(model -> model.isAbstract()).collect(Collectors.toList());
+        int changesMade;
+        do {
+            changesMade = 0;
+            for (ClassModel parentClass : abstractClasses) {
+                // Get all direct children of this parent class.
+                Collection<ClassModel> childClasses = findChildClassesFor(parentClass);
+                // Get a collection of all fields for all
+                Set<FieldModel> allFields = new HashSet<>();
+                childClasses.forEach(child -> allFields.addAll(child.getFields().values()));
+
+                // Filter the full list of fields - only keep the fields that exist in *all* children.
+                List<FieldModel> fieldsToPullup = allFields.stream()
+                        .filter(field -> childClasses.stream().map(c -> c.getFields().containsKey(field.getName())).reduce(true, (sub, element) -> sub && element))
+                        .collect(Collectors.toList());
+
+                // Now pull up each of the fields in the above list
+                fieldsToPullup.forEach(field -> {
+                    parentClass.addField(field);
+                    childClasses.forEach(childClass -> childClass.getFields().remove(field.getName()));
+                });
+
+                // Did we find any fields to pull up?  If yes, increment "changes made".  We're going to keep
+                // going through our model hierarchy until we've pulled up all the shared fields we can.
+                changesMade += fieldsToPullup.size();
+            }
+        } while (changesMade > 0);
     }
 
     /**

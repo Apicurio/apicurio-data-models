@@ -106,7 +106,8 @@ public class ClassModelGenerator {
         });
 
         // Add "accept" method
-        if (model.isIncludeAccept()) {
+        if (!model.isAbstract()) {
+            // TODO cast the visitor to the correct variant (based on the specification)
             modelClass.addMethod()
                     .setName("accept")
                     .setPublic()
