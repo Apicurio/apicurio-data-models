@@ -61,12 +61,13 @@ public class ClassModelGenerator {
      * @param outputDirectory
      */
     public void generateInto(File outputDirectory) {
-        Logger.info("Generating model interfaces for entity '%s'", model.getName());
+        Logger.info("Generating model for entity '%s'", model.getName());
 
         // Generate a java class for the model.
         JavaClassSource modelClass = Roaster.create(JavaClassSource.class)
                 .setPackage(model.getPackage().getName())
                 .setName(model.getName())
+                .setAbstract(model.isAbstract())
                 .setPublic();
 
         // Set the super type
@@ -105,12 +106,14 @@ public class ClassModelGenerator {
         });
 
         // Add "accept" method
-        modelClass.addMethod()
-                .setName("accept")
-                .setPublic()
-                .setReturnTypeVoid()
-                .setBody("visitor.visit" + model.getName() + "(this);")
-                .addParameter("io.apicurio.datamodels.core.visitors.IVisitor", "visitor");
+        if (model.isIncludeAccept()) {
+            modelClass.addMethod()
+                    .setName("accept")
+                    .setPublic()
+                    .setReturnTypeVoid()
+                    .setBody("visitor.visit" + model.getName() + "(this);")
+                    .addParameter("io.apicurio.datamodels.core.visitors.IVisitor", "visitor");
+        }
 
         writeToFile(modelClass, outputDirectory);
     }

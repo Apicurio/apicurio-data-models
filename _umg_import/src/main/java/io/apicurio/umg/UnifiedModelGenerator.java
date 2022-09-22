@@ -18,15 +18,21 @@ package io.apicurio.umg;
 
 import io.apicurio.umg.beans.beans.Entity;
 import io.apicurio.umg.beans.beans.Specification;
-import io.apicurio.umg.index.SpecificationIndex;
 import io.apicurio.umg.index.ModelIndex;
+import io.apicurio.umg.index.SpecificationIndex;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.ClassModel;
 import io.apicurio.umg.models.FieldModel;
 import io.apicurio.umg.models.PackageModel;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -90,6 +96,7 @@ public class UnifiedModelGenerator {
         documentClass.setName("Document");
         documentClass.setPackage(coreModelPackage);
         documentClass.setCore(true);
+        documentClass.setIncludeAccept(true);
         coreModelPackage.getClasses().put(documentClass.getName(), documentClass);
         modelIndex.indexClass(documentClass);
 
@@ -190,6 +197,7 @@ public class UnifiedModelGenerator {
             model.setName(entity.getName());
             model.setPackage(specPackage);
             model.setAbstract(false);
+            model.setIncludeAccept(true);
             if (entity.getExtensible() != null && entity.getExtensible()) {
                 model.setParent(extensibleNodeClass);
             } else {
@@ -232,7 +240,99 @@ public class UnifiedModelGenerator {
      * Find common base classes across specifications and versions of specifications.
      */
     private void normalizeModels() {
-        // FIXME todo
+        // Process every class model we've created thus far
+        Queue<ClassModel> modelsToProcess = new ConcurrentLinkedQueue<>();
+        modelsToProcess.addAll(modelIndex.findClasses(""));
+        Set<String> modelsProcessed = new HashSet<>();
+
+        // Keep working until we've processed every model (including any new models we
+        // might create during processing).
+        while (!modelsToProcess.isEmpty()) {
+            ClassModel classModel = modelsToProcess.remove();
+            if (modelsProcessed.contains(classModel.getFullyQualifiedName())) {
+                continue;
+            }
+
+            // Check if we need to create a parent class for this model in any parent scope
+            PackageModel ancestorPackageModel = classModel.getPackage().getParent();
+            while (ancestorPackageModel != null) {
+                if (needsParentClass(ancestorPackageModel, classModel.getName())) {
+                    ClassModel ancestorClass = new ClassModel();
+                    ancestorClass.setName(classModel.getName());
+                    ancestorClass.setParent(classModel.getParent());
+                    ancestorClass.setPackage(ancestorPackageModel);
+                    ancestorClass.setAbstract(true);
+                    ancestorPackageModel.addClass(ancestorClass);
+                    modelsToProcess.add(ancestorClass);
+                    modelIndex.indexClass(ancestorClass);
+
+                    Collection<ClassModel> childClasses = findChildClassesFor(ancestorClass);
+                    // Make the new parent class the actual parent of each child class
+                    childClasses.forEach(childClass -> {
+                        childClass.setParent(ancestorClass);
+                        // Skip processing this model if its turn comes up in the queue.
+                        modelsProcessed.add(childClass.getFullyQualifiedName());
+                    });
+                    // break out of loop - no need to search further up the hierarchy
+                    ancestorPackageModel = null;
+                } else {
+                    ancestorPackageModel = ancestorPackageModel.getParent();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * A class needs a parent class if there are multiple classes with the same name in the
+     * package hierarchy.
+     * @param packageModel
+     * @param className
+     */
+    private boolean needsParentClass(PackageModel packageModel, String className) {
+        int count = 0;
+        for (PackageModel childPackage : packageModel.getChildren().values()) {
+            if (childPackage.containsClass(className)) {
+                count++;
+            }
+        }
+        return count > 1;
+    }
+
+    /**
+     * Returns all classes with the same name as the given parent class.  Does a search of
+     * the package tree to find such classes.
+     * @param parentClass
+     */
+    private Collection<ClassModel> findChildClassesFor(ClassModel parentClass) {
+        String className = parentClass.getName();
+        PackageModel parentPackage = parentClass.getPackage();
+        List<ClassModel> childClasses = new ArrayList<>();
+        for (PackageModel packageModel : parentPackage.getChildren().values()) {
+            ClassModel childClass = findChildClassIn(packageModel, className);
+            if (childClass != null) {
+                childClasses.add(childClass);
+            }
+        }
+        return childClasses;
+    }
+
+    /**
+     * Finds a child class in the given package with the given name.
+     * @param packageModel
+     * @param className
+     */
+    private ClassModel findChildClassIn(PackageModel packageModel, String className) {
+        if (packageModel.getClasses().containsKey(className)) {
+            return packageModel.getClasses().get(className);
+        }
+        for (PackageModel childPackage : packageModel.getChildren().values()) {
+            ClassModel classModel = findChildClassIn(childPackage, className);
+            if (classModel != null) {
+                return classModel;
+            }
+        }
+        return null;
     }
 
     /**

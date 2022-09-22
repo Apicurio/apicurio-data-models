@@ -44,4 +44,20 @@ public class PackageModel {
     public void setClasses(Map<String, ClassModel> classes) {
         this.classes = classes;
     }
+
+    public void addClass(ClassModel classModel) {
+        this.getClasses().put(classModel.getName(), classModel);
+    }
+
+    public boolean containsClass(String className) {
+        if (getClasses().containsKey(className)) {
+            return true;
+        }
+        for (PackageModel childPackage : getChildren().values()) {
+            if (childPackage.containsClass(className)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
