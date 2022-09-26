@@ -1,27 +1,55 @@
 package io.apicurio.umg.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static lombok.AccessLevel.NONE;
+
+@Builder
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class ClassModel {
 
-    private ClassModel parent;
+    // Multiple parents are only valid for interfaces
+    // TODO: Add a separate model for interfaces?
+    @Builder.Default
+    private Set<ClassModel> parents = new HashSet<>();
+
+    @Getter(NONE)
+    @Setter(NONE)
     private PackageModel _package;
+
     private String name;
+
+    @Builder.Default
     private Map<String, FieldModel> fields = new HashMap<>();
+
+    @Getter(NONE)
+    @Setter(NONE)
     private boolean _abstract;
+
     private boolean core;
 
-    public ClassModel() {
-    }
+    private boolean _interface;
 
-    public ClassModel getParent() {
-        return parent;
-    }
+    @Builder.Default
+    private Set<ClassModel> _implements = new HashSet<>();
 
-    public void setParent(ClassModel parent) {
-        this.parent = parent;
-    }
+    private JavaClassSource classSource;
+
+    private JavaInterfaceSource interfaceSource;
 
     public PackageModel getPackage() {
         return _package;
@@ -29,22 +57,6 @@ public class ClassModel {
 
     public void setPackage(PackageModel _package) {
         this._package = _package;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<String, FieldModel> getFields() {
-        return fields;
-    }
-
-    public void setFields(Map<String, FieldModel> fields) {
-        this.fields = fields;
     }
 
     public boolean isAbstract() {
@@ -57,14 +69,6 @@ public class ClassModel {
 
     public String getFullyQualifiedName() {
         return getPackage().getName() + "." + getName();
-    }
-
-    public boolean isCore() {
-        return core;
-    }
-
-    public void setCore(boolean core) {
-        this.core = core;
     }
 
     public void addField(FieldModel fieldModel) {

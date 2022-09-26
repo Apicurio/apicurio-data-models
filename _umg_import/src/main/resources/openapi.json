@@ -117,11 +117,23 @@
                     "name": {
                         "type": "string"
                     },
+                    "extends": {
+                        "type": "string"
+                    },
                     "extensible": {
                         "type": "boolean"
                     },
                     "root": {
                         "type": "boolean"
+                    },
+                    "transparent": {
+                        "type": "boolean"
+                    },
+                    "includes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "properties": {
                         "type": "array",

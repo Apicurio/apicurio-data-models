@@ -1,48 +1,43 @@
 package io.apicurio.umg.models;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+@Builder
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class PackageModel {
 
+    @EqualsAndHashCode.Include
     private String name;
+
     private PackageModel parent;
+
+    @Builder.Default
+    @ToString.Exclude
     private Map<String, PackageModel> children = new HashMap<>();
+
+    @Builder.Default
+    @ToString.Exclude
     private Map<String, ClassModel> classes = new HashMap<>();
 
-    public PackageModel() {
+    @ToString.Include
+    private Set<String> classesKeys() {
+        return classes.keySet();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public PackageModel getParent() {
-        return parent;
-    }
-
-    public void setParent(PackageModel parent) {
-        this.parent = parent;
-    }
-
-    public Map<String, PackageModel> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Map<String, PackageModel> children) {
-        this.children = children;
-    }
-
-    public Map<String, ClassModel> getClasses() {
-        return classes;
-    }
-
-    public void setClasses(Map<String, ClassModel> classes) {
-        this.classes = classes;
+    @ToString.Include
+    private Set<String> childrenKeys() {
+        return children.keySet();
     }
 
     public void addClass(ClassModel classModel) {

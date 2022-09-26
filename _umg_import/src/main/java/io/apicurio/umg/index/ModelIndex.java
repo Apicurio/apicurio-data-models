@@ -35,6 +35,16 @@ public class ModelIndex {
     private Trie<String, ClassModel> classIndex = new PatriciaTrie<>();
     private Map<String, ClassModel> classnameIndex = new HashMap<>();
 
+    public void remove(ClassModel classModel) {
+        classIndex.remove(classModel.getFullyQualifiedName());
+        // ClassName index, shared values?
+        classnameIndex.remove(classModel.getName());
+    }
+
+    public void remove(PackageModel packageModel) {
+        packageIndex.remove(packageModel.getName());
+    }
+
     public boolean hasPackage(String name) {
         return packageIndex.containsKey(name);
     }

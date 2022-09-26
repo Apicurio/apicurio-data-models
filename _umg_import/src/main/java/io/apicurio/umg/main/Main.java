@@ -16,7 +16,7 @@
 
 package io.apicurio.umg.main;
 
-import io.apicurio.umg.UnifiedModelGenerator;
+import io.apicurio.umg.UnifiedModelGenerator2;
 import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
@@ -33,6 +33,7 @@ public class Main {
 
     /**
      * Main entry point.  Runs the unified model generator.
+     *
      * @param args
      */
     public static void main(String[] args) throws Exception {
@@ -43,7 +44,7 @@ public class Main {
             FileUtils.deleteDirectory(outputDir);
             outputDir.mkdirs();
         }
-        
+
         // Copy base src code to the output directory
 //        File baseSrc = new File("src/main/base");
 //        FileUtils.copyDirectory(baseSrc, outputDir);
@@ -51,7 +52,7 @@ public class Main {
         // Load the specs
         List<Specification> specs = loadSpecs();
         // Create a unified model generator
-        UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
+        UnifiedModelGenerator2 generator = UnifiedModelGenerator2.create(specs);
         // Generate the source code into the target output directory.
         generator.generateInto(outputDir);
         Logger.info("Model generated successfully!");
