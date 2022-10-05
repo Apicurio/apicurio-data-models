@@ -6,10 +6,21 @@ versions:
 name: OpenAPI 2.0.x
 prefix: Oai20x
 package: io.apicurio.datamodels.openapi.v20
+
+traits:
+  - name: ExtensibleTrait
+    properties:
+      - name: '/x-.+/'
+        type: Extension
+  - name: ReferenceableTrait
+    properties:
+      - name: '$ref'
+        type: string
+
 entities:
   - name: Document
-    root: true
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: swagger
         type: string
@@ -42,7 +53,8 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
   - name: Info
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: title
         type: string
@@ -57,7 +69,8 @@ entities:
       - name: version
         type: string
   - name: Contact
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: name
         type: string
@@ -66,20 +79,23 @@ entities:
       - name: email
         type: string
   - name: License
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: name
         type: string
       - name: url
         type: string
   - name: Paths
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: '*'
         type: PathItem
   - name: PathItem
-    referenceable: true
-    extensible: true
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: get
         type: Operation
@@ -98,7 +114,8 @@ entities:
       - name: parameters
         type: '[Parameter]'
   - name: Operation
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: tags
         type: '[string]'
@@ -125,15 +142,17 @@ entities:
       - name: security
         type: '[SecurityRequirement]'
   - name: ExternalDocumentation
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: description
         type: string
       - name: url
         type: string
   - name: Parameter
-    referenceable: true
-    extensible: true
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: name
         type: string
@@ -182,7 +201,8 @@ entities:
       - name: multipleOf
         type: number
   - name: Items
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: type
         type: string
@@ -219,14 +239,17 @@ entities:
       - name: multipleOf
         type: number
   - name: Responses
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties: 
       - name: default
         type: Response
       - name: '*'
         type: Response
   - name: Response
-    extensible: true
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: description
         type: string
@@ -245,7 +268,8 @@ entities:
       - name: '*'
         type: Header
   - name: Header
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: description
         type: string
@@ -292,7 +316,9 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
   - name: Schema
-    extensible: true
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: format
         type: string
@@ -351,7 +377,8 @@ entities:
       - name: example
         type: object
   - name: Xml
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: name
         type: string
@@ -380,7 +407,8 @@ entities:
       - name: '*'
         type: SecurityScheme
   - name: SecurityScheme
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: type
         type: string
@@ -399,7 +427,8 @@ entities:
       - name: scopes
         type: string
   - name: Scopes
-    extensible: true
+    traits:
+      - ExtensibleTrait
     properties:
       - name: '*'
         type: string
@@ -407,3 +436,9 @@ entities:
     properties:
       - name: '*'
         type: '[string]'
+  - name: Extension
+    properties:
+      - name: name
+        type: string
+      - name: value
+        type: object
