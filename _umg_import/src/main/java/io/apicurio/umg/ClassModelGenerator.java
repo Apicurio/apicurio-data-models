@@ -16,11 +16,11 @@
 
 package io.apicurio.umg;
 
-import io.apicurio.umg.index.SpecificationIndex;
-import io.apicurio.umg.index.ModelIndex;
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.FieldModel;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.Type;
@@ -28,10 +28,10 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.util.Types;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.List;
+import io.apicurio.umg.index.ModelIndex;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.FieldModel;
 
 /**
  * Used to generate a {@link io.apicurio.umg.models.ClassModel} as a java class file.
@@ -39,18 +39,15 @@ import java.util.List;
  */
 public class ClassModelGenerator {
 
-    private final SpecificationIndex specIndex;
     private final ModelIndex modelIndex;
     private final ClassModel model;
 
     /**
      * Constructor.
-     * @param specIndex
      * @param modelIndex
      * @param model
      */
-    public ClassModelGenerator(SpecificationIndex specIndex, ModelIndex modelIndex, ClassModel model) {
-        this.specIndex = specIndex;
+    public ClassModelGenerator(ModelIndex modelIndex, ClassModel model) {
         this.modelIndex = modelIndex;
         this.model = model;
     }
@@ -81,7 +78,7 @@ public class ClassModelGenerator {
         model.getFields().values().forEach(fieldModel -> {
             String fieldName = sanitizeFieldName(fieldModel.getName());
             if (!"*".equals(fieldName)) {
-                Type fieldType = resolveType(fieldModel.getType());
+                Type<?> fieldType = resolveType(fieldModel.getType());
                 String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                 modelClass.addField()
                         .setName(fieldName)

@@ -45,8 +45,8 @@ public class Main {
         }
         
         // Copy base src code to the output directory
-        File baseSrc = new File("src/main/base");
-        FileUtils.copyDirectory(baseSrc, outputDir);
+//        File baseSrc = new File("src/main/base");
+//        FileUtils.copyDirectory(baseSrc, outputDir);
 
         // Load the specs
         List<Specification> specs = loadSpecs();

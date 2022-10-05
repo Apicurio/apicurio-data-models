@@ -16,17 +16,7 @@
 
 package io.apicurio.umg;
 
-import io.apicurio.umg.beans.beans.Entity;
-import io.apicurio.umg.beans.beans.Specification;
-import io.apicurio.umg.index.ModelIndex;
-import io.apicurio.umg.index.SpecificationIndex;
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.FieldModel;
-import io.apicurio.umg.models.PackageModel;
-
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,7 +25,14 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import io.apicurio.umg.beans.beans.Entity;
+import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.index.ModelIndex;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.FieldModel;
+import io.apicurio.umg.models.PackageModel;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -49,8 +46,6 @@ public class UnifiedModelGenerator {
     }
 
     private List<Specification> specifications;
-    // TODO need this? remove if not
-    private SpecificationIndex specIndex = new SpecificationIndex();;
     private ModelIndex modelIndex = new ModelIndex();
 
     private PackageModel basePackage;
@@ -235,7 +230,7 @@ public class UnifiedModelGenerator {
     private void generateModelClassFiles(File outputDirectory) {
         modelIndex.findClasses("").forEach(classModel -> {
             if (!classModel.isCore()) {
-                ClassModelGenerator classModelGenerator = new ClassModelGenerator(specIndex, modelIndex, classModel);
+                ClassModelGenerator classModelGenerator = new ClassModelGenerator(modelIndex, classModel);
                 classModelGenerator.generateInto(outputDirectory);
             }
         });
