@@ -30,7 +30,7 @@ public class IncludeFieldsModelsStage implements Stage {
             var entityModel = state.getSpecIndex().getEntityIndex().get(entityId);
             var entity = entityModel.getEntity();
 
-            var includes = entity.getIncludes();
+            var includes = entity.getTraits();
             if(includes != null && includes.size() > 0) {
                 stack.push(entityId);
 
@@ -53,9 +53,9 @@ public class IncludeFieldsModelsStage implements Stage {
                     }
 
                     if(ready.contains(entityId)) {
-                        if(!nullableBoolean(inclEntityModel.getEntity().getTransparent())) {
-                            entityModel.getClassModel().get_implements().add(inclEntityModel.getClassModel());
-                        }
+//                        if(!nullableBoolean(inclEntityModel.getEntity().getTransparent())) {
+//                            entityModel.getClassModel().get_implements().add(inclEntityModel.getClassModel());
+//                        }
                         entity.getProperties().addAll(inclEntity.getProperties());
                         done.add(entityId);
                     } else {

@@ -10,6 +10,7 @@ public class ValidateSpecificationsTest {
         validateSpec("specifications/openapi/openapi-2.0.x.yaml");
         validateSpec("specifications/openapi/openapi-3.0.x.yaml");
         validateSpec("specifications/openapi/openapi-3.1.x.yaml");
+        validateSpec("specifications/jsonschema/jsonschema-2020‑12.yaml");
     }
 
     private void validateSpec(String specPath) {

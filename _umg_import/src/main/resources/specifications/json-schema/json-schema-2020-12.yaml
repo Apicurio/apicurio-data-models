@@ -3,29 +3,8 @@ version: 2020-12
 name: JSON Schema 2020-12
 prefix: Jss202012
 package: io.apicurio.datamodels.jsonschema.v202012
-entities:
 
-
-  - name: JsonSchema
-    root: true # TODO Should we have an explicit root? What if there are multiple roots?
-    includes:
-      - CommonTrait
-    properties:
-      - name: $schema # TODO Test if these can be in a nested schema
-        type: string
-      - name: $id
-        type: string
-      - name: __rootSchema
-        type: JsonSchemaNode
-
-
-  - name: JsonSchemaNode # TODO Merge with Common trait?
-    properties:
-      - name: __owner
-        type: JsonSchema
-      - name: __parent
-        type: JsonSchemaNode
-
+traits:
   - name: CommonTrait
     transparent: true
     properties:
@@ -46,10 +25,76 @@ entities:
       - name: writeOnly
         type: boolean
 
+  - name: EnumTrait # TODO: If EnumTrait is an interface, make sure it extends Foo
+    properties:
+      - name: enum
+        type: "[any]" # TODO Underlying-format-specific value, e.g. any json node. Use JSONNode directly?
+
+  - name: ConstTrait
+    properties:
+      - name: const
+        type: any # TODO Underlying-format-specific value, e.g. any json node. Use JSONNode directly?
+
+  - name: NumericTrait
+    transparent: true
+    properties:
+      - name: multipleOf
+        type: integer
+      - name: minimum
+        type: number
+      - name: exclusiveMinimum
+        type: number
+      - name: maximum
+        type: number
+      - name: exclusiveMaximum
+        type: number
+
+  - name: AllOfTrait
+    properties:
+      - name: allOf
+        type: "[JsonSchemaNode]"
+  - name: AnyOfTrait
+    properties:
+      - name: anyOf
+        type: "[JsonSchemaNode]"
+  - name: OneOfTrait
+    properties:
+      - name: oneOf
+        type: "[JsonSchemaNode]"
+  - name: NotTrait
+    properties:
+      - name: not
+        type: JsonSchemaNode
+
+  - name: IfTrait # Maybe use IfKeyword instead of IfTrait?
+    properties:
+      - name: if
+        type: JsonSchemaNode
+  - name: ThenTrait
+    properties:
+      - name: then
+        type: JsonSchemaNode
+  - name: ElseTrait
+    properties:
+      - name: else
+        type: JsonSchemaNode
+
+entities:
+
+  - name: Document
+    traits:
+      - CommonTrait
+    properties:
+      - name: $schema # TODO Test if these can be in a nested schema
+        type: string
+      - name: $id
+        type: string
+      - name: __rootSchema
+        type: Node
+
 
   - name: ObjectSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -88,8 +133,7 @@ entities:
 
 
   - name: ArraySchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -122,8 +166,7 @@ entities:
 
 
   - name: EmptySchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -137,16 +180,13 @@ entities:
 
 
   - name: TrueSchema
-    extends: JsonSchemaNode
 
 
   - name: FalseSchema
-    extends: JsonSchemaNode
 
 
   - name: BooleanSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -157,29 +197,9 @@ entities:
       - IfTrait
       - ThenTrait
       - ElseTrait
-
-  - name: FooTrait
-    properties:
-      - name: foo
-        type: object
-        
-  - name: EnumTrait # TODO: If EnumTrait is an interface, make sure it extends Foo
-    includes:
-      - FooTrait
-    properties:
-      - name: enum
-        type: "[any]" # TODO Underlying-format-specific value, e.g. any json node. Use JSONNode directly?
-
-
-  - name: ConstTrait
-    properties:
-      - name: const
-        type: any # TODO Underlying-format-specific value, e.g. any json node. Use JSONNode directly?
-
 
   - name: NullSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -191,10 +211,8 @@ entities:
       - ThenTrait
       - ElseTrait
 
-
   - name: StringSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - CommonTrait
       - EnumTrait
       - ConstTrait
@@ -218,42 +236,15 @@ entities:
         type: string
 
 
-  - name: NumericTrait
-    transparent: true
-    includes:
-      - CommonTrait
-      - EnumTrait
-      - ConstTrait
-      - AllOfTrait
-      - AnyOfTrait
-      - OneOfTrait
-      - NotTrait
-      - IfTrait
-      - ThenTrait
-      - ElseTrait
-    properties:
-      - name: multipleOf
-        type: integer
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: number
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: number
   - name: IntegerSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - NumericTrait
   - name: NumberSchema
-    extends: JsonSchemaNode
-    includes:
+    traits:
       - NumericTrait
 
 
   - name: ReferenceSchema
-    extends: JsonSchemaNode
     properties:
       - name: $ref
         type: string
@@ -264,32 +255,3 @@ entities:
 
   # TODO Do something about this https://json-schema.org/understanding-json-schema/reference/combining.html#factoring-schemas
   # Should we allow embedding these?
-  - name: AllOfTrait
-    properties:
-      - name: allOf
-        type: "[JsonSchemaNode]"
-  - name: AnyOfTrait
-    properties:
-      - name: anyOf
-        type: "[JsonSchemaNode]"
-  - name: OneOfTrait
-    properties:
-      - name: oneOf
-        type: "[JsonSchemaNode]"
-  - name: NotTrait
-    properties:
-      - name: not
-        type: JsonSchemaNode
-
-  - name: IfTrait # Maybe use IfKeyword instead of IfTrait?
-    properties:
-      - name: if
-        type: JsonSchemaNode
-  - name: ThenTrait
-    properties:
-      - name: then
-        type: JsonSchemaNode
-  - name: ElseTrait
-    properties:
-      - name: else
-        type: JsonSchemaNode
