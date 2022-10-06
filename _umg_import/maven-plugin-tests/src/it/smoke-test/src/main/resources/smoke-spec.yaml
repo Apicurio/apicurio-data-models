@@ -1,0 +1,34 @@
+specification: SmokeAPI
+version: 1.0.x
+versions:
+  - version: 1.0
+    url: https://example.com/Smoke/versions/1.0.md
+name: SmokeAPI 1.0.x
+prefix: Smoke
+package: org.example.smoke.v10
+
+traits:
+  - name: CommonTrait
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+
+entities:
+  - name: Document
+    traits:
+      - CommonTrait
+    properties:
+      - name: id
+        type: string
+      - name: large
+        type: boolean
+      - name: docs
+        type: Documentation
+  - name: Documentation
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
