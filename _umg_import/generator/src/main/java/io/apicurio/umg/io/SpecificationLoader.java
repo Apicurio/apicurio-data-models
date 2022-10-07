@@ -63,7 +63,8 @@ public class SpecificationLoader {
         Logger.info("Loading specification from: %s", specURL);
         try {
             Specification spec = mapper.readValue(specURL, Specification.class);
-            Logger.info("Specification '%s' loaded with %d entities.", spec.getName(),
+            Logger.info("Specification '%s' loaded with %d traits and %d entities.", spec.getName(),
+            		Optional.ofNullable(spec.getTraits()).orElse(Collections.emptySet()).size(),
                     Optional.ofNullable(spec.getEntities()).orElse(Collections.emptySet()).size());
             return spec;
         } catch (Throwable t) {

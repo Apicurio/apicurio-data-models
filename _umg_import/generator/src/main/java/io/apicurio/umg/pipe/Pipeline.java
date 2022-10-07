@@ -14,7 +14,7 @@ public class Pipeline {
         stages.add(stage);
     }
 
-    public void run(GenState state) {
+    public void run(GeneratorState state) {
         for (Stage stage : stages) {
             stage.process(state);
         }

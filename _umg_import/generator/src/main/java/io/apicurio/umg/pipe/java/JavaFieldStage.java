@@ -13,7 +13,7 @@ public class JavaFieldStage extends AbstractStage {
     protected void doProcess() {
         var resolver = getState().getJavaTypeResolver();
 
-        getState().getIndex().findClasses("").forEach(model -> {
+        getState().getClassIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 Logger.info("Generating model for entity '%s'", model.getName());
@@ -27,7 +27,7 @@ public class JavaFieldStage extends AbstractStage {
                     String fieldName = sanitizeFieldName(fieldModel.getName());
                     if (!"*".equals(fieldName)) {
 
-                        Type fieldType = resolver.resolveType(fieldModel.getType(), getState().getIndex(), model.getPackage());
+                        Type fieldType = resolver.resolveType(fieldModel.getType(), getState().getClassIndex(), model.getPackage());
                         fieldModel.setJavaType(fieldType);
                         if(!model.is_interface()) {
                             var modelClass = model.getClassSource();

@@ -5,10 +5,9 @@ versions:
     url: https://www.asyncapi.com/docs/specifications/2.0.0
 name: AsyncAPI 2.0.x
 prefix: Aai20x
-package: io.apicurio.datamodels.asyncapi.v20
+namespace: io.apicurio.datamodels.asyncapi.v20
 entities:
   - name: Document
-    root: true
     properties:
       - name: asyncapi
         type: string

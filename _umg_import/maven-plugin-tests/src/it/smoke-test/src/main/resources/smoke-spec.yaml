@@ -5,7 +5,7 @@ versions:
     url: https://example.com/Smoke/versions/1.0.md
 name: SmokeAPI 1.0.x
 prefix: Smoke
-package: org.example.smoke.v10
+namespace: org.example.smoke.v10
 
 traits:
   - name: CommonTrait

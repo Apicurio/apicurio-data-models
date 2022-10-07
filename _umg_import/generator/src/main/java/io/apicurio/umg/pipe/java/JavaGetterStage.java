@@ -12,7 +12,7 @@ import io.apicurio.umg.pipe.AbstractStage;
 public class JavaGetterStage extends AbstractStage {
     @Override
     protected void doProcess() {
-        getState().getIndex().findClasses("").forEach(model -> {
+        getState().getClassIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 // Add fields with getters/setters

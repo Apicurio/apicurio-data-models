@@ -19,9 +19,6 @@ package io.apicurio.umg.index;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.apicurio.umg.beans.beans.Entity;
-import io.apicurio.umg.beans.beans.Specification;
-import io.apicurio.umg.beans.beans.Trait;
 import io.apicurio.umg.models.EntityModel;
 import io.apicurio.umg.models.EntityModelId;
 import io.apicurio.umg.models.TraitModel;
@@ -36,18 +33,17 @@ import lombok.Getter;
 public class SpecificationIndex {
 
     @Getter
+    private Map<TraitModelId, TraitModel> traitIndex = new HashMap<>();
+    @Getter
     private Map<EntityModelId, EntityModel> entityIndex = new HashMap<>();
 
-    @Getter
-    private Map<TraitModelId, TraitModel> traitIndex = new HashMap<>();
-
-    public void index(Specification spec, Entity entity, EntityModel model) {
-        var key = EntityModelId.create(spec, entity);
+    public void index(EntityModel model) {
+        var key = EntityModelId.create(model.getSpec(), model);
         entityIndex.put(key, model);
     }
 
-    public void index(Specification spec, Trait trait, TraitModel model) {
-        var key = TraitModelId.create(spec, trait);
+    public void index(TraitModel model) {
+        var key = TraitModelId.create(model.getSpec(), model);
         traitIndex.put(key, model);
     }
 }

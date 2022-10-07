@@ -11,7 +11,7 @@ import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.index.ModelIndex;
+import io.apicurio.umg.index.ClassIndex;
 import io.apicurio.umg.models.ClassModel;
 import io.apicurio.umg.models.PackageModel;
 
@@ -30,7 +30,7 @@ public class JavaTypeResolver {
     /**
      * Resolves a type defined in a specfile to a Roaster {@link org.jboss.forge.roaster.model.Type}.
      */
-    public Type<?> resolveType(String type, ModelIndex index, PackageModel packageModel) {
+    public Type<?> resolveType(String type, ClassIndex index, PackageModel packageModel) {
 
         boolean isList = false;
         boolean isMap = false;

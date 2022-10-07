@@ -10,7 +10,7 @@ import io.apicurio.umg.pipe.AbstractStage;
 public class JavaClassStage extends AbstractStage {
     @Override
     protected void doProcess() {
-        getState().getIndex().findClasses("").forEach(model -> {
+        getState().getClassIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 Logger.info("Generating model for entity '%s'", model.getName());

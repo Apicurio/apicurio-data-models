@@ -1,7 +1,6 @@
 package io.apicurio.umg.maven;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +12,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import io.apicurio.umg.UnifiedModelGenerator2;
+import io.apicurio.umg.UnifiedModelGenerator;
 import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 
@@ -66,7 +65,7 @@ public class GenerateModelsMojo extends AbstractMojo {
         // Load the specs
         List<Specification> specs = loadSpecifications();
         // Create a unified model generator
-        UnifiedModelGenerator2 generator = UnifiedModelGenerator2.create(specs);
+        UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
         // Generate the source code into the target output directory.
         try {
 			generator.generateInto(outputDir);

@@ -10,7 +10,7 @@ public class RemoveTransparentClassModelsStage extends AbstractStage {
 //            var entity = em.getEntity();
 //            if(nullableBoolean(entity.getTransparent())) {
 //                //getState().getSpecIndex().getEntityIndex().remove(id);
-//                getState().getIndex().remove(em.getClassModel());
+//                getState().getModelIndex().remove(em.getClassModel());
 //            }
         });
     }

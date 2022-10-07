@@ -17,7 +17,7 @@ public class RunGeneratorTest {
     public void run() throws Exception {
 
         var specs = loadSpecs();
-        var generator = UnifiedModelGenerator2.create(specs);
+        var generator = UnifiedModelGenerator.create(specs);
         generator.generateInto(getTargetDir());
         Logger.info("Model generated successfully!");
     }

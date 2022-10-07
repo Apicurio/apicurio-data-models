@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.index.ClassIndex;
 import io.apicurio.umg.index.ModelIndex;
 import io.apicurio.umg.index.SpecificationIndex;
 import io.apicurio.umg.models.ClassModel;
@@ -15,19 +16,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GenState {
+public class GeneratorState {
 
-    private ModelIndex index = new ModelIndex();
+    private ModelIndex modelIndex = new ModelIndex();
 
     private SpecificationIndex specIndex = new SpecificationIndex();
 
-    private PackageModel basePackage;
+    private ClassIndex classIndex = new ClassIndex();
 
     private ClassModel nodeClass;
 
     private ClassModel extensibleNodeClass;
 
-    private List<Specification> specifications;
+    private Collection<Specification> specifications;
 
     private JavaTypeResolver javaTypeResolver = new JavaTypeResolver();
 

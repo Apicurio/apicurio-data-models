@@ -1,25 +1,22 @@
 package io.apicurio.umg.pipe;
 
+import io.apicurio.umg.logging.Logger;
+
 public class DebugStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        // Debug output
-        // TODO remove this
-        if (Boolean.TRUE) {
-            return;
-        }
-        System.out.println("---");
-        getState().getIndex().findPackages("io.apicurio").forEach(pkg -> {
-            System.out.println("Package: " + pkg.getName());
-            pkg.getClasses().values().forEach(clss -> {
-                System.out.println("    Class: " + clss.getName());
-                clss.getFields().values().forEach(field -> {
-                    System.out.println("        Field: " + field.getName() + " (" + field.getType() + ")");
+        Logger.debug("--- DEBUG ---");
+        getState().getModelIndex().findNamespaces("io.apicurio").forEach(namespace -> {
+            Logger.debug("Package: " + namespace.fullName());
+            namespace.getEntities().values().forEach(entity -> {
+                Logger.debug("    Entity: " + entity.getName());
+                entity.getProperties().values().forEach(field -> {
+                    Logger.debug("        Property: " + field.getName() + " (" + field.getType() + ")");
                 });
             });
         });
-        System.out.println("---");
+        Logger.debug("---");
     }
 
 

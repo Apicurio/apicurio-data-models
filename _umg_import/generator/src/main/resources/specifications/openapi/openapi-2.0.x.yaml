@@ -5,7 +5,7 @@ versions:
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 name: OpenAPI 2.0.x
 prefix: Oai20x
-package: io.apicurio.datamodels.openapi.v20
+namespace: io.apicurio.datamodels.openapi.v20
 
 traits:
   - name: ExtensibleTrait

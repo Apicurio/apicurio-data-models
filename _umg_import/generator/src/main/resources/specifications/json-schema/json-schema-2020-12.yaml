@@ -2,7 +2,7 @@ specification: JSONSchema
 version: 2020-12
 name: JSON Schema 2020-12
 prefix: Jss202012
-package: io.apicurio.datamodels.jsonschema.v202012
+namespace: io.apicurio.datamodels.jsonschema.v202012
 
 traits:
   - name: JsonSchemaNode

@@ -17,7 +17,7 @@
                 "description": "",
                 "required": [
                     "entities",
-                    "package"
+                    "namespace"
                 ],
                 "type": "object",
                 "properties": {
@@ -47,16 +47,17 @@
                             "$ref": "#/components/schemas/Entity"
                         }
                     },
-                    "package": {
-                        "description": "",
-                        "type": "string"
-                    },
                     "traits": {
                         "description": "",
+                        "uniqueItems": true,
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Trait"
                         }
+                    },
+                    "namespace": {
+                        "description": "",
+                        "type": "string"
                     }
                 },
                 "example": {
@@ -69,7 +70,7 @@
                         }
                     ],
                     "name": "OpenAPI 2.0.x",
-                    "package": "io.apicurio.datamodels.openapi",
+                    "namespace": "io.apicurio.datamodels.openapi",
                     "prefix": "Oai20x",
                     "traits": [],
                     "entities": []

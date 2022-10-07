@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import io.apicurio.umg.UnifiedModelGenerator2;
+import io.apicurio.umg.UnifiedModelGenerator;
 import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
@@ -46,14 +46,10 @@ public class Main {
             outputDir.mkdirs();
         }
 
-        // Copy base src code to the output directory
-//        File baseSrc = new File("src/main/base");
-//        FileUtils.copyDirectory(baseSrc, outputDir);
-
         // Load the specs
         List<Specification> specs = loadSpecs();
         // Create a unified model generator
-        UnifiedModelGenerator2 generator = UnifiedModelGenerator2.create(specs);
+        UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
         // Generate the source code into the target output directory.
         generator.generateInto(outputDir);
         Logger.info("Model generated successfully!");
@@ -68,7 +64,8 @@ public class Main {
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-2.0.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.0.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.1.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/json-schema/json-schema-2020-12.yaml", Main.class.getClassLoader()));
+//        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
         return specs;
     }
 

@@ -11,7 +11,7 @@ versions:
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
 name: OpenAPI 3.0.x
 prefix: Oai30x
-package: io.apicurio.datamodels.openapi.v30
+namespace: io.apicurio.datamodels.openapi.v30
 
 traits:
   - name: ExtensibleTrait

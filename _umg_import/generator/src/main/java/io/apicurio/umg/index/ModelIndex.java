@@ -17,69 +17,81 @@
 package io.apicurio.umg.index;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
+import io.apicurio.umg.models.EntityModel;
+import io.apicurio.umg.models.NamespaceModel;
+import io.apicurio.umg.models.TraitModel;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class ModelIndex {
 
-    private Trie<String, PackageModel> packageIndex = new PatriciaTrie<>();
-    private Trie<String, ClassModel> classIndex = new PatriciaTrie<>();
-    private Map<String, ClassModel> classnameIndex = new HashMap<>();
+    private Trie<String, NamespaceModel> namespaceIndex = new PatriciaTrie<>();
+    private Trie<String, TraitModel> traitIndex = new PatriciaTrie<>();
+    private Trie<String, EntityModel> entityIndex = new PatriciaTrie<>();
 
-    public void remove(ClassModel classModel) {
-        classIndex.remove(classModel.getFullyQualifiedName());
-        // ClassName index, shared values?
-        classnameIndex.remove(classModel.getName());
+    public void remove(TraitModel traitModel) {
+        traitIndex.remove(traitModel.fullyQualifiedName());
     }
 
-    public void remove(PackageModel packageModel) {
-        packageIndex.remove(packageModel.getName());
+    public void remove(EntityModel entityModel) {
+        entityIndex.remove(entityModel.fullyQualifiedName());
     }
 
-    public boolean hasPackage(String name) {
-        return packageIndex.containsKey(name);
-    }
-    public boolean hasClass(String fullyQualifiedClassName) {
-        return classIndex.containsKey(fullyQualifiedClassName);
+    public void remove(NamespaceModel namespaceModel) {
+        namespaceIndex.remove(namespaceModel.getName());
     }
 
-    public void indexPackage(PackageModel model) {
-        packageIndex.put(model.getName(), model);
+    public boolean hasNamespace(String name) {
+        return namespaceIndex.containsKey(name);
+    }
+    public boolean hasEntity(String fullyQualifiedEntityName) {
+        return entityIndex.containsKey(fullyQualifiedEntityName);
     }
 
-    public void indexClass(ClassModel model) {
-        classIndex.put(model.getFullyQualifiedName(), model);
-        classnameIndex.put(model.getName(), model);
+    public void index(NamespaceModel model) {
+        namespaceIndex.put(model.getName(), model);
     }
 
-    public PackageModel lookupPackage(String packageName) {
-        return packageIndex.get(packageName);
+    public void index(TraitModel model) {
+        traitIndex.put(model.fullyQualifiedName(), model);
     }
 
-    public PackageModel lookupPackage(String packageName, Function<Void, PackageModel> factory) {
-        return packageIndex.computeIfAbsent(packageName, (key) -> factory.apply(null));
+    public void index(EntityModel model) {
+        entityIndex.put(model.fullyQualifiedName(), model);
     }
 
-    public ClassModel lookupClass(String fullyQualifiedClassName) {
-        return classIndex.get(fullyQualifiedClassName);
+    public NamespaceModel lookupNamespace(String namespace) {
+        return namespaceIndex.get(namespace);
     }
 
-    public Collection<PackageModel> findPackages(String prefix) {
-        return packageIndex.prefixMap(prefix).values();
+    public NamespaceModel lookupNamespace(String namespace, Function<String, NamespaceModel> factory) {
+        return namespaceIndex.computeIfAbsent(namespace, (key) -> factory.apply(key));
     }
 
-    public Collection<ClassModel> findClasses(String prefix) {
-        return classIndex.prefixMap(prefix).values();
+    public TraitModel lookupTrait(String fullyQualifiedTraitName) {
+        return traitIndex.get(fullyQualifiedTraitName);
+    }
+
+    public EntityModel lookupEntity(String fullyQualifiedEntityName) {
+        return entityIndex.get(fullyQualifiedEntityName);
+    }
+
+    public Collection<NamespaceModel> findNamespaces(String prefix) {
+        return namespaceIndex.prefixMap(prefix).values();
+    }
+
+    public Collection<TraitModel> findTraits(String prefix) {
+        return traitIndex.prefixMap(prefix).values();
+    }
+
+    public Collection<EntityModel> findEntities(String prefix) {
+        return entityIndex.prefixMap(prefix).values();
     }
 
 }

@@ -8,10 +8,10 @@ import lombok.Getter;
 public abstract class AbstractStage implements Stage {
 	
 	@Getter
-	private GenState state;
+	private GeneratorState state;
 
 	@Override
-	public void process(GenState state) {
+	public void process(GeneratorState state) {
 		this.state = state;
 		this.doProcess();
 	}
