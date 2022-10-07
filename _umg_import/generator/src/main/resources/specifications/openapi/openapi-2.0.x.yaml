@@ -16,6 +16,41 @@ traits:
     properties:
       - name: '$ref'
         type: string
+  - name: SchemaLikeTrait
+    transparent: true
+    properties:
+      - name: type
+        type: string
+      - name: format
+        type: string
+      - name: items
+        type: Items
+      - name: default
+        type: object
+      - name: maximum
+        type: number
+      - name: exclusiveMaximum
+        type: boolean
+      - name: minimum
+        type: number
+      - name: exclusiveMinimum
+        type: boolean
+      - name: maxLength
+        type: integer
+      - name: minLength
+        type: integer
+      - name: pattern
+        type: string
+      - name: maxItems
+        type: integer
+      - name: minItems
+        type: integer
+      - name: uniqueItems
+        type: boolean
+      - name: enum
+        type: '[string]'
+      - name: multipleOf
+        type: number
 
 entities:
   - name: Document
@@ -153,6 +188,7 @@ entities:
     traits:
       - ExtensibleTrait
       - ReferenceableTrait
+      - SchemaLikeTrait
     properties:
       - name: name
         type: string
@@ -164,80 +200,17 @@ entities:
         type: boolean
       - name: schema
         type: Schema
-      - name: type
-        type: string
-      - name: format
-        type: string
       - name: allowEmptyValue
         type: boolean
-      - name: items
-        type: Items
       - name: collectionFormat
         type: string
-      - name: default
-        type: object
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: boolean
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: boolean
-      - name: maxLength
-        type: integer
-      - name: minLength
-        type: integer
-      - name: pattern
-        type: string
-      - name: maxItems
-        type: integer
-      - name: minItems
-        type: integer
-      - name: uniqueItems
-        type: boolean
-      - name: enum
-        type: '[string]'
-      - name: multipleOf
-        type: number
   - name: Items
     traits:
       - ExtensibleTrait
+      - SchemaLikeTrait
     properties:
-      - name: type
-        type: string
-      - name: format
-        type: string
-      - name: items
-        type: Items
       - name: collectionFormat
         type: string
-      - name: default
-        type: object
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: boolean
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: boolean
-      - name: maxLength
-        type: integer
-      - name: minLength
-        type: integer
-      - name: pattern
-        type: string
-      - name: maxItems
-        type: integer
-      - name: minItems
-        type: integer
-      - name: uniqueItems
-        type: boolean
-      - name: enum
-        type: '[string]'
-      - name: multipleOf
-        type: number
   - name: Responses
     traits:
       - ExtensibleTrait
@@ -270,43 +243,12 @@ entities:
   - name: Header
     traits:
       - ExtensibleTrait
+      - SchemaLikeTrait
     properties:
       - name: description
         type: string
-      - name: type
-        type: string
-      - name: format
-        type: string
-      - name: items
-        type: Items
       - name: collectionFormat
         type: string
-      - name: default
-        type: object
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: boolean
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: boolean
-      - name: maxLength
-        type: integer
-      - name: minLength
-        type: integer
-      - name: pattern
-        type: string
-      - name: maxItems
-        type: integer
-      - name: minItems
-        type: integer
-      - name: uniqueItems
-        type: boolean
-      - name: enum
-        type: '[string]'
-      - name: multipleOf
-        type: number
   - name: Tag
     properties:
       - name: name
@@ -319,47 +261,16 @@ entities:
     traits:
       - ExtensibleTrait
       - ReferenceableTrait
+      - SchemaLikeTrait
     properties:
-      - name: format
-        type: string
       - name: title
         type: string
-      - name: description
-        type: string
-      - name: default
-        type: object
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: boolean
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: boolean
-      - name: maxLength
-        type: integer
-      - name: minLength
-        type: integer
-      - name: pattern
-        type: string
-      - name: maxItems
-        type: integer
-      - name: minItems
-        type: integer
-      - name: uniqueItems
-        type: boolean
       - name: maxProperties
         type: integer
       - name: minProperties
         type: integer
       - name: required
         type: boolean
-      - name: enum
-        type: '[string]'
-      - name: type
-        type: string
-      - name: items
-        type: Items
       - name: allOf
         type: '[Schema]'
       - name: properties

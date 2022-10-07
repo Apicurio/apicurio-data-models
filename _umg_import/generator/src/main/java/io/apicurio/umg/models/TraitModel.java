@@ -1,6 +1,6 @@
 package io.apicurio.umg.models;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.apicurio.umg.beans.beans.Specification;
@@ -19,7 +19,7 @@ public class TraitModel {
 	private NamespaceModel namespace;
 	@Include
 	private String name;
-	private final Map<String, PropertyModel> properties = new HashMap<>();
+	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
 	private boolean transparent;
 
 	public String fullyQualifiedName() {
