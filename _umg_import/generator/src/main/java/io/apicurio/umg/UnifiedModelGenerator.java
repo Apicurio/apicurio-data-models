@@ -28,6 +28,9 @@ import io.apicurio.umg.pipe.CreateTraitModelsStage;
 import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
 import io.apicurio.umg.pipe.IndexSpecificationsStage;
+import io.apicurio.umg.pipe.NormalizeEntitiesStage;
+import io.apicurio.umg.pipe.NormalizePropertiesStage;
+import io.apicurio.umg.pipe.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.RemoveTransparentTraitsStage;
 
@@ -36,63 +39,68 @@ import io.apicurio.umg.pipe.RemoveTransparentTraitsStage;
  */
 public class UnifiedModelGenerator {
 
-    private Collection<Specification> specifications;
+	private Collection<Specification> specifications;
 
-    public static UnifiedModelGenerator create(Collection<Specification> specifications) {
-        UnifiedModelGenerator generator = new UnifiedModelGenerator(specifications);
-        return generator;
-    }
+	public static UnifiedModelGenerator create(Collection<Specification> specifications) {
+		UnifiedModelGenerator generator = new UnifiedModelGenerator(specifications);
+		return generator;
+	}
 
-    private UnifiedModelGenerator(Collection<Specification> specifications) {
-        this.specifications = specifications;
-    }
+	private UnifiedModelGenerator(Collection<Specification> specifications) {
+		this.specifications = specifications;
+	}
 
-    /**
-     * Generates the output from the given list of specifications.
-     */
-    public void generateInto(File outputDirectory) throws Exception {
-        Logger.info("Output directory: %s", outputDirectory.getAbsolutePath());
+	/**
+	 * Generates the output from the given list of specifications.
+	 */
+	public void generateInto(File outputDirectory) throws Exception {
+		Logger.info("Output directory: %s", outputDirectory.getAbsolutePath());
 
-        GeneratorState state = new GeneratorState();
-        state.setSpecifications(specifications);
-        Pipeline pipe = new Pipeline();
-        
-        // Index phase
-        pipe.addStage(new IndexSpecificationsStage());
-        
-        // Model creation phase
-        pipe.addStage(new CreateNamespaceModelsStage());
-        pipe.addStage(new CreateTraitModelsStage());
-        pipe.addStage(new CreateEntityModelsStage());
-        pipe.addStage(new CreatePropertyModelsStage());
+		GeneratorState state = new GeneratorState();
+		state.setSpecifications(specifications);
+		Pipeline pipe = new Pipeline();
 
-        // Model optimization phase
-        pipe.addStage(new RemoveTransparentTraitsStage());
-        
-//        pipe.addStage(new PrepareJsonSchemaStage());
-//
-//        pipe.addStage(new CreateClassModelsStage());
-//        pipe.addStage(new ProcessExtendsStage());
-//
-//        pipe.addStage(new IncludeFieldsModelsStage());
-//        pipe.addStage(new CreateFieldModelsStage());
-//
-//        pipe.addStage(new UnionTypeMapperStage());
-//
-//        pipe.addStage(new RemoveTransparentClassModelsStage());
-//
-//        pipe.addStage(new NormalizeModelsStage());
-//        pipe.addStage(new NormalizeFieldsStage());
-//
-//        pipe.addStage(new JavaClassStage());
-//        pipe.addStage(new JavaAddImplementsStage());
-//        pipe.addStage(new JavaSuperTypesStage());
-//        pipe.addStage(new JavaFieldStage());
-//        pipe.addStage(new JavaGetterStage());
-//        pipe.addStage(new JavaSetterStage());
-//        pipe.addStage(new JavaWriteStage(outputDirectory));
+		// Index phase
+		pipe.addStage(new IndexSpecificationsStage());
 
-        pipe.addStage(new DebugStage());
-        pipe.run(state);
-    }
+		// Model creation phase
+		pipe.addStage(new CreateNamespaceModelsStage());
+		pipe.addStage(new CreateTraitModelsStage());
+		pipe.addStage(new CreateEntityModelsStage());
+		pipe.addStage(new CreatePropertyModelsStage());
+
+		// Model optimization phase
+		pipe.addStage(new RemoveTransparentTraitsStage());
+		pipe.addStage(new NormalizeTraitsStage());
+		pipe.addStage(new NormalizeEntitiesStage());
+		pipe.addStage(new NormalizePropertiesStage());
+
+		// Debug the models
+		pipe.addStage(new DebugStage());
+
+		//        pipe.addStage(new PrepareJsonSchemaStage());
+		//
+		//        pipe.addStage(new CreateClassModelsStage());
+		//        pipe.addStage(new ProcessExtendsStage());
+		//
+		//        pipe.addStage(new IncludeFieldsModelsStage());
+		//        pipe.addStage(new CreateFieldModelsStage());
+		//
+		//        pipe.addStage(new UnionTypeMapperStage());
+		//
+		//        pipe.addStage(new RemoveTransparentClassModelsStage());
+		//
+		//        pipe.addStage(new NormalizeModelsStage());
+		//        pipe.addStage(new NormalizeFieldsStage());
+		//
+		//        pipe.addStage(new JavaClassStage());
+		//        pipe.addStage(new JavaAddImplementsStage());
+		//        pipe.addStage(new JavaSuperTypesStage());
+		//        pipe.addStage(new JavaFieldStage());
+		//        pipe.addStage(new JavaGetterStage());
+		//        pipe.addStage(new JavaSetterStage());
+		//        pipe.addStage(new JavaWriteStage(outputDirectory));
+
+		pipe.run(state);
+	}
 }

@@ -19,9 +19,18 @@ public class NamespaceModel {
 	private String name;
 	private final Map<String, NamespaceModel> children = new HashMap<>();
 	private final Map<String, EntityModel> entities = new HashMap<>();
+	private final Map<String, TraitModel> traits = new HashMap<>();
 
 	public String fullName() {
 		return (parent != null ? parent.fullName() + "." : "") + name;
+	}
+
+	public boolean containsEntity(String entityName) {
+		return entities.containsKey(entityName);
+	}
+
+	public boolean containsTrait(String traitName) {
+		return traits.containsKey(traitName);
 	}
 
 }

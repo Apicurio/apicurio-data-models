@@ -29,6 +29,7 @@ public class RemoveTransparentTraitsStage extends AbstractStage {
 		// All transparent traits are now inlined. Remove them from the index
 		// as they are no longer needed.
 		traitsToRemove.forEach(trait -> {
+			trait.getNamespace().getTraits().remove(trait.getName());
 			getState().getModelIndex().remove(trait);
 		});
 	}

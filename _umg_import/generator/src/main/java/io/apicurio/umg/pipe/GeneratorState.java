@@ -9,7 +9,9 @@ import io.apicurio.umg.index.ClassIndex;
 import io.apicurio.umg.index.ModelIndex;
 import io.apicurio.umg.index.SpecificationIndex;
 import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
+import io.apicurio.umg.models.EntityModel;
+import io.apicurio.umg.models.NamespaceModel;
+import io.apicurio.umg.models.TraitModel;
 import io.apicurio.umg.pipe.java.JavaTypeResolver;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,53 +20,90 @@ import lombok.Setter;
 @Setter
 public class GeneratorState {
 
-    private ModelIndex modelIndex = new ModelIndex();
+	private ModelIndex modelIndex = new ModelIndex();
 
-    private SpecificationIndex specIndex = new SpecificationIndex();
+	private SpecificationIndex specIndex = new SpecificationIndex();
 
-    private ClassIndex classIndex = new ClassIndex();
+	private ClassIndex classIndex = new ClassIndex();
 
-    private ClassModel nodeClass;
+	private ClassModel nodeClass;
 
-    private ClassModel extensibleNodeClass;
+	private ClassModel extensibleNodeClass;
 
-    private Collection<Specification> specifications;
+	private Collection<Specification> specifications;
 
-    private JavaTypeResolver javaTypeResolver = new JavaTypeResolver();
+	private JavaTypeResolver javaTypeResolver = new JavaTypeResolver();
 
-    /**
-     * Returns all classes with the same name as the given parent class.  Does a search of
-     * the package tree to find such classes.
-     * @param parentClass
-     */
-    public Collection<ClassModel> findChildClassesFor(ClassModel parentClass) {
-        String className = parentClass.getName();
-        PackageModel parentPackage = parentClass.getPackage();
-        List<ClassModel> childClasses = new ArrayList<>();
-        for (PackageModel packageModel : parentPackage.getChildren().values()) {
-            ClassModel childClass = findChildClassIn(packageModel, className);
-            if (childClass != null) {
-                childClasses.add(childClass);
-            }
-        }
-        return childClasses;
-    }
+	/**
+	 * Returns all traits with the same name as the given parent trait.  Does a search of
+	 * the namespace tree to find such traits.
+	 * @param parentTrait
+	 */
+	public Collection<TraitModel> findChildTraitsFor(TraitModel parentTrait) {
+		String traitName = parentTrait.getName();
+		NamespaceModel parentNamespace = parentTrait.getNamespace();
+		List<TraitModel> childTraits = new ArrayList<>();
+		for (NamespaceModel namespaceModel : parentNamespace.getChildren().values()) {
+			TraitModel childTrait = findChildTraitIn(namespaceModel, traitName);
+			if (childTrait != null) {
+				childTraits.add(childTrait);
+			}
+		}
+		return childTraits;
+	}
 
-    /**
-     * Finds a child class in the given package with the given name.
-     * @param packageModel
-     * @param className
-     */
-    public ClassModel findChildClassIn(PackageModel packageModel, String className) {
-        if (packageModel.getClasses().containsKey(className)) {
-            return packageModel.getClasses().get(className);
-        }
-        for (PackageModel childPackage : packageModel.getChildren().values()) {
-            ClassModel classModel = findChildClassIn(childPackage, className);
-            if (classModel != null) {
-                return classModel;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Returns all entities with the same name as the given parent entity.  Does a search of
+	 * the namespace tree to find such entities.
+	 * @param parentEntity
+	 */
+	public Collection<EntityModel> findChildEntitiesFor(EntityModel parentEntity) {
+		String entityName = parentEntity.getName();
+		NamespaceModel parentNamespace = parentEntity.getNamespace();
+		List<EntityModel> childEntities = new ArrayList<>();
+		for (NamespaceModel namespaceModel : parentNamespace.getChildren().values()) {
+			EntityModel childEntity = findChildEntityIn(namespaceModel, entityName);
+			if (childEntity != null) {
+				childEntities.add(childEntity);
+			}
+		}
+		return childEntities;
+	}
+
+	/**
+	 * Finds a child trait in the given namespace with the given name.
+	 * @param namespaceModel
+	 * @param traitName
+	 */
+	public TraitModel findChildTraitIn(NamespaceModel namespaceModel, String traitName) {
+		if (namespaceModel.containsTrait(traitName)) {
+			return namespaceModel.getTraits().get(traitName);
+		}
+		for (NamespaceModel childNamespace : namespaceModel.getChildren().values()) {
+			TraitModel traitModel = findChildTraitIn(childNamespace, traitName);
+			if (traitModel != null) {
+				return traitModel;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Finds a child entity in the given namespace with the given name.
+	 * @param namespaceModel
+	 * @param entityName
+	 */
+	public EntityModel findChildEntityIn(NamespaceModel namespaceModel, String entityName) {
+		if (namespaceModel.containsEntity(entityName)) {
+			return namespaceModel.getEntities().get(entityName);
+		}
+		for (NamespaceModel childNamespace : namespaceModel.getChildren().values()) {
+			EntityModel entityModel = findChildEntityIn(childNamespace, entityName);
+			if (entityModel != null) {
+				return entityModel;
+			}
+		}
+		return null;
+	}
+
 }

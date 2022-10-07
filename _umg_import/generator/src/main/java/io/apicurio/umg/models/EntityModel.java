@@ -21,6 +21,7 @@ public class EntityModel {
 	private NamespaceModel namespace;
 	@Include
 	private String name;
+	private EntityModel parent;
 	private final Collection<TraitModel> traits = new LinkedHashSet<>();
 	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
 

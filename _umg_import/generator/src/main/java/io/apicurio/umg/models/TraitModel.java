@@ -19,6 +19,7 @@ public class TraitModel {
 	private NamespaceModel namespace;
 	@Include
 	private String name;
+	private TraitModel parent;
 	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
 	private boolean transparent;
 
