@@ -1,21 +1,22 @@
 package io.apicurio.umg.models;
 
 import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.beans.Trait;
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class EntityModelId {
+public class TraitId {
 
     private String specificationId;
     private String specificationVersion;
-    private String entityName;
+    private String traitName;
 
-    public static EntityModelId create(Specification spec, EntityModel entity) {
-        return EntityModelId.builder().specificationId(spec.getSpecification())
+    public static TraitId create(Specification spec, Trait trait) {
+        return TraitId.builder().specificationId(spec.getSpecification())
                 .specificationVersion(spec.getVersion())
-                .entityName(entity.getName())
+                .traitName(trait.getName())
                 .build();
     }
 }

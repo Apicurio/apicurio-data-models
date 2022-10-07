@@ -23,10 +23,13 @@ import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.pipe.CreateEntityModelsStage;
 import io.apicurio.umg.pipe.CreateNamespaceModelsStage;
+import io.apicurio.umg.pipe.CreatePropertyModelsStage;
 import io.apicurio.umg.pipe.CreateTraitModelsStage;
 import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
+import io.apicurio.umg.pipe.IndexSpecificationsStage;
 import io.apicurio.umg.pipe.Pipeline;
+import io.apicurio.umg.pipe.RemoveTransparentTraitsStage;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -53,9 +56,19 @@ public class UnifiedModelGenerator {
         GeneratorState state = new GeneratorState();
         state.setSpecifications(specifications);
         Pipeline pipe = new Pipeline();
+        
+        // Index phase
+        pipe.addStage(new IndexSpecificationsStage());
+        
+        // Model creation phase
         pipe.addStage(new CreateNamespaceModelsStage());
         pipe.addStage(new CreateTraitModelsStage());
         pipe.addStage(new CreateEntityModelsStage());
+        pipe.addStage(new CreatePropertyModelsStage());
+
+        // Model optimization phase
+        pipe.addStage(new RemoveTransparentTraitsStage());
+        
 //        pipe.addStage(new PrepareJsonSchemaStage());
 //
 //        pipe.addStage(new CreateClassModelsStage());

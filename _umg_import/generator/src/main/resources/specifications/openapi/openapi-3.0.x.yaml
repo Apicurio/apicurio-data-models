@@ -129,7 +129,7 @@ entities:
   - name: PathItem
     traits:
       - ExtensibleTrait
-      - Referenceable
+      - ReferenceableTrait
     properties:
       - name: summary
         type: description

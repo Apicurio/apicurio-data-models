@@ -16,13 +16,16 @@
 
 package io.apicurio.umg.index;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.EntityModelId;
-import io.apicurio.umg.models.TraitModel;
-import io.apicurio.umg.models.TraitModelId;
+import io.apicurio.umg.beans.beans.Entity;
+import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.beans.Trait;
+import io.apicurio.umg.models.EntityId;
+import io.apicurio.umg.models.TraitId;
 import lombok.Getter;
 
 /**
@@ -32,18 +35,26 @@ import lombok.Getter;
  */
 public class SpecificationIndex {
 
+	@Getter
+	private Collection<Specification> specifications = new HashSet<>();
     @Getter
-    private Map<TraitModelId, TraitModel> traitIndex = new HashMap<>();
+    private Map<TraitId, Trait> traitIndex = new HashMap<>();
     @Getter
-    private Map<EntityModelId, EntityModel> entityIndex = new HashMap<>();
+    private Map<EntityId, Entity> entityIndex = new HashMap<>();
 
-    public void index(EntityModel model) {
-        var key = EntityModelId.create(model.getSpec(), model);
+    public void index(Specification spec) {
+    	specifications.add(spec);
+    	spec.getTraits().forEach(trait -> indexTrait(spec, trait));
+    	spec.getEntities().forEach(entity -> indexEntity(spec, entity));
+    }
+
+    public void indexEntity(Specification spec, Entity model) {
+        var key = EntityId.create(spec, model);
         entityIndex.put(key, model);
     }
 
-    public void index(TraitModel model) {
-        var key = TraitModelId.create(model.getSpec(), model);
+    public void indexTrait(Specification spec, Trait model) {
+        var key = TraitId.create(spec, model);
         traitIndex.put(key, model);
     }
 }
