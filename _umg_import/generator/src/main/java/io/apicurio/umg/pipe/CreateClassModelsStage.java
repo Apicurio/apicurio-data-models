@@ -3,15 +3,11 @@ package io.apicurio.umg.pipe;
 import io.apicurio.umg.models.ClassModel;
 import io.apicurio.umg.models.PackageModel;
 
-public class CreateClassModelsStage implements Stage {
-
-    private GenState state;
+public class CreateClassModelsStage extends AbstractStage {
 
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getSpecIndex().getTraitIndex().forEach((id, tm) -> {
+    protected void doProcess() {
+        getState().getSpecIndex().getTraitIndex().forEach((id, tm) -> {
             var trait = tm.getTrait();
 
             String specPackageName = tm.getSpec().getPackage();
@@ -22,19 +18,19 @@ public class CreateClassModelsStage implements Stage {
             model.setPackage(specPackage);
             model.setAbstract(false);
 //            if (entity.getExtensible() != null && entity.getExtensible()) {
-//                model.getParents().add(state.getExtensibleNodeClass());
+//                model.getParents().add(getState().getExtensibleNodeClass());
 //            } else {
-//                model.getParents().add(state.getNodeClass());
+//                model.getParents().add(getState().getNodeClass());
 //            }
             specPackage.getClasses().put(model.getName(), model);
 
-            state.getIndex().indexClass(model);
+            getState().getIndex().indexClass(model);
 
             tm.setClassModel(model);
         });
 
         
-        state.getSpecIndex().getEntityIndex().forEach((id, em) -> {
+        getState().getSpecIndex().getEntityIndex().forEach((id, em) -> {
             var entity = em.getEntity();
 
             String specPackageName = em.getSpec().getPackage();
@@ -45,13 +41,13 @@ public class CreateClassModelsStage implements Stage {
             model.setPackage(specPackage);
             model.setAbstract(false);
 //            if (entity.getExtensible() != null && entity.getExtensible()) {
-//                model.getParents().add(state.getExtensibleNodeClass());
+//                model.getParents().add(getState().getExtensibleNodeClass());
 //            } else {
-//                model.getParents().add(state.getNodeClass());
+//                model.getParents().add(getState().getNodeClass());
 //            }
             specPackage.getClasses().put(model.getName(), model);
 
-            state.getIndex().indexClass(model);
+            getState().getIndex().indexClass(model);
 
             em.setClassModel(model);
         });

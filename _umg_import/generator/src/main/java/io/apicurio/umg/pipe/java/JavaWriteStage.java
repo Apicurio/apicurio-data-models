@@ -1,19 +1,15 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.pipe.GenState;
-import io.apicurio.umg.pipe.Stage;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.JavaSource;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public class JavaWriteStage implements Stage {
+import org.jboss.forge.roaster.model.source.JavaSource;
 
-    private GenState state;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.pipe.AbstractStage;
+
+public class JavaWriteStage extends AbstractStage {
 
     private File outputDirectory;
 
@@ -22,10 +18,8 @@ public class JavaWriteStage implements Stage {
     }
 
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getIndex().findClasses("").forEach(model -> {
+    protected void doProcess() {
+        getState().getIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 Logger.info("Generating model for entity '%s'", model.getName());

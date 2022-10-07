@@ -17,7 +17,6 @@
 package io.apicurio.umg.index;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.apicurio.umg.beans.beans.Entity;

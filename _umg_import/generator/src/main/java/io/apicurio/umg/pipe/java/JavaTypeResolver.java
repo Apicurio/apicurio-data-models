@@ -1,18 +1,19 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.index.ModelIndex;
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.Type;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
+import static java.util.Map.entry;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Map.entry;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.Type;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+
+import io.apicurio.umg.index.ModelIndex;
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.PackageModel;
 
 public class JavaTypeResolver {
 

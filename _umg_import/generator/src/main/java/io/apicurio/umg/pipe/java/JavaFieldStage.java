@@ -1,25 +1,19 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.pipe.GenState;
-import io.apicurio.umg.pipe.Stage;
+import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
+
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
-import java.util.Map;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.pipe.AbstractStage;
 
-import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
-
-public class JavaFieldStage implements Stage {
-
-    private GenState state;
-
+public class JavaFieldStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-        var resolver = state.getJavaTypeResolver();
+    protected void doProcess() {
+        var resolver = getState().getJavaTypeResolver();
 
-        state.getIndex().findClasses("").forEach(model -> {
+        getState().getIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 Logger.info("Generating model for entity '%s'", model.getName());
@@ -33,7 +27,7 @@ public class JavaFieldStage implements Stage {
                     String fieldName = sanitizeFieldName(fieldModel.getName());
                     if (!"*".equals(fieldName)) {
 
-                        Type fieldType = resolver.resolveType(fieldModel.getType(), state.getIndex(), model.getPackage());
+                        Type fieldType = resolver.resolveType(fieldModel.getType(), getState().getIndex(), model.getPackage());
                         fieldModel.setJavaType(fieldType);
                         if(!model.is_interface()) {
                             var modelClass = model.getClassSource();

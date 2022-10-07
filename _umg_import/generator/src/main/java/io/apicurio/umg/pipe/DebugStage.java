@@ -1,22 +1,16 @@
 package io.apicurio.umg.pipe;
 
-import java.io.File;
-
-public class DebugStage implements Stage {
-
-    private GenState state;
+public class DebugStage extends AbstractStage {
 
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
+    protected void doProcess() {
         // Debug output
         // TODO remove this
         if (Boolean.TRUE) {
             return;
         }
         System.out.println("---");
-        state.getIndex().findPackages("io.apicurio").forEach(pkg -> {
+        getState().getIndex().findPackages("io.apicurio").forEach(pkg -> {
             System.out.println("Package: " + pkg.getName());
             pkg.getClasses().values().forEach(clss -> {
                 System.out.println("    Class: " + clss.getName());

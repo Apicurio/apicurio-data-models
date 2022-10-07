@@ -1,17 +1,11 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.pipe.GenState;
-import io.apicurio.umg.pipe.Stage;
+import io.apicurio.umg.pipe.AbstractStage;
 
-public class JavaSuperTypesStage implements Stage {
-
-    private GenState state;
-
+public class JavaSuperTypesStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getIndex().findClasses("").forEach(model -> {
+    protected void doProcess() {
+        getState().getIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
                 if (model.is_interface()) {
 

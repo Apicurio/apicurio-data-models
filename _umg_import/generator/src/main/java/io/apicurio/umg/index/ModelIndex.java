@@ -16,15 +16,16 @@
 
 package io.apicurio.umg.index;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
-import org.apache.commons.collections4.Trie;
-import org.apache.commons.collections4.trie.PatriciaTrie;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.apache.commons.collections4.Trie;
+import org.apache.commons.collections4.trie.PatriciaTrie;
+
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.PackageModel;
 
 /**
  * @author eric.wittmann@gmail.com

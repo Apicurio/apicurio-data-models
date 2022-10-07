@@ -16,15 +16,16 @@
 
 package io.apicurio.umg.main;
 
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+
 import io.apicurio.umg.UnifiedModelGenerator2;
 import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com

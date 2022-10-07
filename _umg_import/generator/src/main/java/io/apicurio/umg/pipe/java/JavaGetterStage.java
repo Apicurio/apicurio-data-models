@@ -1,24 +1,18 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.FieldModel;
-import io.apicurio.umg.pipe.GenState;
-import io.apicurio.umg.pipe.Stage;
+import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
-import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
+import io.apicurio.umg.models.FieldModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
-public class JavaGetterStage implements Stage {
-
-    private GenState state;
-
+public class JavaGetterStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getIndex().findClasses("").forEach(model -> {
+    protected void doProcess() {
+        getState().getIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 // Add fields with getters/setters

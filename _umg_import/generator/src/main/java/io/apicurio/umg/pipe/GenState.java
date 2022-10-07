@@ -1,5 +1,9 @@
 package io.apicurio.umg.pipe;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import io.apicurio.umg.beans.beans.Specification;
 import io.apicurio.umg.index.ModelIndex;
 import io.apicurio.umg.index.SpecificationIndex;
@@ -8,10 +12,6 @@ import io.apicurio.umg.models.PackageModel;
 import io.apicurio.umg.pipe.java.JavaTypeResolver;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter

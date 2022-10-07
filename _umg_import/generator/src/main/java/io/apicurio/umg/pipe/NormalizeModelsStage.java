@@ -1,25 +1,21 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class NormalizeModelsStage implements Stage {
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.PackageModel;
 
-    private GenState state;
-
+public class NormalizeModelsStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
+    protected void doProcess() {
 
         // Process every class model we've created thus far
         Queue<ClassModel> modelsToProcess = new ConcurrentLinkedQueue<>();
-        modelsToProcess.addAll(state.getIndex().findClasses(""));
+        modelsToProcess.addAll(getState().getIndex().findClasses(""));
         Set<String> modelsProcessed = new HashSet<>();
 
         // Keep working until we've processed every model (including any new models we
@@ -41,9 +37,9 @@ public class NormalizeModelsStage implements Stage {
                     ancestorClass.setAbstract(true);
                     ancestorPackageModel.addClass(ancestorClass);
                     modelsToProcess.add(ancestorClass);
-                    state.getIndex().indexClass(ancestorClass);
+                    getState().getIndex().indexClass(ancestorClass);
 
-                    Collection<ClassModel> childClasses = state.findChildClassesFor(ancestorClass);
+                    Collection<ClassModel> childClasses = getState().findChildClassesFor(ancestorClass);
                     // Make the new parent class the actual parent of each child class
                     childClasses.forEach(childClass -> {
                         childClass.getParents().add(ancestorClass);

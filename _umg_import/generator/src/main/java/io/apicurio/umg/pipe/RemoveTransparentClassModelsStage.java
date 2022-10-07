@@ -2,20 +2,15 @@ package io.apicurio.umg.pipe;
 
 import java.util.HashMap;
 
-public class RemoveTransparentClassModelsStage implements Stage {
-
-    private GenState state;
-
-    @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        var copy = new HashMap<>(state.getSpecIndex().getEntityIndex());
+public class RemoveTransparentClassModelsStage extends AbstractStage {
+	@Override
+    protected void doProcess() {
+        var copy = new HashMap<>(getState().getSpecIndex().getEntityIndex());
         copy.forEach((id, em) -> {
 //            var entity = em.getEntity();
 //            if(nullableBoolean(entity.getTransparent())) {
-//                //state.getSpecIndex().getEntityIndex().remove(id);
-//                state.getIndex().remove(em.getClassModel());
+//                //getState().getSpecIndex().getEntityIndex().remove(id);
+//                getState().getIndex().remove(em.getClassModel());
 //            }
         });
     }

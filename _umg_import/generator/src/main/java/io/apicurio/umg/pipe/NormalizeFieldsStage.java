@@ -1,29 +1,25 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.FieldModel;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class NormalizeFieldsStage implements Stage {
+import io.apicurio.umg.models.ClassModel;
+import io.apicurio.umg.models.FieldModel;
 
-    private GenState state;
-
+public class NormalizeFieldsStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
+    protected void doProcess() {
 
-        List<ClassModel> abstractClasses = state.getIndex().findClasses("").stream().filter(model -> model.isAbstract()).collect(Collectors.toList());
+        List<ClassModel> abstractClasses = getState().getIndex().findClasses("").stream().filter(model -> model.isAbstract()).collect(Collectors.toList());
         int changesMade;
         do {
             changesMade = 0;
             for (ClassModel parentClass : abstractClasses) {
                 // Get all direct children of this parent class.
-                Collection<ClassModel> childClasses = state.findChildClassesFor(parentClass);
+                Collection<ClassModel> childClasses = getState().findChildClassesFor(parentClass);
                 // Get a collection of all fields for all
                 Set<FieldModel> allFields = new HashSet<>();
                 childClasses.forEach(child -> allFields.addAll(child.getFields().values()));

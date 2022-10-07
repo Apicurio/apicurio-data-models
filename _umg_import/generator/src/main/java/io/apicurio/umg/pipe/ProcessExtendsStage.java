@@ -1,17 +1,9 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
-
-public class ProcessExtendsStage implements Stage {
-
-    private GenState state;
-
+public class ProcessExtendsStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getSpecIndex().getEntityIndex().forEach((id, em) -> {
+    protected void doProcess() {
+        getState().getSpecIndex().getEntityIndex().forEach((id, em) -> {
             var entity = em.getEntity();
             if(entity.getExtends() != null) {
                 // TODO A "common" package/namespace?
@@ -22,7 +14,7 @@ public class ProcessExtendsStage implements Stage {
                 if(fqn == null){
                     throw new RuntimeException("TODO");
                 }
-                var parent = state.getIndex().lookupClass(fqn);
+                var parent = getState().getIndex().lookupClass(fqn);
                 em.getClassModel().getParents().add(parent);
             }
         });

@@ -1,17 +1,13 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.PackageModel;
-
 import java.util.HashSet;
 
-public class ExpandPackageModelsStage implements Stage {
+import io.apicurio.umg.models.PackageModel;
 
-    private GenState state;
-
+public class ExpandPackageModelsStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-        var copy = new HashSet<>(state.getIndex().findPackages(""));
+    protected void doProcess() {
+        var copy = new HashSet<>(getState().getIndex().findPackages(""));
         copy.forEach(pkg -> {
             this.makePackageWithHierarchy(pkg);
         });
@@ -20,10 +16,10 @@ public class ExpandPackageModelsStage implements Stage {
     private void makePackageWithHierarchy(PackageModel pkg) {
 
         PackageModel _package = pkg;
-        while(_package != state.getBasePackage()) {
+        while(_package != getState().getBasePackage()) {
             String packageName = _package.getName();
             String parentPackageName = this.parentpkg(packageName);
-            PackageModel parentPackage = state.getIndex().lookupPackage(parentPackageName, (_t) -> {
+            PackageModel parentPackage = getState().getIndex().lookupPackage(parentPackageName, (_t) -> {
                 PackageModel model = PackageModel.builder().build();
                 model.setName(parentPackageName);
                 return model;

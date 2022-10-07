@@ -3,22 +3,21 @@ package io.apicurio.umg.pipe;
 import io.apicurio.umg.models.ClassModel;
 import io.apicurio.umg.models.PackageModel;
 
-public class PrepareJsonSchemaStage implements Stage {
+public class PrepareJsonSchemaStage extends AbstractStage {
 
-    @Override
-    public void process(GenState state) {
-
+	@Override
+    protected void doProcess() {
         var basePackage = PackageModel.builder()
                 .name("io.apicurio.datamodels")
                 .build();
-        state.getIndex().indexPackage(basePackage);
+        getState().getIndex().indexPackage(basePackage);
 
-        state.setBasePackage(basePackage);
+        getState().setBasePackage(basePackage);
 
         var coreModelPackage = PackageModel.builder()
                 .name("io.apicurio.datamodels.core.models")
                 .build();
-        state.getIndex().indexPackage(coreModelPackage);
+        getState().getIndex().indexPackage(coreModelPackage);
 
         // Create some common base classes
         var nodeClass = ClassModel.builder()
@@ -28,10 +27,10 @@ public class PrepareJsonSchemaStage implements Stage {
                 ._abstract(true)
                 .build();
         coreModelPackage.getClasses().put(nodeClass.getName(), nodeClass);
-        state.getIndex().indexClass(nodeClass);
+        getState().getIndex().indexClass(nodeClass);
 
-        state.setNodeClass(nodeClass);
-        state.getJavaTypeResolver().registerType("entity", nodeClass);
+        getState().setNodeClass(nodeClass);
+        getState().getJavaTypeResolver().registerType("entity", nodeClass);
 
         var jsonNodePackage = PackageModel.builder()
                 .name("com.fasterxml.jackson.databind")
@@ -45,10 +44,10 @@ public class PrepareJsonSchemaStage implements Stage {
                 .build();
 
         jsonNodePackage.getClasses().put(jsonNodeClass.getName(), jsonNodeClass);
-        state.getIndex().indexClass(jsonNodeClass);
+        getState().getIndex().indexClass(jsonNodeClass);
 
-        state.getJavaTypeResolver().registerType("any", jsonNodeClass);
+        getState().getJavaTypeResolver().registerType("any", jsonNodeClass);
 
-        state.setNodeClass(null);
+        getState().setNodeClass(null);
     }
 }

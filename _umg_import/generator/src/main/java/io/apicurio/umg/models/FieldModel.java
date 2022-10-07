@@ -1,11 +1,12 @@
 package io.apicurio.umg.models;
 
+import org.jboss.forge.roaster.model.Type;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jboss.forge.roaster.model.Type;
 
 @Builder
 @Getter

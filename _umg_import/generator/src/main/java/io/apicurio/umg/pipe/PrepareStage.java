@@ -3,21 +3,19 @@ package io.apicurio.umg.pipe;
 import io.apicurio.umg.models.ClassModel;
 import io.apicurio.umg.models.PackageModel;
 
-public class PrepareStage implements Stage {
-
+public class PrepareStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-
+    protected void doProcess() {
         // Create the base packages
         var basePackage = PackageModel.builder().build();
         basePackage.setName("io.apicurio.datamodels");
-        state.getIndex().indexPackage(basePackage);
-        state.setBasePackage(basePackage);
+        getState().getIndex().indexPackage(basePackage);
+        getState().setBasePackage(basePackage);
 
         var coreModelPackage = PackageModel.builder().build();
         coreModelPackage.setName("io.apicurio.datamodels.core.models");
-        state.getIndex().indexPackage(coreModelPackage);
-        //state.setCoreModelPackage(coreModelPackage);
+        getState().getIndex().indexPackage(coreModelPackage);
+        //getState().setCoreModelPackage(coreModelPackage);
 
         // Create some common base classes
         var nodeClass = ClassModel.builder().build();
@@ -26,8 +24,8 @@ public class PrepareStage implements Stage {
         nodeClass.setCore(true);
         nodeClass.setAbstract(true);
         coreModelPackage.getClasses().put(nodeClass.getName(), nodeClass);
-        state.getIndex().indexClass(nodeClass);
-        state.setNodeClass(nodeClass);
+        getState().getIndex().indexClass(nodeClass);
+        getState().setNodeClass(nodeClass);
 
         var extensibleNodeClass = ClassModel.builder().build();
         extensibleNodeClass.setName("ExtensibleNode");
@@ -35,8 +33,8 @@ public class PrepareStage implements Stage {
         extensibleNodeClass.setCore(true);
         extensibleNodeClass.setAbstract(true);
         coreModelPackage.getClasses().put(extensibleNodeClass.getName(), extensibleNodeClass);
-        state.getIndex().indexClass(extensibleNodeClass);
-        state.setExtensibleNodeClass(extensibleNodeClass);
+        getState().getIndex().indexClass(extensibleNodeClass);
+        getState().setExtensibleNodeClass(extensibleNodeClass);
 
         var documentClass = ClassModel.builder().build();
         documentClass.setName("Document");
@@ -44,9 +42,7 @@ public class PrepareStage implements Stage {
         documentClass.setAbstract(true);
         documentClass.setCore(true);
         coreModelPackage.getClasses().put(documentClass.getName(), documentClass);
-        state.getIndex().indexClass(documentClass);
-        //state.setDocumentClass(documentClass);
-
-
+        getState().getIndex().indexClass(documentClass);
+        //getState().setDocumentClass(documentClass);
     }
 }

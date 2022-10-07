@@ -1,21 +1,16 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.pipe.GenState;
-import io.apicurio.umg.pipe.Stage;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
-public class JavaClassStage implements Stage {
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.pipe.AbstractStage;
 
-    private GenState state;
-
+public class JavaClassStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        state.getIndex().findClasses("").forEach(model -> {
+    protected void doProcess() {
+        getState().getIndex().findClasses("").forEach(model -> {
             if (!model.isCore()) {
 
                 Logger.info("Generating model for entity '%s'", model.getName());

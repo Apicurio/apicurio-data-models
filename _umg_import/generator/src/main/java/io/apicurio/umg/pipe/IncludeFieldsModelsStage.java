@@ -13,15 +13,10 @@ import io.apicurio.umg.models.EntityModelId;
 import io.apicurio.umg.models.TraitModel;
 import io.apicurio.umg.models.TraitModelId;
 
-public class IncludeFieldsModelsStage implements Stage {
-
-    private GenState state;
-
+public class IncludeFieldsModelsStage extends AbstractStage {
     @Override
-    public void process(GenState state) {
-        this.state = state;
-
-        Deque<EntityModelId> stack = new ArrayDeque<>(state.getSpecIndex().getEntityIndex().keySet());
+    protected void doProcess() {
+        Deque<EntityModelId> stack = new ArrayDeque<>(getState().getSpecIndex().getEntityIndex().keySet());
         Set<EntityModelId> ready = new HashSet<>();
         Set<EntityModelId> done = new HashSet<>();
         var i = 1;
@@ -31,7 +26,7 @@ public class IncludeFieldsModelsStage implements Stage {
             if(done.contains(entityId)) {
                 continue;
             }
-            EntityModel entityModel = state.getSpecIndex().getEntityIndex().get(entityId);
+            EntityModel entityModel = getState().getSpecIndex().getEntityIndex().get(entityId);
             Entity entity = entityModel.getEntity();
 
             List<String> traits = entity.getTraits();
@@ -45,7 +40,7 @@ public class IncludeFieldsModelsStage implements Stage {
                             .specificationVersion(entityId.getSpecificationVersion())
                             .traitName(incl)
                             .build();
-                    TraitModel inclTraitModel = state.getSpecIndex().getTraitIndex().get(inclTraitId);
+                    TraitModel inclTraitModel = getState().getSpecIndex().getTraitIndex().get(inclTraitId);
                     if (inclTraitModel == null) {
                         throw new RuntimeException("Included trait " + inclTraitId + " not found");
                     }
