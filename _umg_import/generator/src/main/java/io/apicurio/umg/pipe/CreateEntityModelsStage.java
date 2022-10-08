@@ -18,7 +18,12 @@ public class CreateEntityModelsStage extends AbstractStage {
 				if (nsModel == null) {
 					throw new RuntimeException("Namespace '" + spec.getNamespace() + "' for entity '" + entity.getName() + "' not found.");
 				}
-				EntityModel entityModel = EntityModel.builder().namespace(nsModel).name(entity.getName()).spec(spec).build();
+				EntityModel entityModel = EntityModel.builder()
+						.namespace(nsModel)
+						.name(entity.getName())
+						.spec(spec)
+						.leaf(true)
+						.build();
 				Logger.info("Created entity model: %s", entityModel.fullyQualifiedName());
 
 				// Add traits to the model

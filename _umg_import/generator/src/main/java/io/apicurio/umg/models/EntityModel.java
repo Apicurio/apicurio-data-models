@@ -24,9 +24,14 @@ public class EntityModel {
 	private EntityModel parent;
 	private final Collection<TraitModel> traits = new LinkedHashSet<>();
 	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
+	private boolean leaf;
 
 	public String fullyQualifiedName() {
 		return namespace.fullName() + "." + name;
+	}
+
+	public void addProperty(PropertyModel property) {
+		this.properties.put(property.getName(), property);
 	}
 
 }

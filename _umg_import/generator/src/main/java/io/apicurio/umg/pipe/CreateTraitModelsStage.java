@@ -17,6 +17,7 @@ public class CreateTraitModelsStage extends AbstractStage {
 						.name(trait.getName())
 						.spec(spec)
 						.transparent(Util.nullableBoolean(trait.getTransparent()))
+						.leaf(true)
 						.build();
 				Logger.info("Created trait model: %s", traitModel.fullyQualifiedName());
 

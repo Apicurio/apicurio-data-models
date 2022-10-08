@@ -22,6 +22,7 @@ public class TraitModel {
 	private TraitModel parent;
 	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
 	private boolean transparent;
+	private boolean leaf;
 
 	public String fullyQualifiedName() {
 		return namespace.fullName() + "." + name;
