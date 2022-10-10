@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.index.ClassIndex;
 import io.apicurio.umg.index.ModelIndex;
 import io.apicurio.umg.index.SpecificationIndex;

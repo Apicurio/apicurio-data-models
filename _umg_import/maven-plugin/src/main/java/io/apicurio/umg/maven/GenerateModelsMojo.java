@@ -13,7 +13,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import io.apicurio.umg.UnifiedModelGenerator;
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 
 /**

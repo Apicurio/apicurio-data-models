@@ -3,7 +3,7 @@ package io.apicurio.umg.models;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

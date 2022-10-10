@@ -1,6 +1,6 @@
 package io.apicurio.umg;
 
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.main.Main;

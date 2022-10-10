@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import io.apicurio.umg.beans.beans.Entity;
-import io.apicurio.umg.beans.beans.Specification;
-import io.apicurio.umg.beans.beans.Trait;
+import io.apicurio.umg.beans.Entity;
+import io.apicurio.umg.beans.Specification;
+import io.apicurio.umg.beans.Trait;
 import io.apicurio.umg.models.EntityId;
 import io.apicurio.umg.models.TraitId;
 import lombok.Getter;

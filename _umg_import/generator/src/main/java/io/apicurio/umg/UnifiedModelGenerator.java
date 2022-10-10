@@ -19,7 +19,7 @@ package io.apicurio.umg;
 import java.io.File;
 import java.util.Collection;
 
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.pipe.CreateEntityModelsStage;
 import io.apicurio.umg.pipe.CreateNamespaceModelsStage;

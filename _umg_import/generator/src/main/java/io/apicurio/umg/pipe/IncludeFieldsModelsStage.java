@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import io.apicurio.umg.beans.beans.Entity;
-import io.apicurio.umg.beans.beans.Trait;
+import io.apicurio.umg.beans.Entity;
+import io.apicurio.umg.beans.Trait;
 import io.apicurio.umg.models.EntityModel;
 import io.apicurio.umg.models.EntityId;
 import io.apicurio.umg.models.TraitModel;

@@ -129,10 +129,10 @@
                         </goals>
                         <configuration>
                             <projectSettings>
-                                <javaPackage>io.apicurio.umg.beans</javaPackage>
+                                <javaPackage>io.apicurio.umg</javaPackage>
                             </projectSettings>
                             <inputSpec>src/main/resources/openapi.json</inputSpec>
-                            <outputDir>${project.build.directory}/apicurio</outputDir>
+                            <outputDir>${project.build.directory}/generated-sources</outputDir>
                         </configuration>
                     </execution>
                 </executions>
@@ -150,7 +150,7 @@
                         <configuration>
                             <sources>
                                 <source>src/main/base</source>
-                                <source>${project.build.directory}/apicurio</source>
+                                <source>${project.build.directory}/generated-sources</source>
                             </sources>
                         </configuration>
                     </execution>

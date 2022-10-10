@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import io.apicurio.umg.UnifiedModelGenerator;
-import io.apicurio.umg.beans.beans.Specification;
+import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
 
