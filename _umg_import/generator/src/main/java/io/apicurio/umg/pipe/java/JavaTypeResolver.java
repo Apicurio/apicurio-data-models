@@ -11,9 +11,9 @@ import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.index.ClassIndex;
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
+import io.apicurio.umg.index.java.ClassIndex;
+import io.apicurio.umg.models.java.ClassModel;
+import io.apicurio.umg.models.java.PackageModel;
 
 public class JavaTypeResolver {
 

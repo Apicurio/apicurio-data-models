@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
-import io.apicurio.umg.models.FieldModel;
+import io.apicurio.umg.models.java.FieldModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaGetterStage extends AbstractStage {

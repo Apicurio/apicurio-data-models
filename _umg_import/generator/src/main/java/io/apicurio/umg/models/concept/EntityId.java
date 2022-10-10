@@ -1,4 +1,4 @@
-package io.apicurio.umg.models;
+package io.apicurio.umg.models.concept;
 
 import io.apicurio.umg.beans.Entity;
 import io.apicurio.umg.beans.Specification;

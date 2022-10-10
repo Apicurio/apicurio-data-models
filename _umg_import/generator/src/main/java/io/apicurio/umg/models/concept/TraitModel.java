@@ -1,4 +1,4 @@
-package io.apicurio.umg.models;
+package io.apicurio.umg.models.concept;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

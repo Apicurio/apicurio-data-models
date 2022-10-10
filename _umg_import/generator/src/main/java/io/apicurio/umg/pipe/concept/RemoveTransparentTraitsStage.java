@@ -1,10 +1,11 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.apicurio.umg.models.TraitModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 /**
  * Removes (aka inlines) any transparent traits.  This essentially copies all of the properties from

@@ -1,4 +1,4 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,8 +6,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import io.apicurio.umg.models.NamespaceModel;
-import io.apicurio.umg.models.TraitModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class NormalizeTraitsStage extends AbstractStage {
 

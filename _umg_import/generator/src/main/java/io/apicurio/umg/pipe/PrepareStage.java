@@ -1,8 +1,5 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
-
 public class PrepareStage extends AbstractStage {
     @Override
     protected void doProcess() {

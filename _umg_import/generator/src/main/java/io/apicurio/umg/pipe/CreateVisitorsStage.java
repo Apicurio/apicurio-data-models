@@ -1,11 +1,11 @@
 package io.apicurio.umg.pipe;
 
-import java.util.stream.Collectors;
-
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.NamespaceModel;
 import io.apicurio.umg.models.VisitorModel;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+
+import java.util.stream.Collectors;
 
 /**
  * Creates a Visitor for each leaf namespace.  Adds all of the entities

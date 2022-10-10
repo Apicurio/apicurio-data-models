@@ -1,8 +1,10 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.NamespaceModel;
-import io.apicurio.umg.models.TraitModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
+import io.apicurio.umg.pipe.Util;
 
 public class CreateTraitModelsStage extends AbstractStage {
 

@@ -1,8 +1,9 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.PropertyModel;
-import io.apicurio.umg.models.TraitModel;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 /**
  * Creates "parent" traits for all entities with child properties.  Only creates the parent trait

@@ -1,4 +1,6 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
+
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class IndexSpecificationsStage extends AbstractStage {
 

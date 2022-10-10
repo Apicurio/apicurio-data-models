@@ -7,7 +7,7 @@ import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.FieldModel;
+import io.apicurio.umg.models.java.FieldModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaSetterStage extends AbstractStage {

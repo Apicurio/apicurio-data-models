@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package io.apicurio.umg.index;
+package io.apicurio.umg.index.concept;
 
-import java.util.Collection;
-import java.util.function.Function;
-
+import io.apicurio.umg.models.VisitorModel;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.models.concept.TraitModel;
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.NamespaceModel;
-import io.apicurio.umg.models.TraitModel;
-import io.apicurio.umg.models.VisitorModel;
+import java.util.Collection;
+import java.util.function.Function;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -41,12 +40,15 @@ public class ModelIndex {
     public void remove(TraitModel traitModel) {
         traitIndex.remove(traitModel.fullyQualifiedName());
     }
+
     public void remove(EntityModel entityModel) {
         entityIndex.remove(entityModel.fullyQualifiedName());
     }
+
     public void remove(NamespaceModel namespaceModel) {
         namespaceIndex.remove(namespaceModel.getName());
     }
+
     public void remove(VisitorModel visitorModel) {
         entityIndex.remove(visitorModel.getNamespace().fullName());
     }
@@ -55,12 +57,15 @@ public class ModelIndex {
     public boolean hasNamespace(String name) {
         return namespaceIndex.containsKey(name);
     }
+
     public boolean hasTrait(String fullyQualifiedTraitName) {
         return traitIndex.containsKey(fullyQualifiedTraitName);
     }
+
     public boolean hasEntity(String fullyQualifiedEntityName) {
         return entityIndex.containsKey(fullyQualifiedEntityName);
     }
+
     public boolean hasVisitor(String namespace) {
         return namespaceIndex.containsKey(namespace);
     }
@@ -69,12 +74,15 @@ public class ModelIndex {
     public void index(NamespaceModel model) {
         namespaceIndex.put(model.getName(), model);
     }
+
     public void index(TraitModel model) {
         traitIndex.put(model.fullyQualifiedName(), model);
     }
+
     public void index(EntityModel model) {
         entityIndex.put(model.fullyQualifiedName(), model);
     }
+
     public void index(VisitorModel model) {
         visitorIndex.put(model.getNamespace().fullName(), model);
     }
@@ -83,15 +91,19 @@ public class ModelIndex {
     public NamespaceModel lookupNamespace(String namespace) {
         return namespaceIndex.get(namespace);
     }
+
     public NamespaceModel lookupNamespace(String namespace, Function<String, NamespaceModel> factory) {
         return namespaceIndex.computeIfAbsent(namespace, (key) -> factory.apply(key));
     }
+
     public TraitModel lookupTrait(String fullyQualifiedTraitName) {
         return traitIndex.get(fullyQualifiedTraitName);
     }
+
     public EntityModel lookupEntity(String fullyQualifiedEntityName) {
         return entityIndex.get(fullyQualifiedEntityName);
     }
+
     public VisitorModel lookupVisitor(String namespace) {
         return visitorIndex.get(namespace);
     }
@@ -100,12 +112,15 @@ public class ModelIndex {
     public Collection<NamespaceModel> findNamespaces(String prefix) {
         return namespaceIndex.prefixMap(prefix).values();
     }
+
     public Collection<TraitModel> findTraits(String prefix) {
         return traitIndex.prefixMap(prefix).values();
     }
+
     public Collection<EntityModel> findEntities(String prefix) {
         return entityIndex.prefixMap(prefix).values();
     }
+
     public Collection<VisitorModel> findVisitors(String prefix) {
         return visitorIndex.prefixMap(prefix).values();
     }

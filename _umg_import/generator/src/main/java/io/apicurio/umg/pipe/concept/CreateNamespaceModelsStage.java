@@ -1,10 +1,11 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import java.util.Arrays;
 import java.util.List;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.NamespaceModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class CreateNamespaceModelsStage extends AbstractStage {
 

@@ -1,13 +1,6 @@
 package io.apicurio.umg.pipe;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
+import io.apicurio.umg.models.java.PackageModel;
 
 public class NormalizeModelsStage extends AbstractStage {
     @Override

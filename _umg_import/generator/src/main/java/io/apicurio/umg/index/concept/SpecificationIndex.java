@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.umg.index;
+package io.apicurio.umg.index.concept;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,8 +24,8 @@ import java.util.Map;
 import io.apicurio.umg.beans.Entity;
 import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.beans.Trait;
-import io.apicurio.umg.models.EntityId;
-import io.apicurio.umg.models.TraitId;
+import io.apicurio.umg.models.concept.EntityId;
+import io.apicurio.umg.models.concept.TraitId;
 import lombok.Getter;
 
 /**

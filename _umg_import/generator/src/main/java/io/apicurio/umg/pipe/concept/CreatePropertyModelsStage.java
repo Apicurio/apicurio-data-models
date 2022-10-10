@@ -1,10 +1,11 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.PropertyModel;
-import io.apicurio.umg.models.PropertyType;
-import io.apicurio.umg.models.TraitModel;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyType;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class CreatePropertyModelsStage extends AbstractStage {
 

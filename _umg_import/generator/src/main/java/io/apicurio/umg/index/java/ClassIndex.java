@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.umg.index;
+package io.apicurio.umg.index.java;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,8 +24,8 @@ import java.util.function.Function;
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
-import io.apicurio.umg.models.ClassModel;
-import io.apicurio.umg.models.PackageModel;
+import io.apicurio.umg.models.java.ClassModel;
+import io.apicurio.umg.models.java.PackageModel;
 
 /**
  * @author eric.wittmann@gmail.com

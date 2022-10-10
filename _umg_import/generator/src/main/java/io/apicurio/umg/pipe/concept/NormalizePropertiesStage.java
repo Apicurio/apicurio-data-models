@@ -1,14 +1,15 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
+
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import io.apicurio.umg.models.EntityModel;
-import io.apicurio.umg.models.PropertyModel;
-import io.apicurio.umg.models.TraitModel;
 
 public class NormalizePropertiesStage extends AbstractStage {
     @Override

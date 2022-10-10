@@ -1,7 +1,5 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.FieldModel;
-
 public class CreateFieldModelsStage extends AbstractStage {
 
     @Override

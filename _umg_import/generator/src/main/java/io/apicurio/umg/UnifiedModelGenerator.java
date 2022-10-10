@@ -16,26 +16,26 @@
 
 package io.apicurio.umg;
 
-import java.io.File;
-import java.util.Collection;
-
 import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.pipe.CreateEntityModelsStage;
-import io.apicurio.umg.pipe.CreateNamespaceModelsStage;
-import io.apicurio.umg.pipe.CreateParentTraitsStage;
-import io.apicurio.umg.pipe.CreatePropertyModelsStage;
-import io.apicurio.umg.pipe.CreateTraitModelsStage;
 import io.apicurio.umg.pipe.CreateVisitorsStage;
 import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
-import io.apicurio.umg.pipe.IndexSpecificationsStage;
-import io.apicurio.umg.pipe.NormalizeEntitiesStage;
-import io.apicurio.umg.pipe.NormalizePropertiesStage;
-import io.apicurio.umg.pipe.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.Pipeline;
-import io.apicurio.umg.pipe.RemoveTransparentTraitsStage;
+import io.apicurio.umg.pipe.concept.CreateEntityModelsStage;
+import io.apicurio.umg.pipe.concept.CreateNamespaceModelsStage;
+import io.apicurio.umg.pipe.concept.CreateParentTraitsStage;
+import io.apicurio.umg.pipe.concept.CreatePropertyModelsStage;
+import io.apicurio.umg.pipe.concept.CreateTraitModelsStage;
+import io.apicurio.umg.pipe.concept.IndexSpecificationsStage;
+import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
+import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
+import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
+import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
+
+import java.io.File;
+import java.util.Collection;
 
 /**
  * @author eric.wittmann@gmail.com

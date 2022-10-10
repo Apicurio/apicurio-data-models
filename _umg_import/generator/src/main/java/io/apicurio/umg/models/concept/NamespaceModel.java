@@ -1,8 +1,6 @@
-package io.apicurio.umg.models;
+package io.apicurio.umg.models.concept;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import io.apicurio.umg.models.VisitorModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -10,7 +8,12 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @AllArgsConstructor
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
+@Setter
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 public class NamespaceModel {

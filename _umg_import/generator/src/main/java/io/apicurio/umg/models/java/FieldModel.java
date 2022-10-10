@@ -1,4 +1,4 @@
-package io.apicurio.umg.models;
+package io.apicurio.umg.models.java;
 
 import org.jboss.forge.roaster.model.Type;
 
