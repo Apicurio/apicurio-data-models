@@ -28,4 +28,11 @@ public class TraitModel {
         return namespace.fullName() + "." + name;
     }
 
+    public void addProperty(PropertyModel property) {
+        this.properties.put(property.getName(), property);
+    }
+
+    public boolean hasProperty(String propertyName) {
+        return this.properties.containsKey(propertyName);
+    }
 }
