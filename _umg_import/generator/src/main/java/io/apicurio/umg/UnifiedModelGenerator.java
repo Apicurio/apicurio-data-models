@@ -26,12 +26,14 @@ import io.apicurio.umg.pipe.CreateNamespaceModelsStage;
 import io.apicurio.umg.pipe.CreateParentTraitsStage;
 import io.apicurio.umg.pipe.CreatePropertyModelsStage;
 import io.apicurio.umg.pipe.CreateTraitModelsStage;
+import io.apicurio.umg.pipe.CreateVisitorsStage;
 import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
 import io.apicurio.umg.pipe.IndexSpecificationsStage;
 import io.apicurio.umg.pipe.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.NormalizeTraitsStage;
+import io.apicurio.umg.pipe.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.RemoveTransparentTraitsStage;
 
@@ -70,12 +72,14 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateEntityModelsStage());
         pipe.addStage(new CreatePropertyModelsStage());
         pipe.addStage(new CreateParentTraitsStage());
+        pipe.addStage(new CreateVisitorsStage());
 
         // Model optimization phase
         pipe.addStage(new RemoveTransparentTraitsStage());
         pipe.addStage(new NormalizeTraitsStage());
         pipe.addStage(new NormalizeEntitiesStage());
         pipe.addStage(new NormalizePropertiesStage());
+        pipe.addStage(new NormalizeVisitorsStage());
 
         // Debug the models
         pipe.addStage(new DebugStage());

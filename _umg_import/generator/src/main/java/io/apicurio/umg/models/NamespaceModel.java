@@ -3,14 +3,16 @@ package io.apicurio.umg.models;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-@Data
+@Getter @Setter @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 public class NamespaceModel {
 
     @Include
@@ -20,6 +22,7 @@ public class NamespaceModel {
     private final Map<String, NamespaceModel> children = new HashMap<>();
     private final Map<String, EntityModel> entities = new HashMap<>();
     private final Map<String, TraitModel> traits = new HashMap<>();
+    private VisitorModel visitor;
 
     public String fullName() {
         return (parent != null ? parent.fullName() + "." : "") + name;
@@ -33,4 +36,8 @@ public class NamespaceModel {
         return traits.containsKey(traitName);
     }
 
+    @Override
+    public String toString() {
+        return "Namespace<" + fullName() + ">";
+    }
 }

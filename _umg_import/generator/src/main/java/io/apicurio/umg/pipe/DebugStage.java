@@ -26,6 +26,9 @@ public class DebugStage extends AbstractStage {
                     Logger.debug("        Property: " + field.getName() + " (" + field.getType() + ")");
                 });
             });
+            if (namespace.getVisitor() != null) {
+                Logger.debug("    Visitor (%d properties)", namespace.getVisitor().getEntities().size());
+            }
         });
         Logger.debug("---");
     }
