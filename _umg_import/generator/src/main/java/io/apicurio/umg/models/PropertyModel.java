@@ -9,8 +9,8 @@ import lombok.Data;
 @Builder
 @Data
 public class PropertyModel {
-	
-	private String name;
-	private PropertyType type;
+    
+    private String name;
+    private PropertyType type;
 
 }

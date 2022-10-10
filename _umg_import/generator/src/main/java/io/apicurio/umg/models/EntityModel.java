@@ -16,22 +16,26 @@ import lombok.EqualsAndHashCode.Include;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EntityModel {
 
-	private Specification spec;
-	@Include
-	private NamespaceModel namespace;
-	@Include
-	private String name;
-	private EntityModel parent;
-	private final Collection<TraitModel> traits = new LinkedHashSet<>();
-	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
-	private boolean leaf;
+    private Specification spec;
+    @Include
+    private NamespaceModel namespace;
+    @Include
+    private String name;
+    private EntityModel parent;
+    private final Collection<TraitModel> traits = new LinkedHashSet<>();
+    private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
+    private boolean leaf;
 
-	public String fullyQualifiedName() {
-		return namespace.fullName() + "." + name;
-	}
+    public String fullyQualifiedName() {
+        return namespace.fullName() + "." + name;
+    }
 
-	public void addProperty(PropertyModel property) {
-		this.properties.put(property.getName(), property);
-	}
+    public void addProperty(PropertyModel property) {
+        this.properties.put(property.getName(), property);
+    }
+
+    public boolean hasProperty(String propertyName) {
+        return this.properties.containsKey(propertyName);
+    }
 
 }

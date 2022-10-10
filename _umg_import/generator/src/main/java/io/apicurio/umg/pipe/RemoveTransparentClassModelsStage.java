@@ -3,7 +3,7 @@ package io.apicurio.umg.pipe;
 import java.util.HashMap;
 
 public class RemoveTransparentClassModelsStage extends AbstractStage {
-	@Override
+    @Override
     protected void doProcess() {
         var copy = new HashMap<>(getState().getSpecIndex().getEntityIndex());
         copy.forEach((id, em) -> {

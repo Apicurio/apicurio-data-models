@@ -21,8 +21,8 @@ public class SpecificationLoader {
      * @param specPath
      */
     public static Specification loadSpec(String specPath) {
-    	File file = new File(specPath);
-    	return loadSpec(file);
+        File file = new File(specPath);
+        return loadSpec(file);
     }
 
     /**
@@ -45,10 +45,10 @@ public class SpecificationLoader {
      */
     public static Specification loadSpec(File specFile) {
         try {
-        	if (!specFile.isFile()) {
-        		throw new RuntimeException("Invalid specification file (not a file): " + specFile);
-        	}
-        	return loadSpec(specFile.toURI().toURL());
+            if (!specFile.isFile()) {
+                throw new RuntimeException("Invalid specification file (not a file): " + specFile);
+            }
+            return loadSpec(specFile.toURI().toURL());
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -64,7 +64,7 @@ public class SpecificationLoader {
         try {
             Specification spec = mapper.readValue(specURL, Specification.class);
             Logger.info("Specification '%s' loaded with %d traits and %d entities.", spec.getName(),
-            		Optional.ofNullable(spec.getTraits()).orElse(Collections.emptySet()).size(),
+                    Optional.ofNullable(spec.getTraits()).orElse(Collections.emptySet()).size(),
                     Optional.ofNullable(spec.getEntities()).orElse(Collections.emptySet()).size());
             return spec;
         } catch (Throwable t) {

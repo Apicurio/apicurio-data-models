@@ -5,7 +5,7 @@ import io.apicurio.umg.models.PackageModel;
 
 public class PrepareJsonSchemaStage extends AbstractStage {
 
-	@Override
+    @Override
     protected void doProcess() {
 //        var basePackage = PackageModel.builder()
 //                .name("io.apicurio.datamodels")

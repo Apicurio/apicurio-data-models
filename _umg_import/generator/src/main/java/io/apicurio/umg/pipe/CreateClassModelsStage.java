@@ -1,10 +1,10 @@
 package io.apicurio.umg.pipe;
 
 public class CreateClassModelsStage extends AbstractStage {
-	
-	@Override
-	protected void doProcess() {
-	}
+    
+    @Override
+    protected void doProcess() {
+    }
 //
 //    @Override
 //    protected void doProcess() {

@@ -14,18 +14,18 @@ import lombok.EqualsAndHashCode.Include;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TraitModel {
 
-	private Specification spec;
-	@Include
-	private NamespaceModel namespace;
-	@Include
-	private String name;
-	private TraitModel parent;
-	private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
-	private boolean transparent;
-	private boolean leaf;
+    private Specification spec;
+    @Include
+    private NamespaceModel namespace;
+    @Include
+    private String name;
+    private TraitModel parent;
+    private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
+    private boolean transparent;
+    private boolean leaf;
 
-	public String fullyQualifiedName() {
-		return namespace.fullName() + "." + name;
-	}
+    public String fullyQualifiedName() {
+        return namespace.fullName() + "." + name;
+    }
 
 }

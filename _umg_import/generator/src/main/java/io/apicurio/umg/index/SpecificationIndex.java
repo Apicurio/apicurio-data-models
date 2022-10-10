@@ -35,17 +35,17 @@ import lombok.Getter;
  */
 public class SpecificationIndex {
 
-	@Getter
-	private Collection<Specification> specifications = new HashSet<>();
+    @Getter
+    private Collection<Specification> specifications = new HashSet<>();
     @Getter
     private Map<TraitId, Trait> traitIndex = new HashMap<>();
     @Getter
     private Map<EntityId, Entity> entityIndex = new HashMap<>();
 
     public void index(Specification spec) {
-    	specifications.add(spec);
-    	spec.getTraits().forEach(trait -> indexTrait(spec, trait));
-    	spec.getEntities().forEach(entity -> indexEntity(spec, entity));
+        specifications.add(spec);
+        spec.getTraits().forEach(trait -> indexTrait(spec, trait));
+        spec.getEntities().forEach(entity -> indexEntity(spec, entity));
     }
 
     public void indexEntity(Specification spec, Entity model) {

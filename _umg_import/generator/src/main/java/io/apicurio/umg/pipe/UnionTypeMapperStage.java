@@ -6,7 +6,7 @@ public class UnionTypeMapperStage extends AbstractStage {
         getState().getModelIndex().findEntities("").forEach(cm -> {
             cm.getProperties().forEach((name, fm) -> {
                 if(fm.getType().isUnion()) {
-                	// TODO mapping of union types to language-specific types should be done in Java or Typescript specific generators
+                    // TODO mapping of union types to language-specific types should be done in Java or Typescript specific generators
                     //fm.setType("object");
                 }
             });

@@ -36,8 +36,8 @@
                         </goals>
                         <configuration>
                             <specifications>
-                            	<specification>${project.basedir}/src/main/resources/smoke-spec.yaml</specification>
-							</specifications>
+                                <specification>${project.basedir}/src/main/resources/smoke-spec.yaml</specification>
+                            </specifications>
                         </configuration>
                     </execution>
                 </executions>

@@ -46,7 +46,7 @@ public class GenerateModelsMojo extends AbstractMojo {
             throw new MojoFailureException("No input specifications found.");
         }
         if (!specifications.stream().map(specFile -> specFile.isFile()).reduce((a, b) -> a && b).orElse(false)) {
-        	throw new MojoFailureException("At least one configured specification does not exist.");
+            throw new MojoFailureException("At least one configured specification does not exist.");
         }
 
         if (outputDir.isFile()) {
@@ -68,10 +68,10 @@ public class GenerateModelsMojo extends AbstractMojo {
         UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
         // Generate the source code into the target output directory.
         try {
-			generator.generateInto(outputDir);
-		} catch (Exception e) {
-			throw new MojoExecutionException("Error generating unified model classes.", e);
-		}
+            generator.generateInto(outputDir);
+        } catch (Exception e) {
+            throw new MojoExecutionException("Error generating unified model classes.", e);
+        }
 
         getLog().info("Models successfully generated.");
     }
@@ -79,17 +79,17 @@ public class GenerateModelsMojo extends AbstractMojo {
     /**
      * Loads the configured specifications.
      */
-	private List<Specification> loadSpecifications() {
-		return this.specifications.stream().map(file -> SpecificationLoader.loadSpec(file)).collect(Collectors.toUnmodifiableList());
-	}
-	
-	public static void main(String[] args) {
-		List<String> strings = Arrays.asList("foo", "bar", "baz", "blerg");
-		
+    private List<Specification> loadSpecifications() {
+        return this.specifications.stream().map(file -> SpecificationLoader.loadSpec(file)).collect(Collectors.toUnmodifiableList());
+    }
+    
+    public static void main(String[] args) {
+        List<String> strings = Arrays.asList("foo", "bar", "baz", "blerg");
+        
         System.out.println(strings.stream().map(s -> "bar".equals(s)).reduce((a, b) -> {
-        	System.out.println("(a, b) = " + a + "," + b);
-        	return a || b;
+            System.out.println("(a, b) = " + a + "," + b);
+            return a || b;
         }).orElse(false));
-	}
+    }
 
 }
