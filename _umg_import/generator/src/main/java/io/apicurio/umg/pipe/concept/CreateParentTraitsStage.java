@@ -18,7 +18,7 @@ public class CreateParentTraitsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        getState().getModelIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
+        getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
             entity.getProperties().values().stream().filter(property -> needsParent(entity, property)).forEach(property -> {
                 if (!property.getType().isList() && !property.getType().isMap()) {
                     String propertyTypeName = property.getType().getName();
@@ -31,7 +31,7 @@ public class CreateParentTraitsStage extends AbstractStage {
                         PropertyModel traitProperty = PropertyModel.builder().name(property.getName()).type(property.getType()).build();
                         parentTrait.getProperties().put(property.getName(), traitProperty);
                         entity.getNamespace().getTraits().put(traitName, parentTrait);
-                        getState().getModelIndex().index(parentTrait);
+                        getState().getConceptIndex().index(parentTrait);
                     }
                     entity.getTraits().add(parentTrait);
                 }
@@ -53,7 +53,7 @@ public class CreateParentTraitsStage extends AbstractStage {
         if (property.getName().equals("*")) {
             return false;
         }
-        return getState().getModelIndex().findEntities("")
+        return getState().getConceptIndex().findEntities("")
                 .stream()
                 .filter(e -> !e.getName().equals(entity.getName()))
                 .filter(e -> e.hasProperty(property.getName()))

@@ -16,7 +16,7 @@ public class NormalizePropertiesStage extends AbstractStage {
     protected void doProcess() {
 
         // Normalize the Entity Properties
-        List<EntityModel> branchEntities = getState().getModelIndex().findEntities("").stream().filter(model -> !model.isLeaf()).collect(Collectors.toList());
+        List<EntityModel> branchEntities = getState().getConceptIndex().findEntities("").stream().filter(model -> !model.isLeaf()).collect(Collectors.toList());
         int changesMade;
         do {
             changesMade = 0;
@@ -45,7 +45,7 @@ public class NormalizePropertiesStage extends AbstractStage {
         } while (changesMade > 0);
 
         // Normalize the Trait Properties
-        List<TraitModel> branchTraits = getState().getModelIndex().findTraits("").stream().filter(model -> !model.isLeaf()).collect(Collectors.toList());
+        List<TraitModel> branchTraits = getState().getConceptIndex().findTraits("").stream().filter(model -> !model.isLeaf()).collect(Collectors.toList());
         do {
             changesMade = 0;
             for (TraitModel parentTrait : branchTraits) {

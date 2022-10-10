@@ -33,6 +33,15 @@ import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
+import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
+import io.apicurio.umg.pipe.java.JavaClassStage;
+import io.apicurio.umg.pipe.java.JavaFieldStage;
+import io.apicurio.umg.pipe.java.JavaGetterStage;
+import io.apicurio.umg.pipe.java.JavaSetterStage;
+import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
+import io.apicurio.umg.pipe.java.JavaWriteStage;
+import io.apicurio.umg.pipe.java.TodoStage;
+import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 
 import java.io.File;
 import java.util.Collection;
@@ -99,13 +108,15 @@ public class UnifiedModelGenerator {
         //        pipe.addStage(new NormalizeModelsStage());
         //        pipe.addStage(new NormalizeFieldsStage());
         //
-        //        pipe.addStage(new JavaClassStage());
-        //        pipe.addStage(new JavaAddImplementsStage());
-        //        pipe.addStage(new JavaSuperTypesStage());
-        //        pipe.addStage(new JavaFieldStage());
-        //        pipe.addStage(new JavaGetterStage());
-        //        pipe.addStage(new JavaSetterStage());
-        //        pipe.addStage(new JavaWriteStage(outputDirectory));
+        pipe.addStage(new TransformConceptToJavaModelStage());
+        pipe.addStage(new TodoStage());
+        pipe.addStage(new JavaClassStage());
+        pipe.addStage(new JavaAddImplementsStage());
+        pipe.addStage(new JavaSuperTypesStage());
+        pipe.addStage(new JavaFieldStage());
+        pipe.addStage(new JavaGetterStage());
+        pipe.addStage(new JavaSetterStage());
+        pipe.addStage(new JavaWriteStage(outputDirectory));
 
         pipe.run(state);
     }

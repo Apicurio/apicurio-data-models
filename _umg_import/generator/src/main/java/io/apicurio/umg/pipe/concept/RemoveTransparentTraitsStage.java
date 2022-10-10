@@ -16,7 +16,7 @@ public class RemoveTransparentTraitsStage extends AbstractStage {
     @Override
     protected void doProcess() {
         Set<TraitModel> traitsToRemove = new HashSet<>();
-        getState().getModelIndex().findEntities("").forEach(entity -> {
+        getState().getConceptIndex().findEntities("").forEach(entity -> {
             entity.getTraits().stream().filter(t -> t.isTransparent()).collect(Collectors.toSet()).forEach(trait -> {
                 // Copy all properties from the trait to the entity.
                 entity.getProperties().putAll(trait.getProperties());
@@ -31,7 +31,7 @@ public class RemoveTransparentTraitsStage extends AbstractStage {
         // as they are no longer needed.
         traitsToRemove.forEach(trait -> {
             trait.getNamespace().getTraits().remove(trait.getName());
-            getState().getModelIndex().remove(trait);
+            getState().getConceptIndex().remove(trait);
         });
     }
 

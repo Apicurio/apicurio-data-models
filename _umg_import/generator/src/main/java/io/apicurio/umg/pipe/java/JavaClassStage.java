@@ -1,5 +1,7 @@
 package io.apicurio.umg.pipe.java;
 
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaInterfaceModel;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
@@ -10,29 +12,31 @@ import io.apicurio.umg.pipe.AbstractStage;
 public class JavaClassStage extends AbstractStage {
     @Override
     protected void doProcess() {
-        getState().getClassIndex().findClasses("").forEach(model -> {
-            if (!model.isCore()) {
+        getState().getJavaIndex().getTypes().values().forEach(t -> {
+            if (!t.isExternal()) {
 
-                Logger.info("Generating model for entity '%s'", model.getName());
+                Logger.info("Generating model for type '%s'", t.getName());
 
-                if (model.is_interface()) {
+                if (t instanceof JavaInterfaceModel) {
+                    var _interface = (JavaInterfaceModel) t;
 
                     JavaInterfaceSource modelClass = Roaster.create(JavaInterfaceSource.class)
-                            .setPackage(model.getPackage().getName())
-                            .setName(model.getName())
+                            .setPackage(_interface.get_package().getName())
+                            .setName(_interface.getName())
                             .setPublic();
 
-                    model.setInterfaceSource(modelClass);
+                    _interface.setInterfaceSource(modelClass);
 
                 } else {
+                    var _class = (JavaClassModel) t;
 
                     JavaClassSource modelClass = Roaster.create(JavaClassSource.class)
-                            .setPackage(model.getPackage().getName())
-                            .setName(model.getName())
-                            .setAbstract(model.isAbstract())
+                            .setPackage(_class.get_package().getName())
+                            .setName(_class.getName())
+                            .setAbstract(_class.is_abstract())
                             .setPublic();
 
-                    model.setClassSource(modelClass);
+                    _class.setClassSource(modelClass);
                 }
             }
         });

@@ -7,7 +7,7 @@ public class DebugStage extends AbstractStage {
     @Override
     protected void doProcess() {
         Logger.debug("--- DEBUG ---");
-        getState().getModelIndex().findNamespaces("io.apicurio").forEach(namespace -> {
+        getState().getConceptIndex().findNamespaces("io.apicurio").forEach(namespace -> {
             Logger.debug("==========================");
             Logger.debug("Namespace: " + namespace.fullName());
             Logger.debug("==========================");

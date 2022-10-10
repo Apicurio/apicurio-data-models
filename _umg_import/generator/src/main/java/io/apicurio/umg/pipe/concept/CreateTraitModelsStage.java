@@ -13,7 +13,7 @@ public class CreateTraitModelsStage extends AbstractStage {
         Logger.info("-- Creating Trait Models --");
         getState().getSpecifications().forEach(spec -> {
             spec.getTraits().forEach(trait -> {
-                NamespaceModel nsModel = getState().getModelIndex().lookupNamespace(spec.getNamespace());
+                NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(spec.getNamespace());
                 TraitModel traitModel = TraitModel.builder()
                         .namespace(nsModel)
                         .name(trait.getName())
@@ -26,7 +26,7 @@ public class CreateTraitModelsStage extends AbstractStage {
                 // Add trait to namespace
                 nsModel.getTraits().put(traitModel.getName(), traitModel);
                 // Index the model
-                getState().getModelIndex().index(traitModel);
+                getState().getConceptIndex().index(traitModel);
             });
         });
     }

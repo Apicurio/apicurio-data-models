@@ -16,7 +16,7 @@ public class NormalizeTraitsStage extends AbstractStage {
     protected void doProcess() {
         // Process every trait model we've created thus far
         Queue<TraitModel> modelsToProcess = new ConcurrentLinkedQueue<>();
-        modelsToProcess.addAll(getState().getModelIndex().findTraits(""));
+        modelsToProcess.addAll(getState().getConceptIndex().findTraits(""));
         Set<String> modelsProcessed = new HashSet<>();
 
         // Keep working until we've processed every model (including any new models we
@@ -38,7 +38,7 @@ public class NormalizeTraitsStage extends AbstractStage {
                             .build();
                     ancestorNamespaceModel.getTraits().put(ancestorTrait.getName(), ancestorTrait);
                     modelsToProcess.add(ancestorTrait);
-                    getState().getModelIndex().index(ancestorTrait);
+                    getState().getConceptIndex().index(ancestorTrait);
 
                     Collection<TraitModel> childTraits = getState().findChildTraitsFor(ancestorTrait);
                     // Make the new parent trait the actual parent of each child trait

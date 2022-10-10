@@ -4,7 +4,7 @@ public class NormalizeVisitorsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        getState().getModelIndex().findVisitors("").stream().forEach(visitor -> {
+        getState().getConceptIndex().findVisitors("").stream().forEach(visitor -> {
 
         });
     }

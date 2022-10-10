@@ -1,6 +1,6 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.models.java.PackageModel;
+import io.apicurio.umg.models.java.JavaPackageModel;
 
 public class NormalizeModelsStage extends AbstractStage {
     @Override
@@ -56,13 +56,13 @@ public class NormalizeModelsStage extends AbstractStage {
      * @param packageModel
      * @param className
      */
-    private boolean needsParentClass(PackageModel packageModel, String className) {
+    private boolean needsParentClass(JavaPackageModel packageModel, String className) {
         int count = 0;
-        for (PackageModel childPackage : packageModel.getChildren().values()) {
-            if (childPackage.containsClass(className)) {
-                count++;
-            }
-        }
+//        for (JavaPackageModel childPackage : packageModel.getChildren().values()) {
+//            if (childPackage.containsClass(className)) {
+//                count++;
+//            }
+//        }
         return count > 1;
     }
 

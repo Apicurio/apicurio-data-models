@@ -24,12 +24,13 @@ import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.function.Function;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class ModelIndex {
+public class ConceptIndex {
 
     private Trie<String, NamespaceModel> namespaceIndex = new PatriciaTrie<>();
     private Trie<String, TraitModel> traitIndex = new PatriciaTrie<>();
@@ -125,4 +126,11 @@ public class ModelIndex {
         return visitorIndex.prefixMap(prefix).values();
     }
 
+    public Collection<EntityModel> getAllEntitiesWithCopy() {
+        return new HashSet<>(findEntities(""));
+    }
+
+    public Collection<TraitModel> getAllTraitsWithCopy() {
+        return new HashSet<>(findTraits(""));
+    }
 }

@@ -16,7 +16,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
             // Create property models for traits
             spec.getTraits().forEach(trait -> {
                 String fqTraitName = spec.getNamespace() + "." + trait.getName();
-                TraitModel traitModel = getState().getModelIndex().lookupTrait(fqTraitName);
+                TraitModel traitModel = getState().getConceptIndex().lookupTrait(fqTraitName);
                 trait.getProperties().forEach(property -> {
                     PropertyModel propertyModel = PropertyModel.builder().name(property.getName()).type(PropertyType.create(property.getType())).build();
                     Logger.info("Created trait property model: %s/%s", traitModel.fullyQualifiedName(), propertyModel.getName());
@@ -27,7 +27,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
             // Create property models for entities
             spec.getEntities().forEach(entity -> {
                 String fqEntityName = spec.getNamespace() + "." + entity.getName();
-                EntityModel entityModel = getState().getModelIndex().lookupEntity(fqEntityName);
+                EntityModel entityModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 entity.getProperties().forEach(property -> {
                     PropertyModel propertyModel = PropertyModel.builder().name(property.getName()).type(PropertyType.create(property.getType())).build();
                     Logger.info("Created entity property model: %s/%s", entityModel.fullyQualifiedName(), propertyModel.getName());

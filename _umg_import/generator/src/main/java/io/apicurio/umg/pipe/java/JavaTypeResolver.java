@@ -6,18 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.java.JavaType;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.index.java.ClassIndex;
-import io.apicurio.umg.models.java.ClassModel;
-import io.apicurio.umg.models.java.PackageModel;
+import io.apicurio.umg.index.java.JavaIndex;
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaPackageModel;
 
 public class JavaTypeResolver {
 
-    private Map<String, ClassModel> registeredTypes = new HashMap<>();
+    private Map<String, JavaClassModel> registeredTypes = new HashMap<>();
 
     private static Map<String, String> BASE_TYPE_MAP = Map.ofEntries(
             entry("string", String.class.getName()),
@@ -30,7 +32,7 @@ public class JavaTypeResolver {
     /**
      * Resolves a type defined in a specfile to a Roaster {@link org.jboss.forge.roaster.model.Type}.
      */
-    public Type<?> resolveType(String type, ClassIndex index, PackageModel packageModel) {
+    public Type<?> resolveType(String type, JavaIndex index, JavaPackageModel packageModel) {
 
         boolean isList = false;
         boolean isMap = false;
@@ -49,24 +51,26 @@ public class JavaTypeResolver {
         if (baseType == null) {
             var t = registeredTypes.get(type);
             if (t != null) {
-                baseType = t.getFullyQualifiedName();
+                baseType = t.fullyQualifiedName();
             }
         }
 
         if (baseType == null) {
-            ClassModel t;
+            JavaType t;
             if (type.contains(".")) {
-                t = index.lookupClass(type);
+                t = index.getTypes().get(type);
             } else {
-                t = index.lookupClass(packageModel.getName() + "." + type);
+                t = index.getTypes().get(packageModel.getName() + "." + type);
             }
             if (t != null) {
-                baseType = t.getFullyQualifiedName();
+                baseType = t.fullyQualifiedName();
             }
         }
 
         if (baseType == null) {
-            throw new RuntimeException("Unknown type: " + type);
+            //throw new RuntimeException("Unknown type: " + type);
+            Logger.error("Unknown type: " + type); // TODO Happens with io.apicurio.datamodels.openapi.v30.Extension
+            baseType = "Object";
         }
 
         if (isList) {
@@ -82,7 +86,7 @@ public class JavaTypeResolver {
         return methods.get(0).getReturnType();
     }
 
-    public void registerType(String type, ClassModel model) {
+    public void registerType(String type, JavaClassModel model) {
         this.registeredTypes.put(type, model);
     }
 }

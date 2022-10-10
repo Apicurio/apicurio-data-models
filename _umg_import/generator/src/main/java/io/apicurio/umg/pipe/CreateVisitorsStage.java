@@ -17,12 +17,12 @@ public class CreateVisitorsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        getState().getModelIndex().findNamespaces("").stream().filter(ns -> ns.getChildren().isEmpty()).forEach(ns -> {
+        getState().getConceptIndex().findNamespaces("").stream().filter(ns -> ns.getChildren().isEmpty()).forEach(ns -> {
             Logger.debug("Creating a visitor for namespace: %s", ns.fullName());
             VisitorModel visitorModel = VisitorModel.builder().namespace(ns).build();
             visitorModel.getEntities().addAll(ns.getEntities().values().stream().map(entity -> cloneEntity(entity)).collect(Collectors.toSet()));
             ns.setVisitor(visitorModel);
-            getState().getModelIndex().index(visitorModel);
+            getState().getConceptIndex().index(visitorModel);
 
             // Now create ancestor visitors
             NamespaceModel parentNS = ns.getParent();
@@ -33,7 +33,7 @@ public class CreateVisitorsStage extends AbstractStage {
                     if (parentVisitor == null) {
                         parentVisitor = VisitorModel.builder().namespace(parentNS).build();
                         parentNS.setVisitor(parentVisitor);
-                        getState().getModelIndex().index(parentVisitor);
+                        getState().getConceptIndex().index(parentVisitor);
                     }
                     visitorModel.setParent(parentVisitor);
                     parentVisitor.getChildren().add(visitorModel);

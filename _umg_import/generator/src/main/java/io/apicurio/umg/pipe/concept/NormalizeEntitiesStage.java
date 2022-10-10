@@ -16,7 +16,7 @@ public class NormalizeEntitiesStage extends AbstractStage {
     protected void doProcess() {
         // Process every entity model we've created thus far
         Queue<EntityModel> modelsToProcess = new ConcurrentLinkedQueue<>();
-        modelsToProcess.addAll(getState().getModelIndex().findEntities(""));
+        modelsToProcess.addAll(getState().getConceptIndex().findEntities(""));
         Set<String> modelsProcessed = new HashSet<>();
 
         // Keep working until we've processed every model (including any new models we
@@ -38,7 +38,7 @@ public class NormalizeEntitiesStage extends AbstractStage {
                             .build();
                     ancestorNamespaceModel.getEntities().put(ancestorEntity.getName(), ancestorEntity);
                     modelsToProcess.add(ancestorEntity);
-                    getState().getModelIndex().index(ancestorEntity);
+                    getState().getConceptIndex().index(ancestorEntity);
 
                     Collection<EntityModel> childEntities = getState().findChildEntitiesFor(ancestorEntity);
                     // Make the new parent entity the actual parent of each child entity

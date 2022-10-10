@@ -1,36 +1,37 @@
 package io.apicurio.umg.pipe.java;
 
-import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
-
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.pipe.AbstractStage;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.pipe.AbstractStage;
+import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
 
 public class JavaFieldStage extends AbstractStage {
     @Override
     protected void doProcess() {
+
         var resolver = getState().getJavaTypeResolver();
 
-        getState().getClassIndex().findClasses("").forEach(model -> {
-            if (!model.isCore()) {
+        getState().getJavaIndex().getTypes().values().forEach(t -> {
+            if (!t.isExternal()) {
 
-                Logger.info("Generating model for entity '%s'", model.getName());
+                Logger.info("Generating model for type '%s'", t.getName());
 
 
                 // Add fields with getters/setters
-                model.getFields().values().forEach(fieldModel -> {
-
+                t.getFields().values().forEach(fieldModel -> {
 
 
                     String fieldName = sanitizeFieldName(fieldModel.getName());
                     if (!"*".equals(fieldName)) {
 
-                        Type fieldType = resolver.resolveType(fieldModel.getType(), getState().getClassIndex(), model.getPackage());
+                        Type fieldType = resolver.resolveType(fieldModel.getType(), getState().getJavaIndex(), t.get_package());
                         fieldModel.setJavaType(fieldType);
-                        if(!model.is_interface()) {
-                            var modelClass = model.getClassSource();
+                        if (t instanceof JavaClassModel) {
+                            var _class = (JavaClassModel) t;
+                            var modelClass = _class.getClassSource();
                             String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                             modelClass.addField()
                                     .setName(fieldName)

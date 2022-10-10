@@ -1,26 +1,25 @@
 package io.apicurio.umg.pipe.java;
 
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaSuperTypesStage extends AbstractStage {
     @Override
     protected void doProcess() {
-        getState().getClassIndex().findClasses("").forEach(model -> {
-            if (!model.isCore()) {
-                if (model.is_interface()) {
-
-                    model.getParents().forEach(p -> {
-                        model.getInterfaceSource().addInterface(p.getInterfaceSource());
+        getState().getJavaIndex().getTypes().values().forEach(t -> {
+            if (!t.isExternal()) {
+                if (t instanceof JavaInterfaceModel) {
+                    var _interface = (JavaInterfaceModel) t;
+                    _interface.getParents().forEach(p -> {
+                        _interface.getInterfaceSource().addInterface(p.getInterfaceSource());
                     });
 
                 } else {
-
-                    if (model.getParents().size() > 1) {
-                        throw new IllegalStateException("TODO");
+                    var _class = (JavaClassModel) t;
+                    if (_class.getParent() != null) {
+                        _class.getClassSource().setSuperType(_class.getParent().getClassSource());
                     }
-                    model.getParents().forEach(p -> {
-                        model.getClassSource().setSuperType(p.getClassSource());
-                    });
                 }
             }
         });

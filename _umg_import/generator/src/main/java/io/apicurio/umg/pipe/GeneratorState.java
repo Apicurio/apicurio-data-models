@@ -1,34 +1,34 @@
 package io.apicurio.umg.pipe;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import io.apicurio.umg.beans.Specification;
-import io.apicurio.umg.index.java.ClassIndex;
-import io.apicurio.umg.index.concept.ModelIndex;
+import io.apicurio.umg.index.concept.ConceptIndex;
 import io.apicurio.umg.index.concept.SpecificationIndex;
-import io.apicurio.umg.models.java.ClassModel;
+import io.apicurio.umg.index.java.JavaIndex;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.pipe.java.JavaTypeResolver;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
 public class GeneratorState {
 
-    private ModelIndex modelIndex = new ModelIndex();
+    private ConceptIndex conceptIndex = new ConceptIndex();
 
     private SpecificationIndex specIndex = new SpecificationIndex();
 
-    private ClassIndex classIndex = new ClassIndex();
+    private JavaIndex javaIndex = new JavaIndex();
 
-    private ClassModel nodeClass;
+    private JavaClassModel nodeClass;
 
-    private ClassModel extensibleNodeClass;
+    private JavaClassModel extensibleNodeClass;
 
     private Collection<Specification> specifications;
 
@@ -37,6 +37,7 @@ public class GeneratorState {
     /**
      * Returns all traits with the same name as the given parent trait.  Does a search of
      * the namespace tree to find such traits.
+     *
      * @param parentTrait
      */
     public Collection<TraitModel> findChildTraitsFor(TraitModel parentTrait) {
@@ -55,6 +56,7 @@ public class GeneratorState {
     /**
      * Returns all entities with the same name as the given parent entity.  Does a search of
      * the namespace tree to find such entities.
+     *
      * @param parentEntity
      */
     public Collection<EntityModel> findChildEntitiesFor(EntityModel parentEntity) {
@@ -72,6 +74,7 @@ public class GeneratorState {
 
     /**
      * Finds a child trait in the given namespace with the given name.
+     *
      * @param namespaceModel
      * @param traitName
      */
@@ -90,6 +93,7 @@ public class GeneratorState {
 
     /**
      * Finds a child entity in the given namespace with the given name.
+     *
      * @param namespaceModel
      * @param entityName
      */

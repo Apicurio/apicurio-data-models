@@ -15,7 +15,7 @@ public class CreateEntityModelsStage extends AbstractStage {
         Logger.info("-- Creating Entity Models --");
         getState().getSpecifications().forEach(spec -> {
             spec.getEntities().forEach(entity -> {
-                NamespaceModel nsModel = getState().getModelIndex().lookupNamespace(spec.getNamespace());
+                NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(spec.getNamespace());
                 if (nsModel == null) {
                     throw new RuntimeException("Namespace '" + spec.getNamespace() + "' for entity '" + entity.getName() + "' not found.");
                 }
@@ -30,7 +30,7 @@ public class CreateEntityModelsStage extends AbstractStage {
                 // Add traits to the model
                 entity.getTraits().forEach(trait -> {
                     String fqTraitName = spec.getNamespace() + "." + trait;
-                    TraitModel traitModel = getState().getModelIndex().lookupTrait(fqTraitName);
+                    TraitModel traitModel = getState().getConceptIndex().lookupTrait(fqTraitName);
                     if (traitModel == null) {
                         throw new RuntimeException("Trait '" + fqTraitName + "' referenced by entity '" + entityModel.fullyQualifiedName() + "' not found.");
                     }
@@ -40,7 +40,7 @@ public class CreateEntityModelsStage extends AbstractStage {
                 // Add entity to namespace
                 nsModel.getEntities().put(entityModel.getName(), entityModel);
                 // Index the model
-                getState().getModelIndex().index(entityModel);
+                getState().getConceptIndex().index(entityModel);
             });
         });
     }

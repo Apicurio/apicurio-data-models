@@ -29,13 +29,13 @@ public class CreateNamespaceModelsStage extends AbstractStage {
         for (String nsComponent : nsComponents) {
             currentNs = (currentNs == null) ? nsComponent : currentNs + "." + nsComponent;
             final NamespaceModel parentModel = lastModel;
-            NamespaceModel nsModel = getState().getModelIndex().lookupNamespace(currentNs, (ns) -> {
+            NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(currentNs, (ns) -> {
                 NamespaceModel rval = NamespaceModel.builder().name(nsComponent).parent(parentModel).build();
                 if (parentModel != null) {
                     parentModel.getChildren().put(nsComponent, rval);
                 }
                 Logger.info("Created namespace model: %s", rval.fullName());
-                getState().getModelIndex().index(rval);
+                getState().getConceptIndex().index(rval);
                 return rval;
             });
             lastModel = nsModel;
