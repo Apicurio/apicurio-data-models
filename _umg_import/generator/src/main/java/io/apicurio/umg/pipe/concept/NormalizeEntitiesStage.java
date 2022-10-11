@@ -22,18 +22,18 @@ public class NormalizeEntitiesStage extends AbstractStage {
         // Keep working until we've processed every model (including any new models we
         // might create during processing).
         while (!modelsToProcess.isEmpty()) {
-            EntityModel classModel = modelsToProcess.remove();
-            if (modelsProcessed.contains(classModel.fullyQualifiedName())) {
+            EntityModel traitModel = modelsToProcess.remove();
+            if (modelsProcessed.contains(traitModel.fullyQualifiedName())) {
                 continue;
             }
 
             // Check if we need to create a parent entity for this model in any parent scope
-            NamespaceModel ancestorNamespaceModel = classModel.getNamespace().getParent();
+            NamespaceModel ancestorNamespaceModel = traitModel.getNamespace().getParent();
             while (ancestorNamespaceModel != null) {
-                if (needsParentEntity(ancestorNamespaceModel, classModel.getName())) {
+                if (needsParentEntity(ancestorNamespaceModel, traitModel.getName())) {
                     EntityModel ancestorEntity = EntityModel.builder()
-                            .name(classModel.getName())
-                            .parent(classModel.getParent())
+                            .name(traitModel.getName())
+                            .parent(traitModel.getParent())
                             .namespace(ancestorNamespaceModel)
                             .build();
                     ancestorNamespaceModel.getEntities().put(ancestorEntity.getName(), ancestorEntity);

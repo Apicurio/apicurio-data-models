@@ -35,11 +35,11 @@ public class CreateNamespaceModelsStage extends AbstractStage {
                     parentModel.getChildren().put(nsComponent, rval);
                 }
                 Logger.info("Created namespace model: %s", rval.fullName());
-                getState().getConceptIndex().index(rval);
                 return rval;
             });
             lastModel = nsModel;
         }
+
         return lastModel;
     }
 

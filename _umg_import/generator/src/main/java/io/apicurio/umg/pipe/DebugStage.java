@@ -1,5 +1,7 @@
 package io.apicurio.umg.pipe;
 
+import java.util.stream.Collectors;
+
 import io.apicurio.umg.logging.Logger;
 
 public class DebugStage extends AbstractStage {
@@ -27,7 +29,8 @@ public class DebugStage extends AbstractStage {
                 });
             });
             if (namespace.getVisitor() != null) {
-                Logger.debug("    Visitor (%d properties)", namespace.getVisitor().getEntities().size());
+                Logger.debug("    Visitor (%d entities): " + namespace.getVisitor().getEntities().stream().map(entity -> entity.getName()).collect(Collectors.toList()),
+                        namespace.getVisitor().getEntities().size());
             }
         });
         Logger.debug("---");

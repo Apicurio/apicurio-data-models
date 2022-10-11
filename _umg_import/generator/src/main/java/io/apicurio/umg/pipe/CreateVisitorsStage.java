@@ -1,11 +1,11 @@
 package io.apicurio.umg.pipe;
 
+import java.util.stream.Collectors;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.VisitorModel;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
-
-import java.util.stream.Collectors;
 
 /**
  * Creates a Visitor for each leaf namespace.  Adds all of the entities
@@ -17,7 +17,7 @@ public class CreateVisitorsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        getState().getConceptIndex().findNamespaces("").stream().filter(ns -> ns.getChildren().isEmpty()).forEach(ns -> {
+        getState().getConceptIndex().findNamespaces("").stream().filter(ns -> ns.getChildren().isEmpty()).collect(Collectors.toList()).forEach(ns -> {
             Logger.debug("Creating a visitor for namespace: %s", ns.fullName());
             VisitorModel visitorModel = VisitorModel.builder().namespace(ns).build();
             visitorModel.getEntities().addAll(ns.getEntities().values().stream().map(entity -> cloneEntity(entity)).collect(Collectors.toSet()));
@@ -31,6 +31,7 @@ public class CreateVisitorsStage extends AbstractStage {
                 if (parentNS.getChildren().size() > 1) {
                     VisitorModel parentVisitor = parentNS.getVisitor();
                     if (parentVisitor == null) {
+                        Logger.debug("Creating a visitor for namespace: %s", parentNS.fullName());
                         parentVisitor = VisitorModel.builder().namespace(parentNS).build();
                         parentNS.setVisitor(parentVisitor);
                         getState().getConceptIndex().index(parentVisitor);

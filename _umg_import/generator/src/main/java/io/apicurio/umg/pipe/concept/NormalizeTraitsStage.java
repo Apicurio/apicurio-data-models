@@ -22,18 +22,18 @@ public class NormalizeTraitsStage extends AbstractStage {
         // Keep working until we've processed every model (including any new models we
         // might create during processing).
         while (!modelsToProcess.isEmpty()) {
-            TraitModel classModel = modelsToProcess.remove();
-            if (modelsProcessed.contains(classModel.fullyQualifiedName())) {
+            TraitModel traitModel = modelsToProcess.remove();
+            if (modelsProcessed.contains(traitModel.fullyQualifiedName())) {
                 continue;
             }
 
             // Check if we need to create a parent trait for this model in any parent scope
-            NamespaceModel ancestorNamespaceModel = classModel.getNamespace().getParent();
+            NamespaceModel ancestorNamespaceModel = traitModel.getNamespace().getParent();
             while (ancestorNamespaceModel != null) {
-                if (needsParentTrait(ancestorNamespaceModel, classModel.getName())) {
+                if (needsParentTrait(ancestorNamespaceModel, traitModel.getName())) {
                     TraitModel ancestorTrait = TraitModel.builder()
-                            .name(classModel.getName())
-                            .parent(classModel.getParent())
+                            .name(traitModel.getName())
+                            .parent(traitModel.getParent())
                             .namespace(ancestorNamespaceModel)
                             .build();
                     ancestorNamespaceModel.getTraits().put(ancestorTrait.getName(), ancestorTrait);

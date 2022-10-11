@@ -1,5 +1,8 @@
 package io.apicurio.umg.models;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import lombok.AllArgsConstructor;
@@ -8,9 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Collection;
-import java.util.HashSet;
 
 @Builder
 @Getter
@@ -28,5 +28,33 @@ public class VisitorModel {
     @Override
     public String toString() {
         return "Visitor <" + namespace.fullName() + ">";
+    }
+
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
+
+    public void addEntity(EntityModel entity) {
+        this.entities.add(entity);
+    }
+
+    public void removeEntity(String entityName) {
+        EntityModel entity = this.findEntity(entityName);
+        if (entity != null) {
+            this.entities.remove(entity);
+        }
+    }
+
+    public boolean containsEntity(String entityName) {
+        return findEntity(entityName) != null;
+    }
+
+    public EntityModel findEntity(String entityName) {
+        for (EntityModel entityModel : entities) {
+            if (entityModel.getName().equals(entityName)) {
+                return entityModel;
+            }
+        }
+        return null;
     }
 }
