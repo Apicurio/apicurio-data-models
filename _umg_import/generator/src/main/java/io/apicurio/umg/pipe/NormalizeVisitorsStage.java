@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.apicurio.umg.models.VisitorModel;
 import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.VisitorModel;
 
 public class NormalizeVisitorsStage extends AbstractStage {
 

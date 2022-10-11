@@ -1,10 +1,8 @@
-package io.apicurio.umg.models;
+package io.apicurio.umg.models.concept;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import io.apicurio.umg.models.concept.EntityModel;
-import io.apicurio.umg.models.concept.NamespaceModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

@@ -16,10 +16,11 @@
 
 package io.apicurio.umg.index.concept;
 
-import io.apicurio.umg.models.VisitorModel;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.models.concept.VisitorModel;
+
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 

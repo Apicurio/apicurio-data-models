@@ -3,7 +3,6 @@ package io.apicurio.umg.models.concept;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.apicurio.umg.models.VisitorModel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
