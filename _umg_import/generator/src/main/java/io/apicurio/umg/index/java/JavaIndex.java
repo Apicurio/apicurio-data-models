@@ -21,8 +21,10 @@ import io.apicurio.umg.models.java.JavaType;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -51,5 +53,15 @@ public class JavaIndex {
             _package.addClass(_new);
             return _new;
         });
+    }
+
+    public void removeType(JavaType type) {
+        var _package = type.get_package();
+        _package.getTypes().remove(type.fullyQualifiedName());
+        types.remove(type.fullyQualifiedName());
+    }
+
+    public Set<JavaType> getAllTypesWithCopy() {
+        return new HashSet<>(types.values());
     }
 }

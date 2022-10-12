@@ -42,6 +42,7 @@ import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.TodoStage;
 import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
+import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
 import java.io.File;
 import java.util.Collection;
@@ -109,6 +110,8 @@ public class UnifiedModelGenerator {
         //        pipe.addStage(new NormalizeFieldsStage());
         //
         pipe.addStage(new TransformConceptToJavaModelStage());
+
+        pipe.addStage(new TransformToInterfaces());
         pipe.addStage(new TodoStage());
         pipe.addStage(new JavaClassStage());
         pipe.addStage(new JavaAddImplementsStage());

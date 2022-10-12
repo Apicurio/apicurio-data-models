@@ -14,12 +14,13 @@ public class TransformConceptToJavaModelStage extends AbstractStage {
         getState().getConceptIndex().getAllEntitiesWithCopy().forEach(x -> {
             makePackages(x.getNamespace());
             var _package = getState().getJavaIndex().getPackages().get(x.getNamespace().fullName());
-            var _class = getState().getJavaIndex().lookupAndIndexType(() -> {
+            var _class = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
                 return JavaClassModel.builder()
                         ._package(_package)
                         .name(x.getName())
                         .build();
             });
+
             x.getProperties().values().forEach(p -> {
                 _class.addField(JavaFieldModel.builder()
                         .name(p.getName())
@@ -44,6 +45,8 @@ public class TransformConceptToJavaModelStage extends AbstractStage {
                         .build());
             });
         });
+
+        // Inheritance
     }
 
 
