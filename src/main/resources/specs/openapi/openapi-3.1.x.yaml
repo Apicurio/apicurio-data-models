@@ -1,0 +1,444 @@
+specification: OpenAPI
+version: 3.1.x
+versions:
+  - version: 3.1.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+name: OpenAPI 3.1.x
+prefix: Oai31x
+namespace: io.apicurio.datamodels.openapi.v31
+
+traits:
+  - name: ExtensibleTrait
+    properties:
+      - name: '/x-.+/'
+        type: Extension
+  - name: ReferenceableTrait
+    properties:
+      - name: '$ref'
+        type: string
+      - name: 'summary'
+        type: string
+      - name: 'description'
+        type: string
+
+entities:
+  - name: Document
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: openapi
+        type: string
+      - name: jsonSchemaDialect
+        type: string
+      - name: info
+        type: Info
+      - name: servers
+        type: '[Server]'
+      - name: paths
+        type: Paths
+      - name: webhooks
+        type: '{PathItem}'
+      - name: components
+        type: Components
+      - name: security
+        type: '[SecurityRequirement]'
+      - name: tags
+        type: '[Tag]'
+      - name: externalDocs
+        type: ExternalDocumentation
+  - name: Info
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: title
+        type: string
+      - name: summary
+        type: string
+      - name: description
+        type: string
+      - name: termsOfService
+        type: string
+      - name: contact
+        type: Contact
+      - name: license
+        type: License
+      - name: version
+        type: string
+  - name: Contact
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: name
+        type: string
+      - name: url
+        type: string
+      - name: email
+        type: string
+  - name: License
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: name
+        type: string
+      - name: identifier
+        type: string
+      - name: url
+        type: string
+  - name: Server
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: url
+        type: string
+      - name: description
+        type: string
+      - name: variables
+        type: '{ServerVariable}'
+  - name: ServerVariable
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: enum
+        type: '[string]'
+      - name: default
+        type: string
+      - name: description
+        type: string
+  - name: Components
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: schemas
+        type: '{Schema}'
+      - name: responses
+        type: '{Response}'
+      - name: parameters
+        type: '{Parameter}'
+      - name: examples
+        type: '{Example}'
+      - name: requestBodies
+        type: '{RequestBody}'
+      - name: headers
+        type: '{Header}'
+      - name: securitySchemes
+        type: '{SecurityScheme}'
+      - name: links
+        type: '{Link}'
+      - name: callbacks
+        type: '{Callback}'
+      - name: pathItems
+        type: '{PathItem}'
+  - name: Paths
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: '*'
+        type: PathItem
+  - name: PathItem
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: '$ref'
+        type: string
+      - name: summary
+        type: description
+      - name: summary
+        type: string
+      - name: get
+        type: Operation
+      - name: put
+        type: Operation
+      - name: post
+        type: Operation
+      - name: delete
+        type: Operation
+      - name: options
+        type: Operation
+      - name: head
+        type: Operation
+      - name: patch
+        type: Operation
+      - name: trace
+        type: Operation
+      - name: servers
+        type: '[Server]'
+      - name: parameters
+        type: '[Parameter]'
+  - name: Operation
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: tags
+        type: '[string]'
+      - name: summary
+        type: string
+      - name: description
+        type: string
+      - name: externalDocs
+        type: ExternalDocumentation
+      - name: operationId
+        type: string
+      - name: parameters
+        type: '[Parameter]'
+      - name: requestBody
+        type: RequestBody
+      - name: responses
+        type: Responses
+      - name: callbacks
+        type: '{Callback}'
+      - name: deprecated
+        type: boolean
+      - name: security
+        type: '[SecurityRequirement]'
+      - name: servers
+        type: '[Server]'
+  - name: ExternalDocumentation
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
+  - name: Parameter
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: name
+        type: string
+      - name: in
+        type: string
+      - name: description
+        type: string
+      - name: required
+        type: boolean
+      - name: deprecated
+        type: boolean
+      - name: allowEmptyValue
+        type: boolean
+      - name: style
+        type: string
+      - name: explode
+        type: boolean
+      - name: allowReserved
+        type: boolean
+      - name: schema
+        type: Schema
+      - name: example
+        type: object
+      - name: examples
+        type: '{Example}'
+  - name: RequestBody
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: description
+        type: string
+      - name: content
+        type: '{MediaType}'
+      - name: required
+        type: boolean
+  - name: MediaType
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: schema
+        type: Schema
+      - name: example
+        type: object
+      - name: examples
+        type: '{Example}'
+      - name: encoding
+        type: '{Encoding}'
+  - name: Encoding
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: contentType
+        type: string
+      - name: headers
+        type: '{Header}'
+      - name: style
+        type: string
+      - name: explode
+        type: boolean
+      - name: allowReserved
+        type: boolean
+  - name: Responses
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: default
+        type: Response
+      - name: '*'
+        type: Response
+  - name: Response
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: description
+        type: string
+      - name: headers
+        type: '{Header}'
+      - name: content
+        type: '{MediaType}'
+      - name: links
+        type: '{Link}'
+  - name: Callback
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: '*'
+        type: PathItem
+  - name: Example
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: summary
+        type: string
+      - name: description
+        type: string
+      - name: value
+        type: object
+      - name: externalValue
+        type: string
+  - name: Link
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: operationRef
+        type: string
+      - name: operationId
+        type: string
+      - name: parameters
+        type: '{object}'
+      - name: requestBody
+        type: object
+      - name: description
+        type: string
+      - name: server
+        type: Server
+  - name: Header
+    traits:
+      - ReferenceableTrait
+    properties:
+      - name: description
+        type: string
+      - name: required
+        type: boolean
+      - name: deprecated
+        type: boolean
+      - name: allowEmptyValue
+        type: boolean
+      - name: style
+        type: string
+      - name: explode
+        type: boolean
+      - name: allowReserved
+        type: boolean
+      - name: schema
+        type: Schema
+      - name: example
+        type: object
+      - name: examples
+        type: '{Example}'
+  - name: Tag
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+      - name: externalDocs
+        type: ExternalDocumentation
+  - name: Schema # NOTE: OpenAPI 3 now uses JSON Schema Draft 2020-12 for schemas
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: '$ref'
+        type: string
+      - name: discriminator
+        type: Discriminator
+      - name: xml
+        type: XML
+      - name: externalDocs
+        type: ExternalDocumentation
+      - name: example
+        type: object
+  - name: Discriminator
+    properties:
+      - name: propertyName
+        type: string
+      - name: mapping
+        type: '{string}'
+  - name: XML
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: name
+        type: string
+      - name: namespace
+        type: string
+      - name: prefix
+        type: string
+      - name: attribute
+        type: boolean
+      - name: wrapped
+        type: boolean
+  - name: SecurityScheme
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
+    properties:
+      - name: type
+        type: string
+      - name: description
+        type: string
+      - name: name
+        type: string
+      - name: in
+        type: string
+      - name: scheme
+        type: string
+      - name: bearerFormat
+        type: string
+      - name: flows
+        type: OAuthFlows
+      - name: openIdConnectUrl
+        type: string
+  - name: OAuthFlows
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: implicit
+        type: OAuthFlow
+      - name: password
+        type: OAuthFlow
+      - name: clientCredentials
+        type: OAuthFlow
+      - name: authorizationCode
+        type: OAuthFlow
+  - name: OAuthFlow
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: authorizationUrl
+        type: string
+      - name: tokenUrl
+        type: string
+      - name: refreshUrl
+        type: string
+      - name: scopes
+        type: '{string}'
+  - name: SecurityRequirement
+    properties:
+      - name: '*'
+        type: '[string]'
