@@ -1,0 +1,75 @@
+specification: AsyncAPI
+version: 2.0.x
+versions:
+  - version: 2.0.0
+    url: https://www.asyncapi.com/docs/specifications/2.0.0
+name: AsyncAPI 2.0.x
+prefix: Aai20x
+namespace: io.apicurio.datamodels.asyncapi.v20
+entities:
+  - name: Document
+    properties:
+      - name: asyncapi
+        type: string
+      - name: id
+        type: string
+      - name: info
+        type: Info
+      - name: servers
+        type: '[Server]'
+      - name: channels
+        type: Channels
+      - name: components
+        type: Components
+      - name: tags
+        type: '[Tag]'
+      - name: externalDocs
+        type: ExternalDocumentation
+  - name: Info
+    properties:
+      - name: title
+        type: string
+      - name: description
+        type: string
+      - name: termsOfService
+        type: string
+      - name: contact
+        type: Contact
+      - name: license
+        type: License
+      - name: version
+        type: string
+  - name: Contact
+    properties:
+      - name: name
+        type: string
+      - name: url
+        type: string
+      - name: email
+        type: string
+  - name: License
+    properties:
+      - name: name
+        type: string
+      - name: url
+        type: string
+  - name: Server
+    properties: []
+  - name: Channels
+    properties: []
+  - name: Components
+    properties: []
+  - name: Tag
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+      - name: externalDocs
+        type: ExternalDocumentation
+  - name: ExternalDocumentation
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
