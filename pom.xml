@@ -224,6 +224,10 @@
                         <configuration>
                             <specifications>
                                 <specification>${project.basedir}/src/main/resources/specs/asyncapi/asyncapi-2.0.x.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi/asyncapi-2.1.x.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi/asyncapi-2.2.x.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi/asyncapi-2.3.x.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi/asyncapi-2.4.x.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/json-schema/json-schema-2020-12.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/openapi/openapi-2.0.x.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/openapi/openapi-3.0.x.yaml</specification>

@@ -1,11 +1,11 @@
 specification: AsyncAPI
-version: 2.0.x
+version: 2.5.x
 versions:
-  - version: 2.0.0
-    url: https://www.asyncapi.com/docs/reference/specification/v2.0.0
-name: AsyncAPI 2.0.x
-prefix: Aai20x
-namespace: io.apicurio.datamodels.asyncapi.v20
+  - version: 2.5.0
+    url: https://www.asyncapi.com/docs/reference/specification/v2.5.0
+name: AsyncAPI 2.5.x
+prefix: Aai25x
+namespace: io.apicurio.datamodels.asyncapi.v25
 
 traits:
   - name: ExtensibleTrait
@@ -30,6 +30,8 @@ entities:
         type: Info
       - name: servers
         type: Servers
+      - name: defaultContentType
+        type: string
       - name: channels
         type: Channels
       - name: components
@@ -79,6 +81,7 @@ entities:
   - name: Server
     traits:
       - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: url
         type: string
@@ -92,11 +95,14 @@ entities:
         type: '{ServerVariable}'
       - name: security
         type: '[SecurityRequirement]'
+      - name: tags
+        type: '[Tag]'
       - name: bindings
         type: ServerBindings
   - name: ServerVariable
     traits:
       - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: enum
         type: '[string]'
@@ -117,6 +123,8 @@ entities:
     properties:
       - name: description
         type: string
+      - name: servers
+        type: '[string]'
       - name: subscribe
         type: Operation
       - name: publish
@@ -135,16 +143,18 @@ entities:
         type: string
       - name: description
         type: string
+      - name: security
+        type: '[SecurityRequirement]'
       - name: tags
         type: '[Tag]'
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: OperationBindings
+        type: '{OperationBindings}'
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message
+        type: 'Message|{[Message]}'
   - name: OperationTrait
     traits:
       - ExtensibleTrait
@@ -156,6 +166,8 @@ entities:
         type: string
       - name: description
         type: string
+      - name: security
+        type: '[SecurityRequirement]'
       - name: tags
         type: '[Tag]'
       - name: externalDocs
@@ -178,12 +190,17 @@ entities:
       - name: location
         type: string
   - name: ServerBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
       - name: ws
         type: Binding
       - name: kafka
+        type: Binding
+      - name: anypointmq
         type: Binding
       - name: amqp
         type: Binding
@@ -199,19 +216,32 @@ entities:
         type: Binding
       - name: sns
         type: Binding
+      - name: solace
+        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
+        type: Binding
+      - name: googlepubsub
         type: Binding
   - name: ChannelBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
       - name: ws
         type: Binding
       - name: kafka
+        type: Binding
+      - name: anypointmq
         type: Binding
       - name: amqp
         type: Binding
@@ -227,19 +257,32 @@ entities:
         type: Binding
       - name: sns
         type: Binding
+      - name: solace
+        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
+        type: Binding
+      - name: googlepubsub
         type: Binding
   - name: OperationBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
       - name: ws
         type: Binding
       - name: kafka
+        type: Binding
+      - name: anypointmq
         type: Binding
       - name: amqp
         type: Binding
@@ -255,19 +298,32 @@ entities:
         type: Binding
       - name: sns
         type: Binding
+      - name: solace
+        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
+        type: Binding
+      - name: googlepubsub
         type: Binding
   - name: MessageBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
       - name: ws
         type: Binding
       - name: kafka
+        type: Binding
+      - name: anypointmq
         type: Binding
       - name: amqp
         type: Binding
@@ -283,17 +339,27 @@ entities:
         type: Binding
       - name: sns
         type: Binding
+      - name: solace
+        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
+        type: Binding
+      - name: googlepubsub
         type: Binding
   - name: Message
     traits:
       - ExtensibleTrait
       - ReferenceableTrait
     properties:
+      - name: messageId
+        type: string
       - name: headers
         type: Schema
       - name: payload
@@ -319,7 +385,7 @@ entities:
       - name: bindings
         type: MessageBindings
       - name: examples
-        type: '{any}'
+        type: MessageExample
       - name: traits
         type: '[MessageTrait]'
   - name: MessageTrait
@@ -327,6 +393,8 @@ entities:
       - ExtensibleTrait
       - ReferenceableTrait
     properties:
+      - name: messageId
+        type: string
       - name: headers
         type: Schema
       - name: correlationId
@@ -351,6 +419,18 @@ entities:
         type: MessageBindings
       - name: examples
         type: '{any}'
+  - name: MessageExample
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: headers
+        type: '{any}'
+      - name: payload
+        type: any
+      - name: name
+        type: string
+      - name: summary
+        type: string
   - name: Tag
     traits:
       - ExtensibleTrait
@@ -375,6 +455,12 @@ entities:
     properties:
       - name: schemas
         type: '{Schema}'
+      - name: servers
+        type: '{Server}'
+      - name: serverVariables
+        type: '{ServerVariable}'
+      - name: channels
+        type: '{ChannelItem}'
       - name: messages
         type: '{Message}'
       - name: securitySchemes
