@@ -8,7 +8,6 @@ import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.pipe.java.JavaTypeResolver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,8 +30,6 @@ public class GeneratorState {
     private JavaClassModel extensibleNodeClass;
 
     private Collection<Specification> specifications;
-
-    private JavaTypeResolver javaTypeResolver = new JavaTypeResolver();
 
     /**
      * Returns all traits with the same name as the given parent trait.  Does a search of

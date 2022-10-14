@@ -1,7 +1,6 @@
 package io.apicurio.umg.pipe.java;
 
 import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaAddImplementsStage extends AbstractStage {
@@ -9,11 +8,11 @@ public class JavaAddImplementsStage extends AbstractStage {
     protected void doProcess() {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
             if (!t.isExternal()) {
-                if(t instanceof JavaClassModel) {
+                if (t instanceof JavaClassModel) {
                     var _class = (JavaClassModel) t;
                     _class.get_implements().forEach(im -> {
                         // TODO assert it's an interface
-                        _class.getClassSource().addInterface(((JavaInterfaceModel)im).getInterfaceSource());
+                        _class.getClassSource().addInterface(im.getInterfaceSource());
                     });
                 }
             }

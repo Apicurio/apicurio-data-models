@@ -16,8 +16,8 @@
 
 package io.apicurio.umg.index.java;
 
+import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
-import io.apicurio.umg.models.java.JavaType;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class JavaIndex {
 
     @Getter
-    private Map<String, JavaType> types = new HashMap<>();
+    private Map<String, JavaEntityModel> types = new HashMap<>();
 
     @Getter
     private Map<String, JavaPackageModel> packages = new HashMap<>();
@@ -44,7 +44,7 @@ public class JavaIndex {
         return packages.computeIfAbsent(_new.getName(), _unused -> _new);
     }
 
-    public JavaType lookupAndIndexType(Supplier<JavaType> factory) {
+    public JavaEntityModel lookupAndIndexType(Supplier<JavaEntityModel> factory) {
         var _new = factory.get();
         var _package = _new.get_package();
         Objects.requireNonNull(_package);
@@ -55,13 +55,13 @@ public class JavaIndex {
         });
     }
 
-    public void removeType(JavaType type) {
+    public void removeType(JavaEntityModel type) {
         var _package = type.get_package();
         _package.getTypes().remove(type.fullyQualifiedName());
         types.remove(type.fullyQualifiedName());
     }
 
-    public Set<JavaType> getAllTypesWithCopy() {
+    public Set<JavaEntityModel> getAllJavaEntitiesWithCopy() {
         return new HashSet<>(types.values());
     }
 }

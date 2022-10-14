@@ -11,14 +11,14 @@ public class JavaSuperTypesStage extends AbstractStage {
             if (!t.isExternal()) {
                 if (t instanceof JavaInterfaceModel) {
                     var _interface = (JavaInterfaceModel) t;
-                    _interface.getParents().forEach(p -> {
+                    _interface.get_extends().forEach(p -> {
                         _interface.getInterfaceSource().addInterface(p.getInterfaceSource());
                     });
 
                 } else {
                     var _class = (JavaClassModel) t;
-                    if (_class.getParent() != null) {
-                        _class.getClassSource().setSuperType(_class.getParent().getClassSource());
+                    if (_class.get_extends() != null) {
+                        _class.getClassSource().setSuperType(_class.get_extends().getClassSource());
                     }
                 }
             }

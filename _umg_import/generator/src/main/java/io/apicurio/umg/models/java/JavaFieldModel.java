@@ -1,22 +1,46 @@
 package io.apicurio.umg.models.java;
 
+import io.apicurio.umg.models.concept.PropertyModel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.Type;
 
 @Builder
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class JavaFieldModel {
 
+    // Field name
+    @EqualsAndHashCode.Include
     private String name;
 
-    private String type;
+    //private boolean resolved;
 
-    private Type javaType;
+    private PropertyModel concept;
+
+    // EITHER:
+    // Raw Java type string, e.g. boolean, int, (java.lang.)Object
+    private String rawType;
+
+    // OR:
+    // Entity in the model, including external entity such as com.fasterxml.jackson.databind.JsonNode
+    private JavaEntityModel entityType;
+
+    @Builder.Default
+    private Flavor flavor = Flavor.NONE; // TODO Maybe just use the concept model?
+
+    private Type<?> typeSource;
+
+    public enum Flavor {
+        NONE,
+        //SET, TODO?
+        STRING_MAP,
+        LIST
+    }
 }

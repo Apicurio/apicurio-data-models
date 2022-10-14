@@ -27,9 +27,9 @@ public class JavaPackageModel {
 
     private final Map<String, JavaPackageModel> children = new HashMap<>();
 
-    private final Map<String, JavaType> types = new HashMap<>();
+    private final Map<String, JavaEntityModel> types = new HashMap<>();
 
-    public void addClass(JavaType type) {
+    public void addClass(JavaEntityModel type) {
         types.put(type.getName(), type);
     }
 }

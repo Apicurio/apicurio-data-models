@@ -17,34 +17,33 @@ public class JavaGetterStage extends AbstractStage {
             if (!t.isExternal()) {
 
                 // Add fields with getters/setters
-                t.getFields().values().forEach(fieldModel -> {
+                t.getFields().forEach(fieldModel -> {
 
                     String fieldName = sanitizeFieldName(fieldModel.getName());
-                    if (!"*".equals(fieldName)) {
 
-                        Type fieldType = fieldModel.getJavaType();
+                    Type fieldType = fieldModel.getTypeSource();
 
-                        // Add a getter for the field.
-                        if (t instanceof JavaInterfaceModel) {
-                            var _interface = (JavaInterfaceModel) t;
-                            var modelClass = _interface.getInterfaceSource();
-                            String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
-                            _interface.getInterfaceSource()
-                                    .addMethod()
-                                    .setName(fieldGetter(fieldModel))
-                                    .setReturnType(resolvedType);
+                    // Add a getter for the field.
+                    if (t instanceof JavaInterfaceModel) {
+                        var _interface = (JavaInterfaceModel) t;
+                        var modelClass = _interface.getInterfaceSource();
+                        String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
+                        _interface.getInterfaceSource()
+                                .addMethod()
+                                .setName(fieldGetter(fieldModel))
+                                .setReturnType(resolvedType);
 
-                        } else {
-                            var _class = (JavaClassModel) t;
-                            var modelClass = _class.getClassSource();
-                            String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
-                            modelClass.addMethod()
-                                    .setName(fieldGetter(fieldModel))
-                                    .setReturnType(resolvedType)
-                                    .setPublic()
-                                    .setBody("return " + fieldName + ";");
-                        }
+                    } else {
+                        var _class = (JavaClassModel) t;
+                        var modelClass = _class.getClassSource();
+                        String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
+                        modelClass.addMethod()
+                                .setName(fieldGetter(fieldModel))
+                                .setReturnType(resolvedType)
+                                .setPublic()
+                                .setBody("return " + fieldName + ";");
                     }
+
                 });
 
             }
@@ -52,7 +51,7 @@ public class JavaGetterStage extends AbstractStage {
     }
 
     private static String fieldGetter(JavaFieldModel fieldModel) {
-        boolean isBool = fieldModel.getType().equals("boolean");
+        boolean isBool = fieldModel.getRawType() != null && fieldModel.getRawType().endsWith("Boolean");
         return (isBool ? "is" : "get") + StringUtils.capitalize(fieldModel.getName());
     }
 }

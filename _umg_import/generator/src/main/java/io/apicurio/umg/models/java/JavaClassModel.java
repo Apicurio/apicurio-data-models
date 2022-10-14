@@ -10,24 +10,39 @@ import org.jboss.forge.roaster.model.source.JavaSource;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @SuperBuilder
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
-public class JavaClassModel extends JavaType {
+public class JavaClassModel extends JavaEntityModel {
 
-    private JavaClassModel parent;
+    private JavaClassModel _extends;
 
     private boolean _abstract;
 
-    private final Set<JavaType> _implements = new HashSet<>();
+    private final Set<JavaInterfaceModel> _implements = new HashSet<>();
 
     private JavaClassSource classSource;
 
     @Override
     public JavaSource getJavaSource() {
         return classSource;
+    }
+
+    @Override
+    public boolean isInterface() {
+        return false;
+    }
+
+    @Override
+    public void ifInterface(Consumer<JavaInterfaceModel> f) {
+    }
+
+    @Override
+    public void ifClass(Consumer<JavaClassModel> f) {
+        f.accept(this);
     }
 }

@@ -22,31 +22,33 @@ public class TransformConceptToJavaModelStage extends AbstractStage {
             });
 
             x.getProperties().values().forEach(p -> {
-                _class.addField(JavaFieldModel.builder()
+                _class.getFields().add(JavaFieldModel.builder()
                         .name(p.getName())
-                        .type(p.getType().getName()) // TODO
+                        .concept(p)
                         .build());
             });
+
+            _class.setEntityModel(x);
         });
 
         getState().getConceptIndex().getAllTraitsWithCopy().forEach(x -> {
             makePackages(x.getNamespace());
             var _package = getState().getJavaIndex().getPackages().get(x.getNamespace().fullName());
-            var _class = getState().getJavaIndex().lookupAndIndexType(() -> {
+            var _interface = getState().getJavaIndex().lookupAndIndexType(() -> {
                 return JavaInterfaceModel.builder()
                         ._package(_package)
                         .name(x.getName())
                         .build();
             });
             x.getProperties().values().forEach(p -> {
-                _class.addField(JavaFieldModel.builder()
+                _interface.getFields().add(JavaFieldModel.builder()
                         .name(p.getName())
-                        .type(p.getType().getName()) // TODO
+                        .concept(p)
                         .build());
             });
-        });
 
-        // Inheritance
+            _interface.setTraitModel(x);
+        });
     }
 
 

@@ -26,7 +26,10 @@ public class RunGeneratorTest {
         System.out.println(relPath);
         File targetDir = new File(relPath + "../../target/generated-models");
         if (targetDir.exists()) {
-            targetDir.delete();
+            var d = targetDir.delete();
+            System.err.println("Dir deleted " + d);
+        } else {
+            System.err.println("Dir does not exists " + targetDir);
         }
         targetDir.mkdir();
         return targetDir;

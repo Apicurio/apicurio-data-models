@@ -13,56 +13,63 @@ public class TransformToInterfaces extends AbstractStage {
     protected void doProcess() {
         var skip = new HashSet<String>();
         // For all entities, if they are a leaf entity, create an impl class
-        getState().getJavaIndex().getAllTypesWithCopy().forEach(t -> {
-            if (!skip.contains(t.fullyQualifiedName())) {
+        getState().getJavaIndex().getAllJavaEntitiesWithCopy().forEach(je -> {
+            if (!skip.contains(je.fullyQualifiedName())) {
 
-                if (t instanceof JavaClassModel) {
-                    var _class = (JavaClassModel) t;
-                    var entity = getState().getConceptIndex().lookupEntity(_class.fullyQualifiedName());
-                    if (!_class.isExternal()) {
-                        if (entity.isLeaf()) {
-                            Logger.debug("Processing leaf class %s", t.fullyQualifiedName());
+                je.ifClass(originalClass -> {
+                    var originalEntity = originalClass.getEntityModel();
+                    if (!originalClass.isExternal()) {
+                        if (originalEntity.isLeaf()) {
+
+                            Logger.debug("Processing leaf class %s", je.fullyQualifiedName());
                             // Remove the original from the index
-                            getState().getJavaIndex().removeType(_class);
-
-                            // Create an impl version
-                            var prefix = entity.getSpec().getPrefix();
-                            var implClass = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
-                                return JavaClassModel.builder()
-                                        ._package(_class.get_package())
-                                        .name(/*prefix +*/ StringUtils.capitalize(_class.getName()) + "Impl")
-                                        .build();
-                            });
-                            skip.add(implClass.fullyQualifiedName());
-                            implClass.getFields().putAll(_class.getFields());
+                            getState().getJavaIndex().removeType(originalClass);
 
                             // Create an interface for the impl
-                            var _interface = (JavaInterfaceModel) getState().getJavaIndex().lookupAndIndexType(() -> {
+                            var leafInterface = (JavaInterfaceModel) getState().getJavaIndex().lookupAndIndexType(() -> {
                                 return JavaInterfaceModel.builder()
-                                        ._package(_class.get_package())
-                                        .name(_class.getName())
+                                        ._package(originalClass.get_package())
+                                        .name(originalClass.getName())
                                         .build();
                             });
-                            skip.add(_interface.fullyQualifiedName());
-                            _interface.getFields().putAll(_class.getFields());
-                            implClass.get_implements().add(_interface);
+                            leafInterface.getFields().addAll(originalClass.getFields());
+                            leafInterface.get_extends().addAll(originalClass.get_implements());
+
+                            // Create an impl version
+                            var leafClass = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
+                                return JavaClassModel.builder()
+                                        ._package(originalClass.get_package())
+                                        .name(StringUtils.capitalize(originalClass.getName()) + "Impl")
+                                        .build();
+                            });
+                            leafClass.getFields().addAll(originalClass.getFields());
+                            leafClass.set_extends(originalClass.get_extends());
+                            // The things below already come from the leaf interface
+                            //leafClass.get_implements().addAll(originalClass.get_implements());
+                            leafClass.get_implements().add(leafInterface);
+
+                            skip.add(leafClass.fullyQualifiedName());
+                            skip.add(leafInterface.fullyQualifiedName());
+
+                            // TODO Tranform properties to use interface instead of the original type
+                            // This should still work now because of the same name
 
                             // Process parents
-                            JavaInterfaceModel childInterface = _interface;
-                            var parent = entity.getParent();
-                            while (parent != null) {
-                                var grandParent = parent.getParent();
-                                Logger.debug("Parent of %s is %s", parent.fullyQualifiedName(), grandParent == null ? "null" : grandParent.fullyQualifiedName());
+                            JavaInterfaceModel childInterface = leafInterface;
+                            var parentEntity = originalEntity.getParent();
+                            while (parentEntity != null) {
+                                var grandParentEntity = parentEntity.getParent();
+                                Logger.debug("Parent of %s is %s", childInterface.fullyQualifiedName(), parentEntity.fullyQualifiedName());
 
-                                var parentType = getState().getJavaIndex().getTypes().get(parent.fullyQualifiedName());
-                                // If the parent type is an interface, assume we've already processed it from a different child
+                                var parentJavaEntity = getState().getJavaIndex().getTypes().get(parentEntity.fullyQualifiedName());
 
                                 JavaInterfaceModel parentInterface;
-                                if (parentType instanceof JavaClassModel) {
-                                    var parentClass = (JavaClassModel) parentType;
+                                if (parentJavaEntity instanceof JavaClassModel) {
+                                    var parentClass = (JavaClassModel) parentJavaEntity;
 
                                     // Remove the parent class from the index
                                     getState().getJavaIndex().removeType(parentClass);
+                                    skip.add(parentClass.fullyQualifiedName());
 
                                     // Create an interface for the parent
                                     parentInterface = (JavaInterfaceModel) getState().getJavaIndex().lookupAndIndexType(() -> {
@@ -71,35 +78,39 @@ public class TransformToInterfaces extends AbstractStage {
                                                 .name(parentClass.getName())
                                                 .build();
                                     });
-                                    parentInterface.getFields().putAll(parentClass.getFields());
-                                    skip.add(parentClass.fullyQualifiedName());
-                                } else {
-                                    parentInterface = (JavaInterfaceModel) parentType;
-                                }
-                                // Add fields from the parent to the impl class
-                                implClass.getFields().putAll(parentType.getFields());
-                                // Also add the fields to the leaf
-                                _class.getFields().putAll(parentType.getFields());
-                                // Make sure the interface extends the child
-                                childInterface.getParents().add(parentInterface);
+                                    parentInterface.getFields().addAll(parentClass.getFields());
+                                    parentInterface.get_extends().addAll(parentClass.get_implements());
 
+                                } else {
+                                    // If the parent type is an interface, assume we've already processed it from a different child
+                                    parentInterface = (JavaInterfaceModel) parentJavaEntity;
+                                }
+
+                                // "DENORMALIZE" - Pull fields from the parent to the impl class
+                                // so concrete impls can be created
+                                leafClass.getFields().addAll(parentInterface.getFields());
+                                // Make sure the interface extends the child
+                                childInterface.get_extends().add(parentInterface);
+
+                                // NEXT cycle
                                 childInterface = parentInterface;
-                                parent = grandParent;
+                                parentEntity = grandParentEntity;
                                 // skips
-                                skip.add(parentInterface.fullyQualifiedName());
+                                //skip.add(parentInterface.fullyQualifiedName());
                             }
 
                         } else {
-                            Logger.debug("Skipping non-leaf class %s", t.fullyQualifiedName());
+                            Logger.debug("Skipping non-leaf class %s", je.fullyQualifiedName());
                         }
                     } else {
-                        Logger.debug("Skipping external class %s", t.fullyQualifiedName());
+                        Logger.debug("Skipping external class %s", je.fullyQualifiedName());
                     }
-                } else {
-                    Logger.debug("Skipping interface %s", t.fullyQualifiedName());
-                }
+                });
+                je.ifInterface(_ignored -> {
+                    Logger.debug("Skipping interface %s", je.fullyQualifiedName());
+                });
             } else {
-                Logger.debug("Skipping created %s", t.fullyQualifiedName());
+                Logger.debug("Skipping already processed %s", je.fullyQualifiedName());
             }
         });
     }

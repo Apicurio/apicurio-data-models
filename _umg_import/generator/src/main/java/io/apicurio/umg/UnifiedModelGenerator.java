@@ -40,8 +40,11 @@ import io.apicurio.umg.pipe.java.JavaGetterStage;
 import io.apicurio.umg.pipe.java.JavaSetterStage;
 import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
+import io.apicurio.umg.pipe.java.ResolveFieldSourceTypes;
+import io.apicurio.umg.pipe.java.ResolveFieldTypes;
 import io.apicurio.umg.pipe.java.TodoStage;
 import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
+import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
 import java.io.File;
@@ -94,25 +97,21 @@ public class UnifiedModelGenerator {
         // Debug the models
         pipe.addStage(new DebugStage());
 
-        //        pipe.addStage(new PrepareJsonSchemaStage());
-        //
-        //        pipe.addStage(new CreateClassModelsStage());
-        //        pipe.addStage(new ProcessExtendsStage());
-        //
-        //        pipe.addStage(new IncludeFieldsModelsStage());
-        //        pipe.addStage(new CreateFieldModelsStage());
-        //
-        //        pipe.addStage(new UnionTypeMapperStage());
-        //
-        //        pipe.addStage(new RemoveTransparentClassModelsStage());
-        //
-        //        pipe.addStage(new NormalizeModelsStage());
-        //        pipe.addStage(new NormalizeFieldsStage());
-        //
+        // === Java-specific stages
+
         pipe.addStage(new TransformConceptToJavaModelStage());
 
-        pipe.addStage(new TransformToInterfaces());
         pipe.addStage(new TodoStage());
+        pipe.addStage(new ResolveFieldTypes());
+        pipe.addStage(new ResolveFieldSourceTypes());
+
+        pipe.addStage(new TransformInheritance());
+        pipe.addStage(new TransformToInterfaces());
+
+//        pipe.addStage(new TodoStage());
+//        pipe.addStage(new ResolveFieldTypes());
+//        pipe.addStage(new ResolveFieldSourceTypes());
+
         pipe.addStage(new JavaClassStage());
         pipe.addStage(new JavaAddImplementsStage());
         pipe.addStage(new JavaSuperTypesStage());

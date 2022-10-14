@@ -15,7 +15,7 @@ public class JavaClassStage extends AbstractStage {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
             if (!t.isExternal()) {
 
-                Logger.info("Generating model for type '%s'", t.getName());
+//                Logger.info("Generating model for type '%s'", t.getName());
 
                 if (t instanceof JavaInterfaceModel) {
                     var _interface = (JavaInterfaceModel) t;
