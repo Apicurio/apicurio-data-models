@@ -415,18 +415,6 @@
                                     <arguments>install</arguments>
                                 </configuration>
                             </execution>
-                            <!-- Test the library -->
-                            <execution>
-                                <id>ng test</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <phase>test</phase>
-                                <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>test</arguments>
-                                </configuration>
-                            </execution>
                             <!-- Build+package the library -->
                             <execution>
                                 <id>ng build</id>
@@ -436,7 +424,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>package</arguments>
+                                    <arguments>run package</arguments>
                                 </configuration>
                             </execution>
                         </executions>

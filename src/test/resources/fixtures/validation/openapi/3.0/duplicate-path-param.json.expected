@@ -1,2 +1,0 @@
-[PAR-019] |medium| {/paths[/dupesWithinPathItemInlineAndRefCombo]/parameters[0]->in} :: Duplicate query parameter named 'status' found (parameters must be unique by name and location).
-[PAR-019] |medium| {/paths[/dupesWithinPathItemInlineAndRefCombo]/parameters[1]->in} :: Duplicate query parameter named 'status' found (parameters must be unique by name and location).

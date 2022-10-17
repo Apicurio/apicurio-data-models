@@ -1,7 +1,0 @@
-[{
-    "__type": "RenameParameterCommand",
-    "_oldParamName": "status",
-    "_newParamName": "newParamName",
-    "_paramIn": "query",
-    "_parentPath": "/paths[/pet/findByStatus]/get"
-}]

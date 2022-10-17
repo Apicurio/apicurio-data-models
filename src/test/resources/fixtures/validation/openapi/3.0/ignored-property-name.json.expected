@@ -1,2 +1,0 @@
-[PAR-021] |medium| {/paths[/pets]/get/parameters[2]->name} :: The "Authorization" header parameter will be ignored.
-[HEAD-008] |medium| {/paths[/pets]/get/responses[200]/content[multipart/form-data]/encoding[id]/headers[Content-Type]->null} :: The "Content-Type" header will be ignored.
