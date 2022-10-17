@@ -1,4 +1,0 @@
-[{
-    "__type": "DeleteAllServersCommand",
-    "_parentPath": "/paths[/foo]"
-}]

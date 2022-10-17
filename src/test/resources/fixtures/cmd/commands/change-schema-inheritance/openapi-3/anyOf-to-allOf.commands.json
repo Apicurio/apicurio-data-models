@@ -1,7 +1,0 @@
-[
-    {
-        "__type": "ChangeSchemaInheritanceCommand",
-        "_schemaPath": "/components/schemas[DataType]",
-        "_newInheritanceType": "allOf"
-    }
-]

@@ -1,5 +1,0 @@
-[{
-    "__type": "NewOperationCommand_Aai20",
-    "_channel": "myChannel",
-    "_opType": "subscribe"
-}]

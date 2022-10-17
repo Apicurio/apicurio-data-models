@@ -1,6 +1,0 @@
-[{
-    "__type": "DeleteMediaTypeCommand",
-    "_mediaTypeName": "multipart/mixed",
-    "_mediaTypePath": "/paths[/foo]/get/requestBody/content[multipart/mixed]",
-    "_parentPath": "/paths[/foo]/get/requestBody"
-}]

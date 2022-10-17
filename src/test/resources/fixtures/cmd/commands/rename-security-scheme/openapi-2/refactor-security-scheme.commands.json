@@ -1,5 +1,0 @@
-[{
-    "__type": "RenameSecuritySchemeCommand",
-    "_oldSchemeName": "petstore_auth",
-    "_newSchemeName": "custom_auth"
-}]

@@ -1,9 +1,0 @@
-[{
-    "__type": "NewSecuritySchemeCommand_30",
-    "_scheme": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-    },
-    "_schemeName": "NewScheme"
-}]

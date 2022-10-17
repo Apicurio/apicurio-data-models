@@ -1,9 +1,0 @@
-[{
-    "__type": "SetExtensionCommand",
-    "_parentPath": "/paths[/pet/{petId}]/get",
-    "_name": "x-zimbabwe",
-    "_value": {
-        "property1": "foo",
-        "property2": "bar"
-    }
-}]

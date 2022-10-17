@@ -1,7 +1,0 @@
-[{
-    "__type": "NewSchemaPropertyCommand_20",
-    "_schemaPath": "/definitions[Person]",
-    "_propertyName": "newProperty",
-    "_description": "Hello world.",
-    "_newType": null
-}]

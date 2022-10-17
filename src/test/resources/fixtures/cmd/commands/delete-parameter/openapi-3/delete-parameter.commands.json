@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteParameterCommand_30",
-    "_parameterPath": "/paths[/foo]/get/parameters[2]",
-    "_parentPath": "/paths[/foo]/get"
-}]
