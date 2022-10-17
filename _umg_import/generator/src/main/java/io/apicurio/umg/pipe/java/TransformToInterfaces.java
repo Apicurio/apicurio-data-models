@@ -6,6 +6,7 @@ import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayDeque;
 import java.util.HashSet;
 
 public class TransformToInterfaces extends AbstractStage {
@@ -32,8 +33,18 @@ public class TransformToInterfaces extends AbstractStage {
                                         .name(originalClass.getName())
                                         .build();
                             });
-                            leafInterface.getFields().addAll(originalClass.getFields());
                             leafInterface.get_extends().addAll(originalClass.get_implements());
+                            // Skip fields that are in parent interfaces:
+                            var fieldsToAdd = new HashSet<>(originalClass.getFields());
+                            var queue = new ArrayDeque<JavaInterfaceModel>(); // TODO when/if we do abstract classes, add these here?
+                            queue.addAll(leafInterface.get_extends());
+                            var item = queue.poll();
+                            while (item != null) {
+                                fieldsToAdd.removeAll(item.getFields());
+                                queue.addAll(item.get_extends());
+                                item = queue.poll();
+                            }
+                            leafInterface.getFields().addAll(fieldsToAdd);
 
                             // Create an impl version
                             var leafClass = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
