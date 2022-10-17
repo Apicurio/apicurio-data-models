@@ -101,16 +101,12 @@ public class UnifiedModelGenerator {
 
         pipe.addStage(new TransformConceptToJavaModelStage());
 
-        pipe.addStage(new TodoStage());
-        pipe.addStage(new ResolveFieldTypes());
-        pipe.addStage(new ResolveFieldSourceTypes());
-
         pipe.addStage(new TransformInheritance());
         pipe.addStage(new TransformToInterfaces());
 
-//        pipe.addStage(new TodoStage());
-//        pipe.addStage(new ResolveFieldTypes());
-//        pipe.addStage(new ResolveFieldSourceTypes());
+        pipe.addStage(new TodoStage());
+        pipe.addStage(new ResolveFieldTypes());
+        pipe.addStage(new ResolveFieldSourceTypes());
 
         pipe.addStage(new JavaClassStage());
         pipe.addStage(new JavaAddImplementsStage());

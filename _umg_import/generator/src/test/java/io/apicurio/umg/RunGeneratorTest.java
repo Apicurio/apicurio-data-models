@@ -4,6 +4,8 @@ import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.main.Main;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,15 +23,13 @@ public class RunGeneratorTest {
         Logger.info("Model generated successfully!");
     }
 
+    @SneakyThrows
     public File getTargetDir() {
         String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         System.out.println(relPath);
         File targetDir = new File(relPath + "../../target/generated-models");
         if (targetDir.exists()) {
-            var d = targetDir.delete();
-            System.err.println("Dir deleted " + d);
-        } else {
-            System.err.println("Dir does not exists " + targetDir);
+            FileUtils.deleteDirectory(targetDir);
         }
         targetDir.mkdir();
         return targetDir;
