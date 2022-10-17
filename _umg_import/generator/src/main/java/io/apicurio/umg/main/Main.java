@@ -61,11 +61,16 @@ public class Main {
     private static List<Specification> loadSpecs() {
         Logger.info("Loading specifications.");
         List<Specification> specs = new LinkedList<>();
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.1.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.2.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.3.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.4.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.5.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-2.0.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.0.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/openapi/openapi-3.1.x.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specifications/json-schema/json-schema-2020-12.yaml", Main.class.getClassLoader()));
-//        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
         return specs;
     }
 

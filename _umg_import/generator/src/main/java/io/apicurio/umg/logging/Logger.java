@@ -20,22 +20,27 @@ package io.apicurio.umg.logging;
  * @author eric.wittmann@gmail.com
  */
 public class Logger {
-    
+
     public static final void info(String message, Object ...args) {
         String formattedMsg = String.format(message, args);
-        System.out.println(formattedMsg);
+        System.out.println("INFO:  " + formattedMsg);
     }
-    
+
     public static final void debug(String message, Object ...args) {
         String formattedMsg = String.format(message, args);
-        System.out.println(formattedMsg);
+        System.out.println("DEBUG: " + formattedMsg);
     }
-    
+
+    public static final void warn(String message, Object ...args) {
+        String formattedMsg = String.format(message, args);
+        System.err.println("WARN:  " + formattedMsg);
+    }
+
     public static final void error(String message, Object ...args) {
         String formattedMsg = String.format(message, args);
-        System.err.println(formattedMsg);
+        System.err.println("ERROR: " + formattedMsg);
     }
-    
+
     public static final void error(Throwable t) {
         t.printStackTrace(System.err);
     }
