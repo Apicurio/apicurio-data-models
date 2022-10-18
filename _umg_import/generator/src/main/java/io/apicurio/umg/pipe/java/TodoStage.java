@@ -6,7 +6,7 @@ public class TodoStage extends AbstractStage {
     @Override
     protected void doProcess() {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
-            var field = t.getFields().stream().filter(f -> "/x-.+/".equals(f.getName())).findAny();
+            var field = t.getFields().stream().filter(f -> f.getName().startsWith("/")).findAny();
             field.ifPresent(f -> {
                 t.getFields().remove(f);
                 f.setName("todo_regexp");
