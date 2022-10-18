@@ -140,7 +140,8 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: OperationBindings
+        # type: OperationBindings CLASHES with field type in the later specs
+        type: '{OperationBindings}'
       - name: traits
         type: '[OperationTrait]'
       - name: message
@@ -161,7 +162,8 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: OperationBindings
+        # type: OperationBindings CLASHES with field type in the later specs
+        type: '{OperationBindings}'
   - name: Parameters
     properties:
       - name: '/^[A-Za-z0-9_\-]+$/'
