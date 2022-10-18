@@ -1,10 +1,9 @@
-specification: AsyncAPI
-version: 2.5.x
+name: AsyncAPI 2.5
+version: 2.5
 versions:
   - version: 2.5.0
     url: https://www.asyncapi.com/docs/reference/specification/v2.5.0
-name: AsyncAPI 2.5.x
-prefix: Aai25x
+prefix: AsyncApi25
 namespace: io.apicurio.datamodels.asyncapi.v25
 
 traits:
