@@ -1,11 +1,10 @@
-specification: AsyncAPI
-version: 2.1.x
+name: AsyncAPI 2.3
+version: 2.3
 versions:
-  - version: 2.1.0
-    url: https://www.asyncapi.com/docs/reference/specification/v2.1.0
-name: AsyncAPI 2.1.x
-prefix: Aai21x
-namespace: io.apicurio.datamodels.asyncapi.v21
+  - version: 2.3.0
+    url: https://www.asyncapi.com/docs/reference/specification/v2.3.0
+prefix: AsyncApi23
+namespace: io.apicurio.datamodels.asyncapi.v23
 
 traits:
   - name: ExtensibleTrait
@@ -81,6 +80,7 @@ entities:
   - name: Server
     traits:
       - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: url
         type: string
@@ -119,6 +119,8 @@ entities:
     properties:
       - name: description
         type: string
+      - name: servers
+        type: '[string]'
       - name: subscribe
         type: Operation
       - name: publish
@@ -146,7 +148,7 @@ entities:
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message
+        type: 'Message|{[Message]}'
   - name: OperationTrait
     traits:
       - ExtensibleTrait
@@ -190,6 +192,8 @@ entities:
         type: Binding
       - name: kafka
         type: Binding
+      - name: anypointmq
+        type: Binding
       - name: amqp
         type: Binding
       - name: amqp1
@@ -203,6 +207,8 @@ entities:
       - name: jms
         type: Binding
       - name: sns
+        type: Binding
+      - name: solace
         type: Binding
       - name: sqs
         type: Binding
@@ -225,6 +231,8 @@ entities:
         type: Binding
       - name: kafka
         type: Binding
+      - name: anypointmq
+        type: Binding
       - name: amqp
         type: Binding
       - name: amqp1
@@ -238,6 +246,8 @@ entities:
       - name: jms
         type: Binding
       - name: sns
+        type: Binding
+      - name: solace
         type: Binding
       - name: sqs
         type: Binding
@@ -260,6 +270,8 @@ entities:
         type: Binding
       - name: kafka
         type: Binding
+      - name: anypointmq
+        type: Binding
       - name: amqp
         type: Binding
       - name: amqp1
@@ -273,6 +285,8 @@ entities:
       - name: jms
         type: Binding
       - name: sns
+        type: Binding
+      - name: solace
         type: Binding
       - name: sqs
         type: Binding
@@ -293,6 +307,8 @@ entities:
         type: Binding
       - name: kafka
         type: Binding
+      - name: anypointmq
+        type: Binding
       - name: amqp
         type: Binding
       - name: amqp1
@@ -306,6 +322,8 @@ entities:
       - name: jms
         type: Binding
       - name: sns
+        type: Binding
+      - name: solace
         type: Binding
       - name: sqs
         type: Binding
@@ -347,7 +365,7 @@ entities:
       - name: bindings
         type: MessageBindings
       - name: examples
-        type: '{any}'
+        type: MessageExample
       - name: traits
         type: '[MessageTrait]'
   - name: MessageTrait
@@ -379,6 +397,18 @@ entities:
         type: MessageBindings
       - name: examples
         type: '{any}'
+  - name: MessageExample
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: headers
+        type: '{any}'
+      - name: payload
+        type: any
+      - name: name
+        type: string
+      - name: summary
+        type: string
   - name: Tag
     traits:
       - ExtensibleTrait
@@ -403,6 +433,10 @@ entities:
     properties:
       - name: schemas
         type: '{Schema}'
+      - name: servers
+        type: '{Server}'
+      - name: channels
+        type: '{ChannelItem}'
       - name: messages
         type: '{Message}'
       - name: securitySchemes
