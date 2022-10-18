@@ -1,1 +1,6 @@
 Keep this folder synchronized with Apicurio Data Models repository (which is the canonical location for the specifications).
+
+Feature TODOs:
+
+- default values for properties
+- validation for properties, e.g. positive integer property

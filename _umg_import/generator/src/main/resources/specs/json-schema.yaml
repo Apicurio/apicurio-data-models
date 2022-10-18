@@ -4,5 +4,8 @@ description: JSON Schema is a vocabulary that allows you to annotate and validat
 prefix: JsonSchema
 namespace: io.apicurio.datamodels.jsonschema
 versions:
+  - $ref: ./json-schema/json-schema-draft-4.yaml
+  - $ref: ./json-schema/json-schema-draft-6.yaml
+  - $ref: ./json-schema/json-schema-draft-7.yaml
+  - $ref: ./json-schema/json-schema-2019-09.yaml
   - $ref: ./json-schema/json-schema-2020-12.yaml
-  

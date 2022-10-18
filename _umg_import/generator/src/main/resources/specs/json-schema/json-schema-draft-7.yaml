@@ -1,13 +1,13 @@
-name: JSON Schema 2020-12
-version: 2020-12
+name: JSON Schema Draft 7
+version: draft-7
 versions:
-  - version: 2020-12
-    url: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-01
-prefix: JsonSchema202012
-namespace: io.apicurio.datamodels.jsonschema.v202012
+  - version: draft-7
+    url: https://tools.ietf.org/html/draft-handrews-json-schema-validation-01
+prefix: JsonSchemaDraft7
+namespace: io.apicurio.datamodels.jsonschema.draft7
 # NOTES:
 # - Keep everything in alphabetical order please
-# - Release notes: https://json-schema.org/draft/2020-12/release-notes.html
+# - Release notes: https://json-schema.org/draft-07/json-schema-release-notes.html
 traits:
 
   - name: AllOfTrait
@@ -27,7 +27,7 @@ traits:
 
   - name: DefinitionsTrait
     properties:
-      - name: $defs
+      - name: definitions
         type: "[any]"
 
   - name: ElseTrait
@@ -57,8 +57,6 @@ traits:
     properties:
       - name: default
         type: string
-      - name: deprecated
-        type: boolean
       - name: description
         type: string
       - name: examples
@@ -69,11 +67,7 @@ traits:
         type: string
       - name: writeOnly
         type: boolean
-      - name: $anchor
-        type: string
       - name: $comment
-        type: string
-      - name: $dynamicAnchor
         type: string
 
   - name: NotTrait
@@ -100,13 +94,6 @@ traits:
       - name: oneOf
         type: "[JsonSchemaNode]"
 
-  - name: ReferenceTrait
-    properties:
-      - name: $dynamicRef
-        type: string
-      - name: $ref
-        type: string
-
   - name: ThenTrait
     properties:
       - name: then
@@ -127,25 +114,18 @@ entities:
       - MetadataTrait
       - NotTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
     properties:
+      - name: additionalItems
+        type: JsonSchemaNode
       - name: contains
         type: JsonSchemaNode
       - name: items
-        type: JsonSchemaNode
-      - name: maxContains
-        type: integer
+        type: JsonSchemaNode|[JsonSchemaNode]
       - name: maxItems
-        type: integer
-      - name: minContains
         type: integer
       - name: minItems
         type: integer
-      - name: prefixItems
-        type: JsonSchemaNode|[JsonSchemaNode]
-      - name: unevaluatedItems
-        type: JsonSchemaNode
       - name: uniqueItems
         type: boolean
 
@@ -162,7 +142,6 @@ entities:
       - MetadataTrait
       - NotTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
 
   - name: Document
@@ -187,7 +166,6 @@ entities:
       - MetadataTrait
       - NotTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
 
   - name: FalseSchema
@@ -208,7 +186,6 @@ entities:
       - NotTrait
       - NumericTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
 
   - name: NullSchema
@@ -225,7 +202,6 @@ entities:
       - NotTrait
       - NumericTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
 
   - name: NumberSchema
@@ -242,7 +218,6 @@ entities:
       - NotTrait
       - NumericTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
 
   - name: ObjectSchema
@@ -258,15 +233,12 @@ entities:
       - MetadataTrait
       - NotTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
     properties:
       - name: additionalProperties
         type: "{JsonSchemaNode}"
-      - name: dependentRequired
-        type: "{ObjectSchemaDependentRequiredItem}" # FULL: "{[string]}"
-      - name: dependentSchemas
-        type: "{JsonSchemaNode}"
+      - name: dependencies
+        type: "{ObjectSchemaDependenciesItem}" # FULL: "{JsonSchemaNode|[string]}"
       - name: maxProperties
         type: integer
       - name: minProperties
@@ -279,12 +251,18 @@ entities:
         type: EmptySchema|FalseSchema|StringSchema|TrueSchema
       - name: required
         type: "[string]"
-      - name: unevaluatedProperties
-        type: JsonSchemaNode
-  - name: ObjectSchemaDependentRequiredItem
+  - name: ObjectSchemaDependenciesItem
     properties:
       - name: value
-        type: "[string]"
+        type: JsonSchemaNode|[string]
+
+  - name: ReferenceSchema
+    traits:
+      - JsonSchemaNode
+      - MetadataTrait
+    properties:
+      - name: $ref
+        type: string
 
   - name: StringSchema
     traits:
@@ -300,14 +278,11 @@ entities:
       - MetadataTrait
       - NotTrait
       - OneOfTrait
-      - ReferenceTrait
       - ThenTrait
     properties:
       - name: contentEncoding
         type: string
       - name: contentMediaType
-        type: string
-      - name: contentSchema
         type: string
       - name: maxLength
         type: integer

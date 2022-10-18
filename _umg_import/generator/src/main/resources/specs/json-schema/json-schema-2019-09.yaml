@@ -1,13 +1,13 @@
-name: JSON Schema 2020-12
-version: 2020-12
+name: JSON Schema 2019-09
+version: 2019-09
 versions:
-  - version: 2020-12
-    url: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-01
-prefix: JsonSchema202012
-namespace: io.apicurio.datamodels.jsonschema.v202012
+  - version: 2019-09
+    url: https://tools.ietf.org/html/draft-handrews-json-schema-validation-02
+prefix: JsonSchema201909
+namespace: io.apicurio.datamodels.jsonschema.v201909
 # NOTES:
 # - Keep everything in alphabetical order please
-# - Release notes: https://json-schema.org/draft/2020-12/release-notes.html
+# - Release notes: https://json-schema.org/draft/2019-09/release-notes.html
 traits:
 
   - name: AllOfTrait
@@ -73,8 +73,8 @@ traits:
         type: string
       - name: $comment
         type: string
-      - name: $dynamicAnchor
-        type: string
+      - name: $recursiveAnchor
+        type: boolean
 
   - name: NotTrait
     properties:
@@ -102,7 +102,7 @@ traits:
 
   - name: ReferenceTrait
     properties:
-      - name: $dynamicRef
+      - name: $recursiveRef
         type: string
       - name: $ref
         type: string
@@ -130,10 +130,12 @@ entities:
       - ReferenceTrait
       - ThenTrait
     properties:
+      - name: additionalItems
+        type: JsonSchemaNode
       - name: contains
         type: JsonSchemaNode
       - name: items
-        type: JsonSchemaNode
+        type: JsonSchemaNode|[JsonSchemaNode]
       - name: maxContains
         type: integer
       - name: maxItems
@@ -142,8 +144,6 @@ entities:
         type: integer
       - name: minItems
         type: integer
-      - name: prefixItems
-        type: JsonSchemaNode|[JsonSchemaNode]
       - name: unevaluatedItems
         type: JsonSchemaNode
       - name: uniqueItems
