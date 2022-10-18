@@ -1,15 +1,11 @@
 package io.apicurio.umg.pipe.java;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaFieldModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
+import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +30,7 @@ public class ResolveFieldTypes extends AbstractStage {
 
         getState().getJavaIndex().getAllJavaEntitiesWithCopy().forEach(je -> {
             je.getFields().forEach(f -> {
+
                 var propertyType = f.getConcept().getType();
 
                 // First decide base type
@@ -46,40 +43,27 @@ public class ResolveFieldTypes extends AbstractStage {
                     f.setRawType(baseType);
                 } else {
                     // Does the type contain package?
-                    String packageString;
+                    String packageString = null;
                     String classString;
                     if (propertyType.getName().contains(".")) {
                         var sep = propertyType.getName().lastIndexOf(".");
                         packageString = propertyType.getName().substring(0, sep);
                         classString = propertyType.getName().substring(sep + 1);
                     } else {
-                        // Look for interfaces that contain the same field
-                        // This is in case the field is located in an higher-level interface
-                        // Select the "highest-level" package
-                        // Process only classes, assume interfaces are normalized
-                        if (je.isClass()) {
-                            var _class = (JavaClassModel) je;
-                            var packages = new HashSet<String>();
-                            packages.add(je.get_package().getName());
-                            var queue = new ArrayDeque<>(_class.get_implements());
-                            var item = queue.poll();
-                            while (item != null) {
-                                if (item.getFields().contains(f)) {
-                                    packages.add(item.get_package().getName());
-                                }
-                                queue.addAll(item.get_extends());
-                                item = queue.poll();
-                            }
-                            // Use a package with the least amount of dots, not nice but should work
-                            packageString = packages.stream()
-                                    .reduce((left, right) ->
-                                            StringUtils.countMatches(left, ".") <= StringUtils.countMatches(right, ".") ? left : right)
-                                    .get(); // There should always be at least the current package
-
-                        } else {
-                            packageString = je.get_package().getName(); // Use the package where entity is located
-                        }
                         classString = propertyType.getName();
+                        // Use the highest-level package that contains the entity
+                        var _package = je.get_package();
+                        JavaPackageModel highestPackage = null;
+                        while (_package != null) {
+                            var target = _package.getTypes().get(classString);
+                            if (target != null) {
+                                highestPackage = _package;
+                            }
+                            _package = _package.getParent();
+                        }
+                        if (highestPackage != null) {
+                            packageString = highestPackage.getName();
+                        }
                     }
                     // Look for class with the given name
                     var classes = getState().getJavaIndex().getAllJavaEntitiesWithCopy().stream()
@@ -92,7 +76,7 @@ public class ResolveFieldTypes extends AbstractStage {
                         f.setEntityType(classes.get(0));
                     } else {
                         // Try to match based on the package (if exists)
-                        Optional<JavaEntityModel> type = Optional.of(packageString)
+                        Optional<JavaEntityModel> type = Optional.ofNullable(packageString)
                                 .map(p -> getState().getJavaIndex().getPackages().get(p))
                                 .map(p -> {
                                     var filtered = classes.stream().filter(c -> c.get_package().getName().equals(p.getName()))
