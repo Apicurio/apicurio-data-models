@@ -13,12 +13,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import io.apicurio.umg.UnifiedModelGenerator;
-import io.apicurio.umg.beans.Specification;
 import io.apicurio.umg.io.SpecificationLoader;
+import io.apicurio.umg.models.spec.SpecificationModel;
 
 /**
  * The main generate code mojo implementation.
- * 
+ *
  * @author eric.wittmann@gmail.com
  */
 @Mojo(name = "generate")
@@ -29,7 +29,7 @@ public class GenerateModelsMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${project}", readonly = true)
     protected MavenProject project;
-    
+
     @Parameter(required = true)
     List<File> specifications;
 
@@ -63,7 +63,7 @@ public class GenerateModelsMojo extends AbstractMojo {
         this.project.addCompileSourceRoot(outputDir.getAbsolutePath());
 
         // Load the specs
-        List<Specification> specs = loadSpecifications();
+        List<SpecificationModel> specs = loadSpecifications();
         // Create a unified model generator
         UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
         // Generate the source code into the target output directory.
@@ -79,13 +79,13 @@ public class GenerateModelsMojo extends AbstractMojo {
     /**
      * Loads the configured specifications.
      */
-    private List<Specification> loadSpecifications() {
+    private List<SpecificationModel> loadSpecifications() {
         return this.specifications.stream().map(file -> SpecificationLoader.loadSpec(file)).collect(Collectors.toUnmodifiableList());
     }
-    
+
     public static void main(String[] args) {
         List<String> strings = Arrays.asList("foo", "bar", "baz", "blerg");
-        
+
         System.out.println(strings.stream().map(s -> "bar".equals(s)).reduce((a, b) -> {
             System.out.println("(a, b) = " + a + "," + b);
             return a || b;

@@ -1,5 +1,5 @@
-specification: OpenAPI
-version: 3.0.x
+name: OpenAPI 3.0
+version: 3.0
 versions:
   - version: 3.0.0
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md
@@ -9,8 +9,7 @@ versions:
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
   - version: 3.0.3
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
-name: OpenAPI 3.0.x
-prefix: Oai30x
+prefix: OpenApi30
 namespace: io.apicurio.datamodels.openapi.v30
 
 traits:

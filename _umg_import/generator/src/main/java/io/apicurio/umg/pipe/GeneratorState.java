@@ -1,6 +1,9 @@
 package io.apicurio.umg.pipe;
 
-import io.apicurio.umg.beans.Specification;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import io.apicurio.umg.index.concept.ConceptIndex;
 import io.apicurio.umg.index.concept.SpecificationIndex;
 import io.apicurio.umg.index.java.JavaIndex;
@@ -8,12 +11,9 @@ import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.spec.SpecificationModel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
@@ -29,7 +29,7 @@ public class GeneratorState {
 
     private JavaClassModel extensibleNodeClass;
 
-    private Collection<Specification> specifications;
+    private Collection<SpecificationModel> specifications;
 
     /**
      * Returns all traits with the same name as the given parent trait.  Does a search of

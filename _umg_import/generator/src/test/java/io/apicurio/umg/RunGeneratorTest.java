@@ -1,22 +1,22 @@
 package io.apicurio.umg;
 
-import io.apicurio.umg.beans.Specification;
-import io.apicurio.umg.io.SpecificationLoader;
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.main.Main;
-import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+
+import io.apicurio.umg.io.SpecificationLoader;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.main.Main;
+import io.apicurio.umg.models.spec.SpecificationModel;
+import lombok.SneakyThrows;
 
 public class RunGeneratorTest {
 
     @Test
     public void run() throws Exception {
-
         var specs = loadSpecs();
         var generator = UnifiedModelGenerator.create(specs);
         generator.generateInto(getTargetDir());
@@ -35,22 +35,13 @@ public class RunGeneratorTest {
         return targetDir;
     }
 
-    private static List<Specification> loadSpecs() {
-
+    private static List<SpecificationModel> loadSpecs() {
         Logger.info("Loading specifications.");
-        List<Specification> specs = new ArrayList<>();
+        List<SpecificationModel> specs = new ArrayList<>();
 
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi/asyncapi-2.0.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi/asyncapi-2.2.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi/asyncapi-2.3.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi/asyncapi-2.4.x.yaml", Main.class.getClassLoader()));
-
-        specs.add(SpecificationLoader.loadSpec("specs/json-schema/json-schema-2020-12.yaml", Main.class.getClassLoader()));
-
-        specs.add(SpecificationLoader.loadSpec("specs/openapi/openapi-2.0.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/openapi/openapi-3.0.x.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/openapi/openapi-3.1.x.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
 
         return specs;
     }

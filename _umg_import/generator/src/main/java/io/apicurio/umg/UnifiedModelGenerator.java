@@ -16,8 +16,11 @@
 
 package io.apicurio.umg;
 
-import io.apicurio.umg.beans.Specification;
+import java.io.File;
+import java.util.Collection;
+
 import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.CreateVisitorsStage;
 import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
@@ -47,22 +50,19 @@ import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
-import java.io.File;
-import java.util.Collection;
-
 /**
  * @author eric.wittmann@gmail.com
  */
 public class UnifiedModelGenerator {
 
-    private Collection<Specification> specifications;
+    private Collection<SpecificationModel> specifications;
 
-    public static UnifiedModelGenerator create(Collection<Specification> specifications) {
+    public static UnifiedModelGenerator create(Collection<SpecificationModel> specifications) {
         UnifiedModelGenerator generator = new UnifiedModelGenerator(specifications);
         return generator;
     }
 
-    private UnifiedModelGenerator(Collection<Specification> specifications) {
+    private UnifiedModelGenerator(Collection<SpecificationModel> specifications) {
         this.specifications = specifications;
     }
 

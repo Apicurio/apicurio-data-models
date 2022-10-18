@@ -3,7 +3,7 @@ package io.apicurio.umg.models.concept;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import io.apicurio.umg.beans.Specification;
+import io.apicurio.umg.beans.SpecificationVersion;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode.Include;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TraitModel {
 
-    private Specification spec;
+    private SpecificationVersion specVersion;
     @Include
     private NamespaceModel namespace;
     @Include

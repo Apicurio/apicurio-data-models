@@ -13,23 +13,23 @@ public class CreateEntityModelsStage extends AbstractStage {
     @Override
     protected void doProcess() {
         Logger.info("-- Creating Entity Models --");
-        getState().getSpecifications().forEach(spec -> {
-            spec.getEntities().forEach(entity -> {
-                NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(spec.getNamespace());
+        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
+            specVersion.getEntities().forEach(entity -> {
+                NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(specVersion.getNamespace());
                 if (nsModel == null) {
-                    throw new RuntimeException("Namespace '" + spec.getNamespace() + "' for entity '" + entity.getName() + "' not found.");
+                    throw new RuntimeException("Namespace '" + specVersion.getNamespace() + "' for entity '" + entity.getName() + "' not found.");
                 }
                 EntityModel entityModel = EntityModel.builder()
                         .namespace(nsModel)
                         .name(entity.getName())
-                        .spec(spec)
+                        .specVersion(specVersion)
                         .leaf(true)
                         .build();
                 Logger.info("Created entity model: %s", entityModel.fullyQualifiedName());
 
                 // Add traits to the model
                 entity.getTraits().forEach(trait -> {
-                    String fqTraitName = spec.getNamespace() + "." + trait;
+                    String fqTraitName = specVersion.getNamespace() + "." + trait;
                     TraitModel traitModel = getState().getConceptIndex().lookupTrait(fqTraitName);
                     if (traitModel == null) {
                         throw new RuntimeException("Trait '" + fqTraitName + "' referenced by entity '" + entityModel.fullyQualifiedName() + "' not found.");

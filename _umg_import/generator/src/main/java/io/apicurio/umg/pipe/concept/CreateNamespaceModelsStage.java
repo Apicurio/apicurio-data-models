@@ -12,8 +12,8 @@ public class CreateNamespaceModelsStage extends AbstractStage {
     @Override
     protected void doProcess() {
         Logger.info("-- Creating Namespace Models --");
-        getState().getSpecifications().forEach(spec -> {
-            String ns = spec.getNamespace();
+        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
+            String ns = specVersion.getNamespace();
             this.makeNamespaces(ns);
         });
     }

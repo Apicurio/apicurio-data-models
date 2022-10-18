@@ -1,10 +1,9 @@
-specification: OpenAPI
-version: 2.0.x
+name: OpenAPI 2.0
+version: 2.0
 versions:
   - version: 2.0
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
-name: OpenAPI 2.0.x
-prefix: Oai20x
+prefix: OpenApi20
 namespace: io.apicurio.datamodels.openapi.v20
 
 traits:

@@ -1,0 +1,18 @@
+package io.apicurio.umg.models.concept;
+
+import io.apicurio.umg.beans.SpecificationVersion;
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
+public class SpecificationVersionId {
+
+    private String namespace;
+
+    public static SpecificationVersionId create(SpecificationVersion specVersion) {
+        return SpecificationVersionId.builder().namespace(specVersion.getNamespace())
+                .build();
+    }
+
+}

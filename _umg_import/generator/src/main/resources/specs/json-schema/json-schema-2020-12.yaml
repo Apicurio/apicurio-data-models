@@ -1,7 +1,9 @@
-specification: JSONSchema
-version: 2020-12
 name: JSON Schema 2020-12
-prefix: Jss202012
+version: 2020-12
+versions:
+  - version: 2020-12
+    url: https://json-schema.org/draft/2020-12/release-notes.html
+prefix: JsonSchema202012
 namespace: io.apicurio.datamodels.jsonschema.v202012
 
 traits:

@@ -1,17 +1,10 @@
-specification: OpenAPI
-version: 3.0.x
+name: OpenAPI 3.1
+version: 3.1
 versions:
-  - version: 3.0.0
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md
-  - version: 3.0.1
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
-  - version: 3.0.2
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
-  - version: 3.0.3
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
-name: OpenAPI 3.0.x
-prefix: Oai30x
-namespace: io.apicurio.datamodels.openapi.v30
+  - version: 3.1.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+prefix: OpenApi31
+namespace: io.apicurio.datamodels.openapi.v31
 
 traits:
   - name: ExtensibleTrait
@@ -22,6 +15,10 @@ traits:
     properties:
       - name: '$ref'
         type: string
+      - name: 'summary'
+        type: string
+      - name: 'description'
+        type: string
 
 entities:
   - name: Document
@@ -30,12 +27,16 @@ entities:
     properties:
       - name: openapi
         type: string
+      - name: jsonSchemaDialect
+        type: string
       - name: info
         type: Info
       - name: servers
         type: '[Server]'
       - name: paths
         type: Paths
+      - name: webhooks
+        type: '{PathItem}'
       - name: components
         type: Components
       - name: security
@@ -49,6 +50,8 @@ entities:
       - ExtensibleTrait
     properties:
       - name: title
+        type: string
+      - name: summary
         type: string
       - name: description
         type: string
@@ -75,6 +78,8 @@ entities:
       - ExtensibleTrait
     properties:
       - name: name
+        type: string
+      - name: identifier
         type: string
       - name: url
         type: string
@@ -120,6 +125,8 @@ entities:
         type: '{Link}'
       - name: callbacks
         type: '{Callback}'
+      - name: pathItems
+        type: '{PathItem}'
   - name: Paths
     traits:
       - ExtensibleTrait
@@ -129,8 +136,9 @@ entities:
   - name: PathItem
     traits:
       - ExtensibleTrait
-      - ReferenceableTrait
     properties:
+      - name: '$ref'
+        type: string
       - name: summary
         type: description
       - name: summary
@@ -349,81 +357,21 @@ entities:
         type: string
       - name: externalDocs
         type: ExternalDocumentation
-  - name: Schema
+  - name: Schema # NOTE: OpenAPI 3 now uses JSON Schema Draft 2020-12 for schemas
     traits:
       - ExtensibleTrait
       - ReferenceableTrait
     properties:
-      - name: format
+      - name: '$ref'
         type: string
-      - name: title
-        type: string
-      - name: description
-        type: string
-      - name: default
-        type: object
-      - name: multipleOf
-        type: number
-      - name: maximum
-        type: number
-      - name: exclusiveMaximum
-        type: boolean
-      - name: minimum
-        type: number
-      - name: exclusiveMinimum
-        type: boolean
-      - name: maxLength
-        type: number
-      - name: minLength
-        type: number
-      - name: pattern
-        type: string
-      - name: maxItems
-        type: number
-      - name: minItems
-        type: number
-      - name: uniqueItems
-        type: boolean
-      - name: maxProperties
-        type: number
-      - name: minProperties
-        type: number
-      - name: required
-        type: '[string]'
-      - name: enum
-        type: '[string]'
-      - name: type
-        type: string
-      - name: items
-        type: object
-      - name: allOf
-        type: '[schema]'
-      - name: properties
-        type: '{Schema}'
-      - name: additionalProperties
-        type: object
-      - name: readOnly
-        type: boolean
+      - name: discriminator
+        type: Discriminator
       - name: xml
         type: XML
       - name: externalDocs
         type: ExternalDocumentation
       - name: example
         type: object
-      - name: oneOf
-        type: '[Schema]'
-      - name: anyOf
-        type: '[Schema]'
-      - name: not
-        type: Schema
-      - name: discriminator
-        type: Discriminator
-      - name: nullable
-        type: boolean
-      - name: writeOnly
-        type: boolean
-      - name: deprecated
-        type: boolean
   - name: Discriminator
     properties:
       - name: propertyName

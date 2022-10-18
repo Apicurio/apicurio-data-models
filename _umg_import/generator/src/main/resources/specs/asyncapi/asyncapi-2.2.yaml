@@ -1,11 +1,10 @@
-specification: AsyncAPI
-version: 2.5.x
+name: AsyncAPI 2.2
+version: 2.2
 versions:
-  - version: 2.5.0
-    url: https://www.asyncapi.com/docs/reference/specification/v2.5.0
-name: AsyncAPI 2.5.x
-prefix: Aai25x
-namespace: io.apicurio.datamodels.asyncapi.v25
+  - version: 2.2.0
+    url: https://www.asyncapi.com/docs/reference/specification/v2.2.0
+prefix: AsyncApi22
+namespace: io.apicurio.datamodels.asyncapi.v22
 
 traits:
   - name: ExtensibleTrait
@@ -81,7 +80,6 @@ entities:
   - name: Server
     traits:
       - ExtensibleTrait
-      - ReferenceableTrait
     properties:
       - name: url
         type: string
@@ -95,14 +93,11 @@ entities:
         type: '{ServerVariable}'
       - name: security
         type: '[SecurityRequirement]'
-      - name: tags
-        type: '[Tag]'
       - name: bindings
         type: ServerBindings
   - name: ServerVariable
     traits:
       - ExtensibleTrait
-      - ReferenceableTrait
     properties:
       - name: enum
         type: '[string]'
@@ -143,8 +138,6 @@ entities:
         type: string
       - name: description
         type: string
-      - name: security
-        type: '[SecurityRequirement]'
       - name: tags
         type: '[Tag]'
       - name: externalDocs
@@ -154,7 +147,7 @@ entities:
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: 'Message|{[Message]}'
+        type: Message
   - name: OperationTrait
     traits:
       - ExtensibleTrait
@@ -166,8 +159,6 @@ entities:
         type: string
       - name: description
         type: string
-      - name: security
-        type: '[SecurityRequirement]'
       - name: tags
         type: '[Tag]'
       - name: externalDocs
@@ -216,8 +207,6 @@ entities:
         type: Binding
       - name: sns
         type: Binding
-      - name: solace
-        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
@@ -227,8 +216,6 @@ entities:
       - name: mercure
         type: Binding
       - name: ibmmq
-        type: Binding
-      - name: googlepubsub
         type: Binding
   - name: ChannelBindings
     traits:
@@ -257,8 +244,6 @@ entities:
         type: Binding
       - name: sns
         type: Binding
-      - name: solace
-        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
@@ -268,8 +253,6 @@ entities:
       - name: mercure
         type: Binding
       - name: ibmmq
-        type: Binding
-      - name: googlepubsub
         type: Binding
   - name: OperationBindings
     traits:
@@ -298,8 +281,6 @@ entities:
         type: Binding
       - name: sns
         type: Binding
-      - name: solace
-        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
@@ -307,10 +288,6 @@ entities:
       - name: redis
         type: Binding
       - name: mercure
-        type: Binding
-      - name: ibmmq
-        type: Binding
-      - name: googlepubsub
         type: Binding
   - name: MessageBindings
     traits:
@@ -339,8 +316,6 @@ entities:
         type: Binding
       - name: sns
         type: Binding
-      - name: solace
-        type: Binding
       - name: sqs
         type: Binding
       - name: stomp
@@ -351,15 +326,11 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
-      - name: googlepubsub
-        type: Binding
   - name: Message
     traits:
       - ExtensibleTrait
       - ReferenceableTrait
     properties:
-      - name: messageId
-        type: string
       - name: headers
         type: Schema
       - name: payload
@@ -393,8 +364,6 @@ entities:
       - ExtensibleTrait
       - ReferenceableTrait
     properties:
-      - name: messageId
-        type: string
       - name: headers
         type: Schema
       - name: correlationId
@@ -455,12 +424,6 @@ entities:
     properties:
       - name: schemas
         type: '{Schema}'
-      - name: servers
-        type: '{Server}'
-      - name: serverVariables
-        type: '{ServerVariable}'
-      - name: channels
-        type: '{ChannelItem}'
       - name: messages
         type: '{Message}'
       - name: securitySchemes

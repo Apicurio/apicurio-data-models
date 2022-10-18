@@ -12,87 +12,6 @@
     "paths": {},
     "components": {
         "schemas": {
-            "Specification": {
-                "title": "Root Type for Specification",
-                "description": "",
-                "required": [
-                    "entities",
-                    "namespace"
-                ],
-                "type": "object",
-                "properties": {
-                    "specification": {
-                        "type": "string"
-                    },
-                    "version": {
-                        "type": "string"
-                    },
-                    "versions": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/SpecVersion"
-                        }
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "prefix": {
-                        "type": "string"
-                    },
-                    "entities": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Entity"
-                        }
-                    },
-                    "traits": {
-                        "description": "",
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Trait"
-                        }
-                    },
-                    "namespace": {
-                        "description": "",
-                        "type": "string"
-                    }
-                },
-                "example": {
-                    "specification": "OpenAPI",
-                    "version": "2.0.x",
-                    "versions": [
-                        {
-                            "version": "2.0",
-                            "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
-                        }
-                    ],
-                    "name": "OpenAPI 2.0.x",
-                    "namespace": "io.apicurio.datamodels.openapi",
-                    "prefix": "Oai20x",
-                    "traits": [],
-                    "entities": []
-                }
-            },
-            "SpecVersion": {
-                "title": "Root Type for SpecVersion",
-                "description": "",
-                "type": "object",
-                "properties": {
-                    "version": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    }
-                },
-                "example": {
-                    "version": "2.0",
-                    "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
-                }
-            },
             "Property": {
                 "title": "Root Type for Property",
                 "description": "",
@@ -195,6 +114,156 @@
                             "type": "string"
                         }
                     ]
+                }
+            },
+            "SpecificationVersion": {
+                "title": "Root Type for Specification",
+                "description": "",
+                "required": [
+                    "entities",
+                    "namespace"
+                ],
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    },
+                    "versions": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Version"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "prefix": {
+                        "type": "string"
+                    },
+                    "entities": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Entity"
+                        }
+                    },
+                    "traits": {
+                        "description": "",
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Trait"
+                        }
+                    },
+                    "namespace": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "specification": "OpenAPI",
+                    "version": "2.0.x",
+                    "versions": [
+                        {
+                            "version": "2.0",
+                            "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
+                        }
+                    ],
+                    "name": "OpenAPI 2.0.x",
+                    "namespace": "io.apicurio.datamodels.openapi",
+                    "prefix": "Oai20x",
+                    "traits": [],
+                    "entities": []
+                }
+            },
+            "Version": {
+                "title": "Root Type for SpecVersion",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "version": "2.0",
+                    "url": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md"
+                }
+            },
+            "Specification": {
+                "description": "",
+                "required": [
+                    "versions",
+                    "prefix",
+                    "namespace",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "prefix": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "namespace": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "versions": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SpecificationVersionRef"
+                        }
+                    },
+                    "url": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "Anonymous Syndicated Typhoon Modeling Language",
+                    "prefix": "Ast",
+                    "namespace": "org.example.models.ast",
+                    "versions": [
+                        {
+                            "$ref": "./v1.0.yaml"
+                        },
+                        {
+                            "$ref": "./v2.0.yaml"
+                        }
+                    ]
+                }
+            },
+            "SpecificationVersionRef": {
+                "title": "Root Type for SpecificationRef",
+                "description": "",
+                "required": [
+                    "$ref"
+                ],
+                "type": "object",
+                "properties": {
+                    "$ref": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "$ref": "./foo.yaml"
                 }
             }
         }

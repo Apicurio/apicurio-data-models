@@ -1,10 +1,9 @@
-specification: AsyncAPI
-version: 2.0.x
+name: AsyncAPI 2.0
+version: 2.0
 versions:
   - version: 2.0.0
     url: https://www.asyncapi.com/docs/reference/specification/v2.0.0
-name: AsyncAPI 2.0.x
-prefix: Aai20x
+prefix: AsyncApi20
 namespace: io.apicurio.datamodels.asyncapi.v20
 
 traits:
@@ -140,7 +139,7 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: OperationBindings
+        type: '{OperationBindings}'
       - name: traits
         type: '[OperationTrait]'
       - name: message
@@ -161,7 +160,7 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: OperationBindings
+        type: '{OperationBindings}'
   - name: Parameters
     properties:
       - name: '/^[A-Za-z0-9_\-]+$/'

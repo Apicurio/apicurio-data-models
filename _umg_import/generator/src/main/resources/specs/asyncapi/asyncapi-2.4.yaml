@@ -1,11 +1,10 @@
-specification: AsyncAPI
-version: 2.5.x
+name: AsyncAPI 2.4
+version: 2.4
 versions:
-  - version: 2.5.0
-    url: https://www.asyncapi.com/docs/reference/specification/v2.5.0
-name: AsyncAPI 2.5.x
-prefix: Aai25x
-namespace: io.apicurio.datamodels.asyncapi.v25
+  - version: 2.4.0
+    url: https://www.asyncapi.com/docs/reference/specification/v2.4.0
+prefix: AsyncApi24
+namespace: io.apicurio.datamodels.asyncapi.v24
 
 traits:
   - name: ExtensibleTrait
@@ -95,8 +94,6 @@ entities:
         type: '{ServerVariable}'
       - name: security
         type: '[SecurityRequirement]'
-      - name: tags
-        type: '[Tag]'
       - name: bindings
         type: ServerBindings
   - name: ServerVariable
@@ -228,8 +225,6 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
-      - name: googlepubsub
-        type: Binding
   - name: ChannelBindings
     traits:
       - ExtensibleTrait
@@ -269,8 +264,6 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
-      - name: googlepubsub
-        type: Binding
   - name: OperationBindings
     traits:
       - ExtensibleTrait
@@ -307,10 +300,6 @@ entities:
       - name: redis
         type: Binding
       - name: mercure
-        type: Binding
-      - name: ibmmq
-        type: Binding
-      - name: googlepubsub
         type: Binding
   - name: MessageBindings
     traits:
@@ -350,8 +339,6 @@ entities:
       - name: mercure
         type: Binding
       - name: ibmmq
-        type: Binding
-      - name: googlepubsub
         type: Binding
   - name: Message
     traits:

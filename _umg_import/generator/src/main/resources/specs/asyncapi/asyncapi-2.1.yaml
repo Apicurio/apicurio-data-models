@@ -1,11 +1,10 @@
-specification: AsyncAPI
-version: 2.0.x
+name: AsyncAPI 2.1
+version: 2.1
 versions:
-  - version: 2.0.0
-    url: https://www.asyncapi.com/docs/reference/specification/v2.0.0
-name: AsyncAPI 2.0.x
-prefix: Aai20x
-namespace: io.apicurio.datamodels.asyncapi.v20
+  - version: 2.1.0
+    url: https://www.asyncapi.com/docs/reference/specification/v2.1.0
+prefix: AsyncApi21
+namespace: io.apicurio.datamodels.asyncapi.v21
 
 traits:
   - name: ExtensibleTrait
@@ -30,6 +29,8 @@ entities:
         type: Info
       - name: servers
         type: Servers
+      - name: defaultContentType
+        type: string
       - name: channels
         type: Channels
       - name: components
@@ -140,7 +141,6 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        # type: OperationBindings CLASHES with field type in the later specs
         type: '{OperationBindings}'
       - name: traits
         type: '[OperationTrait]'
@@ -162,8 +162,7 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        # type: OperationBindings CLASHES with field type in the later specs
-        type: '{OperationBindings}'
+        type: OperationBindings
   - name: Parameters
     properties:
       - name: '/^[A-Za-z0-9_\-]+$/'
@@ -180,6 +179,9 @@ entities:
       - name: location
         type: string
   - name: ServerBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
@@ -206,8 +208,15 @@ entities:
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
         type: Binding
   - name: ChannelBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
@@ -234,8 +243,15 @@ entities:
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
         type: Binding
   - name: OperationBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
@@ -262,8 +278,13 @@ entities:
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
         type: Binding
   - name: MessageBindings
+    traits:
+      - ExtensibleTrait
+      - ReferenceableTrait
     properties:
       - name: http
         type: Binding
@@ -290,6 +311,10 @@ entities:
       - name: stomp
         type: Binding
       - name: redis
+        type: Binding
+      - name: mercure
+        type: Binding
+      - name: ibmmq
         type: Binding
   - name: Message
     traits:
