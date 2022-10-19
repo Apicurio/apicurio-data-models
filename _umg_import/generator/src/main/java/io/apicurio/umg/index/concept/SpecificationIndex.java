@@ -38,12 +38,13 @@ import lombok.Getter;
  */
 public class SpecificationIndex {
 
-    @Getter
     private Collection<SpecificationModel> specifications = new HashSet<>();
+
+    private Collection<SpecificationVersion> specificationVersions = new HashSet<>();
+
     @Getter
     private Map<SpecificationVersionId, SpecificationModel> specIndex = new HashMap<>();
-    @Getter
-    private Collection<SpecificationVersion> specificationVersions = new HashSet<>();
+
     @Getter
     private Map<TraitId, Trait> traitIndex = new HashMap<>();
     @Getter
@@ -67,6 +68,10 @@ public class SpecificationIndex {
     public void indexTrait(SpecificationVersion specVersion, Trait model) {
         var key = TraitId.create(specVersion, model);
         traitIndex.put(key, model);
+    }
+
+    public Collection<SpecificationModel> getAllSpecifications() {
+        return Collections.unmodifiableCollection(specifications);
     }
 
     public Collection<SpecificationVersion> getAllSpecificationVersions() {

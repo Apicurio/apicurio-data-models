@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 
 import io.apicurio.umg.beans.SpecificationVersion;
+import io.apicurio.umg.models.spec.SpecificationModel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,9 @@ import lombok.EqualsAndHashCode.Include;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EntityModel {
 
+    private SpecificationModel specModel;
     private SpecificationVersion specVersion;
+
     @Include
     private NamespaceModel namespace;
     @Include

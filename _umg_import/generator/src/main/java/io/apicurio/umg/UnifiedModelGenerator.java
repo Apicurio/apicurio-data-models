@@ -16,9 +16,6 @@
 
 package io.apicurio.umg;
 
-import java.io.File;
-import java.util.Collection;
-
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.CreateVisitorsStage;
@@ -36,6 +33,7 @@ import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
+import io.apicurio.umg.pipe.java.AddPrefixes;
 import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
 import io.apicurio.umg.pipe.java.JavaClassStage;
 import io.apicurio.umg.pipe.java.JavaFieldStage;
@@ -49,6 +47,9 @@ import io.apicurio.umg.pipe.java.TodoStage;
 import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
+
+import java.io.File;
+import java.util.Collection;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -99,15 +100,16 @@ public class UnifiedModelGenerator {
 
         // === Java-specific stages
 
+        // Working with Java-specific models
         pipe.addStage(new TransformConceptToJavaModelStage());
-
         pipe.addStage(new TransformInheritance());
         pipe.addStage(new TransformToInterfaces());
-
         pipe.addStage(new TodoStage());
         pipe.addStage(new ResolveFieldTypes());
-        pipe.addStage(new ResolveFieldSourceTypes());
+        pipe.addStage(new AddPrefixes());
 
+        // Working with Roaster
+        pipe.addStage(new ResolveFieldSourceTypes());
         pipe.addStage(new JavaClassStage());
         pipe.addStage(new JavaAddImplementsStage());
         pipe.addStage(new JavaSuperTypesStage());
