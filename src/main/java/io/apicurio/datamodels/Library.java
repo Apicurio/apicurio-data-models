@@ -16,7 +16,8 @@
 
 package io.apicurio.datamodels;
 
-import io.apicurio.datamodels.openapi.v31.DocumentImpl;
+import io.apicurio.datamodels.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.openapi.v30.OpenApi30DocumentImpl;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -26,10 +27,11 @@ import io.apicurio.datamodels.openapi.v31.DocumentImpl;
  */
 public class Library {
 
-    public static void testLibrary() {
-        Document doc = new DocumentImpl();
-        io.apicurio.datamodels.openapi.v31.Document oa31Doc = ((io.apicurio.datamodels.openapi.v31.Document) doc);
+    public static Document testLibrary() {
+        Document doc = new OpenApi30DocumentImpl();
+        OpenApi30Document oa31Doc = ((OpenApi30Document) doc);
         oa31Doc.setOpenapi("3.1.0");
+        return oa31Doc;
     }
 
 }
