@@ -51,7 +51,7 @@ public class JavaGetterStage extends AbstractStage {
     }
 
     private static String fieldGetter(JavaFieldModel fieldModel) {
-        boolean isBool = fieldModel.getRawType() != null && fieldModel.getRawType().endsWith("Boolean");
+        boolean isBool = fieldModel.getPrimitiveType() != null && fieldModel.getPrimitiveType().endsWith("Boolean");
         return (isBool ? "is" : "get") + StringUtils.capitalize(fieldModel.getName());
     }
 }

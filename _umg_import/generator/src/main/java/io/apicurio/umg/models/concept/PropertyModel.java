@@ -11,6 +11,8 @@ import lombok.Data;
 public class PropertyModel {
     
     private String name;
-    private PropertyType type;
 
+    private String rawType;
+
+    private PropertyType type;
 }

@@ -19,8 +19,8 @@ public class ResolveFieldSourceTypes extends AbstractStage {
         getState().getJavaIndex().getAllJavaEntitiesWithCopy().forEach(je -> {
             je.getFields().forEach(f -> {
                 String baseType = null;
-                if (f.getRawType() != null) {
-                    baseType = f.getRawType();
+                if (f.getPrimitiveType() != null) {
+                    baseType = f.getPrimitiveType();
                 }
                 if (f.getEntityType() != null) {
                     baseType = f.getEntityType().fullyQualifiedName();

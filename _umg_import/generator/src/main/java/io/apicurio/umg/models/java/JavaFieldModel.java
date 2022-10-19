@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.Type;
 
 @Builder
@@ -26,7 +25,7 @@ public class JavaFieldModel {
 
     // EITHER:
     // Raw Java type string, e.g. boolean, int, (java.lang.)Object
-    private String rawType;
+    private String primitiveType;
 
     // OR:
     // Entity in the model, including external entity such as com.fasterxml.jackson.databind.JsonNode

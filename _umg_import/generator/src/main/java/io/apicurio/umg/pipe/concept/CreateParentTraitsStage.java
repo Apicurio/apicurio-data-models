@@ -10,7 +10,7 @@ import io.apicurio.umg.pipe.AbstractStage;
  * if there are at least two entities that have that child as a property.  For example, the "Contact"
  * entity is always a child of the "Info" entity, so a "ContactParent" trait is not created as it
  * is not needed.
- *
+ * <p>
  * The purpose of the Parent trait is to have a common trait used to manage the parent-child
  * relationship of an entity during visitation.
  */
@@ -21,14 +21,17 @@ public class CreateParentTraitsStage extends AbstractStage {
         getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
             entity.getProperties().values().stream().filter(property -> needsParent(entity, property)).forEach(property -> {
                 if (!property.getType().isList() && !property.getType().isMap()) {
-                    String propertyTypeName = property.getType().getName();
+                    String propertyTypeName = property.getType().getSimpleType();
                     String traitName = propertyTypeName + "Parent";
                     TraitModel parentTrait;
                     if (entity.getNamespace().containsTrait(traitName)) {
                         parentTrait = entity.getNamespace().getTraits().get(traitName);
                     } else {
                         parentTrait = TraitModel.builder().namespace(entity.getNamespace()).name(traitName).build();
-                        PropertyModel traitProperty = PropertyModel.builder().name(property.getName()).type(property.getType()).build();
+                        PropertyModel traitProperty = PropertyModel.builder()
+                                .name(property.getName())
+                                .rawType(property.getRawType())
+                                .type(property.getType()).build();
                         parentTrait.getProperties().put(property.getName(), traitProperty);
                         entity.getNamespace().getTraits().put(traitName, parentTrait);
                         getState().getConceptIndex().index(parentTrait);
@@ -43,11 +46,12 @@ public class CreateParentTraitsStage extends AbstractStage {
      * Returns true if the given entity/property combination is not unique across the models.  If the
      * combination is unique, then no parent trait is needed.  If it is NOT unique (meaning there
      * are other entities with the same property) then a parent IS needed.
+     *
      * @param entity
      * @param property
      */
     private boolean needsParent(EntityModel entity, PropertyModel property) {
-        if (!property.getType().isEntity()) {
+        if (property.getType().isPrimitiveType()) {
             return false;
         }
         if (property.getName().equals("*")) {

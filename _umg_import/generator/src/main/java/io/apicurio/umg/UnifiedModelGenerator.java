@@ -44,6 +44,7 @@ import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.ResolveFieldSourceTypes;
 import io.apicurio.umg.pipe.java.ResolveFieldTypes;
 import io.apicurio.umg.pipe.java.TodoStage;
+import io.apicurio.umg.pipe.java.TransformComplexTypes;
 import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
@@ -105,6 +106,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new TransformInheritance());
         pipe.addStage(new TransformToInterfaces());
         pipe.addStage(new TodoStage());
+        pipe.addStage(new TransformComplexTypes());
         pipe.addStage(new ResolveFieldTypes());
         pipe.addStage(new AddPrefixes());
 

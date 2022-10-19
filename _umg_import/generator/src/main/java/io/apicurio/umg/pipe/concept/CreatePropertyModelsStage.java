@@ -18,7 +18,11 @@ public class CreatePropertyModelsStage extends AbstractStage {
                 String fqTraitName = specVersion.getNamespace() + "." + trait.getName();
                 TraitModel traitModel = getState().getConceptIndex().lookupTrait(fqTraitName);
                 trait.getProperties().forEach(property -> {
-                    PropertyModel propertyModel = PropertyModel.builder().name(property.getName()).type(PropertyType.create(property.getType())).build();
+                    PropertyModel propertyModel = PropertyModel.builder()
+                            .name(property.getName())
+                            .rawType(property.getType())
+                            .type(PropertyType.parse(property.getType()))
+                            .build();
                     Logger.info("Created trait property model: %s/%s", traitModel.fullyQualifiedName(), propertyModel.getName());
                     traitModel.getProperties().put(property.getName(), propertyModel);
                 });
@@ -29,7 +33,11 @@ public class CreatePropertyModelsStage extends AbstractStage {
                 String fqEntityName = specVersion.getNamespace() + "." + entity.getName();
                 EntityModel entityModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 entity.getProperties().forEach(property -> {
-                    PropertyModel propertyModel = PropertyModel.builder().name(property.getName()).type(PropertyType.create(property.getType())).build();
+                    PropertyModel propertyModel = PropertyModel.builder()
+                            .name(property.getName())
+                            .rawType(property.getType())
+                            .type(PropertyType.parse(property.getType()))
+                            .build();
                     Logger.info("Created entity property model: %s/%s", entityModel.fullyQualifiedName(), propertyModel.getName());
                     entityModel.getProperties().put(property.getName(), propertyModel);
                 });
