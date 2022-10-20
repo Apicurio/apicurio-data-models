@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteAllParametersCommand_20",
-    "_parentPath": "/paths[/pet/{petId}]/post",
-    "_paramType": "formData"
-}]

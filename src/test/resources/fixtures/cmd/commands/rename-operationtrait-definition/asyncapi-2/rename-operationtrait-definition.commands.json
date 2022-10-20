@@ -1,7 +1,0 @@
-[
-  {
-    "__type": "RenameOperationTraitDefinitionCommand",
-    "_oldName": "comonProperties",
-    "_newName": "commonProperties"
-  }
-]

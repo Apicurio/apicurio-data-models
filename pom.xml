@@ -55,8 +55,8 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Node Versions -->
         <version.node-js>16.16.0</version.node-js>
@@ -66,9 +66,8 @@
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
         <version.commons-io>2.11.0</version.commons-io>
         <version.junit>4.13.2</version.junit>
-        <version.org.jsweet>2.3.5</version.org.jsweet>
         <version.org.jsweet-core>6.3.0</version.org.jsweet-core>
-        <version.org.jsweet-transpiler>2.3.7</version.org.jsweet-transpiler>
+        <version.org.jsweet-transpiler>3.1.0</version.org.jsweet-transpiler>
         <version.org.skyscreamer>1.5.1</version.org.skyscreamer>
         
         <!-- Plugin Versions -->
@@ -82,6 +81,7 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.1.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        <version.jsweet-maven-plugin>3.1.0</version.jsweet-maven-plugin>
     </properties>
 
     <dependencies>
@@ -256,29 +256,13 @@
         <profile>
             <id>transpilation</id>
 
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>jsweet-plugins-release</id>
-                    <name>plugins-release</name>
-                    <url>https://repository.jsweet.org/artifactory/plugins-release-local</url>
-                </pluginRepository>
-            </pluginRepositories>
-
-            <repositories>
-                <repository>
-                    <id>jsweet-central</id>
-                    <name>libs-release</name>
-                    <url>https://repository.jsweet.org/artifactory/libs-release-local</url>
-                </repository>
-            </repositories>
-
             <build>
                 <plugins>
                     <!-- Generate TS from Java -->
                     <plugin>
                         <groupId>org.jsweet</groupId>
                         <artifactId>jsweet-maven-plugin</artifactId>
-                        <version>${version.org.jsweet}</version>
+                        <version>${version.jsweet-maven-plugin}</version>
                         <configuration>
                             <verbose>true</verbose>
                             <tsOut>target/ts/src</tsOut>
@@ -394,18 +378,6 @@
                                     <arguments>install</arguments>
                                 </configuration>
                             </execution>
-                            <!-- Test the library -->
-                            <execution>
-                                <id>ng test</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <phase>test</phase>
-                                <configuration>
-                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>test</arguments>
-                                </configuration>
-                            </execution>
                             <!-- Build+package the library -->
                             <execution>
                                 <id>ng build</id>
@@ -415,7 +387,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>package</arguments>
+                                    <arguments>run package</arguments>
                                 </configuration>
                             </execution>
                         </executions>

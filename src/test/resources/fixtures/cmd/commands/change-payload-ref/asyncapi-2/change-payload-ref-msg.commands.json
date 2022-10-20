@@ -1,5 +1,0 @@
-[{
-  "__type": "ChangePayloadRefCommand_Aai20",
-  "_payloadRef": "#/components/schema/UserSignedUpEvent",
-  "_messagePath": "/channels[myChannel]/subscribe/message"
-}]
