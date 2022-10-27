@@ -1,16 +1,17 @@
 package io.apicurio.umg.models.java;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.JavaSource;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
-import org.jboss.forge.roaster.model.source.JavaSource;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
 
 @SuperBuilder
 @Getter
@@ -24,7 +25,7 @@ public class JavaInterfaceModel extends JavaEntityModel {
     private JavaInterfaceSource interfaceSource;
 
     @Override
-    public JavaSource getJavaSource() {
+    public JavaSource<?> getJavaSource() {
         return interfaceSource;
     }
 

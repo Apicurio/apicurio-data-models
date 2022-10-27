@@ -1,11 +1,12 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.pipe.AbstractStage;
-import org.jboss.forge.roaster.model.source.JavaSource;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+import org.jboss.forge.roaster.model.source.JavaSource;
+
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaWriteStage extends AbstractStage {
 
@@ -20,6 +21,12 @@ public class JavaWriteStage extends AbstractStage {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
             writeToFile(t.getJavaSource(), outputDirectory);
         });
+        getState().getJavaIndex().getClasses().forEach(c -> {
+            writeToFile(c.getJavaSource(), outputDirectory);
+        });
+        getState().getJavaIndex().getInterfaces().forEach(c -> {
+            writeToFile(c.getJavaSource(), outputDirectory);
+        });
     }
 
     /**
@@ -28,7 +35,7 @@ public class JavaWriteStage extends AbstractStage {
      * @param modelClass
      * @param outputDirectory
      */
-    private void writeToFile(JavaSource modelClass, File outputDirectory) {
+    private void writeToFile(JavaSource<?> modelClass, File outputDirectory) {
         String pkg = modelClass.getPackage();
         String fpath = pkg.replace(".", "/");
         File dir = new File(outputDirectory, fpath);

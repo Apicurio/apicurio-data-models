@@ -1,12 +1,11 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
-import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaClassStage extends AbstractStage {
@@ -14,8 +13,6 @@ public class JavaClassStage extends AbstractStage {
     protected void doProcess() {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
             if (!t.isExternal()) {
-
-//                Logger.info("Generating model for type '%s'", t.getName());
 
                 if (t instanceof JavaInterfaceModel) {
                     var _interface = (JavaInterfaceModel) t;

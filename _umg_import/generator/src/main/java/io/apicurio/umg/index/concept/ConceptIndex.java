@@ -16,17 +16,17 @@
 
 package io.apicurio.umg.index.concept;
 
-import io.apicurio.umg.models.concept.EntityModel;
-import io.apicurio.umg.models.concept.NamespaceModel;
-import io.apicurio.umg.models.concept.TraitModel;
-import io.apicurio.umg.models.concept.VisitorModel;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.function.Function;
 
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.function.Function;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.models.concept.VisitorModel;
 
 /**
  * @author eric.wittmann@gmail.com

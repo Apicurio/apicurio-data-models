@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import io.apicurio.umg.UnifiedModelGenerator;
+import io.apicurio.umg.UnifiedModelGeneratorConfig;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
@@ -33,25 +34,28 @@ import io.apicurio.umg.models.spec.SpecificationModel;
 public class Main {
 
     /**
-     * Main entry point.  Runs the unified model generator.
+     * Main entry point. Runs the unified model generator.
      *
      * @param args
      */
     public static void main(String[] args) throws Exception {
         Logger.info("Starting Apicurio Unified Model Generator");
         // Clean the output directory
-        File outputDir = new File("target/apicurio-data-models/src/main/java");
+        File outputDir = new File("target/from-main");
         if (outputDir.isDirectory()) {
             FileUtils.deleteDirectory(outputDir);
             outputDir.mkdirs();
         }
 
+        // Set up config
+        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
+                .rootNamespace("io.apicurio.datamodels").outputDirectory(outputDir).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecs();
         // Create a unified model generator
-        UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
+        UnifiedModelGenerator generator = new UnifiedModelGenerator(config, specs);
         // Generate the source code into the target output directory.
-        generator.generateInto(outputDir);
+        generator.generate();
         Logger.info("Model generated successfully!");
     }
 
@@ -61,9 +65,9 @@ public class Main {
     private static List<SpecificationModel> loadSpecs() {
         Logger.info("Loading specifications.");
         List<SpecificationModel> specs = new LinkedList<>();
-        specs.add(SpecificationLoader.loadSpec("specifications/asyncapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specifications/openapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specifications/json-schema.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
         return specs;
     }
 

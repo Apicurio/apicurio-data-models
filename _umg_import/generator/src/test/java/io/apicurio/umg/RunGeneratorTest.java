@@ -17,9 +17,10 @@ public class RunGeneratorTest {
 
     @Test
     public void run() throws Exception {
+        var config = UnifiedModelGeneratorConfig.builder().outputDirectory(getTargetDir()).rootNamespace("io.apicurio.datamodels").build();
         var specs = loadSpecs();
-        var generator = UnifiedModelGenerator.create(specs);
-        generator.generateInto(getTargetDir());
+        var generator = new UnifiedModelGenerator(config, specs);
+        generator.generate();
         Logger.info("Model generated successfully!");
     }
 

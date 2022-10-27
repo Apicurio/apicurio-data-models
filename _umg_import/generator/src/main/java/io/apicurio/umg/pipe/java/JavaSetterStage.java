@@ -1,14 +1,15 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaFieldModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.pipe.AbstractStage;
+import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
-import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaFieldModel;
+import io.apicurio.umg.models.java.JavaInterfaceModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaSetterStage extends AbstractStage {
     @Override
@@ -21,7 +22,7 @@ public class JavaSetterStage extends AbstractStage {
 
                     String fieldName = sanitizeFieldName(fieldModel.getName());
 
-                    Type fieldType = fieldModel.getTypeSource();
+                    Type<?> fieldType = fieldModel.getTypeSource();
 
                     // Add a setter for the field.
                     if (t instanceof JavaInterfaceModel) {
@@ -29,10 +30,10 @@ public class JavaSetterStage extends AbstractStage {
                         var modelClass = _interface.getInterfaceSource();
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         _interface.getInterfaceSource()
-                                .addMethod()
-                                .setName(fieldSetter(fieldModel))
-                                .setReturnTypeVoid()
-                                .addParameter(resolvedType, fieldName);
+                        .addMethod()
+                        .setName(fieldSetter(fieldModel))
+                        .setReturnTypeVoid()
+                        .addParameter(resolvedType, fieldName);
                         // TODO What happens if I use set body?
 
                     } else {
@@ -40,11 +41,11 @@ public class JavaSetterStage extends AbstractStage {
                         var modelClass = _class.getClassSource();
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         modelClass.addMethod()
-                                .setName(fieldSetter(fieldModel))
-                                .setReturnTypeVoid()
-                                .setPublic()
-                                .setBody("this." + fieldName + " = " + fieldName + ";")
-                                .addParameter(resolvedType, fieldName);
+                        .setName(fieldSetter(fieldModel))
+                        .setReturnTypeVoid()
+                        .setPublic()
+                        .setBody("this." + fieldName + " = " + fieldName + ";")
+                        .addParameter(resolvedType, fieldName);
                     }
 
                 });

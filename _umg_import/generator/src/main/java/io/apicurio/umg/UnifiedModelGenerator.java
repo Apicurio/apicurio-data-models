@@ -16,10 +16,11 @@
 
 package io.apicurio.umg;
 
+import java.util.Collection;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.CreateVisitorsStage;
-import io.apicurio.umg.pipe.DebugStage;
 import io.apicurio.umg.pipe.GeneratorState;
 import io.apicurio.umg.pipe.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.Pipeline;
@@ -34,6 +35,7 @@ import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.AddPrefixes;
+import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
 import io.apicurio.umg.pipe.java.JavaClassStage;
 import io.apicurio.umg.pipe.java.JavaFieldStage;
@@ -41,6 +43,7 @@ import io.apicurio.umg.pipe.java.JavaGetterStage;
 import io.apicurio.umg.pipe.java.JavaSetterStage;
 import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
+import io.apicurio.umg.pipe.java.LoadBaseClasses;
 import io.apicurio.umg.pipe.java.ResolveFieldSourceTypes;
 import io.apicurio.umg.pipe.java.ResolveFieldTypes;
 import io.apicurio.umg.pipe.java.TodoStage;
@@ -49,33 +52,33 @@ import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
-import java.io.File;
-import java.util.Collection;
-
 /**
  * @author eric.wittmann@gmail.com
  */
 public class UnifiedModelGenerator {
 
-    private Collection<SpecificationModel> specifications;
+    private final UnifiedModelGeneratorConfig config;
+    private final Collection<SpecificationModel> specifications;
 
-    public static UnifiedModelGenerator create(Collection<SpecificationModel> specifications) {
-        UnifiedModelGenerator generator = new UnifiedModelGenerator(specifications);
-        return generator;
-    }
-
-    private UnifiedModelGenerator(Collection<SpecificationModel> specifications) {
+    /**
+     * Constructor.
+     * @param config
+     * @param specifications
+     */
+    public UnifiedModelGenerator(UnifiedModelGeneratorConfig config, Collection<SpecificationModel> specifications) {
+        this.config = config;
         this.specifications = specifications;
     }
 
     /**
      * Generates the output from the given list of specifications.
      */
-    public void generateInto(File outputDirectory) throws Exception {
-        Logger.info("Output directory: %s", outputDirectory.getAbsolutePath());
+    public void generate() throws Exception {
+        Logger.info("Output directory: %s", config.getOutputDirectory().getAbsolutePath());
 
         GeneratorState state = new GeneratorState();
         state.setSpecifications(specifications);
+        state.setConfig(config);
         Pipeline pipe = new Pipeline();
 
         // Index phase
@@ -97,7 +100,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new NormalizeVisitorsStage());
 
         // Debug the models
-        pipe.addStage(new DebugStage());
+        //pipe.addStage(new DebugStage());
 
         // === Java-specific stages
 
@@ -109,6 +112,8 @@ public class UnifiedModelGenerator {
         pipe.addStage(new TransformComplexTypes());
         pipe.addStage(new ResolveFieldTypes());
         pipe.addStage(new AddPrefixes());
+        pipe.addStage(new LoadBaseClasses());
+        pipe.addStage(new CreateReadersStage());
 
         // Working with Roaster
         pipe.addStage(new ResolveFieldSourceTypes());
@@ -118,7 +123,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new JavaFieldStage());
         pipe.addStage(new JavaGetterStage());
         pipe.addStage(new JavaSetterStage());
-        pipe.addStage(new JavaWriteStage(outputDirectory));
+        pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
 
         pipe.run(state);
     }

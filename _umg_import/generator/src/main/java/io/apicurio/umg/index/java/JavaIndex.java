@@ -16,16 +16,20 @@
 
 package io.apicurio.umg.index.java;
 
-import io.apicurio.umg.models.java.JavaEntityModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
-import lombok.Getter;
-
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.java.JavaClassModel;
+import io.apicurio.umg.models.java.JavaEntityModel;
+import io.apicurio.umg.models.java.JavaInterfaceModel;
+import io.apicurio.umg.models.java.JavaPackageModel;
+import lombok.Getter;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -37,6 +41,16 @@ public class JavaIndex {
 
     @Getter
     private Map<String, JavaPackageModel> packages = new HashMap<>();
+
+    @Getter
+    private Collection<JavaClassModel> classes = new HashSet<>();
+
+    @Getter
+    private Collection<JavaInterfaceModel> interfaces = new HashSet<>();
+
+    public JavaPackageModel lookupPackage(String namespace) {
+        return this.packages.get(namespace);
+    }
 
     public JavaPackageModel lookupAndIndexPackage(Supplier<JavaPackageModel> factory) {
         var _new = factory.get();
@@ -55,6 +69,14 @@ public class JavaIndex {
         });
     }
 
+    public JavaEntityModel lookupType(String fullyQualifiedName) {
+        return this.types.get(fullyQualifiedName);
+    }
+
+    public JavaEntityModel lookupType(EntityModel entity) {
+        return lookupType(entity.fullyQualifiedName());
+    }
+
     public void removeType(JavaEntityModel type) {
         var _package = type.get_package();
         _package.getTypes().remove(type.fullyQualifiedName());
@@ -64,4 +86,13 @@ public class JavaIndex {
     public Set<JavaEntityModel> getAllJavaEntitiesWithCopy() {
         return new HashSet<>(types.values());
     }
+
+    public void addClass(JavaClassModel classModel) {
+        this.classes.add(classModel);
+    }
+
+    public void addInterface(JavaInterfaceModel interfaceModel) {
+        this.interfaces.add(interfaceModel);
+    }
+
 }

@@ -1,5 +1,11 @@
 package io.apicurio.umg.models.java;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.jboss.forge.roaster.model.source.JavaSource;
+
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import lombok.EqualsAndHashCode;
@@ -7,11 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.jboss.forge.roaster.model.source.JavaSource;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
 
 @SuperBuilder
 @Getter
@@ -39,7 +40,7 @@ public abstract class JavaEntityModel {
         return _package.getName() + "." + name;
     }
 
-    public abstract JavaSource getJavaSource();
+    public abstract JavaSource<?> getJavaSource();
 
     public abstract boolean isInterface();
 

@@ -13,6 +13,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import io.apicurio.umg.UnifiedModelGenerator;
+import io.apicurio.umg.UnifiedModelGeneratorConfig;
 import io.apicurio.umg.io.SpecificationLoader;
 import io.apicurio.umg.models.spec.SpecificationModel;
 
@@ -33,6 +34,9 @@ public class GenerateModelsMojo extends AbstractMojo {
     @Parameter(required = true)
     List<File> specifications;
 
+    @Parameter(required = true)
+    String rootNamespace;
+
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/umg")
     File outputDir;
 
@@ -45,7 +49,8 @@ public class GenerateModelsMojo extends AbstractMojo {
         if (specifications == null || specifications.isEmpty()) {
             throw new MojoFailureException("No input specifications found.");
         }
-        if (!specifications.stream().map(specFile -> specFile.isFile()).reduce((a, b) -> a && b).orElse(false)) {
+        if (!specifications.stream().map(specFile -> specFile.isFile()).reduce((a, b) -> a && b)
+                .orElse(false)) {
             throw new MojoFailureException("At least one configured specification does not exist.");
         }
 
@@ -62,13 +67,16 @@ public class GenerateModelsMojo extends AbstractMojo {
         getLog().info("Generating code into: " + outputDir.getAbsolutePath());
         this.project.addCompileSourceRoot(outputDir.getAbsolutePath());
 
+        // Create config
+        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder().outputDirectory(outputDir)
+                .rootNamespace(rootNamespace).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecifications();
         // Create a unified model generator
-        UnifiedModelGenerator generator = UnifiedModelGenerator.create(specs);
+        UnifiedModelGenerator generator = new UnifiedModelGenerator(config, specs);
         // Generate the source code into the target output directory.
         try {
-            generator.generateInto(outputDir);
+            generator.generate();
         } catch (Exception e) {
             throw new MojoExecutionException("Error generating unified model classes.", e);
         }
@@ -80,7 +88,8 @@ public class GenerateModelsMojo extends AbstractMojo {
      * Loads the configured specifications.
      */
     private List<SpecificationModel> loadSpecifications() {
-        return this.specifications.stream().map(file -> SpecificationLoader.loadSpec(file)).collect(Collectors.toUnmodifiableList());
+        return this.specifications.stream().map(file -> SpecificationLoader.loadSpec(file))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public static void main(String[] args) {
