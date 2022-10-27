@@ -415,13 +415,13 @@ entities:
       - name: messageTraits
         type: '{MessageTrait}'
       - name: serverBindings
-        type: '{ServerBinding}'
+        type: '{ServerBindings}'
       - name: channelBindings
-        type: '{ChannelBinding}'
+        type: '{ChannelBindings}'
       - name: operationBindings
-        type: '{OperationBinding}'
+        type: '{OperationBindings}'
       - name: messageBindings
-        type: '{MessageBinding}'
+        type: '{MessageBindings}'
   - name: Schema
     traits:
       - ExtensibleTrait
