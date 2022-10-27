@@ -227,6 +227,7 @@
                                 <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/openapi.yaml</specification>
                             </specifications>
+                            <rootNamespace>io.apicurio.datamodels</rootNamespace>
                         </configuration>
                     </execution>
                 </executions>
