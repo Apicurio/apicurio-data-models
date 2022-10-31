@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.apicurio.umg.pipe.java.ResolveFieldTypes;
+import io.apicurio.umg.pipe.java.Util;
 import lombok.Builder;
 import lombok.Data;
 
@@ -161,6 +161,10 @@ public class PropertyType {
     private boolean simple;
 
     public boolean isPrimitiveType() {
-        return isSimple() && ResolveFieldTypes.PRIMITIVE_TYPE_MAP.get(simpleType) != null;
+        return isSimple() && Util.PRIMITIVE_TYPE_MAP.containsKey(simpleType);
+    }
+
+    public boolean isEntityType() {
+        return isSimple() && !isPrimitiveType();
     }
 }

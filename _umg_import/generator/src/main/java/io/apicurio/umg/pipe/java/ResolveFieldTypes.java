@@ -1,34 +1,19 @@
 package io.apicurio.umg.pipe.java;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaFieldModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Map.entry;
-
 /**
  * Go over field types and resolve them (not the sources yet)
  */
 public class ResolveFieldTypes extends AbstractStage {
-
-    // TODO Move this map into some shared place?
-    public static Map<String, String> PRIMITIVE_TYPE_MAP = Map.ofEntries(
-            entry("string", String.class.getName()),
-            entry("boolean", Boolean.class.getName()),
-            entry("number", Number.class.getName()),
-            entry("integer", Integer.class.getName()),
-            entry("object", ObjectNode.class.getCanonicalName()),
-            entry("any", JsonNode.class.getCanonicalName())
-    );
 
     @Override
     protected void doProcess() {
@@ -73,10 +58,10 @@ public class ResolveFieldTypes extends AbstractStage {
 
                 if (!stop) {
                     // Is this a primitive type?
-                    var baseType = PRIMITIVE_TYPE_MAP.get(simpleType);
+                    var baseType = Util.PRIMITIVE_TYPE_MAP.get(simpleType);
                     if (baseType != null) {
                         // yes, primitive type
-                        f.setPrimitiveType(baseType);
+                        f.setPrimitiveType(baseType.getCanonicalName());
                     } else {
                         // no, look for entity
                         // Does the type contain package?
