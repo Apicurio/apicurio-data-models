@@ -2,12 +2,10 @@ package io.apicurio.umg.pipe.java;
 
 import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
 import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaFieldModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -31,7 +29,7 @@ public class JavaGetterStage extends AbstractStage {
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         _interface.getInterfaceSource()
                         .addMethod()
-                        .setName(fieldGetter(fieldModel))
+                        .setName(Util.fieldGetter(fieldModel))
                         .setReturnType(resolvedType);
 
                     } else {
@@ -39,7 +37,7 @@ public class JavaGetterStage extends AbstractStage {
                         var modelClass = _class.getClassSource();
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         modelClass.addMethod()
-                        .setName(fieldGetter(fieldModel))
+                        .setName(Util.fieldGetter(fieldModel))
                         .setReturnType(resolvedType)
                         .setPublic()
                         .setBody("return " + fieldName + ";");
@@ -49,10 +47,5 @@ public class JavaGetterStage extends AbstractStage {
 
             }
         });
-    }
-
-    private static String fieldGetter(JavaFieldModel fieldModel) {
-        boolean isBool = fieldModel.getPrimitiveType() != null && fieldModel.getPrimitiveType().endsWith("Boolean");
-        return (isBool ? "is" : "get") + StringUtils.capitalize(fieldModel.getName());
     }
 }

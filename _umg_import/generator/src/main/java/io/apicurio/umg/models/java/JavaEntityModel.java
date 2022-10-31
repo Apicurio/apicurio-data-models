@@ -51,4 +51,8 @@ public abstract class JavaEntityModel {
     public abstract void ifInterface(Consumer<JavaInterfaceModel> f);
 
     public abstract void ifClass(Consumer<JavaClassModel> f);
+
+    public JavaFieldModel getField(String fieldName) {
+        return fields.stream().filter(field -> field.getName().equals(fieldName)).findAny().orElse(null);
+    }
 }

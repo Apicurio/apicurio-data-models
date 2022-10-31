@@ -2,12 +2,10 @@ package io.apicurio.umg.pipe.java;
 
 import static io.apicurio.umg.pipe.java.Util.sanitizeFieldName;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.util.Types;
 
 import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaFieldModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -31,7 +29,7 @@ public class JavaSetterStage extends AbstractStage {
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         _interface.getInterfaceSource()
                         .addMethod()
-                        .setName(fieldSetter(fieldModel))
+                        .setName(Util.fieldSetter(fieldModel))
                         .setReturnTypeVoid()
                         .addParameter(resolvedType, fieldName);
                         // TODO What happens if I use set body?
@@ -41,7 +39,7 @@ public class JavaSetterStage extends AbstractStage {
                         var modelClass = _class.getClassSource();
                         String resolvedType = Types.toResolvedType(fieldType.getQualifiedNameWithGenerics(), modelClass.getOrigin());
                         modelClass.addMethod()
-                        .setName(fieldSetter(fieldModel))
+                        .setName(Util.fieldSetter(fieldModel))
                         .setReturnTypeVoid()
                         .setPublic()
                         .setBody("this." + fieldName + " = " + fieldName + ";")
@@ -54,7 +52,4 @@ public class JavaSetterStage extends AbstractStage {
         });
     }
 
-    private static String fieldSetter(JavaFieldModel fieldModel) {
-        return "set" + StringUtils.capitalize(fieldModel.getName());
-    }
 }

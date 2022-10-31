@@ -113,7 +113,6 @@ public class UnifiedModelGenerator {
         pipe.addStage(new ResolveFieldTypes());
         pipe.addStage(new AddPrefixes());
         pipe.addStage(new LoadBaseClasses());
-        pipe.addStage(new CreateReadersStage());
 
         // Working with Roaster
         pipe.addStage(new ResolveFieldSourceTypes());
@@ -123,6 +122,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new JavaFieldStage());
         pipe.addStage(new JavaGetterStage());
         pipe.addStage(new JavaSetterStage());
+        pipe.addStage(new CreateReadersStage());
         pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
 
         pipe.run(state);

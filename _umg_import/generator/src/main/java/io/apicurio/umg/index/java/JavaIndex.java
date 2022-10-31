@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
@@ -37,10 +38,10 @@ import lombok.Getter;
 public class JavaIndex {
 
     @Getter
-    private Map<String, JavaEntityModel> types = new HashMap<>();
+    private Map<String, JavaPackageModel> packages = new HashMap<>();
 
     @Getter
-    private Map<String, JavaPackageModel> packages = new HashMap<>();
+    private Map<String, JavaEntityModel> types = new HashMap<>();
 
     @Getter
     private Collection<JavaClassModel> classes = new HashSet<>();
@@ -75,6 +76,10 @@ public class JavaIndex {
 
     public JavaEntityModel lookupType(EntityModel entity) {
         return lookupType(entity.fullyQualifiedName());
+    }
+
+    public JavaEntityModel lookupType(TraitModel trait) {
+        return lookupType(trait.fullyQualifiedName());
     }
 
     public void removeType(JavaEntityModel type) {

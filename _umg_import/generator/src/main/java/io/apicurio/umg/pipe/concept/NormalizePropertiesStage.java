@@ -1,15 +1,16 @@
 package io.apicurio.umg.pipe.concept;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.pipe.AbstractStage;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class NormalizePropertiesStage extends AbstractStage {
     @Override
@@ -29,7 +30,7 @@ public class NormalizePropertiesStage extends AbstractStage {
 
                 // Filter the full list of properties - only keep the properties that exist in *all* children.
                 List<PropertyModel> propertiesToPullup = allProperties.stream()
-                        .filter(property -> childEntities.stream().map(c -> c.getProperties().containsKey(property.getName())).reduce(true, (sub, element) -> sub && element))
+                        .filter(property -> childEntities.stream().map(c -> hasProperty(c.getProperties(), property)).reduce(true, (sub, element) -> sub && element))
                         .collect(Collectors.toList());
 
                 // Now pull up each of the properties in the above list
@@ -57,7 +58,7 @@ public class NormalizePropertiesStage extends AbstractStage {
 
                 // Filter the full list of properties - only keep the properties that exist in *all* children.
                 List<PropertyModel> propertiesToPullup = allProperties.stream()
-                        .filter(property -> childTraits.stream().map(c -> c.getProperties().containsKey(property.getName())).reduce(true, (sub, element) -> sub && element))
+                        .filter(property -> childTraits.stream().map(c -> hasProperty(c.getProperties(), property)).reduce(true, (sub, element) -> sub && element))
                         .collect(Collectors.toList());
 
                 // Now pull up each of the properties in the above list
@@ -71,5 +72,16 @@ public class NormalizePropertiesStage extends AbstractStage {
                 changesMade += propertiesToPullup.size();
             }
         } while (changesMade > 0);
+    }
+
+    /**
+     * Checks if the given collection of properties contains the given property.  It must have a property with
+     * the same name and the property must have the same type.
+     * @param properties
+     * @param property
+     */
+    private boolean hasProperty(Map<String, PropertyModel> properties, PropertyModel property) {
+        PropertyModel otherProperty = properties.get(property.getName());
+        return otherProperty != null && otherProperty.getType().equals(property.getType());
     }
 }

@@ -11,43 +11,43 @@ public class TransformConceptToJavaModelStage extends AbstractStage {
     @Override
     protected void doProcess() {
 
-        getState().getConceptIndex().getAllEntitiesWithCopy().forEach(x -> {
-            makePackages(x.getNamespace());
-            var _package = getState().getJavaIndex().getPackages().get(x.getNamespace().fullName());
+        getState().getConceptIndex().getAllEntitiesWithCopy().forEach(entity -> {
+            makePackages(entity.getNamespace());
+            var _package = getState().getJavaIndex().getPackages().get(entity.getNamespace().fullName());
             var _class = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
                 return JavaClassModel.builder()
                         ._package(_package)
-                        .name(x.getName())
+                        .name(entity.getName())
                         .build();
             });
 
-            x.getProperties().values().forEach(p -> {
+            entity.getProperties().values().forEach(p -> {
                 _class.getFields().add(JavaFieldModel.builder()
                         .name(p.getName())
                         .concept(p)
                         .build());
             });
 
-            _class.setEntityModel(x);
+            _class.setEntityModel(entity);
         });
 
-        getState().getConceptIndex().getAllTraitsWithCopy().forEach(x -> {
-            makePackages(x.getNamespace());
-            var _package = getState().getJavaIndex().getPackages().get(x.getNamespace().fullName());
+        getState().getConceptIndex().getAllTraitsWithCopy().forEach(trait -> {
+            makePackages(trait.getNamespace());
+            var _package = getState().getJavaIndex().getPackages().get(trait.getNamespace().fullName());
             var _interface = getState().getJavaIndex().lookupAndIndexType(() -> {
                 return JavaInterfaceModel.builder()
                         ._package(_package)
-                        .name(x.getName())
+                        .name(trait.getName())
                         .build();
             });
-            x.getProperties().values().forEach(p -> {
+            trait.getProperties().values().forEach(p -> {
                 _interface.getFields().add(JavaFieldModel.builder()
                         .name(p.getName())
                         .concept(p)
                         .build());
             });
 
-            _interface.setTraitModel(x);
+            _interface.setTraitModel(trait);
         });
     }
 
