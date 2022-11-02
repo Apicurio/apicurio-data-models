@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -134,6 +135,7 @@ public class CreateReadersStage extends AbstractStage {
     private void createReadPropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
             JavaEntityModel javaEntityModel, JavaClassSource readerClassSource) {
         CreateReadProperty crp = new CreateReadProperty(property, entityModel, javaEntityModel, readerClassSource);
+        body.clearContext();
         crp.writeTo(body);
     }
 
@@ -169,7 +171,6 @@ public class CreateReadersStage extends AbstractStage {
         return createMethodName(entityModel.getName());
     }
 
-    @SuppressWarnings("unused")
     private static String addMethodName(EntityModel entityModel) {
         return addMethodName(entityModel.getName());
     }
@@ -250,7 +251,7 @@ public class CreateReadersStage extends AbstractStage {
                 body.append("{");
                 body.append("    List<String> propertyNames = JsonUtil.keys(json);");
                 body.append("    propertyNames.forEach(name -> {");
-                body.append("        ObjectNode object = JsonUtil.consumeJsonProperty(json, name);");
+                body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
                 body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
@@ -318,7 +319,7 @@ public class CreateReadersStage extends AbstractStage {
                 body.append("{");
                 body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
                 body.append("    propertyNames.forEach(name -> {");
-                body.append("        ObjectNode object = JsonUtil.consumeJsonProperty(json, name);");
+                body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
                 body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
@@ -346,7 +347,7 @@ public class CreateReadersStage extends AbstractStage {
             body.addContext("readMethodName", readMethodName(propertyTypeEntity));
 
             body.append("{");
-            body.append("    ObjectNode object = JsonUtil.consumeJsonProperty(json, \"${propertyName}\");");
+            body.append("    ObjectNode object = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
             body.append("    if (object != null) {");
             body.append("        node.${setterMethodName}(node.${createMethodName}());");
             body.append("        ${readMethodName}(object, node.${getterMethodName}());");
@@ -371,14 +372,13 @@ public class CreateReadersStage extends AbstractStage {
             body.addContext("setterMethodName", Util.fieldSetter(property));
 
             PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
-            if (listValuePropertyType.getSimpleType().equals("string")) {
+            if (listValuePropertyType.isPrimitiveType()) {
+                body.addContext("consumeMethodName", determineConsumePropertyVariant(property.getType()));
+                body.addContext("propertyValueJavaType", determineValueType(property.getType()));
+                readerClassSource.addImport(List.class);
+
                 body.append("{");
-                body.append("    List<String> value = JsonUtil.consumeStringArrayProperty(json, \"${propertyName}\");");
-                body.append("    node.${setterMethodName}(value);");
-                body.append("}");
-            } else if (listValuePropertyType.getSimpleType().equals("any")) {
-                body.append("{");
-                body.append("    Map<String, JsonNode> value = JsonUtil.consumeAnyArrayProperty(json, \"${propertyName}\");");
+                body.append("    ${propertyValueJavaType} value = JsonUtil.${consumeMethodName}(json, \"${propertyName}\");");
                 body.append("    node.${setterMethodName}(value);");
                 body.append("}");
             } else if (listValuePropertyType.isEntityType()) {
@@ -403,18 +403,16 @@ public class CreateReadersStage extends AbstractStage {
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", createMethodName(entityTypeModel));
                 body.addContext("readMethodName", readMethodName(entityTypeModel));
-                body.addContext("setterMethod", Util.fieldSetter(property));
+                body.addContext("addMethodName", addMethodName(entityTypeModel));
 
                 body.append("{");
-                body.append("    List<ObjectNode> objects = JsonUtil.consumeJsonArrayProperty(json, \"${propertyName}\");");
+                body.append("    List<ObjectNode> objects = JsonUtil.consumeObjectArrayProperty(json, \"${propertyName}\");");
                 body.append("    if (objects != null) {");
-                body.append("        List<${mapValueJavaType}> models = new ArrayList<>();");
                 body.append("        objects.forEach(object -> {");
                 body.append("            ${mapValueJavaType} model = node.${createMethodName}();");
                 body.append("            this.${readMethodName}(object, model);");
-                body.append("            models.add(model);");
+                body.append("            node.${addMethodName}(model);");
                 body.append("        });");
-                body.append("        node.${setterMethod}(models);");
                 body.append("    }");
                 body.append("}");
             } else {
@@ -428,19 +426,13 @@ public class CreateReadersStage extends AbstractStage {
             body.addContext("setterMethodName", Util.fieldSetter(property));
 
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
-            if (mapValuePropertyType.getSimpleType().equals("string")) {
+            if (mapValuePropertyType.isPrimitiveType()) {
+                body.addContext("consumeMethodName", determineConsumePropertyVariant(property.getType()));
+                body.addContext("propertyValueJavaType", determineValueType(property.getType()));
+                readerClassSource.addImport(Map.class);
+
                 body.append("{");
-                body.append("    Map<String, String> value = JsonUtil.consumeStringMapProperty(json, \"${propertyName}\");");
-                body.append("    node.${setterMethodName}(value);");
-                body.append("}");
-            } else if (mapValuePropertyType.getSimpleType().equals("any")) {
-                body.append("{");
-                body.append("    Map<String, JsonNode> value = JsonUtil.consumeAnyMapProperty(json, \"${propertyName}\");");
-                body.append("    node.${setterMethodName}(value);");
-                body.append("}");
-            } else if (mapValuePropertyType.getSimpleType().equals("object")) {
-                body.append("{");
-                body.append("    Map<String, ObjectNode> value = JsonUtil.consumeJsonMapProperty(json, \"${propertyName}\");");
+                body.append("    ${propertyValueJavaType} value = JsonUtil.${consumeMethodName}(json, \"${propertyName}\");");
                 body.append("    node.${setterMethodName}(value);");
                 body.append("}");
             } else if (mapValuePropertyType.isEntityType()) {
@@ -467,9 +459,9 @@ public class CreateReadersStage extends AbstractStage {
                 body.addContext("addMethodName", "add" + entityTypeName);
 
                 body.append("{");
-                body.append("    ObjectNode ${objectName} = JsonUtil.consumeJsonProperty(json, \"${propertyName}\");");
+                body.append("    ObjectNode ${objectName} = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
                 body.append("    JsonUtil.keys(${objectName}).forEach(name -> {");
-                body.append("        ObjectNode mapValue = JsonUtil.consumeJsonProperty(${objectName}, name);");
+                body.append("        ObjectNode mapValue = JsonUtil.consumeObjectProperty(${objectName}, name);");
                 body.append("        ${mapValueJavaType} model = node.${createMethodName}(name);");
                 body.append("        this.${readMethodName}(mapValue, model);");
                 body.append("        node.${addMethodName}(name, model);");
@@ -492,20 +484,55 @@ public class CreateReadersStage extends AbstractStage {
          * Figure out which variant of "consumeProperty" from "JsonUtil" we should use for
          * this property.  The property might be a primitive type, or a list/map of primitive
          * types, or an Entity type, or a list/map of Entity types.
+         * @param type
          */
         private String determineConsumePropertyVariant(PropertyType type) {
             if (type.isEntityType()) {
-                return "consumeJsonProperty";
+                return "consumeObjectProperty";
             }
 
             if (type.isPrimitiveType()) {
                 Class<?> _class = Util.primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
-                    return "consumeJsonProperty";
+                    readerClassSource.addImport(_class);
+                    return "consumeObjectProperty";
                 } else if (JsonNode.class.equals(_class)) {
+                    readerClassSource.addImport(_class);
                     return "consumeAnyProperty";
                 } else {
                     return "consume" + _class.getSimpleName() + "Property";
+                }
+            }
+
+            if (type.isList()) {
+                PropertyType listType = type.getNested().iterator().next();
+                if (listType.isPrimitiveType()) {
+                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    if (ObjectNode.class.equals(_class)) {
+                        readerClassSource.addImport(_class);
+                        return "consumeObjectArrayProperty";
+                    } else if (JsonNode.class.equals(_class)) {
+                        readerClassSource.addImport(_class);
+                        return "consumeAnyArrayProperty";
+                    } else {
+                        return "consume" + _class.getSimpleName() + "ArrayProperty";
+                    }
+                }
+            }
+
+            if (type.isMap()) {
+                PropertyType mapType = type.getNested().iterator().next();
+                if (mapType.isPrimitiveType()) {
+                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    if (ObjectNode.class.equals(_class)) {
+                        readerClassSource.addImport(_class);
+                        return "consumeObjectMapProperty";
+                    } else if (JsonNode.class.equals(_class)) {
+                        readerClassSource.addImport(_class);
+                        return "consumeAnyMapProperty";
+                    } else {
+                        return "consume" + _class.getSimpleName() + "MapProperty";
+                    }
                 }
             }
 
@@ -515,14 +542,39 @@ public class CreateReadersStage extends AbstractStage {
 
         /**
          * Determines the Java data type of the given property.
+         * @param type
          */
         private String determineValueType(PropertyType type) {
             if (type.isPrimitiveType()) {
                 Class<?> _class = Util.primitiveTypeToClass(type);
                 if (_class != null) {
+                    readerClassSource.addImport(_class);
                     return _class.getSimpleName();
                 }
             }
+
+            if (type.isList()) {
+                PropertyType listType = type.getNested().iterator().next();
+                if (listType.isPrimitiveType()) {
+                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    if (_class != null) {
+                        readerClassSource.addImport(_class);
+                        return "List<" + _class.getSimpleName() + ">";
+                    }
+                }
+            }
+
+            if (type.isMap()) {
+                PropertyType mapType = type.getNested().iterator().next();
+                if (mapType.isPrimitiveType()) {
+                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    if (_class != null) {
+                        readerClassSource.addImport(_class);
+                        return "Map<String, " + _class.getSimpleName() + ">";
+                    }
+                }
+            }
+
             Logger.warn("[CreateReadersStage] Unable to determine value type for: " + property);
             return "Object";
         }

@@ -19,6 +19,10 @@ public class BodyBuilder {
         }
     }
 
+    public void clearContext() {
+        context.clear();
+    }
+
     public void append(String line) {
         String lineResolved = line;
         for (Entry<String, String> entry : context.entrySet()) {
@@ -26,6 +30,9 @@ public class BodyBuilder {
         }
         str.append(lineResolved);
         str.append("\n");
+        if (lineResolved.contains("${")) {
+            Logger.warn("[BodyBuilder] append detected unresolved variables: " + lineResolved);
+        }
     }
 
     @Override

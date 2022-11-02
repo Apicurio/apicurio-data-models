@@ -3,7 +3,7 @@ version: 1.0
 versions:
   - version: 1.0
     url: https://example.com/Reader/versions/1.0.md
-prefix: Reader
+prefix: Rdr10
 namespace: org.example.reader.v10
 
 traits:
@@ -16,7 +16,7 @@ traits:
   - name: ExtensibleTrait
     properties:
       - name: '/^x-[\\w\\d\\-\\_]+$/'
-        type: Extension
+        type: ExtensionEntity
         collection: extensions
 
 entities:
@@ -27,53 +27,132 @@ entities:
     properties:
       - name: id
         type: string
-      - name: large
+      - name: primitives
+        type: PrimitiveTypesEntity
+      - name: lists
+        type: ListTypesEntity
+      - name: maps
+        type: MapTypesEntity
+      - name: entities
+        type: EntityTypesEntity
+      - name: entities
+        type: StarTypesEntity
+
+  - name: PrimitiveTypesEntity
+    properties:
+      - name: stringProperty
+        type: string
+      - name: booleanProperty
         type: boolean
-      - name: docs
-        type: Documentation
-      - name: tags
-        type: '[Tag]'
-      - name: cheeses
-        type: '{Cheese}'
-      - name: strings
-        type: Strings
-      - name: stringLists
-        type: StringLists
-  - name: Documentation
-    properties:
-      - name: description
-        type: string
-      - name: url
-        type: string
-  - name: Tag
-    properties:
-      - name: key
-        type: string
-      - name: properties
-        type: '{string}'
-  - name: Cheese
-    properties:
-      - name: type
-        type: string
-  - name: Crackers
-    properties:
-      - name: '*'
-        type: Cracker
-  - name: Cracker
-    properties:
-      - name: type
-        type: string
-      - name: size
+      - name: integerProperty
+        type: integer
+      - name: numberProperty
         type: number
-  - name: Strings
+      - name: objectProperty
+        type: object
+      - name: anyProperty
+        type: any
+
+  - name: ListTypesEntity
+    properties:
+      - name: strings
+        type: '[string]'
+      - name: booleans
+        type: '[boolean]'
+      - name: integers
+        type: '[integer]'
+      - name: numbers
+        type: '[number]'
+      - name: objects
+        type: '[object]'
+      - name: anys
+        type: '[any]'
+
+  - name: MapTypesEntity
+    properties:
+      - name: strings
+        type: '{string}'
+      - name: booleans
+        type: '{boolean}'
+      - name: integers
+        type: '{integer}'
+      - name: numbers
+        type: '{number}'
+      - name: objects
+        type: '{object}'
+      - name: anys
+        type: '{any}'
+
+  - name: EntityTypesEntity
+    properties:
+      - name: child
+        type: ChildEntity
+      - name: children
+        type: '[ChildEntity]'
+      - name: childMap
+        type: '{ChildEntity}'
+
+  - name: ChildEntity
+    properties:
+      - name: name
+        type: string
+      - name: origin
+        type: string
+
+  - name: StarTypesEntity
+    properties:
+      - name: stringMap
+        type: StringMapEntity
+      - name: integerMap
+        type: IntegerMapEntity
+      - name: numberMap
+        type: NumberMapEntity
+      - name: booleanMap
+        type: BooleanMapEntity
+      - name: anyMap
+        type: AnyMapEntity
+      - name: objectMap
+        type: ObjectMapEntity
+      - name: entityMap
+        type: EntityMapEntity
+
+  - name: StringMapEntity
     properties:
       - name: '*'
         type: string
-  - name: StringLists
+
+  - name: IntegerMapEntity
     properties:
       - name: '*'
-        type: '[string]'
-  - name: Extension
+        type: integer
+
+  - name: NumberMapEntity
+    properties:
+      - name: '*'
+        type: number
+
+  - name: BooleanMapEntity
+    properties:
+      - name: '*'
+        type: boolean
+
+  - name: ObjectMapEntity
+    properties:
+      - name: '*'
+        type: object
+
+  - name: AnyMapEntity
+    properties:
+      - name: '*'
+        type: any
+
+  - name: EntityMapEntity
+    properties:
+      - name: '*'
+        type: ChildEntity
+
+
+  - name: ExtensionEntity
     properties:
       - name: name
         type: string

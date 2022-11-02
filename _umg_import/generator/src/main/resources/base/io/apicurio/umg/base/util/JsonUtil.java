@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
@@ -42,8 +43,23 @@ public class JsonUtil {
         return rval;
     }
     
+    public static List<String> matchingKeys(String regex, ObjectNode json) {
+        Pattern pattern = Pattern.compile(regex);
+        List<String> rval = new ArrayList<>();
+        if (json != null) {
+            Iterator<String> fieldNames = json.fieldNames();
+            while (fieldNames.hasNext()) {
+                String fieldName = fieldNames.next();
+                if (Pattern.matches(regex, fieldName)) {
+                    rval.add(fieldName);
+                }
+            }
+        }
+        return rval;
+    }
+    
     /* Get/Consume a JSON (Object) property. */
-    public static ObjectNode getJsonProperty(ObjectNode json, String propertyName) {
+    public static ObjectNode getObjectProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
             JsonNode objectNode = json.get(propertyName);
             if (objectNode.isObject()) {
@@ -52,9 +68,9 @@ public class JsonUtil {
         }
         return null;
     }
-    public static ObjectNode consumeJsonProperty(ObjectNode json, String propertyName) {
+    public static ObjectNode consumeObjectProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
-            ObjectNode rval = getJsonProperty(json, propertyName);
+            ObjectNode rval = getObjectProperty(json, propertyName);
             if (rval != null) {
                 json.remove(propertyName);
                 return rval;
@@ -64,7 +80,7 @@ public class JsonUtil {
     }
 
     /* Get/Consume a JSON (Any) property. */
-    public static JsonNode getJsonAnyProperty(ObjectNode json, String propertyName) {
+    public static JsonNode getAnyProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
             JsonNode jsonNode = json.get(propertyName);
             if (!jsonNode.isNull()) {
@@ -73,17 +89,17 @@ public class JsonUtil {
         }
         return null;
     }
-    public static JsonNode consumeJsonAnyProperty(ObjectNode json, String propertyName) {
+    public static JsonNode consumeAnyProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
-            JsonNode rval = getJsonAnyProperty(json, propertyName);
+            JsonNode rval = getAnyProperty(json, propertyName);
             json.remove(propertyName);
             return rval;
         }
         return null;
     }
     
-    /* Get/consume an array of objects property. */
-    public static List<JsonNode> getJsonArrayProperty(ObjectNode json, String propertyName) {
+    /* Get/consume an array of anys property. */
+    public static List<JsonNode> getAnyArrayProperty(ObjectNode json, String propertyName) {
         if (!json.has(propertyName)) {
             return null;
         }
@@ -99,15 +115,40 @@ public class JsonUtil {
             return null;
         }
     }
-    public static List<JsonNode> consumeJsonArrayProperty(ObjectNode json, String propertyName) {
-        if (json.has(propertyName)) {
-            List<JsonNode> rval = getJsonArrayProperty(json, propertyName);
+    public static List<JsonNode> consumeAnyArrayProperty(ObjectNode json, String propertyName) {
+        List<JsonNode> rval = getAnyArrayProperty(json, propertyName);
+        if (rval != null) {
             json.remove(propertyName);
-            return rval;
         }
-        return null;
+        return rval;
     }
-    
+
+    /* Get/consume an array of objects property. */
+    public static List<ObjectNode> getObjectArrayProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<ObjectNode> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                if (item.isObject()) {
+                    rval.add((ObjectNode) item);
+                }
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<ObjectNode> consumeObjectArrayProperty(ObjectNode json, String propertyName) {
+        List<ObjectNode> rval = getObjectArrayProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
 
     /* Get/consume an array of strings property. */
     public static List<String> getStringArrayProperty(ObjectNode json, String propertyName) {
@@ -130,6 +171,100 @@ public class JsonUtil {
         ObjectNode node = (ObjectNode) json;
         if (node.has(propertyName)) {
             List<String> rval = getStringArrayProperty(json, propertyName);
+            node.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
+
+    /* Get/consume an array of integers property. */
+    public static List<Integer> getIntegerArrayProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<Integer> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                if (item.isInt()) {
+                    rval.add(item.asInt());
+                }
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<Integer> consumeIntegerArrayProperty(ObjectNode json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        if (node.has(propertyName)) {
+            List<Integer> rval = getIntegerArrayProperty(json, propertyName);
+            node.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
+
+    /* Get/consume an array of numbers property. */
+    public static List<Number> getNumberArrayProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<Number> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                if (item.isInt()) {
+                    rval.add(item.asInt());
+                }
+                if (item.isLong()) {
+                    rval.add(item.asLong());
+                }
+                if (item.isFloat() || item.isDouble() || item.isBigDecimal() || item.isBigInteger()) {
+                    rval.add(item.asDouble());
+                }
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<Number> consumeNumberArrayProperty(ObjectNode json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        if (node.has(propertyName)) {
+            List<Number> rval = getNumberArrayProperty(json, propertyName);
+            node.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
+    
+
+    /* Get/consume an array of booleans property. */
+    public static List<Boolean> getBooleanArrayProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isArray()) {
+            ArrayNode array = (ArrayNode) node;
+            List<Boolean> rval = new ArrayList<>();
+            for (JsonNode item : array) {
+                if (item.isBoolean()) {
+                    rval.add(item.asBoolean());
+                }
+            }
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static List<Boolean> consumeBooleanArrayProperty(ObjectNode json, String propertyName) {
+        ObjectNode node = (ObjectNode) json;
+        if (node.has(propertyName)) {
+            List<Boolean> rval = getBooleanArrayProperty(json, propertyName);
             node.remove(propertyName);
             return rval;
         }
@@ -228,6 +363,166 @@ public class JsonUtil {
             }
         }
         return null;
+    }
+
+
+    /* Get/consume a map of anys property. */
+    public static Map<String, JsonNode> getAnyMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, JsonNode> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getAnyProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, JsonNode> consumeAnyMapProperty(ObjectNode json, String propertyName) {
+        Map<String, JsonNode> rval = getAnyMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
+
+    /* Get/consume a map of objects property. */
+    public static Map<String, ObjectNode> getObjectMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, ObjectNode> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getObjectProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, ObjectNode> consumeObjectMapProperty(ObjectNode json, String propertyName) {
+        Map<String, ObjectNode> rval = getObjectMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
+
+
+    /* Get/consume a map of strings property. */
+    public static Map<String, String> getStringMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, String> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getStringProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, String> consumeStringMapProperty(ObjectNode json, String propertyName) {
+        Map<String, String> rval = getStringMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
+
+    /* Get/consume a map of integers property. */
+    public static Map<String, Integer> getIntegerMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, Integer> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getIntegerProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, Integer> consumeIntegerMapProperty(ObjectNode json, String propertyName) {
+        Map<String, Integer> rval = getIntegerMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
+
+
+    /* Get/consume a map of numbers property. */
+    public static Map<String, Number> getNumberMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, Number> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getNumberProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, Number> consumeNumberMapProperty(ObjectNode json, String propertyName) {
+        Map<String, Number> rval = getNumberMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
+    }
+
+
+    /* Get/consume a map of numbers property. */
+    public static Map<String, Boolean> getBooleanMapProperty(ObjectNode json, String propertyName) {
+        if (!json.has(propertyName)) {
+            return null;
+        }
+        JsonNode node = json.get(propertyName);
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Map<String, Boolean> rval = new LinkedHashMap<>();
+            List<String> keys = keys(object);
+            keys.forEach(key -> {
+                rval.put(key, getBooleanProperty(object, key));
+            });
+            return rval;
+        } else {
+            return null;
+        }
+    }
+    public static Map<String, Boolean> consumeBooleanMapProperty(ObjectNode json, String propertyName) {
+        Map<String, Boolean> rval = getBooleanMapProperty(json, propertyName);
+        if (rval != null) {
+            json.remove(propertyName);
+        }
+        return rval;
     }
 
 
