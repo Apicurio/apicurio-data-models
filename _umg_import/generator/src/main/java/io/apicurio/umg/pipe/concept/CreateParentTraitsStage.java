@@ -30,6 +30,7 @@ public class CreateParentTraitsStage extends AbstractStage {
                         parentTrait = TraitModel.builder().namespace(entity.getNamespace()).name(traitName).build();
                         PropertyModel traitProperty = PropertyModel.builder()
                                 .name(property.getName())
+                                .collection(property.getCollection())
                                 .rawType(property.getRawType())
                                 .type(property.getType()).build();
                         parentTrait.getProperties().put(property.getName(), traitProperty);

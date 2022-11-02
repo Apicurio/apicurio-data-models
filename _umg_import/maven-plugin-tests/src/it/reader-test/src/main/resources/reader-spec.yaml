@@ -1,0 +1,6 @@
+name: Reader Testing Model
+prefix: Reader
+namespace: org.example.reader
+versions:
+  - $ref: ./reader-spec-v1.yaml
+  

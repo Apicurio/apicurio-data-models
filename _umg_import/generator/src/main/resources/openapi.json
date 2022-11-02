@@ -26,6 +26,10 @@
                     },
                     "type": {
                         "type": "string"
+                    },
+                    "collection": {
+                        "description": "",
+                        "type": "string"
                     }
                 },
                 "example": {

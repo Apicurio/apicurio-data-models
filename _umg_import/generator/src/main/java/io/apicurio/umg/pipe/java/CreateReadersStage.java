@@ -1,16 +1,17 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.Method;
-import org.jboss.forge.roaster.model.MethodHolder;
-import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
@@ -145,17 +146,44 @@ public class CreateReadersStage extends AbstractStage {
         Set<PropertyModel> models = new HashSet<>();
         while (model != null) {
             models.addAll(model.getProperties().values());
+
+            // Also include properties from all traits.
+            model.getTraits().forEach(trait -> {
+                TraitModel t = trait;
+                while (t != null) {
+                    models.addAll(t.getProperties().values());
+                    t = t.getParent();
+                }
+            });
+
             model = model.getParent();
         }
         return models;
     }
 
     private static String readMethodName(EntityModel entityModel) {
-        return "read" + entityModel.getName();
+        return readMethodName(entityModel.getName());
     }
 
     private static String createMethodName(EntityModel entityModel) {
-        return "create" + entityModel.getName();
+        return createMethodName(entityModel.getName());
+    }
+
+    @SuppressWarnings("unused")
+    private static String addMethodName(EntityModel entityModel) {
+        return addMethodName(entityModel.getName());
+    }
+
+    private static String readMethodName(String entityName) {
+        return "read" + StringUtils.capitalize(entityName);
+    }
+
+    private static String createMethodName(String entityName) {
+        return "create" + StringUtils.capitalize(entityName);
+    }
+
+    private static String addMethodName(String entityName) {
+        return "add" + StringUtils.capitalize(entityName);
     }
 
     @Data
@@ -171,14 +199,16 @@ public class CreateReadersStage extends AbstractStage {
          * @param body
          */
         public void writeTo(BodyBuilder body) {
-            if (property.getType().isSimple() && !"*".equals(property.getName()) && !property.getName().startsWith("/")) {
-                handleSimpleType(body);
-            } else if (property.getType().isSimple() && "*".equals(property.getName())) {
+            if ("*".equals(property.getName())) {
                 /* Handle mapped properties */
-                handleStarProperties(body);
-            } else if (property.getType().isSimple() && property.getName().startsWith("/")) {
+                handleStarProperty(body);
+            } else if (property.getName().startsWith("/")) {
                 /* Handle regex properties */
-                handleRegexProperties(body);
+                handleRegexProperty(body);
+            } else if (property.getType().isEntityType()) {
+                handleEntityProperty(body);
+            } else if (property.getType().isPrimitiveType()) {
+                handlePrimitiveTypeProperty(body);
             } else if (property.getType().isList()) {
                 /* Handle List property */
                 handleListProperty(body);
@@ -194,67 +224,224 @@ public class CreateReadersStage extends AbstractStage {
             }
         }
 
-        private void handleSimpleType(BodyBuilder body) {
-            body.addContext("valueType", determineValueType());
-            body.addContext("consumeProperty", determineConsumePropertyVariant());
+        private void handleStarProperty(BodyBuilder body) {
+            if (property.getType().isEntityType()) {
+                String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
+                EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
+                if (propertyTypeEntity == null) {
+                    Logger.warn("[CreateReadersStage] STAR Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                    return;
+                }
+                JavaEntityModel propertyTypeJavaModel = getState().getJavaIndex().lookupType(propertyTypeEntity);
+                if (propertyTypeJavaModel == null) {
+                    Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    return;
+                }
+                readerClassSource.addImport(propertyTypeJavaModel.fullyQualifiedName());
+                readerClassSource.addImport(List.class);
+
+                body.addContext("entityJavaType", propertyTypeJavaModel.getName());
+                body.addContext("createMethodName", createMethodName(propertyTypeEntity));
+                body.addContext("readMethodName", readMethodName(propertyTypeEntity));
+                body.addContext("addMethodName", "addItem");
+
+                body.append("{");
+                body.append("    List<String> propertyNames = JsonUtil.keys(json);");
+                body.append("    propertyNames.forEach(name -> {");
+                body.append("        ObjectNode object = JsonUtil.consumeJsonProperty(json, name);");
+                body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
+                body.append("        this.${readMethodName}(object, model);");
+                body.append("        node.${addMethodName}(name, model);");
+                body.append("    });");
+                body.append("}");
+            } else if (property.getType().isPrimitiveType()) {
+                readerClassSource.addImport(List.class);
+
+                body.addContext("valueType", determineValueType(property.getType()));
+                body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
+
+                body.append("{");
+                body.append("    List<String> propertyNames = JsonUtil.keys(json);");
+                body.append("    propertyNames.forEach(name -> {");
+                body.append("        ${valueType} value = JsonUtil.${consumeProperty}(json, name);");
+                body.append("        node.addItem(name, value);");
+                body.append("    });");
+                body.append("}");
+            } else if (property.getType().isList()) {
+                readerClassSource.addImport(List.class);
+
+                PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
+                if (listValuePropertyType.getSimpleType().equals("string")) {
+                    body.append("{");
+                    body.append("    List<String> propertyNames = JsonUtil.keys(json);");
+                    body.append("    propertyNames.forEach(name -> {");
+                    body.append("        List<String> value = JsonUtil.consumeStringArrayProperty(json, name);");
+                    body.append("        node.addItem(name, value);");
+                    body.append("    });");
+                    body.append("}");
+                } else {
+                    Logger.warn("[CreateReadersStage] (list) STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                }
+            } else {
+                Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
+                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            }
+        }
+
+        private void handleRegexProperty(BodyBuilder body) {
+            if (property.getType().isEntityType()) {
+                String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
+                EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
+                if (propertyTypeEntity == null) {
+                    Logger.warn("[CreateReadersStage] REGEX Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                    return;
+                }
+                JavaEntityModel propertyTypeJavaModel = getState().getJavaIndex().lookupType(propertyTypeEntity);
+                if (propertyTypeJavaModel == null) {
+                    Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    return;
+                }
+                readerClassSource.addImport(propertyTypeJavaModel.fullyQualifiedName());
+                readerClassSource.addImport(List.class);
+
+                body.addContext("propertyRegex", encodeRegex(property.getName()));
+                body.addContext("entityJavaType", propertyTypeJavaModel.getName());
+                body.addContext("createMethodName", createMethodName(propertyTypeEntity));
+                body.addContext("readMethodName", readMethodName(propertyTypeEntity));
+                body.addContext("addMethodName", addMethodName(property.getCollection()));
+
+                body.append("{");
+                body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
+                body.append("    propertyNames.forEach(name -> {");
+                body.append("        ObjectNode object = JsonUtil.consumeJsonProperty(json, name);");
+                body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
+                body.append("        this.${readMethodName}(object, model);");
+                body.append("        node.${addMethodName}(name, model);");
+                body.append("    });");
+                body.append("}");
+            } else {
+                Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            }
+        }
+
+        private void handleEntityProperty(BodyBuilder body) {
+            String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
+            EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
+            if (propertyTypeEntity == null) {
+                Logger.warn("[CreateReadersStage] Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                return;
+            }
+
             body.addContext("propertyName", property.getName());
-            body.addContext("setterName", Util.fieldSetter(property));
-            body.addContext("getterName", Util.fieldGetter(property));
+            body.addContext("setterMethodName", Util.fieldSetter(property));
+            body.addContext("createMethodName", createMethodName(propertyTypeEntity));
+            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("readMethodName", readMethodName(propertyTypeEntity));
 
             body.append("{");
-            body.append("    ${valueType} value = JsonUtil.${consumeProperty}(json, \"${propertyName}\");");
-            if (property.getType().isPrimitiveType()) {
-                body.append("    node.${setterName}(value);");
-            } else {
-                String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
-                EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
-                if (propertyTypeEntity == null) {
-                    Logger.warn("[CreateReadersStage] Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                } else {
-                    body.addContext("createMethodName", createMethodName(propertyTypeEntity));
-                    body.addContext("readMethodName", readMethodName(propertyTypeEntity));
-
-                    body.append("    if (value != null) {");
-                    body.append("        node.${setterName}(node.${createMethodName}());");
-                    body.append("        ${readMethodName}(value, node.${getterName}());");
-                    body.append("    }");
-                }
-            }
+            body.append("    ObjectNode object = JsonUtil.consumeJsonProperty(json, \"${propertyName}\");");
+            body.append("    if (object != null) {");
+            body.append("        node.${setterMethodName}(node.${createMethodName}());");
+            body.append("        ${readMethodName}(object, node.${getterMethodName}());");
+            body.append("    }");
             body.append("}");
         }
 
-        private void handleStarProperties(BodyBuilder body) {
-            // TODO Auto-generated method stub
-            Logger.warn("[CreateReadersStage] '*' Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            Logger.warn("[CreateReadersStage]        property type: " + property.getType());
-        }
+        private void handlePrimitiveTypeProperty(BodyBuilder body) {
+            body.addContext("valueType", determineValueType(property.getType()));
+            body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
+            body.addContext("propertyName", property.getName());
+            body.addContext("setterMethodName", Util.fieldSetter(property));
 
-        private void handleRegexProperties(BodyBuilder body) {
-            // TODO Auto-generated method stub
-            Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            body.append("{");
+            body.append("    ${valueType} value = JsonUtil.${consumeProperty}(json, \"${propertyName}\");");
+            body.append("    node.${setterMethodName}(value);");
+            body.append("}");
         }
 
         private void handleListProperty(BodyBuilder body) {
-            // TODO Auto-generated method stub
-            Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            body.addContext("propertyName", property.getName());
+            body.addContext("setterMethodName", Util.fieldSetter(property));
+
+            PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
+            if (listValuePropertyType.getSimpleType().equals("string")) {
+                body.append("{");
+                body.append("    List<String> value = JsonUtil.consumeStringArrayProperty(json, \"${propertyName}\");");
+                body.append("    node.${setterMethodName}(value);");
+                body.append("}");
+            } else if (listValuePropertyType.getSimpleType().equals("any")) {
+                body.append("{");
+                body.append("    Map<String, JsonNode> value = JsonUtil.consumeAnyArrayProperty(json, \"${propertyName}\");");
+                body.append("    node.${setterMethodName}(value);");
+                body.append("}");
+            } else if (listValuePropertyType.isEntityType()) {
+                String entityTypeName = listValuePropertyType.getSimpleType();
+                String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
+                EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
+                if (entityTypeModel == null) {
+                    Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type is entity but not found in index: " + property.getType());
+                    return;
+                }
+                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(entityTypeModel);
+                if (entityTypeJavaModel == null) {
+                    Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    return;
+                }
+                readerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                readerClassSource.addImport(List.class);
+                readerClassSource.addImport(ArrayList.class);
+
+                body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
+                body.addContext("createMethodName", createMethodName(entityTypeModel));
+                body.addContext("readMethodName", readMethodName(entityTypeModel));
+                body.addContext("setterMethod", Util.fieldSetter(property));
+
+                body.append("{");
+                body.append("    List<ObjectNode> objects = JsonUtil.consumeJsonArrayProperty(json, \"${propertyName}\");");
+                body.append("    if (objects != null) {");
+                body.append("        List<${mapValueJavaType}> models = new ArrayList<>();");
+                body.append("        objects.forEach(object -> {");
+                body.append("            ${mapValueJavaType} model = node.${createMethodName}();");
+                body.append("            this.${readMethodName}(object, model);");
+                body.append("            models.add(model);");
+                body.append("        });");
+                body.append("        node.${setterMethod}(models);");
+                body.append("    }");
+                body.append("}");
+            } else {
+                Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            }
         }
 
         private void handleMapProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("setterName", Util.fieldSetter(property));
+            body.addContext("setterMethodName", Util.fieldSetter(property));
 
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
             if (mapValuePropertyType.getSimpleType().equals("string")) {
                 body.append("{");
                 body.append("    Map<String, String> value = JsonUtil.consumeStringMapProperty(json, \"${propertyName}\");");
-                body.append("    node.${setterName}(value);");
+                body.append("    node.${setterMethodName}(value);");
                 body.append("}");
             } else if (mapValuePropertyType.getSimpleType().equals("any")) {
                 body.append("{");
                 body.append("    Map<String, JsonNode> value = JsonUtil.consumeAnyMapProperty(json, \"${propertyName}\");");
-                body.append("    node.${setterName}(value);");
+                body.append("    node.${setterMethodName}(value);");
+                body.append("}");
+            } else if (mapValuePropertyType.getSimpleType().equals("object")) {
+                body.append("{");
+                body.append("    Map<String, ObjectNode> value = JsonUtil.consumeJsonMapProperty(json, \"${propertyName}\");");
+                body.append("    node.${setterMethodName}(value);");
                 body.append("}");
             } else if (mapValuePropertyType.isEntityType()) {
                 String entityTypeName = mapValuePropertyType.getSimpleType();
@@ -306,24 +493,22 @@ public class CreateReadersStage extends AbstractStage {
          * this property.  The property might be a primitive type, or a list/map of primitive
          * types, or an Entity type, or a list/map of Entity types.
          */
-        private String determineConsumePropertyVariant() {
-            if (property.getType().isSimple()) {
-                if (property.getType().isPrimitiveType()) {
-                    Method<?, ?> method = findGetterMethod();
-                    if (method == null) {
-                        Logger.warn("[CreateReadersStage] Getter not found for property: " + property + " for: " + javaEntityModel);
-                        return null;
-                    }
-                    Type<?> returnType = method.getReturnType();
-                    if (returnType.toString().equals("ObjectNode")) {
-                        return "consumeJsonProperty";
-                    } else {
-                        return "consume" + returnType.toString() + "Property";
-                    }
-                } else {
+        private String determineConsumePropertyVariant(PropertyType type) {
+            if (type.isEntityType()) {
+                return "consumeJsonProperty";
+            }
+
+            if (type.isPrimitiveType()) {
+                Class<?> _class = Util.primitiveTypeToClass(type);
+                if (ObjectNode.class.equals(_class)) {
                     return "consumeJsonProperty";
+                } else if (JsonNode.class.equals(_class)) {
+                    return "consumeAnyProperty";
+                } else {
+                    return "consume" + _class.getSimpleName() + "Property";
                 }
             }
+
             Logger.warn("[CreateReadersStage] Unable to determine value type for: " + property);
             return "consumeProperty";
         }
@@ -331,69 +516,19 @@ public class CreateReadersStage extends AbstractStage {
         /**
          * Determines the Java data type of the given property.
          */
-        private String determineValueType() {
-            if (property.getType().isSimple()) {
-                if (property.getType().isPrimitiveType()) {
-                    Method<?, ?> method = findGetterMethod();
-                    if (method == null) {
-                        Logger.warn("[CreateReadersStage] Getter not found for property: " + property + " for: " + javaEntityModel);
-                        return "Object";
-                    }
-                    Type<?> returnType = method.getReturnType();
-                    return returnType.toString();
-                } else {
-                    return "ObjectNode";
+        private String determineValueType(PropertyType type) {
+            if (type.isPrimitiveType()) {
+                Class<?> _class = Util.primitiveTypeToClass(type);
+                if (_class != null) {
+                    return _class.getSimpleName();
                 }
             }
             Logger.warn("[CreateReadersStage] Unable to determine value type for: " + property);
             return "Object";
         }
 
-        /**
-         * Finds the getter for the given property.  Searches up the java class/interface hierarchy for the
-         * getter method.
-         * @param property
-         * @param javaEntityModel
-         */
-        private Method<?, ?> findGetterMethod() {
-            String getterName = Util.fieldGetter(property);
-            Collection<EntityModel> entities = new HashSet<>();
-            Collection<TraitModel> traits = new HashSet<>();
-
-            EntityModel model = entityModel;
-            while (model != null) {
-                entities.add(model);
-                for (TraitModel trait : model.getTraits()) {
-                    TraitModel t = trait;
-                    while (t != null) {
-                        traits.add(t);
-                        t = t.getParent();
-                    }
-                }
-                model = model.getParent();
-            }
-
-            // Check for getter in all entities
-            for (EntityModel entity : entities) {
-                JavaEntityModel javaModel = getState().getJavaIndex().lookupType(entity);
-                MethodHolder<?> source = (MethodHolder<?>) javaModel.getJavaSource();
-                Method<?, ?> method = source.getMethod(getterName);
-                if (method != null) {
-                    return method;
-                }
-            }
-
-            // Check for getter in all traits
-            for (TraitModel trait : traits) {
-                JavaEntityModel javaModel = getState().getJavaIndex().lookupType(trait);
-                MethodHolder<?> source = (MethodHolder<?>) javaModel.getJavaSource();
-                Method<?, ?> method = source.getMethod(getterName);
-                if (method != null) {
-                    return method;
-                }
-            }
-
-            return null;
+        private String encodeRegex(String regex) {
+            return regex.replace("\\", "\\\\");
         }
     }
 }

@@ -20,6 +20,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
                 trait.getProperties().forEach(property -> {
                     PropertyModel propertyModel = PropertyModel.builder()
                             .name(property.getName())
+                            .collection(property.getCollection())
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();
@@ -35,6 +36,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
                 entity.getProperties().forEach(property -> {
                     PropertyModel propertyModel = PropertyModel.builder()
                             .name(property.getName())
+                            .collection(property.getCollection())
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();

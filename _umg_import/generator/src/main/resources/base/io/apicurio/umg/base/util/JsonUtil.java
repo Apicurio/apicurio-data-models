@@ -62,6 +62,25 @@ public class JsonUtil {
         }
         return null;
     }
+
+    /* Get/Consume a JSON (Any) property. */
+    public static JsonNode getJsonAnyProperty(ObjectNode json, String propertyName) {
+        if (json.has(propertyName)) {
+            JsonNode jsonNode = json.get(propertyName);
+            if (!jsonNode.isNull()) {
+                return jsonNode;
+            }
+        }
+        return null;
+    }
+    public static JsonNode consumeJsonAnyProperty(ObjectNode json, String propertyName) {
+        if (json.has(propertyName)) {
+            JsonNode rval = getJsonAnyProperty(json, propertyName);
+            json.remove(propertyName);
+            return rval;
+        }
+        return null;
+    }
     
     /* Get/consume an array of objects property. */
     public static List<JsonNode> getJsonArrayProperty(ObjectNode json, String propertyName) {

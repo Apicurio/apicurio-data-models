@@ -1,0 +1,81 @@
+name: ReaderAPI 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/Reader/versions/1.0.md
+prefix: Reader
+namespace: org.example.reader.v10
+
+traits:
+  - name: CommonTrait
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+  - name: ExtensibleTrait
+    properties:
+      - name: '/^x-[\\w\\d\\-\\_]+$/'
+        type: Extension
+        collection: extensions
+
+entities:
+  - name: Document
+    traits:
+      - CommonTrait
+      - ExtensibleTrait
+    properties:
+      - name: id
+        type: string
+      - name: large
+        type: boolean
+      - name: docs
+        type: Documentation
+      - name: tags
+        type: '[Tag]'
+      - name: cheeses
+        type: '{Cheese}'
+      - name: strings
+        type: Strings
+      - name: stringLists
+        type: StringLists
+  - name: Documentation
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
+  - name: Tag
+    properties:
+      - name: key
+        type: string
+      - name: properties
+        type: '{string}'
+  - name: Cheese
+    properties:
+      - name: type
+        type: string
+  - name: Crackers
+    properties:
+      - name: '*'
+        type: Cracker
+  - name: Cracker
+    properties:
+      - name: type
+        type: string
+      - name: size
+        type: number
+  - name: Strings
+    properties:
+      - name: '*'
+        type: string
+  - name: StringLists
+    properties:
+      - name: '*'
+        type: '[string]'
+  - name: Extension
+    properties:
+      - name: name
+        type: string
+      - name: type
+        type: string

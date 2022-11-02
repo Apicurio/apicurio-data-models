@@ -9,8 +9,10 @@ import lombok.Data;
 @Builder
 @Data
 public class PropertyModel {
-    
+
     private String name;
+
+    private String collection;
 
     private String rawType;
 
