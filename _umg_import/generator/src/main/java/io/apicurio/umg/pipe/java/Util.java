@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.models.java.JavaFieldModel;
+import io.apicurio.umg.models.java.JavaFieldModel.Flavor;
 
 public class Util {
 
@@ -37,7 +38,7 @@ public class Util {
     }
 
     public static String fieldGetter(JavaFieldModel fieldModel) {
-        boolean isBool = fieldModel.getPrimitiveType() != null && fieldModel.getPrimitiveType().endsWith("Boolean");
+        boolean isBool = fieldModel.getPrimitiveType() != null && fieldModel.getFlavor() == Flavor.NONE && fieldModel.getPrimitiveType().equals("java.lang.Boolean");
         return (isBool ? "is" : "get") + StringUtils.capitalize(fieldModel.getName());
     }
 
@@ -46,8 +47,16 @@ public class Util {
     }
 
     public static String fieldGetter(PropertyModel propertyModel) {
-        boolean isBool = propertyModel.getType().isPrimitiveType() && propertyModel.getType().getSimpleType().equals("boolean");
-        return (isBool ? "is" : "get") + StringUtils.capitalize(propertyModel.getName());
+        String name = propertyModel.getName();
+        if (name.startsWith("/")) {
+            name = propertyModel.getCollection();
+        }
+        return fieldGetter(name, propertyModel.getType());
+    }
+
+    public static String fieldGetter(String name, PropertyType type) {
+        boolean isBool = type.isPrimitiveType() && type.getSimpleType().equals("boolean");
+        return (isBool ? "is" : "get") + StringUtils.capitalize(name);
     }
 
     public static String fieldSetter(PropertyModel propertyModel) {

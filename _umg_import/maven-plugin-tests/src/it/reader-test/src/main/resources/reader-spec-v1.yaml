@@ -23,7 +23,6 @@ entities:
   - name: Document
     traits:
       - CommonTrait
-      - ExtensibleTrait
     properties:
       - name: id
         type: string
@@ -35,8 +34,17 @@ entities:
         type: MapTypesEntity
       - name: entities
         type: EntityTypesEntity
-      - name: entities
+      - name: starTypes
         type: StarTypesEntity
+      - name: ext
+        type: ExtensibleEntity
+
+  - name: ExtensibleEntity
+    traits:
+      - ExtensibleTrait
+    properties:
+      - name: id
+        type: string
 
   - name: PrimitiveTypesEntity
     properties:

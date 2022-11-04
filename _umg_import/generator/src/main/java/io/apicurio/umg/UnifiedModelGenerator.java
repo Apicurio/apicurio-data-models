@@ -36,6 +36,7 @@ import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.AddPrefixes;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
+import io.apicurio.umg.pipe.java.CreateWritersStage;
 import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
 import io.apicurio.umg.pipe.java.JavaClassStage;
 import io.apicurio.umg.pipe.java.JavaFieldStage;
@@ -43,7 +44,7 @@ import io.apicurio.umg.pipe.java.JavaGetterStage;
 import io.apicurio.umg.pipe.java.JavaSetterStage;
 import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
-import io.apicurio.umg.pipe.java.LoadBaseClasses;
+import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
 import io.apicurio.umg.pipe.java.ResolveFieldSourceTypes;
 import io.apicurio.umg.pipe.java.ResolveFieldTypes;
 import io.apicurio.umg.pipe.java.TodoStage;
@@ -112,7 +113,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new TransformComplexTypes());
         pipe.addStage(new ResolveFieldTypes());
         pipe.addStage(new AddPrefixes());
-        pipe.addStage(new LoadBaseClasses());
+        pipe.addStage(new LoadBaseClassesStage());
 
         // Working with Roaster
         pipe.addStage(new ResolveFieldSourceTypes());
@@ -123,6 +124,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new JavaGetterStage());
         pipe.addStage(new JavaSetterStage());
         pipe.addStage(new CreateReadersStage());
+        pipe.addStage(new CreateWritersStage());
         pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
 
         pipe.run(state);

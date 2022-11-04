@@ -525,6 +525,145 @@ public class JsonUtil {
         return rval;
     }
 
+    
+    /* Set a JSON (Object) property. */
+    public static void setObjectProperty(ObjectNode json, String propertyName, ObjectNode value) {
+        if (value != null) {
+            json.set(propertyName, value);
+        }
+    }
+    /* Set a JSON (Any) property. */
+    public static void setAnyProperty(ObjectNode json, String propertyName, JsonNode value) {
+        if (value != null) {
+            json.set(propertyName, value);
+        }
+    }
+    /* Set an array of anys property. */
+    public static void setAnyArrayProperty(ObjectNode json, String propertyName, List<JsonNode> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set an array of objects property. */
+    public static void setObjectArrayProperty(ObjectNode json, String propertyName, List<ObjectNode> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set an array of strings property. */
+    public static void setStringArrayProperty(ObjectNode json, String propertyName, List<String> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set an array of integers property. */
+    public static void setIntegerArrayProperty(ObjectNode json, String propertyName, List<Integer> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set an array of numbers property. */
+    public static void setNumberArrayProperty(ObjectNode json, String propertyName, List<Number> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v != null ? v.doubleValue() : null));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set an array of booleans property. */
+    public static void setBooleanArrayProperty(ObjectNode json, String propertyName, List<Boolean> value) {
+        if (value != null) {
+            ArrayNode array = json.arrayNode(value.size());
+            value.forEach(v -> array.add(v));
+            json.set(propertyName, array);
+        }
+    }
+    /* Set a string property. */
+    public static void setStringProperty(ObjectNode json, String propertyName, String value) {
+        if (value != null) {
+            json.set(propertyName, factory.textNode(value));
+        }
+    }
+    /* Set an Integer property. */
+    public static void setIntegerProperty(ObjectNode json, String propertyName, Integer value) {
+        if (value != null) {
+            json.set(propertyName, factory.numberNode(value));
+        }
+    }
+    /* Set a Number property. */
+    public static void setNumberProperty(ObjectNode json, String propertyName, Number value) {
+        if (value != null) {
+            json.set(propertyName, factory.numberNode(value.doubleValue()));
+        }
+    }
+    /* Set a Boolean property. */
+    public static void setBooleanProperty(ObjectNode json, String propertyName, Boolean value) {
+        if (value != null) {
+            json.set(propertyName, factory.booleanNode(value));
+        }
+    }
+    /* Set a map of anys property. */
+    public static void setAnyMapProperty(ObjectNode json, String propertyName, Map<String, JsonNode> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, entry.getValue());
+            });
+        }
+    }
+    /* Set a map of objects property. */
+    public static void setObjectMapProperty(ObjectNode json, String propertyName, Map<String, ObjectNode> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, entry.getValue());
+            });
+        }
+    }
+    /* Set a map of strings property. */
+    public static void setStringMapProperty(ObjectNode json, String propertyName, Map<String, String> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, factory.textNode(entry.getValue()));
+            });
+        }
+    }
+    /* Set a map of integers property. */
+    public static void setIntegerMapProperty(ObjectNode json, String propertyName, Map<String, Integer> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, factory.numberNode(entry.getValue()));
+            });
+        }
+    }
+    /* Set a map of numbers property. */
+    public static void setNumberMapProperty(ObjectNode json, String propertyName, Map<String, Number> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, factory.numberNode(entry.getValue().doubleValue()));
+            });
+        }
+    }
+    /* Set a map of numbers property. */
+    public static void setBooleanMapProperty(ObjectNode json, String propertyName, Map<String, Boolean> value) {
+        if (value != null) {
+            value.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                json.set(propertyName, factory.booleanNode(entry.getValue()));
+            });
+        }
+    }
 
     public static String stringify(JsonNode json) {
         try {

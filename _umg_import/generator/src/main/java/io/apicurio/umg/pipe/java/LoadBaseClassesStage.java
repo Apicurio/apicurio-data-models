@@ -18,7 +18,7 @@ import io.apicurio.umg.pipe.AbstractStage;
  *
  * @author eric.wittmann@gmail.com
  */
-public class LoadBaseClasses extends AbstractStage {
+public class LoadBaseClassesStage extends AbstractStage {
 
     @Override
     protected void doProcess() {

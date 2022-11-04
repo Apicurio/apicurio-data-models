@@ -2,10 +2,8 @@ package io.apicurio.umg.pipe.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.Roaster;
@@ -20,7 +18,6 @@ import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
-import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
@@ -114,7 +111,7 @@ public class CreateReadersStage extends AbstractStage {
         // Now create the body content for the reader.
         BodyBuilder body = new BodyBuilder();
         // Read each property of the entity
-        Collection<PropertyModel> allProperties = getAllPropertiesFor(entityModel);
+        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
         allProperties.forEach(property -> {
             createReadPropertyCode(body, property, entityModel, javaEntityModel, readerClassSource);
         });
@@ -137,30 +134,6 @@ public class CreateReadersStage extends AbstractStage {
         CreateReadProperty crp = new CreateReadProperty(property, entityModel, javaEntityModel, readerClassSource);
         body.clearContext();
         crp.writeTo(body);
-    }
-
-    /**
-     * Gets a list of all properties for the given entity.  This includes any inherited properties.
-     * @param entityModel
-     */
-    private Collection<PropertyModel> getAllPropertiesFor(EntityModel entityModel) {
-        EntityModel model = entityModel;
-        Set<PropertyModel> models = new HashSet<>();
-        while (model != null) {
-            models.addAll(model.getProperties().values());
-
-            // Also include properties from all traits.
-            model.getTraits().forEach(trait -> {
-                TraitModel t = trait;
-                while (t != null) {
-                    models.addAll(t.getProperties().values());
-                    t = t.getParent();
-                }
-            });
-
-            model = model.getParent();
-        }
-        return models;
     }
 
     private static String readMethodName(EntityModel entityModel) {
@@ -201,23 +174,18 @@ public class CreateReadersStage extends AbstractStage {
          */
         public void writeTo(BodyBuilder body) {
             if ("*".equals(property.getName())) {
-                /* Handle mapped properties */
                 handleStarProperty(body);
             } else if (property.getName().startsWith("/")) {
-                /* Handle regex properties */
                 handleRegexProperty(body);
             } else if (property.getType().isEntityType()) {
                 handleEntityProperty(body);
             } else if (property.getType().isPrimitiveType()) {
                 handlePrimitiveTypeProperty(body);
             } else if (property.getType().isList()) {
-                /* Handle List property */
                 handleListProperty(body);
             } else if (property.getType().isMap()) {
-                /* Handle map property */
                 handleMapProperty(body);
             } else if (property.getType().isUnion()) {
-                /* Handle union property */
                 handleUnionProperty(body);
             } else {
                 Logger.warn("[CreateReadersStage] Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
@@ -400,7 +368,7 @@ public class CreateReadersStage extends AbstractStage {
                 readerClassSource.addImport(List.class);
                 readerClassSource.addImport(ArrayList.class);
 
-                body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
+                body.addContext("listValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", createMethodName(entityTypeModel));
                 body.addContext("readMethodName", readMethodName(entityTypeModel));
                 body.addContext("addMethodName", addMethodName(entityTypeModel));
@@ -409,7 +377,7 @@ public class CreateReadersStage extends AbstractStage {
                 body.append("    List<ObjectNode> objects = JsonUtil.consumeObjectArrayProperty(json, \"${propertyName}\");");
                 body.append("    if (objects != null) {");
                 body.append("        objects.forEach(object -> {");
-                body.append("            ${mapValueJavaType} model = node.${createMethodName}();");
+                body.append("            ${listValueJavaType} model = node.${createMethodName}();");
                 body.append("            this.${readMethodName}(object, model);");
                 body.append("            node.${addMethodName}(model);");
                 body.append("        });");

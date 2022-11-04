@@ -18,6 +18,7 @@ package io.apicurio.umg.index.concept;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.apache.commons.collections4.Trie;
@@ -25,6 +26,7 @@ import org.apache.commons.collections4.trie.PatriciaTrie;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
+import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 
@@ -134,4 +136,30 @@ public class ConceptIndex {
     public Collection<TraitModel> getAllTraitsWithCopy() {
         return new HashSet<>(findTraits(""));
     }
+
+    /**
+     * Gets a list of all properties for the given entity.  This includes any inherited properties and
+     * any properties from Traits.
+     * @param entityModel
+     */
+    public Collection<PropertyModel> getAllEntityProperties(EntityModel entityModel) {
+        EntityModel model = entityModel;
+        Set<PropertyModel> models = new HashSet<>();
+        while (model != null) {
+            models.addAll(model.getProperties().values());
+
+            // Also include properties from all traits.
+            model.getTraits().forEach(trait -> {
+                TraitModel t = trait;
+                while (t != null) {
+                    models.addAll(t.getProperties().values());
+                    t = t.getParent();
+                }
+            });
+
+            model = model.getParent();
+        }
+        return models;
+    }
+
 }

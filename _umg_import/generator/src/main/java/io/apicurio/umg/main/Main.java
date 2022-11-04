@@ -65,9 +65,10 @@ public class Main {
     private static List<SpecificationModel> loadSpecs() {
         Logger.info("Loading specifications.");
         List<SpecificationModel> specs = new LinkedList<>();
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
+        //        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
+        //        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
+        //        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml"));
         return specs;
     }
 
