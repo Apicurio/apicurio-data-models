@@ -49,7 +49,7 @@ public class Main {
 
         // Set up config
         UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
-                .rootNamespace("io.apicurio.datamodels").outputDirectory(outputDir).build();
+                .rootNamespace("org.example.reader").outputDirectory(outputDir).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecs();
         // Create a unified model generator

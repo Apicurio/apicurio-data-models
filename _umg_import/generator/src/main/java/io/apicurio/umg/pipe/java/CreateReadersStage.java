@@ -61,6 +61,7 @@ public class CreateReadersStage extends AbstractStage {
                     .setAbstract(readerClass.is_abstract())
                     .setPublic();
             readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
+            readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "ReaderUtil");
 
             // Create the readXYZ methods - one for each entity
             createReadMethods(specVersion, readerClassSource);
@@ -116,7 +117,7 @@ public class CreateReadersStage extends AbstractStage {
             createReadPropertyCode(body, property, entityModel, javaEntityModel, readerClassSource);
         });
         // Read "extra" properties (whatever is left over)
-        // TODO read extra properties
+        createReadExtraPropertiesCode(body);
 
         methodSource.setBody(body.toString());
     }
@@ -134,6 +135,14 @@ public class CreateReadersStage extends AbstractStage {
         CreateReadProperty crp = new CreateReadProperty(property, entityModel, javaEntityModel, readerClassSource);
         body.clearContext();
         crp.writeTo(body);
+    }
+
+    /**
+     * Creates code that will read any extra/remaining properties on a JSON object.
+     * @param body
+     */
+    private void createReadExtraPropertiesCode(BodyBuilder body) {
+        body.append("ReaderUtil.readExtraProperties(json, node);");
     }
 
     private static String readMethodName(EntityModel entityModel) {

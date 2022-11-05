@@ -23,7 +23,8 @@ public class LoadBaseClassesStage extends AbstractStage {
     @Override
     protected void doProcess() {
         try {
-            loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl");
+            loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl",
+                    "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil");
             loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.Visitor",
                     "io.apicurio.umg.base.Visitable");
         } catch (IOException e) {
@@ -41,6 +42,14 @@ public class LoadBaseClassesStage extends AbstractStage {
                 return JavaPackageModel.builder().name(targetPackageName).build();
             });
             source.setPackage(targetPackageName);
+            source.getImports().forEach(inport -> {
+                if (inport.getPackage().contains("io.apicurio.umg.base")) {
+                    String newPackage = inport.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
+                    inport.setName(newPackage + "." + inport.getSimpleName());
+                }
+            });
+
+
             JavaClassModel classModel = JavaClassModel.builder()._package(targetPackage)
                     .name(source.getName()).classSource(source).external(true).build();
             getState().getJavaIndex().addClass(classModel);

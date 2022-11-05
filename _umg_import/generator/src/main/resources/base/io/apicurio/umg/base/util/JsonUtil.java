@@ -57,7 +57,20 @@ public class JsonUtil {
         }
         return rval;
     }
+
+    public static JsonNode getProperty(ObjectNode json, String propertyName) {
+        if (json.has(propertyName)) {
+            return json.get(propertyName);
+        }
+        return null;
+    }
     
+    public static void setProperty(ObjectNode json, String propertyName, JsonNode value) {
+        if (value != null) {
+            json.set(propertyName, value);
+        }
+    }
+
     /* Get/Consume a JSON (Object) property. */
     public static ObjectNode getObjectProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {

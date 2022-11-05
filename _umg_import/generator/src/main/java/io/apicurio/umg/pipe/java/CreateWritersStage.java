@@ -61,6 +61,7 @@ public class CreateWritersStage extends AbstractStage {
                     .setAbstract(writerClass.is_abstract())
                     .setPublic();
             writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
+            writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
 
             // Create the writeXYZ methods - one for each entity
             createWriteMethods(specVersion, writerClassSource);
@@ -116,7 +117,7 @@ public class CreateWritersStage extends AbstractStage {
             createWritePropertyCode(body, property, entityModel, javaEntityModel, writerClassSource);
         });
         // Write "extra" properties
-        // TODO write extra properties
+        createWriteExtraPropertiesCode(body);
 
         methodSource.setBody(body.toString());
     }
@@ -134,6 +135,14 @@ public class CreateWritersStage extends AbstractStage {
         CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntityModel, writerClassSource);
         body.clearContext();
         crp.writeTo(body);
+    }
+
+    /**
+     * Generates code that will write the extra properties from the model to the JSON output.
+     * @param body
+     */
+    private void createWriteExtraPropertiesCode(BodyBuilder body) {
+        body.append("WriterUtil.writeExtraProperties(node, json);");
     }
 
     private static String writeMethodName(EntityModel entityModel) {
