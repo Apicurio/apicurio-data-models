@@ -45,6 +45,9 @@ entities:
     properties:
       - name: id
         type: string
+      - name: '/^z-(+*)$/'
+        type: any
+        collection: zees
 
   - name: PrimitiveTypesEntity
     properties:

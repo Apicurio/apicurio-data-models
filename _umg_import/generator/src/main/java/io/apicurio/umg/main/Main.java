@@ -49,7 +49,9 @@ public class Main {
 
         // Set up config
         UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
-                .rootNamespace("org.example.reader").outputDirectory(outputDir).build();
+                .rootNamespace("io.apicurio.datamodels").outputDirectory(outputDir).build();
+        //        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
+        //                .rootNamespace("org.example.reader").outputDirectory(outputDir).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecs();
         // Create a unified model generator
@@ -65,10 +67,10 @@ public class Main {
     private static List<SpecificationModel> loadSpecs() {
         Logger.info("Loading specifications.");
         List<SpecificationModel> specs = new LinkedList<>();
-        //        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
-        //        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
         //        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml"));
+        //        specs.add(SpecificationLoader.loadSpec("../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml"));
         return specs;
     }
 

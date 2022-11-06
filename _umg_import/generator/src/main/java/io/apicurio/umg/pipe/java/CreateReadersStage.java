@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
+import org.modeshape.common.text.Inflector;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -31,6 +32,8 @@ import lombok.Data;
  * @author eric.wittmann@gmail.com
  */
 public class CreateReadersStage extends AbstractStage {
+
+    private static final Inflector inflector = new Inflector();
 
     @Override
     protected void doProcess() {
@@ -234,35 +237,24 @@ public class CreateReadersStage extends AbstractStage {
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType()) {
+            } else if (property.getType().isPrimitiveType() ||
+                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
+                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
                 readerClassSource.addImport(List.class);
+                if (property.getType().isMap()) {
+                    readerClassSource.addImport(Map.class);
+                }
 
                 body.addContext("valueType", determineValueType(property.getType()));
-                body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
+                body.addContext("consumePropertyMethodName", determineConsumePropertyVariant(property.getType()));
 
                 body.append("{");
                 body.append("    List<String> propertyNames = JsonUtil.keys(json);");
                 body.append("    propertyNames.forEach(name -> {");
-                body.append("        ${valueType} value = JsonUtil.${consumeProperty}(json, name);");
+                body.append("        ${valueType} value = JsonUtil.${consumePropertyMethodName}(json, name);");
                 body.append("        node.addItem(name, value);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isList()) {
-                readerClassSource.addImport(List.class);
-
-                PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
-                if (listValuePropertyType.getSimpleType().equals("string")) {
-                    body.append("{");
-                    body.append("    List<String> propertyNames = JsonUtil.keys(json);");
-                    body.append("    propertyNames.forEach(name -> {");
-                    body.append("        List<String> value = JsonUtil.consumeStringArrayProperty(json, name);");
-                    body.append("        node.addItem(name, value);");
-                    body.append("    });");
-                    body.append("}");
-                } else {
-                    Logger.warn("[CreateReadersStage] (list) STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
-                }
             } else {
                 Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
                 Logger.warn("[CreateReadersStage]        property type: " + property.getType());
@@ -291,7 +283,7 @@ public class CreateReadersStage extends AbstractStage {
                 body.addContext("entityJavaType", propertyTypeJavaModel.getName());
                 body.addContext("createMethodName", createMethodName(propertyTypeEntity));
                 body.addContext("readMethodName", readMethodName(propertyTypeEntity));
-                body.addContext("addMethodName", addMethodName(property.getCollection()));
+                body.addContext("addMethodName", addMethodName(inflector.singularize(property.getCollection())));
 
                 body.append("{");
                 body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
@@ -300,6 +292,27 @@ public class CreateReadersStage extends AbstractStage {
                 body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
+                body.append("    });");
+                body.append("}");
+            } else if (property.getType().isPrimitiveType() ||
+                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
+                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+
+                readerClassSource.addImport(List.class);
+                if (property.getType().isMap()) {
+                    readerClassSource.addImport(Map.class);
+                }
+
+                body.addContext("propertyRegex", encodeRegex(property.getName()));
+                body.addContext("valueType", determineValueType(property.getType()));
+                body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
+                body.addContext("addMethodName", addMethodName(inflector.singularize(property.getCollection())));
+
+                body.append("{");
+                body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
+                body.append("    propertyNames.forEach(name -> {");
+                body.append("        ${valueType} value = JsonUtil.${consumeProperty}(json, name);");
+                body.append("        node.${addMethodName}(name, value);");
                 body.append("    });");
                 body.append("}");
             } else {
