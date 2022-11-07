@@ -21,10 +21,10 @@ public class JavaWriteStage extends AbstractStage {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
             writeToFile(t.getJavaSource(), outputDirectory);
         });
-        getState().getJavaIndex().getClasses().forEach(c -> {
+        getState().getJavaIndex().getClasses().values().forEach(c -> {
             writeToFile(c.getJavaSource(), outputDirectory);
         });
-        getState().getJavaIndex().getInterfaces().forEach(c -> {
+        getState().getJavaIndex().getInterfaces().values().forEach(c -> {
             writeToFile(c.getJavaSource(), outputDirectory);
         });
     }

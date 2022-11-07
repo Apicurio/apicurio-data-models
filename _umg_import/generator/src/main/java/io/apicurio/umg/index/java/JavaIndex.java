@@ -16,7 +16,6 @@
 
 package io.apicurio.umg.index.java;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -44,10 +43,10 @@ public class JavaIndex {
     private Map<String, JavaEntityModel> types = new HashMap<>();
 
     @Getter
-    private Collection<JavaClassModel> classes = new HashSet<>();
+    private Map<String, JavaClassModel> classes = new HashMap<>();
 
     @Getter
-    private Collection<JavaInterfaceModel> interfaces = new HashSet<>();
+    private Map<String, JavaInterfaceModel> interfaces = new HashMap<>();
 
     public JavaPackageModel lookupPackage(String namespace) {
         return this.packages.get(namespace);
@@ -93,11 +92,19 @@ public class JavaIndex {
     }
 
     public void addClass(JavaClassModel classModel) {
-        this.classes.add(classModel);
+        this.classes.put(classModel.fullyQualifiedName(), classModel);
     }
 
     public void addInterface(JavaInterfaceModel interfaceModel) {
-        this.interfaces.add(interfaceModel);
+        this.interfaces.put(interfaceModel.fullyQualifiedName(), interfaceModel);
+    }
+
+    public JavaClassModel lookupClass(String fullyQualifiedName) {
+        return this.classes.get(fullyQualifiedName);
+    }
+
+    public JavaInterfaceModel lookupInterface(String fullyQualifiedName) {
+        return this.interfaces.get(fullyQualifiedName);
     }
 
 }

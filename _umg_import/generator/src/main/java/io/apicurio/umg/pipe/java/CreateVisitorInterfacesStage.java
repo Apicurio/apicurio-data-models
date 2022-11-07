@@ -55,7 +55,7 @@ public class CreateVisitorInterfacesStage extends AbstractStage {
             return packageModel;
         });
 
-        // Create the reader interface model
+        // Create the reader interface
         JavaInterfaceModel visitorInterface = JavaInterfaceModel.builder()
                 ._package(visitorPackage)
                 .name(visitorInterfaceName)
