@@ -39,9 +39,16 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) throws Exception {
+        Logger.info("=== START ===");
+        generate("io.apicurio.datamodels", "specs/asyncapi.yaml", "specs/openapi.yaml");
+        generate("org.example.reader", "../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml");
+        Logger.info("=== END ===");
+    }
+
+    public static void generate(String rootNamespace, String ... specPaths) throws Exception {
         Logger.info("Starting Apicurio Unified Model Generator");
         // Clean the output directory
-        File outputDir = new File("target/from-main");
+        File outputDir = new File("target/from-main/" + rootNamespace);
         if (outputDir.isDirectory()) {
             FileUtils.deleteDirectory(outputDir);
             outputDir.mkdirs();
@@ -49,11 +56,9 @@ public class Main {
 
         // Set up config
         UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
-                .rootNamespace("io.apicurio.datamodels").outputDirectory(outputDir).build();
-        //        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
-        //                .rootNamespace("org.example.reader").outputDirectory(outputDir).build();
+                .rootNamespace(rootNamespace).outputDirectory(outputDir).build();
         // Load the specs
-        List<SpecificationModel> specs = loadSpecs();
+        List<SpecificationModel> specs = loadSpecs(specPaths);
         // Create a unified model generator
         UnifiedModelGenerator generator = new UnifiedModelGenerator(config, specs);
         // Generate the source code into the target output directory.
@@ -64,14 +69,17 @@ public class Main {
     /**
      * Loads all the specification files (as resources).
      */
-    private static List<SpecificationModel> loadSpecs() {
+    private static List<SpecificationModel> loadSpecs(String ... specPaths) {
         Logger.info("Loading specifications.");
-        List<SpecificationModel> specs = new LinkedList<>();
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
-        //        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
-        //        specs.add(SpecificationLoader.loadSpec("../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml"));
-        return specs;
+        List<SpecificationModel> loadedSpecs = new LinkedList<>();
+        for (String specPath : specPaths) {
+            if (specPath.startsWith("specs")) {
+                loadedSpecs.add(SpecificationLoader.loadSpec(specPath, Main.class.getClassLoader()));
+            } else {
+                loadedSpecs.add(SpecificationLoader.loadSpec(specPath));
+            }
+        }
+        return loadedSpecs;
     }
 
 }

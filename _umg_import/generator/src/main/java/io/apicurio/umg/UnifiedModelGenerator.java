@@ -20,22 +20,23 @@ import java.util.Collection;
 
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
-import io.apicurio.umg.pipe.CreateVisitorsStage;
 import io.apicurio.umg.pipe.GeneratorState;
-import io.apicurio.umg.pipe.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.concept.CreateEntityModelsStage;
 import io.apicurio.umg.pipe.concept.CreateNamespaceModelsStage;
 import io.apicurio.umg.pipe.concept.CreateParentTraitsStage;
 import io.apicurio.umg.pipe.concept.CreatePropertyModelsStage;
 import io.apicurio.umg.pipe.concept.CreateTraitModelsStage;
+import io.apicurio.umg.pipe.concept.CreateVisitorsStage;
 import io.apicurio.umg.pipe.concept.IndexSpecificationsStage;
 import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
+import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.AddPrefixes;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
+import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateWritersStage;
 import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
 import io.apicurio.umg.pipe.java.JavaClassStage;
@@ -125,6 +126,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new JavaSetterStage());
         pipe.addStage(new CreateReadersStage());
         pipe.addStage(new CreateWritersStage());
+        pipe.addStage(new CreateVisitorInterfacesStage());
         pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
 
         pipe.run(state);

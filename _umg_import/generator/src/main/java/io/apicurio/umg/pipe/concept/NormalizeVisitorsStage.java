@@ -1,4 +1,4 @@
-package io.apicurio.umg.pipe;
+package io.apicurio.umg.pipe.concept;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.VisitorModel;
+import io.apicurio.umg.pipe.AbstractStage;
 
 public class NormalizeVisitorsStage extends AbstractStage {
 
@@ -42,6 +43,36 @@ public class NormalizeVisitorsStage extends AbstractStage {
                 changesMade += entitiesToPullup.size();
             }
         } while (changesMade > 0);
+
+        // Ensure that there is a singular shared common visitor at the root namespace.  Depending
+        // on the inputs, this might already exists.  But let's make sure.
+        String rootNamespace = getState().getConfig().getRootNamespace();
+        VisitorModel rootVisitor = getState().getConceptIndex().lookupVisitor(rootNamespace);
+        if (rootVisitor == null) {
+            createRootVisitor(rootNamespace);
+        }
+
+        // Now that the entities in the visitors are normalized, make sure each entity
+        // has an appropriate namespace set.
+        getState().getConceptIndex().findVisitors("").forEach(visitor -> {
+            visitor.getEntities().forEach(entity -> {
+                entity.setNamespace(visitor.getNamespace());
+            });
+        });
+    }
+
+    /**
+     * Creates a visitor in the root namespace.  Ensures that all other unparented visitors
+     * are parented by this new root visitor.
+     * @param rootNamespace
+     */
+    private void createRootVisitor(String rootNamespace) {
+        VisitorModel rootVisitor = VisitorModel.builder().namespace(getState().getConceptIndex().lookupNamespace(rootNamespace)).build();
+        getState().getConceptIndex().findVisitors("").stream().filter(visitor -> visitor.getParent() == null).forEach(visitor -> {
+            visitor.setParent(rootVisitor);
+            rootVisitor.getChildren().add(visitor);
+        });
+        getState().getConceptIndex().index(rootVisitor);
     }
 
     /**

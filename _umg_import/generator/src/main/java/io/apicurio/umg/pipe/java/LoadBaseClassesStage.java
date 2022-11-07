@@ -25,8 +25,7 @@ public class LoadBaseClassesStage extends AbstractStage {
         try {
             loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl",
                     "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil");
-            loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.Visitor",
-                    "io.apicurio.umg.base.Visitable");
+            loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.Visitable");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

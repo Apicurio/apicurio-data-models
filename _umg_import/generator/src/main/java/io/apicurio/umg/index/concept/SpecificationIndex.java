@@ -44,17 +44,24 @@ public class SpecificationIndex {
 
     @Getter
     private Map<SpecificationVersionId, SpecificationModel> specIndex = new HashMap<>();
-
     @Getter
     private Map<TraitId, Trait> traitIndex = new HashMap<>();
     @Getter
     private Map<EntityId, Entity> entityIndex = new HashMap<>();
+    @Getter
+    private Map<String, String> prefixToNS = new HashMap<>();
+    @Getter
+    private Map<String, String> nsToPrefix = new HashMap<>();
 
     public void index(SpecificationModel spec) {
         specifications.add(spec);
+        prefixToNS.put(spec.getPrefix(), spec.getNamespace());
+        nsToPrefix.put(spec.getNamespace(), spec.getPrefix());
         spec.getVersions().forEach(specVer -> {
             specificationVersions.add(specVer);
             specIndex.put(SpecificationVersionId.create(specVer), spec);
+            prefixToNS.put(specVer.getPrefix(), specVer.getNamespace());
+            nsToPrefix.put(specVer.getNamespace(), specVer.getPrefix());
             specVer.getTraits().forEach(trait -> indexTrait(specVer, trait));
             specVer.getEntities().forEach(entity -> indexEntity(specVer, entity));
         });
@@ -77,4 +84,9 @@ public class SpecificationIndex {
     public Collection<SpecificationVersion> getAllSpecificationVersions() {
         return Collections.unmodifiableCollection(specificationVersions);
     }
+
+    public String prefixForNS(String namespace) {
+        return nsToPrefix.get(namespace);
+    }
+
 }

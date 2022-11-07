@@ -105,12 +105,14 @@ public class CreateReadersStage extends AbstractStage {
             return;
         }
 
+        readerClassSource.addImport(ObjectNode.class);
+        readerClassSource.addImport(javaEntityModel.getJavaSource().getQualifiedName());
         MethodSource<JavaClassSource> methodSource = readerClassSource.addMethod()
                 .setName(readMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(ObjectNode.class, "json");
-        methodSource.addParameter(javaEntityModel.getJavaSource().getQualifiedName(), "node");
+        methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
+        methodSource.addParameter(javaEntityModel.getJavaSource().getName(), "node");
 
         // Now create the body content for the reader.
         BodyBuilder body = new BodyBuilder();

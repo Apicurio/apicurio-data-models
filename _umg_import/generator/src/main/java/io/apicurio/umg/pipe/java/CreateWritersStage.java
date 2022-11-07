@@ -102,12 +102,14 @@ public class CreateWritersStage extends AbstractStage {
             return;
         }
 
+        writerClassSource.addImport(javaEntityModel.getJavaSource().getQualifiedName());
+        writerClassSource.addImport(ObjectNode.class);
         MethodSource<JavaClassSource> methodSource = writerClassSource.addMethod()
                 .setName(writeMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getJavaSource().getQualifiedName(), "node");
-        methodSource.addParameter(ObjectNode.class, "json");
+        methodSource.addParameter(javaEntityModel.getJavaSource().getName(), "node");
+        methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
 
         // Now create the body content for the writer.
         BodyBuilder body = new BodyBuilder();
