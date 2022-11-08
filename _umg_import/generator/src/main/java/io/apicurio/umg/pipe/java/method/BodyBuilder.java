@@ -1,15 +1,24 @@
-package io.apicurio.umg.pipe.java;
+package io.apicurio.umg.pipe.java.method;
+
+import io.apicurio.umg.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import io.apicurio.umg.logging.Logger;
-
 public class BodyBuilder {
 
     private StringBuilder str = new StringBuilder();
     private Map<String, String> context = new HashMap<>();
+
+    public static BodyBuilder create() {
+        return new BodyBuilder();
+    }
+
+    public BodyBuilder c(String name, String value) {
+        addContext(name, value);
+        return this;
+    }
 
     public void addContext(String name, String value) {
         if (value == null) {
@@ -21,6 +30,11 @@ public class BodyBuilder {
 
     public void clearContext() {
         context.clear();
+    }
+
+    public BodyBuilder a(String line) {
+        append(line);
+        return this;
     }
 
     public void append(String line) {
@@ -37,6 +51,7 @@ public class BodyBuilder {
 
     @Override
     public String toString() {
+        // TODO Perform string building lazily (on-demand)
         return str.toString();
     }
 

@@ -12,8 +12,11 @@ public class AddPrefixes extends AbstractStage {
 
         getState().getSpecIndex().getAllSpecifications().forEach(specificationModel -> {
             prefixMap.put(specificationModel.getNamespace(), specificationModel.getPrefix());
+            prefixMap.put(specificationModel.getNamespace() + ".visitors", specificationModel.getPrefix());
+
             specificationModel.getVersions().forEach(specificationVersion -> {
                 prefixMap.put(specificationVersion.getNamespace(), specificationVersion.getPrefix());
+                prefixMap.put(specificationVersion.getNamespace() + ".visitors", specificationVersion.getPrefix());
             });
         });
 

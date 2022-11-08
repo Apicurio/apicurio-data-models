@@ -1,17 +1,18 @@
 package io.apicurio.umg.models.java;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
-import org.jboss.forge.roaster.model.source.JavaSource;
-
+import io.apicurio.umg.models.java.method.JavaEntityMethod;
+import io.apicurio.umg.models.java.method.JavaInterfaceMethod;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.JavaSource;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 @SuperBuilder
 @Getter
@@ -24,9 +25,16 @@ public class JavaInterfaceModel extends JavaEntityModel {
 
     private JavaInterfaceSource interfaceSource;
 
+    private final Set<JavaInterfaceMethod> interfaceMethods = new HashSet<>();
+
     @Override
-    public JavaSource<?> getJavaSource() {
+    public JavaSource<?> getSource() {
         return interfaceSource;
+    }
+
+    @Override
+    public Set<JavaEntityMethod> getMethods() {
+        return (Set<JavaEntityMethod>) (Set<? extends JavaEntityMethod>) interfaceMethods;
     }
 
     @Override
@@ -41,5 +49,6 @@ public class JavaInterfaceModel extends JavaEntityModel {
 
     @Override
     public void ifClass(Consumer<JavaClassModel> f) {
+        // NOOP
     }
 }

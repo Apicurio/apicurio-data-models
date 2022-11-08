@@ -33,6 +33,7 @@ public class TransformToInterfaces extends AbstractStage {
                                         .name(originalClass.getName())
                                         .build();
                             });
+                            leafInterface.setEntityModel(originalEntity);
                             leafInterface.get_extends().addAll(originalClass.get_implements());
                             // Skip fields that are in parent interfaces:
                             var fieldsToAdd = new HashSet<>(originalClass.getFields());
@@ -53,6 +54,7 @@ public class TransformToInterfaces extends AbstractStage {
                                         .name(StringUtils.capitalize(originalClass.getName()) + "Impl")
                                         .build();
                             });
+                            leafClass.setEntityModel(originalEntity);
                             leafClass.getFields().addAll(originalClass.getFields());
                             leafClass.set_extends(originalClass.get_extends());
                             // The things below already come from the leaf interface
@@ -96,7 +98,7 @@ public class TransformToInterfaces extends AbstractStage {
                                     // If the parent type is an interface, assume we've already processed it from a different child
                                     parentInterface = (JavaInterfaceModel) parentJavaEntity;
                                 }
-
+                                parentInterface.setEntityModel(parentEntity);
                                 // "DENORMALIZE" - Pull fields from the parent to the impl class
                                 // so concrete impls can be created
                                 leafClass.getFields().addAll(parentInterface.getFields());

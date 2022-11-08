@@ -1,19 +1,7 @@
 package io.apicurio.umg.pipe.java;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
-import org.modeshape.common.text.Inflector;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
@@ -23,12 +11,24 @@ import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
+import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+import org.modeshape.common.text.Inflector;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Creates the i/o reader classes.  There is a bespoke reader for each specification
  * version.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class CreateReadersStage extends AbstractStage {
@@ -76,6 +76,7 @@ public class CreateReadersStage extends AbstractStage {
 
     /**
      * Creates a "read" method for each entity in the spec version.
+     *
      * @param specVersion
      * @param readerClassSource
      */
@@ -92,6 +93,7 @@ public class CreateReadersStage extends AbstractStage {
 
     /**
      * Creates a single "readXyx" method for the given entity.
+     *
      * @param specVersion
      * @param readerClassSource
      * @param entityModel
@@ -106,13 +108,13 @@ public class CreateReadersStage extends AbstractStage {
         }
 
         readerClassSource.addImport(ObjectNode.class);
-        readerClassSource.addImport(javaEntityModel.getJavaSource().getQualifiedName());
+        readerClassSource.addImport(javaEntityModel.getSource().getQualifiedName());
         MethodSource<JavaClassSource> methodSource = readerClassSource.addMethod()
                 .setName(readMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
         methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
-        methodSource.addParameter(javaEntityModel.getJavaSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
 
         // Now create the body content for the reader.
         BodyBuilder body = new BodyBuilder();
@@ -129,6 +131,7 @@ public class CreateReadersStage extends AbstractStage {
 
     /**
      * Generates the right java code for reading a single property of an entity.
+     *
      * @param body
      * @param property
      * @param javaEntityModel
@@ -136,7 +139,7 @@ public class CreateReadersStage extends AbstractStage {
      * @param readerClassSource
      */
     private void createReadPropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
-            JavaEntityModel javaEntityModel, JavaClassSource readerClassSource) {
+                                        JavaEntityModel javaEntityModel, JavaClassSource readerClassSource) {
         CreateReadProperty crp = new CreateReadProperty(property, entityModel, javaEntityModel, readerClassSource);
         body.clearContext();
         crp.writeTo(body);
@@ -144,6 +147,7 @@ public class CreateReadersStage extends AbstractStage {
 
     /**
      * Creates code that will read any extra/remaining properties on a JSON object.
+     *
      * @param body
      */
     private void createReadExtraPropertiesCode(BodyBuilder body) {
@@ -184,6 +188,7 @@ public class CreateReadersStage extends AbstractStage {
 
         /**
          * Generates code to read a property from a JSON node into the data model.
+         *
          * @param body
          */
         public void writeTo(BodyBuilder body) {
@@ -476,6 +481,7 @@ public class CreateReadersStage extends AbstractStage {
          * Figure out which variant of "consumeProperty" from "JsonUtil" we should use for
          * this property.  The property might be a primitive type, or a list/map of primitive
          * types, or an Entity type, or a list/map of Entity types.
+         *
          * @param type
          */
         private String determineConsumePropertyVariant(PropertyType type) {
@@ -534,6 +540,7 @@ public class CreateReadersStage extends AbstractStage {
 
         /**
          * Determines the Java data type of the given property.
+         *
          * @param type
          */
         private String determineValueType(PropertyType type) {

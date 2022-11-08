@@ -16,13 +16,6 @@
 
 package io.apicurio.umg.index.java;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Supplier;
-
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.java.JavaClassModel;
@@ -30,6 +23,15 @@ import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
 import lombok.Getter;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -89,6 +91,10 @@ public class JavaIndex {
 
     public Set<JavaEntityModel> getAllJavaEntitiesWithCopy() {
         return new HashSet<>(types.values());
+    }
+
+    public Collection<JavaEntityModel> getAllJavaEntitiesWithoutCopy() {
+        return Collections.unmodifiableCollection(types.values());
     }
 
     public void addClass(JavaClassModel classModel) {

@@ -1,12 +1,11 @@
 package io.apicurio.umg.pipe.java;
 
+import io.apicurio.umg.pipe.AbstractStage;
+import org.jboss.forge.roaster.model.source.JavaSource;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-
-import org.jboss.forge.roaster.model.source.JavaSource;
-
-import io.apicurio.umg.pipe.AbstractStage;
 
 public class JavaWriteStage extends AbstractStage {
 
@@ -19,13 +18,13 @@ public class JavaWriteStage extends AbstractStage {
     @Override
     protected void doProcess() {
         getState().getJavaIndex().getTypes().values().forEach(t -> {
-            writeToFile(t.getJavaSource(), outputDirectory);
+            writeToFile(t.getSource(), outputDirectory);
         });
         getState().getJavaIndex().getClasses().values().forEach(c -> {
-            writeToFile(c.getJavaSource(), outputDirectory);
+            writeToFile(c.getSource(), outputDirectory);
         });
         getState().getJavaIndex().getInterfaces().values().forEach(c -> {
-            writeToFile(c.getJavaSource(), outputDirectory);
+            writeToFile(c.getSource(), outputDirectory);
         });
     }
 

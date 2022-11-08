@@ -16,8 +16,6 @@
 
 package io.apicurio.umg;
 
-import java.util.Collection;
-
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.GeneratorState;
@@ -36,6 +34,7 @@ import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.AddPrefixes;
 import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
+import io.apicurio.umg.pipe.java.CreateFactoryMethodsStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
@@ -44,6 +43,7 @@ import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
 import io.apicurio.umg.pipe.java.JavaClassStage;
 import io.apicurio.umg.pipe.java.JavaFieldStage;
 import io.apicurio.umg.pipe.java.JavaGetterStage;
+import io.apicurio.umg.pipe.java.JavaMethodStage;
 import io.apicurio.umg.pipe.java.JavaSetterStage;
 import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
@@ -56,6 +56,8 @@ import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
+import java.util.Collection;
+
 /**
  * @author eric.wittmann@gmail.com
  */
@@ -66,6 +68,7 @@ public class UnifiedModelGenerator {
 
     /**
      * Constructor.
+     *
      * @param config
      * @param specifications
      */
@@ -115,8 +118,11 @@ public class UnifiedModelGenerator {
         pipe.addStage(new TodoStage());
         pipe.addStage(new TransformComplexTypes());
         pipe.addStage(new ResolveFieldTypes());
+        pipe.addStage(new CreateFactoryMethodsStage());
         pipe.addStage(new AddPrefixes());
         pipe.addStage(new LoadBaseClassesStage());
+        pipe.addStage(new JavaGetterStage());
+        pipe.addStage(new JavaSetterStage());
 
         // Working with Roaster
         pipe.addStage(new ResolveFieldSourceTypes());
@@ -124,8 +130,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new JavaAddImplementsStage());
         pipe.addStage(new JavaSuperTypesStage());
         pipe.addStage(new JavaFieldStage());
-        pipe.addStage(new JavaGetterStage());
-        pipe.addStage(new JavaSetterStage());
+        pipe.addStage(new JavaMethodStage());
         pipe.addStage(new CreateReadersStage());
         pipe.addStage(new CreateWritersStage());
         pipe.addStage(new CreateVisitorInterfacesStage());

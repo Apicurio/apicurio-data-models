@@ -1,18 +1,8 @@
 package io.apicurio.umg.pipe.java;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
@@ -22,12 +12,22 @@ import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
+import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Creates the i/o writer classes.  There is a bespoke writer for each specification
  * version.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class CreateWritersStage extends AbstractStage {
@@ -73,6 +73,7 @@ public class CreateWritersStage extends AbstractStage {
 
     /**
      * Creates a "write" method for each entity in the spec version.
+     *
      * @param specVersion
      * @param writerClassSource
      */
@@ -89,6 +90,7 @@ public class CreateWritersStage extends AbstractStage {
 
     /**
      * Creates a single "writeXyx" method for the given entity.
+     *
      * @param specVersion
      * @param writerClassSource
      * @param entityModel
@@ -102,13 +104,13 @@ public class CreateWritersStage extends AbstractStage {
             return;
         }
 
-        writerClassSource.addImport(javaEntityModel.getJavaSource().getQualifiedName());
+        writerClassSource.addImport(javaEntityModel.getSource().getQualifiedName());
         writerClassSource.addImport(ObjectNode.class);
         MethodSource<JavaClassSource> methodSource = writerClassSource.addMethod()
                 .setName(writeMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getJavaSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
         methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
 
         // Now create the body content for the writer.
@@ -126,6 +128,7 @@ public class CreateWritersStage extends AbstractStage {
 
     /**
      * Generates the right java code for writing a single property of an entity.
+     *
      * @param body
      * @param property
      * @param javaEntityModel
@@ -133,7 +136,7 @@ public class CreateWritersStage extends AbstractStage {
      * @param writerClassSource
      */
     private void createWritePropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
-            JavaEntityModel javaEntityModel, JavaClassSource writerClassSource) {
+                                         JavaEntityModel javaEntityModel, JavaClassSource writerClassSource) {
         CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntityModel, writerClassSource);
         body.clearContext();
         crp.writeTo(body);
@@ -141,6 +144,7 @@ public class CreateWritersStage extends AbstractStage {
 
     /**
      * Generates code that will write the extra properties from the model to the JSON output.
+     *
      * @param body
      */
     private void createWriteExtraPropertiesCode(BodyBuilder body) {
@@ -165,6 +169,7 @@ public class CreateWritersStage extends AbstractStage {
 
         /**
          * Generates code to write a property from a JSON node into the data model.
+         *
          * @param body
          */
         public void writeTo(BodyBuilder body) {
@@ -423,6 +428,7 @@ public class CreateWritersStage extends AbstractStage {
          * Figure out which variant of "writeProperty" from "JsonUtil" we should use for
          * this property.  The property might be a primitive type, or a list/map of primitive
          * types.
+         *
          * @param type
          */
         private String determineSetPropertyVariant(PropertyType type) {
@@ -477,6 +483,7 @@ public class CreateWritersStage extends AbstractStage {
 
         /**
          * Determines the Java data type of the given property.
+         *
          * @param type
          */
         private String determineValueType(PropertyType type) {

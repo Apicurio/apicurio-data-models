@@ -87,6 +87,22 @@ public class ResolveFieldTypes extends AbstractStage {
                                 packageString = highestPackage.getName();
                             }
                         }
+                        // Ensuring that the field type is found within the same package or its parents.
+                        // Replace with the commented code if we decide we want to do cross-referencing between spec version.
+                        if(packageString != null) {
+                            var fqn = packageString + "." + classString;
+                            var type = getState().getJavaIndex().lookupType(fqn);
+                            if(type != null) {
+                                f.setEntityType(type);
+                            } else {
+                                Logger.warn("Could not find class '%s' for property %s. Using Object.", fqn, f.getConcept());
+                                f.setPrimitiveType("Object");
+                            }
+                        } else {
+                            Logger.warn("Could not find class '%s' for property %s. Using Object.", simpleType, f.getConcept());
+                            f.setPrimitiveType("Object");
+                        }
+                        /*
                         // Look for class with the given name
                         var classes = getState().getJavaIndex().getAllJavaEntitiesWithCopy().stream()
                                 .filter(e -> e.getName().equals(classString))
@@ -112,6 +128,7 @@ public class ResolveFieldTypes extends AbstractStage {
                                 f.setPrimitiveType("Object");
                             }
                         }
+                        */
                     }
                 }
             });

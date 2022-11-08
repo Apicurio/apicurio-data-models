@@ -1,24 +1,24 @@
 package io.apicurio.umg.pipe.java;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
-
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Creates the visitor interfaces.  There is hierarchy of visitors that is similar to the
  * hierarchy of data models but slightly different.  The visitor hieararchy is determined
  * as part of the concept phase.  This class simply generates Java interfaces from that
  * visitor concept hierarchy.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
@@ -35,11 +35,12 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
     /**
      * Creates visitor interfaces for all visitors in a hierarchy, starting with the
      * given root visitor model.
+     *
      * @param visitor
      * @param parentVisitorInterface
      */
     private void createVisitorInterfaces(VisitorModel visitor, JavaInterfaceModel parentVisitorInterface) {
-        Logger.debug("Creating interface for: "  + visitor.toString());
+        Logger.debug("Creating interface for: " + visitor.toString());
         String visitorPackageName = getVisitorInterfacePackageName(visitor);
         String visitorInterfaceName = getVisitorInterfaceName(visitor);
 
@@ -85,6 +86,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
 
     /**
      * Creates the readXyz() method for the given entity.
+     *
      * @param visitorInterfaceSource
      * @param entity
      */
@@ -97,13 +99,13 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
             return;
         }
 
-        visitorInterfaceSource.addImport(javaEntityModel.getJavaSource().getQualifiedName());
+        visitorInterfaceSource.addImport(javaEntityModel.getSource().getQualifiedName());
 
         MethodSource<JavaInterfaceSource> methodSource = visitorInterfaceSource.addMethod()
                 .setName(visitMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getJavaSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
     }
 
     private JavaEntityModel findRootEntity(String fullyQualifiedName) {

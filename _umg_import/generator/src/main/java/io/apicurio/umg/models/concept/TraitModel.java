@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 
+// TODO Put EntityModel and TraitModel under the same parent? (Similar to JavaEntityModel)
+// See io.apicurio.umg.pipe.java.method.FactoryMethod
 @Builder
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
