@@ -35,6 +35,7 @@ import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.AddPrefixes;
+import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
@@ -128,6 +129,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateReadersStage());
         pipe.addStage(new CreateWritersStage());
         pipe.addStage(new CreateVisitorInterfacesStage());
+        pipe.addStage(new CreateCombinedVisitorInterfacesStage());
         pipe.addStage(new CreateVisitorAdaptersStage());
         pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
 

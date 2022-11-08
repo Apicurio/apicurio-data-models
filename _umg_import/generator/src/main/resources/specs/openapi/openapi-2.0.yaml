@@ -282,12 +282,12 @@ entities:
       - name: readOnly
         type: boolean
       - name: xml
-        type: Xml
+        type: XML
       - name: externalDocs
         type: ExternalDocumentation
       - name: example
         type: object
-  - name: Xml
+  - name: XML
     traits:
       - ExtensibleTrait
     properties:

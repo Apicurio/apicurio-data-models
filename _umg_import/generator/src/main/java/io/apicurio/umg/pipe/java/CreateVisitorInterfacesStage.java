@@ -13,7 +13,6 @@ import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
-import io.apicurio.umg.pipe.AbstractStage;
 
 /**
  * Creates the visitor interfaces.  There is hierarchy of visitors that is similar to the
@@ -22,7 +21,7 @@ import io.apicurio.umg.pipe.AbstractStage;
  * visitor concept hierarchy.
  * @author eric.wittmann@gmail.com
  */
-public class CreateVisitorInterfacesStage extends AbstractStage {
+public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
 
     @Override
     protected void doProcess() {
@@ -41,9 +40,8 @@ public class CreateVisitorInterfacesStage extends AbstractStage {
      */
     private void createVisitorInterfaces(VisitorModel visitor, JavaInterfaceModel parentVisitorInterface) {
         Logger.debug("Creating interface for: "  + visitor.toString());
-        String visitorPackageName = visitor.getNamespace().fullName() + ".visitors";
-        String visitorPrefix = (visitor.getParent() == null) ? null : getState().getSpecIndex().prefixForNS(visitor.getNamespace().fullName());
-        String visitorInterfaceName = (visitorPrefix != null ? visitorPrefix : "") + "Visitor";
+        String visitorPackageName = getVisitorInterfacePackageName(visitor);
+        String visitorInterfaceName = getVisitorInterfaceName(visitor);
 
         // Lookup the package for the NS
         JavaPackageModel visitorPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
@@ -55,7 +53,7 @@ public class CreateVisitorInterfacesStage extends AbstractStage {
             return packageModel;
         });
 
-        // Create the reader interface
+        // Create the visitor interface
         JavaInterfaceModel visitorInterface = JavaInterfaceModel.builder()
                 ._package(visitorPackage)
                 .name(visitorInterfaceName)

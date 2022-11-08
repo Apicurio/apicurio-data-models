@@ -1,7 +1,10 @@
 package io.apicurio.umg.pipe.java;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -13,26 +16,47 @@ import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
-import io.apicurio.umg.pipe.AbstractStage;
 
 /**
  * Creates an adapter for each visitor interface.  An adapter is just a class that implements
  * the visitor interface with empty implementations for each visit method.
  * @author eric.wittmann@gmail.com
  */
-public class CreateVisitorAdaptersStage extends AbstractStage {
+public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
+
+    private static final String TYPE_NORMAL = "normal";
+    private static final String TYPE_COMBINED = "combined";
 
     @Override
     protected void doProcess() {
-        getState().getConceptIndex().findVisitors("").stream().filter(v -> v.getChildren().isEmpty()).forEach(visitor -> {
-            createVisitorAdapter(visitor);
+        // Create a visitor adapter for each spec version visitor
+        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVer -> {
+            VisitorModel visitor = getState().getConceptIndex().lookupVisitor(specVer.getNamespace());
+            createVisitorAdapter(visitor, TYPE_NORMAL);
         });
+        // Create a visitor adapter for each specification (combined adapter)
+        getState().getSpecifications().forEach(spec -> {
+            VisitorModel visitor = getState().getConceptIndex().lookupVisitor(spec.getNamespace());
+            if (visitor != null) {
+                createVisitorAdapter(visitor, TYPE_COMBINED);
+            }
+        });
+        // Create a visitor adapter at the root (combined adapter)
+        VisitorModel rootVisitor = getState().getConceptIndex().lookupVisitor(getState().getConfig().getRootNamespace());
+        if (rootVisitor == null) {
+            Logger.warn("[CreateCombinedVisitorInterfacesStage] Root visitor not found!");
+        } else {
+            createVisitorAdapter(rootVisitor, TYPE_COMBINED);
+        }
     }
 
-    private void createVisitorAdapter(VisitorModel visitor) {
-        String visitorPackageName = visitor.getNamespace().fullName() + ".visitors";
-        String visitorPrefix = (visitor.getParent() == null) ? null : getState().getSpecIndex().prefixForNS(visitor.getNamespace().fullName());
-        String visitorInterfaceName = (visitorPrefix != null ? visitorPrefix : "") + "Visitor";
+    private void createVisitorAdapter(VisitorModel visitor, String type) {
+        String visitorPackageName = getVisitorInterfacePackageName(visitor);
+        String visitorPrefix = getVisitorInterfacePrefix(visitor);
+        if (type == TYPE_COMBINED) {
+            visitorPrefix = "Combined" + visitorPrefix;
+        }
+        String visitorInterfaceName = visitorPrefix + "Visitor";
         String visitorAdapterName = visitorInterfaceName + "Adapter";
         Logger.debug("Creating visitor adapter: " + visitorAdapterName);
 
@@ -46,32 +70,53 @@ public class CreateVisitorAdaptersStage extends AbstractStage {
             return packageModel;
         });
 
-        // Lookup the visitor interface
-        String visitorInterfaceFQN = visitorPackageName + "." + visitorInterfaceName;
-        JavaInterfaceModel visitorInterface = getState().getJavaIndex().lookupInterface(visitorInterfaceFQN);
-        if (visitorInterface == null) {
-            Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorInterfaceFQN);
-        }
-
         // Create the visitor adapter class
-        JavaClassModel visitorAdapterClass= JavaClassModel.builder()
+        JavaClassModel visitorAdapterClass = JavaClassModel.builder()
                 ._package(visitorPackage)
                 .name(visitorAdapterName)
                 .build();
-        visitorAdapterClass.get_implements().add(visitorInterface);
 
         // Create java source code for the visitor adapter
         JavaClassSource visitorAdapterSource = Roaster.create(JavaClassSource.class)
                 .setPackage(visitorPackageName)
                 .setName(visitorAdapterClass.getName())
                 .setPublic();
-        visitorAdapterSource.implementInterface(visitorInterface.getInterfaceSource());
-        visitorAdapterSource.getJavaDoc().setText(
-                "Visitor adapter for the '" + visitorInterface.getName() + "' visitor.  This provides empty implementations of every visit method in the visitor.  Useful when you only need to visit a few types of nodes in a data model.");
         visitorAdapterClass.setClassSource(visitorAdapterSource);
 
-        List<MethodSource<?>> allMethods = findAllMethods(visitor);
-        allMethods.forEach(method -> {
+        // Determine which visitors this adapter is implementing
+        Set<VisitorModel> visitorsToImplement;
+        if (type == TYPE_NORMAL) {
+            visitorsToImplement = Collections.singleton(visitor);
+        } else {
+            visitorsToImplement = findDescendantVisitors(visitor);
+        }
+
+        // For each visitor, lookup its Java interface, add it to the list of interfaces implemented,
+        // and then collect all methods in the interface (avoiding potential duplicates).
+        List<MethodSource<?>> methodsToImplement = new LinkedList<MethodSource<?>>();
+        Set<String> methodNames = new HashSet<>();
+        for (VisitorModel visitorToImplement : visitorsToImplement) {
+            JavaInterfaceModel vtiInterface = resolveJavaInterface(visitorToImplement);
+            if (vtiInterface == null) {
+                Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
+            }
+
+            visitorAdapterClass.get_implements().add(vtiInterface);
+            visitorAdapterSource.addImport(vtiInterface.getInterfaceSource());
+            visitorAdapterSource.addInterface(vtiInterface.getInterfaceSource());
+
+            // Add all methods to the list (but avoid duplicates).
+            List<MethodSource<?>> allMethods = getAllMethodsForVisitorInterface(visitorToImplement);
+            allMethods.forEach(method -> {
+                if (!methodNames.contains(method.getName())) {
+                    methodsToImplement.add(method);
+                    methodNames.add(method.getName());
+                }
+            });
+        }
+
+        // Now create an empty implementation for each visit method.
+        methodsToImplement.forEach(method -> {
             MethodSource<JavaClassSource> methodSource = visitorAdapterSource.addMethod()
                     .setName(method.getName())
                     .setReturnTypeVoid()
@@ -80,6 +125,7 @@ public class CreateVisitorAdaptersStage extends AbstractStage {
             ParameterSource<?> param = method.getParameters().get(0);
             visitorAdapterSource.addImport(param.getType());
             methodSource.addParameter(param.getType().getName(), param.getName());
+            methodSource.addAnnotation(Override.class);
             methodSource.setBody("");
         });
 
@@ -88,29 +134,20 @@ public class CreateVisitorAdaptersStage extends AbstractStage {
     }
 
     /**
-     * Finds all visitXyz() methods defined for the visitor for the given model.  This
-     * is done by walking up the hierarchy of visitors, looking up the generated Java
-     * interface for each one, and collecting the methods defined on each visitor.
+     * Returns all of the methods defined for the visitor interface generated for the
+     * given visitor model.  This walks up the visitor hierarchy, collecting all methods
+     * defined on visitor interfaces.  It returns the full collection of methods (for
+     * this visitor and all super-interfaces).
      * @param visitor
      */
-    private List<MethodSource<?>> findAllMethods(VisitorModel visitor) {
-        List<MethodSource<?>> rval = new ArrayList<>();
-        VisitorModel viz = visitor;
-        while (viz != null) {
-            String visitorPackageName = viz.getNamespace().fullName() + ".visitors";
-            String visitorPrefix = (viz.getParent() == null) ? null : getState().getSpecIndex().prefixForNS(viz.getNamespace().fullName());
-            String visitorInterfaceName = (visitorPrefix != null ? visitorPrefix : "") + "Visitor";
-            String visitorInterfaceFQN = visitorPackageName + "." + visitorInterfaceName;
-
-            JavaInterfaceModel visitorInterface = getState().getJavaIndex().lookupInterface(visitorInterfaceFQN);
-            if (visitorInterface == null) {
-                Logger.warn("Visitor java interface not found for: " + visitorInterfaceFQN);
-            }
-            rval.addAll(visitorInterface.getInterfaceSource().getMethods());
-
-            viz = viz.getParent();
+    private List<MethodSource<?>> getAllMethodsForVisitorInterface(VisitorModel visitor) {
+        List<MethodSource<?>> methods = new LinkedList<>();
+        while (visitor != null) {
+            JavaInterfaceModel visitorInterface = resolveJavaInterface(visitor);
+            methods.addAll(visitorInterface.getInterfaceSource().getMethods());
+            visitor = visitor.getParent();
         }
-        return rval;
+        return methods;
     }
 
 }
