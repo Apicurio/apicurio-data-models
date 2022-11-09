@@ -16,6 +16,8 @@
 
 package io.apicurio.umg;
 
+import java.util.Collection;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.GeneratorState;
@@ -55,8 +57,6 @@ import io.apicurio.umg.pipe.java.TransformComplexTypes;
 import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
 import io.apicurio.umg.pipe.java.TransformInheritance;
 import io.apicurio.umg.pipe.java.TransformToInterfaces;
-
-import java.util.Collection;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -112,6 +112,7 @@ public class UnifiedModelGenerator {
         // === Java-specific stages
 
         // Working with Java-specific models
+        pipe.addStage(new LoadBaseClassesStage());
         pipe.addStage(new TransformConceptToJavaModelStage());
         pipe.addStage(new TransformInheritance());
         pipe.addStage(new TransformToInterfaces());
@@ -120,7 +121,6 @@ public class UnifiedModelGenerator {
         pipe.addStage(new ResolveFieldTypes());
         pipe.addStage(new CreateFactoryMethodsStage());
         pipe.addStage(new AddPrefixes());
-        pipe.addStage(new LoadBaseClassesStage());
         pipe.addStage(new JavaGetterStage());
         pipe.addStage(new JavaSetterStage());
 

@@ -1,11 +1,8 @@
 package io.apicurio.umg.pipe.java;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.java.JavaEntityModel;
 import io.apicurio.umg.models.java.JavaFieldModel;
 import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
@@ -26,7 +23,7 @@ public class ResolveFieldTypes extends AbstractStage {
                 // This stage can only process:
                 // - a simple type
                 // - a list of simple types
-                // - a map of simple tpe
+                // - a map of simple types
                 // Previous stage must preprocess more complex types (TODO TransformComplexTypes)
 
                 var stop = false;
@@ -128,7 +125,7 @@ public class ResolveFieldTypes extends AbstractStage {
                                 f.setPrimitiveType("Object");
                             }
                         }
-                        */
+                         */
                     }
                 }
             });

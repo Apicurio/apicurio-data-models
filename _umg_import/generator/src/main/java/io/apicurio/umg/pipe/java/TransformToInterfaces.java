@@ -1,13 +1,14 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.ArrayDeque;
+import java.util.HashSet;
+
+import org.apache.commons.lang3.StringUtils;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.java.JavaInterfaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayDeque;
-import java.util.HashSet;
 
 public class TransformToInterfaces extends AbstractStage {
     @Override
@@ -49,14 +50,21 @@ public class TransformToInterfaces extends AbstractStage {
 
                             // Create an impl version
                             var leafClass = (JavaClassModel) getState().getJavaIndex().lookupAndIndexType(() -> {
+                                String nodeImplFQCN = getState().getConfig().getRootNamespace() + ".NodeImpl";
+                                JavaClassModel nodeImplClassModel = getState().getJavaIndex().lookupClass(nodeImplFQCN);
+                                if (nodeImplClassModel == null) {
+                                    Logger.warn("[TransformToInterfaces] NodeImpl class not found!");
+                                }
                                 return JavaClassModel.builder()
                                         ._package(originalClass.get_package())
                                         .name(StringUtils.capitalize(originalClass.getName()) + "Impl")
+                                        ._extends(nodeImplClassModel)
                                         .build();
                             });
                             leafClass.setEntityModel(originalEntity);
                             leafClass.getFields().addAll(originalClass.getFields());
-                            leafClass.set_extends(originalClass.get_extends());
+                            // Note: the Impl classes should always extend `NodeImpl`
+                            //leafClass.set_extends(originalClass.get_extends());
                             // The things below already come from the leaf interface
                             //leafClass.get_implements().addAll(originalClass.get_implements());
                             leafClass.get_implements().add(leafInterface);
