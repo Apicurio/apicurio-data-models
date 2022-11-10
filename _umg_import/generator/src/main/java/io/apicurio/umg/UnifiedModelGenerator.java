@@ -37,8 +37,10 @@ import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceParentStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
-import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
+import io.apicurio.umg.pipe.java.CreateEntityImplStage;
 import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
+import io.apicurio.umg.pipe.java.CreateImplFieldsStage;
+import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
@@ -105,7 +107,9 @@ public class UnifiedModelGenerator {
         pipe.addStage(new ConfigureInterfaceParentStage());
         pipe.addStage(new ConfigureInterfaceTraitsStage());
         pipe.addStage(new CreateInterfaceMethodsStage());
-        //        pipe.addStage(new CreateEntityImplStage());
+        pipe.addStage(new CreateEntityImplStage());
+        pipe.addStage(new CreateImplFieldsStage());
+        //        pipe.addStage(new CreateImplMethodsStage());
 
         pipe.addStage(new CreateReadersStage());
         pipe.addStage(new CreateWritersStage());

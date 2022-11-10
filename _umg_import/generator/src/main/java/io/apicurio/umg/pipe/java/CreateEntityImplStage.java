@@ -33,6 +33,7 @@ public class CreateEntityImplStage extends AbstractJavaStage {
         entityClass.addImport(entityInterface);
         entityClass.addInterface(entityInterface);
 
+        // All impl classes extend NodeImpl
         JavaClassSource nodeImpl = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
         entityClass.extendSuperType(nodeImpl);
 

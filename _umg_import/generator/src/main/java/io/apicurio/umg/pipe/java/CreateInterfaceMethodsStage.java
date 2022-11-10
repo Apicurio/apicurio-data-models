@@ -1,5 +1,6 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,10 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
                 Logger.error("[CreateInterfaceMethodsStage] Regex property defined without a collection name: " + javaEntityOrTrait.getCanonicalName() + "::" + property);
                 return;
             }
-            PropertyType collectionPropertyType = PropertyType.parse("{" + property.getType().getSimpleType() + "}");
+            PropertyType collectionPropertyType = PropertyType.builder()
+                    .nested(Collections.singleton(property.getType()))
+                    .map(true)
+                    .build();
             PropertyModel collectionProperty = PropertyModel.builder().name(property.getCollection()).type(collectionPropertyType).build();
 
             if (isEntity(property)) {
@@ -83,7 +87,7 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
             createClearMethod(javaEntityOrTrait, property);
             createRemoveMethod(javaEntityOrTrait, property);
         } else {
-            Logger.warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntityOrTrait.getQualifiedName());
+            Logger.warn("[CreateInterfaceMethodsStage] Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntityOrTrait.getQualifiedName());
         }
     }
 

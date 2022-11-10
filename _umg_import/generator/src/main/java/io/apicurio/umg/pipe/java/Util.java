@@ -18,15 +18,9 @@ public class Util {
             entry("any", JsonNode.class));
 
     public static Map<String, String> JAVA_KEYWORD_MAP = Map.ofEntries(
-            Map.entry("default", "_default"),
-            Map.entry("enum", "_enum"),
-            Map.entry("const", "_const"),
-            Map.entry("if", "_if"),
-            Map.entry("else", "_else")
-            );
-
-    public static String sanitizeFieldName(String name) {
-        return JAVA_KEYWORD_MAP.getOrDefault(name, name);
-    }
-
+            entry("default", "_default"),
+            entry("enum", "_enum"),
+            entry("const", "_const"),
+            entry("if", "_if"),
+            entry("else", "_else"));
 }

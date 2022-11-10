@@ -3,6 +3,7 @@ package io.apicurio.umg.pipe.java;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.modeshape.common.text.Inflector;
 
@@ -16,6 +17,23 @@ import io.apicurio.umg.pipe.AbstractStage;
 public abstract class AbstractJavaStage extends AbstractStage {
 
     private static final Inflector inflector = new Inflector();
+
+    protected String getFieldName(PropertyModel property) {
+        if (property.getName().equals("*")) {
+            return "_items";
+        }
+        if (property.getName().startsWith("/")) {
+            return sanitizeFieldName(property.getCollection());
+        }
+        return sanitizeFieldName(property.getName());
+    }
+
+    protected String sanitizeFieldName(String name) {
+        if (name == null) {
+            return null;
+        }
+        return Util.JAVA_KEYWORD_MAP.getOrDefault(name, name);
+    }
 
     protected String getPrefix(NamespaceModel namespace) {
         return getPrefix(namespace.fullName());
@@ -200,8 +218,8 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return inflector.singularize(name);
     }
 
-    protected boolean hasNamedMethod(JavaInterfaceSource entityInterface, String methodName) {
-        for (MethodSource<JavaInterfaceSource> method : entityInterface.getMethods()) {
+    protected boolean hasNamedMethod(MethodHolderSource<?> entityInterface, String methodName) {
+        for (MethodSource<?> method : entityInterface.getMethods()) {
             if (method.getName().equals(methodName)) {
                 return true;
             }
