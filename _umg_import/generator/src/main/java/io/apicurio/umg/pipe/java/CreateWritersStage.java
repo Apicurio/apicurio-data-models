@@ -235,7 +235,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
-                body.addContext("getterMethodName", Util.fieldGetter(property));
+                body.addContext("getterMethodName", getterMethodName(property));
                 body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
                 body.append("{");
@@ -254,7 +254,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 writerClassSource.addImport(List.class);
 
                 body.addContext("valueType", determineValueType(property.getType()));
-                body.addContext("getterMethodName", Util.fieldGetter(property));
+                body.addContext("getterMethodName", getterMethodName(property));
                 body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
 
                 body.append("{");
@@ -283,7 +283,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             }
 
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
             body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
             body.append("{");
@@ -296,14 +296,14 @@ public class CreateWritersStage extends AbstractJavaStage {
         private void handlePrimitiveTypeProperty(BodyBuilder body) {
             body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             body.append("JsonUtil.${setPropertyMethodName}(json, \"${propertyName}\", node.${getterMethodName}());");
         }
 
         private void handleListProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
             if (listValuePropertyType.isPrimitiveType()) {
@@ -341,7 +341,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("            this.${writeMethodName}(model, object);");
                 body.append("            array.add(object);");
                 body.append("        });");
-                body.append("        JsonUtil.setObjectProperty(json, \"children\", array);");
+                body.append("        JsonUtil.setAnyProperty(json, \"children\", array);");
                 body.append("    }");
                 body.append("}");
             } else {
@@ -352,7 +352,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
         private void handleMapProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
             if (mapValuePropertyType.isPrimitiveType()) {
@@ -414,7 +414,7 @@ public class CreateWritersStage extends AbstractJavaStage {
          */
         private String determineSetPropertyVariant(PropertyType type) {
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
                     writerClassSource.addImport(_class);
                     return "setObjectProperty";
@@ -429,7 +429,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (ObjectNode.class.equals(_class)) {
                         writerClassSource.addImport(_class);
                         return "setObjectArrayProperty";
@@ -445,7 +445,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (ObjectNode.class.equals(_class)) {
                         writerClassSource.addImport(_class);
                         return "setObjectMapProperty";
@@ -469,7 +469,7 @@ public class CreateWritersStage extends AbstractJavaStage {
          */
         private String determineValueType(PropertyType type) {
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (_class != null) {
                     writerClassSource.addImport(_class);
                     return _class.getSimpleName();
@@ -479,7 +479,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (_class != null) {
                         writerClassSource.addImport(_class);
                         return "List<" + _class.getSimpleName() + ">";
@@ -490,7 +490,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (_class != null) {
                         writerClassSource.addImport(_class);
                         return "Map<String, " + _class.getSimpleName() + ">";

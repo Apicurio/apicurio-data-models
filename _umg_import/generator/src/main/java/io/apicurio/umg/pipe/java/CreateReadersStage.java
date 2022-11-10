@@ -200,7 +200,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.keys(json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
+                body.append("        ${entityJavaType} model = node.${createMethodName}();");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -257,7 +257,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = node.${createMethodName}(name);");
+                body.append("        ${entityJavaType} model = node.${createMethodName}();");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -299,9 +299,9 @@ public class CreateReadersStage extends AbstractJavaStage {
             }
 
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", Util.fieldSetter(property));
+            body.addContext("setterMethodName", setterMethodName(property));
             body.addContext("createMethodName", createMethodName(propertyTypeEntity));
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
             body.addContext("readMethodName", readMethodName(propertyTypeEntity));
 
             body.append("{");
@@ -317,7 +317,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             body.addContext("valueType", determineValueType(property.getType()));
             body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", Util.fieldSetter(property));
+            body.addContext("setterMethodName", setterMethodName(property));
 
             body.append("{");
             body.append("    ${valueType} value = JsonUtil.${consumeProperty}(json, \"${propertyName}\");");
@@ -327,7 +327,7 @@ public class CreateReadersStage extends AbstractJavaStage {
 
         private void handleListProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", Util.fieldSetter(property));
+            body.addContext("setterMethodName", setterMethodName(property));
 
             PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
             if (listValuePropertyType.isPrimitiveType()) {
@@ -361,7 +361,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.addContext("listValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", createMethodName(entityTypeModel));
                 body.addContext("readMethodName", readMethodName(entityTypeModel));
-                body.addContext("addMethodName", addMethodName(entityTypeModel));
+                body.addContext("addMethodName", addMethodName(singularize(property.getName())));
 
                 body.append("{");
                 body.append("    List<ObjectNode> objects = JsonUtil.consumeObjectArrayProperty(json, \"${propertyName}\");");
@@ -381,7 +381,7 @@ public class CreateReadersStage extends AbstractJavaStage {
 
         private void handleMapProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", Util.fieldSetter(property));
+            body.addContext("setterMethodName", setterMethodName(property));
 
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
             if (mapValuePropertyType.isPrimitiveType()) {
@@ -410,17 +410,16 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
                 readerClassSource.addImport(entityTypeJavaModel);
 
-                body.addContext("objectName", "object");
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", "create" + entityTypeName);
                 body.addContext("readMethodName", "read" + entityTypeName);
-                body.addContext("addMethodName", "add" + entityTypeName);
+                body.addContext("addMethodName", addMethodName(singularize(property.getName())));
 
                 body.append("{");
-                body.append("    ObjectNode ${objectName} = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
-                body.append("    JsonUtil.keys(${objectName}).forEach(name -> {");
-                body.append("        ObjectNode mapValue = JsonUtil.consumeObjectProperty(${objectName}, name);");
-                body.append("        ${mapValueJavaType} model = node.${createMethodName}(name);");
+                body.append("    ObjectNode object = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
+                body.append("    JsonUtil.keys(object).forEach(name -> {");
+                body.append("        ObjectNode mapValue = JsonUtil.consumeObjectProperty(object, name);");
+                body.append("        ${mapValueJavaType} model = node.${createMethodName}();");
                 body.append("        this.${readMethodName}(mapValue, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -451,7 +450,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             }
 
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
                     readerClassSource.addImport(_class);
                     return "consumeObjectProperty";
@@ -466,7 +465,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (ObjectNode.class.equals(_class)) {
                         readerClassSource.addImport(_class);
                         return "consumeObjectArrayProperty";
@@ -482,7 +481,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (ObjectNode.class.equals(_class)) {
                         readerClassSource.addImport(_class);
                         return "consumeObjectMapProperty";
@@ -506,7 +505,7 @@ public class CreateReadersStage extends AbstractJavaStage {
          */
         private String determineValueType(PropertyType type) {
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (_class != null) {
                     readerClassSource.addImport(_class);
                     return _class.getSimpleName();
@@ -516,7 +515,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (_class != null) {
                         readerClassSource.addImport(_class);
                         return "List<" + _class.getSimpleName() + ">";
@@ -527,7 +526,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (_class != null) {
                         readerClassSource.addImport(_class);
                         return "Map<String, " + _class.getSimpleName() + ">";

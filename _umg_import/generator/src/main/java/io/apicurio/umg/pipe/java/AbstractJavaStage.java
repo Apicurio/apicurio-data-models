@@ -1,16 +1,10 @@
 package io.apicurio.umg.pipe.java;
 
-import static java.util.Map.entry;
-
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.modeshape.common.text.Inflector;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
@@ -23,16 +17,12 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     private static final Inflector inflector = new Inflector();
 
-    public static Map<String, Class<?>> PRIMITIVE_TYPE_MAP = Map.ofEntries(
-            entry("string", String.class),
-            entry("boolean", Boolean.class),
-            entry("number", Number.class),
-            entry("integer", Integer.class),
-            entry("object", ObjectNode.class),
-            entry("any", JsonNode.class));
-
     protected String getPrefix(NamespaceModel namespace) {
-        String prefix = getState().getSpecIndex().getNsToPrefix().get(namespace.fullName());
+        return getPrefix(namespace.fullName());
+    }
+
+    protected String getPrefix(String namespace) {
+        String prefix = getState().getSpecIndex().getNsToPrefix().get(namespace);
         return prefix == null ? "" : prefix;
     }
 
@@ -81,6 +71,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String getNodeEntityInterfaceFQN() {
         return getState().getConfig().getRootNamespace() + ".Node";
+    }
+
+    protected String getMappedNodeInterfaceFQN() {
+        return getState().getConfig().getRootNamespace() + ".MappedNode";
     }
 
     protected String getNodeEntityClassFQN() {
@@ -156,7 +150,7 @@ public abstract class AbstractJavaStage extends AbstractStage {
         if (!type.isPrimitiveType()) {
             throw new UnsupportedOperationException("Property type not primitive: " + type);
         }
-        Class<?> rval = PRIMITIVE_TYPE_MAP.get(type.getSimpleType());
+        Class<?> rval = Util.PRIMITIVE_TYPE_MAP.get(type.getSimpleType());
         if (rval == null) {
             throw new UnsupportedOperationException("Primitive-to-class mapping not found for: " + type.getSimpleType());
         }
@@ -164,11 +158,15 @@ public abstract class AbstractJavaStage extends AbstractStage {
     }
 
     protected JavaInterfaceSource resolveEntityType(NamespaceModel namespace, PropertyModel property) {
+        return resolveEntityType(namespace.fullName(), property.getType());
+    }
+
+    protected JavaInterfaceSource resolveEntityType(String namespace, PropertyModel property) {
         return resolveEntityType(namespace, property.getType());
     }
 
-    protected JavaInterfaceSource resolveEntityType(NamespaceModel namespace, PropertyType type) {
-        String _package = namespace.fullName();
+    protected JavaInterfaceSource resolveEntityType(String namespace, PropertyType type) {
+        String _package = namespace;
         String prefix = getPrefix(namespace);
         String fqn = _package + "." + prefix + type.getSimpleType();
         return getState().getJavaIndex().lookupInterface(fqn);
@@ -209,6 +207,18 @@ public abstract class AbstractJavaStage extends AbstractStage {
             }
         }
         return false;
+    }
+
+    protected JavaInterfaceSource lookupEntity(EntityModel entity) {
+        return getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
+    }
+
+    protected JavaInterfaceSource lookupTrait(TraitModel trait) {
+        return getState().getJavaIndex().lookupInterface(getTraitInterfaceFQN(trait));
+    }
+
+    protected JavaClassSource lookupEntityImpl(EntityModel entity) {
+        return getState().getJavaIndex().lookupClass(getEntityClassFQN(entity));
     }
 
 }
