@@ -34,29 +34,18 @@ import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
-import io.apicurio.umg.pipe.java.AddPrefixes;
+import io.apicurio.umg.pipe.java.ConfigureInterfaceParentStage;
+import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
-import io.apicurio.umg.pipe.java.CreateFactoryMethodsStage;
+import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
+import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
+import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateWritersStage;
-import io.apicurio.umg.pipe.java.JavaAddImplementsStage;
-import io.apicurio.umg.pipe.java.JavaClassStage;
-import io.apicurio.umg.pipe.java.JavaFieldStage;
-import io.apicurio.umg.pipe.java.JavaGetterStage;
-import io.apicurio.umg.pipe.java.JavaMethodStage;
-import io.apicurio.umg.pipe.java.JavaSetterStage;
-import io.apicurio.umg.pipe.java.JavaSuperTypesStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
-import io.apicurio.umg.pipe.java.ResolveFieldSourceTypes;
-import io.apicurio.umg.pipe.java.ResolveFieldTypes;
-import io.apicurio.umg.pipe.java.TodoStage;
-import io.apicurio.umg.pipe.java.TransformComplexTypes;
-import io.apicurio.umg.pipe.java.TransformConceptToJavaModelStage;
-import io.apicurio.umg.pipe.java.TransformInheritance;
-import io.apicurio.umg.pipe.java.TransformToInterfaces;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -109,34 +98,21 @@ public class UnifiedModelGenerator {
         // Debug the models
         //pipe.addStage(new DebugStage());
 
-        // === Java-specific stages
-
-        // Working with Java-specific models
+        // Generate java code
         pipe.addStage(new LoadBaseClassesStage());
-        pipe.addStage(new TransformConceptToJavaModelStage());
-        pipe.addStage(new TransformInheritance());
-        pipe.addStage(new TransformToInterfaces());
-        pipe.addStage(new TodoStage());
-        pipe.addStage(new TransformComplexTypes());
-        pipe.addStage(new ResolveFieldTypes());
-        pipe.addStage(new CreateFactoryMethodsStage());
-        pipe.addStage(new AddPrefixes());
-        pipe.addStage(new JavaGetterStage());
-        pipe.addStage(new JavaSetterStage());
+        pipe.addStage(new CreateTraitInterfacesStage());
+        pipe.addStage(new CreateEntityInterfacesStage());
+        pipe.addStage(new ConfigureInterfaceParentStage());
+        pipe.addStage(new ConfigureInterfaceTraitsStage());
+        pipe.addStage(new CreateInterfaceMethodsStage());
+        //        pipe.addStage(new CreateEntityImplStage());
 
-        // Working with Roaster
-        pipe.addStage(new ResolveFieldSourceTypes());
-        pipe.addStage(new JavaClassStage());
-        pipe.addStage(new JavaAddImplementsStage());
-        pipe.addStage(new JavaSuperTypesStage());
-        pipe.addStage(new JavaFieldStage());
-        pipe.addStage(new JavaMethodStage());
         pipe.addStage(new CreateReadersStage());
         pipe.addStage(new CreateWritersStage());
         pipe.addStage(new CreateVisitorInterfacesStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());
         pipe.addStage(new CreateVisitorAdaptersStage());
-        pipe.addStage(new JavaWriteStage(config.getOutputDirectory()));
+        pipe.addStage(new JavaWriteStage());
 
         pipe.run(state);
     }

@@ -1,28 +1,27 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaEntityModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
-import io.apicurio.umg.pipe.AbstractStage;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Creates the i/o writer classes.  There is a bespoke writer for each specification
@@ -30,35 +29,18 @@ import java.util.Map;
  *
  * @author eric.wittmann@gmail.com
  */
-public class CreateWritersStage extends AbstractStage {
+public class CreateWritersStage extends AbstractJavaStage {
 
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
             String writerPackageName = specVersion.getNamespace() + ".io";
             String writerClassName = specVersion.getPrefix() + "ModelWriter";
-            // Create the package for the writer
-            JavaPackageModel writerPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-                JavaPackageModel parentPackage = getState().getJavaIndex().lookupPackage(specVersion.getNamespace());
-                JavaPackageModel packageModel = JavaPackageModel.builder()
-                        .name(writerPackageName)
-                        .parent(parentPackage)
-                        .build();
-                return packageModel;
-            });
-
-            // Create the writer class model
-            JavaClassModel writerClass = JavaClassModel.builder()
-                    ._package(writerPackage)
-                    ._abstract(false)
-                    .name(writerClassName)
-                    .build();
 
             // Create java source code for the writer
             JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
-                    .setPackage(writerClass.get_package().getName())
-                    .setName(writerClass.getName())
-                    .setAbstract(writerClass.is_abstract())
+                    .setPackage(writerPackageName)
+                    .setName(writerClassName)
                     .setPublic();
             writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
             writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
@@ -66,8 +48,7 @@ public class CreateWritersStage extends AbstractStage {
             // Create the writeXYZ methods - one for each entity
             createWriteMethods(specVersion, writerClassSource);
 
-            writerClass.setClassSource(writerClassSource);
-            getState().getJavaIndex().addClass(writerClass);
+            getState().getJavaIndex().index(writerClassSource);
         });
     }
 
@@ -98,19 +79,19 @@ public class CreateWritersStage extends AbstractStage {
     private void createWriteMethodFor(SpecificationVersion specVersion, JavaClassSource writerClassSource, EntityModel entityModel) {
         String writeMethodName = writeMethodName(entityModel);
 
-        JavaEntityModel javaEntityModel = getState().getJavaIndex().lookupType(entityModel);
+        JavaInterfaceSource javaEntityModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityModel));
         if (javaEntityModel == null) {
             Logger.warn("[CreateWritersStage] Java entity not found for: " + entityModel.fullyQualifiedName());
             return;
         }
 
-        writerClassSource.addImport(javaEntityModel.getSource().getQualifiedName());
+        writerClassSource.addImport(javaEntityModel.getQualifiedName());
         writerClassSource.addImport(ObjectNode.class);
         MethodSource<JavaClassSource> methodSource = writerClassSource.addMethod()
                 .setName(writeMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getName(), "node");
         methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
 
         // Now create the body content for the writer.
@@ -131,13 +112,13 @@ public class CreateWritersStage extends AbstractStage {
      *
      * @param body
      * @param property
-     * @param javaEntityModel
-     * @param javaEntityModel
+     * @param javaEntity
+     * @param javaEntity
      * @param writerClassSource
      */
     private void createWritePropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
-                                         JavaEntityModel javaEntityModel, JavaClassSource writerClassSource) {
-        CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntityModel, writerClassSource);
+            JavaInterfaceSource javaEntity, JavaClassSource writerClassSource) {
+        CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntity, writerClassSource);
         body.clearContext();
         crp.writeTo(body);
     }
@@ -164,7 +145,7 @@ public class CreateWritersStage extends AbstractStage {
     private class CreateWriteProperty {
         PropertyModel property;
         EntityModel entityModel;
-        JavaEntityModel javaEntityModel;
+        JavaInterfaceSource javaEntityModel;
         JavaClassSource writerClassSource;
 
         /**
@@ -244,14 +225,14 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(propertyTypeEntity);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(propertyTypeEntity));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] REGEX Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("getterMethodName", Util.fieldGetter(property));
@@ -338,13 +319,13 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(entityTypeModel);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
                 writerClassSource.addImport(List.class);
                 writerClassSource.addImport(ArrayNode.class);
 
@@ -388,14 +369,14 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(entityTypeModel);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("writeMethodName", "write" + entityTypeName);

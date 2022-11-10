@@ -16,22 +16,13 @@
 
 package io.apicurio.umg.index.java;
 
-import io.apicurio.umg.models.concept.EntityModel;
-import io.apicurio.umg.models.concept.TraitModel;
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaEntityModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
-import lombok.Getter;
-
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Supplier;
+
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+
+import lombok.Getter;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -39,78 +30,28 @@ import java.util.function.Supplier;
 public class JavaIndex {
 
     @Getter
-    private Map<String, JavaPackageModel> packages = new HashMap<>();
+    private Map<String, JavaInterfaceSource> interfaces = new HashMap<>();
 
     @Getter
-    private Map<String, JavaEntityModel> types = new HashMap<>();
+    private Map<String, JavaClassSource> classes = new HashMap<>();
 
-    @Getter
-    private Map<String, JavaClassModel> classes = new HashMap<>();
 
-    @Getter
-    private Map<String, JavaInterfaceModel> interfaces = new HashMap<>();
-
-    public JavaPackageModel lookupPackage(String namespace) {
-        return this.packages.get(namespace);
+    public JavaInterfaceSource lookupInterface(String fullyQualifiedName) {
+        return this.interfaces.get(fullyQualifiedName);
     }
 
-    public JavaPackageModel lookupAndIndexPackage(Supplier<JavaPackageModel> factory) {
-        var _new = factory.get();
-        Objects.requireNonNull(_new.getName());
-        return packages.computeIfAbsent(_new.getName(), _unused -> _new);
-    }
-
-    public JavaEntityModel lookupAndIndexType(Supplier<JavaEntityModel> factory) {
-        var _new = factory.get();
-        var _package = _new.get_package();
-        Objects.requireNonNull(_package);
-        Objects.requireNonNull(_new.getName());
-        return types.computeIfAbsent(_new.fullyQualifiedName(), _unused -> {
-            _package.addClass(_new);
-            return _new;
-        });
-    }
-
-    public JavaEntityModel lookupType(String fullyQualifiedName) {
-        return this.types.get(fullyQualifiedName);
-    }
-
-    public JavaEntityModel lookupType(EntityModel entity) {
-        return lookupType(entity.fullyQualifiedName());
-    }
-
-    public JavaEntityModel lookupType(TraitModel trait) {
-        return lookupType(trait.fullyQualifiedName());
-    }
-
-    public void removeType(JavaEntityModel type) {
-        var _package = type.get_package();
-        _package.getTypes().remove(type.fullyQualifiedName());
-        types.remove(type.fullyQualifiedName());
-    }
-
-    public Set<JavaEntityModel> getAllJavaEntitiesWithCopy() {
-        return new HashSet<>(types.values());
-    }
-
-    public Collection<JavaEntityModel> getAllJavaEntitiesWithoutCopy() {
-        return Collections.unmodifiableCollection(types.values());
-    }
-
-    public void addClass(JavaClassModel classModel) {
-        this.classes.put(classModel.fullyQualifiedName(), classModel);
-    }
-
-    public void addInterface(JavaInterfaceModel interfaceModel) {
-        this.interfaces.put(interfaceModel.fullyQualifiedName(), interfaceModel);
-    }
-
-    public JavaClassModel lookupClass(String fullyQualifiedName) {
+    public JavaClassSource lookupClass(String fullyQualifiedName) {
         return this.classes.get(fullyQualifiedName);
     }
 
-    public JavaInterfaceModel lookupInterface(String fullyQualifiedName) {
-        return this.interfaces.get(fullyQualifiedName);
+    public void index(JavaClassSource _class) {
+        String fqcn = _class.getCanonicalName();
+        this.classes.put(fqcn, _class);
+    }
+
+    public void index(JavaInterfaceSource _iface) {
+        String fqcn = _iface.getCanonicalName();
+        this.interfaces.put(fqcn, _iface);
     }
 
 }

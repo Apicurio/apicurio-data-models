@@ -2,6 +2,9 @@ package io.apicurio.umg.base.util;
 
 import io.apicurio.umg.base.Node;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class WriterUtil {
 
     public static final void writeExtraProperties(Node node, ObjectNode json) {

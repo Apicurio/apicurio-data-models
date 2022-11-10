@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
-import io.apicurio.umg.models.java.JavaFieldModel;
-import io.apicurio.umg.models.java.JavaFieldModel.Flavor;
 
 public class Util {
 
@@ -35,15 +33,6 @@ public class Util {
 
     public static String sanitizeFieldName(String name) {
         return JAVA_KEYWORD_MAP.getOrDefault(name, name);
-    }
-
-    public static String fieldGetter(JavaFieldModel fieldModel) {
-        boolean isBool = fieldModel.getPrimitiveType() != null && fieldModel.getFlavor() == Flavor.NONE && fieldModel.getPrimitiveType().equals("java.lang.Boolean");
-        return (isBool ? "is" : "get") + StringUtils.capitalize(fieldModel.getName());
-    }
-
-    public static String fieldSetter(JavaFieldModel fieldModel) {
-        return "set" + StringUtils.capitalize(fieldModel.getName());
     }
 
     public static String fieldGetter(PropertyModel propertyModel) {

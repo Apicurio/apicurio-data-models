@@ -3,13 +3,13 @@ package io.apicurio.umg.pipe.java;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.SpecificationVersionId;
 import io.apicurio.umg.models.concept.VisitorModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.pipe.AbstractStage;
 
-public abstract class AbstractVisitorStage extends AbstractStage {
+public abstract class AbstractVisitorStage extends AbstractJavaStage {
 
     /**
      * Determines the package to use for the interface generated for the given visitor.
@@ -73,9 +73,9 @@ public abstract class AbstractVisitorStage extends AbstractStage {
      * Resolves a generated java interface from a visitor model.
      * @param visitor
      */
-    protected JavaInterfaceModel resolveJavaInterface(VisitorModel visitor) {
+    protected JavaInterfaceSource resolveJavaInterface(VisitorModel visitor) {
         String interfaceFQN = getVisitorInterfaceFullName(visitor);
-        JavaInterfaceModel _interface = getState().getJavaIndex().lookupInterface(interfaceFQN);
+        JavaInterfaceSource _interface = getState().getJavaIndex().lookupInterface(interfaceFQN);
         if (_interface == null) {
             Logger.warn("[" + getClass().getSimpleName() + "] Visitor interface not found: " + interfaceFQN);
         }
