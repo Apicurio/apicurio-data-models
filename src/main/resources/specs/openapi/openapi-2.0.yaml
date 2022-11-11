@@ -238,7 +238,7 @@ entities:
   - name: Example
     properties:
       - name: '*'
-        type: Header
+        type: any
   - name: Header
     traits:
       - ExtensibleTrait
