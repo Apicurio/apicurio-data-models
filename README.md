@@ -161,3 +161,4 @@ still good.  You should then push your changes to your fork, and then
 ```bash
 $ git push origin apicurio-data-models-7         # pushes your topic branch into your public fork
 ```
+

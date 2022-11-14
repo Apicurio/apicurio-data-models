@@ -7,7 +7,7 @@ on:
       - 'LICENSE'
       - 'README*'
       - 'CODE_OF_CONDUCT*'
-    branches: [master]
+    branches: [main]
   pull_request:
     paths-ignore:
       - '.github/**'
@@ -15,7 +15,7 @@ on:
       - 'LICENSE'
       - 'README*'
       - 'CODE_OF_CONDUCT*'
-    branches: [master]
+    branches: [main]
 
 jobs:
   build-verify:

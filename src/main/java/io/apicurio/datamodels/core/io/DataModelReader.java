@@ -46,7 +46,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * @author eric.wittmann@gmail.com
  */
 public abstract class DataModelReader {
-    
+
     /**
      * Constructor.
      */
@@ -93,12 +93,12 @@ public abstract class DataModelReader {
         Object info = JsonCompat.consumeProperty(json, Constants.PROP_INFO);
         List<Object> tags = JsonCompat.consumePropertyArray(json, Constants.PROP_TAGS);
         Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
-        
+
         if (info != null) {
             node.info = node.createInfo();
             this.readInfo(info, node.info);
         }
-        
+
         if (tags != null) {
             List<Tag> tagModels = new ArrayList<>();
             for (Object tag : tags) {
@@ -108,7 +108,7 @@ public abstract class DataModelReader {
             }
             node.tags = tagModels;
         }
-        
+
         if (externalDocs != null) {
             node.externalDocs = node.createExternalDocumentation();
             this.readExternalDocumentation(externalDocs, node.externalDocs);
@@ -116,7 +116,7 @@ public abstract class DataModelReader {
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
     /**
      * Reads an info object into a data model instance (info node).
      * @param json
@@ -129,17 +129,17 @@ public abstract class DataModelReader {
         Object contact = JsonCompat.consumeProperty(json, Constants.PROP_CONTACT);
         Object license = JsonCompat.consumeProperty(json, Constants.PROP_LICENSE);
         String version = JsonCompat.consumePropertyString(json, Constants.PROP_VERSION);
-        
+
         node.title = title;
         node.description = description;
         node.termsOfService = termsOfService;
         node.version = version;
-        
+
         if (contact != null) {
             node.contact = node.createContact();
             this.readContact(contact, node.contact);
         }
-        
+
         if (license != null) {
             node.license = node.createLicense();
             this.readLicense(license, node.license);
@@ -192,10 +192,10 @@ public abstract class DataModelReader {
         String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
-        
+
         node.name = name;
         node.description = description;
-        
+
         if (externalDocs != null) {
             ExternalDocumentation externalDocsModel = node.createExternalDocumentation();
             this.readExternalDocumentation(externalDocs, externalDocsModel);
@@ -215,10 +215,10 @@ public abstract class DataModelReader {
         String url = JsonCompat.consumePropertyString(json, Constants.PROP_URL);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object variables = JsonCompat.consumeProperty(json, Constants.PROP_VARIABLES);
-        
+
         node.url = url;
         node.description = description;
-        
+
         if (variables != null) {
             JsonCompat.keys(variables).forEach(key -> {
                 Object serverVariable = JsonCompat.consumeProperty(variables, key);
@@ -241,7 +241,7 @@ public abstract class DataModelReader {
         List<String> enum_ = JsonCompat.consumePropertyStringArray(json, Constants.PROP_ENUM);
         String default_ = JsonCompat.consumePropertyString(json, Constants.PROP_DEFAULT);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
-        
+
         node.enum_ = enum_;
         node.default_ = default_;
         node.description = description;
@@ -261,7 +261,7 @@ public abstract class DataModelReader {
             node.addSecurityRequirementItem(key, scopes);
         });
     }
-    
+
     /**
      * Reads a security scheme.
      * @param json
@@ -272,16 +272,16 @@ public abstract class DataModelReader {
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         String name = JsonCompat.consumePropertyString(json, Constants.PROP_NAME);
         String in = JsonCompat.consumePropertyString(json, Constants.PROP_IN);
-        
+
         node.type = type;
         node.description = description;
         node.name = name;
         node.in = in;
-        
+
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
     /**
      * Reads an external documentation into the data model.
      * @param json
@@ -334,7 +334,7 @@ public abstract class DataModelReader {
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
     /**
      * Reads a single operation.
      * @param json
@@ -345,7 +345,7 @@ public abstract class DataModelReader {
         String summary = JsonCompat.consumePropertyString(json, Constants.PROP_SUMMARY);
         String description = JsonCompat.consumePropertyString(json, Constants.PROP_DESCRIPTION);
         Object externalDocs = JsonCompat.consumeProperty(json, Constants.PROP_EXTERNAL_DOCS);
-        
+
         node.operationId = operationId;
         node.summary = summary;
         node.description = description;
@@ -354,7 +354,7 @@ public abstract class DataModelReader {
             node.externalDocs = node.createExternalDocumentation();
             this.readExternalDocumentation(externalDocs, node.externalDocs);
         }
-        
+
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
@@ -369,7 +369,7 @@ public abstract class DataModelReader {
         Object password = JsonCompat.consumeProperty(json, Constants.PROP_PASSWORD);
         Object clientCredentials = JsonCompat.consumeProperty(json, Constants.PROP_CLIENT_CREDENTIALS);
         Object authorizationCode = JsonCompat.consumeProperty(json, Constants.PROP_AUTHORIZATION_CODE);
-        
+
         if (implicit != null) {
             node.implicit = node.createImplicitOAuthFlow();
             this.readOAuthFlow(implicit, node.implicit);
@@ -401,12 +401,17 @@ public abstract class DataModelReader {
         String tokenUrl = JsonCompat.consumePropertyString(json, Constants.PROP_TOKEN_URL);
         String refreshUrl = JsonCompat.consumePropertyString(json, Constants.PROP_REFRESH_URL);
         Object scopes = JsonCompat.consumeProperty(json, Constants.PROP_SCOPES);
-        
+
         node.authorizationUrl = authorizationUrl;
         node.tokenUrl = tokenUrl;
         node.refreshUrl = refreshUrl;
-        
+
         if (scopes != null) {
+            // Hack alert: add and remove a scope to force the lazy creation of the scopes map.
+            // GH Issue:  https://github.com/Apicurio/apicurio-data-models/issues/527
+            // This will be eliminated in Data Models 2.
+            node.addScope("_hack", "");
+            node.removeScope("_hack");
             JsonCompat.keys(scopes).forEach( scope -> {
                 String description = JsonCompat.consumePropertyString(scopes, scope);
                 node.addScope(scope, description);
@@ -416,5 +421,5 @@ public abstract class DataModelReader {
         this.readExtensions(json, node);
         this.readExtraProperties(json, node);
     }
-    
+
 }
