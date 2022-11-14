@@ -19,8 +19,8 @@ jobs:
           git config --global user.email "apicurio.ci@gmail.com"
           git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/Apicurio/apicurio.github.io.git"
           git fetch
-          git checkout master
-          git branch --set-upstream-to=origin/master
+          git checkout main
+          git branch --set-upstream-to=origin/main
           git pull
 
       - name: Fetch required Details
