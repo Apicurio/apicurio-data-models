@@ -415,7 +415,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>package</arguments>
+                                    <arguments>run package</arguments>
                                 </configuration>
                             </execution>
                         </executions>
