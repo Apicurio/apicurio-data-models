@@ -40,9 +40,9 @@ public class RunGeneratorTest {
         Logger.info("Loading specifications.");
         List<SpecificationModel> specs = new ArrayList<>();
 
-        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
-        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
         specs.add(SpecificationLoader.loadSpec("specs/openapi.yaml", Main.class.getClassLoader()));
+        specs.add(SpecificationLoader.loadSpec("specs/asyncapi.yaml", Main.class.getClassLoader()));
+        //        specs.add(SpecificationLoader.loadSpec("specs/json-schema.yaml", Main.class.getClassLoader()));
 
         return specs;
     }

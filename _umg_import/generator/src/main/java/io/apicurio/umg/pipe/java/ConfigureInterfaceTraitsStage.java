@@ -22,7 +22,7 @@ public class ConfigureInterfaceTraitsStage extends AbstractJavaStage {
         JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
         entity.getTraits().forEach(trait -> {
             JavaInterfaceSource javaTrait = getState().getJavaIndex().lookupInterface(getTraitInterfaceFQN(trait));
-            javaEntity.addImport(javaTrait);
+            addImportTo(javaTrait, javaEntity);
             javaEntity.addInterface(javaTrait);
         });
     }

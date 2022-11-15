@@ -30,10 +30,10 @@ public interface MappedNode<T> {
     public void addItem(String name, T item);
 
     /**
-     * Deletes a child item by name and returns the deleted child or undefined if there wasn't one.
+     * Removes a child item by name and returns the deleted child or undefined if there wasn't one.
      * 
      * @param name
      */
-    public T deleteItem(String name);
+    public T removeItem(String name);
 
 }

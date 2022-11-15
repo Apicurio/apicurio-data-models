@@ -102,24 +102,24 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
         String mappedNodeFQN = getMappedNodeInterfaceFQN();
         JavaInterfaceSource mappedNodeInterface = getState().getJavaIndex().lookupInterface(mappedNodeFQN);
 
-        javaEntityOrTrait.addImport(mappedNodeInterface);
+        addImportTo(mappedNodeInterface, javaEntityOrTrait);
         String mappedNodeInterfaceWithType;
 
         if (isPrimitiveList(property)) {
             Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(List.class);
-            javaEntityOrTrait.addImport(listType);
+            addImportTo(List.class, javaEntityOrTrait);
+            addImportTo(listType, javaEntityOrTrait);
             String mappedType = "List<" + listType.getSimpleName() + ">";
             mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + mappedType + ">";
         } else if (isPrimitiveMap(property)) {
             Class<?> mapType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(Map.class);
-            javaEntityOrTrait.addImport(mapType);
+            addImportTo(Map.class, javaEntityOrTrait);
+            addImportTo(mapType, javaEntityOrTrait);
             String mappedType = "Map<String, " + mapType.getSimpleName() + ">";
             mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + mappedType + ">";
         } else if (isPrimitive(property)) {
             Class<?> primType = primitiveTypeToClass(property.getType());
-            javaEntityOrTrait.addImport(primType);
+            addImportTo(primType, javaEntityOrTrait);
             mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + primType.getSimpleName() + ">";
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveEntityType(javaEntityOrTrait.getPackage(), property);
@@ -127,7 +127,7 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
                 Logger.error("Java interface for entity type not found: " + property.getType());
                 return;
             } else {
-                javaEntityOrTrait.addImport(entityType);
+                addImportTo(entityType, javaEntityOrTrait);
                 mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + entityType.getName() + ">";
             }
         } else {
@@ -147,24 +147,24 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
         MethodSource<JavaInterfaceSource> method = javaEntityOrTrait.addMethod().setName(getterMethodName(property)).setPublic();
         if (isPrimitiveList(property)) {
             Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(List.class);
-            javaEntityOrTrait.addImport(listType);
+            addImportTo(List.class, javaEntityOrTrait);
+            addImportTo(listType, javaEntityOrTrait);
             method.setReturnType("List<" + listType.getSimpleName() + ">");
         } else if (isPrimitiveMap(property)) {
-            Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(Map.class);
-            javaEntityOrTrait.addImport(listType);
-            method.setReturnType("Map<String, " + listType.getSimpleName() + ">");
+            Class<?> mapType = primitiveTypeToClass(property.getType().getNested().iterator().next());
+            addImportTo(Map.class, javaEntityOrTrait);
+            addImportTo(mapType, javaEntityOrTrait);
+            method.setReturnType("Map<String, " + mapType.getSimpleName() + ">");
         } else if (isPrimitive(property)) {
             Class<?> returnType = primitiveTypeToClass(property.getType());
-            javaEntityOrTrait.addImport(returnType);
+            addImportTo(returnType, javaEntityOrTrait);
             method.setReturnType(returnType.getSimpleName());
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveEntityType(javaEntityOrTrait.getPackage(), property);
             if (entityType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
-                javaEntityOrTrait.addImport(entityType);
+                addImportTo(entityType, javaEntityOrTrait);
                 method.setReturnType(entityType.getName());
             }
         } else if (isEntityList(property)) {
@@ -172,8 +172,8 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
             if (listType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
-                javaEntityOrTrait.addImport(List.class);
-                javaEntityOrTrait.addImport(listType);
+                addImportTo(List.class, javaEntityOrTrait);
+                addImportTo(listType, javaEntityOrTrait);
                 method.setReturnType("List<" + listType.getName() + ">");
             }
         } else if (isEntityMap(property)) {
@@ -181,8 +181,8 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
             if (mapType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
-                javaEntityOrTrait.addImport(Map.class);
-                javaEntityOrTrait.addImport(mapType);
+                addImportTo(Map.class, javaEntityOrTrait);
+                addImportTo(mapType, javaEntityOrTrait);
                 method.setReturnType("Map<String, " + mapType.getName() + ">");
             }
         } else {
@@ -199,24 +199,24 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
         MethodSource<JavaInterfaceSource> method = javaEntityOrTrait.addMethod().setName(setterMethodName(property)).setReturnTypeVoid().setPublic();
         if (isPrimitiveList(property)) {
             Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(List.class);
-            javaEntityOrTrait.addImport(listType);
+            addImportTo(List.class, javaEntityOrTrait);
+            addImportTo(listType, javaEntityOrTrait);
             method.addParameter("List<" + listType.getSimpleName() + ">", "value");
         } else if (isPrimitiveMap(property)) {
-            Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityOrTrait.addImport(Map.class);
-            javaEntityOrTrait.addImport(listType);
-            method.addParameter("Map<String, " + listType.getSimpleName() + ">", "value");
+            Class<?> mapType = primitiveTypeToClass(property.getType().getNested().iterator().next());
+            addImportTo(Map.class, javaEntityOrTrait);
+            addImportTo(mapType, javaEntityOrTrait);
+            method.addParameter("Map<String, " + mapType.getSimpleName() + ">", "value");
         } else if (isPrimitive(property)) {
             Class<?> paramType = primitiveTypeToClass(property.getType());
-            javaEntityOrTrait.addImport(paramType);
+            addImportTo(paramType, javaEntityOrTrait);
             method.addParameter(paramType.getSimpleName(), "value");
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveEntityType(javaEntityOrTrait.getPackage(), property);
             if (entityType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
-                javaEntityOrTrait.addImport(entityType);
+                addImportTo(entityType, javaEntityOrTrait);
                 method.addParameter(entityType.getName(), "value");
             }
         } else {
@@ -267,7 +267,7 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
                 return;
             }
 
-            javaEntityOrTrait.addImport(entityType);
+            addImportTo(entityType, javaEntityOrTrait);
 
             MethodSource<JavaInterfaceSource> method = javaEntityOrTrait.addMethod().setPublic().setName(methodName).setReturnTypeVoid();
             if (property.getType().isMap()) {
@@ -276,7 +276,7 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
             method.addParameter(entityType.getName(), "value");
         } else if (type.isPrimitiveType()) {
             Class<?> primitiveType = primitiveTypeToClass(type);
-            javaEntityOrTrait.addImport(primitiveType);
+            addImportTo(primitiveType, javaEntityOrTrait);
 
             MethodSource<JavaInterfaceSource> method = javaEntityOrTrait.addMethod().setPublic().setName(methodName).setReturnTypeVoid();
             if (property.getType().isMap()) {
@@ -317,7 +317,7 @@ public class CreateInterfaceMethodsStage extends AbstractJavaStage {
                 Logger.error("[CreateEntityInterfaceMethodsStage] Could not resolve entity type: " + javaEntityOrTrait.getPackage() + "::" + type);
                 return;
             }
-            javaEntityOrTrait.addImport(entityType);
+            addImportTo(entityType, javaEntityOrTrait);
             method.addParameter(entityType.getName(), "value");
         } else {
             method.addParameter("String", "name");

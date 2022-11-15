@@ -85,8 +85,8 @@ public class CreateReadersStage extends AbstractJavaStage {
             Logger.warn("[CreateReadersStage] Java interface for entity not found: " + entityFQN);
         }
 
-        readerClassSource.addImport(ObjectNode.class);
-        readerClassSource.addImport(javaEntity);
+        addImportTo(ObjectNode.class, readerClassSource);
+        addImportTo(javaEntity, readerClassSource);
         MethodSource<JavaClassSource> methodSource = readerClassSource.addMethod()
                 .setName(readMethodName)
                 .setReturnTypeVoid()
@@ -188,8 +188,8 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                readerClassSource.addImport(propertyTypeJavaEntity);
-                readerClassSource.addImport(List.class);
+                addImportTo(propertyTypeJavaEntity, readerClassSource);
+                addImportTo(List.class, readerClassSource);
 
                 body.addContext("entityJavaType", propertyTypeJavaEntity.getName());
                 body.addContext("createMethodName", createMethodName(propertyTypeEntity));
@@ -208,9 +208,9 @@ public class CreateReadersStage extends AbstractJavaStage {
             } else if (property.getType().isPrimitiveType() ||
                     (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
                     (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
-                readerClassSource.addImport(List.class);
+                addImportTo(List.class, readerClassSource);
                 if (property.getType().isMap()) {
-                    readerClassSource.addImport(Map.class);
+                    addImportTo(Map.class, readerClassSource);
                 }
 
                 body.addContext("valueType", determineValueType(property.getType()));
@@ -244,8 +244,8 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                readerClassSource.addImport(propertyTypeJavaEntity);
-                readerClassSource.addImport(List.class);
+                addImportTo(propertyTypeJavaEntity, readerClassSource);
+                addImportTo(List.class, readerClassSource);
 
                 body.addContext("propertyRegex", encodeRegex(property.getName()));
                 body.addContext("entityJavaType", propertyTypeJavaEntity.getName());
@@ -266,9 +266,9 @@ public class CreateReadersStage extends AbstractJavaStage {
                     (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
                     (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
 
-                readerClassSource.addImport(List.class);
+                addImportTo(List.class, readerClassSource);
                 if (property.getType().isMap()) {
-                    readerClassSource.addImport(Map.class);
+                    addImportTo(Map.class, readerClassSource);
                 }
 
                 body.addContext("propertyRegex", encodeRegex(property.getName()));
@@ -333,7 +333,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (listValuePropertyType.isPrimitiveType()) {
                 body.addContext("consumeMethodName", determineConsumePropertyVariant(property.getType()));
                 body.addContext("propertyValueJavaType", determineValueType(property.getType()));
-                readerClassSource.addImport(List.class);
+                addImportTo(List.class, readerClassSource);
 
                 body.append("{");
                 body.append("    ${propertyValueJavaType} value = JsonUtil.${consumeMethodName}(json, \"${propertyName}\");");
@@ -354,9 +354,9 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                readerClassSource.addImport(entityTypeJavaModel);
-                readerClassSource.addImport(List.class);
-                readerClassSource.addImport(ArrayList.class);
+                addImportTo(entityTypeJavaModel, readerClassSource);
+                addImportTo(List.class, readerClassSource);
+                addImportTo(ArrayList.class, readerClassSource);
 
                 body.addContext("listValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", createMethodName(entityTypeModel));
@@ -387,7 +387,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (mapValuePropertyType.isPrimitiveType()) {
                 body.addContext("consumeMethodName", determineConsumePropertyVariant(property.getType()));
                 body.addContext("propertyValueJavaType", determineValueType(property.getType()));
-                readerClassSource.addImport(Map.class);
+                addImportTo(Map.class, readerClassSource);
 
                 body.append("{");
                 body.append("    ${propertyValueJavaType} value = JsonUtil.${consumeMethodName}(json, \"${propertyName}\");");
@@ -408,7 +408,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                readerClassSource.addImport(entityTypeJavaModel);
+                addImportTo(entityTypeJavaModel, readerClassSource);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("createMethodName", "create" + entityTypeName);
@@ -431,10 +431,9 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleUnionProperty(BodyBuilder body) {
-            // TODO Auto-generated method stub
+            // TODO Implement union types!!
             Logger.warn("[CreateReadersStage] UNION Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
             Logger.warn("[CreateReadersStage]        property type: " + property.getType());
-
         }
 
         /**
@@ -452,10 +451,10 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isPrimitiveType()) {
                 Class<?> _class = primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
-                    readerClassSource.addImport(_class);
+                    addImportTo(_class, readerClassSource);
                     return "consumeObjectProperty";
                 } else if (JsonNode.class.equals(_class)) {
-                    readerClassSource.addImport(_class);
+                    addImportTo(_class, readerClassSource);
                     return "consumeAnyProperty";
                 } else {
                     return "consume" + _class.getSimpleName() + "Property";
@@ -467,10 +466,10 @@ public class CreateReadersStage extends AbstractJavaStage {
                 if (listType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(listType);
                     if (ObjectNode.class.equals(_class)) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "consumeObjectArrayProperty";
                     } else if (JsonNode.class.equals(_class)) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "consumeAnyArrayProperty";
                     } else {
                         return "consume" + _class.getSimpleName() + "ArrayProperty";
@@ -483,10 +482,10 @@ public class CreateReadersStage extends AbstractJavaStage {
                 if (mapType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(mapType);
                     if (ObjectNode.class.equals(_class)) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "consumeObjectMapProperty";
                     } else if (JsonNode.class.equals(_class)) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "consumeAnyMapProperty";
                     } else {
                         return "consume" + _class.getSimpleName() + "MapProperty";
@@ -507,7 +506,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             if (type.isPrimitiveType()) {
                 Class<?> _class = primitiveTypeToClass(type);
                 if (_class != null) {
-                    readerClassSource.addImport(_class);
+                    addImportTo(_class, readerClassSource);
                     return _class.getSimpleName();
                 }
             }
@@ -517,7 +516,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 if (listType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(listType);
                     if (_class != null) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "List<" + _class.getSimpleName() + ">";
                     }
                 }
@@ -528,7 +527,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 if (mapType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(mapType);
                     if (_class != null) {
-                        readerClassSource.addImport(_class);
+                        addImportTo(_class, readerClassSource);
                         return "Map<String, " + _class.getSimpleName() + ">";
                     }
                 }

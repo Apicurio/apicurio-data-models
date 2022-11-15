@@ -22,6 +22,7 @@ import java.util.Map;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
+import io.apicurio.umg.logging.Logger;
 import lombok.Getter;
 
 /**
@@ -37,6 +38,7 @@ public class JavaIndex {
 
 
     public JavaInterfaceSource lookupInterface(String fullyQualifiedName) {
+        //Logger.debug("[JavaIndex] Looking up interface: " + fullyQualifiedName);
         return this.interfaces.get(fullyQualifiedName);
     }
 
@@ -51,6 +53,7 @@ public class JavaIndex {
 
     public void index(JavaInterfaceSource _iface) {
         String fqcn = _iface.getCanonicalName();
+        Logger.debug("[JavaIndex] Indexing interface: " + _iface.getQualifiedName());
         this.interfaces.put(fqcn, _iface);
     }
 

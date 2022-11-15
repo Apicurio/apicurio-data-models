@@ -40,7 +40,7 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         Logger.info("=== START ===");
-        generate("io.apicurio.datamodels", "specs/asyncapi.yaml", "specs/openapi.yaml");
+        //        generate("io.apicurio.datamodels", "specs/asyncapi.yaml", "specs/openapi.yaml");
         generate("org.example.reader", "../maven-plugin-tests/src/it/reader-test/src/main/resources/reader-spec.yaml");
         Logger.info("=== END ===");
     }

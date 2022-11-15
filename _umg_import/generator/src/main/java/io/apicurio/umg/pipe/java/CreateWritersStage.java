@@ -86,7 +86,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         writerClassSource.addImport(javaEntityModel.getQualifiedName());
-        writerClassSource.addImport(ObjectNode.class);
+        addImportTo(ObjectNode.class, writerClassSource);
         MethodSource<JavaClassSource> methodSource = writerClassSource.addMethod()
                 .setName(writeMethodName)
                 .setReturnTypeVoid()
@@ -183,7 +183,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                     Logger.warn("[CreateWritersStage]        property type: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(List.class);
+                addImportTo(List.class, writerClassSource);
 
                 body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
@@ -198,7 +198,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             } else if (property.getType().isPrimitiveType() ||
                     (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
                     (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
-                writerClassSource.addImport(List.class);
+                addImportTo(List.class, writerClassSource);
 
                 body.addContext("valueType", determineValueType(property.getType()));
                 body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
@@ -231,8 +231,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel);
+                addImportTo(Map.class, writerClassSource);
+                addImportTo(entityTypeJavaModel, writerClassSource);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("getterMethodName", getterMethodName(property));
@@ -251,7 +251,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             } else if (property.getType().isPrimitiveType() ||
                     (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
                     (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
-                writerClassSource.addImport(List.class);
+                addImportTo(List.class, writerClassSource);
 
                 body.addContext("valueType", determineValueType(property.getType()));
                 body.addContext("getterMethodName", getterMethodName(property));
@@ -325,9 +325,9 @@ public class CreateWritersStage extends AbstractJavaStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(entityTypeJavaModel);
-                writerClassSource.addImport(List.class);
-                writerClassSource.addImport(ArrayNode.class);
+                addImportTo(entityTypeJavaModel, writerClassSource);
+                addImportTo(List.class, writerClassSource);
+                addImportTo(ArrayNode.class, writerClassSource);
 
                 body.addContext("listValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("writeMethodName", writeMethodName(entityTypeModel));
@@ -357,7 +357,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
             if (mapValuePropertyType.isPrimitiveType()) {
                 body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
-                writerClassSource.addImport(List.class);
+                addImportTo(List.class, writerClassSource);
 
                 body.append("JsonUtil.${setPropertyMethodName}(json, \"${propertyName}\", node.${getterMethodName}());");
             } else if (mapValuePropertyType.isEntityType()) {
@@ -375,8 +375,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel);
+                addImportTo(Map.class, writerClassSource);
+                addImportTo(entityTypeJavaModel, writerClassSource);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("writeMethodName", "write" + entityTypeName);
@@ -416,10 +416,10 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isPrimitiveType()) {
                 Class<?> _class = primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
-                    writerClassSource.addImport(_class);
+                    addImportTo(_class, writerClassSource);
                     return "setObjectProperty";
                 } else if (JsonNode.class.equals(_class)) {
-                    writerClassSource.addImport(_class);
+                    addImportTo(_class, writerClassSource);
                     return "setAnyProperty";
                 } else {
                     return "set" + _class.getSimpleName() + "Property";
@@ -431,10 +431,10 @@ public class CreateWritersStage extends AbstractJavaStage {
                 if (listType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(listType);
                     if (ObjectNode.class.equals(_class)) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "setObjectArrayProperty";
                     } else if (JsonNode.class.equals(_class)) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "setAnyArrayProperty";
                     } else {
                         return "set" + _class.getSimpleName() + "ArrayProperty";
@@ -447,10 +447,10 @@ public class CreateWritersStage extends AbstractJavaStage {
                 if (mapType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(mapType);
                     if (ObjectNode.class.equals(_class)) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "setObjectMapProperty";
                     } else if (JsonNode.class.equals(_class)) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "setAnyMapProperty";
                     } else {
                         return "set" + _class.getSimpleName() + "MapProperty";
@@ -471,7 +471,7 @@ public class CreateWritersStage extends AbstractJavaStage {
             if (type.isPrimitiveType()) {
                 Class<?> _class = primitiveTypeToClass(type);
                 if (_class != null) {
-                    writerClassSource.addImport(_class);
+                    addImportTo(_class, writerClassSource);
                     return _class.getSimpleName();
                 }
             }
@@ -481,7 +481,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 if (listType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(listType);
                     if (_class != null) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "List<" + _class.getSimpleName() + ">";
                     }
                 }
@@ -492,7 +492,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 if (mapType.isPrimitiveType()) {
                     Class<?> _class = primitiveTypeToClass(mapType);
                     if (_class != null) {
-                        writerClassSource.addImport(_class);
+                        addImportTo(_class, writerClassSource);
                         return "Map<String, " + _class.getSimpleName() + ">";
                     }
                 }

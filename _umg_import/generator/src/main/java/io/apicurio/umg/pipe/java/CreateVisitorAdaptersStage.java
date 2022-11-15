@@ -77,12 +77,12 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         List<MethodSource<?>> methodsToImplement = new LinkedList<MethodSource<?>>();
         Set<String> methodNames = new HashSet<>();
         for (VisitorModel visitorToImplement : visitorsToImplement) {
-            JavaInterfaceSource vtiInterface = resolveJavaInterface(visitorToImplement);
+            JavaInterfaceSource vtiInterface = lookupVisitor(visitorToImplement);
             if (vtiInterface == null) {
                 Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
             }
 
-            visitorAdapterSource.addImport(vtiInterface);
+            addImportTo(vtiInterface, visitorAdapterSource);
             visitorAdapterSource.addInterface(vtiInterface);
 
             // Add all methods to the list (but avoid duplicates).
@@ -123,7 +123,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
     private List<MethodSource<?>> getAllMethodsForVisitorInterface(VisitorModel visitor) {
         List<MethodSource<?>> methods = new LinkedList<>();
         while (visitor != null) {
-            JavaInterfaceSource visitorInterface = resolveJavaInterface(visitor);
+            JavaInterfaceSource visitorInterface = lookupVisitor(visitor);
             methods.addAll(visitorInterface.getMethods());
             visitor = visitor.getParent();
         }

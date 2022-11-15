@@ -24,10 +24,18 @@ public abstract class NodeImpl implements Node {
     public Node root() {
         return this._root;
     }
+    
+    public void setRoot(Node root) {
+        this._root = root;
+    }
 
     @Override
     public Node parent() {
         return this._parent;
+    }
+    
+    public void setParent(Node parent) {
+        this._parent = parent;
     }
 
     @Override

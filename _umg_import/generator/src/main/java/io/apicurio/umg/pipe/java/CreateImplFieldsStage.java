@@ -1,10 +1,13 @@
 package io.apicurio.umg.pipe.java;
 
-import java.awt.List;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
@@ -44,6 +47,16 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
                     .map(true)
                     .build();
             property = PropertyModel.builder().name("_items").type(mappedType).build();
+        } else if (property.getName().startsWith("/") && (isEntity(property) || isPrimitive(property))) {
+            if (property.getCollection() == null) {
+                Logger.error("[CreateImplFieldsStage] Regex property defined without a collection name: " + javaEntityImpl.getCanonicalName() + "::" + property);
+                return;
+            }
+            PropertyType collectionPropertyType = PropertyType.builder()
+                    .nested(Collections.singleton(property.getType()))
+                    .map(true)
+                    .build();
+            property = PropertyModel.builder().name(property.getCollection()).type(collectionPropertyType).build();
         }
 
         String fieldName = getFieldName(property);
@@ -56,44 +69,51 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
 
         if (isPrimitive(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType());
-            javaEntityImpl.addImport(pType);
+            addImportTo(pType, javaEntityImpl);
             fieldType = pType.getSimpleName();
         } else if (isEntity(property)) {
             String entityFQN = javaEntityImpl.getPackage() + "." + property.getType().getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            javaEntityImpl.addImport(javaTypeEntity);
+            addImportTo(javaTypeEntity, javaEntityImpl);
             fieldType = javaTypeEntity.getName();
         } else if (isPrimitiveList(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityImpl.addImport(pType);
-            javaEntityImpl.addImport(List.class);
+            addImportTo(pType, javaEntityImpl);
+            addImportTo(List.class, javaEntityImpl);
             fieldType = "List<" + pType.getSimpleName() + ">";
         } else if (isPrimitiveMap(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityImpl.addImport(pType);
-            javaEntityImpl.addImport(Map.class);
+            addImportTo(pType, javaEntityImpl);
+            addImportTo(Map.class, javaEntityImpl);
             fieldType = "Map<String, " + pType.getSimpleName() + ">";
         } else if (isEntityList(property)) {
             PropertyType listType = property.getType().getNested().iterator().next();
             String entityFQN = javaEntityImpl.getPackage() + "." + listType.getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            javaEntityImpl.addImport(javaTypeEntity);
-            javaEntityImpl.addImport(List.class);
+            addImportTo(javaTypeEntity, javaEntityImpl);
+            addImportTo(List.class, javaEntityImpl);
             fieldType = "List<" + javaTypeEntity.getName() + ">";
         } else if (isEntityMap(property)) {
             PropertyType mapType = property.getType().getNested().iterator().next();
             String entityFQN = javaEntityImpl.getPackage() + "." + mapType.getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            javaEntityImpl.addImport(javaTypeEntity);
-            javaEntityImpl.addImport(Map.class);
+            addImportTo(javaTypeEntity, javaEntityImpl);
+            addImportTo(Map.class, javaEntityImpl);
             fieldType = "Map<String, " + javaTypeEntity.getName() + ">";
         } else {
             Logger.warn("[CreateImplFieldsStage] Field not created - property type not supported: " + property);
         }
 
-        javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);
+        FieldSource<JavaClassSource> field = javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);
+        if (isEntityList(property) || isPrimitiveList(property)) {
+            addImportTo(ArrayList.class, javaEntityImpl);
+            field.setLiteralInitializer("new ArrayList<>()");
+        } else if (isEntityMap(property) || isPrimitiveMap(property)) {
+            addImportTo(LinkedHashMap.class, javaEntityImpl);
+            field.setLiteralInitializer("new LinkedHashMap<>()");
+        }
     }
 }

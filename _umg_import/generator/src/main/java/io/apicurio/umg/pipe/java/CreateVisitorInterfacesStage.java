@@ -43,7 +43,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
                 .setName(visitorInterfaceName)
                 .setPublic();
         if (parentVisitorInterface != null) {
-            visitorInterfaceSource.addImport(parentVisitorInterface);
+            addImportTo(parentVisitorInterface, visitorInterfaceSource);
             visitorInterfaceSource.addInterface(parentVisitorInterface.getName());
         }
 
@@ -75,7 +75,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
             return;
         }
 
-        visitorInterfaceSource.addImport(javaEntityModel);
+        addImportTo(javaEntityModel, visitorInterfaceSource);
 
         MethodSource<JavaInterfaceSource> methodSource = visitorInterfaceSource.addMethod()
                 .setName(visitMethodName)

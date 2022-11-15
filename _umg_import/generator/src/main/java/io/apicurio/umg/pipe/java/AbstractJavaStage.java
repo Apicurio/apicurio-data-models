@@ -3,20 +3,64 @@ package io.apicurio.umg.pipe.java;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.modeshape.common.text.Inflector;
 
+import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.models.concept.TraitModel;
+import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public abstract class AbstractJavaStage extends AbstractStage {
 
     private static final Inflector inflector = new Inflector();
+
+
+    /**
+     * Determines the package to use for the interface generated for the given visitor.
+     * @param visitor
+     */
+    protected String getVisitorInterfacePackageName(VisitorModel visitor) {
+        String packageName = visitor.getNamespace().fullName();
+        String visitorPackageName = packageName + ".visitors";
+        return visitorPackageName;
+    }
+
+    /**
+     * Determines the prefix to use for the interface name for the given visitor.
+     * @param visitor
+     */
+    protected String getVisitorInterfacePrefix(VisitorModel visitor) {
+        return (visitor.getParent() == null) ? "" : getState().getSpecIndex().prefixForNS(visitor.getNamespace().fullName());
+    }
+
+    /**
+     * Determines the interface name for the given visitor.
+     * @param visitor
+     */
+    protected String getVisitorInterfaceName(VisitorModel visitor) {
+        String visitorPrefix = getVisitorInterfacePrefix(visitor);
+        String visitorInterfaceName = visitorPrefix + "Visitor";
+        return visitorInterfaceName;
+    }
+
+    /**
+     * Determines the fully qualified name of the Java interface for a given visitor.
+     * @param visitor
+     */
+    protected String getVisitorInterfaceFullName(VisitorModel visitor) {
+        String packageName = visitor.getNamespace().fullName();
+        String visitorPackageName = packageName + ".visitors";
+        String visitorPrefix = getVisitorInterfacePrefix(visitor);
+        String visitorInterfaceName = visitorPrefix + "Visitor";
+        return visitorPackageName + "." + visitorInterfaceName;
+    }
 
     protected String getFieldName(PropertyModel property) {
         if (property.getName().equals("*")) {
@@ -97,6 +141,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String getNodeEntityClassFQN() {
         return getState().getConfig().getRootNamespace() + ".NodeImpl";
+    }
+
+    protected String getRootVisitorInterfaceFQN() {
+        return getState().getConfig().getRootNamespace() + ".visitors.Visitor";
     }
 
     protected String createMethodName(EntityModel entityModel) {
@@ -187,7 +235,7 @@ public abstract class AbstractJavaStage extends AbstractStage {
         String _package = namespace;
         String prefix = getPrefix(namespace);
         String fqn = _package + "." + prefix + type.getSimpleType();
-        return getState().getJavaIndex().lookupInterface(fqn);
+        return lookupEntity(fqn);
     }
 
     protected boolean isEntityList(PropertyModel property) {
@@ -228,7 +276,11 @@ public abstract class AbstractJavaStage extends AbstractStage {
     }
 
     protected JavaInterfaceSource lookupEntity(EntityModel entity) {
-        return getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
+        return lookupEntity(getEntityInterfaceFQN(entity));
+    }
+
+    protected JavaInterfaceSource lookupEntity(String fullyQualifiedName) {
+        return getState().getJavaIndex().lookupInterface(fullyQualifiedName);
     }
 
     protected JavaInterfaceSource lookupTrait(TraitModel trait) {
@@ -236,7 +288,28 @@ public abstract class AbstractJavaStage extends AbstractStage {
     }
 
     protected JavaClassSource lookupEntityImpl(EntityModel entity) {
-        return getState().getJavaIndex().lookupClass(getEntityClassFQN(entity));
+        return lookupEntityImpl(getEntityClassFQN(entity));
+    }
+
+    protected JavaClassSource lookupEntityImpl(String fullyQualifiedName) {
+        return getState().getJavaIndex().lookupClass(fullyQualifiedName);
+    }
+
+    protected JavaInterfaceSource lookupVisitor(VisitorModel visitor) {
+        String interfaceFQN = getVisitorInterfaceFullName(visitor);
+        JavaInterfaceSource _interface = getState().getJavaIndex().lookupInterface(interfaceFQN);
+        if (_interface == null) {
+            Logger.warn("[" + getClass().getSimpleName() + "] Visitor interface not found: " + interfaceFQN);
+        }
+        return _interface;
+    }
+
+    protected void addImportTo(JavaSource<?> _import, JavaSource<?> importer) {
+        importer.addImport(_import);
+    }
+
+    protected void addImportTo(Class<?> _import, JavaSource<?> importer) {
+        importer.addImport(_import);
     }
 
 }
