@@ -248,9 +248,9 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             return;
         }
 
-        createAddMethodBody(property, method);
+        createAddMethodBody(javaEntity, property, method);
     }
-    protected void createAddMethodBody(PropertyModel property, MethodSource<?> method) {
+    protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
     }
 
     /**

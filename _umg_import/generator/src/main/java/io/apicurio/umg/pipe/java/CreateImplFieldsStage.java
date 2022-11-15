@@ -1,6 +1,5 @@
 package io.apicurio.umg.pipe.java;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -41,12 +40,14 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
     }
 
     private void createEntityImplField(JavaClassSource javaEntityImpl, PropertyModel property) {
+        boolean isStarProperty = false;
         if ("*".equals(property.getName())) {
             PropertyType mappedType = PropertyType.builder()
                     .nested(Collections.singleton(property.getType()))
                     .map(true)
                     .build();
             property = PropertyModel.builder().name("_items").type(mappedType).build();
+            isStarProperty = true;
         } else if (property.getName().startsWith("/") && (isEntity(property) || isPrimitive(property))) {
             if (property.getCollection() == null) {
                 Logger.error("[CreateImplFieldsStage] Regex property defined without a collection name: " + javaEntityImpl.getCanonicalName() + "::" + property);
@@ -108,10 +109,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
         }
 
         FieldSource<JavaClassSource> field = javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);
-        if (isEntityList(property) || isPrimitiveList(property)) {
-            javaEntityImpl.addImport(ArrayList.class);
-            field.setLiteralInitializer("new ArrayList<>()");
-        } else if (isEntityMap(property) || isPrimitiveMap(property)) {
+        if (isStarProperty) {
             javaEntityImpl.addImport(LinkedHashMap.class);
             field.setLiteralInitializer("new LinkedHashMap<>()");
         }

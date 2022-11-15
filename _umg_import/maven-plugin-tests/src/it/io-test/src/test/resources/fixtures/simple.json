@@ -4,7 +4,7 @@
         "stringProperty": "hello-world",
         "booleanProperty": true,
         "integerProperty": 17,
-        "numberProperty": 117,
+        "numberProperty": 117.5,
         "objectProperty": {
             "foo": "bar"
         },

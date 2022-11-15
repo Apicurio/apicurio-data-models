@@ -32,7 +32,7 @@ public class IoTest {
         Assert.assertEquals("hello-world", document.getPrimitives().getStringProperty());
         Assert.assertEquals(true, document.getPrimitives().isBooleanProperty());
         Assert.assertEquals(Integer.valueOf(17), document.getPrimitives().getIntegerProperty());
-        Assert.assertEquals(Integer.valueOf(117), document.getPrimitives().getNumberProperty());
+        Assert.assertEquals(Double.valueOf(117.5), document.getPrimitives().getNumberProperty());
         Assert.assertNotNull(document.getPrimitives().getObjectProperty());
         Assert.assertNotNull(document.getPrimitives().getAnyProperty());
     }

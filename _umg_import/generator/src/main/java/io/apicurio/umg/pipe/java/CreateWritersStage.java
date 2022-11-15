@@ -179,7 +179,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleStarProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -199,9 +199,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("        JsonUtil.setObjectProperty(json, propertyName, object);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 writerClassSource.addImport(List.class);
 
                 body.addContext("valueType", determineValueType(property.getType()));
@@ -221,7 +219,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleRegexProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -252,9 +250,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("        });");
                 body.append("    }");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 writerClassSource.addImport(List.class);
 
                 body.addContext("valueType", determineValueType(property.getType()));
@@ -290,9 +286,11 @@ public class CreateWritersStage extends AbstractJavaStage {
             body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
             body.append("{");
-            body.append("    ObjectNode object = JsonUtil.objectNode();");
-            body.append("    this.${writeMethodName}(node.${getterMethodName}(), object);");
-            body.append("    JsonUtil.setObjectProperty(json, \"${propertyName}\", object);");
+            body.append("    if (node.${getterMethodName}() != null) {");
+            body.append("        ObjectNode object = JsonUtil.objectNode();");
+            body.append("        this.${writeMethodName}(node.${getterMethodName}(), object);");
+            body.append("        JsonUtil.setObjectProperty(json, \"${propertyName}\", object);");
+            body.append("    }");
             body.append("}");
         }
 
@@ -385,9 +383,9 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.addContext("writeMethodName", "write" + entityTypeName);
 
                 body.append("{");
-                body.append("    ObjectNode object = JsonUtil.objectNode();");
                 body.append("    Map<String, ${mapValueJavaType}> models = node.${getterMethodName}();");
                 body.append("    if (models != null) {");
+                body.append("        ObjectNode object = JsonUtil.objectNode();");
                 body.append("        models.keySet().forEach(jsonName -> {");
                 body.append("            ObjectNode jsonValue = JsonUtil.objectNode();");
                 body.append("            this.${writeMethodName}(models.get(jsonName), jsonValue);");

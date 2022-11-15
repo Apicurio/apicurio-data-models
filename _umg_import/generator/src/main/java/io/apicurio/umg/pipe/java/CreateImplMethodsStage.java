@@ -2,6 +2,7 @@ package io.apicurio.umg.pipe.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -180,22 +181,24 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     }
 
     @Override
-    protected void createAddMethodBody(PropertyModel property, MethodSource<?> method) {
+    protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
         PropertyType type = property.getType().getNested().iterator().next();
 
         BodyBuilder body = new BodyBuilder();
         body.addContext("fieldName", getFieldName(property));
 
-        if (type.isEntityType()) {
+        if (type.isEntityType() || type.isPrimitiveType()) {
             if (property.getType().isMap()) {
+                javaEntity.addImport(LinkedHashMap.class);
+                body.append("if (this.${fieldName} == null) {");
+                body.append("    this.${fieldName} = new LinkedHashMap<>();");
+                body.append("}");
                 body.append("this.${fieldName}.put(name, value);");
             } else {
-                body.append("this.${fieldName}.add(value);");
-            }
-        } else if (type.isPrimitiveType()) {
-            if (property.getType().isMap()) {
-                body.append("this.${fieldName}.put(name, value);");
-            } else {
+                javaEntity.addImport(ArrayList.class);
+                body.append("if (this.${fieldName} == null) {");
+                body.append("    this.${fieldName} = new ArrayList<>();");
+                body.append("}");
                 body.append("this.${fieldName}.add(value);");
             }
         }
@@ -208,7 +211,9 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
         String fieldName = getFieldName(property);
         BodyBuilder body = new BodyBuilder();
         body.addContext("fieldName", fieldName);
-        body.append("this.${fieldName}.clear();");
+        body.append("if (this.${fieldName} != null) {");
+        body.append("    this.${fieldName}.clear();");
+        body.append("}");
         method.setBody(body.toString());
     }
 
@@ -218,11 +223,13 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
         BodyBuilder body = new BodyBuilder();
         body.addContext("fieldName", fieldName);
 
+        body.append("if (this.${fieldName} != null) {");
         if (property.getType().isList()) {
-            body.append("${fieldName}.remove(value);");
+            body.append("    this.${fieldName}.remove(value);");
         } else {
-            body.append("${fieldName}.remove(name);");
+            body.append("    this.${fieldName}.remove(name);");
         }
+        body.append("}");
 
         method.setBody(body.toString());
     }
