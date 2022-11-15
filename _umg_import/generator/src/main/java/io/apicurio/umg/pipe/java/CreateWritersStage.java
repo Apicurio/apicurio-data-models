@@ -1,28 +1,27 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaEntityModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
-import io.apicurio.umg.pipe.AbstractStage;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Creates the i/o writer classes.  There is a bespoke writer for each specification
@@ -30,35 +29,18 @@ import java.util.Map;
  *
  * @author eric.wittmann@gmail.com
  */
-public class CreateWritersStage extends AbstractStage {
+public class CreateWritersStage extends AbstractJavaStage {
 
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
             String writerPackageName = specVersion.getNamespace() + ".io";
             String writerClassName = specVersion.getPrefix() + "ModelWriter";
-            // Create the package for the writer
-            JavaPackageModel writerPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-                JavaPackageModel parentPackage = getState().getJavaIndex().lookupPackage(specVersion.getNamespace());
-                JavaPackageModel packageModel = JavaPackageModel.builder()
-                        .name(writerPackageName)
-                        .parent(parentPackage)
-                        .build();
-                return packageModel;
-            });
-
-            // Create the writer class model
-            JavaClassModel writerClass = JavaClassModel.builder()
-                    ._package(writerPackage)
-                    ._abstract(false)
-                    .name(writerClassName)
-                    .build();
 
             // Create java source code for the writer
             JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
-                    .setPackage(writerClass.get_package().getName())
-                    .setName(writerClass.getName())
-                    .setAbstract(writerClass.is_abstract())
+                    .setPackage(writerPackageName)
+                    .setName(writerClassName)
                     .setPublic();
             writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
             writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
@@ -66,8 +48,7 @@ public class CreateWritersStage extends AbstractStage {
             // Create the writeXYZ methods - one for each entity
             createWriteMethods(specVersion, writerClassSource);
 
-            writerClass.setClassSource(writerClassSource);
-            getState().getJavaIndex().addClass(writerClass);
+            getState().getJavaIndex().index(writerClassSource);
         });
     }
 
@@ -98,23 +79,27 @@ public class CreateWritersStage extends AbstractStage {
     private void createWriteMethodFor(SpecificationVersion specVersion, JavaClassSource writerClassSource, EntityModel entityModel) {
         String writeMethodName = writeMethodName(entityModel);
 
-        JavaEntityModel javaEntityModel = getState().getJavaIndex().lookupType(entityModel);
+        JavaInterfaceSource javaEntityModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityModel));
         if (javaEntityModel == null) {
             Logger.warn("[CreateWritersStage] Java entity not found for: " + entityModel.fullyQualifiedName());
             return;
         }
 
-        writerClassSource.addImport(javaEntityModel.getSource().getQualifiedName());
+        writerClassSource.addImport(javaEntityModel.getQualifiedName());
         writerClassSource.addImport(ObjectNode.class);
         MethodSource<JavaClassSource> methodSource = writerClassSource.addMethod()
                 .setName(writeMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getName(), "node");
         methodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
 
         // Now create the body content for the writer.
         BodyBuilder body = new BodyBuilder();
+        body.append("if (node == null) {");
+        body.append("    return;");
+        body.append("}");
+
         // Write each property of the entity
         Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
         allProperties.forEach(property -> {
@@ -131,13 +116,13 @@ public class CreateWritersStage extends AbstractStage {
      *
      * @param body
      * @param property
-     * @param javaEntityModel
-     * @param javaEntityModel
+     * @param javaEntity
+     * @param javaEntity
      * @param writerClassSource
      */
     private void createWritePropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
-                                         JavaEntityModel javaEntityModel, JavaClassSource writerClassSource) {
-        CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntityModel, writerClassSource);
+            JavaInterfaceSource javaEntity, JavaClassSource writerClassSource) {
+        CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntity, writerClassSource);
         body.clearContext();
         crp.writeTo(body);
     }
@@ -164,7 +149,7 @@ public class CreateWritersStage extends AbstractStage {
     private class CreateWriteProperty {
         PropertyModel property;
         EntityModel entityModel;
-        JavaEntityModel javaEntityModel;
+        JavaInterfaceSource javaEntityModel;
         JavaClassSource writerClassSource;
 
         /**
@@ -194,7 +179,7 @@ public class CreateWritersStage extends AbstractStage {
         }
 
         private void handleStarProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -214,9 +199,7 @@ public class CreateWritersStage extends AbstractStage {
                 body.append("        JsonUtil.setObjectProperty(json, propertyName, object);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 writerClassSource.addImport(List.class);
 
                 body.addContext("valueType", determineValueType(property.getType()));
@@ -236,7 +219,7 @@ public class CreateWritersStage extends AbstractStage {
         }
 
         private void handleRegexProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -244,17 +227,17 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(propertyTypeEntity);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(propertyTypeEntity));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] REGEX Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
-                body.addContext("getterMethodName", Util.fieldGetter(property));
+                body.addContext("getterMethodName", getterMethodName(property));
                 body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
                 body.append("{");
@@ -267,20 +250,17 @@ public class CreateWritersStage extends AbstractStage {
                 body.append("        });");
                 body.append("    }");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 writerClassSource.addImport(List.class);
 
                 body.addContext("valueType", determineValueType(property.getType()));
-                body.addContext("getterMethodName", Util.fieldGetter(property));
+                body.addContext("getterMethodName", getterMethodName(property));
                 body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
 
                 body.append("{");
                 body.append("    Map<String, ${valueType}> values = node.${getterMethodName}();");
                 body.append("    if (values != null) {");
                 body.append("        values.keySet().forEach(propertyName -> {");
-                body.append("            ObjectNode object = JsonUtil.objectNode();");
                 body.append("            ${valueType} value = values.get(propertyName);");
                 body.append("            JsonUtil.${setPropertyMethodName}(json, propertyName, value);");
                 body.append("        });");
@@ -302,27 +282,29 @@ public class CreateWritersStage extends AbstractStage {
             }
 
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
             body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
 
             body.append("{");
-            body.append("    ObjectNode object = JsonUtil.objectNode();");
-            body.append("    this.${writeMethodName}(node.${getterMethodName}(), object);");
-            body.append("    JsonUtil.setObjectProperty(json, \"${propertyName}\", object);");
+            body.append("    if (node.${getterMethodName}() != null) {");
+            body.append("        ObjectNode object = JsonUtil.objectNode();");
+            body.append("        this.${writeMethodName}(node.${getterMethodName}(), object);");
+            body.append("        JsonUtil.setObjectProperty(json, \"${propertyName}\", object);");
+            body.append("    }");
             body.append("}");
         }
 
         private void handlePrimitiveTypeProperty(BodyBuilder body) {
             body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             body.append("JsonUtil.${setPropertyMethodName}(json, \"${propertyName}\", node.${getterMethodName}());");
         }
 
         private void handleListProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             PropertyType listValuePropertyType = property.getType().getNested().iterator().next();
             if (listValuePropertyType.isPrimitiveType()) {
@@ -338,13 +320,13 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(entityTypeModel);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
                 writerClassSource.addImport(List.class);
                 writerClassSource.addImport(ArrayNode.class);
 
@@ -360,7 +342,7 @@ public class CreateWritersStage extends AbstractStage {
                 body.append("            this.${writeMethodName}(model, object);");
                 body.append("            array.add(object);");
                 body.append("        });");
-                body.append("        JsonUtil.setObjectProperty(json, \"children\", array);");
+                body.append("        JsonUtil.setAnyProperty(json, \"children\", array);");
                 body.append("    }");
                 body.append("}");
             } else {
@@ -371,7 +353,7 @@ public class CreateWritersStage extends AbstractStage {
 
         private void handleMapProperty(BodyBuilder body) {
             body.addContext("propertyName", property.getName());
-            body.addContext("getterMethodName", Util.fieldGetter(property));
+            body.addContext("getterMethodName", getterMethodName(property));
 
             PropertyType mapValuePropertyType = property.getType().getNested().iterator().next();
             if (mapValuePropertyType.isPrimitiveType()) {
@@ -388,22 +370,22 @@ public class CreateWritersStage extends AbstractStage {
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaEntityModel entityTypeJavaModel = getState().getJavaIndex().lookupType(entityTypeModel);
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateWritersStage] MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(Map.class);
-                writerClassSource.addImport(entityTypeJavaModel.fullyQualifiedName());
+                writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("writeMethodName", "write" + entityTypeName);
 
                 body.append("{");
-                body.append("    ObjectNode object = JsonUtil.objectNode();");
                 body.append("    Map<String, ${mapValueJavaType}> models = node.${getterMethodName}();");
                 body.append("    if (models != null) {");
+                body.append("        ObjectNode object = JsonUtil.objectNode();");
                 body.append("        models.keySet().forEach(jsonName -> {");
                 body.append("            ObjectNode jsonValue = JsonUtil.objectNode();");
                 body.append("            this.${writeMethodName}(models.get(jsonName), jsonValue);");
@@ -433,7 +415,7 @@ public class CreateWritersStage extends AbstractStage {
          */
         private String determineSetPropertyVariant(PropertyType type) {
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (ObjectNode.class.equals(_class)) {
                     writerClassSource.addImport(_class);
                     return "setObjectProperty";
@@ -448,7 +430,7 @@ public class CreateWritersStage extends AbstractStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (ObjectNode.class.equals(_class)) {
                         writerClassSource.addImport(_class);
                         return "setObjectArrayProperty";
@@ -464,7 +446,7 @@ public class CreateWritersStage extends AbstractStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (ObjectNode.class.equals(_class)) {
                         writerClassSource.addImport(_class);
                         return "setObjectMapProperty";
@@ -488,7 +470,7 @@ public class CreateWritersStage extends AbstractStage {
          */
         private String determineValueType(PropertyType type) {
             if (type.isPrimitiveType()) {
-                Class<?> _class = Util.primitiveTypeToClass(type);
+                Class<?> _class = primitiveTypeToClass(type);
                 if (_class != null) {
                     writerClassSource.addImport(_class);
                     return _class.getSimpleName();
@@ -498,7 +480,7 @@ public class CreateWritersStage extends AbstractStage {
             if (type.isList()) {
                 PropertyType listType = type.getNested().iterator().next();
                 if (listType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(listType);
+                    Class<?> _class = primitiveTypeToClass(listType);
                     if (_class != null) {
                         writerClassSource.addImport(_class);
                         return "List<" + _class.getSimpleName() + ">";
@@ -509,7 +491,7 @@ public class CreateWritersStage extends AbstractStage {
             if (type.isMap()) {
                 PropertyType mapType = type.getNested().iterator().next();
                 if (mapType.isPrimitiveType()) {
-                    Class<?> _class = Util.primitiveTypeToClass(mapType);
+                    Class<?> _class = primitiveTypeToClass(mapType);
                     if (_class != null) {
                         writerClassSource.addImport(_class);
                         return "Map<String, " + _class.getSimpleName() + ">";

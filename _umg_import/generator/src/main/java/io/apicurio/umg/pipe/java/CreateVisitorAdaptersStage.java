@@ -8,14 +8,12 @@ import java.util.Set;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.source.ParameterSource;
 
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.VisitorModel;
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
 
 /**
  * Creates an adapter for each visitor interface.  An adapter is just a class that implements
@@ -60,28 +58,11 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         String visitorAdapterName = visitorInterfaceName + "Adapter";
         Logger.debug("Creating visitor adapter: " + visitorAdapterName);
 
-        // Lookup the package for the NS
-        JavaPackageModel visitorPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-            JavaPackageModel parentPackage = getState().getJavaIndex().lookupPackage(visitor.getNamespace().fullName());
-            JavaPackageModel packageModel = JavaPackageModel.builder()
-                    .name(visitorPackageName)
-                    .parent(parentPackage)
-                    .build();
-            return packageModel;
-        });
-
         // Create the visitor adapter class
-        JavaClassModel visitorAdapterClass = JavaClassModel.builder()
-                ._package(visitorPackage)
-                .name(visitorAdapterName)
-                .build();
-
-        // Create java source code for the visitor adapter
         JavaClassSource visitorAdapterSource = Roaster.create(JavaClassSource.class)
                 .setPackage(visitorPackageName)
-                .setName(visitorAdapterClass.getName())
+                .setName(visitorAdapterName)
                 .setPublic();
-        visitorAdapterClass.setClassSource(visitorAdapterSource);
 
         // Determine which visitors this adapter is implementing
         Set<VisitorModel> visitorsToImplement;
@@ -96,14 +77,13 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         List<MethodSource<?>> methodsToImplement = new LinkedList<MethodSource<?>>();
         Set<String> methodNames = new HashSet<>();
         for (VisitorModel visitorToImplement : visitorsToImplement) {
-            JavaInterfaceModel vtiInterface = resolveJavaInterface(visitorToImplement);
+            JavaInterfaceSource vtiInterface = lookupVisitor(visitorToImplement);
             if (vtiInterface == null) {
                 Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
             }
 
-            visitorAdapterClass.get_implements().add(vtiInterface);
-            visitorAdapterSource.addImport(vtiInterface.getInterfaceSource());
-            visitorAdapterSource.addInterface(vtiInterface.getInterfaceSource());
+            visitorAdapterSource.addImport(vtiInterface);
+            visitorAdapterSource.addInterface(vtiInterface);
 
             // Add all methods to the list (but avoid duplicates).
             List<MethodSource<?>> allMethods = getAllMethodsForVisitorInterface(visitorToImplement);
@@ -124,13 +104,13 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
             // We know each visit method will have a single parameter.
             ParameterSource<?> param = method.getParameters().get(0);
             visitorAdapterSource.addImport(param.getType());
-            methodSource.addParameter(param.getType().getName(), param.getName());
+            methodSource.addParameter(param.getType().getSimpleName(), param.getName());
             methodSource.addAnnotation(Override.class);
             methodSource.setBody("");
         });
 
         // Index the new class
-        getState().getJavaIndex().addClass(visitorAdapterClass);
+        getState().getJavaIndex().index(visitorAdapterSource);
     }
 
     /**
@@ -143,8 +123,8 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
     private List<MethodSource<?>> getAllMethodsForVisitorInterface(VisitorModel visitor) {
         List<MethodSource<?>> methods = new LinkedList<>();
         while (visitor != null) {
-            JavaInterfaceModel visitorInterface = resolveJavaInterface(visitor);
-            methods.addAll(visitorInterface.getInterfaceSource().getMethods());
+            JavaInterfaceSource visitorInterface = lookupVisitor(visitor);
+            methods.addAll(visitorInterface.getMethods());
             visitor = visitor.getParent();
         }
         return methods;

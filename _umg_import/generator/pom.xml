@@ -153,7 +153,6 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/main/base</source>
                                 <source>${project.build.directory}/generated-sources</source>
                             </sources>
                         </configuration>

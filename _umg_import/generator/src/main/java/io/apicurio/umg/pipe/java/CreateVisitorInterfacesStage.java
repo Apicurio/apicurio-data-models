@@ -1,17 +1,12 @@
 package io.apicurio.umg.pipe.java;
 
-import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.concept.EntityModel;
-import io.apicurio.umg.models.concept.VisitorModel;
-import io.apicurio.umg.models.java.JavaEntityModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.apicurio.umg.logging.Logger;
+import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.VisitorModel;
 
 /**
  * Creates the visitor interfaces.  There is hierarchy of visitors that is similar to the
@@ -25,9 +20,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
 
     @Override
     protected void doProcess() {
-        List<VisitorModel> rootVisitors = getState().getConceptIndex().findVisitors("").stream()
-                .filter(visitor -> visitor.getParent() == null).collect(Collectors.toList());
-        rootVisitors.forEach(visitor -> {
+        getState().getConceptIndex().findVisitors("").stream().filter(visitor -> visitor.getParent() == null).forEach(visitor -> {
             createVisitorInterfaces(visitor, null);
         });
     }
@@ -39,48 +32,31 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
      * @param visitor
      * @param parentVisitorInterface
      */
-    private void createVisitorInterfaces(VisitorModel visitor, JavaInterfaceModel parentVisitorInterface) {
+    private void createVisitorInterfaces(VisitorModel visitor, JavaInterfaceSource parentVisitorInterface) {
         Logger.debug("Creating interface for: " + visitor.toString());
         String visitorPackageName = getVisitorInterfacePackageName(visitor);
         String visitorInterfaceName = getVisitorInterfaceName(visitor);
 
-        // Lookup the package for the NS
-        JavaPackageModel visitorPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-            JavaPackageModel parentPackage = getState().getJavaIndex().lookupPackage(visitor.getNamespace().fullName());
-            JavaPackageModel packageModel = JavaPackageModel.builder()
-                    .name(visitorPackageName)
-                    .parent(parentPackage)
-                    .build();
-            return packageModel;
-        });
-
         // Create the visitor interface
-        JavaInterfaceModel visitorInterface = JavaInterfaceModel.builder()
-                ._package(visitorPackage)
-                .name(visitorInterfaceName)
-                .build();
-
-        // Create java source code for the visitor
         JavaInterfaceSource visitorInterfaceSource = Roaster.create(JavaInterfaceSource.class)
                 .setPackage(visitorPackageName)
-                .setName(visitorInterface.getName())
+                .setName(visitorInterfaceName)
                 .setPublic();
         if (parentVisitorInterface != null) {
-            visitorInterfaceSource.addImport(parentVisitorInterface.fullyQualifiedName());
+            visitorInterfaceSource.addImport(parentVisitorInterface);
             visitorInterfaceSource.addInterface(parentVisitorInterface.getName());
         }
-        visitorInterface.setInterfaceSource(visitorInterfaceSource);
 
         // Now create visitXyz methods for each entity in the visitor
         visitor.getEntities().forEach(entity -> {
             createVisitMethodFor(visitorInterfaceSource, entity);
         });
 
-        getState().getJavaIndex().addInterface(visitorInterface);
+        getState().getJavaIndex().index(visitorInterfaceSource);
 
         // Now recursively process all the children of this visitor.
         visitor.getChildren().forEach(childVisitor -> {
-            createVisitorInterfaces(childVisitor, visitorInterface);
+            createVisitorInterfaces(childVisitor, visitorInterfaceSource);
         });
     }
 
@@ -93,26 +69,25 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
     private void createVisitMethodFor(JavaInterfaceSource visitorInterfaceSource, EntityModel entity) {
         String visitMethodName = "visit" + entity.getName();
 
-        JavaEntityModel javaEntityModel = findRootEntity(entity.fullyQualifiedName());
+        JavaInterfaceSource javaEntityModel = findRootJavaEntity(entity);
         if (javaEntityModel == null) {
             Logger.warn("[CreateVisitorInterfacesStage] Java entity not found for: " + entity.fullyQualifiedName());
             return;
         }
 
-        visitorInterfaceSource.addImport(javaEntityModel.getSource().getQualifiedName());
+        visitorInterfaceSource.addImport(javaEntityModel);
 
         MethodSource<JavaInterfaceSource> methodSource = visitorInterfaceSource.addMethod()
                 .setName(visitMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel.getSource().getName(), "node");
+        methodSource.addParameter(javaEntityModel.getName(), "node");
     }
 
-    private JavaEntityModel findRootEntity(String fullyQualifiedName) {
-        EntityModel entity = getState().getConceptIndex().lookupEntity(fullyQualifiedName);
+    private JavaInterfaceSource findRootJavaEntity(EntityModel entity) {
         while (entity.getParent() != null) {
             entity = entity.getParent();
         }
-        return getState().getJavaIndex().lookupType(entity);
+        return getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
     }
 }

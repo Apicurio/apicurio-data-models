@@ -1,0 +1,170 @@
+name: IO Test API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/IO/versions/1.0.md
+prefix: Iot10
+namespace: org.example.io.v10
+
+traits:
+  - name: Common
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+  - name: Extensible
+    properties:
+      - name: '/^x-[\\w\\d\\-\\_]+$/'
+        type: ExtensionEntity
+        collection: extensions
+
+entities:
+  - name: Document
+    traits:
+      - Common
+    properties:
+      - name: id
+        type: string
+      - name: primitives
+        type: PrimitiveTypesEntity
+      - name: lists
+        type: ListTypesEntity
+      - name: maps
+        type: MapTypesEntity
+      - name: entities
+        type: EntityTypesEntity
+      - name: starTypes
+        type: StarTypesEntity
+      - name: ext
+        type: ExtensibleEntity
+
+  - name: ExtensibleEntity
+    traits:
+      - Extensible
+    properties:
+      - name: id
+        type: string
+      - name: '/^z-(+*)$/'
+        type: any
+        collection: zees
+
+  - name: PrimitiveTypesEntity
+    properties:
+      - name: stringProperty
+        type: string
+      - name: booleanProperty
+        type: boolean
+      - name: integerProperty
+        type: integer
+      - name: numberProperty
+        type: number
+      - name: objectProperty
+        type: object
+      - name: anyProperty
+        type: any
+
+  - name: ListTypesEntity
+    properties:
+      - name: strings
+        type: '[string]'
+      - name: booleans
+        type: '[boolean]'
+      - name: integers
+        type: '[integer]'
+      - name: numbers
+        type: '[number]'
+      - name: objects
+        type: '[object]'
+      - name: anys
+        type: '[any]'
+
+  - name: MapTypesEntity
+    properties:
+      - name: strings
+        type: '{string}'
+      - name: booleans
+        type: '{boolean}'
+      - name: integers
+        type: '{integer}'
+      - name: numbers
+        type: '{number}'
+      - name: objects
+        type: '{object}'
+      - name: anys
+        type: '{any}'
+
+  - name: EntityTypesEntity
+    properties:
+      - name: child
+        type: ChildEntity
+      - name: children
+        type: '[ChildEntity]'
+      - name: childMap
+        type: '{ChildEntity}'
+
+  - name: ChildEntity
+    properties:
+      - name: name
+        type: string
+      - name: origin
+        type: string
+
+  - name: StarTypesEntity
+    properties:
+      - name: stringMap
+        type: StringMapEntity
+      - name: integerMap
+        type: IntegerMapEntity
+      - name: numberMap
+        type: NumberMapEntity
+      - name: booleanMap
+        type: BooleanMapEntity
+      - name: anyMap
+        type: AnyMapEntity
+      - name: objectMap
+        type: ObjectMapEntity
+      - name: entityMap
+        type: EntityMapEntity
+
+  - name: StringMapEntity
+    properties:
+      - name: '*'
+        type: string
+
+  - name: IntegerMapEntity
+    properties:
+      - name: '*'
+        type: integer
+
+  - name: NumberMapEntity
+    properties:
+      - name: '*'
+        type: number
+
+  - name: BooleanMapEntity
+    properties:
+      - name: '*'
+        type: boolean
+
+  - name: ObjectMapEntity
+    properties:
+      - name: '*'
+        type: object
+
+  - name: AnyMapEntity
+    properties:
+      - name: '*'
+        type: any
+
+  - name: EntityMapEntity
+    properties:
+      - name: '*'
+        type: ChildEntity
+
+  - name: ExtensionEntity
+    properties:
+      - name: name
+        type: string
+      - name: type
+        type: string

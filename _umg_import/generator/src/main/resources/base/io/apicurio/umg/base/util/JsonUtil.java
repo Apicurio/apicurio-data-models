@@ -1,14 +1,11 @@
 package io.apicurio.umg.base.util;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -16,15 +13,10 @@ import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NullNode;
-import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.node.ValueNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
-
 
 public class JsonUtil {
 
@@ -44,7 +36,6 @@ public class JsonUtil {
     }
     
     public static List<String> matchingKeys(String regex, ObjectNode json) {
-        Pattern pattern = Pattern.compile(regex);
         List<String> rval = new ArrayList<>();
         if (json != null) {
             Iterator<String> fieldNames = json.fieldNames();
@@ -626,55 +617,61 @@ public class JsonUtil {
     /* Set a map of anys property. */
     public static void setAnyMapProperty(ObjectNode json, String propertyName, Map<String, JsonNode> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, entry.getValue());
+                object.set(entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
     /* Set a map of objects property. */
     public static void setObjectMapProperty(ObjectNode json, String propertyName, Map<String, ObjectNode> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, entry.getValue());
+                object.set(entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
     /* Set a map of strings property. */
     public static void setStringMapProperty(ObjectNode json, String propertyName, Map<String, String> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, factory.textNode(entry.getValue()));
+                setStringProperty(object, entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
     /* Set a map of integers property. */
     public static void setIntegerMapProperty(ObjectNode json, String propertyName, Map<String, Integer> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, factory.numberNode(entry.getValue()));
+                setIntegerProperty(object, entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
     /* Set a map of numbers property. */
     public static void setNumberMapProperty(ObjectNode json, String propertyName, Map<String, Number> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, factory.numberNode(entry.getValue().doubleValue()));
+                setNumberProperty(object, entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
     /* Set a map of numbers property. */
     public static void setBooleanMapProperty(ObjectNode json, String propertyName, Map<String, Boolean> value) {
         if (value != null) {
+            ObjectNode object = objectNode();
             value.entrySet().forEach(entry -> {
-                String key = entry.getKey();
-                json.set(propertyName, factory.booleanNode(entry.getValue()));
+                setBooleanProperty(object, entry.getKey(), entry.getValue());
             });
+            setProperty(json, propertyName, object);
         }
     }
 
@@ -687,7 +684,7 @@ public class JsonUtil {
         }
     }
     
-    public static Object parseJSON(String jsonString) {
+    public static JsonNode parseJSON(String jsonString) {
         try {
             return mapper.readTree(jsonString);
         } catch (IOException e) {

@@ -8,9 +8,6 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import io.apicurio.umg.logging.Logger;
-import io.apicurio.umg.models.java.JavaClassModel;
-import io.apicurio.umg.models.java.JavaInterfaceModel;
-import io.apicurio.umg.models.java.JavaPackageModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 /**
@@ -25,7 +22,8 @@ public class LoadBaseClassesStage extends AbstractStage {
         try {
             loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl",
                     "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil");
-            loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.Visitable");
+            loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.MappedNode",
+                    "io.apicurio.umg.base.Visitable");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,21 +35,14 @@ public class LoadBaseClassesStage extends AbstractStage {
             URL classSource = getBaseClassURL(_class);
             JavaClassSource source = Roaster.parse(JavaClassSource.class, classSource);
             String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-            JavaPackageModel targetPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-                return JavaPackageModel.builder().name(targetPackageName).build();
-            });
             source.setPackage(targetPackageName);
-            source.getImports().forEach(inport -> {
-                if (inport.getPackage().contains("io.apicurio.umg.base")) {
-                    String newPackage = inport.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-                    inport.setName(newPackage + "." + inport.getSimpleName());
+            source.getImports().forEach(_import -> {
+                if (_import.getPackage().contains("io.apicurio.umg.base")) {
+                    String newPackage = _import.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
+                    _import.setName(newPackage + "." + _import.getSimpleName());
                 }
             });
-
-
-            JavaClassModel classModel = JavaClassModel.builder()._package(targetPackage)
-                    .name(source.getName()).classSource(source).external(true).build();
-            getState().getJavaIndex().addClass(classModel);
+            getState().getJavaIndex().index(source);
         }
     }
 
@@ -61,13 +52,14 @@ public class LoadBaseClassesStage extends AbstractStage {
             URL interfaceSource = getBaseClassURL(_interface);
             JavaInterfaceSource source = Roaster.parse(JavaInterfaceSource.class, interfaceSource);
             String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-            JavaPackageModel targetPackage = getState().getJavaIndex().lookupAndIndexPackage(() -> {
-                return JavaPackageModel.builder().name(targetPackageName).build();
-            });
             source.setPackage(targetPackageName);
-            JavaInterfaceModel interfaceModel = JavaInterfaceModel.builder()._package(targetPackage)
-                    .name(source.getName()).interfaceSource(source).external(true).build();
-            getState().getJavaIndex().addInterface(interfaceModel);
+            source.getImports().forEach(_import -> {
+                if (_import.getPackage().contains("io.apicurio.umg.base")) {
+                    String newPackage = _import.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
+                    _import.setName(newPackage + "." + _import.getSimpleName());
+                }
+            });
+            getState().getJavaIndex().index(source);
         }
     }
 

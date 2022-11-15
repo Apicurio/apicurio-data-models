@@ -11,7 +11,6 @@ import io.apicurio.umg.index.java.JavaIndex;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
-import io.apicurio.umg.models.java.JavaClassModel;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,10 +28,6 @@ public class GeneratorState {
     private SpecificationIndex specIndex = new SpecificationIndex();
 
     private JavaIndex javaIndex = new JavaIndex();
-
-    private JavaClassModel nodeClass;
-
-    private JavaClassModel extensibleNodeClass;
 
     /**
      * Returns all traits with the same name as the given parent trait.  Does a search of
