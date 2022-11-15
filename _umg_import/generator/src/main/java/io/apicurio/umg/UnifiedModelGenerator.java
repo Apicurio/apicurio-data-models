@@ -50,6 +50,7 @@ import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateWritersStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
+import io.apicurio.umg.pipe.java.OrganizeImportsStage;
 import io.apicurio.umg.pipe.java.RemoveUnusedImportsStage;
 
 /**
@@ -122,6 +123,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateVisitorAdaptersStage());
 
         pipe.addStage(new RemoveUnusedImportsStage());
+        pipe.addStage(new OrganizeImportsStage());
         pipe.addStage(new JavaWriteStage());
 
         pipe.run(state);
