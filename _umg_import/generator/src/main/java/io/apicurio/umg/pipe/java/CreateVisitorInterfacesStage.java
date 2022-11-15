@@ -43,7 +43,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
                 .setName(visitorInterfaceName)
                 .setPublic();
         if (parentVisitorInterface != null) {
-            addImportTo(parentVisitorInterface, visitorInterfaceSource);
+            visitorInterfaceSource.addImport(parentVisitorInterface);
             visitorInterfaceSource.addInterface(parentVisitorInterface.getName());
         }
 
@@ -75,13 +75,13 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
             return;
         }
 
-        addImportTo(javaEntityModel, visitorInterfaceSource);
+        visitorInterfaceSource.addImport(javaEntityModel);
 
         MethodSource<JavaInterfaceSource> methodSource = visitorInterfaceSource.addMethod()
                 .setName(visitMethodName)
                 .setReturnTypeVoid()
                 .setPublic();
-        methodSource.addParameter(javaEntityModel, "node");
+        methodSource.addParameter(javaEntityModel.getName(), "node");
     }
 
     private JavaInterfaceSource findRootJavaEntity(EntityModel entity) {

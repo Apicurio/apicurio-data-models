@@ -69,39 +69,39 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
 
         if (isPrimitive(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType());
-            addImportTo(pType, javaEntityImpl);
+            javaEntityImpl.addImport(pType);
             fieldType = pType.getSimpleName();
         } else if (isEntity(property)) {
             String entityFQN = javaEntityImpl.getPackage() + "." + property.getType().getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            addImportTo(javaTypeEntity, javaEntityImpl);
+            javaEntityImpl.addImport(javaTypeEntity);
             fieldType = javaTypeEntity.getName();
         } else if (isPrimitiveList(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            addImportTo(pType, javaEntityImpl);
-            addImportTo(List.class, javaEntityImpl);
+            javaEntityImpl.addImport(pType);
+            javaEntityImpl.addImport(List.class);
             fieldType = "List<" + pType.getSimpleName() + ">";
         } else if (isPrimitiveMap(property)) {
             Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            addImportTo(pType, javaEntityImpl);
-            addImportTo(Map.class, javaEntityImpl);
+            javaEntityImpl.addImport(pType);
+            javaEntityImpl.addImport(Map.class);
             fieldType = "Map<String, " + pType.getSimpleName() + ">";
         } else if (isEntityList(property)) {
             PropertyType listType = property.getType().getNested().iterator().next();
             String entityFQN = javaEntityImpl.getPackage() + "." + listType.getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            addImportTo(javaTypeEntity, javaEntityImpl);
-            addImportTo(List.class, javaEntityImpl);
+            javaEntityImpl.addImport(javaTypeEntity);
+            javaEntityImpl.addImport(List.class);
             fieldType = "List<" + javaTypeEntity.getName() + ">";
         } else if (isEntityMap(property)) {
             PropertyType mapType = property.getType().getNested().iterator().next();
             String entityFQN = javaEntityImpl.getPackage() + "." + mapType.getSimpleType();
             EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
             JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
-            addImportTo(javaTypeEntity, javaEntityImpl);
-            addImportTo(Map.class, javaEntityImpl);
+            javaEntityImpl.addImport(javaTypeEntity);
+            javaEntityImpl.addImport(Map.class);
             fieldType = "Map<String, " + javaTypeEntity.getName() + ">";
         } else {
             Logger.warn("[CreateImplFieldsStage] Field not created - property type not supported: " + property);
@@ -109,10 +109,10 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
 
         FieldSource<JavaClassSource> field = javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);
         if (isEntityList(property) || isPrimitiveList(property)) {
-            addImportTo(ArrayList.class, javaEntityImpl);
+            javaEntityImpl.addImport(ArrayList.class);
             field.setLiteralInitializer("new ArrayList<>()");
         } else if (isEntityMap(property) || isPrimitiveMap(property)) {
-            addImportTo(LinkedHashMap.class, javaEntityImpl);
+            javaEntityImpl.addImport(LinkedHashMap.class);
             field.setLiteralInitializer("new LinkedHashMap<>()");
         }
     }

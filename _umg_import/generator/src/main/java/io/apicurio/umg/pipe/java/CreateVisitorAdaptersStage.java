@@ -82,7 +82,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
                 Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
             }
 
-            addImportTo(vtiInterface, visitorAdapterSource);
+            visitorAdapterSource.addImport(vtiInterface);
             visitorAdapterSource.addInterface(vtiInterface);
 
             // Add all methods to the list (but avoid duplicates).
@@ -104,7 +104,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
             // We know each visit method will have a single parameter.
             ParameterSource<?> param = method.getParameters().get(0);
             visitorAdapterSource.addImport(param.getType());
-            methodSource.addParameter(param.getType().getName(), param.getName());
+            methodSource.addParameter(param.getType().getSimpleName(), param.getName());
             methodSource.addAnnotation(Override.class);
             methodSource.setBody("");
         });

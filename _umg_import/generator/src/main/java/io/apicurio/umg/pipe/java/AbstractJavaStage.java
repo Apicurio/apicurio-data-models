@@ -3,7 +3,6 @@ package io.apicurio.umg.pipe.java;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
-import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.modeshape.common.text.Inflector;
@@ -302,14 +301,6 @@ public abstract class AbstractJavaStage extends AbstractStage {
             Logger.warn("[" + getClass().getSimpleName() + "] Visitor interface not found: " + interfaceFQN);
         }
         return _interface;
-    }
-
-    protected void addImportTo(JavaSource<?> _import, JavaSource<?> importer) {
-        importer.addImport(_import);
-    }
-
-    protected void addImportTo(Class<?> _import, JavaSource<?> importer) {
-        importer.addImport(_import);
     }
 
 }

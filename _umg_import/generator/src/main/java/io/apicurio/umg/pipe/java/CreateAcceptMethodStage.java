@@ -42,8 +42,8 @@ public class CreateAcceptMethodStage extends AbstractJavaStage {
 
         String methodName = "accept";
 
-        addImportTo(javaVisitor, javaEntity);
-        addImportTo(javaRootVisitorInterface, javaEntity);
+        javaEntity.addImport(javaVisitor);
+        javaEntity.addImport(javaRootVisitorInterface);
         MethodSource<JavaClassSource> method = javaEntity.addMethod().setPublic().setName(methodName).setReturnTypeVoid();
         method.addParameter(javaRootVisitorInterface.getName(), "visitor");
         method.addAnnotation(Override.class);

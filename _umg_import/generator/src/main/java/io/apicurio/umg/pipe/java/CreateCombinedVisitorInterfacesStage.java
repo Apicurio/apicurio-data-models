@@ -59,7 +59,7 @@ public class CreateCombinedVisitorInterfacesStage extends AbstractVisitorStage {
             if (descendantVisitorInterfaceModel == null) {
                 Logger.warn("[CreateCombinedVisitorInterfacesStage] Could not find visitor java interface for: " + descendantVisitor);
             } else {
-                addImportTo(descendantVisitorInterfaceModel, combinedVisitorInterfaceSource);
+                combinedVisitorInterfaceSource.addImport(descendantVisitorInterfaceModel);
                 combinedVisitorInterfaceSource.addInterface(descendantVisitorInterfaceModel);
             }
         }
