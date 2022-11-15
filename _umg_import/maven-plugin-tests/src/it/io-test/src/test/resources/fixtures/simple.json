@@ -1,0 +1,13 @@
+{
+    "id": "simple",
+    "primitives": {
+        "stringProperty": "hello-world",
+        "booleanProperty": true,
+        "integerProperty": 17,
+        "numberProperty": 117,
+        "objectProperty": {
+            "foo": "bar"
+        },
+        "anyProperty": [10, true, "foo"]
+    }
+}

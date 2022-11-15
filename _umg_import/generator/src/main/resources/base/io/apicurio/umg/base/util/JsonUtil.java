@@ -684,7 +684,7 @@ public class JsonUtil {
         }
     }
     
-    public static Object parseJSON(String jsonString) {
+    public static JsonNode parseJSON(String jsonString) {
         try {
             return mapper.readTree(jsonString);
         } catch (IOException e) {

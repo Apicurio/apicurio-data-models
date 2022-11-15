@@ -96,6 +96,10 @@ public class CreateWritersStage extends AbstractJavaStage {
 
         // Now create the body content for the writer.
         BodyBuilder body = new BodyBuilder();
+        body.append("if (node == null) {");
+        body.append("    return;");
+        body.append("}");
+
         // Write each property of the entity
         Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
         allProperties.forEach(property -> {

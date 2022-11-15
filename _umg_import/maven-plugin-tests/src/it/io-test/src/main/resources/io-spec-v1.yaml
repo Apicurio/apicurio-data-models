@@ -1,19 +1,19 @@
-name: ReaderAPI 1.0
+name: IO Test API 1.0
 version: 1.0
 versions:
   - version: 1.0
-    url: https://example.com/Reader/versions/1.0.md
-prefix: Rdr10
-namespace: org.example.reader.v10
+    url: https://example.com/IO/versions/1.0.md
+prefix: Iot10
+namespace: org.example.io.v10
 
 traits:
-  - name: CommonTrait
+  - name: Common
     properties:
       - name: name
         type: string
       - name: description
         type: string
-  - name: ExtensibleTrait
+  - name: Extensible
     properties:
       - name: '/^x-[\\w\\d\\-\\_]+$/'
         type: ExtensionEntity
@@ -22,7 +22,7 @@ traits:
 entities:
   - name: Document
     traits:
-      - CommonTrait
+      - Common
     properties:
       - name: id
         type: string
@@ -41,7 +41,7 @@ entities:
 
   - name: ExtensibleEntity
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: id
         type: string
@@ -161,7 +161,6 @@ entities:
     properties:
       - name: '*'
         type: ChildEntity
-
 
   - name: ExtensionEntity
     properties:
