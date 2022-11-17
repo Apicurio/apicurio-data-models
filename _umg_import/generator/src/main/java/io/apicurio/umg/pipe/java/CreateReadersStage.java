@@ -33,8 +33,8 @@ public class CreateReadersStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
-            String readerPackageName = specVersion.getNamespace() + ".io";
-            String readerClassName = specVersion.getPrefix() + "ModelReader";
+            String readerPackageName = getReaderPackageName(specVersion);
+            String readerClassName = getReaderClassName(specVersion);
 
             // Create java source code for the reader
             JavaClassSource readerClassSource = Roaster.create(JavaClassSource.class)

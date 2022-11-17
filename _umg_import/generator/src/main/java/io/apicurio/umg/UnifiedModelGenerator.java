@@ -43,11 +43,13 @@ import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateImplFieldsStage;
 import io.apicurio.umg.pipe.java.CreateImplMethodsStage;
 import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
+import io.apicurio.umg.pipe.java.CreateReaderDispatchersStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateTestFixturesStage;
 import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
+import io.apicurio.umg.pipe.java.CreateWriterDispatchersStage;
 import io.apicurio.umg.pipe.java.CreateWritersStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
@@ -122,6 +124,8 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateAcceptMethodStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());
         pipe.addStage(new CreateVisitorAdaptersStage());
+        pipe.addStage(new CreateReaderDispatchersStage());
+        pipe.addStage(new CreateWriterDispatchersStage());
 
         pipe.addStage(new RemoveUnusedImportsStage());
         pipe.addStage(new OrganizeImportsStage());

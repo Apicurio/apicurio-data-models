@@ -6,6 +6,7 @@ import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
+import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
@@ -16,6 +17,22 @@ import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public abstract class AbstractJavaStage extends AbstractStage {
+
+    protected String getReaderClassName(SpecificationVersion specVersion) {
+        return specVersion.getPrefix() + "ModelReader";
+    }
+
+    protected String getReaderPackageName(SpecificationVersion specVersion) {
+        return specVersion.getNamespace() + ".io";
+    }
+
+    protected String getWriterClassName(SpecificationVersion specVersion) {
+        return specVersion.getPrefix() + "ModelWriter";
+    }
+
+    protected String getWriterPackageName(SpecificationVersion specVersion) {
+        return specVersion.getNamespace() + ".io";
+    }
 
     /**
      * Determines the package to use for the interface generated for the given visitor.

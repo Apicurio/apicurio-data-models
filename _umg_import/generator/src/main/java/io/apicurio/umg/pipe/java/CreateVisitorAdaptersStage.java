@@ -113,21 +113,4 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         getState().getJavaIndex().index(visitorAdapterSource);
     }
 
-    /**
-     * Returns all of the methods defined for the visitor interface generated for the
-     * given visitor model.  This walks up the visitor hierarchy, collecting all methods
-     * defined on visitor interfaces.  It returns the full collection of methods (for
-     * this visitor and all super-interfaces).
-     * @param visitor
-     */
-    private List<MethodSource<?>> getAllMethodsForVisitorInterface(VisitorModel visitor) {
-        List<MethodSource<?>> methods = new LinkedList<>();
-        while (visitor != null) {
-            JavaInterfaceSource visitorInterface = lookupVisitor(visitor);
-            methods.addAll(visitorInterface.getMethods());
-            visitor = visitor.getParent();
-        }
-        return methods;
-    }
-
 }

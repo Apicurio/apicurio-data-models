@@ -6,18 +6,9 @@ versions:
 prefix: Smoke
 namespace: org.example.smoke.v10
 
-traits:
-  - name: CommonTrait
-    properties:
-      - name: name
-        type: string
-      - name: description
-        type: string
-
 entities:
   - name: Document
-    traits:
-      - CommonTrait
+    root: true
     properties:
       - name: id
         type: string

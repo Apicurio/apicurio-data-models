@@ -34,8 +34,8 @@ public class CreateWritersStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
-            String writerPackageName = specVersion.getNamespace() + ".io";
-            String writerClassName = specVersion.getPrefix() + "ModelWriter";
+            String writerPackageName = getWriterPackageName(specVersion);
+            String writerClassName = getWriterClassName(specVersion);
 
             // Create java source code for the writer
             JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
