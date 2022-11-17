@@ -15,12 +15,13 @@ traits:
         type: string
   - name: Extensible
     properties:
-      - name: '/^x-[\\w\\d\\-\\_]+$/'
+      - name: '/^x-[\w-]+$/'
         type: ExtensionEntity
         collection: extensions
 
 entities:
   - name: Document
+    root: true
     traits:
       - Common
     properties:
@@ -45,7 +46,7 @@ entities:
     properties:
       - name: id
         type: string
-      - name: '/^z-(+*)$/'
+      - name: '/^z-[\w]+$/'
         type: any
         collection: zees
 

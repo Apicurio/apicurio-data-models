@@ -5,7 +5,6 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
-import org.modeshape.common.text.Inflector;
 
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
@@ -17,9 +16,6 @@ import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
 public abstract class AbstractJavaStage extends AbstractStage {
-
-    private static final Inflector inflector = new Inflector();
-
 
     /**
      * Determines the package to use for the interface generated for the given visitor.
@@ -235,34 +231,6 @@ public abstract class AbstractJavaStage extends AbstractStage {
         String prefix = getPrefix(namespace);
         String fqn = _package + "." + prefix + type.getSimpleType();
         return lookupEntity(fqn);
-    }
-
-    protected boolean isEntityList(PropertyModel property) {
-        return property.getType().isList() && property.getType().getNested().iterator().next().isEntityType();
-    }
-
-    protected boolean isEntityMap(PropertyModel property) {
-        return property.getType().isMap() && property.getType().getNested().iterator().next().isEntityType();
-    }
-
-    protected boolean isEntity(PropertyModel property) {
-        return property.getType().isEntityType();
-    }
-
-    protected boolean isPrimitive(PropertyModel property) {
-        return property.getType().isPrimitiveType();
-    }
-
-    protected boolean isPrimitiveList(PropertyModel property) {
-        return property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType();
-    }
-
-    protected boolean isPrimitiveMap(PropertyModel property) {
-        return property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType();
-    }
-
-    protected String singularize(String name) {
-        return inflector.singularize(name);
     }
 
     protected boolean hasNamedMethod(MethodHolderSource<?> entityInterface, String methodName) {

@@ -28,6 +28,7 @@ public class EntityModel {
     private final Collection<TraitModel> traits = new LinkedHashSet<>();
     private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
     private boolean leaf;
+    private boolean root;
 
     public String fullyQualifiedName() {
         return namespace.fullName() + "." + name;

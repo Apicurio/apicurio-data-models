@@ -173,7 +173,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleStarProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -204,9 +204,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 readerClassSource.addImport(List.class);
                 if (property.getType().isMap()) {
                     readerClassSource.addImport(Map.class);
@@ -229,7 +227,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleRegexProperty(BodyBuilder body) {
-            if (property.getType().isEntityType()) {
+            if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
@@ -246,7 +244,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 readerClassSource.addImport(propertyTypeJavaEntity);
                 readerClassSource.addImport(List.class);
 
-                body.addContext("propertyRegex", encodeRegex(property.getName()));
+                body.addContext("propertyRegex", encodeRegex(extractRegex(property.getName())));
                 body.addContext("entityJavaType", propertyTypeJavaEntity.getName());
                 body.addContext("createMethodName", createMethodName(propertyTypeEntity));
                 body.addContext("readMethodName", readMethodName(propertyTypeEntity));
@@ -261,16 +259,13 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
                 body.append("}");
-            } else if (property.getType().isPrimitiveType() ||
-                    (property.getType().isList() && property.getType().getNested().iterator().next().isPrimitiveType()) ||
-                    (property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType())) {
-
+            } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
                 readerClassSource.addImport(List.class);
                 if (property.getType().isMap()) {
                     readerClassSource.addImport(Map.class);
                 }
 
-                body.addContext("propertyRegex", encodeRegex(property.getName()));
+                body.addContext("propertyRegex", encodeRegex(extractRegex(property.getName())));
                 body.addContext("valueType", determineValueType(property.getType()));
                 body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
                 body.addContext("addMethodName", addMethodName(singularize(property.getCollection())));

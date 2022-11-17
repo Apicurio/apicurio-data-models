@@ -44,6 +44,7 @@ import io.apicurio.umg.pipe.java.CreateImplFieldsStage;
 import io.apicurio.umg.pipe.java.CreateImplMethodsStage;
 import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
+import io.apicurio.umg.pipe.java.CreateTestFixturesStage;
 import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
@@ -125,6 +126,9 @@ public class UnifiedModelGenerator {
         pipe.addStage(new RemoveUnusedImportsStage());
         pipe.addStage(new OrganizeImportsStage());
         pipe.addStage(new JavaWriteStage());
+
+        // Generate tests
+        pipe.addStage(new CreateTestFixturesStage());
 
         pipe.run(state);
     }

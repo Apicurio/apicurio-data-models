@@ -50,6 +50,7 @@
                                 <specification>${project.basedir}/src/main/resources/io-spec.yaml</specification>
                             </specifications>
                             <rootNamespace>org.example.io</rootNamespace>
+                            <testSubDir>fixtures</testSubDir>
                         </configuration>
                     </execution>
                 </executions>
@@ -60,7 +61,7 @@
                 <version>3.2.0</version>
                 <executions>
                     <execution>
-                        <id>add-source</id>
+                        <id>add-sources</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>add-source</goal>
@@ -69,6 +70,20 @@
                             <sources>
                                 <source>${project.build.directory}/generated-sources/umg</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-test-resources/umg</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

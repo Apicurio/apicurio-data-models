@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -40,11 +41,25 @@ public class GenerateModelsMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/umg")
     File outputDir;
 
-    /**
-     * @see org.apache.maven.plugin.Mojo#execute()
-     */
+    @Parameter(defaultValue = "${project.build.directory}/generated-test-resources/umg")
+    File testOutputDir;
+
+    @Parameter
+    String testSubDir;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        try {
+            doExecute();
+        } catch (MojoExecutionException | MojoFailureException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void doExecute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Generating unified models from: " + specifications);
         if (specifications == null || specifications.isEmpty()) {
             throw new MojoFailureException("No input specifications found.");
@@ -58,17 +73,31 @@ public class GenerateModelsMojo extends AbstractMojo {
             throw new MojoFailureException(
                     "Output directory is unexpectedly a file (should be a directory or non-existent).");
         }
+        if (testOutputDir.isFile()) {
+            throw new MojoFailureException(
+                    "Test output directory is unexpectedly a file (should be a directory or non-existent).");
+        }
 
         if (!outputDir.exists()) {
             outputDir.mkdirs();
+        }
+        if (!testOutputDir.exists()) {
+            testOutputDir.mkdirs();
         }
 
         // Add the output directory as a compile source.
         getLog().info("Generating code into: " + outputDir.getAbsolutePath());
         this.project.addCompileSourceRoot(outputDir.getAbsolutePath());
+        Resource testResource = new Resource();
+        testResource.setDirectory(testOutputDir.getAbsolutePath());
+        this.project.addTestResource(testResource);
+
+        File umgTestOutputDir = testSubDir == null ? testOutputDir : new File(testOutputDir, testSubDir);
 
         // Create config
-        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder().outputDirectory(outputDir)
+        UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
+                .outputDirectory(outputDir)
+                .testOutputDirectory(umgTestOutputDir)
                 .rootNamespace(rootNamespace).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecifications();

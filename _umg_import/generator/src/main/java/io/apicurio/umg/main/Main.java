@@ -49,14 +49,21 @@ public class Main {
         Logger.info("Starting Apicurio Unified Model Generator");
         // Clean the output directory
         File outputDir = new File("target/from-main/" + rootNamespace);
+        File testOutputDir = new File("target/from-main-test/" + rootNamespace);
         if (outputDir.isDirectory()) {
             FileUtils.deleteDirectory(outputDir);
             outputDir.mkdirs();
         }
+        if (testOutputDir.isDirectory()) {
+            FileUtils.deleteDirectory(testOutputDir);
+            testOutputDir.mkdirs();
+        }
 
         // Set up config
         UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
-                .rootNamespace(rootNamespace).outputDirectory(outputDir).build();
+                .rootNamespace(rootNamespace)
+                .outputDirectory(outputDir)
+                .testOutputDirectory(testOutputDir).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecs(specPaths);
         // Create a unified model generator

@@ -47,6 +47,11 @@ public class IoTest {
         doFullTest("simple.json");
     }
 
+    @Test
+    public void testFullGenerated() throws Exception {
+        doFullTest("iot10-full.json");
+    }
+
     private void doFullTest(String testFile) throws Exception {
         String originalContent = loadTestResource(testFile);
         Iot10Document inputDocument = IoTestLibrary.readDocument(originalContent);

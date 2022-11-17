@@ -66,8 +66,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>${version.lombok}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.curious-odd-man</groupId>
+            <artifactId>rgxgen</artifactId>
+            <version>${version.rgxgen}</version>
         </dependency>
 
         <!-- Test Only Deps -->
