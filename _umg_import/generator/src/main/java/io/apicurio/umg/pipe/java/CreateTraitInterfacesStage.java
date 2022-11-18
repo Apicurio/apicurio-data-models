@@ -20,8 +20,8 @@ public class CreateTraitInterfacesStage extends AbstractJavaStage {
     }
 
     private void createTraitInterface(TraitModel trait) {
-        String _package = getTraitInterfacePackage(trait);
-        String name = getTraitInterfaceName(trait);
+        String _package = getJavaTraitInterfacePackage(trait);
+        String name = getJavaTraitInterfaceName(trait);
 
         JavaInterfaceSource entityInterface = Roaster.create(JavaInterfaceSource.class)
                 .setPackage(_package)

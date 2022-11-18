@@ -42,6 +42,7 @@ public class Main {
         Logger.info("=== START ===");
         //        generate("io.apicurio.datamodels", "specs/asyncapi.yaml", "specs/openapi.yaml");
         generate("org.example.io", "../maven-plugin-tests/src/it/io-test/src/main/resources/io-spec.yaml");
+        generate("org.example.multi", "../maven-plugin-tests/src/it/multi-spec-test/src/main/resources/multi-spec.yaml");
         Logger.info("=== END ===");
     }
 

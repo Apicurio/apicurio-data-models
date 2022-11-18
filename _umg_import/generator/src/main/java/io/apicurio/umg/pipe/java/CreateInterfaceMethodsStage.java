@@ -32,13 +32,13 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
 
     private void createEntityInterfaceMethods(EntityModel entity) {
         entity.getProperties().values().forEach(property -> {
-            createPropertyMethods(lookupEntity(entity), property);
+            createPropertyMethods(lookupJavaEntity(entity), property);
         });
     }
 
     private void createTraitInterfaceMethods(TraitModel trait) {
         trait.getProperties().values().forEach(property -> {
-            createPropertyMethods(lookupTrait(trait), property);
+            createPropertyMethods(lookupJavaTrait(trait), property);
         });
     }
 
@@ -75,7 +75,7 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
             javaEntity.addImport(primType);
             mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + primType.getSimpleName() + ">";
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
                 Logger.error("Java interface for entity type not found: " + property.getType());
                 return;

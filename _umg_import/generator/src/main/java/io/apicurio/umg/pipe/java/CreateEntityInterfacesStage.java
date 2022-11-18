@@ -20,8 +20,8 @@ public class CreateEntityInterfacesStage extends AbstractJavaStage {
     }
 
     private void createEntityInterface(EntityModel entity) {
-        String _package = getEntityInterfacePackage(entity);
-        String name = getEntityInterfaceName(entity);
+        String _package = getJavaEntityInterfacePackage(entity);
+        String name = getJavaEntityInterfaceName(entity);
 
         JavaInterfaceSource entityInterface = Roaster.create(JavaInterfaceSource.class)
                 .setPackage(_package)

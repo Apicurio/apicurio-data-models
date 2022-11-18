@@ -77,7 +77,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         List<MethodSource<?>> methodsToImplement = new LinkedList<MethodSource<?>>();
         Set<String> methodNames = new HashSet<>();
         for (VisitorModel visitorToImplement : visitorsToImplement) {
-            JavaInterfaceSource vtiInterface = lookupVisitor(visitorToImplement);
+            JavaInterfaceSource vtiInterface = lookupJavaVisitor(visitorToImplement);
             if (vtiInterface == null) {
                 Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
             }

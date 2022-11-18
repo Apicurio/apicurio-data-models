@@ -21,15 +21,15 @@ public class CreateEntityImplStage extends AbstractJavaStage {
     }
 
     private void createEntityImpl(EntityModel entity) {
-        String _package = getEntityClassPackage(entity);
-        String name = getEntityClassName(entity);
+        String _package = getJavaEntityClassPackage(entity);
+        String name = getJavaEntityClassName(entity);
 
         JavaClassSource entityClass = Roaster.create(JavaClassSource.class)
                 .setPackage(_package)
                 .setName(name)
                 .setPublic();
 
-        JavaInterfaceSource entityInterface = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
+        JavaInterfaceSource entityInterface = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entity));
         entityClass.addImport(entityInterface);
         entityClass.addInterface(entityInterface);
 

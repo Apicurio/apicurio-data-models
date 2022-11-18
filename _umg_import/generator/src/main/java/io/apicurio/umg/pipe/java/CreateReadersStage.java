@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
@@ -76,7 +75,7 @@ public class CreateReadersStage extends AbstractJavaStage {
      * @param entityModel
      */
     private void createReadMethodFor(SpecificationVersion specVersion, JavaClassSource readerClassSource, EntityModel entityModel) {
-        String entityFQN = getEntityInterfaceFQN(entityModel);
+        String entityFQN = getJavaEntityInterfaceFQN(entityModel);
         String readMethodName = readMethodName(entityModel);
 
         JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(entityFQN);
@@ -130,14 +129,6 @@ public class CreateReadersStage extends AbstractJavaStage {
         body.append("ReaderUtil.readExtraProperties(json, node);");
     }
 
-    private static String readMethodName(EntityModel entityModel) {
-        return readMethodName(entityModel.getName());
-    }
-
-    private static String readMethodName(String entityName) {
-        return "read" + StringUtils.capitalize(entityName);
-    }
-
     @Data
     @AllArgsConstructor
     private class CreateReadProperty {
@@ -181,7 +172,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type: " + property.getType());
                     return;
                 }
-                JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(propertyTypeEntity));
+                JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
                 if (propertyTypeJavaEntity == null) {
                     Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
@@ -199,7 +190,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.keys(json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = node.${createMethodName}();");
+                body.append("        ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -235,7 +226,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type: " + property.getType());
                     return;
                 }
-                JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(propertyTypeEntity));
+                JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
                 if (propertyTypeJavaEntity == null) {
                     Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
@@ -291,18 +282,21 @@ public class CreateReadersStage extends AbstractJavaStage {
                 Logger.warn("[CreateReadersStage]        property type: " + property.getType());
                 return;
             }
+            JavaInterfaceSource propertyTypeJavaEntity = resolveJavaEntityType(entityModel.getNamespace(), property);
+            readerClassSource.addImport(propertyTypeJavaEntity);
 
             body.addContext("propertyName", property.getName());
             body.addContext("setterMethodName", setterMethodName(property));
             body.addContext("createMethodName", createMethodName(propertyTypeEntity));
             body.addContext("getterMethodName", getterMethodName(property));
             body.addContext("readMethodName", readMethodName(propertyTypeEntity));
+            body.addContext("propertyEntityType", propertyTypeJavaEntity.getName());
 
             body.append("{");
             body.append("    ObjectNode object = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
             body.append("    if (object != null) {");
             body.append("        node.${setterMethodName}(node.${createMethodName}());");
-            body.append("        ${readMethodName}(object, node.${getterMethodName}());");
+            body.append("        ${readMethodName}(object, (${propertyEntityType}) node.${getterMethodName}());");
             body.append("    }");
             body.append("}");
         }
@@ -342,7 +336,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
@@ -360,7 +354,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<ObjectNode> objects = JsonUtil.consumeObjectArrayProperty(json, \"${propertyName}\");");
                 body.append("    if (objects != null) {");
                 body.append("        objects.forEach(object -> {");
-                body.append("            ${listValueJavaType} model = node.${createMethodName}();");
+                body.append("            ${listValueJavaType} model = (${listValueJavaType}) node.${createMethodName}();");
                 body.append("            this.${readMethodName}(object, model);");
                 body.append("            node.${addMethodName}(model);");
                 body.append("        });");
@@ -395,7 +389,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in index: " + property.getType());
                     return;
                 }
-                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entityTypeModel));
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
                     Logger.warn("[CreateReadersStage] MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
                     Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());

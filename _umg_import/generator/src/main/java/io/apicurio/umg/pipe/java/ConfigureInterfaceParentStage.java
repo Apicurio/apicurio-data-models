@@ -27,20 +27,20 @@ public class ConfigureInterfaceParentStage extends AbstractJavaStage {
         EntityModel parentEntity = entity.getParent();
         JavaInterfaceSource parentJavaEntity = null;
         if (parentEntity != null) {
-            parentJavaEntity = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(parentEntity));
+            parentJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(parentEntity));
         } else {
             parentJavaEntity = getState().getJavaIndex().lookupInterface(getNodeEntityInterfaceFQN());
         }
 
-        JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
+        JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entity));
         javaEntity.addInterface(parentJavaEntity);
     }
 
     private void configureTraitInterfaceParent(TraitModel trait) {
         TraitModel parentTrait = trait.getParent();
         if (parentTrait != null) {
-            JavaInterfaceSource parentJavaTrait = getState().getJavaIndex().lookupInterface(getTraitInterfaceFQN(parentTrait));
-            JavaInterfaceSource javaTrait = getState().getJavaIndex().lookupInterface(getTraitInterfaceFQN(trait));
+            JavaInterfaceSource parentJavaTrait = getState().getJavaIndex().lookupInterface(getJavaTraitInterfaceFQN(parentTrait));
+            JavaInterfaceSource javaTrait = getState().getJavaIndex().lookupInterface(getJavaTraitInterfaceFQN(trait));
             javaTrait.addInterface(parentJavaTrait);
         }
     }

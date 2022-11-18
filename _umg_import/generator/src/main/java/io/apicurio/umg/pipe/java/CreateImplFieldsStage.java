@@ -31,7 +31,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
     }
 
     private void createEntityImplFields(EntityModel entity) {
-        JavaClassSource javaEntityImpl = lookupEntityImpl(entity);
+        JavaClassSource javaEntityImpl = lookupJavaEntityImpl(entity);
         Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entity);
 
         allProperties.forEach(property -> {
@@ -73,9 +73,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
             javaEntityImpl.addImport(pType);
             fieldType = pType.getSimpleName();
         } else if (isEntity(property)) {
-            String entityFQN = javaEntityImpl.getPackage() + "." + property.getType().getSimpleType();
-            EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
-            JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
+            JavaInterfaceSource javaTypeEntity = resolveCommonJavaEntity(javaEntityImpl.getPackage(), property.getType().getSimpleType());
             javaEntityImpl.addImport(javaTypeEntity);
             fieldType = javaTypeEntity.getName();
         } else if (isPrimitiveList(property)) {
@@ -90,17 +88,13 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
             fieldType = "Map<String, " + pType.getSimpleName() + ">";
         } else if (isEntityList(property)) {
             PropertyType listType = property.getType().getNested().iterator().next();
-            String entityFQN = javaEntityImpl.getPackage() + "." + listType.getSimpleType();
-            EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
-            JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
+            JavaInterfaceSource javaTypeEntity = resolveCommonJavaEntity(javaEntityImpl.getPackage(), listType.getSimpleType());
             javaEntityImpl.addImport(javaTypeEntity);
             javaEntityImpl.addImport(List.class);
             fieldType = "List<" + javaTypeEntity.getName() + ">";
         } else if (isEntityMap(property)) {
             PropertyType mapType = property.getType().getNested().iterator().next();
-            String entityFQN = javaEntityImpl.getPackage() + "." + mapType.getSimpleType();
-            EntityModel typeEntity = getState().getConceptIndex().lookupEntity(entityFQN);
-            JavaInterfaceSource javaTypeEntity = lookupEntity(typeEntity);
+            JavaInterfaceSource javaTypeEntity = resolveCommonJavaEntity(javaEntityImpl.getPackage(), mapType.getSimpleType());
             javaEntityImpl.addImport(javaTypeEntity);
             javaEntityImpl.addImport(Map.class);
             fieldType = "Map<String, " + javaTypeEntity.getName() + ">";

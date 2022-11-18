@@ -88,6 +88,6 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
         while (entity.getParent() != null) {
             entity = entity.getParent();
         }
-        return getState().getJavaIndex().lookupInterface(getEntityInterfaceFQN(entity));
+        return getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entity));
     }
 }

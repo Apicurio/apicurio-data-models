@@ -35,7 +35,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     }
 
     private void createEntityImplMethods(EntityModel entity) {
-        JavaClassSource javaEntity = lookupEntityImpl(entity);
+        JavaClassSource javaEntity = lookupJavaEntityImpl(entity);
 
         Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entity);
         allProperties.forEach(property -> {
@@ -70,7 +70,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
             javaEntity.addImport(primType);
             mappedNodeType = primType.getSimpleName();
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
                 Logger.error("[CreateImplMethodsStage] Java interface for entity type not found: " + property.getType());
                 return;
@@ -162,9 +162,12 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     }
 
     @Override
-    protected void createFactoryMethodBody(JavaSource<?> javaEntity, JavaInterfaceSource entityType, MethodSource<?> method) {
-        String implFQN = entityType.getQualifiedName() + "Impl";
-        JavaClassSource entityImpl = lookupEntityImpl(implFQN);
+    protected void createFactoryMethodBody(JavaSource<?> javaEntity, String entityName, MethodSource<?> method) {
+        String entityFQN = javaEntity.getPackage() + "." + entityName;
+        EntityModel entityModel = getState().getConceptIndex().lookupEntity(entityFQN);
+        String implFQN = getJavaEntityClassFQN(entityModel);
+
+        JavaClassSource entityImpl = lookupJavaEntityImpl(implFQN);
         if (entityImpl == null) {
             Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type (impl): " + implFQN);
             return;
@@ -237,6 +240,19 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     @Override
     protected void addAnnotations(MethodSource<?> method) {
         method.addAnnotation(Override.class);
+    }
+
+    /**
+     * Override the entity type resolution to do the extra work of finding the right entity.
+     * This is needed here because Impl classes implement methods for *all* properties, not
+     * just the ones in their same namespace.  So we need to search UP the entity hierarchy
+     * to find the right one.
+     *
+     * @see io.apicurio.umg.pipe.java.AbstractJavaStage#resolveJavaEntity(java.lang.String, java.lang.String)
+     */
+    @Override
+    protected JavaInterfaceSource resolveJavaEntity(String namespace, String entityName) {
+        return resolveCommonJavaEntity(namespace, entityName);
     }
 
 }

@@ -1,0 +1,7 @@
+name: Multi-Spec Testing Model
+prefix: Mlti
+namespace: org.example.multi
+versions:
+  - $ref: ./multi-spec-v1.yaml
+  - $ref: ./multi-spec-v2.yaml
+  

@@ -108,6 +108,14 @@ public class ConceptIndex {
         return entityIndex.get(fullyQualifiedEntityName);
     }
 
+    public EntityModel lookupEntity(String namespace, String entityName) {
+        return lookupEntity(namespace + "." + entityName);
+    }
+
+    public EntityModel lookupEntity(NamespaceModel namespace, String entityName) {
+        return lookupEntity(namespace.fullName(), entityName);
+    }
+
     public VisitorModel lookupVisitor(String namespace) {
         return visitorIndex.get(namespace);
     }
@@ -160,6 +168,23 @@ public class ConceptIndex {
             model = model.getParent();
         }
         return models;
+    }
+
+    /**
+     * Given a starting namespace and an entity name, search up the entity hierarchy for
+     * entities matching the name.  Returns the common-most one.
+     * @param namespace
+     * @param entityName
+     */
+    public EntityModel lookupCommonEntity(String namespace, String entityName) {
+        NamespaceModel nsModel = lookupNamespace(namespace);
+        EntityModel entity;
+        do {
+            String entityFQN = nsModel.fullName() + "." + entityName;
+            entity = lookupEntity(entityFQN);
+            nsModel = nsModel.getParent();
+        } while (lookupEntity(nsModel, entityName) != null);
+        return entity;
     }
 
 }

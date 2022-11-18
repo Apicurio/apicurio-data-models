@@ -100,42 +100,42 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return prefix == null ? "" : prefix;
     }
 
-    protected String getEntityInterfaceFQN(EntityModel entity) {
-        return getEntityInterfacePackage(entity) + "." + getEntityInterfaceName(entity);
+    protected String getJavaEntityInterfaceFQN(EntityModel entity) {
+        return getJavaEntityInterfacePackage(entity) + "." + getJavaEntityInterfaceName(entity);
     }
 
-    protected String getTraitInterfaceFQN(TraitModel trait) {
-        return getTraitInterfacePackage(trait) + "." + getTraitInterfaceName(trait);
+    protected String getJavaTraitInterfaceFQN(TraitModel trait) {
+        return getJavaTraitInterfacePackage(trait) + "." + getJavaTraitInterfaceName(trait);
     }
 
-    protected String getEntityClassFQN(EntityModel entity) {
-        return getEntityClassPackage(entity) + "." + getEntityClassName(entity);
+    protected String getJavaEntityClassFQN(EntityModel entity) {
+        return getJavaEntityClassPackage(entity) + "." + getJavaEntityClassName(entity);
     }
 
-    protected String getEntityInterfaceName(EntityModel entity) {
+    protected String getJavaEntityInterfaceName(EntityModel entity) {
         String prefix = getState().getSpecIndex().getNsToPrefix().get(entity.getNamespace().fullName());
         return (prefix == null ? "" : prefix) + entity.getName();
     }
 
-    protected String getTraitInterfaceName(TraitModel trait) {
+    protected String getJavaTraitInterfaceName(TraitModel trait) {
         String prefix = getState().getSpecIndex().getNsToPrefix().get(trait.getNamespace().fullName());
         return (prefix == null ? "" : prefix) + trait.getName();
     }
 
-    protected String getEntityClassName(EntityModel entity) {
+    protected String getJavaEntityClassName(EntityModel entity) {
         String prefix = getState().getSpecIndex().getNsToPrefix().get(entity.getNamespace().fullName());
         return (prefix == null ? "" : prefix) + entity.getName() + "Impl";
     }
 
-    protected String getEntityInterfacePackage(EntityModel entity) {
+    protected String getJavaEntityInterfacePackage(EntityModel entity) {
         return getPackage(entity.getNamespace());
     }
 
-    protected String getTraitInterfacePackage(TraitModel trait) {
+    protected String getJavaTraitInterfacePackage(TraitModel trait) {
         return getPackage(trait.getNamespace());
     }
 
-    protected String getEntityClassPackage(EntityModel entity) {
+    protected String getJavaEntityClassPackage(EntityModel entity) {
         return getPackage(entity.getNamespace());
     }
 
@@ -207,6 +207,14 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return "remove" + StringUtils.capitalize(name);
     }
 
+    protected String readMethodName(EntityModel entityModel) {
+        return readMethodName(entityModel.getName());
+    }
+
+    protected String readMethodName(String entityName) {
+        return "read" + StringUtils.capitalize(entityName);
+    }
+
     protected String getterMethodName(PropertyModel propertyModel) {
         String name = propertyModel.getName();
         if (name.startsWith("/")) {
@@ -235,19 +243,36 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return rval;
     }
 
-    protected JavaInterfaceSource resolveEntityType(NamespaceModel namespace, PropertyModel property) {
-        return resolveEntityType(namespace.fullName(), property.getType());
+    protected JavaInterfaceSource resolveJavaEntityType(NamespaceModel namespace, PropertyModel property) {
+        return resolveJavaEntityType(namespace.fullName(), property.getType());
     }
 
-    protected JavaInterfaceSource resolveEntityType(String namespace, PropertyModel property) {
-        return resolveEntityType(namespace, property.getType());
+    protected JavaInterfaceSource resolveJavaEntityType(String namespace, PropertyModel property) {
+        return resolveJavaEntityType(namespace, property.getType());
     }
 
-    protected JavaInterfaceSource resolveEntityType(String namespace, PropertyType type) {
+    protected JavaInterfaceSource resolveJavaEntityType(String namespace, PropertyType type) {
+        return resolveJavaEntity(namespace, type.getSimpleType());
+    }
+
+    protected JavaInterfaceSource resolveJavaEntity(EntityModel entityModel) {
+        return resolveJavaEntity(entityModel.getNamespace().fullName(), entityModel.getName());
+    }
+
+    protected JavaInterfaceSource resolveJavaEntity(String namespace, String entityName) {
         String _package = namespace;
         String prefix = getPrefix(namespace);
-        String fqn = _package + "." + prefix + type.getSimpleType();
-        return lookupEntity(fqn);
+        String fqn = _package + "." + prefix + entityName;
+        return lookupJavaEntity(fqn);
+    }
+
+    protected JavaInterfaceSource resolveCommonJavaEntity(EntityModel entityModel) {
+        return resolveCommonJavaEntity(entityModel.getNamespace().fullName(), entityModel.getName());
+    }
+
+    protected JavaInterfaceSource resolveCommonJavaEntity(String namespace, String entityName) {
+        EntityModel commonEntity = getState().getConceptIndex().lookupCommonEntity(namespace, entityName);
+        return lookupJavaEntity(commonEntity);
     }
 
     protected boolean hasNamedMethod(MethodHolderSource<?> entityInterface, String methodName) {
@@ -259,27 +284,27 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return false;
     }
 
-    protected JavaInterfaceSource lookupEntity(EntityModel entity) {
-        return lookupEntity(getEntityInterfaceFQN(entity));
+    protected JavaInterfaceSource lookupJavaEntity(EntityModel entity) {
+        return lookupJavaEntity(getJavaEntityInterfaceFQN(entity));
     }
 
-    protected JavaInterfaceSource lookupEntity(String fullyQualifiedName) {
+    protected JavaInterfaceSource lookupJavaEntity(String fullyQualifiedName) {
         return getState().getJavaIndex().lookupInterface(fullyQualifiedName);
     }
 
-    protected JavaInterfaceSource lookupTrait(TraitModel trait) {
-        return getState().getJavaIndex().lookupInterface(getTraitInterfaceFQN(trait));
+    protected JavaInterfaceSource lookupJavaTrait(TraitModel trait) {
+        return getState().getJavaIndex().lookupInterface(getJavaTraitInterfaceFQN(trait));
     }
 
-    protected JavaClassSource lookupEntityImpl(EntityModel entity) {
-        return lookupEntityImpl(getEntityClassFQN(entity));
+    protected JavaClassSource lookupJavaEntityImpl(EntityModel entity) {
+        return lookupJavaEntityImpl(getJavaEntityClassFQN(entity));
     }
 
-    protected JavaClassSource lookupEntityImpl(String fullyQualifiedName) {
+    protected JavaClassSource lookupJavaEntityImpl(String fullyQualifiedName) {
         return getState().getJavaIndex().lookupClass(fullyQualifiedName);
     }
 
-    protected JavaInterfaceSource lookupVisitor(VisitorModel visitor) {
+    protected JavaInterfaceSource lookupJavaVisitor(VisitorModel visitor) {
         String interfaceFQN = getVisitorInterfaceFullName(visitor);
         JavaInterfaceSource _interface = getState().getJavaIndex().lookupInterface(interfaceFQN);
         if (_interface == null) {

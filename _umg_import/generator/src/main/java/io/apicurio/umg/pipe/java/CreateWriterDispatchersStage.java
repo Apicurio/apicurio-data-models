@@ -61,7 +61,7 @@ public class CreateWriterDispatchersStage extends AbstractVisitorStage {
         List<MethodSource<?>> methodsToImplement = new LinkedList<MethodSource<?>>();
         Set<String> methodNames = new HashSet<>();
         for (VisitorModel visitorToImplement : visitorsToImplement) {
-            JavaInterfaceSource vtiInterface = lookupVisitor(visitorToImplement);
+            JavaInterfaceSource vtiInterface = lookupJavaVisitor(visitorToImplement);
             if (vtiInterface == null) {
                 Logger.warn("[CreateWriterDispatchersStage] Visitor interface not found: " + visitorToImplement);
             }
@@ -97,20 +97,27 @@ public class CreateWriterDispatchersStage extends AbstractVisitorStage {
         ctor.setBody(ctorBody.toString());
 
         // Now create an implementation for each visit method.
-        methodsToImplement.forEach(method -> {
+        methodsToImplement.forEach(methodToImplement -> {
             MethodSource<JavaClassSource> methodSource = writerDispatcherSource.addMethod()
-                    .setName(method.getName())
+                    .setName(methodToImplement.getName())
                     .setReturnTypeVoid()
                     .setPublic();
             // We know each visit method will have a single parameter.
-            ParameterSource<?> param = method.getParameters().get(0);
+            ParameterSource<?> param = methodToImplement.getParameters().get(0);
             writerDispatcherSource.addImport(param.getType());
             methodSource.addParameter(param.getType().getSimpleName(), param.getName());
             methodSource.addAnnotation(Override.class);
 
+            // Figure out the entity name from the "visit" method name (absent another way).
+            String entityName = methodToImplement.getName().replace("visit", "");
+            JavaInterfaceSource javaEntityType = resolveJavaEntity(specVer.getNamespace(), entityName);
+            writerDispatcherSource.addImport(javaEntityType);
+
+            // Create the method body.
             BodyBuilder body = new BodyBuilder();
-            body.addContext("writeMethodName", method.getName().replace("visit", "write"));
-            body.append("this.writer.${writeMethodName}(node, this.json);");
+            body.addContext("writeMethodName", methodToImplement.getName().replace("visit", "write"));
+            body.addContext("javaEntityType", javaEntityType.getName());
+            body.append("this.writer.${writeMethodName}((${javaEntityType}) node, this.json);");
             methodSource.setBody(body.toString());
         });
 

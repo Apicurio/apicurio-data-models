@@ -41,7 +41,7 @@ public abstract class AbstractVisitorStage extends AbstractJavaStage {
     protected List<MethodSource<?>> getAllMethodsForVisitorInterface(VisitorModel visitor) {
         List<MethodSource<?>> methods = new LinkedList<>();
         while (visitor != null) {
-            JavaInterfaceSource visitorInterface = lookupVisitor(visitor);
+            JavaInterfaceSource visitorInterface = lookupJavaVisitor(visitor);
             methods.addAll(visitorInterface.getMethods());
             visitor = visitor.getParent();
         }

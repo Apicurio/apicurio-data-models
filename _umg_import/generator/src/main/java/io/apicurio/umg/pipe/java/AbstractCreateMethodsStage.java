@@ -100,7 +100,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             javaEntity.addImport(returnType);
             method.setReturnType(returnType.getSimpleName());
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -108,7 +108,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.setReturnType(entityType.getName());
             }
         } else if (isEntityList(property)) {
-            JavaInterfaceSource listType = resolveEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
+            JavaInterfaceSource listType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
             if (listType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -117,7 +117,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.setReturnType("List<" + listType.getName() + ">");
             }
         } else if (isEntityMap(property)) {
-            JavaInterfaceSource mapType = resolveEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
+            JavaInterfaceSource mapType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
             if (mapType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -158,7 +158,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             javaEntity.addImport(paramType);
             method.addParameter(paramType.getSimpleName(), "value");
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
                 Logger.warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -187,11 +187,12 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         if (type.isMap() || type.isList()) {
             type = type.getNested().iterator().next();
         }
-        String methodName = createMethodName(type.getSimpleType());
+        String entityName = type.getSimpleType();
+        String methodName = createMethodName(entityName);
         // The name of the "create" method is based on the type, so it's possible to have
         // duplicates.  Let's not do that.
         if (!hasNamedMethod(((MethodHolderSource<?>) javaEntity), methodName)) {
-            JavaInterfaceSource entityType = resolveEntityType(_package, type);
+            JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
             if (entityType == null) {
                 Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + _package + "::" + type);
                 return;
@@ -200,10 +201,10 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnType(entityType);
             addAnnotations(method);
 
-            createFactoryMethodBody(javaEntity, entityType, method);
+            createFactoryMethodBody(javaEntity, entityName, method);
         }
     }
-    protected void createFactoryMethodBody(JavaSource<?> javaEntity, JavaInterfaceSource entityType, MethodSource<?> method) {
+    protected void createFactoryMethodBody(JavaSource<?> javaEntity, String entityName, MethodSource<?> method) {
     }
 
     /**
@@ -219,7 +220,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         MethodSource<?> method;
 
         if (type.isEntityType()) {
-            JavaInterfaceSource entityType = resolveEntityType(_package, type);
+            JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
             if (entityType == null) {
                 Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + _package + "::" + type);
                 return;
@@ -283,7 +284,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
         if (property.getType().isList()) {
             PropertyType type = property.getType().getNested().iterator().next();
-            JavaInterfaceSource entityType = resolveEntityType(javaEntity.getPackage(), type);
+            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), type);
             if (entityType == null) {
                 Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + javaEntity.getPackage() + "::" + type);
                 return;
