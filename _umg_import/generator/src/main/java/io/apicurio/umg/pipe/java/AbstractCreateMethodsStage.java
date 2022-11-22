@@ -9,7 +9,6 @@ import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
 
@@ -28,12 +27,12 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                     createFactoryMethod(javaEntity, property);
                 }
             } else {
-                Logger.error("[AbstractCreateMethodsStage] STAR property type not handled: " + javaEntity.getCanonicalName() + "::" + property);
+                error("STAR property type not handled: " + javaEntity.getCanonicalName() + "::" + property);
                 return;
             }
         } else if (property.getName().startsWith("/") && (isEntity(property) || isPrimitive(property))) {
             if (property.getCollection() == null) {
-                Logger.error("[AbstractCreateMethodsStage] Regex property defined without a collection name: " + javaEntity.getCanonicalName() + "::" + property);
+                error("Regex property defined without a collection name: " + javaEntity.getCanonicalName() + "::" + property);
                 return;
             }
             PropertyType collectionPropertyType = PropertyType.builder()
@@ -63,7 +62,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createClearMethod(javaEntity, property);
             createRemoveMethod(javaEntity, property);
         } else {
-            Logger.warn("[CreateImplMethodsStage] Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
+            warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
         }
     }
 
@@ -102,7 +101,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
-                Logger.warn("Java interface for entity type not found: " + property.getType());
+                warn("Java interface for entity type not found: " + property.getType());
             } else {
                 javaEntity.addImport(entityType);
                 method.setReturnType(entityType.getName());
@@ -110,7 +109,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         } else if (isEntityList(property)) {
             JavaInterfaceSource listType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
             if (listType == null) {
-                Logger.warn("Java interface for entity type not found: " + property.getType());
+                warn("Java interface for entity type not found: " + property.getType());
             } else {
                 javaEntity.addImport(List.class);
                 javaEntity.addImport(listType);
@@ -119,14 +118,14 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         } else if (isEntityMap(property)) {
             JavaInterfaceSource mapType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
             if (mapType == null) {
-                Logger.warn("Java interface for entity type not found: " + property.getType());
+                warn("Java interface for entity type not found: " + property.getType());
             } else {
                 javaEntity.addImport(Map.class);
                 javaEntity.addImport(mapType);
                 method.setReturnType("Map<String, " + mapType.getName() + ">");
             }
         } else {
-            Logger.warn("[AbstractCreateMethodsStage] Return type not supported for getter method: " + method.getName() + " for type: " + property.getType());
+            warn("Return type not supported for getter method: " + method.getName() + " for type: " + property.getType());
         }
 
         createGetterBody(property, method);
@@ -160,13 +159,13 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
-                Logger.warn("Java interface for entity type not found: " + property.getType());
+                warn("Java interface for entity type not found: " + property.getType());
             } else {
                 javaEntity.addImport(entityType);
                 method.addParameter(entityType.getName(), "value");
             }
         } else {
-            Logger.warn("[AbstractCreateMethodsStage] Parameter type not supported for setter method: " + method.getName() + " for type: " + property.getType());
+            warn("[AbstractCreateMethodsStage] Parameter type not supported for setter method: " + method.getName() + " for type: " + property.getType());
         }
 
         createSetterBody(property, method);
@@ -194,7 +193,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         if (!hasNamedMethod(((MethodHolderSource<?>) javaEntity), methodName)) {
             JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
             if (entityType == null) {
-                Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + _package + "::" + type);
+                error("Could not resolve entity type: " + _package + "::" + type);
                 return;
             }
 
@@ -222,7 +221,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         if (type.isEntityType()) {
             JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
             if (entityType == null) {
-                Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + _package + "::" + type);
+                error("Could not resolve entity type: " + _package + "::" + type);
                 return;
             }
 
@@ -245,7 +244,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             }
             method.addParameter(primitiveType.getSimpleName(), "value");
         } else {
-            Logger.warn("[AbstractCreateMethodsStage] Type not supported for 'add' method: " + methodName + " with type: " + property.getType());
+            warn("Type not supported for 'add' method: " + methodName + " with type: " + property.getType());
             return;
         }
 
@@ -286,7 +285,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             PropertyType type = property.getType().getNested().iterator().next();
             JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), type);
             if (entityType == null) {
-                Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type: " + javaEntity.getPackage() + "::" + type);
+                error("Could not resolve entity type: " + javaEntity.getPackage() + "::" + type);
                 return;
             }
             javaEntity.addImport(entityType);

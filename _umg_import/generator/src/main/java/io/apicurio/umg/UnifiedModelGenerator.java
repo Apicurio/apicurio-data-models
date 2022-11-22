@@ -37,6 +37,7 @@ import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceParentStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateAcceptMethodStage;
+import io.apicurio.umg.pipe.java.CreateAllNodeVisitorStage;
 import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateEntityImplStage;
 import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
@@ -47,6 +48,7 @@ import io.apicurio.umg.pipe.java.CreateReaderDispatchersStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateTestFixturesStage;
 import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
+import io.apicurio.umg.pipe.java.CreateTraversersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateWriterDispatchersStage;
@@ -124,8 +126,10 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateAcceptMethodStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());
         pipe.addStage(new CreateVisitorAdaptersStage());
+        pipe.addStage(new CreateAllNodeVisitorStage());
         pipe.addStage(new CreateReaderDispatchersStage());
         pipe.addStage(new CreateWriterDispatchersStage());
+        pipe.addStage(new CreateTraversersStage());
 
         pipe.addStage(new RemoveUnusedImportsStage());
         pipe.addStage(new OrganizeImportsStage());

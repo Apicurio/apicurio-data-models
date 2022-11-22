@@ -10,7 +10,6 @@ import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -50,7 +49,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
             isStarProperty = true;
         } else if (property.getName().startsWith("/") && (isEntity(property) || isPrimitive(property))) {
             if (property.getCollection() == null) {
-                Logger.error("[CreateImplFieldsStage] Regex property defined without a collection name: " + javaEntityImpl.getCanonicalName() + "::" + property);
+                error("Regex property defined without a collection name: " + javaEntityImpl.getCanonicalName() + "::" + property);
                 return;
             }
             PropertyType collectionPropertyType = PropertyType.builder()
@@ -64,7 +63,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
         String fieldType = "String";
 
         if (fieldName == null) {
-            Logger.warn("[CreateImplFieldsStage] Could not figure out field name for property: " + property);
+            warn("Could not figure out field name for property: " + property);
             return;
         }
 
@@ -99,7 +98,7 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
             javaEntityImpl.addImport(Map.class);
             fieldType = "Map<String, " + javaTypeEntity.getName() + ">";
         } else {
-            Logger.warn("[CreateImplFieldsStage] Field not created - property type not supported: " + property);
+            warn("Field not created - property type not supported: " + property);
         }
 
         FieldSource<JavaClassSource> field = javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);

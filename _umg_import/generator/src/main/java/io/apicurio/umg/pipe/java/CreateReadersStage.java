@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -32,39 +31,37 @@ public class CreateReadersStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
-            String readerPackageName = getReaderPackageName(specVersion);
-            String readerClassName = getReaderClassName(specVersion);
-
-            // Create java source code for the reader
-            JavaClassSource readerClassSource = Roaster.create(JavaClassSource.class)
-                    .setPackage(readerPackageName)
-                    .setName(readerClassName)
-                    .setPublic();
-            readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
-            readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "ReaderUtil");
-
-            // Create the readXYZ methods - one for each entity
-            createReadMethods(specVersion, readerClassSource);
-
-            getState().getJavaIndex().index(readerClassSource);
+            createReader(specVersion);
         });
     }
 
     /**
-     * Creates a "read" method for each entity in the spec version.
-     *
+     * Creates a reader for the given spec version.
      * @param specVersion
-     * @param readerClassSource
      */
-    private void createReadMethods(SpecificationVersion specVersion, JavaClassSource readerClassSource) {
+    private void createReader(SpecificationVersion specVersion) {
+        String readerPackageName = getReaderPackageName(specVersion);
+        String readerClassName = getReaderClassName(specVersion);
+
+        // Create java source code for the reader
+        JavaClassSource readerClassSource = Roaster.create(JavaClassSource.class)
+                .setPackage(readerPackageName)
+                .setName(readerClassName)
+                .setPublic();
+        readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
+        readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "ReaderUtil");
+
+        // Create the readXYZ methods - one for each entity
         specVersion.getEntities().forEach(entity -> {
             EntityModel entityModel = getState().getConceptIndex().lookupEntity(specVersion.getNamespace() + "." + entity.getName());
             if (entityModel == null) {
-                Logger.warn("[CreateReadersStage] Entity model not found for entity: " + entity);
+                warn("Entity model not found for entity: " + entity);
             } else {
                 createReadMethodFor(specVersion, readerClassSource, entityModel);
             }
         });
+
+        getState().getJavaIndex().index(readerClassSource);
     }
 
     /**
@@ -80,7 +77,7 @@ public class CreateReadersStage extends AbstractJavaStage {
 
         JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(entityFQN);
         if (javaEntity == null) {
-            Logger.warn("[CreateReadersStage] Java interface for entity not found: " + entityFQN);
+            warn("Java interface for entity not found: " + entityFQN);
         }
 
         readerClassSource.addImport(ObjectNode.class);
@@ -158,8 +155,8 @@ public class CreateReadersStage extends AbstractJavaStage {
             } else if (property.getType().isUnion()) {
                 handleUnionProperty(body);
             } else {
-                Logger.warn("[CreateReadersStage] Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -168,14 +165,14 @@ public class CreateReadersStage extends AbstractJavaStage {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
-                    Logger.warn("[CreateReadersStage] STAR Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                    warn("STAR Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
                 if (propertyTypeJavaEntity == null) {
-                    Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("STAR Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 readerClassSource.addImport(propertyTypeJavaEntity);
@@ -212,8 +209,8 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    });");
                 body.append("}");
             } else {
-                Logger.warn("[CreateReadersStage] STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("STAR Entity property '" + property.getName() + "' not read (unhandled) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -222,14 +219,14 @@ public class CreateReadersStage extends AbstractJavaStage {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
-                    Logger.warn("[CreateReadersStage] REGEX Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                    warn("REGEX Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource propertyTypeJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
                 if (propertyTypeJavaEntity == null) {
-                    Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 readerClassSource.addImport(propertyTypeJavaEntity);
@@ -269,8 +266,8 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    });");
                 body.append("}");
             } else {
-                Logger.warn("[CreateReadersStage] REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("REGEX Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -278,8 +275,8 @@ public class CreateReadersStage extends AbstractJavaStage {
             String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
             EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
             if (propertyTypeEntity == null) {
-                Logger.warn("[CreateReadersStage] Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
                 return;
             }
             JavaInterfaceSource propertyTypeJavaEntity = resolveJavaEntityType(entityModel.getNamespace(), property);
@@ -332,14 +329,14 @@ public class CreateReadersStage extends AbstractJavaStage {
                 String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
                 EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 if (entityTypeModel == null) {
-                    Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in index: " + property.getType());
+                    warn("LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
-                    Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 readerClassSource.addImport(entityTypeJavaModel);
@@ -361,8 +358,8 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    }");
                 body.append("}");
             } else {
-                Logger.warn("[CreateReadersStage] LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("LIST Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -385,14 +382,14 @@ public class CreateReadersStage extends AbstractJavaStage {
                 String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
                 EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 if (entityTypeModel == null) {
-                    Logger.warn("[CreateReadersStage] MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in index: " + property.getType());
+                    warn("MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
-                    Logger.warn("[CreateReadersStage] MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateReadersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 readerClassSource.addImport(entityTypeJavaModel);
@@ -412,15 +409,15 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    });");
                 body.append("}");
             } else {
-                Logger.warn("[CreateReadersStage] MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+                warn("MAP Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
         private void handleUnionProperty(BodyBuilder body) {
             // TODO Implement union types!!
-            Logger.warn("[CreateReadersStage] UNION Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            Logger.warn("[CreateReadersStage]        property type: " + property.getType());
+            warn("UNION Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
+            warn("       property type: " + property.getType());
         }
 
         /**
@@ -480,7 +477,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
             }
 
-            Logger.warn("[CreateReadersStage] Unable to determine value type for: " + property);
+            warn("Unable to determine value type for: " + property);
             return "consumeProperty";
         }
 
@@ -520,7 +517,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
             }
 
-            Logger.warn("[CreateReadersStage] Unable to determine value type for: " + property);
+            warn("Unable to determine value type for: " + property);
             return "Object";
         }
 

@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -34,39 +33,37 @@ public class CreateWritersStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
-            String writerPackageName = getWriterPackageName(specVersion);
-            String writerClassName = getWriterClassName(specVersion);
-
-            // Create java source code for the writer
-            JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
-                    .setPackage(writerPackageName)
-                    .setName(writerClassName)
-                    .setPublic();
-            writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
-            writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
-
-            // Create the writeXYZ methods - one for each entity
-            createWriteMethods(specVersion, writerClassSource);
-
-            getState().getJavaIndex().index(writerClassSource);
+            createWriter(specVersion);
         });
     }
 
     /**
-     * Creates a "write" method for each entity in the spec version.
-     *
+     * Creates a writer for the given spec version.
      * @param specVersion
-     * @param writerClassSource
      */
-    private void createWriteMethods(SpecificationVersion specVersion, JavaClassSource writerClassSource) {
+    private void createWriter(SpecificationVersion specVersion) {
+        String writerPackageName = getWriterPackageName(specVersion);
+        String writerClassName = getWriterClassName(specVersion);
+
+        // Create java source code for the writer
+        JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
+                .setPackage(writerPackageName)
+                .setName(writerClassName)
+                .setPublic();
+        writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
+        writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
+
+        // Create the writeXYZ methods - one for each entity
         specVersion.getEntities().forEach(entity -> {
             EntityModel entityModel = getState().getConceptIndex().lookupEntity(specVersion.getNamespace() + "." + entity.getName());
             if (entityModel == null) {
-                Logger.warn("[CreateWritersStage] Entity model not found for entity: " + entity);
+                warn("Entity model not found for entity: " + entity);
             } else {
                 createWriteMethodFor(specVersion, writerClassSource, entityModel);
             }
         });
+
+        getState().getJavaIndex().index(writerClassSource);
     }
 
     /**
@@ -81,7 +78,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
         JavaInterfaceSource javaEntityModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityModel));
         if (javaEntityModel == null) {
-            Logger.warn("[CreateWritersStage] Java entity not found for: " + entityModel.fullyQualifiedName());
+            warn("Java entity not found for: " + entityModel.fullyQualifiedName());
             return;
         }
 
@@ -173,8 +170,8 @@ public class CreateWritersStage extends AbstractJavaStage {
             } else if (property.getType().isUnion()) {
                 handleUnionProperty(body);
             } else {
-                Logger.warn("[CreateWritersStage] Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -183,8 +180,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
-                    Logger.warn("[CreateWritersStage] STAR Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                    warn("STAR Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(List.class);
@@ -213,8 +210,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("    });");
                 body.append("}");
             } else {
-                Logger.warn("[CreateWritersStage] STAR Entity property '" + property.getName() + "' not written (unhandled) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("STAR Entity property '" + property.getName() + "' not written (unhandled) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -223,14 +220,14 @@ public class CreateWritersStage extends AbstractJavaStage {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
                 if (propertyTypeEntity == null) {
-                    Logger.warn("[CreateWritersStage] REGEX Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                    warn("REGEX Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
                 if (entityTypeJavaModel == null) {
-                    Logger.warn("[CreateWritersStage] REGEX Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("REGEX Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 writerClassSource.addImport(Map.class);
@@ -267,8 +264,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("    }");
                 body.append("}");
             } else {
-                Logger.warn("[CreateWritersStage] REGEX Entity property '" + property.getName() + "' not written (unhandled) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("REGEX Entity property '" + property.getName() + "' not written (unhandled) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -276,8 +273,8 @@ public class CreateWritersStage extends AbstractJavaStage {
             String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
             EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
             if (propertyTypeEntity == null) {
-                Logger.warn("[CreateWritersStage] Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("Property entity type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
                 return;
             }
             JavaInterfaceSource propertyTypeJavaEntity = resolveJavaEntityType(entityModel.getNamespace(), property);
@@ -319,14 +316,14 @@ public class CreateWritersStage extends AbstractJavaStage {
                 String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
                 EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 if (entityTypeModel == null) {
-                    Logger.warn("[CreateWritersStage] LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
+                    warn("LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource entityTypeJavaModel = resolveJavaEntity(entityTypeModel);
                 if (entityTypeJavaModel == null) {
-                    Logger.warn("[CreateWritersStage] LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource commonEntityTypeJavaModel = resolveCommonJavaEntity(entityTypeModel);
@@ -354,8 +351,8 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("    }");
                 body.append("}");
             } else {
-                Logger.warn("[CreateWritersStage] LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("LIST Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
@@ -374,14 +371,14 @@ public class CreateWritersStage extends AbstractJavaStage {
                 String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
                 EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
                 if (entityTypeModel == null) {
-                    Logger.warn("[CreateWritersStage] MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type is entity but not found in index: " + property.getType());
+                    warn("MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
                 if (entityTypeJavaModel == null) {
-                    Logger.warn("[CreateWritersStage] MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                    Logger.warn("[CreateWritersStage]        property type is entity but not found in JAVA index: " + property.getType());
+                    warn("MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
                 JavaInterfaceSource commonEntityTypeJavaModel = resolveCommonJavaEntity(entityTypeModel);
@@ -407,15 +404,15 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("    }");
                 body.append("}");
             } else {
-                Logger.warn("[CreateWritersStage] MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-                Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+                warn("MAP Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                warn("       property type: " + property.getType());
             }
         }
 
         private void handleUnionProperty(BodyBuilder body) {
             // TODO Auto-generated method stub
-            Logger.warn("[CreateWritersStage] UNION Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            Logger.warn("[CreateWritersStage]        property type: " + property.getType());
+            warn("UNION Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+            warn("       property type: " + property.getType());
         }
 
         /**
@@ -471,7 +468,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 }
             }
 
-            Logger.warn("[CreateWritersStage] Unable to determine value type for: " + property);
+            warn("Unable to determine value type for: " + property);
             return "setProperty";
         }
 
@@ -511,7 +508,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 }
             }
 
-            Logger.warn("[CreateWritersStage] Unable to determine value type for: " + property);
+            warn("Unable to determine value type for: " + property);
             return "Object";
         }
     }

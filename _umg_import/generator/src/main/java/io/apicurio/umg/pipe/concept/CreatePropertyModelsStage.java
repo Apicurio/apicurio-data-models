@@ -1,6 +1,5 @@
 package io.apicurio.umg.pipe.concept;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -11,7 +10,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        Logger.info("-- Creating Property Models --");
+        info("-- Creating Property Models --");
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
             // Create property models for traits
             specVersion.getTraits().forEach(trait -> {
@@ -24,7 +23,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();
-                    Logger.info("Created trait property model: %s/%s", traitModel.fullyQualifiedName(), propertyModel.getName());
+                    info("Created trait property model: %s/%s", traitModel.fullyQualifiedName(), propertyModel.getName());
                     traitModel.getProperties().put(property.getName(), propertyModel);
                 });
             });
@@ -40,7 +39,7 @@ public class CreatePropertyModelsStage extends AbstractStage {
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();
-                    Logger.info("Created entity property model: %s/%s", entityModel.fullyQualifiedName(), propertyModel.getName());
+                    info("Created entity property model: %s/%s", entityModel.fullyQualifiedName(), propertyModel.getName());
                     entityModel.getProperties().put(property.getName(), propertyModel);
                 });
             });

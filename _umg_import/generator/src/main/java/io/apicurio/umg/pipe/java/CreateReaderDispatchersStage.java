@@ -15,7 +15,6 @@ import org.jboss.forge.roaster.model.source.ParameterSource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
@@ -44,7 +43,7 @@ public class CreateReaderDispatchersStage extends AbstractVisitorStage {
         String dispatcherPackageName = readerPackageName;
         String dispatcherClassName = readerClassName + "Dispatcher";
 
-        Logger.debug("Creating reader dispatcher: " + dispatcherClassName);
+        debug("Creating reader dispatcher: " + dispatcherClassName);
 
         // Create the reader dispatcher class
         JavaClassSource readerDispatcherSource = Roaster.create(JavaClassSource.class)
@@ -62,7 +61,7 @@ public class CreateReaderDispatchersStage extends AbstractVisitorStage {
         for (VisitorModel visitorToImplement : visitorsToImplement) {
             JavaInterfaceSource vtiInterface = lookupJavaVisitor(visitorToImplement);
             if (vtiInterface == null) {
-                Logger.warn("[CreateReaderDispatchersStage] Visitor interface not found: " + visitorToImplement);
+                warn("Visitor interface not found: " + visitorToImplement);
             }
 
             readerDispatcherSource.addImport(vtiInterface);

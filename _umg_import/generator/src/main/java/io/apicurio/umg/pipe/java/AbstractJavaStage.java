@@ -7,7 +7,6 @@ import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
 import io.apicurio.umg.beans.SpecificationVersion;
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
@@ -32,6 +31,14 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String getWriterPackageName(SpecificationVersion specVersion) {
         return specVersion.getNamespace() + ".io";
+    }
+
+    protected String getTraverserClassName(SpecificationVersion specVersion) {
+        return specVersion.getPrefix() + "Traverser";
+    }
+
+    protected String getTraverserPackageName(SpecificationVersion specVersion) {
+        return specVersion.getNamespace() + ".visitors";
     }
 
     /**
@@ -157,6 +164,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String getRootVisitorInterfaceFQN() {
         return getState().getConfig().getRootNamespace() + ".visitors.Visitor";
+    }
+
+    protected String getAbstractTraverserFQN() {
+        return getState().getConfig().getRootNamespace() + ".visitors.AbstractTraverser";
     }
 
     protected String createMethodName(EntityModel entityModel) {
@@ -308,7 +319,7 @@ public abstract class AbstractJavaStage extends AbstractStage {
         String interfaceFQN = getVisitorInterfaceFullName(visitor);
         JavaInterfaceSource _interface = getState().getJavaIndex().lookupInterface(interfaceFQN);
         if (_interface == null) {
-            Logger.warn("[" + getClass().getSimpleName() + "] Visitor interface not found: " + interfaceFQN);
+            warn("Visitor interface not found: " + interfaceFQN);
         }
         return _interface;
     }

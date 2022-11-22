@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.curiousoddman.rgxgen.RgxGen;
 
 import io.apicurio.umg.beans.SpecificationVersion;
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
@@ -127,7 +126,7 @@ public class CreateTestFixturesStage extends AbstractStage {
                 return generateEntityMapValue(property, propertyEntity, entityStack);
             }
         }
-        Logger.warn("[CreateTestFixturesStage] Unhandled property: " + property);
+        warn("Unhandled property: " + property);
         return null;
     }
 
@@ -161,7 +160,7 @@ public class CreateTestFixturesStage extends AbstractStage {
                 array.add("three");
                 return array;
         }
-        Logger.warn("[CreateTestFixturesStage] Property type not handled: " + property.getType());
+        warn("Property type not handled: " + property.getType());
         return null;
     }
 

@@ -12,7 +12,6 @@ import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.source.ParameterSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.VisitorModel;
 
 /**
@@ -42,7 +41,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         // Create a visitor adapter at the root (combined adapter)
         VisitorModel rootVisitor = getState().getConceptIndex().lookupVisitor(getState().getConfig().getRootNamespace());
         if (rootVisitor == null) {
-            Logger.warn("[CreateCombinedVisitorInterfacesStage] Root visitor not found!");
+            warn("Root visitor not found!");
         } else {
             createVisitorAdapter(rootVisitor, TYPE_COMBINED);
         }
@@ -56,7 +55,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         }
         String visitorInterfaceName = visitorPrefix + "Visitor";
         String visitorAdapterName = visitorInterfaceName + "Adapter";
-        Logger.debug("Creating visitor adapter: " + visitorAdapterName);
+        debug("Creating visitor adapter: " + visitorAdapterName);
 
         // Create the visitor adapter class
         JavaClassSource visitorAdapterSource = Roaster.create(JavaClassSource.class)
@@ -79,7 +78,7 @@ public class CreateVisitorAdaptersStage extends AbstractVisitorStage {
         for (VisitorModel visitorToImplement : visitorsToImplement) {
             JavaInterfaceSource vtiInterface = lookupJavaVisitor(visitorToImplement);
             if (vtiInterface == null) {
-                Logger.warn("[CreateVisitorAdaptersStage] Visitor interface not found: " + visitorToImplement);
+                warn("Visitor interface not found: " + visitorToImplement);
             }
 
             visitorAdapterSource.addImport(vtiInterface);

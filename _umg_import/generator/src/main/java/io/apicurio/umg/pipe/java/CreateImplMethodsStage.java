@@ -12,7 +12,6 @@ import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -72,14 +71,14 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
-                Logger.error("[CreateImplMethodsStage] Java interface for entity type not found: " + property.getType());
+                error("Java interface for entity type not found: " + property.getType());
                 return;
             } else {
                 javaEntity.addImport(entityType);
                 mappedNodeType = entityType.getName();
             }
         } else {
-            Logger.error("Unhandled STAR property from entity: " + javaEntity.getCanonicalName());
+            error("Unhandled STAR property from entity: " + javaEntity.getCanonicalName());
             return;
         }
 
@@ -169,7 +168,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
 
         JavaClassSource entityImpl = lookupJavaEntityImpl(implFQN);
         if (entityImpl == null) {
-            Logger.error("[AbstractCreateMethodsStage] Could not resolve entity type (impl): " + implFQN);
+            error("Could not resolve entity type (impl): " + implFQN);
             return;
         }
         javaEntity.addImport(entityImpl);

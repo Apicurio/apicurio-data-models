@@ -4,7 +4,6 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 
@@ -33,7 +32,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
      * @param parentVisitorInterface
      */
     private void createVisitorInterfaces(VisitorModel visitor, JavaInterfaceSource parentVisitorInterface) {
-        Logger.debug("Creating interface for: " + visitor.toString());
+        debug("Creating interface for: " + visitor.toString());
         String visitorPackageName = getVisitorInterfacePackageName(visitor);
         String visitorInterfaceName = getVisitorInterfaceName(visitor);
 
@@ -71,7 +70,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
 
         JavaInterfaceSource javaEntityModel = findRootJavaEntity(entity);
         if (javaEntityModel == null) {
-            Logger.warn("[CreateVisitorInterfacesStage] Java entity not found for: " + entity.fullyQualifiedName());
+            warn("Java entity not found for: " + entity.fullyQualifiedName());
             return;
         }
 

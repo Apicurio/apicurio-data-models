@@ -1,10 +1,10 @@
 package io.apicurio.umg.pipe.java.method;
 
-import io.apicurio.umg.logging.Logger;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import io.apicurio.umg.logging.Logger;
 
 public class BodyBuilder {
 
@@ -22,7 +22,7 @@ public class BodyBuilder {
 
     public void addContext(String name, String value) {
         if (value == null) {
-            Logger.warn("Adding null value to BodyBuilder for: " + name);
+            Logger.warn("[BodyBuilder] Adding null value to BodyBuilder for: " + name);
         } else {
             context.put(name, value);
         }
@@ -45,7 +45,7 @@ public class BodyBuilder {
         str.append(lineResolved);
         str.append("\n");
         if (lineResolved.contains("${")) {
-            Logger.warn("[BodyBuilder] append detected unresolved variables: " + lineResolved);
+            Logger.warn("[BodyBuilder] 'append' detected unresolved variables: " + lineResolved);
         }
     }
 

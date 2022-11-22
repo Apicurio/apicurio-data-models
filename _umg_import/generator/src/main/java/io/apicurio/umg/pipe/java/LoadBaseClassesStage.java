@@ -7,7 +7,6 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.pipe.AbstractStage;
 
 /**
@@ -21,9 +20,10 @@ public class LoadBaseClassesStage extends AbstractStage {
     protected void doProcess() {
         try {
             loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl",
-                    "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil");
+                    "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil",
+                    "io.apicurio.umg.base.visitors.AbstractTraverser", "io.apicurio.umg.base.visitors.ReverseTraverser");
             loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.MappedNode",
-                    "io.apicurio.umg.base.Visitable");
+                    "io.apicurio.umg.base.Visitable", "io.apicurio.umg.base.visitors.Traverser");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -31,7 +31,7 @@ public class LoadBaseClassesStage extends AbstractStage {
 
     private void loadBaseClasses(String... classes) throws IOException {
         for (String _class : classes) {
-            Logger.debug("Including base class: " + _class);
+            debug("Including base class: " + _class);
             URL classSource = getBaseClassURL(_class);
             JavaClassSource source = Roaster.parse(JavaClassSource.class, classSource);
             String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
@@ -48,7 +48,7 @@ public class LoadBaseClassesStage extends AbstractStage {
 
     private void loadBaseInterfaces(String... interfaces) throws IOException {
         for (String _interface : interfaces) {
-            Logger.debug("Including base interface: " + _interface);
+            debug("Including base interface: " + _interface);
             URL interfaceSource = getBaseClassURL(_interface);
             JavaInterfaceSource source = Roaster.parse(JavaInterfaceSource.class, interfaceSource);
             String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());

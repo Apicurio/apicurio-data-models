@@ -6,7 +6,6 @@ import java.util.Map;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.TraitModel;
@@ -77,14 +76,14 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
         } else if (isEntity(property)) {
             JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
             if (entityType == null) {
-                Logger.error("Java interface for entity type not found: " + property.getType());
+                error("Java interface for entity type not found: " + property.getType());
                 return;
             } else {
                 javaEntity.addImport(entityType);
                 mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + entityType.getName() + ">";
             }
         } else {
-            Logger.error("Unhandled STAR property from entity: " + javaEntity.getCanonicalName());
+            error("Unhandled STAR property from entity: " + javaEntity.getCanonicalName());
             return;
         }
 

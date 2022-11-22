@@ -3,7 +3,6 @@ package io.apicurio.umg.pipe.concept;
 import java.util.Arrays;
 import java.util.List;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -11,7 +10,7 @@ public class CreateNamespaceModelsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        Logger.info("-- Creating Namespace Models --");
+        info("-- Creating Namespace Models --");
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
             String ns = specVersion.getNamespace();
             this.makeNamespaces(ns);
@@ -34,7 +33,7 @@ public class CreateNamespaceModelsStage extends AbstractStage {
                 if (parentModel != null) {
                     parentModel.getChildren().put(nsComponent, rval);
                 }
-                Logger.info("Created namespace model: %s", rval.fullName());
+                info("Created namespace model: %s", rval.fullName());
                 return rval;
             });
             lastModel = nsModel;

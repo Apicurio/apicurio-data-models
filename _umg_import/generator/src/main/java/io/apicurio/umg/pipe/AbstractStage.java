@@ -2,6 +2,7 @@ package io.apicurio.umg.pipe;
 
 import org.modeshape.common.text.Inflector;
 
+import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.PropertyModel;
 import lombok.Getter;
 
@@ -64,6 +65,22 @@ public abstract class AbstractStage implements Stage {
 
     protected String extractRegex(String propertyName) {
         return propertyName.substring(1, propertyName.length() - 2);
+    }
+
+    protected void info(String message, Object ...args) {
+        Logger.info("[" + getClass().getSimpleName() + "] " + message, args);
+    }
+
+    protected void warn(String message, Object ...args) {
+        Logger.warn("[" + getClass().getSimpleName() + "] " + message, args);
+    }
+
+    protected void debug(String message, Object ...args) {
+        Logger.debug("[" + getClass().getSimpleName() + "] " + message, args);
+    }
+
+    protected void error(String message, Object ...args) {
+        Logger.error("[" + getClass().getSimpleName() + "] " + message, args);
     }
 
 }

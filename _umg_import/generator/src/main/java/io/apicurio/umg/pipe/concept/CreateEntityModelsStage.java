@@ -1,6 +1,5 @@
 package io.apicurio.umg.pipe.concept;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
@@ -12,7 +11,7 @@ import io.apicurio.umg.pipe.AbstractStage;
 public class CreateEntityModelsStage extends AbstractStage {
     @Override
     protected void doProcess() {
-        Logger.info("-- Creating Entity Models --");
+        info("-- Creating Entity Models --");
         getState().getSpecIndex().getAllSpecifications().forEach(specificationModel -> {
             specificationModel.getVersions().forEach(specVersion -> {
 
@@ -29,7 +28,7 @@ public class CreateEntityModelsStage extends AbstractStage {
                             .specVersion(specVersion)
                             .leaf(true)
                             .build();
-                    Logger.info("Created entity model: %s", entityModel.fullyQualifiedName());
+                    info("Created entity model: %s", entityModel.fullyQualifiedName());
 
                     // Add traits to the model
                     entity.getTraits().forEach(trait -> {

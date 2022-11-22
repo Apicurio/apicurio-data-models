@@ -5,7 +5,6 @@ import java.util.Set;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.VisitorModel;
 
 /**
@@ -25,7 +24,7 @@ public class CreateCombinedVisitorInterfacesStage extends AbstractVisitorStage {
         getState().getSpecIndex().getAllSpecifications().forEach(spec -> {
             VisitorModel specVisitor = getState().getConceptIndex().lookupVisitor(spec.getNamespace());
             if (specVisitor == null) {
-                Logger.warn("[CreateCombinedVisitorInterfacesStage] Visitor not found for specification: " + spec.getName());
+                warn("Visitor not found for specification: " + spec.getName());
             } else {
                 createCombinedVisitor(specVisitor);
             }
@@ -34,7 +33,7 @@ public class CreateCombinedVisitorInterfacesStage extends AbstractVisitorStage {
         // Create a combined visitor for the root
         VisitorModel rootVisitor = getState().getConceptIndex().lookupVisitor(getState().getConfig().getRootNamespace());
         if (rootVisitor == null) {
-            Logger.warn("[CreateCombinedVisitorInterfacesStage] Root visitor not found!");
+            warn("Root visitor not found!");
         } else {
             createCombinedVisitor(rootVisitor);
         }
@@ -57,7 +56,7 @@ public class CreateCombinedVisitorInterfacesStage extends AbstractVisitorStage {
             String descendantVisitorFQCN = getVisitorInterfaceFullName(descendantVisitor);
             JavaInterfaceSource descendantVisitorInterfaceModel = getState().getJavaIndex().lookupInterface(descendantVisitorFQCN);
             if (descendantVisitorInterfaceModel == null) {
-                Logger.warn("[CreateCombinedVisitorInterfacesStage] Could not find visitor java interface for: " + descendantVisitor);
+                warn("Could not find visitor java interface for: " + descendantVisitor);
             } else {
                 combinedVisitorInterfaceSource.addImport(descendantVisitorInterfaceModel);
                 combinedVisitorInterfaceSource.addInterface(descendantVisitorInterfaceModel);

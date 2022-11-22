@@ -1,6 +1,5 @@
 package io.apicurio.umg.pipe.concept;
 
-import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.pipe.AbstractStage;
@@ -10,7 +9,7 @@ public class CreateTraitModelsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        Logger.info("-- Creating Trait Models --");
+        info("-- Creating Trait Models --");
         getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
             specVersion.getTraits().forEach(trait -> {
                 NamespaceModel nsModel = getState().getConceptIndex().lookupNamespace(specVersion.getNamespace());
@@ -21,7 +20,7 @@ public class CreateTraitModelsStage extends AbstractStage {
                         .transparent(Util.nullableBoolean(trait.getTransparent()))
                         .leaf(true)
                         .build();
-                Logger.info("Created trait model: %s", traitModel.fullyQualifiedName());
+                info("Created trait model: %s", traitModel.fullyQualifiedName());
 
                 // Add trait to namespace
                 nsModel.getTraits().put(traitModel.getName(), traitModel);
