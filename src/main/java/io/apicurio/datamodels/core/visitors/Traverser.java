@@ -45,16 +45,16 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * @author eric.wittmann@gmail.com
  */
 public class Traverser implements ITraverser, IVisitor {
-	
-	protected IVisitor visitor;
-	
-	/**
-	 * C'tor.
-	 * @param visitor
-	 */
-	public Traverser(IVisitor visitor) {
-		this.visitor = visitor;
-	}
+
+    protected IVisitor visitor;
+
+    /**
+     * C'tor.
+     * @param visitor
+     */
+    public Traverser(IVisitor visitor) {
+        this.visitor = visitor;
+    }
 
     /**
      * Traverse the items of the given array.
@@ -75,7 +75,7 @@ public class Traverser implements ITraverser, IVisitor {
     protected void traverseExtensions(ExtensibleNode node) {
         this.traverseCollection(node.getExtensions());
     }
-    
+
     /**
      * Traverse all children of the indexed node.
      * @param node
@@ -97,6 +97,7 @@ public class Traverser implements ITraverser, IVisitor {
      * down until this node and all child nodes have been visited.
      * @param node
      */
+    @Override
     public void traverse(Node node) {
         node.accept(this);
     }
@@ -111,17 +112,17 @@ public class Traverser implements ITraverser, IVisitor {
         }
     }
 
-	/**
-	 * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
-	 */
-	@Override
-	public final void visitDocument(Document node) {
-		node.accept(this.visitor);
-		this.traverseDocument(node);
-	}
-	
-	/**
-	 * Subclasses can override this to provide version-specific traversal of the root document.
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
+     */
+    @Override
+    public final void visitDocument(Document node) {
+        node.accept(this.visitor);
+        this.traverseDocument(node);
+    }
+
+    /**
+     * Subclasses can override this to provide version-specific traversal of the root document.
      * @param node
      */
     protected void traverseDocument(Document node) {
@@ -132,14 +133,14 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseIfNotNull(node.externalDocs);
     }
 
-	/**
-	 * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
-	 */
-	@Override
-	public void visitExtension(Extension node) {
-	    node.accept(this.visitor);
+    /**
+     * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
+     */
+    @Override
+    public void visitExtension(Extension node) {
+        node.accept(this.visitor);
         this.traverseValidationProblems(node);
-	}
+    }
 
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitValidationProblem(io.apicurio.datamodels.core.models.ValidationProblem)
@@ -160,7 +161,7 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
      */
@@ -170,7 +171,7 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
      */
@@ -191,7 +192,7 @@ public class Traverser implements ITraverser, IVisitor {
         this.traverseExtensions(node);
         this.traverseValidationProblems(node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
      */
@@ -200,7 +201,7 @@ public class Traverser implements ITraverser, IVisitor {
         node.accept(this.visitor);
         this.traverseValidationProblems(node);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
      */
@@ -237,7 +238,7 @@ public class Traverser implements ITraverser, IVisitor {
     protected void traverseParameter(Parameter node) {
         this.traverseIfNotNull(node.schema);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.core.visitors.IVisitor#visitParameterDefinition(io.apicurio.datamodels.core.models.common.IDefinition)
      */
@@ -282,7 +283,7 @@ public class Traverser implements ITraverser, IVisitor {
         Schema schema = (Schema) node;
         this.visitSchema(schema);
     }
-    
+
     /**
      * Traverse an OAuth flow.
      * @param node
