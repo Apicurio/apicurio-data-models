@@ -4,10 +4,11 @@
 
     <groupId>io.apicurio</groupId>
     <artifactId>apicurio-unified-model-generator-parent</artifactId>
-    <version>1.0.0.Final</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <url>https://www.apicur.io/</url>
+    <name>apicurio-unified-model-generator-parent</name>
     <description>Tool to generator Apicurio Data Models classes from a meta-model</description>
 
     <organization>

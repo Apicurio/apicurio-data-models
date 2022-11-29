@@ -4,11 +4,12 @@
     <parent>
         <groupId>io.apicurio</groupId>
         <artifactId>apicurio-unified-model-generator-parent</artifactId>
-        <version>1.0.0.Final</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>apicurio-unified-model-generator</artifactId>
+    <name>apicurio-unified-model-generator</name>
 
     <dependencies>
         <!-- Third Party Deps -->
