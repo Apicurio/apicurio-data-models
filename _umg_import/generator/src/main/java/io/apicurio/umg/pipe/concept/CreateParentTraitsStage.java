@@ -1,7 +1,11 @@
 package io.apicurio.umg.pipe.concept;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -18,6 +22,8 @@ public class CreateParentTraitsStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
+        List<PropertyModelWithOrigin> propertiesToRemove = new LinkedList<>();
+
         getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
             entity.getProperties().values().stream().filter(property -> needsParent(entity, property)).forEach(property -> {
                 if (!property.getType().isList() && !property.getType().isMap()) {
@@ -38,8 +44,15 @@ public class CreateParentTraitsStage extends AbstractStage {
                         getState().getConceptIndex().index(parentTrait);
                     }
                     entity.getTraits().add(parentTrait);
+
+                    PropertyModelWithOrigin pmwo = PropertyModelWithOrigin.builder().property(property).origin(entity).build();
+                    propertiesToRemove.add(pmwo);
                 }
             });
+        });
+
+        propertiesToRemove.forEach(property -> {
+            property.getOrigin().removeProperty(property.getProperty().getName());
         });
     }
 

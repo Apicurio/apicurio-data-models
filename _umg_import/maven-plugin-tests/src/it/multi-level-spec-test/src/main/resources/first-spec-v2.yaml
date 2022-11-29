@@ -1,0 +1,73 @@
+name: First Spec API 2.0
+version: 2.0
+versions:
+  - version: 2.0
+    url: https://example.com/FirstSpec/versions/2.0.md
+prefix: Frst20
+namespace: org.example.multi.frst.v20
+
+traits:
+  - name: Named
+    properties:
+      - name: name
+        type: string
+  - name: Described
+    properties:
+      - name: description
+        type: string
+      - name: summary
+        type: string
+
+entities:
+  - name: Document
+    root: true
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: spec
+        type: string
+      - name: version
+        type: string
+      - name: id
+        type: string
+      - name: widgets
+        type: '[Widget]'
+      - name: servers
+        type: '[Server]'
+      - name: tags
+        type: '[Tag]'
+      - name: properties
+        type: Properties
+
+  - name: Widget
+    traits:
+      - Named
+    properties:
+      - name: widgetId
+        type: string
+      - name: size
+        type: string
+
+  - name: Server
+    traits:
+      - Named
+    properties:
+      - name: url
+        type: string
+
+  - name: Tag
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: value
+        type: string
+      - name: documentation
+        type: string
+
+  - name: Properties
+    properties:
+      - name: '*'
+        type: string
+

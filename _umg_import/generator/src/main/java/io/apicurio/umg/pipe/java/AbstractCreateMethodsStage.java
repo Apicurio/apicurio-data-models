@@ -10,6 +10,7 @@ import org.jboss.forge.roaster.model.source.MethodHolderSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
 
 /**
@@ -19,12 +20,13 @@ import io.apicurio.umg.models.concept.PropertyType;
  */
 public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
-    protected void createPropertyMethods(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createPropertyMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
         if (property.getName().equals("*")) {
-            if (isEntity(property) || isPrimitive(property)) {
-                createMappedNodeMethods(javaEntity, property);
+            if (isEntity(property) || isPrimitive(property) || isPrimitiveList(property)) {
+                createMappedNodeMethods(javaEntity, propertyWithOrigin);
                 if (isEntity(property)) {
-                    createFactoryMethod(javaEntity, property);
+                    createFactoryMethod(javaEntity, propertyWithOrigin);
                 }
             } else {
                 error("STAR property type not handled: " + javaEntity.getCanonicalName() + "::" + property);
@@ -40,27 +42,28 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                     .map(true)
                     .build();
             PropertyModel collectionProperty = PropertyModel.builder().name(property.getCollection()).type(collectionPropertyType).build();
+            PropertyModelWithOrigin collectionPropertyWithOrigin = PropertyModelWithOrigin.builder().property(collectionProperty).origin(propertyWithOrigin.getOrigin()).build();
 
             if (isEntity(property)) {
-                createFactoryMethod(javaEntity, collectionProperty);
+                createFactoryMethod(javaEntity, collectionPropertyWithOrigin);
             }
-            createGetter(javaEntity, collectionProperty);
-            createAddMethod(javaEntity, collectionProperty);
-            createClearMethod(javaEntity, collectionProperty);
-            createRemoveMethod(javaEntity, collectionProperty);
+            createGetter(javaEntity, collectionPropertyWithOrigin);
+            createAddMethod(javaEntity, collectionPropertyWithOrigin);
+            createClearMethod(javaEntity, collectionPropertyWithOrigin);
+            createRemoveMethod(javaEntity, collectionPropertyWithOrigin);
         } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
-            createGetter(javaEntity, property);
-            createSetter(javaEntity, property);
+            createGetter(javaEntity, propertyWithOrigin);
+            createSetter(javaEntity, propertyWithOrigin);
         } else if (isEntity(property)) {
-            createGetter(javaEntity, property);
-            createSetter(javaEntity, property);
-            createFactoryMethod(javaEntity, property);
+            createGetter(javaEntity, propertyWithOrigin);
+            createSetter(javaEntity, propertyWithOrigin);
+            createFactoryMethod(javaEntity, propertyWithOrigin);
         } else if (isEntityList(property) || isEntityMap(property)) {
-            createFactoryMethod(javaEntity, property);
-            createGetter(javaEntity, property);
-            createAddMethod(javaEntity, property);
-            createClearMethod(javaEntity, property);
-            createRemoveMethod(javaEntity, property);
+            createFactoryMethod(javaEntity, propertyWithOrigin);
+            createGetter(javaEntity, propertyWithOrigin);
+            createAddMethod(javaEntity, propertyWithOrigin);
+            createClearMethod(javaEntity, propertyWithOrigin);
+            createRemoveMethod(javaEntity, propertyWithOrigin);
         } else {
             warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
         }
@@ -71,16 +74,19 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      * of values of a particular type.  In this case, the entity needs to extend/implement
      * the "MappedNode" interface.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected abstract void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModel property);
+    protected abstract void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin);
 
     /**
      * Creates a standard java getter method for the given property.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createGetter(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createGetter(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+        String propertyOriginNS = propertyWithOrigin.getOrigin().getNamespace().fullName();
+
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setName(getterMethodName(property)).setPublic();
         addAnnotations(method);
 
@@ -99,7 +105,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             javaEntity.addImport(returnType);
             method.setReturnType(returnType.getSimpleName());
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(propertyOriginNS, property);
             if (entityType == null) {
                 warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -107,7 +113,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.setReturnType(entityType.getName());
             }
         } else if (isEntityList(property)) {
-            JavaInterfaceSource listType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
+            JavaInterfaceSource listType = resolveJavaEntityType(propertyOriginNS, property.getType().getNested().iterator().next());
             if (listType == null) {
                 warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -116,7 +122,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.setReturnType("List<" + listType.getName() + ">");
             }
         } else if (isEntityMap(property)) {
-            JavaInterfaceSource mapType = resolveJavaEntityType(javaEntity.getPackage(), property.getType().getNested().iterator().next());
+            JavaInterfaceSource mapType = resolveJavaEntityType(propertyOriginNS, property.getType().getNested().iterator().next());
             if (mapType == null) {
                 warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -136,9 +142,12 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
     /**
      * Creates a standard java setter method for the given property.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createSetter(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createSetter(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+        String propertyOriginNS = propertyWithOrigin.getOrigin().getNamespace().fullName();
+
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setName(setterMethodName(property)).setReturnTypeVoid().setPublic();
         addAnnotations(method);
 
@@ -157,7 +166,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             javaEntity.addImport(paramType);
             method.addParameter(paramType.getSimpleName(), "value");
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(propertyOriginNS, property);
             if (entityType == null) {
                 warn("Java interface for entity type not found: " + property.getType());
             } else {
@@ -178,9 +187,11 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      * property.  This method will only be called for entity properties, either
      * simple entity properties or collection entity properties (list/map).
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createFactoryMethod(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createFactoryMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
         String _package = javaEntity.getPackage();
         PropertyType type = property.getType();
         if (type.isMap() || type.isList()) {
@@ -210,10 +221,12 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      * Creates an "add" method for the given property.  The type of the property must be a
      * list of entities.  The add method would accept a single entity and add it to the list.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createAddMethod(JavaSource<?> javaEntity, PropertyModel property) {
-        String _package = javaEntity.getPackage();
+    protected void createAddMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
+        String _package = propertyWithOrigin.getOrigin().getNamespace().fullName();
         PropertyType type = property.getType().getNested().iterator().next();
         String methodName = addMethodName(singularize(property.getName()));
         MethodSource<?> method;
@@ -257,9 +270,11 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      * Creates a "clear" method for the given property.  The type of the property must be a
      * list of entities.  The clear method will remove all items from the list.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createClearMethod(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createClearMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
         String methodName = clearMethodName(property.getName());
 
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
@@ -274,18 +289,21 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      * Creates a "remove" method for the given property.  The type of the property must be a
      * list of entities.  The remove method will remove one item from the list.
      * @param entity
-     * @param property
+     * @param propertyWithOrigin
      */
-    protected void createRemoveMethod(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createRemoveMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
+        String _package = propertyWithOrigin.getOrigin().getNamespace().fullName();
         String methodName = removeMethodName(singularize(property.getName()));
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
         addAnnotations(method);
 
         if (property.getType().isList()) {
             PropertyType type = property.getType().getNested().iterator().next();
-            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), type);
+            JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
             if (entityType == null) {
-                error("Could not resolve entity type: " + javaEntity.getPackage() + "::" + type);
+                error("Could not resolve entity type: " + _package + "::" + type);
                 return;
             }
             javaEntity.addImport(entityType);

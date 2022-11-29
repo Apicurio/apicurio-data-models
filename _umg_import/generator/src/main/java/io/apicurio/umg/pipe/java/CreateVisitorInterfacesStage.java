@@ -85,7 +85,7 @@ public class CreateVisitorInterfacesStage extends AbstractVisitorStage {
 
     private JavaInterfaceSource findRootJavaEntity(EntityModel entity) {
         while (entity.getParent() != null) {
-            entity = entity.getParent();
+            entity = (EntityModel) entity.getParent();
         }
         return getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entity));
     }

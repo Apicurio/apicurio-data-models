@@ -24,7 +24,7 @@ public class ConfigureInterfaceParentStage extends AbstractJavaStage {
     }
 
     private void configureEntityInterfaceParent(EntityModel entity) {
-        EntityModel parentEntity = entity.getParent();
+        EntityModel parentEntity = (EntityModel) entity.getParent();
         JavaInterfaceSource parentJavaEntity = null;
         if (parentEntity != null) {
             parentJavaEntity = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(parentEntity));

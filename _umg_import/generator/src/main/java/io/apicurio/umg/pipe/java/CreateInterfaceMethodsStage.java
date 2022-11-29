@@ -8,12 +8,12 @@ import org.jboss.forge.roaster.model.source.JavaSource;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.TraitModel;
 
 /**
- * Adds methods to all entity interfaces.  This works by finding all the properties for the
- * entity and then deciding what methods should exist on the entity interface based on the
- * name and type of the property.
+ * Adds methods to all entity interfaces. This works by finding all the properties for the entity and then
+ * deciding what methods should exist on the entity interface based on the name and type of the property.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -31,26 +31,30 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
 
     private void createEntityInterfaceMethods(EntityModel entity) {
         entity.getProperties().values().forEach(property -> {
-            createPropertyMethods(lookupJavaEntity(entity), property);
+            createPropertyMethods(lookupJavaEntity(entity),
+                    PropertyModelWithOrigin.builder().property(property).origin(entity).build());
         });
     }
 
     private void createTraitInterfaceMethods(TraitModel trait) {
         trait.getProperties().values().forEach(property -> {
-            createPropertyMethods(lookupJavaTrait(trait), property);
+            createPropertyMethods(lookupJavaTrait(trait),
+                    PropertyModelWithOrigin.builder().property(property).origin(trait).build());
         });
     }
 
     /**
-     * When an entity has a "*" property, that means the entity is a wrapper around a map
-     * of values of a particular type.  In this case, the entity interface needs to extend
-     * the "MappedNode" interface.
+     * When an entity has a "*" property, that means the entity is a wrapper around a map of values of a
+     * particular type. In this case, the entity interface needs to extend the "MappedNode" interface.
      *
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
     @Override
-    protected void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createMappedNodeMethods(JavaSource<?> javaEntity,
+            PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
         String mappedNodeFQN = getMappedNodeInterfaceFQN();
         JavaInterfaceSource mappedNodeInterface = getState().getJavaIndex().lookupInterface(mappedNodeFQN);
 
@@ -72,15 +76,18 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
         } else if (isPrimitive(property)) {
             Class<?> primType = primitiveTypeToClass(property.getType());
             javaEntity.addImport(primType);
-            mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + primType.getSimpleName() + ">";
+            mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + primType.getSimpleName()
+            + ">";
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(
+                    propertyWithOrigin.getOrigin().getNamespace().fullName(), property);
             if (entityType == null) {
                 error("Java interface for entity type not found: " + property.getType());
                 return;
             } else {
                 javaEntity.addImport(entityType);
-                mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + entityType.getName() + ">";
+                mappedNodeInterfaceWithType = mappedNodeInterface.getName() + "<" + entityType.getName()
+                + ">";
             }
         } else {
             error("Unhandled STAR property from entity: " + javaEntity.getCanonicalName());

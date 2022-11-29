@@ -34,6 +34,7 @@ import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
+import io.apicurio.umg.pipe.concept.ResolveVisitorEntityStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceParentStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateAcceptMethodStage;
@@ -105,6 +106,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new NormalizeEntitiesStage());
         pipe.addStage(new NormalizePropertiesStage());
         pipe.addStage(new NormalizeVisitorsStage());
+        pipe.addStage(new ResolveVisitorEntityStage());
 
         // Debug the models
         //pipe.addStage(new DebugStage());

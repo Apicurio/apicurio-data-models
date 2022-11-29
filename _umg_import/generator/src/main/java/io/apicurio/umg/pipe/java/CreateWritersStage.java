@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
@@ -98,7 +99,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         body.append("}");
 
         // Write each property of the entity
-        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
+        Collection<PropertyModelWithOrigin> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
         allProperties.forEach(property -> {
             createWritePropertyCode(body, property, entityModel, javaEntityModel, writerClassSource);
         });
@@ -117,9 +118,9 @@ public class CreateWritersStage extends AbstractJavaStage {
      * @param javaEntity
      * @param writerClassSource
      */
-    private void createWritePropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
+    private void createWritePropertyCode(BodyBuilder body, PropertyModelWithOrigin propertyWithOrigin, EntityModel entityModel,
             JavaInterfaceSource javaEntity, JavaClassSource writerClassSource) {
-        CreateWriteProperty crp = new CreateWriteProperty(property, entityModel, javaEntity, writerClassSource);
+        CreateWriteProperty crp = new CreateWriteProperty(propertyWithOrigin, entityModel, javaEntity, writerClassSource);
         body.clearContext();
         crp.writeTo(body);
     }
@@ -144,7 +145,7 @@ public class CreateWritersStage extends AbstractJavaStage {
     @Data
     @AllArgsConstructor
     private class CreateWriteProperty {
-        PropertyModel property;
+        PropertyModelWithOrigin propertyWithOrigin;
         EntityModel entityModel;
         JavaInterfaceSource javaEntityModel;
         JavaClassSource writerClassSource;
@@ -155,6 +156,7 @@ public class CreateWritersStage extends AbstractJavaStage {
          * @param body
          */
         public void writeTo(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if (isStarProperty(property)) {
                 handleStarProperty(body);
             } else if (isRegexProperty(property)) {
@@ -176,6 +178,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleStarProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
@@ -184,15 +187,24 @@ public class CreateWritersStage extends AbstractJavaStage {
                     warn("       property type: " + property.getType());
                     return;
                 }
+                JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(propertyTypeEntity));
+                if (entityTypeJavaModel == null) {
+                    warn("STAR Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type is entity but not found in JAVA index: " + property.getType());
+                    return;
+                }
+
                 writerClassSource.addImport(List.class);
+                writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
+                body.addContext("entityJavaType", entityTypeJavaModel.getName());
 
                 body.append("{");
                 body.append("    List<String> propertyNames = node.getItemNames();");
                 body.append("    propertyNames.forEach(propertyName -> {");
                 body.append("        ObjectNode object = JsonUtil.objectNode();");
-                body.append("        this.${writeMethodName}(node.getItem(propertyName), object);");
+                body.append("        this.${writeMethodName}((${entityJavaType}) node.getItem(propertyName), object);");
                 body.append("        JsonUtil.setObjectProperty(json, propertyName, object);");
                 body.append("    });");
                 body.append("}");
@@ -216,6 +228,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleRegexProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
@@ -230,19 +243,22 @@ public class CreateWritersStage extends AbstractJavaStage {
                     warn("       property type is entity but not found in JAVA index: " + property.getType());
                     return;
                 }
+                JavaInterfaceSource commonEntityTypeJavaModel = resolveCommonJavaEntity(propertyTypeEntity);
+
                 writerClassSource.addImport(Map.class);
                 writerClassSource.addImport(entityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("getterMethodName", getterMethodName(property));
                 body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
+                body.addContext("mapValueCommonJavaType", commonEntityTypeJavaModel.getName());
 
                 body.append("{");
-                body.append("    Map<String, ${mapValueJavaType}> models = node.${getterMethodName}();");
+                body.append("    Map<String, ? extends ${mapValueCommonJavaType}> models = node.${getterMethodName}();");
                 body.append("    if (models != null) {");
                 body.append("        models.keySet().forEach(propertyName -> {");
                 body.append("            ObjectNode object = JsonUtil.objectNode();");
-                body.append("            this.${writeMethodName}(models.get(propertyName), object);");
+                body.append("            this.${writeMethodName}((${mapValueJavaType}) models.get(propertyName), object);");
                 body.append("            JsonUtil.setObjectProperty(json, propertyName, object);");
                 body.append("        });");
                 body.append("    }");
@@ -270,6 +286,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleEntityProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
             EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
             if (propertyTypeEntity == null) {
@@ -295,6 +312,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handlePrimitiveTypeProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("setPropertyMethodName", determineSetPropertyVariant(property.getType()));
             body.addContext("propertyName", property.getName());
             body.addContext("getterMethodName", getterMethodName(property));
@@ -303,6 +321,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleListProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("propertyName", property.getName());
             body.addContext("getterMethodName", getterMethodName(property));
 
@@ -339,7 +358,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.addContext("listValueCommonJavaType", commonEntityTypeJavaModel.getName());
 
                 body.append("{");
-                body.append("    List<${listValueCommonJavaType}> models = node.${getterMethodName}();");
+                body.append("    List<? extends ${listValueCommonJavaType}> models = node.${getterMethodName}();");
                 body.append("    if (models != null) {");
                 body.append("        ArrayNode array = JsonUtil.arrayNode();");
                 body.append("        models.forEach(model -> {");
@@ -357,6 +376,7 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleMapProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("propertyName", property.getName());
             body.addContext("getterMethodName", getterMethodName(property));
 
@@ -392,7 +412,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.addContext("mapValueCommonJavaType", commonEntityTypeJavaModel.getName());
 
                 body.append("{");
-                body.append("    Map<String, ${mapValueCommonJavaType}> models = node.${getterMethodName}();");
+                body.append("    Map<String, ? extends ${mapValueCommonJavaType}> models = node.${getterMethodName}();");
                 body.append("    if (models != null) {");
                 body.append("        ObjectNode object = JsonUtil.objectNode();");
                 body.append("        models.keySet().forEach(jsonName -> {");
@@ -411,6 +431,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
         private void handleUnionProperty(BodyBuilder body) {
             // TODO Auto-generated method stub
+            PropertyModel property = propertyWithOrigin.getProperty();
             warn("UNION Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
             warn("       property type: " + property.getType());
         }
@@ -468,6 +489,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 }
             }
 
+            PropertyModel property = propertyWithOrigin.getProperty();
             warn("Unable to determine value type for: " + property);
             return "setProperty";
         }
@@ -508,6 +530,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 }
             }
 
+            PropertyModel property = propertyWithOrigin.getProperty();
             warn("Unable to determine value type for: " + property);
             return "Object";
         }

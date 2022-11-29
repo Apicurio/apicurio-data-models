@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 import lombok.AllArgsConstructor;
@@ -92,7 +93,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         // Now create the body content for the reader.
         BodyBuilder body = new BodyBuilder();
         // Read each property of the entity
-        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
+        Collection<PropertyModelWithOrigin> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel);
         allProperties.forEach(property -> {
             createReadPropertyCode(body, property, entityModel, javaEntity, readerClassSource);
         });
@@ -110,9 +111,9 @@ public class CreateReadersStage extends AbstractJavaStage {
      * @param javaEntityModel
      * @param readerClassSource
      */
-    private void createReadPropertyCode(BodyBuilder body, PropertyModel property, EntityModel entityModel,
+    private void createReadPropertyCode(BodyBuilder body, PropertyModelWithOrigin property, EntityModel entityModel,
             JavaInterfaceSource javaEntity, JavaClassSource readerClassSource) {
-        CreateReadProperty crp = new CreateReadProperty(property, entityModel, javaEntity, readerClassSource);
+        CreateReadPropertySnippet crp = new CreateReadPropertySnippet(property, entityModel, javaEntity, readerClassSource);
         body.clearContext();
         crp.writeTo(body);
     }
@@ -128,8 +129,8 @@ public class CreateReadersStage extends AbstractJavaStage {
 
     @Data
     @AllArgsConstructor
-    private class CreateReadProperty {
-        PropertyModel property;
+    private class CreateReadPropertySnippet {
+        PropertyModelWithOrigin propertyWithOrigin;
         EntityModel entityModel;
         JavaInterfaceSource javaEntity;
         JavaClassSource readerClassSource;
@@ -140,6 +141,7 @@ public class CreateReadersStage extends AbstractJavaStage {
          * @param body
          */
         public void writeTo(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if ("*".equals(property.getName())) {
                 handleStarProperty(body);
             } else if (property.getName().startsWith("/")) {
@@ -161,6 +163,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleStarProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
@@ -215,6 +218,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleRegexProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             if (isEntity(property)) {
                 String entityTypeName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
                 EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(entityTypeName);
@@ -242,7 +246,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = node.${createMethodName}();");
+                body.append("        ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
                 body.append("        this.${readMethodName}(object, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -272,6 +276,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleEntityProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + property.getType().getSimpleType();
             EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
             if (propertyTypeEntity == null) {
@@ -299,6 +304,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handlePrimitiveTypeProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("valueType", determineValueType(property.getType()));
             body.addContext("consumeProperty", determineConsumePropertyVariant(property.getType()));
             body.addContext("propertyName", property.getName());
@@ -311,6 +317,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleListProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("propertyName", property.getName());
             body.addContext("setterMethodName", setterMethodName(property));
 
@@ -364,6 +371,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleMapProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             body.addContext("propertyName", property.getName());
             body.addContext("setterMethodName", setterMethodName(property));
 
@@ -403,7 +411,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    ObjectNode object = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
                 body.append("    JsonUtil.keys(object).forEach(name -> {");
                 body.append("        ObjectNode mapValue = JsonUtil.consumeObjectProperty(object, name);");
-                body.append("        ${mapValueJavaType} model = node.${createMethodName}();");
+                body.append("        ${mapValueJavaType} model = (${mapValueJavaType}) node.${createMethodName}();");
                 body.append("        this.${readMethodName}(mapValue, model);");
                 body.append("        node.${addMethodName}(name, model);");
                 body.append("    });");
@@ -415,6 +423,7 @@ public class CreateReadersStage extends AbstractJavaStage {
         }
 
         private void handleUnionProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
             // TODO Implement union types!!
             warn("UNION Entity property '" + property.getName() + "' not read (unsupported) for entity: " + entityModel.fullyQualifiedName());
             warn("       property type: " + property.getType());
@@ -477,6 +486,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
             }
 
+            PropertyModel property = propertyWithOrigin.getProperty();
             warn("Unable to determine value type for: " + property);
             return "consumeProperty";
         }
@@ -517,6 +527,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
             }
 
+            PropertyModel property = propertyWithOrigin.getProperty();
             warn("Unable to determine value type for: " + property);
             return "Object";
         }

@@ -118,7 +118,7 @@ public class CreateTraversersStage extends AbstractVisitorStage {
         BodyBuilder body = new BodyBuilder();
         body.append("node.accept(this.visitor);");
 
-        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel).stream().filter(property -> {
+        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entityModel).stream().map(property -> property.getProperty()).filter(property -> {
             return isEntity(property) || isEntityList(property) || isEntityMap(property);
         }).collect(Collectors.toList());
 

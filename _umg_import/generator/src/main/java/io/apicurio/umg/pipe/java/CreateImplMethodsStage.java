@@ -14,6 +14,7 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
@@ -36,7 +37,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     private void createEntityImplMethods(EntityModel entity) {
         JavaClassSource javaEntity = lookupJavaEntityImpl(entity);
 
-        Collection<PropertyModel> allProperties = getState().getConceptIndex().getAllEntityProperties(entity);
+        Collection<PropertyModelWithOrigin> allProperties = getState().getConceptIndex().getAllEntityProperties(entity);
         allProperties.forEach(property -> {
             createPropertyMethods(javaEntity, property);
         });
@@ -47,10 +48,12 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
      * of values of a particular type.  In this case, the entity interface needs to extend
      * the "MappedNode" interface.
      * @param javaEntity
-     * @param property
+     * @param propertyWithOrigin
      */
     @Override
-    protected void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModel property) {
+    protected void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
         String mappedNodeType;
         javaEntity.addImport(List.class);
         javaEntity.addImport(ArrayList.class);
@@ -69,7 +72,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
             javaEntity.addImport(primType);
             mappedNodeType = primType.getSimpleName();
         } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(javaEntity.getPackage(), property);
+            JavaInterfaceSource entityType = resolveJavaEntityType(propertyWithOrigin.getOrigin().getNamespace().fullName(), property);
             if (entityType == null) {
                 error("Java interface for entity type not found: " + property.getType());
                 return;
@@ -239,19 +242,6 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     @Override
     protected void addAnnotations(MethodSource<?> method) {
         method.addAnnotation(Override.class);
-    }
-
-    /**
-     * Override the entity type resolution to do the extra work of finding the right entity.
-     * This is needed here because Impl classes implement methods for *all* properties, not
-     * just the ones in their same namespace.  So we need to search UP the entity hierarchy
-     * to find the right one.
-     *
-     * @see io.apicurio.umg.pipe.java.AbstractJavaStage#resolveJavaEntity(java.lang.String, java.lang.String)
-     */
-    @Override
-    protected JavaInterfaceSource resolveJavaEntity(String namespace, String entityName) {
-        return resolveCommonJavaEntity(namespace, entityName);
     }
 
 }

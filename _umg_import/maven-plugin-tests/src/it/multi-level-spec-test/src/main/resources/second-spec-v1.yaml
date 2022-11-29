@@ -1,0 +1,60 @@
+name: Second Spec API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/SecondSpec/versions/1.0.md
+prefix: Scnd10
+namespace: org.example.multi.scnd.v10
+
+traits:
+  - name: Named
+    properties:
+      - name: name
+        type: string
+  - name: Described
+    properties:
+      - name: description
+        type: string
+
+entities:
+  - name: Document
+    root: true
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: spec
+        type: string
+      - name: version
+        type: string
+      - name: id
+        type: string
+      - name: widgets
+        type: '[Widget]'
+      - name: tags
+        type: '[Tag]'
+      - name: mice
+        type: '[Mouse]'
+
+  - name: Widget
+    traits:
+      - Named
+    properties:
+      - name: type
+        type: string
+
+  - name: Tag
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: value
+        type: string
+
+  - name: Mouse
+    properties:
+      - name: type
+        type: string
+      - name: length
+        type: integer
+

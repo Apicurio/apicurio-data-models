@@ -1,45 +1,19 @@
 package io.apicurio.umg.models.concept;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 
-import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.spec.SpecificationModel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Include;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class EntityModel {
-
-    private SpecificationModel specModel;
-    private SpecificationVersion specVersion;
-
-    @Include
-    private NamespaceModel namespace;
-    @Include
-    private String name;
-    private EntityModel parent;
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public class EntityModel extends EntityOrTraitModel {
+    private final SpecificationModel specModel;
     private final Collection<TraitModel> traits = new LinkedHashSet<>();
-    private final Map<String, PropertyModel> properties = new LinkedHashMap<>();
-    private boolean leaf;
-    private boolean root;
-
-    public String fullyQualifiedName() {
-        return namespace.fullName() + "." + name;
-    }
-
-    public void addProperty(PropertyModel property) {
-        this.properties.put(property.getName(), property);
-    }
-
-    public boolean hasProperty(String propertyName) {
-        return this.properties.containsKey(propertyName);
-    }
+    private final boolean root;
 
 }

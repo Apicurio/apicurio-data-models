@@ -67,7 +67,8 @@ public class CreateTestFixturesStage extends AbstractStage {
         } else {
             entityStack.push(entity.getName());
         }
-        getState().getConceptIndex().getAllEntityProperties(entity).forEach(property -> {
+        getState().getConceptIndex().getAllEntityProperties(entity).forEach(propertyWithOrigin -> {
+            PropertyModel property = propertyWithOrigin.getProperty();
             JsonNode value = generatePropertyValue(entity, property, entityStack);
             if (value != null) {
                 if (isStarProperty(property) || isRegexProperty(property)) {

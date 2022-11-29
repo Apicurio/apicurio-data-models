@@ -1,0 +1,77 @@
+name: Second Spec API 2.0
+version: 2.0
+versions:
+  - version: 2.0
+    url: https://example.com/SecondSpec/versions/2.0.md
+prefix: Scnd20
+namespace: org.example.multi.scnd.v20
+
+traits:
+  - name: Named
+    properties:
+      - name: name
+        type: string
+  - name: Described
+    properties:
+      - name: description
+        type: string
+
+entities:
+  - name: Document
+    root: true
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: spec
+        type: string
+      - name: version
+        type: string
+      - name: id
+        type: string
+      - name: info
+        type: 'Info'
+      - name: widgets
+        type: '[Widget]'
+      - name: tags
+        type: '[Tag]'
+      - name: mice
+        type: '[Mouse]'
+      - name: rats
+        type: '{Rat}'
+
+  - name: Widget
+    traits:
+      - Named
+    properties:
+      - name: type
+        type: string
+
+  - name: Tag
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: value
+        type: string
+
+  - name: Mouse
+    properties:
+      - name: type
+        type: string
+      - name: length
+        type: integer
+
+  - name: Rat
+    properties:
+      - name: color
+        type: string
+      - name: species
+        type: string
+
+  - name: Info
+    properties:
+      - name: version
+        type: string
+      - name: title
+        type: string

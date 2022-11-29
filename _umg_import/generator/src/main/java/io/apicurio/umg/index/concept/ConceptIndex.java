@@ -20,13 +20,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
-import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 
@@ -150,22 +151,24 @@ public class ConceptIndex {
      * any properties from Traits.
      * @param entityModel
      */
-    public Collection<PropertyModel> getAllEntityProperties(EntityModel entityModel) {
+    public Collection<PropertyModelWithOrigin> getAllEntityProperties(EntityModel entityModel) {
         EntityModel model = entityModel;
-        Set<PropertyModel> models = new HashSet<>();
+        Set<PropertyModelWithOrigin> models = new HashSet<>();
         while (model != null) {
-            models.addAll(model.getProperties().values());
+            final EntityModel _entity = model;
+            models.addAll(model.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_entity).build()).collect(Collectors.toList()));
 
             // Also include properties from all traits.
             model.getTraits().forEach(trait -> {
                 TraitModel t = trait;
                 while (t != null) {
-                    models.addAll(t.getProperties().values());
+                    final TraitModel _trait = t;
+                    models.addAll(t.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_trait).build()).collect(Collectors.toList()));
                     t = t.getParent();
                 }
             });
 
-            model = model.getParent();
+            model = (EntityModel) model.getParent();
         }
         return models;
     }

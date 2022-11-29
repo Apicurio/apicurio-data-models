@@ -1,0 +1,46 @@
+name: Parent Trait Test API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/ParentTrait/versions/1.0.md
+prefix: Pt10
+namespace: org.example.pt.v10
+
+entities:
+  - name: Document
+    root: true
+    properties:
+      - name: id
+        type: string
+      - name: foo
+        type: Foo
+      - name: bar
+        type: Bar
+      - name: definitions
+        type: Definitions
+
+  - name: Foo
+    properties:
+      - name: name
+        type: string
+      - name: description
+        type: string
+
+  - name: Bar
+    properties:
+      - name: type
+        type: string
+      - name: color
+        type: string
+
+  - name: Baz
+    properties:
+      - name: length
+        type: number
+
+  - name: Definitions
+    properties:
+      - name: foo
+        type: Foo
+      - name: baz
+        type: Baz

@@ -41,8 +41,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Logger.info("=== START ===");
         //        generate("io.apicurio.datamodels", "specs/asyncapi.yaml", "specs/openapi.yaml");
-        generate("org.example.io", "../maven-plugin-tests/src/it/io-test/src/main/resources/io-spec.yaml");
-        generate("org.example.multi", "../maven-plugin-tests/src/it/multi-spec-test/src/main/resources/multi-spec.yaml");
+        //        generate("org.example.io", "../maven-plugin-tests/src/it/io-test/src/main/resources/io-spec.yaml");
+        //        generate("org.example.multi", "../maven-plugin-tests/src/it/multi-spec-test/src/main/resources/multi-spec.yaml");
+        //generate("org.example.pt", "../maven-plugin-tests/src/it/parent-trait-test/src/main/resources/parent-trait-spec.yaml");
+        generate("io.apicurio.datamodels", "../maven-plugin-tests/src/it/openapi-test/src/main/resources/openapi.yaml");
         Logger.info("=== END ===");
     }
 
