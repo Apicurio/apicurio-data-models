@@ -1,0 +1,46 @@
+name: Verify Build Workflow
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README*'
+      - 'CODE_OF_CONDUCT*'
+    branches: [main]
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README*'
+      - 'CODE_OF_CONDUCT*'
+    branches: [main]
+
+jobs:
+  build-verify:
+    name: Verify Build
+    runs-on: ubuntu-18.04
+    if: github.repository_owner == 'Apicurio'
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Check Java Version
+        run: java -version
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: '3.8.5'
+
+      - name: Check Maven Version
+        run: mvn --version
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Build Project
+        run: mvn clean install

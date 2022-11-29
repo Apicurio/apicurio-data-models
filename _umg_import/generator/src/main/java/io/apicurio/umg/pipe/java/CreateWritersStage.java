@@ -364,7 +364,7 @@ public class CreateWritersStage extends AbstractJavaStage {
                 body.append("        models.forEach(model -> {");
                 body.append("            ObjectNode object = JsonUtil.objectNode();");
                 body.append("            this.${writeMethodName}((${listValueJavaType}) model, object);");
-                body.append("            array.add(object);");
+                body.append("            JsonUtil.addToArray(array, object);");
                 body.append("        });");
                 body.append("        JsonUtil.setAnyProperty(json, \"${propertyName}\", array);");
                 body.append("    }");

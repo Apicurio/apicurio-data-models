@@ -1,0 +1,112 @@
+name: Release Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Version being released'
+        required: true
+      snapshot-version:
+        description: 'Next snapshot version'
+        required: true
+      branch:
+        description: 'Branch to release from'
+        required: true
+        default: 'main'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Apicurio'
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+
+      - name: Check Java Version
+        run: java -version
+
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: '3.8.5'
+
+
+      - name: Check Maven Version
+        run: mvn --version
+
+
+      - name: Log Metadata
+        run: |
+          echo "Releasing Apicurio Unified Model Generator version ${{ github.event.inputs.release-version }} from branch ${{ github.event.inputs.branch }}"
+          echo "Next Snapshot version will be ${{ github.event.inputs.snapshot-version }}"
+
+
+      - name: Set up settings.xml
+        run: |
+          echo "<settings><servers><server><id>${{ secrets.OSSRH_ID }}</id><username>${{ secrets.OSSRH_USERNAME }}</username><password>${{ secrets.OSSRH_TOKEN }}</password></server></servers><profiles><profile><id>${{ secrets.OSSRH_ID }}</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable><gpg.passphrase>${{ secrets.GPG_PASSPHRASE}}</gpg.passphrase></properties></profile></profiles></settings>" > /home/runner/.m2/settings.xml
+          cat /home/runner/.m2/settings.xml
+
+
+
+      - name: Apicurio Unified Model Generator Code Checkout
+        run: |
+          git init
+          git config --global user.name "apicurio-ci"
+          git config --global user.email "apicurio.ci@gmail.com"
+          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git fetch
+          git checkout ${{ github.event.inputs.branch}}
+          git branch --set-upstream-to=origin/${{ github.event.inputs.branch}}
+          git pull
+          echo "#### Listing files after clone ####"
+          find .
+
+
+      - name: Update Release Version ${{ github.event.inputs.release-version}}
+        run: mvn versions:set -DnewVersion=${{ github.event.inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+
+
+      - name: Verify Build
+        run:  mvn clean install
+
+
+      - name: Commit Release Version Change
+        run: |
+          git add .
+          git commit -m "Automated version update: ${{ github.event.inputs.release-version}}"
+          git push
+
+      - name: Import GPG Key
+        uses: crazy-max/ghaction-import-gpg@v1
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+
+      - name: Create GitHub Release
+        run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Maven Deploy
+        run: |
+          # Retry 3 times before the steps actually fails
+          (echo "===== Maven Deploy Attempt: 1 ====" && mvn deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
+          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 30 minutes ====" && sleep 30m) || \
+          (echo "===== Maven Deploy Attempt: 2 ====" && mvn deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
+          (echo "===== Maven Deploy Attempt 1 Failed - Sleeping for 4 hours ====" && sleep 4h) || \
+          (echo "===== Maven Deploy Attempt: 3 ====" && mvn deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests) || \
+          (echo "==== Maven Deploy Step Failed ====" && exit 1)
+
+
+      - name: Update Snapshot version ${{ github.event.inputs.snapshot-version}}
+        run: mvn versions:set -DnewVersion=${{ github.event.inputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+
+
+      - name: Commit Snapshot Version Change
+        run: |
+          git add .
+          git commit -m"Automated version update: ${{ github.event.inputs.snapshot-version}}"
+          git push

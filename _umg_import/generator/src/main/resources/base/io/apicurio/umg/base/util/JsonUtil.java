@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 
@@ -36,17 +36,7 @@ public class JsonUtil {
     }
     
     public static List<String> matchingKeys(String regex, ObjectNode json) {
-        List<String> rval = new ArrayList<>();
-        if (json != null) {
-            Iterator<String> fieldNames = json.fieldNames();
-            while (fieldNames.hasNext()) {
-                String fieldName = fieldNames.next();
-                if (Pattern.matches(regex, fieldName)) {
-                    rval.add(fieldName);
-                }
-            }
-        }
-        return rval;
+        return keys(json).stream().filter(key -> Pattern.matches(regex, key)).collect(Collectors.toList());
     }
 
     public static JsonNode getProperty(ObjectNode json, String propertyName) {
@@ -710,8 +700,8 @@ public class JsonUtil {
         return factory.arrayNode();
     }
 
-    public static NullNode nullNode() {
-        return factory.nullNode();
+    public static void addToArray(ArrayNode array, JsonNode value) {
+        array.add(value);
     }
 
     public static boolean isPropertyDefined(JsonNode json, String propertyName) {
