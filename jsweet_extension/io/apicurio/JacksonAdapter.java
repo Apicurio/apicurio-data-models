@@ -32,6 +32,7 @@ public class JacksonAdapter extends PrinterAdapter {
     public JacksonAdapter(PrinterAdapter parent) {
         super(parent);
         addTypeMapping("com.fasterxml.jackson.databind.node.ObjectNode", "object");
+        addTypeMapping("com.fasterxml.jackson.databind.node.ArrayNode", "Array<any>");
         addTypeMapping("com.fasterxml.jackson.databind.JsonNode", "any");
     }
 }

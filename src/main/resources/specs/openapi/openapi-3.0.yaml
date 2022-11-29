@@ -16,7 +16,8 @@ traits:
   - name: ExtensibleTrait
     properties:
       - name: '/x-.+/'
-        type: Extension
+        type: any
+        collection: extensions
   - name: ReferenceableTrait
     properties:
       - name: '$ref'
@@ -396,7 +397,7 @@ entities:
       - name: items
         type: object
       - name: allOf
-        type: '[schema]'
+        type: '[Schema]'
       - name: properties
         type: '{Schema}'
       - name: additionalProperties
