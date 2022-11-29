@@ -10,7 +10,8 @@ traits:
   - name: ExtensibleTrait
     properties:
       - name: '/x-.+/'
-        type: Extension
+        type: any
+        collection: extensions
   - name: ReferenceableTrait
     properties:
       - name: '$ref'

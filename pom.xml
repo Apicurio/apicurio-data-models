@@ -81,7 +81,7 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.1.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
-        <version.apicurio-unified-model-generator-plugin>1.0.0-SNAPSHOT</version.apicurio-unified-model-generator-plugin>
+        <version.apicurio-unified-model-generator-plugin>1.0.0.Final</version.apicurio-unified-model-generator-plugin>
         <version.jsweet-maven-plugin>3.1.0</version.jsweet-maven-plugin>
     </properties>
 
@@ -223,9 +223,9 @@
                         </goals>
                         <configuration>
                             <specifications>
-                                <specification>${project.basedir}/src/main/resources/specs/asyncapi.yaml</specification>
-                                <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/openapi.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi.yaml</specification>
+<!--                                 <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>-->
                             </specifications>
                             <rootNamespace>io.apicurio.datamodels</rootNamespace>
                         </configuration>
@@ -280,7 +280,7 @@
 
             <build>
                 <plugins>
-                    <!-- Generate TS from Java -->
+                    <!-- Generate TS from Java using JSweet -->
                     <plugin>
                         <groupId>org.jsweet</groupId>
                         <artifactId>jsweet-maven-plugin</artifactId>
@@ -316,6 +316,7 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- Copy some curated TS sources and resources to target/ts -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -359,7 +360,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Generate the core.ts file -->
+                    <!-- Generate the core.ts file using GenerateCoreTs -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
@@ -425,8 +426,6 @@
                         </executions>
                     </plugin>
                 </plugins>
-
-
             </build>
         </profile>
         <profile>
