@@ -1,0 +1,38 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title": "Swagger Sample App",
+    "description": "This is a sample server Petstore server.",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.swagger.io/support",
+      "email": "support@swagger.io"
+    },
+    "extra-property-2": "hello world",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.1",
+    "extra-property-1": true
+  },
+  "host": "example.org",
+  "basePath" : "/example-api",
+  "schemes" : [
+    "http", "https"
+  ],
+  "consumes" : [
+    "application/json",
+    "application/xml"
+  ],
+  "produces" : [
+    "application/json"
+  ],
+  "extra-object-property": {
+    "sub-property-1": 1,
+    "sub-property-2": 2,
+    "sub-property-3": 3,
+    "sub-property-4": "four"
+  }
+}

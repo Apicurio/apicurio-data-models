@@ -1,0 +1,26 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/Common200"
+          }
+        }
+      }
+    }
+  }
+}

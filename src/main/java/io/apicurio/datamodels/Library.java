@@ -21,30 +21,39 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.asyncapi.v20.AsyncApi20Document;
 import io.apicurio.datamodels.asyncapi.v20.AsyncApi20DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v20.io.AsyncApi20ModelReader;
+import io.apicurio.datamodels.asyncapi.v20.io.AsyncApi20ModelWriter;
 import io.apicurio.datamodels.asyncapi.v21.AsyncApi21Document;
 import io.apicurio.datamodels.asyncapi.v21.AsyncApi21DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v21.io.AsyncApi21ModelReader;
+import io.apicurio.datamodels.asyncapi.v21.io.AsyncApi21ModelWriter;
 import io.apicurio.datamodels.asyncapi.v22.AsyncApi22Document;
 import io.apicurio.datamodels.asyncapi.v22.AsyncApi22DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v22.io.AsyncApi22ModelReader;
+import io.apicurio.datamodels.asyncapi.v22.io.AsyncApi22ModelWriter;
 import io.apicurio.datamodels.asyncapi.v23.AsyncApi23Document;
 import io.apicurio.datamodels.asyncapi.v23.AsyncApi23DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v23.io.AsyncApi23ModelReader;
+import io.apicurio.datamodels.asyncapi.v23.io.AsyncApi23ModelWriter;
 import io.apicurio.datamodels.asyncapi.v24.AsyncApi24Document;
 import io.apicurio.datamodels.asyncapi.v24.AsyncApi24DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v24.io.AsyncApi24ModelReader;
+import io.apicurio.datamodels.asyncapi.v24.io.AsyncApi24ModelWriter;
 import io.apicurio.datamodels.asyncapi.v25.AsyncApi25Document;
 import io.apicurio.datamodels.asyncapi.v25.AsyncApi25DocumentImpl;
 import io.apicurio.datamodels.asyncapi.v25.io.AsyncApi25ModelReader;
+import io.apicurio.datamodels.asyncapi.v25.io.AsyncApi25ModelWriter;
 import io.apicurio.datamodels.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.openapi.v20.OpenApi20DocumentImpl;
 import io.apicurio.datamodels.openapi.v20.io.OpenApi20ModelReader;
+import io.apicurio.datamodels.openapi.v20.io.OpenApi20ModelWriter;
 import io.apicurio.datamodels.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.openapi.v30.OpenApi30DocumentImpl;
 import io.apicurio.datamodels.openapi.v30.io.OpenApi30ModelReader;
+import io.apicurio.datamodels.openapi.v30.io.OpenApi30ModelWriter;
 import io.apicurio.datamodels.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.openapi.v31.OpenApi31DocumentImpl;
 import io.apicurio.datamodels.openapi.v31.io.OpenApi31ModelReader;
+import io.apicurio.datamodels.openapi.v31.io.OpenApi31ModelWriter;
 import io.apicurio.datamodels.util.JsonUtil;
 import io.apicurio.datamodels.visitors.Visitor;
 
@@ -144,6 +153,91 @@ public class Library {
     public static Document readDocumentFromJSONString(String jsonString) {
         ObjectNode json = (ObjectNode) JsonUtil.parseJSON(jsonString);
         return readDocument(json);
+    }
+
+    /**
+     * Called to serialize a given data model node to a JSON object.
+     * @param node
+     */
+    public static ObjectNode writeDocument(DocumentType type, Document document) {
+        switch (type) {
+            case ASYNCAPI_20:
+            {
+                AsyncApi20ModelWriter writer = new AsyncApi20ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi20Document) document, json);
+                return json;
+            }
+            case ASYNCAPI_21:
+            {
+                AsyncApi21ModelWriter writer = new AsyncApi21ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi21Document) document, json);
+                return json;
+            }
+            case ASYNCAPI_22:
+            {
+                AsyncApi22ModelWriter writer = new AsyncApi22ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi22Document) document, json);
+                return json;
+            }
+            case ASYNCAPI_23:
+            {
+                AsyncApi23ModelWriter writer = new AsyncApi23ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi23Document) document, json);
+                return json;
+            }
+            case ASYNCAPI_24:
+            {
+                AsyncApi24ModelWriter writer = new AsyncApi24ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi24Document) document, json);
+                return json;
+            }
+            case ASYNCAPI_25:
+            {
+                AsyncApi25ModelWriter writer = new AsyncApi25ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((AsyncApi25Document) document, json);
+                return json;
+            }
+            case OPENAPI_2:
+            {
+                OpenApi20ModelWriter writer = new OpenApi20ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((OpenApi20Document) document, json);
+                return json;
+            }
+            case OPENAPI_30:
+            {
+                OpenApi30ModelWriter writer = new OpenApi30ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((OpenApi30Document) document, json);
+                return json;
+            }
+            case OPENAPI_31:
+            {
+                OpenApi31ModelWriter writer = new OpenApi31ModelWriter();
+                ObjectNode json = JsonUtil.objectNode();
+                writer.writeDocument((OpenApi31Document) document, json);
+                return json;
+            }
+            default:
+            {
+                throw new RuntimeException("Unsupported document type.");
+            }
+        }
+    }
+
+    /**
+     * Called to serialize a given data model to a JSON formatted string.
+     * @param document
+     */
+    public static String writeDocumentToJSONString(DocumentType type, Document document) {
+        ObjectNode json = Library.writeDocument(type, document);
+        return JsonUtil.stringify(json);
     }
 
     /**

@@ -35,32 +35,42 @@ import io.apicurio.datamodels.visitors.Visitor;
 public class VisitorUtil {
 
     public static void visitTree(DocumentType type, Node node, Visitor visitor, TraverserDirection direction) {
-        Traverser traverser;
+        Traverser traverser = null;
         if (direction == TraverserDirection.up) {
             traverser = new ReverseTraverser(visitor);
         } else {
             switch (type) {
                 case ASYNCAPI_20:
                     traverser = new AsyncApi20Traverser(visitor);
+                    break;
                 case ASYNCAPI_21:
                     traverser = new AsyncApi21Traverser(visitor);
+                    break;
                 case ASYNCAPI_22:
                     traverser = new AsyncApi22Traverser(visitor);
+                    break;
                 case ASYNCAPI_23:
                     traverser = new AsyncApi23Traverser(visitor);
+                    break;
                 case ASYNCAPI_24:
                     traverser = new AsyncApi24Traverser(visitor);
+                    break;
                 case ASYNCAPI_25:
                     traverser = new AsyncApi25Traverser(visitor);
+                    break;
                 case OPENAPI_2:
                     traverser = new OpenApi20Traverser(visitor);
+                    break;
                 case OPENAPI_30:
                     traverser = new OpenApi30Traverser(visitor);
+                    break;
                 case OPENAPI_31:
                     traverser = new OpenApi31Traverser(visitor);
-                default:
-                    throw new RuntimeException("Traverser not found for type: " + type);
+                    break;
             }
+        }
+        if (traverser == null) {
+            throw new RuntimeException("Traverser not found for type: " + type);
         }
         traverser.traverse(node);
     }

@@ -1,0 +1,21 @@
+{
+  "swagger": "2.0",
+  "parameters": {
+    "skipParam": {
+      "name": "skip",
+      "in": "query",
+      "description": "number of items to skip",
+      "required": true,
+      "type": "integer",
+      "format": "int32"
+    },
+    "limitParam": {
+      "name": "limit",
+      "in": "query",
+      "description": "max records to return",
+      "required": true,
+      "type": "integer",
+      "format": "int32"
+    }
+  }
+}

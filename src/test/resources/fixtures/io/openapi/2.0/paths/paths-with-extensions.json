@@ -1,0 +1,29 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ],
+        "deprecated": false
+      }
+    },
+    "x-not-a-path" : "extension-value",
+    "x-some-number" : 42,
+    "x-some-boolean" : true,
+    "x-some-object" : {
+      "foo": "bar"
+    },
+    "x-some-array" : [ "foo", "bar" ]
+  }
+}

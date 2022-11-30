@@ -1,0 +1,105 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "Pets GET",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "post": {
+        "summary": "New Pet",
+        "description": "Create a new pet",
+        "operationId": "newPet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "put": {
+        "summary": "Update Pet",
+        "description": "Updates a pet",
+        "operationId": "updatePets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "options": {
+        "summary": "Pet Options",
+        "description": "Gets pet options",
+        "operationId": "petOptions",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "patch": {
+        "summary": "Pet Patch",
+        "description": "Patches a pet",
+        "operationId": "patchPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Pet",
+        "description": "Deletes a pet",
+        "operationId": "deletePet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      },
+      "head": {
+        "summary": "Pet Head",
+        "description": "Pet head",
+        "operationId": "headPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ]
+      }
+    }
+  }
+}
