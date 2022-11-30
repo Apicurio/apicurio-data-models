@@ -190,9 +190,11 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.keys(json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
-                body.append("        this.${readMethodName}(object, model);");
-                body.append("        node.${addMethodName}(name, model);");
+                body.append("        if (object != null) {");
+                body.append("            ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
+                body.append("            this.${readMethodName}(object, model);");
+                body.append("            node.${addMethodName}(name, model);");
+                body.append("        }");
                 body.append("    });");
                 body.append("}");
             } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
@@ -246,9 +248,11 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    List<String> propertyNames = JsonUtil.matchingKeys(\"${propertyRegex}\", json);");
                 body.append("    propertyNames.forEach(name -> {");
                 body.append("        ObjectNode object = JsonUtil.consumeObjectProperty(json, name);");
-                body.append("        ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
-                body.append("        this.${readMethodName}(object, model);");
-                body.append("        node.${addMethodName}(name, model);");
+                body.append("        if (object != null) {");
+                body.append("            ${entityJavaType} model = (${entityJavaType}) node.${createMethodName}();");
+                body.append("            this.${readMethodName}(object, model);");
+                body.append("            node.${addMethodName}(name, model);");
+                body.append("        }");
                 body.append("    });");
                 body.append("}");
             } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
@@ -411,9 +415,11 @@ public class CreateReadersStage extends AbstractJavaStage {
                 body.append("    ObjectNode object = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
                 body.append("    JsonUtil.keys(object).forEach(name -> {");
                 body.append("        ObjectNode mapValue = JsonUtil.consumeObjectProperty(object, name);");
-                body.append("        ${mapValueJavaType} model = (${mapValueJavaType}) node.${createMethodName}();");
-                body.append("        this.${readMethodName}(mapValue, model);");
-                body.append("        node.${addMethodName}(name, model);");
+                body.append("        if (mapValue != null) {");
+                body.append("            ${mapValueJavaType} model = (${mapValueJavaType}) node.${createMethodName}();");
+                body.append("            this.${readMethodName}(mapValue, model);");
+                body.append("            node.${addMethodName}(name, model);");
+                body.append("        }");
                 body.append("    });");
                 body.append("}");
             } else {

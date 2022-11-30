@@ -64,7 +64,7 @@ public abstract class AbstractStage implements Stage {
     }
 
     protected String extractRegex(String propertyName) {
-        return propertyName.substring(1, propertyName.length() - 2);
+        return propertyName.substring(1, propertyName.length() - 1);
     }
 
     protected void info(String message, Object ...args) {

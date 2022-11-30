@@ -3,6 +3,8 @@ package io.apicurio.umg.pipe.concept;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
@@ -61,14 +63,26 @@ public class CreateParentTraitsStage extends AbstractStage {
      * combination is unique, then no parent trait is needed.  If it is NOT unique (meaning there
      * are other entities with the same property) then a parent IS needed.
      *
+     * In other words, we're trying to find multiple entities that share a child entity property.
+     * So if "Foo" and "Bar" entities both have a property called "widget" of type "Widget", then
+     * we want those entities to both have a "WigetParent" trait.
+     *
      * @param entity
      * @param property
      */
     private boolean needsParent(EntityModel entity, PropertyModel property) {
-        if (property.getType().isPrimitiveType()) {
+        if (isStarProperty(property)) {
             return false;
         }
-        if (property.getName().equals("*")) {
+        if (isRegexProperty(property)) {
+            return false;
+        }
+        if (!isEntity(property)) {
+            return false;
+        }
+        String propertyName = property.getName();
+        String propertyTypeName = property.getType().getSimpleType();
+        if (!propertyName.equals(StringUtils.capitalize(propertyTypeName))) {
             return false;
         }
         return getState().getConceptIndex().findEntities("")

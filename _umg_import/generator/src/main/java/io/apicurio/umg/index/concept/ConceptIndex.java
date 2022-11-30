@@ -19,6 +19,7 @@ package io.apicurio.umg.index.concept;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ import org.apache.commons.collections4.trie.PatriciaTrie;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
+import io.apicurio.umg.models.concept.PropertyModelWithOriginComparator;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 
@@ -153,7 +155,7 @@ public class ConceptIndex {
      */
     public Collection<PropertyModelWithOrigin> getAllEntityProperties(EntityModel entityModel) {
         EntityModel model = entityModel;
-        Set<PropertyModelWithOrigin> models = new HashSet<>();
+        Set<PropertyModelWithOrigin> models = new TreeSet<>(new PropertyModelWithOriginComparator());
         while (model != null) {
             final EntityModel _entity = model;
             models.addAll(model.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_entity).build()).collect(Collectors.toList()));
