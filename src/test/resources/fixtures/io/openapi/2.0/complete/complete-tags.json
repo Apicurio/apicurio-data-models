@@ -1,0 +1,18 @@
+{
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "tag1",
+      "description": "Tag 1 operation",
+      "externalDocs": {
+        "description": "Find more info here",
+        "url": "https://swagger.io"
+      },
+      "x-custom-property-1" : "foo",
+      "x-custom-property-2" : {
+        "foo" : "bar",
+        "hello" : "world"
+      }
+    }
+  ]
+}

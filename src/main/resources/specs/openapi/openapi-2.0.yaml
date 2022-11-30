@@ -7,26 +7,26 @@ prefix: OpenApi20
 namespace: io.apicurio.datamodels.openapi.v20
 
 traits:
-  - name: ExtensibleTrait
+  - name: Extensible
     properties:
-      - name: '/x-.+/'
+      - name: '/^x-.+$/'
         type: any
         collection: extensions
-  - name: ReferenceableTrait
+  - name: Referenceable
     properties:
       - name: '$ref'
         type: string
-  - name: SchemaLikeTrait
+  - name: SchemaLike
     transparent: true
     properties:
+      - name: description
+        type: string
       - name: type
         type: string
       - name: format
         type: string
-      - name: items
-        type: Items
       - name: default
-        type: object
+        type: any
       - name: maximum
         type: number
       - name: exclusiveMaximum
@@ -55,7 +55,7 @@ traits:
 entities:
   - name: Document
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: swagger
         type: string
@@ -89,7 +89,7 @@ entities:
         type: ExternalDocumentation
   - name: Info
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: title
         type: string
@@ -105,7 +105,7 @@ entities:
         type: string
   - name: Contact
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -115,7 +115,7 @@ entities:
         type: string
   - name: License
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -123,14 +123,14 @@ entities:
         type: string
   - name: Paths
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: PathItem
   - name: PathItem
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: get
         type: Operation
@@ -150,7 +150,7 @@ entities:
         type: '[Parameter]'
   - name: Operation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: tags
         type: '[string]'
@@ -178,7 +178,7 @@ entities:
         type: '[SecurityRequirement]'
   - name: ExternalDocumentation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: description
         type: string
@@ -186,34 +186,37 @@ entities:
         type: string
   - name: Parameter
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
-      - SchemaLikeTrait
+      - Extensible
+      - Referenceable
+      - SchemaLike
     properties:
       - name: name
         type: string
       - name: in
         type: string
-      - name: description
-        type: string
       - name: required
         type: boolean
       - name: schema
         type: Schema
+      - name: items
+        type: Items
       - name: allowEmptyValue
         type: boolean
       - name: collectionFormat
         type: string
   - name: Items
     traits:
-      - ExtensibleTrait
-      - SchemaLikeTrait
+      - Extensible
+      - SchemaLike
+      - Referenceable
     properties:
+      - name: items
+        type: Items
       - name: collectionFormat
         type: string
   - name: Responses
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties: 
       - name: default
         type: Response
@@ -221,8 +224,8 @@ entities:
         type: Response
   - name: Response
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -242,14 +245,16 @@ entities:
         type: any
   - name: Header
     traits:
-      - ExtensibleTrait
-      - SchemaLikeTrait
+      - Extensible
+      - SchemaLike
     properties:
-      - name: description
-        type: string
+      - name: items
+        type: Items
       - name: collectionFormat
         type: string
   - name: Tag
+    traits:
+      - Extensible
     properties:
       - name: name
         type: string
@@ -259,24 +264,26 @@ entities:
         type: ExternalDocumentation
   - name: Schema
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
-      - SchemaLikeTrait
+      - Extensible
+      - Referenceable
+      - SchemaLike
     properties:
       - name: title
         type: string
+      - name: items
+        type: any # TODO Schema|[Schema]
       - name: maxProperties
         type: integer
       - name: minProperties
         type: integer
       - name: required
-        type: boolean
+        type: '[string]'
       - name: allOf
         type: '[Schema]'
       - name: properties
         type: '{Schema}'
       - name: additionalProperties
-        type: any
+        type: any # TODO: boolean|Schema
       - name: discriminator
         type: string
       - name: readOnly
@@ -286,10 +293,10 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: example
-        type: object
+        type: any
   - name: XML
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -319,7 +326,7 @@ entities:
         type: SecurityScheme
   - name: SecurityScheme
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: type
         type: string
@@ -336,10 +343,10 @@ entities:
       - name: tokenUrl
         type: string
       - name: scopes
-        type: string
+        type: Scopes
   - name: Scopes
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: string
@@ -347,9 +354,3 @@ entities:
     properties:
       - name: '*'
         type: '[string]'
-  - name: Extension
-    properties:
-      - name: name
-        type: string
-      - name: value
-        type: object

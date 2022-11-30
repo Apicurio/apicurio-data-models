@@ -7,12 +7,12 @@ prefix: AsyncApi22
 namespace: io.apicurio.datamodels.asyncapi.v22
 
 traits:
-  - name: ExtensibleTrait
+  - name: Extensible
     properties:
-      - name: '/^x-[\\w\\d\\-\\_]+$/'
+      - name: '/^x-.+$/'
         type: any
         collection: extensions
-  - name: ReferenceableTrait
+  - name: Referenceable
     properties:
       - name: '$ref'
         type: string
@@ -20,7 +20,7 @@ traits:
 entities:
   - name: Document
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: asyncapi
         type: string
@@ -42,7 +42,7 @@ entities:
         type: ExternalDocumentation
   - name: Info
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: title
         type: string
@@ -58,7 +58,7 @@ entities:
         type: License
   - name: Contact
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -68,7 +68,7 @@ entities:
         type: string
   - name: License
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -80,7 +80,7 @@ entities:
         type: Server
   - name: Server
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: url
         type: string
@@ -98,7 +98,7 @@ entities:
         type: ServerBindings
   - name: ServerVariable
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: enum
         type: '[string]'
@@ -114,8 +114,8 @@ entities:
         type: ChannelItem
   - name: ChannelItem
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -131,7 +131,7 @@ entities:
         type: ChannelBindings
   - name: Operation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: operationId
         type: string
@@ -144,15 +144,15 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: bindings
-        type: '{OperationBindings}'
+        type: OperationBindings
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message
+        type: Message # TODO Message|OneOfMessages
   - name: OperationTrait
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: operationId
         type: string
@@ -173,8 +173,8 @@ entities:
         collection: items
   - name: Parameter
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -184,8 +184,8 @@ entities:
         type: string
   - name: ServerBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -221,8 +221,8 @@ entities:
         type: Binding
   - name: ChannelBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -258,8 +258,8 @@ entities:
         type: Binding
   - name: OperationBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -293,8 +293,8 @@ entities:
         type: Binding
   - name: MessageBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -330,9 +330,11 @@ entities:
         type: Binding
   - name: Message
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
+      - name: oneOf # TODO: remove this when union types are supported and Operation::message is updated 
+        type: '[Message]'
       - name: headers
         type: Schema
       - name: payload
@@ -363,8 +365,8 @@ entities:
         type: '[MessageTrait]'
   - name: MessageTrait
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: headers
         type: Schema
@@ -392,7 +394,7 @@ entities:
         type: '{any}'
   - name: MessageExample
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: headers
         type: '{any}'
@@ -404,7 +406,7 @@ entities:
         type: string
   - name: Tag
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -414,7 +416,7 @@ entities:
         type: ExternalDocumentation
   - name: ExternalDocumentation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: description
         type: string
@@ -422,7 +424,7 @@ entities:
         type: string
   - name: Components
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: schemas
         type: '{Schema}'
@@ -448,8 +450,8 @@ entities:
         type: '{MessageBindings}'
   - name: Schema
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: title
         type: string
@@ -535,8 +537,8 @@ entities:
         type: boolean
   - name: SecurityScheme
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: type
         type: string
@@ -556,7 +558,7 @@ entities:
         type: string
   - name: OAuthFlows
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: implicit
         type: OAuthFlow
@@ -568,7 +570,7 @@ entities:
         type: OAuthFlow
   - name: OAuthFlow
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: authorizationUrl
         type: string
@@ -584,8 +586,8 @@ entities:
         type: '[string]'
   - name: CorrelationID
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -593,7 +595,7 @@ entities:
         type: string
   - name: Binding
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: any

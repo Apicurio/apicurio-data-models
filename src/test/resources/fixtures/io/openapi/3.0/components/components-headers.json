@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "Header1": {
+        "description": "The number of allowed requests in the current period",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "Header2": {
+        "description": "The number of allowed requests in the current period",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "HeaderWithContent": {
+        "description": "The number of allowed requests in the current period",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "address": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RefHeader": {
+        "$ref": "#/other/Ref"
+      }
+    }
+  }
+}
