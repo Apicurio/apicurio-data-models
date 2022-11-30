@@ -4,7 +4,7 @@
 
     <groupId>io.apicurio</groupId>
     <artifactId>apicurio-unified-model-generator-parent</artifactId>
-    <version>1.0.1.Final</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <url>https://www.apicur.io/</url>
