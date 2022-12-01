@@ -2,9 +2,12 @@ package io.apicurio.umg.pipe.java;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
 
 import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
 /**
  * Creates the java implementation classes for all leaf entities.
@@ -33,9 +36,29 @@ public class CreateEntityImplStage extends AbstractJavaStage {
         entityClass.addImport(entityInterface);
         entityClass.addInterface(entityInterface);
 
-        // All impl classes extend NodeImpl
-        JavaClassSource nodeImpl = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
-        entityClass.extendSuperType(nodeImpl);
+        if (entity.isRoot()) {
+            // Root entities must extends RootNodeImpl
+            JavaClassSource rootNodeImpl = getState().getJavaIndex().lookupClass(getRootNodeEntityClassFQN());
+            entityClass.addImport(rootNodeImpl);
+            entityClass.extendSuperType(rootNodeImpl);
+
+            // Root entities need a default constructor that passes in the right model type
+            JavaEnumSource modelTypeEnum = getState().getJavaIndex().lookupEnum(getModelTypeEnumFQN());
+            entityClass.addImport(modelTypeEnum);
+
+            MethodSource<JavaClassSource> entityConstructor = entityClass.addMethod().setPublic().setConstructor(true);
+            String prefix = getPrefix(entity.getNamespace());
+            String modelType = prefixToModelType(prefix);
+            BodyBuilder body = new BodyBuilder();
+            body.addContext("modelType", modelType);
+            body.append("super(ModelType.${modelType});");
+            entityConstructor.setBody(body.toString());
+        } else {
+            // All impl classes extend NodeImpl
+            JavaClassSource nodeImpl = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+            entityClass.addImport(nodeImpl);
+            entityClass.extendSuperType(nodeImpl);
+        }
 
         getState().getJavaIndex().index(entityClass);
     }

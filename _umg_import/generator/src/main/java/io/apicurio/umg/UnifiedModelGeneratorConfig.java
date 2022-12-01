@@ -16,5 +16,6 @@ public class UnifiedModelGeneratorConfig {
     private String rootNamespace;
     private File outputDirectory;
     private File testOutputDirectory;
+    private boolean generateTestFixtures;
 
 }

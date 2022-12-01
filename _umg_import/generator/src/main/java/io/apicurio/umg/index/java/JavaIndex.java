@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class JavaIndex {
     @Getter
     private Map<String, JavaClassSource> classes = new HashMap<>();
 
+    @Getter
+    private Map<String, JavaEnumSource> enums = new HashMap<>();
+
 
     public JavaInterfaceSource lookupInterface(String fullyQualifiedName) {
         return this.interfaces.get(fullyQualifiedName);
@@ -42,6 +46,10 @@ public class JavaIndex {
 
     public JavaClassSource lookupClass(String fullyQualifiedName) {
         return this.classes.get(fullyQualifiedName);
+    }
+
+    public JavaEnumSource lookupEnum(String fullyQualifiedName) {
+        return this.enums.get(fullyQualifiedName);
     }
 
     public void index(JavaClassSource _class) {
@@ -52,6 +60,11 @@ public class JavaIndex {
     public void index(JavaInterfaceSource _iface) {
         String fqcn = _iface.getCanonicalName();
         this.interfaces.put(fqcn, _iface);
+    }
+
+    public void index(JavaEnumSource _enum) {
+        String fqcn = _enum.getCanonicalName();
+        this.enums.put(fqcn, _enum);
     }
 
 }

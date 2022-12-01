@@ -45,11 +45,15 @@ public class CreateTestFixturesStage extends AbstractStage {
 
     @Override
     protected void doProcess() {
-        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
-            getState().getConceptIndex().findEntities(specVersion.getNamespace()).stream().filter(entity -> entity.isRoot()).forEach(entity -> {
-                generateIOFixture(specVersion, entity);
+        if (getState().getConfig().isGenerateTestFixtures()) {
+            getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
+                getState().getConceptIndex().findEntities(specVersion.getNamespace()).stream().filter(entity -> entity.isRoot()).forEach(entity -> {
+                    generateIOFixture(specVersion, entity);
+                });
             });
-        });
+        } else {
+            info("Skipping generation of test fixtures.");
+        }
     }
 
     private void generateIOFixture(SpecificationVersion specVersion, EntityModel entity) {

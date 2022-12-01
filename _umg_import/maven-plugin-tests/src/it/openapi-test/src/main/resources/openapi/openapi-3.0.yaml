@@ -25,6 +25,7 @@ traits:
 
 entities:
   - name: Document
+    root: true
     traits:
       - ExtensibleTrait
     properties:

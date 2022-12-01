@@ -15,17 +15,17 @@ public abstract class NodeImpl implements Node {
     private static int __modelIdCounter = 0;
 
     protected int _modelId = __modelIdCounter++;
-    private Node _root;
+    private RootNode _root;
     private Node _parent;
     private Map<String, JsonNode> _extraProperties;
     private Map<String, Object> _attributes;
 
     @Override
-    public Node root() {
+    public RootNode root() {
         return this._root;
     }
     
-    public void setRoot(Node root) {
+    public void setRoot(RootNode root) {
         this._root = root;
     }
 

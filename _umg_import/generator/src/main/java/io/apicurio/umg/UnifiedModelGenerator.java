@@ -35,6 +35,7 @@ import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.concept.ResolveVisitorEntityStage;
+import io.apicurio.umg.pipe.concept.SpecificationValidationStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceParentStage;
 import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateAcceptMethodStage;
@@ -45,7 +46,9 @@ import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateImplFieldsStage;
 import io.apicurio.umg.pipe.java.CreateImplMethodsStage;
 import io.apicurio.umg.pipe.java.CreateInterfaceMethodsStage;
+import io.apicurio.umg.pipe.java.CreateModelTypeStage;
 import io.apicurio.umg.pipe.java.CreateReaderDispatchersStage;
+import io.apicurio.umg.pipe.java.CreateReaderFactoryStage;
 import io.apicurio.umg.pipe.java.CreateReadersStage;
 import io.apicurio.umg.pipe.java.CreateTestFixturesStage;
 import io.apicurio.umg.pipe.java.CreateTraitInterfacesStage;
@@ -53,6 +56,7 @@ import io.apicurio.umg.pipe.java.CreateTraversersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorAdaptersStage;
 import io.apicurio.umg.pipe.java.CreateVisitorInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateWriterDispatchersStage;
+import io.apicurio.umg.pipe.java.CreateWriterFactoryStage;
 import io.apicurio.umg.pipe.java.CreateWritersStage;
 import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
@@ -91,6 +95,7 @@ public class UnifiedModelGenerator {
 
         // Index phase
         pipe.addStage(new IndexSpecificationsStage());
+        pipe.addStage(new SpecificationValidationStage());
 
         // Model creation phase
         pipe.addStage(new CreateNamespaceModelsStage());
@@ -113,6 +118,8 @@ public class UnifiedModelGenerator {
 
         // Generate java code
         pipe.addStage(new LoadBaseClassesStage());
+        pipe.addStage(new CreateModelTypeStage());
+
         pipe.addStage(new CreateTraitInterfacesStage());
         pipe.addStage(new CreateEntityInterfacesStage());
         pipe.addStage(new ConfigureInterfaceParentStage());
@@ -123,7 +130,9 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateImplMethodsStage());
 
         pipe.addStage(new CreateReadersStage());
+        pipe.addStage(new CreateReaderFactoryStage());
         pipe.addStage(new CreateWritersStage());
+        pipe.addStage(new CreateWriterFactoryStage());
         pipe.addStage(new CreateVisitorInterfacesStage());
         pipe.addStage(new CreateAcceptMethodStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());

@@ -44,6 +44,9 @@ public class GenerateModelsMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}/generated-test-resources/umg")
     File testOutputDir;
 
+    @Parameter(defaultValue = "false")
+    Boolean generateTestFixtures;
+
     @Parameter
     String testSubDir;
 
@@ -98,6 +101,7 @@ public class GenerateModelsMojo extends AbstractMojo {
         UnifiedModelGeneratorConfig config = UnifiedModelGeneratorConfig.builder()
                 .outputDirectory(outputDir)
                 .testOutputDirectory(umgTestOutputDir)
+                .generateTestFixtures(generateTestFixtures)
                 .rootNamespace(rootNamespace).build();
         // Load the specs
         List<SpecificationModel> specs = loadSpecifications();

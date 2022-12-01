@@ -29,5 +29,13 @@ public class CreateEntityInterfacesStage extends AbstractJavaStage {
                 .setPublic();
 
         getState().getJavaIndex().index(entityInterface);
+
+        // If the entity is a root, it must extend the RootNode interface
+        if (entity.isRoot()) {
+            String rootNodeFQN = getRootNodeInterfaceFQN();
+            JavaInterfaceSource rootNodeInterfaceSource = getState().getJavaIndex().lookupInterface(rootNodeFQN);
+            entityInterface.addImport(rootNodeInterfaceSource);
+            entityInterface.addInterface(rootNodeInterfaceSource);
+        }
     }
 }

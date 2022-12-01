@@ -52,6 +52,11 @@ public class CreateReadersStage extends AbstractJavaStage {
         readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
         readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "ReaderUtil");
 
+        // Implements the ModelReader interface
+        JavaInterfaceSource modelReaderInterfaceSource = getState().getJavaIndex().lookupInterface(getModelReaderInterfaceFQN());
+        readerClassSource.addImport(modelReaderInterfaceSource);
+        readerClassSource.addInterface(modelReaderInterfaceSource);
+
         // Create the readXYZ methods - one for each entity
         specVersion.getEntities().forEach(entity -> {
             EntityModel entityModel = getState().getConceptIndex().lookupEntity(specVersion.getNamespace() + "." + entity.getName());
@@ -59,10 +64,51 @@ public class CreateReadersStage extends AbstractJavaStage {
                 warn("Entity model not found for entity: " + entity);
             } else {
                 createReadMethodFor(specVersion, readerClassSource, entityModel);
+
+                // There should be a single root entity in the spec.
+                if (entityModel.isRoot()) {
+                    createReadRootMethod(specVersion, readerClassSource, entityModel);
+                }
             }
         });
 
         getState().getJavaIndex().index(readerClassSource);
+    }
+
+    /**
+     * Creates a "readRoot(json)" method for this reader.
+     * @param specVersion
+     * @param readerClassSource
+     * @param entityModel
+     */
+    private void createReadRootMethod(SpecificationVersion specVersion, JavaClassSource readerClassSource, EntityModel entityModel) {
+        JavaInterfaceSource rootNodeInterfaceSource = getState().getJavaIndex().lookupInterface(getRootNodeInterfaceFQN());
+        readerClassSource.addImport(rootNodeInterfaceSource);
+        readerClassSource.addImport(ObjectNode.class);
+
+        MethodSource<JavaClassSource> readRootMethodSource = readerClassSource.addMethod()
+                .setName("readRoot")
+                .setReturnType(rootNodeInterfaceSource.getName())
+                .setPublic();
+        readRootMethodSource.addParameter("ObjectNode", "json");
+        readRootMethodSource.addAnnotation(Override.class);
+
+        String readMethodName = readMethodName(entityModel);
+        JavaInterfaceSource entitySource = lookupJavaEntity(entityModel);
+        JavaClassSource entityImplSource = lookupJavaEntityImpl(entityModel);
+
+        readerClassSource.addImport(entitySource);
+        readerClassSource.addImport(entityImplSource);
+
+        BodyBuilder body = new BodyBuilder();
+        body.addContext("readMethodName", readMethodName);
+        body.addContext("rootEntityType", entitySource.getName());
+        body.addContext("rootEntityImplType", entityImplSource.getName());
+
+        body.append("${rootEntityType} rootModel = new ${rootEntityImplType}();");
+        body.append("this.${readMethodName}(json, rootModel);");
+        body.append("return rootModel;");
+        readRootMethodSource.setBody(body.toString());
     }
 
     /**

@@ -51,6 +51,7 @@
                             </specifications>
                             <rootNamespace>org.example.multi</rootNamespace>
                             <testSubDir>fixtures</testSubDir>
+                            <generateTestFixtures>true</generateTestFixtures>
                         </configuration>
                     </execution>
                 </executions>

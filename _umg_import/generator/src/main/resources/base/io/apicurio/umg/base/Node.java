@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public interface Node extends Visitable {
 
     public int modelId();
-    public Node root();
+    public RootNode root();
     public Node parent();
     public Object getAttribute(String attributeName);
     public void setAttribute(String attributeName, Object attributeValue);

@@ -18,22 +18,26 @@ public class JavaWriteStage extends AbstractStage {
         getState().getJavaIndex().getInterfaces().values().forEach(_interface -> {
             writeToFile(_interface, getState().getConfig().getOutputDirectory());
         });
+        getState().getJavaIndex().getEnums().values().forEach(_enum -> {
+            writeToFile(_enum, getState().getConfig().getOutputDirectory());
+        });
     }
 
     /**
      * Writes the given class out to a file.
      *
-     * @param modelClass
+     * @param javaSource
      * @param outputDirectory
      */
-    private void writeToFile(JavaSource<?> modelClass, File outputDirectory) {
-        String pkg = modelClass.getPackage();
+    private void writeToFile(JavaSource<?> javaSource, File outputDirectory) {
+        String pkg = javaSource.getPackage();
         String fpath = pkg.replace(".", "/");
         File dir = new File(outputDirectory, fpath);
         dir.mkdirs();
-        File file = new File(dir, modelClass.getName() + ".java");
+        File file = new File(dir, javaSource.getName() + ".java");
         try (PrintWriter writer = new PrintWriter(file)) {
-            writer.write(modelClass.toString());
+            // TODO use Roaster's 'Formatter' with the option of custom formatting options to be more controlled here
+            writer.write(javaSource.toString());
             writer.flush();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

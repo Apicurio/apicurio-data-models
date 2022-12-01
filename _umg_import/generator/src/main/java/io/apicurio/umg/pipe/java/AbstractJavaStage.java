@@ -154,12 +154,32 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return getState().getConfig().getRootNamespace() + ".Node";
     }
 
+    protected String getRootNodeInterfaceFQN() {
+        return getState().getConfig().getRootNamespace() + ".RootNode";
+    }
+
     protected String getMappedNodeInterfaceFQN() {
         return getState().getConfig().getRootNamespace() + ".MappedNode";
     }
 
     protected String getNodeEntityClassFQN() {
         return getState().getConfig().getRootNamespace() + ".NodeImpl";
+    }
+
+    protected String getRootNodeEntityClassFQN() {
+        return getState().getConfig().getRootNamespace() + ".RootNodeImpl";
+    }
+
+    protected String getModelTypeEnumFQN() {
+        return getState().getConfig().getRootNamespace() + ".ModelType";
+    }
+
+    protected String getModelReaderInterfaceFQN() {
+        return getState().getConfig().getRootNamespace() + ".io.ModelReader";
+    }
+
+    protected String getModelWriterInterfaceFQN() {
+        return getState().getConfig().getRootNamespace() + ".io.ModelWriter";
     }
 
     protected String getRootVisitorInterfaceFQN() {
@@ -322,6 +342,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
             warn("Visitor interface not found: " + interfaceFQN);
         }
         return _interface;
+    }
+
+    protected String prefixToModelType(String prefix) {
+        return prefix.toUpperCase();
     }
 
 }

@@ -54,6 +54,11 @@ public class CreateWritersStage extends AbstractJavaStage {
         writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "JsonUtil");
         writerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "WriterUtil");
 
+        // Implements the ModelWriter interface
+        JavaInterfaceSource modelWriterInterfaceSource = getState().getJavaIndex().lookupInterface(getModelWriterInterfaceFQN());
+        writerClassSource.addImport(modelWriterInterfaceSource);
+        writerClassSource.addInterface(modelWriterInterfaceSource);
+
         // Create the writeXYZ methods - one for each entity
         specVersion.getEntities().forEach(entity -> {
             EntityModel entityModel = getState().getConceptIndex().lookupEntity(specVersion.getNamespace() + "." + entity.getName());
@@ -61,10 +66,48 @@ public class CreateWritersStage extends AbstractJavaStage {
                 warn("Entity model not found for entity: " + entity);
             } else {
                 createWriteMethodFor(specVersion, writerClassSource, entityModel);
+
+                // There should be a single root entity in the spec.
+                if (entityModel.isRoot()) {
+                    createWriteRootMethod(specVersion, writerClassSource, entityModel);
+                }
             }
         });
 
         getState().getJavaIndex().index(writerClassSource);
+    }
+
+    /**
+     * Creates a "writeRoot(node)" method for this writer.
+     * @param specVersion
+     * @param writerClassSource
+     * @param entityModel
+     */
+    private void createWriteRootMethod(SpecificationVersion specVersion, JavaClassSource writerClassSource, EntityModel entityModel) {
+        JavaInterfaceSource rootNodeInterfaceSource = getState().getJavaIndex().lookupInterface(getRootNodeInterfaceFQN());
+        writerClassSource.addImport(rootNodeInterfaceSource);
+        writerClassSource.addImport(ObjectNode.class);
+
+        MethodSource<JavaClassSource> writeRootMethodSource = writerClassSource.addMethod()
+                .setName("writeRoot")
+                .setReturnType(ObjectNode.class.getName())
+                .setPublic();
+        writeRootMethodSource.addParameter(rootNodeInterfaceSource.getName(), "node");
+        writeRootMethodSource.addAnnotation(Override.class);
+
+        String writeMethodName = writeMethodName(entityModel);
+        JavaInterfaceSource entitySource = lookupJavaEntity(entityModel);
+
+        writerClassSource.addImport(entitySource);
+
+        BodyBuilder body = new BodyBuilder();
+        body.addContext("writeMethodName", writeMethodName);
+        body.addContext("rootEntityType", entitySource.getName());
+
+        body.append("ObjectNode json = JsonUtil.objectNode();");
+        body.append("this.${writeMethodName}((${rootEntityType}) node, json);");
+        body.append("return json;");
+        writeRootMethodSource.setBody(body.toString());
     }
 
     /**
