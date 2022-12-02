@@ -6,7 +6,7 @@ export class JsonUtil {
             return [];
         }
         return Object.keys(json);
-    }    
+    }
 
     public static matchingKeys(regex: string, json: object): string[] {
         const re: RegExp = new RegExp(regex);
@@ -21,7 +21,9 @@ export class JsonUtil {
         return rval;
     }
     public static setProperty(json: object, propertyName: string, propertyValue: any): void {
-        json[propertyName] = propertyValue;
+        if (propertyValue !== null) {
+            json[propertyName] = propertyValue;
+        }
     }
     public static consumeProperty(json: any, propertyName: string): any {
         let rval: any = JsonUtil.getProperty(json, propertyName);
@@ -33,10 +35,18 @@ export class JsonUtil {
 
     /* Get/Consume a JSON (Object) property. */
     public static getObjectProperty(json: object, propertyName: string): object {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeObjectProperty(json: object, propertyName: string): object {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: object = JsonUtil.getObjectProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/Consume a JSON (Any) property. */
@@ -44,136 +54,268 @@ export class JsonUtil {
         return JsonUtil.getProperty(json, propertyName);
     }
     public static consumeAnyProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getAnyProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
-    
+
     /* Get/consume an array of anys property. */
     public static getAnyArrayProperty(json: object, propertyName: string): any[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <any[]> value;
+        }
+        return null;
     }
     public static consumeAnyArrayProperty(json: object, propertyName: string): any[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any[] = JsonUtil.getAnyArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume an array of objects property. */
     public static getObjectArrayProperty(json: object, propertyName: string): object[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <object[]> value;
+        }
+        return null;
     }
     public static consumeObjectArrayProperty(json: object, propertyName: string): object[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: object[] = JsonUtil.getObjectArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume an array of strings property. */
     public static getStringArrayProperty(json: object, propertyName: string): string[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <string[]> value;
+        }
+        return null;
     }
     public static consumeStringArrayProperty(json: object, propertyName: string): string[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: string[] = JsonUtil.getStringArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume an array of integers property. */
     public static getIntegerArrayProperty(json: object, propertyName: string): number[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <number[]> value;
+        }
+        return null;
     }
     public static consumeIntegerArrayProperty(json: object, propertyName: string): number[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: number[] = JsonUtil.getIntegerArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume an array of numbers property. */
     public static getNumberArrayProperty(json: object, propertyName: string): number[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <number[]> value;
+        }
+        return null;
     }
     public static consumeNumberArrayProperty(json: object, propertyName: string): number[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: number[] = JsonUtil.getNumberArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
-    
+
     /* Get/consume an array of booleans property. */
     public static getBooleanArrayProperty(json: object, propertyName: string): boolean[] {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (Array.isArray(value)) {
+            return <boolean[]> value;
+        }
+        return null;
     }
     public static consumeBooleanArrayProperty(json: object, propertyName: string): boolean[] {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: boolean[] = JsonUtil.getBooleanArrayProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
-    
+
     /* Get/Consume a string property. */
     public static getStringProperty(json: object, propertyName: string): string {
-            return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "string") {
+            return <string> value;
+        }
+        return null;
     }
     public static consumeStringProperty(json: object, propertyName: string): string {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: string = JsonUtil.getStringProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/Consume an Integer property. */
     public static getIntegerProperty(json: object, propertyName: string): number {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "number") {
+            return <number> value;
+        }
+        return null;
     }
     public static consumeIntegerProperty(json: object, propertyName: string): number {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: number = JsonUtil.getIntegerProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/Consume a Number property. */
     public static getNumberProperty(json: object, propertyName: string): number {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "number") {
+            return <number> value;
+        }
+        return null;
     }
     public static consumeNumberProperty(json: object, propertyName: string): number {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: number = JsonUtil.getNumberProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/Consume a Boolean property. */
     public static getBooleanProperty(json: object, propertyName: string): boolean {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "boolean") {
+            return <boolean> value;
+        }
+        return null;
     }
     public static consumeBooleanProperty(json: object, propertyName: string): boolean {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: boolean = JsonUtil.getBooleanProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume a map of anys property. */
     public static getAnyMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeAnyMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getAnyMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume a map of objects property. */
     public static getObjectMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeObjectMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getObjectMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
 
     /* Get/consume a map of strings property. */
     public static getStringMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeStringMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getStringMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume a map of integers property. */
     public static getIntegerMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeIntegerMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getIntegerMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume a map of numbers property. */
     public static getNumberMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeNumberMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getNumberMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
     /* Get/consume a map of numbers property. */
     public static getBooleanMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.getProperty(json, propertyName);
+        const value: any = JsonUtil.getProperty(json, propertyName);
+        if (typeof value === "object") {
+            return value;
+        }
+        return null;
     }
     public static consumeBooleanMapProperty(json: object, propertyName: string): any {
-        return JsonUtil.consumeProperty(json, propertyName);
+        const value: any = JsonUtil.getBooleanMapProperty(json, propertyName);
+        if (value != null && value !== undefined) {
+            delete json[propertyName];
+        }
+        return value;
     }
 
 
@@ -265,7 +407,7 @@ export class JsonUtil {
     public static objectNode(): any {
         return {};
     }
-    
+
     public static arrayNode(): any {
         return [];
     }
