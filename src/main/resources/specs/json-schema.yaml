@@ -2,7 +2,7 @@ name: JSON Schema
 url: https://json-schema.org/
 description: JSON Schema is a vocabulary that allows you to annotate and validate JSON documents.
 prefix: JsonSchema
-namespace: io.apicurio.datamodels.jsonschema
+namespace: io.apicurio.datamodels.models.jsonschema
 versions:
   - $ref: ./json-schema/json-schema-draft-4.yaml
   - $ref: ./json-schema/json-schema-draft-6.yaml

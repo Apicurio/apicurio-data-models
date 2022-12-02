@@ -18,44 +18,17 @@ package io.apicurio.datamodels;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.apicurio.datamodels.asyncapi.v20.AsyncApi20Document;
-import io.apicurio.datamodels.asyncapi.v20.AsyncApi20DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v20.io.AsyncApi20ModelReader;
-import io.apicurio.datamodels.asyncapi.v20.io.AsyncApi20ModelWriter;
-import io.apicurio.datamodels.asyncapi.v21.AsyncApi21Document;
-import io.apicurio.datamodels.asyncapi.v21.AsyncApi21DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v21.io.AsyncApi21ModelReader;
-import io.apicurio.datamodels.asyncapi.v21.io.AsyncApi21ModelWriter;
-import io.apicurio.datamodels.asyncapi.v22.AsyncApi22Document;
-import io.apicurio.datamodels.asyncapi.v22.AsyncApi22DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v22.io.AsyncApi22ModelReader;
-import io.apicurio.datamodels.asyncapi.v22.io.AsyncApi22ModelWriter;
-import io.apicurio.datamodels.asyncapi.v23.AsyncApi23Document;
-import io.apicurio.datamodels.asyncapi.v23.AsyncApi23DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v23.io.AsyncApi23ModelReader;
-import io.apicurio.datamodels.asyncapi.v23.io.AsyncApi23ModelWriter;
-import io.apicurio.datamodels.asyncapi.v24.AsyncApi24Document;
-import io.apicurio.datamodels.asyncapi.v24.AsyncApi24DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v24.io.AsyncApi24ModelReader;
-import io.apicurio.datamodels.asyncapi.v24.io.AsyncApi24ModelWriter;
-import io.apicurio.datamodels.asyncapi.v25.AsyncApi25Document;
-import io.apicurio.datamodels.asyncapi.v25.AsyncApi25DocumentImpl;
-import io.apicurio.datamodels.asyncapi.v25.io.AsyncApi25ModelReader;
-import io.apicurio.datamodels.asyncapi.v25.io.AsyncApi25ModelWriter;
-import io.apicurio.datamodels.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.openapi.v20.OpenApi20DocumentImpl;
-import io.apicurio.datamodels.openapi.v20.io.OpenApi20ModelReader;
-import io.apicurio.datamodels.openapi.v20.io.OpenApi20ModelWriter;
-import io.apicurio.datamodels.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.openapi.v30.OpenApi30DocumentImpl;
-import io.apicurio.datamodels.openapi.v30.io.OpenApi30ModelReader;
-import io.apicurio.datamodels.openapi.v30.io.OpenApi30ModelWriter;
-import io.apicurio.datamodels.openapi.v31.OpenApi31Document;
-import io.apicurio.datamodels.openapi.v31.OpenApi31DocumentImpl;
-import io.apicurio.datamodels.openapi.v31.io.OpenApi31ModelReader;
-import io.apicurio.datamodels.openapi.v31.io.OpenApi31ModelWriter;
-import io.apicurio.datamodels.util.JsonUtil;
-import io.apicurio.datamodels.visitors.Visitor;
+import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.ModelType;
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.RootNode;
+import io.apicurio.datamodels.models.io.ModelReader;
+import io.apicurio.datamodels.models.io.ModelReaderFactory;
+import io.apicurio.datamodels.models.io.ModelWriter;
+import io.apicurio.datamodels.models.io.ModelWriterFactory;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.util.JsonUtil;
+import io.apicurio.datamodels.models.visitors.Visitor;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -66,6 +39,15 @@ import io.apicurio.datamodels.visitors.Visitor;
 public class Library {
 
     /**
+     * Creates a new, empty document of the given type.
+     * @param type
+     */
+    public static Document createDocument(ModelType type) {
+        ModelReader reader = ModelReaderFactory.createModelReader(type);
+        return (Document) reader.readRoot(JsonUtil.objectNode());
+    }
+
+    /**
      * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
      * read as a data model {@link Document} and returned.
      * @param json
@@ -73,76 +55,10 @@ public class Library {
     public static Document readDocument(ObjectNode json) {
         // Clone the input because the reader is destructive to the source data.
         ObjectNode clonedJson = (ObjectNode) JsonUtil.clone(json);
-        DocumentType type = DocumentTypeDetector.discoverDocumentType(clonedJson);
-        switch (type) {
-            case ASYNCAPI_20:
-            {
-                AsyncApi20ModelReader reader = new AsyncApi20ModelReader();
-                AsyncApi20Document document = new AsyncApi20DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case ASYNCAPI_21:
-            {
-                AsyncApi21ModelReader reader = new AsyncApi21ModelReader();
-                AsyncApi21Document document = new AsyncApi21DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case ASYNCAPI_22:
-            {
-                AsyncApi22ModelReader reader = new AsyncApi22ModelReader();
-                AsyncApi22Document document = new AsyncApi22DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case ASYNCAPI_23:
-            {
-                AsyncApi23ModelReader reader = new AsyncApi23ModelReader();
-                AsyncApi23Document document = new AsyncApi23DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case ASYNCAPI_24:
-            {
-                AsyncApi24ModelReader reader = new AsyncApi24ModelReader();
-                AsyncApi24Document document = new AsyncApi24DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case ASYNCAPI_25:
-            {
-                AsyncApi25ModelReader reader = new AsyncApi25ModelReader();
-                AsyncApi25Document document = new AsyncApi25DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case OPENAPI_2:
-            {
-                OpenApi20ModelReader reader = new OpenApi20ModelReader();
-                OpenApi20Document document = new OpenApi20DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case OPENAPI_30:
-            {
-                OpenApi30ModelReader reader = new OpenApi30ModelReader();
-                OpenApi30Document document = new OpenApi30DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            case OPENAPI_31:
-            {
-                OpenApi31ModelReader reader = new OpenApi31ModelReader();
-                OpenApi31Document document = new OpenApi31DocumentImpl();
-                reader.readDocument(clonedJson, document);
-                return document;
-            }
-            default:
-            {
-                throw new RuntimeException("Unsupported document type.");
-            }
-        }
+        ModelType type = ModelTypeDetector.discoverModelType(clonedJson);
+
+        ModelReader reader = ModelReaderFactory.createModelReader(type);
+        return (Document) reader.readRoot(clonedJson);
     }
 
     /**
@@ -159,85 +75,45 @@ public class Library {
      * Called to serialize a given data model node to a JSON object.
      * @param node
      */
-    public static ObjectNode writeDocument(DocumentType type, Document document) {
-        switch (type) {
-            case ASYNCAPI_20:
-            {
-                AsyncApi20ModelWriter writer = new AsyncApi20ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi20Document) document, json);
-                return json;
-            }
-            case ASYNCAPI_21:
-            {
-                AsyncApi21ModelWriter writer = new AsyncApi21ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi21Document) document, json);
-                return json;
-            }
-            case ASYNCAPI_22:
-            {
-                AsyncApi22ModelWriter writer = new AsyncApi22ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi22Document) document, json);
-                return json;
-            }
-            case ASYNCAPI_23:
-            {
-                AsyncApi23ModelWriter writer = new AsyncApi23ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi23Document) document, json);
-                return json;
-            }
-            case ASYNCAPI_24:
-            {
-                AsyncApi24ModelWriter writer = new AsyncApi24ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi24Document) document, json);
-                return json;
-            }
-            case ASYNCAPI_25:
-            {
-                AsyncApi25ModelWriter writer = new AsyncApi25ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((AsyncApi25Document) document, json);
-                return json;
-            }
-            case OPENAPI_2:
-            {
-                OpenApi20ModelWriter writer = new OpenApi20ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((OpenApi20Document) document, json);
-                return json;
-            }
-            case OPENAPI_30:
-            {
-                OpenApi30ModelWriter writer = new OpenApi30ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((OpenApi30Document) document, json);
-                return json;
-            }
-            case OPENAPI_31:
-            {
-                OpenApi31ModelWriter writer = new OpenApi31ModelWriter();
-                ObjectNode json = JsonUtil.objectNode();
-                writer.writeDocument((OpenApi31Document) document, json);
-                return json;
-            }
-            default:
-            {
-                throw new RuntimeException("Unsupported document type.");
-            }
-        }
+    public static ObjectNode writeDocument(Document document) {
+        ModelWriter writer = ModelWriterFactory.createModelWriter(document.root().modelType());
+        return writer.writeRoot((RootNode) document);
     }
 
     /**
      * Called to serialize a given data model to a JSON formatted string.
      * @param document
      */
-    public static String writeDocumentToJSONString(DocumentType type, Document document) {
-        ObjectNode json = Library.writeDocument(type, document);
+    public static String writeDocumentToJSONString(Document document) {
+        ObjectNode json = Library.writeDocument( document);
         return JsonUtil.stringify(json);
+    }
+
+    /**
+     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node
+     * type and an empty instance of the node class.  For example, you could read just an
+     * Operation by passing the JSON data for the operation along with an instance of e.g.
+     * {@link OpenApi30Operation} and this will read the data and store it in the instance.
+     * @param json
+     * @param node
+     */
+    public static Node readNode(ObjectNode json, Node node) {
+        // Clone the input because the reader is destructive to the source data.
+        ObjectNode clonedJson = (ObjectNode) JsonUtil.clone(json);
+        Visitor readerDispatcher = ModelReaderFactory.createModelReaderDispatcher(node.root().modelType(), clonedJson);
+        node.accept(readerDispatcher);
+        return node;
+    }
+
+    /**
+     * Called to serialize a given data model node to a JSON object.
+     * @param node
+     */
+    public static ObjectNode writeNode(Node node) {
+        ObjectNode json = JsonUtil.objectNode();
+        Visitor writerDispatcher = ModelWriterFactory.createModelWriterDispatcher(node.root().modelType(), json);
+        node.accept(writerDispatcher);
+        return json;
     }
 
     /**
@@ -247,7 +123,8 @@ public class Library {
      * @param visitor
      * @param direction
      */
-    public static void visitTree(DocumentType type, Node node, Visitor visitor, TraverserDirection direction) {
+    public static void visitTree(Node node, Visitor visitor, TraverserDirection direction) {
+        ModelType type = node.root().modelType();
         VisitorUtil.visitTree(type, node, visitor, direction);
     }
 

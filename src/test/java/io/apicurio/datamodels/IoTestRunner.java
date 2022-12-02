@@ -33,7 +33,9 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.apicurio.datamodels.util.JsonUtil;
+import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.util.JsonUtil;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -99,7 +101,6 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 Assert.assertNotNull(original);
                 // Parse into a Json object
                 ObjectNode originalParsed = (ObjectNode) JsonUtil.parseJSON(original);
-                DocumentType documentType = DocumentTypeDetector.discoverDocumentType(originalParsed);
 
                 // Parse into a data model
                 Document doc = Library.readDocument(originalParsed);
@@ -107,22 +108,25 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
 
                 // Make sure we read the appropriate number of "extra" properties
                 ExtraPropertyDetectionVisitor epv = new ExtraPropertyDetectionVisitor();
-                Library.visitTree(documentType, doc, epv, TraverserDirection.down);
+                Library.visitTree(doc, epv, TraverserDirection.down);
                 int actualExtraProps = epv.getExtraPropertyCount();
                 int expectedExtraProps = child.getExtraProperties();
                 Assert.assertEquals("Wrong number of extra properties found: " + epv.extraProperties, expectedExtraProps, actualExtraProps);
 
                 // Write the data model back to JSON
-                Object roundTripJs = Library.writeDocument(documentType, doc);
+                Object roundTripJs = Library.writeDocument(doc);
                 Assert.assertNotNull(roundTripJs);
 
                 // Stringify the round trip object
                 String roundTrip = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(roundTripJs);
                 Assert.assertNotNull(roundTrip);
                 assertJsonEquals(original, roundTrip);
-                //
-                //                // Now test that we can create a Node Path to **every** node in the document!!
-                //                List<Node> allNodes = getAllNodes(doc);
+
+                List<Node> allNodes = getAllNodes(doc);
+                allNodes.forEach(node -> {
+                    Library.writeNode(node);
+                });
+
                 //                for (Node node : allNodes) {
                 //                    try {
                 //                        NodePath nodePath = Library.createNodePath(node);
@@ -179,11 +183,11 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
      * Returns all nodes in the document.
      * @param doc
      */
-    //    protected List<Node> getAllNodes(Document doc) {
-    //        IoTestAllNodeFinder finder = new IoTestAllNodeFinder();
-    //        Library.visitTree(doc, finder, TraverserDirection.down);
-    //        return finder.allNodes;
-    //    }
+    protected List<Node> getAllNodes(Document doc) {
+        IoTestAllNodeFinder finder = new IoTestAllNodeFinder();
+        Library.visitTree(doc, finder, TraverserDirection.down);
+        return finder.allNodes;
+    }
 
     /**
      * Loads a resource as a string (reads the content at the URL).

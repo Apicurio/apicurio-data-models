@@ -4,7 +4,7 @@ versions:
   - version: 2020-12
     url: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-01
 prefix: JsonSchema202012
-namespace: io.apicurio.datamodels.jsonschema.v202012
+namespace: io.apicurio.datamodels.models.jsonschema.v202012
 # NOTES:
 # - Keep everything in alphabetical order please
 # - Release notes: https://json-schema.org/draft/2020-12/release-notes.html

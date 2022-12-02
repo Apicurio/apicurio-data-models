@@ -4,7 +4,7 @@ versions:
   - version: 2.5.0
     url: https://www.asyncapi.com/docs/reference/specification/v2.5.0
 prefix: AsyncApi25
-namespace: io.apicurio.datamodels.asyncapi.v25
+namespace: io.apicurio.datamodels.models.asyncapi.v25
 
 traits:
   - name: Extensible
@@ -19,6 +19,7 @@ traits:
 
 entities:
   - name: Document
+    root: true
     traits:
       - Extensible
     properties:
