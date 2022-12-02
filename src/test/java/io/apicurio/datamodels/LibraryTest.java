@@ -3,7 +3,7 @@ package io.apicurio.datamodels;
 import org.junit.Assert;
 import org.junit.Test;
 
-import io.apicurio.datamodels.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 
 public class LibraryTest {
 

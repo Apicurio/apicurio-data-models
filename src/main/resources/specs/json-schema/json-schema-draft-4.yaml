@@ -4,7 +4,7 @@ versions:
   - version: draft-4
     url: https://tools.ietf.org/html/draft-fge-json-schema-validation-00
 prefix: JsonSchemaDraft4
-namespace: io.apicurio.datamodels.jsonschema.draft4
+namespace: io.apicurio.datamodels.models.jsonschema.draft4
 # NOTES:
 # - Keep everything in alphabetical order please
 traits:

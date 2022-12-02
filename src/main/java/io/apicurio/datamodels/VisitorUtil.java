@@ -16,55 +16,57 @@
 
 package io.apicurio.datamodels;
 
-import io.apicurio.datamodels.asyncapi.v20.visitors.AsyncApi20Traverser;
-import io.apicurio.datamodels.asyncapi.v21.visitors.AsyncApi21Traverser;
-import io.apicurio.datamodels.asyncapi.v22.visitors.AsyncApi22Traverser;
-import io.apicurio.datamodels.asyncapi.v23.visitors.AsyncApi23Traverser;
-import io.apicurio.datamodels.asyncapi.v24.visitors.AsyncApi24Traverser;
-import io.apicurio.datamodels.asyncapi.v25.visitors.AsyncApi25Traverser;
-import io.apicurio.datamodels.openapi.v20.visitors.OpenApi20Traverser;
-import io.apicurio.datamodels.openapi.v30.visitors.OpenApi30Traverser;
-import io.apicurio.datamodels.openapi.v31.visitors.OpenApi31Traverser;
-import io.apicurio.datamodels.visitors.ReverseTraverser;
-import io.apicurio.datamodels.visitors.Traverser;
-import io.apicurio.datamodels.visitors.Visitor;
+import io.apicurio.datamodels.models.ModelType;
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.asyncapi.v20.visitors.AsyncApi20Traverser;
+import io.apicurio.datamodels.models.asyncapi.v21.visitors.AsyncApi21Traverser;
+import io.apicurio.datamodels.models.asyncapi.v22.visitors.AsyncApi22Traverser;
+import io.apicurio.datamodels.models.asyncapi.v23.visitors.AsyncApi23Traverser;
+import io.apicurio.datamodels.models.asyncapi.v24.visitors.AsyncApi24Traverser;
+import io.apicurio.datamodels.models.asyncapi.v25.visitors.AsyncApi25Traverser;
+import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20Traverser;
+import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30Traverser;
+import io.apicurio.datamodels.models.openapi.v31.visitors.OpenApi31Traverser;
+import io.apicurio.datamodels.models.visitors.ReverseTraverser;
+import io.apicurio.datamodels.models.visitors.Traverser;
+import io.apicurio.datamodels.models.visitors.Visitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
 public class VisitorUtil {
 
-    public static void visitTree(DocumentType type, Node node, Visitor visitor, TraverserDirection direction) {
+    public static void visitTree(ModelType type, Node node, Visitor visitor, TraverserDirection direction) {
         Traverser traverser = null;
         if (direction == TraverserDirection.up) {
             traverser = new ReverseTraverser(visitor);
         } else {
             switch (type) {
-                case ASYNCAPI_20:
+                case ASYNCAPI20:
                     traverser = new AsyncApi20Traverser(visitor);
                     break;
-                case ASYNCAPI_21:
+                case ASYNCAPI21:
                     traverser = new AsyncApi21Traverser(visitor);
                     break;
-                case ASYNCAPI_22:
+                case ASYNCAPI22:
                     traverser = new AsyncApi22Traverser(visitor);
                     break;
-                case ASYNCAPI_23:
+                case ASYNCAPI23:
                     traverser = new AsyncApi23Traverser(visitor);
                     break;
-                case ASYNCAPI_24:
+                case ASYNCAPI24:
                     traverser = new AsyncApi24Traverser(visitor);
                     break;
-                case ASYNCAPI_25:
+                case ASYNCAPI25:
                     traverser = new AsyncApi25Traverser(visitor);
                     break;
-                case OPENAPI_2:
+                case OPENAPI20:
                     traverser = new OpenApi20Traverser(visitor);
                     break;
-                case OPENAPI_30:
+                case OPENAPI30:
                     traverser = new OpenApi30Traverser(visitor);
                     break;
-                case OPENAPI_31:
+                case OPENAPI31:
                     traverser = new OpenApi31Traverser(visitor);
                     break;
             }

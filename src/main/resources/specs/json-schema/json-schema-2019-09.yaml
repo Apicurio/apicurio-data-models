@@ -4,7 +4,7 @@ versions:
   - version: 2019-09
     url: https://tools.ietf.org/html/draft-handrews-json-schema-validation-02
 prefix: JsonSchema201909
-namespace: io.apicurio.datamodels.jsonschema.v201909
+namespace: io.apicurio.datamodels.models.jsonschema.v201909
 # NOTES:
 # - Keep everything in alphabetical order please
 # - Release notes: https://json-schema.org/draft/2019-09/release-notes.html

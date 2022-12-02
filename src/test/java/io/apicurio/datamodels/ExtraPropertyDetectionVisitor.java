@@ -19,7 +19,8 @@ package io.apicurio.datamodels;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.apicurio.datamodels.visitors.AllNodeVisitor;
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.visitors.AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com

@@ -10,7 +10,7 @@ versions:
   - version: 3.0.3
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
 prefix: OpenApi30
-namespace: io.apicurio.datamodels.openapi.v30
+namespace: io.apicurio.datamodels.models.openapi.v30
 
 traits:
   - name: Extensible
@@ -25,6 +25,7 @@ traits:
 
 entities:
   - name: Document
+    root: true
     traits:
       - Extensible
     properties:
