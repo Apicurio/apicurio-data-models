@@ -130,9 +130,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateImplMethodsStage());
 
         pipe.addStage(new CreateReadersStage());
-        pipe.addStage(new CreateReaderFactoryStage());
         pipe.addStage(new CreateWritersStage());
-        pipe.addStage(new CreateWriterFactoryStage());
         pipe.addStage(new CreateVisitorInterfacesStage());
         pipe.addStage(new CreateAcceptMethodStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());
@@ -141,6 +139,8 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateReaderDispatchersStage());
         pipe.addStage(new CreateWriterDispatchersStage());
         pipe.addStage(new CreateTraversersStage());
+        pipe.addStage(new CreateReaderFactoryStage());
+        pipe.addStage(new CreateWriterFactoryStage());
 
         pipe.addStage(new RemoveUnusedImportsStage());
         pipe.addStage(new OrganizeImportsStage());

@@ -6,6 +6,8 @@ import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
 /**
@@ -19,7 +21,7 @@ public class CreateReaderFactoryStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         String readerFactoryPackageName = getState().getConfig().getRootNamespace() + ".io";
-        String readerFactoryClassName = "ReaderFactory";
+        String readerFactoryClassName = "ModelReaderFactory";
 
         // Create java source code for the reader
         JavaClassSource readerClassSource = Roaster.create(JavaClassSource.class)
@@ -27,14 +29,20 @@ public class CreateReaderFactoryStage extends AbstractJavaStage {
                 .setName(readerFactoryClassName)
                 .setPublic();
 
-        // Some imports (model type, model reader interface, etc)
+        createReaderFactoryMethod(readerClassSource);
+        createReaderDispatcherFactoryMethod(readerClassSource);
+
+        getState().getJavaIndex().index(readerClassSource);
+    }
+
+    private void createReaderFactoryMethod(JavaClassSource readerClassSource) {
         JavaEnumSource modelTypeSource = getState().getJavaIndex().lookupEnum(getModelTypeEnumFQN());
         readerClassSource.addImport(modelTypeSource);
         JavaInterfaceSource modelReaderSource = getState().getJavaIndex().lookupInterface(getModelReaderInterfaceFQN());
         readerClassSource.addImport(modelReaderSource);
 
-        // Create the factory method.
-        MethodSource<JavaClassSource> factoryMethodSource = readerClassSource.addMethod().setName("createModelReader").setPublic();
+        MethodSource<JavaClassSource> factoryMethodSource = readerClassSource.addMethod()
+                .setName("createModelReader").setPublic().setStatic(true);
         factoryMethodSource.setReturnType(modelReaderSource);
         factoryMethodSource.addParameter(modelTypeSource.getName(), "modelType");
 
@@ -57,7 +65,53 @@ public class CreateReaderFactoryStage extends AbstractJavaStage {
         body.append("}");
         body.append("return reader;");
         factoryMethodSource.setBody(body.toString());
-
-        getState().getJavaIndex().index(readerClassSource);
     }
+
+    private void createReaderDispatcherFactoryMethod(JavaClassSource readerClassSource) {
+        JavaEnumSource modelTypeSource = getState().getJavaIndex().lookupEnum(getModelTypeEnumFQN());
+        readerClassSource.addImport(modelTypeSource);
+        JavaInterfaceSource rootVisitorInterfaceSource = getState().getJavaIndex().lookupInterface(getRootVisitorInterfaceFQN());
+        readerClassSource.addImport(rootVisitorInterfaceSource);
+
+        readerClassSource.addImport(ObjectNode.class);
+
+        MethodSource<JavaClassSource> factoryMethodSource = readerClassSource.addMethod()
+                .setName("createModelReaderDispatcher").setPublic().setStatic(true);
+        factoryMethodSource.setReturnType(rootVisitorInterfaceSource);
+        factoryMethodSource.addParameter(modelTypeSource.getName(), "modelType");
+        factoryMethodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
+
+        BodyBuilder body = new BodyBuilder();
+        body.addContext("visitorName", rootVisitorInterfaceSource.getName());
+
+        body.append("ModelReader reader = ModelReaderFactory.createModelReader(modelType);");
+        body.append("${visitorName} visitor = null;");
+        body.append("switch (modelType) {");
+        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
+            String readerPackageName = getReaderPackageName(specVersion);
+            String readerClassName = getReaderClassName(specVersion);
+            String readerFQN = readerPackageName + "." + readerClassName;
+            String dispatcherPackageName = readerPackageName;
+            String dispatcherClassName = readerClassName + "Dispatcher";
+            String dispatcherFQN = dispatcherPackageName + "." + dispatcherClassName;
+
+            JavaClassSource readerSource = getState().getJavaIndex().lookupClass(readerFQN);
+            readerClassSource.addImport(readerSource);
+            JavaClassSource readerDispatcherSource = getState().getJavaIndex().lookupClass(dispatcherFQN);
+            readerClassSource.addImport(readerDispatcherSource);
+
+            String modelTypeValue = prefixToModelType(specVersion.getPrefix());
+            body.addContext("modelTypeValue", modelTypeValue);
+            body.addContext("readerClassName", readerSource.getName());
+            body.addContext("dispatcherClassName", readerDispatcherSource.getName());
+
+            body.append("    case ${modelTypeValue}:");
+            body.append("        visitor = new ${dispatcherClassName}(json, (${readerClassName}) reader);");
+            body.append("        break;");
+        });
+        body.append("}");
+        body.append("return visitor;");
+        factoryMethodSource.setBody(body.toString());
+    }
+
 }

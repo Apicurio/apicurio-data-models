@@ -6,6 +6,8 @@ import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
 /**
@@ -19,7 +21,7 @@ public class CreateWriterFactoryStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         String writerFactoryPackageName = getState().getConfig().getRootNamespace() + ".io";
-        String writerFactoryClassName = "WriterFactory";
+        String writerFactoryClassName = "ModelWriterFactory";
 
         // Create java source code for the writer
         JavaClassSource writerClassSource = Roaster.create(JavaClassSource.class)
@@ -27,6 +29,13 @@ public class CreateWriterFactoryStage extends AbstractJavaStage {
                 .setName(writerFactoryClassName)
                 .setPublic();
 
+        createWriterFactoryMethod(writerClassSource);
+        createWriterDispatcherFactoryMethod(writerClassSource);
+
+        getState().getJavaIndex().index(writerClassSource);
+    }
+
+    private void createWriterFactoryMethod(JavaClassSource writerClassSource) {
         // Some imports (model type, model writer interface, etc)
         JavaEnumSource modelTypeSource = getState().getJavaIndex().lookupEnum(getModelTypeEnumFQN());
         writerClassSource.addImport(modelTypeSource);
@@ -34,7 +43,7 @@ public class CreateWriterFactoryStage extends AbstractJavaStage {
         writerClassSource.addImport(modelWriterSource);
 
         // Create the factory method.
-        MethodSource<JavaClassSource> factoryMethodSource = writerClassSource.addMethod().setName("createModelWriter").setPublic();
+        MethodSource<JavaClassSource> factoryMethodSource = writerClassSource.addMethod().setName("createModelWriter").setPublic().setStatic(true);
         factoryMethodSource.setReturnType(modelWriterSource);
         factoryMethodSource.addParameter(modelTypeSource.getName(), "modelType");
 
@@ -57,7 +66,53 @@ public class CreateWriterFactoryStage extends AbstractJavaStage {
         body.append("}");
         body.append("return writer;");
         factoryMethodSource.setBody(body.toString());
-
-        getState().getJavaIndex().index(writerClassSource);
     }
+
+    private void createWriterDispatcherFactoryMethod(JavaClassSource writerClassSource) {
+        JavaEnumSource modelTypeSource = getState().getJavaIndex().lookupEnum(getModelTypeEnumFQN());
+        writerClassSource.addImport(modelTypeSource);
+        JavaInterfaceSource rootVisitorInterfaceSource = getState().getJavaIndex().lookupInterface(getRootVisitorInterfaceFQN());
+        writerClassSource.addImport(rootVisitorInterfaceSource);
+
+        writerClassSource.addImport(ObjectNode.class);
+
+        MethodSource<JavaClassSource> factoryMethodSource = writerClassSource.addMethod()
+                .setName("createModelWriterDispatcher").setPublic().setStatic(true);
+        factoryMethodSource.setReturnType(rootVisitorInterfaceSource);
+        factoryMethodSource.addParameter(modelTypeSource.getName(), "modelType");
+        factoryMethodSource.addParameter(ObjectNode.class.getSimpleName(), "json");
+
+        BodyBuilder body = new BodyBuilder();
+        body.addContext("visitorName", rootVisitorInterfaceSource.getName());
+
+        body.append("ModelWriter writer = ModelWriterFactory.createModelWriter(modelType);");
+        body.append("${visitorName} visitor = null;");
+        body.append("switch (modelType) {");
+        getState().getSpecIndex().getAllSpecificationVersions().forEach(specVersion -> {
+            String writerPackageName = getWriterPackageName(specVersion);
+            String writerClassName = getWriterClassName(specVersion);
+            String writerFQN = writerPackageName + "." + writerClassName;
+            String dispatcherPackageName = writerPackageName;
+            String dispatcherClassName = writerClassName + "Dispatcher";
+            String dispatcherFQN = dispatcherPackageName + "." + dispatcherClassName;
+
+            JavaClassSource writerSource = getState().getJavaIndex().lookupClass(writerFQN);
+            writerClassSource.addImport(writerSource);
+            JavaClassSource writerDispatcherSource = getState().getJavaIndex().lookupClass(dispatcherFQN);
+            writerClassSource.addImport(writerDispatcherSource);
+
+            String modelTypeValue = prefixToModelType(specVersion.getPrefix());
+            body.addContext("modelTypeValue", modelTypeValue);
+            body.addContext("writerClassName", writerSource.getName());
+            body.addContext("dispatcherClassName", writerDispatcherSource.getName());
+
+            body.append("    case ${modelTypeValue}:");
+            body.append("        visitor = new ${dispatcherClassName}(json, (${writerClassName}) writer);");
+            body.append("        break;");
+        });
+        body.append("}");
+        body.append("return visitor;");
+        factoryMethodSource.setBody(body.toString());
+    }
+
 }
