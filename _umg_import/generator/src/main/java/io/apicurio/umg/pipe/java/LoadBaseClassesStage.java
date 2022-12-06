@@ -19,13 +19,25 @@ public class LoadBaseClassesStage extends AbstractStage {
     @Override
     protected void doProcess() {
         try {
-            loadBaseClasses("io.apicurio.umg.base.util.JsonUtil", "io.apicurio.umg.base.NodeImpl",
-                    "io.apicurio.umg.base.util.ReaderUtil", "io.apicurio.umg.base.util.WriterUtil",
-                    "io.apicurio.umg.base.visitors.AbstractTraverser", "io.apicurio.umg.base.visitors.ReverseTraverser",
-                    "io.apicurio.umg.base.RootNodeImpl");
-            loadBaseInterfaces("io.apicurio.umg.base.Node", "io.apicurio.umg.base.MappedNode",
-                    "io.apicurio.umg.base.Visitable", "io.apicurio.umg.base.visitors.Traverser",
-                    "io.apicurio.umg.base.RootNode", "io.apicurio.umg.base.io.ModelReader",
+            loadBaseClasses(
+                    "io.apicurio.umg.base.NodeImpl",
+                    "io.apicurio.umg.base.RootNodeImpl",
+                    "io.apicurio.umg.base.util.JsonUtil",
+                    "io.apicurio.umg.base.util.ReaderUtil",
+                    "io.apicurio.umg.base.util.WriterUtil",
+                    "io.apicurio.umg.base.visitors.AbstractTraverser",
+                    "io.apicurio.umg.base.visitors.TraversalStep",
+                    "io.apicurio.umg.base.visitors.TraversalContextImpl",
+                    "io.apicurio.umg.base.visitors.ReverseTraverser");
+            loadBaseInterfaces(
+                    "io.apicurio.umg.base.Node",
+                    "io.apicurio.umg.base.MappedNode",
+                    "io.apicurio.umg.base.RootNode",
+                    "io.apicurio.umg.base.Visitable",
+                    "io.apicurio.umg.base.visitors.Traverser",
+                    "io.apicurio.umg.base.visitors.TraversalContext",
+                    "io.apicurio.umg.base.visitors.TraversingVisitor",
+                    "io.apicurio.umg.base.io.ModelReader",
                     "io.apicurio.umg.base.io.ModelWriter");
         } catch (IOException e) {
             throw new RuntimeException(e);

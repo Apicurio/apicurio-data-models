@@ -17,7 +17,6 @@ import org.jboss.forge.roaster.model.source.ParameterSource;
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
-import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
@@ -131,28 +130,21 @@ public class CreateTraversersStage extends AbstractVisitorStage {
         allProperties.forEach(_property -> {
             PropertyModel property = _property;
 
-            if (isStarProperty(_property)) {
-                PropertyType listType = PropertyType.builder()
-                        .nested(Collections.singleton(property.getType()))
-                        .list(true)
-                        .build();
-                property = PropertyModel.builder().name("items").type(listType).build();
-            } else if (isRegexProperty(_property)) {
-                PropertyType mappedType = PropertyType.builder()
-                        .nested(Collections.singleton(property.getType()))
-                        .map(true)
-                        .build();
-                property = PropertyModel.builder().name(_property.getCollection()).type(mappedType).build();
-            }
-
+            body.addContext("propertyName", property.getName());
             body.addContext("propertyGetter", getterMethodName(property));
 
             if (isEntity(property)) {
-                body.append("this.traverseIfNotNull(model.${propertyGetter}());");
+                if (isStarProperty(_property)) {
+                    body.append("this.traverseMappedNode(model);");
+                } else if (isRegexProperty(_property)) {
+                    body.append("this.traverseMap(null, model.${propertyGetter}());");
+                } else {
+                    body.append("this.traverse(\"${propertyName}\", model.${propertyGetter}());");
+                }
             } else if (isEntityList(property)) {
-                body.append("this.traverseCollection(model.${propertyGetter}());");
+                body.append("this.traverseList(\"${propertyName}\", model.${propertyGetter}());");
             } else if (isEntityMap(property)) {
-                body.append("this.traverseMap(model.${propertyGetter}());");
+                body.append("this.traverseMap(\"${propertyName}\", model.${propertyGetter}());");
             } else {
                 warn("Unhandled property in traverser: " + property);
             }
