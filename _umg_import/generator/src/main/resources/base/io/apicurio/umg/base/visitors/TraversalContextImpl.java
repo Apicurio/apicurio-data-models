@@ -17,14 +17,14 @@ public class TraversalContextImpl implements TraversalContext {
 
     private final Stack<TraversalStep> stack = new Stack<>();
 
-    public void push(String propertyName) {
-        this.stack.push(new TraversalStep(propertyName));
+    public void pushProperty(String propertyName) {
+        this.stack.push(TraversalStep.fromNodeProperty(propertyName));
     }
-    public void push(String propertyName, int index) {
-        this.stack.push(new TraversalStep(propertyName, index));
+    public void pushIndex(int index) {
+        this.stack.push(TraversalStep.fromListIndex(index));
     }
-    public void push(String propertyName, String key) {
-        this.stack.push(new TraversalStep(propertyName, key));
+    public void pushIndex(String key) {
+        this.stack.push(TraversalStep.fromMapIndex(key));
     }
 
     public void pop() {

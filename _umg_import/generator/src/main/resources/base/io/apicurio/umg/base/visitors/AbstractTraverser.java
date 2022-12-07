@@ -43,7 +43,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      */
     protected void traverse(String propertyName, Node node) {
         if (node != null) {
-            traversalContext.push(propertyName);
+            traversalContext.pushProperty(propertyName);
             doTraverseNode(node);
             traversalContext.pop();
         }
@@ -58,14 +58,16 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
     protected void traverseList(String propertyName, Collection<? extends Node> items) {
         if (items != null) {
             int index = 0;
+            traversalContext.pushProperty(propertyName);
             for (Node node : items) {
                 if (node != null) {
-                    traversalContext.push(propertyName, index);
+                    traversalContext.pushIndex(index);
                     doTraverseNode(node);
                     traversalContext.pop();
                 }
                 index++;
             }
+            traversalContext.pop();
         }
     }
 
@@ -77,14 +79,16 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      */
     protected void traverseMap(String propertyName, Map<String, ? extends Node> items) {
         if (items != null) {
+            traversalContext.pushProperty(propertyName);
             items.keySet().forEach(key -> {
                 Node value = items.get(key);
                 if (value != null) {
-                    this.traversalContext.push(propertyName, key);
+                    this.traversalContext.pushIndex(key);
                     this.doTraverseNode(value);
                     this.traversalContext.pop();
                 }
             });
+            this.traversalContext.pop();
         }
     }
 
@@ -98,9 +102,9 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
             mappedNode.getItemNames().forEach(name -> {
                 Node value = mappedNode.getItem(name);
                 if (value != null) {
-                    this.traversalContext.peek().setIsMap(true);
-                    this.traversalContext.peek().setKey(name);
+                    this.traversalContext.pushIndex(name);
                     this.doTraverseNode(value);
+                    this.traversalContext.pop();
                 }
             });
         }

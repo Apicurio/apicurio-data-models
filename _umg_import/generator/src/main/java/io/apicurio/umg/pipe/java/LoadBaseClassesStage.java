@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.source.Importer;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.PackagedSource;
 
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -19,6 +23,8 @@ public class LoadBaseClassesStage extends AbstractStage {
     @Override
     protected void doProcess() {
         try {
+            loadBaseEnums(
+                    "io.apicurio.umg.base.visitors.TraversalStepType");
             loadBaseClasses(
                     "io.apicurio.umg.base.NodeImpl",
                     "io.apicurio.umg.base.RootNodeImpl",
@@ -44,41 +50,42 @@ public class LoadBaseClassesStage extends AbstractStage {
         }
     }
 
+    private void loadBaseEnums(String... enums) throws IOException {
+        loadBaseSources(JavaEnumSource.class, enums);
+    }
+
     private void loadBaseClasses(String... classes) throws IOException {
-        for (String _class : classes) {
-            debug("Including base class: " + _class);
-            URL classSource = getBaseClassURL(_class);
-            JavaClassSource source = Roaster.parse(JavaClassSource.class, classSource);
-            String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-            source.setPackage(targetPackageName);
-            source.getImports().forEach(_import -> {
-                if (_import.getPackage().contains("io.apicurio.umg.base")) {
-                    String newPackage = _import.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-                    _import.setName(newPackage + "." + _import.getSimpleName());
-                }
-            });
-            getState().getJavaIndex().index(source);
-        }
+        loadBaseSources(JavaClassSource.class, classes);
     }
 
     private void loadBaseInterfaces(String... interfaces) throws IOException {
-        for (String _interface : interfaces) {
-            debug("Including base interface: " + _interface);
-            URL interfaceSource = getBaseClassURL(_interface);
-            JavaInterfaceSource source = Roaster.parse(JavaInterfaceSource.class, interfaceSource);
+        loadBaseSources(JavaInterfaceSource.class, interfaces);
+    }
+
+    private <T extends JavaType<?>> void loadBaseSources(final Class<T> type, String... sources) throws IOException {
+        for (String _source : sources) {
+            debug("Including base source: " + _source);
+            URL sourceUrl = getBaseSourceURL(_source);
+            T source = Roaster.parse(type, sourceUrl);
             String targetPackageName = source.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
-            source.setPackage(targetPackageName);
-            source.getImports().forEach(_import -> {
+            ((PackagedSource<?>) source).setPackage(targetPackageName);
+            ((Importer<?>) source).getImports().forEach(_import -> {
                 if (_import.getPackage().contains("io.apicurio.umg.base")) {
                     String newPackage = _import.getPackage().replace("io.apicurio.umg.base", getState().getConfig().getRootNamespace());
                     _import.setName(newPackage + "." + _import.getSimpleName());
                 }
             });
-            getState().getJavaIndex().index(source);
+            if (type.equals(JavaClassSource.class)) {
+                getState().getJavaIndex().index((JavaClassSource) source);
+            } else if (type.equals(JavaInterfaceSource.class)) {
+                getState().getJavaIndex().index((JavaInterfaceSource) source);
+            } else if (type.equals(JavaEnumSource.class)) {
+                getState().getJavaIndex().index((JavaEnumSource) source);
+            }
         }
     }
 
-    private URL getBaseClassURL(String _class) {
+    private URL getBaseSourceURL(String _class) {
         return getClass().getClassLoader().getResource("base/" + _class.replace('.', '/') + ".java");
     }
 
