@@ -4,6 +4,7 @@ import {Node} from "../src/io/apicurio/datamodels/models/Node";
 import {Library} from "../src/io/apicurio/datamodels/Library";
 import {Document} from "../src/io/apicurio/datamodels/models/Document";
 import {TraverserDirection} from "../src/io/apicurio/datamodels/TraverserDirection";
+import {NodePath} from "../src/io/apicurio/datamodels/paths/NodePath";
 
 
 class ExtraPropertyDetectionVisitor extends AllNodeVisitor {
@@ -67,18 +68,21 @@ allTests.forEach(spec => {
         // Compare what we started with vs. what we now have
         expect(jsObj).toEqual(json);
         
-        // // Now make sure we can create node paths from **every** node in the doc
-        // let nodeFinder: AllNodeFinder = new AllNodeFinder();
-        // Library.visitTree(document, nodeFinder, TraverserDirection.down);
-        // nodeFinder.allNodes.forEach(node => {
-        //     let nodePath: NodePath = Library.createNodePath(node);
-        //     expect(nodePath).not.toBeNull();
-        //     let path: string = nodePath.toString();
-        //     expect(path).not.toBeNull();
-        //     nodePath = new NodePath(path);
-        //     let resolvedNode: Node = nodePath.resolve(document);
-        //     expect(resolvedNode).not.toBeNull();
-        //     expect(resolvedNode).toBe(node);
-        // });
+        // Now make sure we can create node paths from **every** node in the doc
+        let nodeFinder: AllNodeFinder = new AllNodeFinder();
+        Library.visitTree(document, nodeFinder, TraverserDirection.down);
+        nodeFinder.allNodes.forEach(node => {
+            let nodePath: NodePath = Library.createNodePath(node);
+            expect(nodePath).not.toBeNull();
+            let path: string = nodePath.toString();
+            expect(path).not.toBeNull();
+            nodePath = NodePath.parse(path);
+            let resolvedNode: Node = Library.resolveNodePath(nodePath, document);
+            if (resolvedNode === null) {
+                throw Error("Node Path failed to resolve: " + nodePath.toString());
+            }
+            expect(resolvedNode).not.toBeNull();
+            expect(resolvedNode).toBe(node);
+        });
     });
 });

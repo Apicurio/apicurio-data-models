@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.core.paths;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class IoTestCase {
+public class NodePathIoTestCase {
 
     private String name;
-    private String test;
-    private int extraProperties;
+    private String path;
+    private List<String> segments = new ArrayList<>();
 
     /**
      * Constructor.
      */
-    public IoTestCase() {
+    public NodePathIoTestCase() {
     }
 
     /**
@@ -46,31 +49,31 @@ public class IoTestCase {
     }
 
     /**
-     * @return the test
+     * @return the path
      */
-    public String getTest() {
-        return test;
+    public String getPath() {
+        return path;
     }
 
     /**
-     * @param test the test to set
+     * @param path the path to set
      */
-    public void setTest(String test) {
-        this.test = test;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**
-     * @return the extraProperties
+     * @return the segments
      */
-    public int getExtraProperties() {
-        return extraProperties;
+    public List<String> getSegments() {
+        return segments;
     }
 
     /**
-     * @param extraProperties the extraProperties to set
+     * @param segments the segments to set
      */
-    public void setExtraProperties(int extraProperties) {
-        this.extraProperties = extraProperties;
+    public void setSegments(List<String> segments) {
+        this.segments = segments;
     }
 
 }

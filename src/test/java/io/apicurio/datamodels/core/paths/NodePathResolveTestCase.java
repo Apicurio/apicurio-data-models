@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.core.paths;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public class IoTestCase {
+public class NodePathResolveTestCase {
 
     private String name;
     private String test;
-    private int extraProperties;
+    private String path;
 
     /**
      * Constructor.
      */
-    public IoTestCase() {
+    public NodePathResolveTestCase() {
     }
 
     /**
@@ -46,6 +46,20 @@ public class IoTestCase {
     }
 
     /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
      * @return the test
      */
     public String getTest() {
@@ -57,20 +71,6 @@ public class IoTestCase {
      */
     public void setTest(String test) {
         this.test = test;
-    }
-
-    /**
-     * @return the extraProperties
-     */
-    public int getExtraProperties() {
-        return extraProperties;
-    }
-
-    /**
-     * @param extraProperties the extraProperties to set
-     */
-    public void setExtraProperties(int extraProperties) {
-        this.extraProperties = extraProperties;
     }
 
 }

@@ -29,6 +29,8 @@ import io.apicurio.datamodels.models.io.ModelWriterFactory;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
+import io.apicurio.datamodels.paths.NodePath;
+import io.apicurio.datamodels.paths.NodePathUtil;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -124,8 +126,32 @@ public class Library {
      * @param direction
      */
     public static void visitTree(Node node, Visitor visitor, TraverserDirection direction) {
-        ModelType type = node.root().modelType();
-        VisitorUtil.visitTree(type, node, visitor, direction);
+        VisitorUtil.visitTree(node, visitor, direction);
+    }
+
+    /**
+     * Called to create a node path for a given data model node.
+     * @param node
+     */
+    public static NodePath createNodePath(Node node) {
+        return NodePathUtil.createNodePath(node);
+    }
+
+    /**
+     * Called to create a node path instance for a stringified node path.
+     * @param node
+     */
+    public static NodePath parseNodePath(String path) {
+        return NodePathUtil.parseNodePath(path);
+    }
+
+    /**
+     * Resolves the given node path relative to a root document.
+     * @param nodePath
+     * @param doc
+     */
+    public static Node resolveNodePath(NodePath nodePath, Document doc) {
+        return NodePathUtil.resolveNodePath(nodePath, doc);
     }
 
 }

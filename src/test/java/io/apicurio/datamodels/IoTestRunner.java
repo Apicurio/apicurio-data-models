@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 JBoss Inc
+ * Copyright 2022 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.util.JsonUtil;
+import io.apicurio.datamodels.paths.NodePath;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -127,21 +128,21 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                     Library.writeNode(node);
                 });
 
-                //                for (Node node : allNodes) {
-                //                    try {
-                //                        NodePath nodePath = Library.createNodePath(node);
-                //                        Assert.assertNotNull(nodePath);
-                //                        String path = nodePath.toString();
-                //                        Assert.assertNotNull(nodePath);
-                //                        nodePath = new NodePath(path);
-                //                        Node resolvedNode = nodePath.resolve(doc);
-                //                        Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
-                //                        Assert.assertTrue("Path failed to resolve [" + node.getClass().getSimpleName() + "] to the proper node: " + path, node == resolvedNode);
-                //                    } catch (Throwable t) {
-                //                        System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
-                //                        throw t;
-                //                    }
-                //                }
+                for (Node node : allNodes) {
+                    try {
+                        NodePath nodePath = Library.createNodePath(node);
+                        Assert.assertNotNull(nodePath);
+                        String path = nodePath.toString();
+                        Assert.assertNotNull(nodePath);
+                        nodePath = Library.parseNodePath(path);
+                        Node resolvedNode = Library.resolveNodePath(nodePath, doc);
+                        Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
+                        Assert.assertTrue("Path failed to resolve [" + node.getClass().getSimpleName() + "] to the proper node: " + path, node == resolvedNode);
+                    } catch (Throwable t) {
+                        System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
+                        throw t;
+                    }
+                }
                 //
                 //                // Now do a partial read/write test?  This isn't great because there's not a great way to
                 //                // assert the results.  But at least it runs everything through the reader dispatchers.
