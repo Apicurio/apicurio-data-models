@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2022 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ import io.apicurio.datamodels.models.visitors.Visitor;
  */
 public class VisitorUtil {
 
-    public static void visitTree(ModelType type, Node node, Visitor visitor, TraverserDirection direction) {
+    public static void visitTree(Node node, Visitor visitor, TraverserDirection direction) {
+        ModelType type = node.root().modelType();
         Traverser traverser = null;
         if (direction == TraverserDirection.up) {
             traverser = new ReverseTraverser(visitor);

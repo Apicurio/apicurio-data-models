@@ -177,7 +177,7 @@ entities:
         type: OperationBindings
   - name: Parameters
     properties:
-      - name: '/^[A-Za-z0-9_\-]+$/'
+      - name: '*'
         type: Parameter
         collection: items
   - name: Parameter

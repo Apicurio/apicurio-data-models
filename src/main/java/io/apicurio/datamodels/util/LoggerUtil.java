@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2022 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package io.apicurio.datamodels.util;
 import java.io.PrintStream;
 
 /**
- * Compatibility class used to perform logging.  Logging is handled differently in Java vs. TS/JS.  
+ * Compatibility class used to perform logging.  Logging is handled differently in Java vs. TS/JS.
  * A LoggerCompat.ts file exists and implements the TS/JS version of this class.
  * @author eric.wittmann@gmail.com
  */
 public class LoggerUtil {
-    
+
     private static void output(String prefix, PrintStream stream, String message, Object ...args) {
         stream.print("|");
         stream.print(prefix);

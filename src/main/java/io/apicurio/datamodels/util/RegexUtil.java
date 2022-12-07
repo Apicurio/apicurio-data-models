@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2022 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * @author eric.wittmann@gmail.com
  */
 public class RegexUtil {
-    
+
     /**
      * Returns true if the given value matches the given regular expression.
      * @param value
@@ -37,7 +37,7 @@ public class RegexUtil {
         // TODO: compile every regular expression and cache the Pattern instance
         return Pattern.matches(regex, value);
     }
-    
+
     /**
      * Finds all strings within the given input that match the given regular expression.  Returns
      * all matches, with each match represented as a list of the groups specified in the regex.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Red Hat
+ * Copyright 2022 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.core.paths;
+
+import org.junit.runner.RunWith;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-public enum TraverserDirection {
-
-    down, up
+@RunWith(NodePathResolveTestRunner.class)
+public class NodePathResolveTest {
 
 }
