@@ -1,6 +1,6 @@
 name: Second Specification (Multi Level)
 prefix: Scnd
-namespace: org.example.multi.scnd
+namespace: org.example.multil.scnd
 versions:
   - $ref: ./second-spec-v1.yaml
   - $ref: ./second-spec-v2.yaml

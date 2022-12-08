@@ -17,7 +17,9 @@
 package io.apicurio.umg.index.concept;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -42,6 +44,7 @@ public class ConceptIndex {
     private Trie<String, TraitModel> traitIndex = new PatriciaTrie<>();
     private Trie<String, EntityModel> entityIndex = new PatriciaTrie<>();
     private Trie<String, VisitorModel> visitorIndex = new PatriciaTrie<>();
+    private Map<String, PropertyModelWithOriginComparator> propertyComparatorIndex = new HashMap<>();
 
 
     public void remove(TraitModel traitModel) {
@@ -94,6 +97,10 @@ public class ConceptIndex {
         visitorIndex.put(model.getNamespace().fullName(), model);
     }
 
+    public void index(EntityModel model, PropertyModelWithOriginComparator comparator) {
+        propertyComparatorIndex.put(model.fullyQualifiedName(), comparator);
+    }
+
 
     public NamespaceModel lookupNamespace(String namespace) {
         return namespaceIndex.get(namespace);
@@ -121,6 +128,19 @@ public class ConceptIndex {
 
     public VisitorModel lookupVisitor(String namespace) {
         return visitorIndex.get(namespace);
+    }
+
+    public PropertyModelWithOriginComparator lookupPropertyComparator(EntityModel entity) {
+        return lookupPropertyComparator(entity.getNamespace(), entity.getName());
+    }
+
+    public PropertyModelWithOriginComparator lookupPropertyComparator(NamespaceModel namespace, String entityName) {
+        return lookupPropertyComparator(namespace.fullName(), entityName);
+    }
+
+    public PropertyModelWithOriginComparator lookupPropertyComparator(String namespace, String entityName) {
+        String fqn = namespace + "." + entityName;
+        return this.propertyComparatorIndex.get(fqn);
     }
 
 
@@ -155,7 +175,7 @@ public class ConceptIndex {
      */
     public Collection<PropertyModelWithOrigin> getAllEntityProperties(EntityModel entityModel) {
         EntityModel model = entityModel;
-        Set<PropertyModelWithOrigin> models = new TreeSet<>(new PropertyModelWithOriginComparator());
+        Set<PropertyModelWithOrigin> models = new TreeSet<>(lookupPropertyComparator(entityModel));
         while (model != null) {
             final EntityModel _entity = model;
             models.addAll(model.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_entity).build()).collect(Collectors.toList()));

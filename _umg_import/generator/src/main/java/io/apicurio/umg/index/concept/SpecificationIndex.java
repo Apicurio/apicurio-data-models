@@ -25,9 +25,7 @@ import java.util.Map;
 import io.apicurio.umg.beans.Entity;
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.beans.Trait;
-import io.apicurio.umg.models.concept.EntityId;
 import io.apicurio.umg.models.concept.SpecificationVersionId;
-import io.apicurio.umg.models.concept.TraitId;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import lombok.Getter;
 
@@ -45,9 +43,9 @@ public class SpecificationIndex {
     @Getter
     private Map<SpecificationVersionId, SpecificationModel> specIndex = new HashMap<>();
     @Getter
-    private Map<TraitId, Trait> traitIndex = new HashMap<>();
+    private Map<String, Trait> traitIndex = new HashMap<>();
     @Getter
-    private Map<EntityId, Entity> entityIndex = new HashMap<>();
+    private Map<String, Entity> entityIndex = new HashMap<>();
     @Getter
     private Map<String, String> prefixToNS = new HashMap<>();
     @Getter
@@ -68,12 +66,12 @@ public class SpecificationIndex {
     }
 
     public void indexEntity(SpecificationVersion specVersion, Entity model) {
-        var key = EntityId.create(specVersion, model);
+        String key = specVersion.getNamespace() + "." + model.getName();
         entityIndex.put(key, model);
     }
 
     public void indexTrait(SpecificationVersion specVersion, Trait model) {
-        var key = TraitId.create(specVersion, model);
+        String key = specVersion.getNamespace() + "." + model.getName();
         traitIndex.put(key, model);
     }
 

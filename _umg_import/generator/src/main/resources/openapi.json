@@ -42,7 +42,8 @@
                 "description": "",
                 "required": [
                     "properties",
-                    "name"
+                    "name",
+                    "propertyOrder"
                 ],
                 "type": "object",
                 "properties": {
@@ -64,6 +65,13 @@
                     "root": {
                         "description": "",
                         "type": "boolean"
+                    },
+                    "propertyOrder": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 },
                 "example": {
@@ -85,6 +93,11 @@
                             "name": "unique",
                             "type": "boolean"
                         }
+                    ],
+                    "propertyOrder": [
+                        "title",
+                        "description",
+                        "unique"
                     ]
                 }
             },

@@ -50,7 +50,7 @@
                                 <specification>${project.basedir}/src/main/resources/openapi.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/asyncapi.yaml</specification>
                             </specifications>
-                            <rootNamespace>io.apicurio.datamodels</rootNamespace>
+                            <rootNamespace>io.apicurio.datamodels.models</rootNamespace>
                             <testSubDir>fixtures</testSubDir>
                         </configuration>
                     </execution>

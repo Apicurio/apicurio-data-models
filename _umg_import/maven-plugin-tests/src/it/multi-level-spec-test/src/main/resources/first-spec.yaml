@@ -1,6 +1,6 @@
 name: First Specification (Multi Level)
 prefix: Frst
-namespace: org.example.multi.frst
+namespace: org.example.multil.frst
 versions:
   - $ref: ./first-spec-v1.yaml
   - $ref: ./first-spec-v2.yaml

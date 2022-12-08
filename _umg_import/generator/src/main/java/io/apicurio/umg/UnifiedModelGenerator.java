@@ -25,9 +25,11 @@ import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.concept.CreateEntityModelsStage;
 import io.apicurio.umg.pipe.concept.CreateNamespaceModelsStage;
 import io.apicurio.umg.pipe.concept.CreateParentTraitsStage;
+import io.apicurio.umg.pipe.concept.CreatePropertyComparatorStage;
 import io.apicurio.umg.pipe.concept.CreatePropertyModelsStage;
 import io.apicurio.umg.pipe.concept.CreateTraitModelsStage;
 import io.apicurio.umg.pipe.concept.CreateVisitorsStage;
+import io.apicurio.umg.pipe.concept.ExpandPropertyOrderStage;
 import io.apicurio.umg.pipe.concept.IndexSpecificationsStage;
 import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
@@ -95,6 +97,7 @@ public class UnifiedModelGenerator {
 
         // Index phase
         pipe.addStage(new IndexSpecificationsStage());
+        pipe.addStage(new ExpandPropertyOrderStage());
         pipe.addStage(new SpecificationValidationStage());
 
         // Model creation phase
@@ -112,6 +115,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new NormalizePropertiesStage());
         pipe.addStage(new NormalizeVisitorsStage());
         pipe.addStage(new ResolveVisitorEntityStage());
+        pipe.addStage(new CreatePropertyComparatorStage());
 
         // Debug the models
         //pipe.addStage(new DebugStage());

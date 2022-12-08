@@ -49,7 +49,7 @@
                             <specifications>
                                 <specification>${project.basedir}/src/main/resources/asyncapi.yaml</specification>
                             </specifications>
-                            <rootNamespace>io.apicurio.datamodels.asyncapi</rootNamespace>
+                            <rootNamespace>io.apicurio.datamodels.models.asyncapi</rootNamespace>
                             <testSubDir>fixtures</testSubDir>
                         </configuration>
                     </execution>

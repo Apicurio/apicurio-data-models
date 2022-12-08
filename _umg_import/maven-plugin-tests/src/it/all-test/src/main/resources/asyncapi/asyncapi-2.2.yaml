@@ -4,15 +4,15 @@ versions:
   - version: 2.2.0
     url: https://www.asyncapi.com/docs/reference/specification/v2.2.0
 prefix: AsyncApi22
-namespace: io.apicurio.datamodels.asyncapi.v22
+namespace: io.apicurio.datamodels.models.asyncapi.v22
 
 traits:
-  - name: ExtensibleTrait
+  - name: Extensible
     properties:
-      - name: '/^x-[\\w\\d\\-\\_]+$/'
+      - name: '/^x-.+$/'
         type: any
         collection: extensions
-  - name: ReferenceableTrait
+  - name: Referenceable
     properties:
       - name: '$ref'
         type: string
@@ -21,7 +21,7 @@ entities:
   - name: Document
     root: true
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: asyncapi
         type: string
@@ -41,9 +41,13 @@ entities:
         type: '[Tag]'
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Info
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: title
         type: string
@@ -57,9 +61,13 @@ entities:
         type: Contact
       - name: license
         type: License
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Contact
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -67,21 +75,32 @@ entities:
         type: string
       - name: email
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: License
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Servers
     properties:
       - name: '*'
         type: Server
+    propertyOrder:
+      - $this
+
   - name: Server
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: url
         type: string
@@ -97,9 +116,13 @@ entities:
         type: '[SecurityRequirement]'
       - name: bindings
         type: ServerBindings
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ServerVariable
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: enum
         type: '[string]'
@@ -109,14 +132,21 @@ entities:
         type: string
       - name: examples
         type: '[string]'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Channels
     properties:
       - name: '*'
         type: ChannelItem
+    propertyOrder:
+      - $this
+
   - name: ChannelItem
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -130,30 +160,14 @@ entities:
         type: Parameters
       - name: bindings
         type: ChannelBindings
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Operation
     traits:
-      - ExtensibleTrait
-    properties:
-      - name: operationId
-        type: string
-      - name: summary
-        type: string
-      - name: description
-        type: string
-      - name: tags
-        type: '[Tag]'
-      - name: externalDocs
-        type: ExternalDocumentation
-      - name: bindings
-        type: '{OperationBindings}'
-      - name: traits
-        type: '[OperationTrait]'
-      - name: message
-        type: Message
-  - name: OperationTrait
-    traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
     properties:
       - name: operationId
         type: string
@@ -167,15 +181,48 @@ entities:
         type: ExternalDocumentation
       - name: bindings
         type: OperationBindings
+      - name: traits
+        type: '[OperationTrait]'
+      - name: message
+        type: Message # TODO Message|OneOfMessages
+    propertyOrder:
+      - $this
+      - $Extensible
+
+  - name: OperationTrait
+    traits:
+      - Extensible
+      - Referenceable
+    properties:
+      - name: operationId
+        type: string
+      - name: summary
+        type: string
+      - name: description
+        type: string
+      - name: tags
+        type: '[Tag]'
+      - name: externalDocs
+        type: ExternalDocumentation
+      - name: bindings
+        type: OperationBindings
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Parameters
     properties:
-      - name: '/^[A-Za-z0-9_\-]+$/'
+      - name: '*'
         type: Parameter
         collection: items
+    propertyOrder:
+      - $this
+
   - name: Parameter
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -183,10 +230,15 @@ entities:
         type: Schema
       - name: location
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: ServerBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -220,10 +272,15 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: ChannelBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -257,10 +314,15 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: OperationBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -292,10 +354,15 @@ entities:
         type: Binding
       - name: mercure
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageBindings
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: http
         type: Binding
@@ -329,11 +396,18 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Message
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
+      - name: oneOf # TODO: remove this when union types are supported and Operation::message is updated 
+        type: '[Message]'
       - name: headers
         type: Schema
       - name: payload
@@ -362,10 +436,15 @@ entities:
         type: MessageExample
       - name: traits
         type: '[MessageTrait]'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageTrait
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: headers
         type: Schema
@@ -391,9 +470,14 @@ entities:
         type: MessageBindings
       - name: examples
         type: '{any}'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageExample
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: headers
         type: '{any}'
@@ -403,9 +487,13 @@ entities:
         type: string
       - name: summary
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Tag
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -413,17 +501,25 @@ entities:
         type: string
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ExternalDocumentation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: description
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Components
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: schemas
         type: '{Schema}'
@@ -447,10 +543,14 @@ entities:
         type: '{OperationBindings}'
       - name: messageBindings
         type: '{MessageBindings}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Schema
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: title
         type: string
@@ -534,10 +634,15 @@ entities:
         type: ExternalDocumentation
       - name: deprecated
         type: boolean
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: SecurityScheme
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: type
         type: string
@@ -555,9 +660,14 @@ entities:
         type: OAuthFlows
       - name: openIdConnectUrl
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: OAuthFlows
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: implicit
         type: OAuthFlow
@@ -567,9 +677,13 @@ entities:
         type: OAuthFlow
       - name: authorizationCode
         type: OAuthFlow
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: OAuthFlow
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: authorizationUrl
         type: string
@@ -579,23 +693,37 @@ entities:
         type: string
       - name: scopes
         type: '{string}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: SecurityRequirement
     properties:
       - name: '*'
         type: '[string]'
+    propertyOrder:
+      - $this
+
   - name: CorrelationID
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
       - name: location
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Binding
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: any
-
+    propertyOrder:
+      - $this
+      - $Extensible

@@ -16,9 +16,13 @@ entities:
         type: boolean
       - name: docs
         type: Documentation
+    propertyOrder:
+      - $this
   - name: Documentation
     properties:
       - name: description
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this

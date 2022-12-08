@@ -1,8 +1,19 @@
 package io.apicurio.umg.models.concept;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PropertyModelWithOriginComparator implements Comparator<PropertyModelWithOrigin> {
+
+    private Map<String, Integer> propertyValues = new HashMap<>();
+
+    public PropertyModelWithOriginComparator(List<String> propertyOrder) {
+        for (int idx = 0; idx < propertyOrder.size(); idx++) {
+            propertyValues.put(propertyOrder.get(idx), idx);
+        }
+    }
 
     @Override
     public int compare(PropertyModelWithOrigin property1, PropertyModelWithOrigin property2) {
@@ -11,19 +22,14 @@ public class PropertyModelWithOriginComparator implements Comparator<PropertyMod
         if (name1.equals(name2)) {
             return 0;
         }
-        // Always put the "*" property at the end of any list of properties.
-        if (name1.equals("*")) {
-            return 1;
-        } else if (name2.equals("*")) {
-            return -1;
+
+        Integer orderValue1 = propertyValues.get(name1);
+        Integer orderValue2 = propertyValues.get(name2);
+        if (orderValue1 == null || orderValue2 == null) {
+            return name1.compareToIgnoreCase(name2);
         }
-        // Next to last (after "*" properties) should be any regex properties.
-        if (name1.startsWith("/")) {
-            return 1;
-        } else if (name2.startsWith("/")) {
-            return -1;
-        }
-        return name1.compareTo(name2);
+
+        return orderValue1.compareTo(orderValue2);
     }
 
 }

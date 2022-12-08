@@ -1,23 +1,23 @@
-package org.example.multi.test;
+package org.example.multil.test;
 
-import org.example.multi.Document;
-import org.example.multi.frst.v10.Frst10Document;
-import org.example.multi.frst.v10.Frst10DocumentImpl;
-import org.example.multi.frst.v10.io.Frst10ModelReader;
-import org.example.multi.frst.v10.io.Frst10ModelWriter;
-import org.example.multi.frst.v20.Frst20Document;
-import org.example.multi.frst.v20.Frst20DocumentImpl;
-import org.example.multi.frst.v20.io.Frst20ModelReader;
-import org.example.multi.frst.v20.io.Frst20ModelWriter;
-import org.example.multi.scnd.v10.Scnd10Document;
-import org.example.multi.scnd.v10.Scnd10DocumentImpl;
-import org.example.multi.scnd.v10.io.Scnd10ModelReader;
-import org.example.multi.scnd.v10.io.Scnd10ModelWriter;
-import org.example.multi.scnd.v20.Scnd20Document;
-import org.example.multi.scnd.v20.Scnd20DocumentImpl;
-import org.example.multi.scnd.v20.io.Scnd20ModelReader;
-import org.example.multi.scnd.v20.io.Scnd20ModelWriter;
-import org.example.multi.util.JsonUtil;
+import org.example.multil.Document;
+import org.example.multil.frst.v10.Frst10Document;
+import org.example.multil.frst.v10.Frst10DocumentImpl;
+import org.example.multil.frst.v10.io.Frst10ModelReader;
+import org.example.multil.frst.v10.io.Frst10ModelWriter;
+import org.example.multil.frst.v20.Frst20Document;
+import org.example.multil.frst.v20.Frst20DocumentImpl;
+import org.example.multil.frst.v20.io.Frst20ModelReader;
+import org.example.multil.frst.v20.io.Frst20ModelWriter;
+import org.example.multil.scnd.v10.Scnd10Document;
+import org.example.multil.scnd.v10.Scnd10DocumentImpl;
+import org.example.multil.scnd.v10.io.Scnd10ModelReader;
+import org.example.multil.scnd.v10.io.Scnd10ModelWriter;
+import org.example.multil.scnd.v20.Scnd20Document;
+import org.example.multil.scnd.v20.Scnd20DocumentImpl;
+import org.example.multil.scnd.v20.io.Scnd20ModelReader;
+import org.example.multil.scnd.v20.io.Scnd20ModelWriter;
+import org.example.multil.util.JsonUtil;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

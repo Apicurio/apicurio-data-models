@@ -26,6 +26,7 @@ public class CreateEntityModelsStage extends AbstractStage {
                             .root(entity.getRoot() != null ? entity.getRoot() : false)
                             .specModel(specificationModel)
                             .specVersion(specVersion)
+                            .propertyOrder(entity.getPropertyOrder())
                             .leaf(true)
                             .build();
                     info("Created entity model: %s", entityModel.fullyQualifiedName());

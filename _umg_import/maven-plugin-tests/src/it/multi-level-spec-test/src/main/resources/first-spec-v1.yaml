@@ -4,7 +4,7 @@ versions:
   - version: 1.0
     url: https://example.com/FirstSpec/versions/1.0.md
 prefix: Frst10
-namespace: org.example.multi.frst.v10
+namespace: org.example.multil.frst.v10
 
 traits:
   - name: Named
@@ -35,6 +35,10 @@ entities:
         type: '[Tag]'
       - name: properties
         type: Properties
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Widget
     traits:
@@ -44,6 +48,9 @@ entities:
         type: string
       - name: size
         type: string
+    propertyOrder:
+      - $Named
+      - $this
 
   - name: Tag
     traits:
@@ -52,9 +59,15 @@ entities:
     properties:
       - name: value
         type: string
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Properties
     properties:
       - name: '*'
         type: string
+    propertyOrder:
+      - $this
 

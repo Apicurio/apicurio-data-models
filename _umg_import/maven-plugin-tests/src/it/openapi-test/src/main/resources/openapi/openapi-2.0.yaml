@@ -4,29 +4,29 @@ versions:
   - version: 2.0
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 prefix: OpenApi20
-namespace: io.apicurio.datamodels.openapi.v20
+namespace: io.apicurio.datamodels.models.openapi.v20
 
 traits:
-  - name: ExtensibleTrait
+  - name: Extensible
     properties:
-      - name: '/x-.+/'
+      - name: '/^x-.+$/'
         type: any
         collection: extensions
-  - name: ReferenceableTrait
+  - name: Referenceable
     properties:
       - name: '$ref'
         type: string
-  - name: SchemaLikeTrait
+  - name: SchemaLike
     transparent: true
     properties:
+      - name: description
+        type: string
       - name: type
         type: string
       - name: format
         type: string
-      - name: items
-        type: Items
       - name: default
-        type: object
+        type: any
       - name: maximum
         type: number
       - name: exclusiveMaximum
@@ -56,7 +56,7 @@ entities:
   - name: Document
     root: true
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: swagger
         type: string
@@ -88,9 +88,13 @@ entities:
         type: '[Tag]'
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Info
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: title
         type: string
@@ -104,9 +108,13 @@ entities:
         type: License
       - name: version
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Contact
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -114,24 +122,36 @@ entities:
         type: string
       - name: email
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: License
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Paths
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: PathItem
+    propertyOrder:
+      - $Extensible
+      - $this
+
   - name: PathItem
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: get
         type: Operation
@@ -149,9 +169,14 @@ entities:
         type: Operation
       - name: parameters
         type: '[Parameter]'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Operation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: tags
         type: '[string]'
@@ -177,53 +202,80 @@ entities:
         type: boolean
       - name: security
         type: '[SecurityRequirement]'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ExternalDocumentation
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: description
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Parameter
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
-      - SchemaLikeTrait
+      - Extensible
+      - Referenceable
+      - SchemaLike
     properties:
       - name: name
         type: string
       - name: in
         type: string
-      - name: description
-        type: string
       - name: required
         type: boolean
       - name: schema
         type: Schema
+      - name: items
+        type: Items
       - name: allowEmptyValue
         type: boolean
       - name: collectionFormat
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $SchemaLike
+      - $this
+      - $Extensible
+
   - name: Items
     traits:
-      - ExtensibleTrait
-      - SchemaLikeTrait
+      - Extensible
+      - SchemaLike
+      - Referenceable
     properties:
+      - name: items
+        type: Items
       - name: collectionFormat
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $SchemaLike
+      - $this
+      - $Extensible
+
   - name: Responses
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties: 
       - name: default
         type: Response
       - name: '*'
         type: Response
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Response
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
+      - Extensible
+      - Referenceable
     properties:
       - name: description
         type: string
@@ -233,24 +285,42 @@ entities:
         type: Headers
       - name: examples
         type: Example
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Headers
     properties:
       - name: '*'
         type: Header
+    propertyOrder:
+      - $this
+
   - name: Example
     properties:
       - name: '*'
         type: any
+    propertyOrder:
+      - $this
+
   - name: Header
     traits:
-      - ExtensibleTrait
-      - SchemaLikeTrait
+      - Extensible
+      - SchemaLike
     properties:
-      - name: description
-        type: string
+      - name: items
+        type: Items
       - name: collectionFormat
         type: string
+    propertyOrder:
+      - $SchemaLike
+      - $this
+      - $Extensible
+
   - name: Tag
+    traits:
+      - Extensible
     properties:
       - name: name
         type: string
@@ -258,26 +328,32 @@ entities:
         type: string
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Schema
     traits:
-      - ExtensibleTrait
-      - ReferenceableTrait
-      - SchemaLikeTrait
+      - Extensible
+      - Referenceable
+      - SchemaLike
     properties:
       - name: title
         type: string
+      - name: items
+        type: any # TODO Schema|[Schema]
       - name: maxProperties
         type: integer
       - name: minProperties
         type: integer
       - name: required
-        type: boolean
+        type: '[string]'
       - name: allOf
         type: '[Schema]'
       - name: properties
         type: '{Schema}'
       - name: additionalProperties
-        type: any
+        type: any # TODO: boolean|Schema
       - name: discriminator
         type: string
       - name: readOnly
@@ -287,10 +363,16 @@ entities:
       - name: externalDocs
         type: ExternalDocumentation
       - name: example
-        type: object
+        type: any
+    propertyOrder:
+      - $Referenceable
+      - $SchemaLike
+      - $this
+      - $Extensible
+
   - name: XML
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: name
         type: string
@@ -302,25 +384,41 @@ entities:
         type: boolean
       - name: wrapped
         type: boolean
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Definitions
     properties:
       - name: '*'
         type: Schema
+    propertyOrder:
+      - $this
+
   - name: ParameterDefinitions
     properties:
       - name: '*'
         type: Parameter
+    propertyOrder:
+      - $this
+
   - name: ResponseDefinitions
     properties:
       - name: '*'
         type: Response
+    propertyOrder:
+      - $this
+
   - name: SecurityDefinitions
     properties:
       - name: '*'
         type: SecurityScheme
+    propertyOrder:
+      - $this
+
   - name: SecurityScheme
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: type
         type: string
@@ -337,20 +435,24 @@ entities:
       - name: tokenUrl
         type: string
       - name: scopes
-        type: string
+        type: Scopes
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Scopes
     traits:
-      - ExtensibleTrait
+      - Extensible
     properties:
       - name: '*'
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: SecurityRequirement
     properties:
       - name: '*'
         type: '[string]'
-  - name: Extension
-    properties:
-      - name: name
-        type: string
-      - name: value
-        type: object
+    propertyOrder:
+      - $this

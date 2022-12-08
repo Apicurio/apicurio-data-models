@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.VisitorModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
@@ -67,7 +68,11 @@ public class NormalizeVisitorsStage extends AbstractStage {
      * @param rootNamespace
      */
     private void createRootVisitor(String rootNamespace) {
-        VisitorModel rootVisitor = VisitorModel.builder().namespace(getState().getConceptIndex().lookupNamespace(rootNamespace)).build();
+        NamespaceModel rootNS = getState().getConceptIndex().lookupNamespace(rootNamespace);
+        if (rootNS == null) {
+            throw new RuntimeException("Root namespace not found: " + rootNamespace);
+        }
+        VisitorModel rootVisitor = VisitorModel.builder().namespace(rootNS).build();
         getState().getConceptIndex().findVisitors("").stream().filter(visitor -> visitor.getParent() == null).forEach(visitor -> {
             visitor.setParent(rootVisitor);
             rootVisitor.getChildren().add(visitor);

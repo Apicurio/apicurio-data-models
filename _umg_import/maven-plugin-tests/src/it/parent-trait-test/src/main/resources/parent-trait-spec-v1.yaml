@@ -18,6 +18,8 @@ entities:
         type: Bar
       - name: definitions
         type: Definitions
+    propertyOrder:
+      - $this
 
   - name: Foo
     properties:
@@ -25,6 +27,8 @@ entities:
         type: string
       - name: description
         type: string
+    propertyOrder:
+      - $this
 
   - name: Bar
     properties:
@@ -32,11 +36,15 @@ entities:
         type: string
       - name: color
         type: string
+    propertyOrder:
+      - $this
 
   - name: Baz
     properties:
       - name: length
         type: number
+    propertyOrder:
+      - $this
 
   - name: Definitions
     properties:
@@ -44,3 +52,6 @@ entities:
         type: Foo
       - name: baz
         type: Baz
+    propertyOrder:
+      - $this
+        

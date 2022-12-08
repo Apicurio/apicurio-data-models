@@ -50,7 +50,7 @@
                                 <specification>${project.basedir}/src/main/resources/first-spec.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/second-spec.yaml</specification>
                             </specifications>
-                            <rootNamespace>org.example.multi</rootNamespace>
+                            <rootNamespace>org.example.multil</rootNamespace>
                             <testSubDir>fixtures</testSubDir>
                             <generateTestFixtures>true</generateTestFixtures>
                         </configuration>

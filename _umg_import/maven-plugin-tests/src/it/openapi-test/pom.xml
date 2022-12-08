@@ -49,7 +49,7 @@
                             <specifications>
                                 <specification>${project.basedir}/src/main/resources/openapi.yaml</specification>
                             </specifications>
-                            <rootNamespace>io.apicurio.datamodels.openapi</rootNamespace>
+                            <rootNamespace>io.apicurio.datamodels.models.openapi</rootNamespace>
                             <testSubDir>fixtures</testSubDir>
                         </configuration>
                     </execution>

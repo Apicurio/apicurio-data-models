@@ -4,7 +4,7 @@ versions:
   - version: 1.0
     url: https://example.com/SecondSpec/versions/1.0.md
 prefix: Scnd10
-namespace: org.example.multi.scnd.v10
+namespace: org.example.multil.scnd.v10
 
 traits:
   - name: Named
@@ -35,6 +35,10 @@ entities:
         type: '[Tag]'
       - name: mice
         type: '[Mouse]'
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Widget
     traits:
@@ -42,6 +46,9 @@ entities:
     properties:
       - name: type
         type: string
+    propertyOrder:
+      - $Named
+      - $this
 
   - name: Tag
     traits:
@@ -50,6 +57,10 @@ entities:
     properties:
       - name: value
         type: string
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Mouse
     properties:
@@ -57,4 +68,6 @@ entities:
         type: string
       - name: length
         type: integer
+    propertyOrder:
+      - $this
 

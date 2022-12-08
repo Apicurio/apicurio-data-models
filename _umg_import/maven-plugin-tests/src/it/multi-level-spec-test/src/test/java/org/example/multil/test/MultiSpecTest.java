@@ -1,11 +1,11 @@
-package org.example.multi.test;
+package org.example.multil.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.example.multi.Document;
-import org.example.multi.util.JsonUtil;
+import org.example.multil.Document;
+import org.example.multil.util.JsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

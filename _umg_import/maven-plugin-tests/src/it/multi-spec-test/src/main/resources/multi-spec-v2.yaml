@@ -37,6 +37,10 @@ entities:
         type: '[Tag]'
       - name: properties
         type: Properties
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Widget
     traits:
@@ -46,6 +50,9 @@ entities:
         type: string
       - name: size
         type: string
+    propertyOrder:
+      - $Named
+      - $this
 
   - name: Server
     traits:
@@ -53,6 +60,9 @@ entities:
     properties:
       - name: url
         type: string
+    propertyOrder:
+      - $Named
+      - $this
 
   - name: Tag
     traits:
@@ -63,9 +73,15 @@ entities:
         type: string
       - name: documentation
         type: string
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
 
   - name: Properties
     properties:
       - name: '*'
         type: string
+    propertyOrder:
+      - $this
 
