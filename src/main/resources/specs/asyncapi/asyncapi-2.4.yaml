@@ -41,6 +41,10 @@ entities:
         type: '[Tag]'
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Info
     traits:
       - Extensible
@@ -57,6 +61,10 @@ entities:
         type: Contact
       - name: license
         type: License
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Contact
     traits:
       - Extensible
@@ -67,6 +75,10 @@ entities:
         type: string
       - name: email
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: License
     traits:
       - Extensible
@@ -75,10 +87,17 @@ entities:
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Servers
     properties:
       - name: '*'
         type: Server
+    propertyOrder:
+      - $this
+
   - name: Server
     traits:
       - Extensible
@@ -98,6 +117,11 @@ entities:
         type: '[SecurityRequirement]'
       - name: bindings
         type: ServerBindings
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: ServerVariable
     traits:
       - Extensible
@@ -111,10 +135,18 @@ entities:
         type: string
       - name: examples
         type: '[string]'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Channels
     properties:
       - name: '*'
         type: ChannelItem
+    propertyOrder:
+      - $this
+
   - name: ChannelItem
     traits:
       - Extensible
@@ -132,6 +164,11 @@ entities:
         type: Parameters
       - name: bindings
         type: ChannelBindings
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Operation
     traits:
       - Extensible
@@ -154,6 +191,10 @@ entities:
         type: '[OperationTrait]'
       - name: message
         type: Message # TODO Message|OneOfMessages
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: OperationTrait
     traits:
       - Extensible
@@ -173,11 +214,19 @@ entities:
         type: ExternalDocumentation
       - name: bindings
         type: OperationBindings
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Parameters
     properties:
       - name: '*'
         type: Parameter
         collection: items
+    propertyOrder:
+      - $this
+
   - name: Parameter
     traits:
       - Extensible
@@ -189,6 +238,11 @@ entities:
         type: Schema
       - name: location
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: ServerBindings
     traits:
       - Extensible
@@ -228,6 +282,11 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: ChannelBindings
     traits:
       - Extensible
@@ -267,6 +326,11 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: OperationBindings
     traits:
       - Extensible
@@ -304,6 +368,11 @@ entities:
         type: Binding
       - name: mercure
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageBindings
     traits:
       - Extensible
@@ -343,6 +412,11 @@ entities:
         type: Binding
       - name: ibmmq
         type: Binding
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Message
     traits:
       - Extensible
@@ -380,6 +454,11 @@ entities:
         type: MessageExample
       - name: traits
         type: '[MessageTrait]'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageTrait
     traits:
       - Extensible
@@ -411,6 +490,11 @@ entities:
         type: MessageBindings
       - name: examples
         type: '{any}'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MessageExample
     traits:
       - Extensible
@@ -423,6 +507,10 @@ entities:
         type: string
       - name: summary
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Tag
     traits:
       - Extensible
@@ -433,6 +521,10 @@ entities:
         type: string
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ExternalDocumentation
     traits:
       - Extensible
@@ -441,6 +533,10 @@ entities:
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Components
     traits:
       - Extensible
@@ -473,6 +569,10 @@ entities:
         type: '{OperationBindings}'
       - name: messageBindings
         type: '{MessageBindings}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Schema
     traits:
       - Extensible
@@ -560,6 +660,11 @@ entities:
         type: ExternalDocumentation
       - name: deprecated
         type: boolean
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: SecurityScheme
     traits:
       - Extensible
@@ -581,6 +686,11 @@ entities:
         type: OAuthFlows
       - name: openIdConnectUrl
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: OAuthFlows
     traits:
       - Extensible
@@ -593,6 +703,10 @@ entities:
         type: OAuthFlow
       - name: authorizationCode
         type: OAuthFlow
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: OAuthFlow
     traits:
       - Extensible
@@ -605,10 +719,17 @@ entities:
         type: string
       - name: scopes
         type: '{string}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: SecurityRequirement
     properties:
       - name: '*'
         type: '[string]'
+    propertyOrder:
+      - $this
+
   - name: CorrelationID
     traits:
       - Extensible
@@ -618,10 +739,17 @@ entities:
         type: string
       - name: location
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Binding
     traits:
       - Extensible
     properties:
       - name: '*'
         type: any
-
+    propertyOrder:
+      - $this
+      - $Extensible

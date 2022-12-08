@@ -16,9 +16,9 @@ traits:
     properties:
       - name: '$ref'
         type: string
-      - name: 'summary'
+      - name: summary
         type: string
-      - name: 'description'
+      - name: description
         type: string
 
 entities:
@@ -47,6 +47,10 @@ entities:
         type: '[Tag]'
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Info
     traits:
       - Extensible
@@ -65,6 +69,10 @@ entities:
         type: License
       - name: version
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Contact
     traits:
       - Extensible
@@ -75,6 +83,10 @@ entities:
         type: string
       - name: email
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: License
     traits:
       - Extensible
@@ -85,6 +97,10 @@ entities:
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Server
     traits:
       - Extensible
@@ -95,6 +111,10 @@ entities:
         type: string
       - name: variables
         type: '{ServerVariable}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ServerVariable
     traits:
       - Extensible
@@ -105,6 +125,10 @@ entities:
         type: string
       - name: description
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Components
     traits:
       - Extensible
@@ -129,22 +153,25 @@ entities:
         type: '{Callback}'
       - name: pathItems
         type: '{PathItem}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Paths
     traits:
       - Extensible
     properties:
       - name: '*'
         type: PathItem
+    propertyOrder:
+      - $Extensible
+      - $this
+
   - name: PathItem
     traits:
       - Extensible
+      - Referenceable
     properties:
-      - name: '$ref'
-        type: string
-      - name: summary
-        type: string
-      - name: description
-        type: string
       - name: get
         type: Operation
       - name: put
@@ -165,6 +192,11 @@ entities:
         type: '[Server]'
       - name: parameters
         type: '[Parameter]'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Operation
     traits:
       - Extensible
@@ -193,6 +225,10 @@ entities:
         type: '[SecurityRequirement]'
       - name: servers
         type: '[Server]'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: ExternalDocumentation
     traits:
       - Extensible
@@ -201,6 +237,10 @@ entities:
         type: string
       - name: url
         type: string
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Parameter
     traits:
       - Extensible
@@ -209,8 +249,6 @@ entities:
       - name: name
         type: string
       - name: in
-        type: string
-      - name: description
         type: string
       - name: required
         type: boolean
@@ -230,17 +268,25 @@ entities:
         type: any
       - name: examples
         type: '{Example}'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: RequestBody
     traits:
       - Extensible
       - Referenceable
     properties:
-      - name: description
-        type: string
       - name: content
         type: '{MediaType}'
       - name: required
         type: boolean
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: MediaType
     traits:
       - Extensible
@@ -253,6 +299,10 @@ entities:
         type: '{Example}'
       - name: encoding
         type: '{Encoding}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Encoding
     traits:
       - Extensible
@@ -267,6 +317,10 @@ entities:
         type: boolean
       - name: allowReserved
         type: boolean
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Responses
     traits:
       - Extensible
@@ -276,19 +330,27 @@ entities:
         type: Response
       - name: '*'
         type: Response
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Response
     traits:
       - Extensible
       - Referenceable
     properties:
-      - name: description
-        type: string
       - name: headers
         type: '{Header}'
       - name: content
         type: '{MediaType}'
       - name: links
         type: '{Link}'
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Callback
     traits:
       - Extensible
@@ -296,19 +358,25 @@ entities:
     properties:
       - name: '*'
         type: PathItem
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Example
     traits:
       - Extensible
       - Referenceable
     properties:
-      - name: summary
-        type: string
-      - name: description
-        type: string
       - name: value
         type: any
       - name: externalValue
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Link
     traits:
       - Extensible
@@ -322,16 +390,17 @@ entities:
         type: '{any}' # TODO {any|expression}
       - name: requestBody
         type: any # TODO any|{expression}
-      - name: description
-        type: string
       - name: server
         type: Server
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Header
     traits:
       - Referenceable
     properties:
-      - name: description
-        type: string
       - name: required
         type: boolean
       - name: deprecated
@@ -352,6 +421,10 @@ entities:
         type: '{Example}'
       - name: content
         type: '{MediaType}'
+    propertyOrder:
+      - $Referenceable
+      - $this
+
   - name: Tag
     traits:
       - Extensible
@@ -362,6 +435,10 @@ entities:
         type: string
       - name: externalDocs
         type: ExternalDocumentation
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: Schema # NOTE: OpenAPI 3 now uses JSON Schema Draft 2020-12 for schemas
     traits:
       - Extensible
@@ -377,12 +454,20 @@ entities:
         type: ExternalDocumentation
       - name: example
         type: any
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: Discriminator
     properties:
       - name: propertyName
         type: string
       - name: mapping
         type: '{string}'
+    propertyOrder:
+      - $this
+
   - name: XML
     traits:
       - Extensible
@@ -397,14 +482,16 @@ entities:
         type: boolean
       - name: wrapped
         type: boolean
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: SecurityScheme
     traits:
       - Extensible
       - Referenceable
     properties:
       - name: type
-        type: string
-      - name: description
         type: string
       - name: name
         type: string
@@ -418,6 +505,11 @@ entities:
         type: OAuthFlows
       - name: openIdConnectUrl
         type: string
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
   - name: OAuthFlows
     traits:
       - Extensible
@@ -430,6 +522,10 @@ entities:
         type: OAuthFlow
       - name: authorizationCode
         type: OAuthFlow
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: OAuthFlow
     traits:
       - Extensible
@@ -442,7 +538,13 @@ entities:
         type: string
       - name: scopes
         type: '{string}'
+    propertyOrder:
+      - $this
+      - $Extensible
+
   - name: SecurityRequirement
     properties:
       - name: '*'
         type: '[string]'
+    propertyOrder:
+      - $this
