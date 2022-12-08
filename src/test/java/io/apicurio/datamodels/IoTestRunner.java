@@ -115,7 +115,7 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 Assert.assertEquals("Wrong number of extra properties found: " + epv.extraProperties, expectedExtraProps, actualExtraProps);
 
                 // Write the data model back to JSON
-                Object roundTripJs = Library.writeDocument(doc);
+                ObjectNode roundTripJs = Library.writeDocument(doc);
                 Assert.assertNotNull(roundTripJs);
 
                 // Stringify the round trip object
