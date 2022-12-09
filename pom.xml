@@ -453,7 +453,19 @@
                             </execution>
                             <!-- Build+package the library -->
                             <execution>
-                                <id>ng build</id>
+                                <id>npm test</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <workingDirectory>${basedir}/target/ts</workingDirectory>
+                                    <arguments>run test</arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Build+package the library -->
+                            <execution>
+                                <id>npm build</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
