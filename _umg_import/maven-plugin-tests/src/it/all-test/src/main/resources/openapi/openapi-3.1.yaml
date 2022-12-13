@@ -399,6 +399,7 @@ entities:
 
   - name: Header
     traits:
+      - Extensible
       - Referenceable
     properties:
       - name: required
@@ -424,6 +425,7 @@ entities:
     propertyOrder:
       - $Referenceable
       - $this
+      - $Extensible
 
   - name: Tag
     traits:

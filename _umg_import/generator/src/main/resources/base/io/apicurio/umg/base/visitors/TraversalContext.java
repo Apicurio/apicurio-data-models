@@ -14,4 +14,8 @@ public interface TraversalContext {
 
     public List<TraversalStep> getAllSteps();
 
+    public boolean containsStep(TraversalStepType type, Object value);
+
+    public String getMostRecentPropertyStep();
+
 }

@@ -46,4 +46,25 @@ public class TraversalContextImpl implements TraversalContext {
         return Collections.unmodifiableList(Arrays.asList(steps));
     }
 
+    @Override
+    public String getMostRecentPropertyStep() {
+        for (int idx = stack.size() - 1; idx >= 0; idx--) {
+            TraversalStep step = stack.get(idx);
+            if (step.getType() == TraversalStepType.property) {
+                return (String) step.getValue();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean containsStep(TraversalStepType type, Object value) {
+        for (TraversalStep step : stack) {
+            if (step.getType() == type && value.equals(step.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

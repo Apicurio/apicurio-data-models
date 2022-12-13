@@ -407,6 +407,7 @@ entities:
 
   - name: Header
     traits:
+      - Extensible
       - Referenceable
     properties:
       - name: description
@@ -434,6 +435,7 @@ entities:
     propertyOrder:
       - $Referenceable
       - $this
+      - $Extensible
 
   - name: Tag
     traits:
