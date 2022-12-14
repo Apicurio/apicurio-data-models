@@ -1,0 +1,1049 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "description": "A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification"
+  },
+  "servers": [
+    {
+      "url": "https://{username}.gigantic-server.com:{port}/{basePath}",
+      "description": "The production API server",
+      "variables": {
+        "username": {
+          "default": "demo",
+          "description": "this value is assigned by the service provider, in this example `gigantic-server.com`"
+        },
+        "missingProperty": {
+          "default": "foo",
+          "description": "A missing property."
+        },
+        "port": {
+          "enum": [
+            "8443",
+            "443"
+          ],
+          "default": "8443"
+        },
+        "basePath": {
+          "default": "v2"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/enc-001": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8"
+                },
+                "profileImage": {
+                  "contentType": "image/png, image/jpeg",
+                  "headers": {
+                    "X-Rate-Limit-Limit": {
+                      "description": "The number of allowed requests in the current period",
+                      "schema": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/enc-002": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/enc-003": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "explode": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/enc-004": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "allowReserved": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/enc-005": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "style": "matrix",
+                  "explode": true,
+                  "allowReserved": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/head-010": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "headers": {
+                    "X-Header-1": {
+                      "description": "The number of allowed requests in the current period",
+                      "style": "form",
+                      "schema": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/head-011": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  },
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8",
+                  "headers": {
+                    "X-Header-1": {
+                      "description": "The number of allowed requests in the current period",
+                      "style": "simple",
+                      "content": {
+                        "text/plain": {
+                          "schema": {
+                            "type": "string"
+                          }
+                        },
+                        "application/json": {
+                          "schema": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/link-002": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "the user being returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            },
+            "links": {
+              "address": {
+                "operationId": "getUserAddress",
+                "parameters": {
+                  "userId": "$request.path.id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mt-003": {
+      "post": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "historyMetadata": {
+                  "contentType": "application/xml; charset=utf-8"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/op-009": {
+      "get": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "historyMetadata": {
+                    "description": "metadata in XML format",
+                    "type": "object",
+                    "properties": {
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        }
+      }
+    },
+    "/op-013": {
+      "get": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "responses": {}
+      }
+    },
+    "/par-022": {
+      "parameters": [
+        {
+          "name": "X-Header-Param",
+          "in": "side"
+        }
+      ]
+    },
+    "/par-003/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path"
+        }
+      ]
+    },
+    "/par-013/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false
+        }
+      ]
+    },
+    "/par-022": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "query",
+          "allowEmptyValue": false,
+          "style": "shallowObject"
+        }
+      ]
+    },
+    "/par-027/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "style": "form"
+        }
+      ]
+    },
+    "/par-023": {
+      "parameters": [
+        {
+          "name": "criteria",
+          "in": "query",
+          "required": true,
+          "style": "label"
+        }
+      ]
+    },
+    "/par-024": {
+      "parameters": [
+        {
+          "name": "x-cookie",
+          "in": "cookie",
+          "required": false,
+          "style": "label"
+        }
+      ]
+    },
+    "/par-025": {
+      "parameters": [
+        {
+          "name": "X-Header",
+          "in": "header",
+          "required": false,
+          "style": "label"
+        }
+      ]
+    },
+    "/par-028": {
+      "parameters": [
+        {
+          "name": "X-Header",
+          "in": "header",
+          "required": false,
+          "allowReserved": true
+        }
+      ]
+    },
+    "/par-029": {
+      "parameters": [
+        {
+          "name": "object",
+          "in": "query",
+          "required": true,
+          "style": "deepObject",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "/sameNameDifferentInWithinPathItem": {
+      "get": {
+        "description": "Parameters with same name and different locations defined inline within operation - valid",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "status",
+          "in": "header",
+          "description": "Status param in header",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/dupesWithinPathItemInlined": {
+      "get": {
+        "description": "Duplicate parameters (name & in combination) defined inline within path item - invalid",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/dupesWithinPathItemInlineAndRefCombo": {
+      "get": {
+        "description": "Duplicate parameters (name & in combination) one defined inline within operation and other referenced - invalid",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/statusParam"
+        }
+      ]
+    },
+    "/dupesWithinPathItemIndirectReference": {
+      "get": {
+        "description": "Duplicate parameters (name & in combination) one defined inline within operation and other indirectly referenced - invalid",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/indirectRef"
+        }
+      ]
+    },
+    "/incorrectReferenceWithinPathItem": {
+      "get": {
+        "description": "Parameters (name & in combination) pointing to non-existent reference - invalid",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/missing"
+        }
+      ]
+    },
+    "/sameNameDifferentInWithinOperation": {
+      "get": {
+        "description": "Parameters with same name and different locations defined inline within operation - valid",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status param in query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "header",
+            "description": "Status param in header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/dupesWithinOpInlined": {
+      "get": {
+        "description": "Duplicate parameters (name & in combination) defined inline within operation - invalid",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status param in query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status param in query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/dupesWithinOpInlineAndRefCombo": {
+      "get": {
+        "description": "Duplicate parameters (name & in combination) one defined inline within operation and other referenced - invalid",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status param in query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/statusParam"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/parameterOverridingPathItemDefinitionInlined": {
+      "get": {
+        "description": "Parameter defined inline at operation level overriding the one defined inline within pathItem - valid",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status param in query (string)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status param in query (number)",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "/par-007/operation/{id}": {
+      "get": {
+        "description": "Parameter defined inline at operation level but not in path template - invalid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "missing",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/par-007/pathItem/{id}": {
+      "get": {
+        "description": "Parameter defined inline at pathItem level but not in path template - invalid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "missing",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/op-011/{id}/{sub}": {
+      "get": {
+        "description": "Path parameter defined in template but no matching parameter defined - invalid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/par-021": {
+      "parameters": [
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "required": true
+        }
+      ]
+    },
+    "/sch-002": {
+      "get": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "property-1": {
+                    }
+                  },
+                  "discriminator": {
+                    "propertyName": "name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sreq-002": {
+      "get": {
+        "description": "Creates a new pet in the store.  Duplicates are allowed",
+        "responses": {
+          "200": {
+            "description": "A successful response."
+          }
+        },
+        "security": [
+          {
+            "api_key": [
+              "write:foo",
+              "read:bar"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "statusParam": {
+        "name": "status",
+        "in": "query",
+        "description": "Status param in query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "indirectRef": {
+        "$ref": "#/components/parameters/statusParam"
+      }
+    },
+    "schemas": {
+      "xml-002": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "xml": {
+              "attribute": true
+            }
+          },
+          "name": {
+            "type": "string",
+            "xml": {
+              "namespace": "http://example.com/schema/sample",
+              "prefix": "sample",
+              "wrapped": true
+            }
+          },
+          "animals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "xml": {
+              "namespace": "http://example.com/schema/animal",
+              "prefix": "animal",
+              "wrapped": true
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      },
+      "ss-008": {
+        "type": "invalid"
+      },
+      "ss-009": {
+        "type": "apiKey",
+        "in": "body",
+        "name": "paramname"
+      },
+      "ss-017": {
+        "type": "http",
+        "scheme": "basic",
+        "bearerFormat": "JWT"
+      },
+      "ss-016": {
+        "type": "http",
+        "scheme": "leveraged"
+      }
+    }
+  }
+}

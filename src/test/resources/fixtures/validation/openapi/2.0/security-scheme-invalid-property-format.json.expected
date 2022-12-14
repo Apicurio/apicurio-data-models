@@ -1,0 +1,3 @@
+[SS-011] |medium| {/securityDefinitions[petstore_auth]->authorizationUrl} :: Security Scheme Authorization URL is an incorrect format.
+[SS-011] |medium| {/securityDefinitions[petstore_auth_accessCode]->authorizationUrl} :: Security Scheme Authorization URL is an incorrect format.
+[SS-012] |medium| {/securityDefinitions[petstore_auth_accessCode]->tokenUrl} :: Security Scheme Token URL is an incorrect format.

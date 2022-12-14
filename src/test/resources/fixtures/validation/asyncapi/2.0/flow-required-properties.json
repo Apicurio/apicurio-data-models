@@ -1,0 +1,29 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+      "title": "AsyncAPI Sample App",
+      "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+     "version": "1.0.1"
+  },
+  "components": {
+    "securitySchemes": {
+     "supportedOauthFlows": {
+        "type": "oauth2",
+        "description": "Flows to support OAuth 2.0",
+        "flows": {
+          "implicit": {
+          },
+          "password": {
+          },
+          "clientCredentials": {
+          },
+          "authorizationCode": {
+          }
+        }
+      }
+    }
+ }
+}

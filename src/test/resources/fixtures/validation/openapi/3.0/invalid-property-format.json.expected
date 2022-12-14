@@ -1,0 +1,4 @@
+[INF-004] |medium| {/info->termsOfService} :: Terms of Service URL is an incorrect format.
+[CTC-001] |medium| {/info/contact->url} :: Contact URL is an incorrect format.
+[CTC-002] |medium| {/info/contact->email} :: Contact Email is an incorrect format.
+[LIC-002] |medium| {/info/license->url} :: License URL is an incorrect format.

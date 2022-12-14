@@ -40,4 +40,36 @@ export class NodeUtil {
         return parseInt(value);
     }
 
+    public static isNullOrUndefined(value: any): boolean {
+        return value === null || value === undefined;
+    }
+    
+    public static isDefined(value: any): boolean {
+        return value !== null && value !== undefined;
+    }
+    
+    public static asArray(list: string[]): string[] {
+        return list;
+    }
+
+    public static asList(...items: string[]): string[] {
+        return items;
+    }
+
+    public static copyList(list: string[]): string[] {
+        return list.slice(0);
+    }
+
+    public static equals(value1: string, value2: string): boolean {
+        return value1 == value2;
+    }
+
+    public static join(delim: string, values: string[]): string {
+        return values.join(delim);
+    }
+
+    public static joinArray(delim: string, values: string[]): string {
+        return NodeCompat.join(delim, values);
+    }
+
 }

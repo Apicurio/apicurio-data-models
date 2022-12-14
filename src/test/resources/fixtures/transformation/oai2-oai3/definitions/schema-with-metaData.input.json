@@ -1,0 +1,19 @@
+{
+  "swagger" : "2.0",
+  "definitions" : {
+    "Example": {
+      "title": "Example Type",
+      "description" : "Some markdown flavored description would go here!",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

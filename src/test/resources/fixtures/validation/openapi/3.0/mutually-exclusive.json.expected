@@ -1,0 +1,7 @@
+[MT-001] |medium| {/components/parameters[mt-001]/content[text/plain]->example} :: Media Type "Example" and "Examples" are mutually exclusive.
+[PAR-030] |medium| {/components/parameters[par-030]->schema} :: Parameter cannot have both a Schema and Content.
+[PAR-031] |medium| {/components/parameters[par-031]->example} :: Parameter "Example" and "Examples" are mutually exclusive.
+[EX-004] |medium| {/components/examples[ex-004]->value} :: Example "Value" and "External Value" are mutually exclusive.
+[HEAD-014] |medium| {/components/headers[head-014]->schema} :: Header cannot have both a Schema and Content.
+[HEAD-013] |medium| {/components/headers[head-013]->example} :: Header "Example" and "Examples" are mutually exclusive.
+[LINK-001] |medium| {/components/links[link-001]->operationId} :: Link Operation Reference and Operation ID cannot both be used.

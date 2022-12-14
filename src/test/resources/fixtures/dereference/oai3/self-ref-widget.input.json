@@ -1,0 +1,21 @@
+{
+    "openapi": "3.0.2",
+    "components": {
+        "schemas": {
+            "Widget": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "selfWidget": {
+                        "$ref": "https://www.example.com/schemas.json#/components/schemas/SelfWidget"
+                    }
+                }
+            }
+        }
+    }
+}

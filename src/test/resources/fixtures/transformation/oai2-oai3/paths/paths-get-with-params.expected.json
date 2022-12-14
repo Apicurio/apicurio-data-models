@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.3",
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "token to be passed as a header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "array",
+              "items": {
+                "format": "int64",
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "ID of the object to fetch",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/parameters/qinfo"
+          }
+        ],
+        "requestBody": {
+          "description": "user to add to the system",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

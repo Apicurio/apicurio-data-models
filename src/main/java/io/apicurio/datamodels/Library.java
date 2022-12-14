@@ -26,11 +26,13 @@ import io.apicurio.datamodels.models.io.ModelReader;
 import io.apicurio.datamodels.models.io.ModelReaderFactory;
 import io.apicurio.datamodels.models.io.ModelWriter;
 import io.apicurio.datamodels.models.io.ModelWriterFactory;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
+import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -152,6 +154,34 @@ public class Library {
      */
     public static Node resolveNodePath(NodePath nodePath, Document doc) {
         return NodePathUtil.resolveNodePath(nodePath, doc);
+    }
+
+    /**
+     * Transforms from an OpenAPI 2.0 document into a 3.0 document.
+     * @param source
+     */
+    public static Document transformDocument(Document source, ModelType toType) {
+        if (source.root().modelType() != ModelType.OPENAPI20 || toType != ModelType.OPENAPI30) {
+            throw new RuntimeException("Transformation not supported.");
+        }
+
+        // Transform from OpenApi20 to OpenApi30
+        OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
+        OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
+        VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
+        return transformer.getResult();
+    }
+
+    /**
+     * Clones the given document by serializing it to a JS object, and then re-parsing it.
+     * @param source
+     */
+    public static Document cloneDocument(Document source) {
+        // TODO have the code generator produce a Cloner of some kind that knows how to clone any Node.
+        //      We already have reader/writer dispatchers.  We only need something that can create a new,
+        //      empty model instance from an existing (not empty) model.
+        ObjectNode jsObj = writeNode(source);
+        return readDocument(jsObj);
     }
 
 }
