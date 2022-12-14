@@ -1,0 +1,2 @@
+[INF-001] |medium| {/info->title} :: API is missing a title.
+[INF-002] |medium| {/info->version} :: API is missing a version.

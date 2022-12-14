@@ -1,0 +1,8 @@
+{
+  "swagger": "2.0",
+  "host": "petstore.swagger.io",
+  "basePath": "/v2",
+  "schemes": [
+    "http"
+  ]
+}

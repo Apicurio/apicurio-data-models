@@ -1,0 +1,54 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Sample API",
+        "version": "1.0.0",
+        "description": "An example API."
+    },
+    "paths": {
+        "/invoices": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Invoice"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "$ref": "https://schemas.example.org/responses.json#/components/responses/NotFound"
+                    }
+                },
+                "operationId": "getInvoices"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Error": {
+                "description": "",
+                "required": [
+                    "code"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "Invoice": {
+                "description": "",
+                "type": "object"
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Person": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "x-my-extension": true,
+      "x-int-extension": 17
+    }
+  }
+}

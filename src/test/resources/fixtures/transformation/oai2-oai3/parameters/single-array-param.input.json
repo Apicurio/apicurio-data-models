@@ -1,0 +1,23 @@
+{
+  "swagger": "2.0",
+  "parameters": {
+    "arrayParam-number": {
+      "name": "arrayp-1",
+      "in": "query",
+      "description": "an array of stuff",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "number",
+        "collectionFormat": "csv",
+        "maximum": 100,
+        "exclusiveMaximum": true,
+        "minimum": 1,
+        "exclusiveMinimum": false,
+        "multipleOf": 5,
+        "minItems": 1,
+        "maxItems": 20
+      }
+    }
+  }
+}

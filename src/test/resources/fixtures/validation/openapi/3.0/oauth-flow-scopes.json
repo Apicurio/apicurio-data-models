@@ -1,0 +1,28 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "OAuth Flow With Scopes Test",
+        "version": "1.0.0"
+    },
+    "paths": {
+    },
+    "components": {
+        "securitySchemes": {
+            "testScheme": {
+                "type": "oauth2",
+                "name": "X-Auth",
+                "in": "header",
+                "scheme": "bearer",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://myserver.com/login/v2/authorization",
+                        "scopes": {
+                            "foo": "foo description"
+                        }
+                    }
+                },
+                "openIdConnectUrl": "http://example.org/login"
+            }
+        }
+    }
+}

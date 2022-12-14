@@ -18,6 +18,10 @@ package io.apicurio.datamodels.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +37,30 @@ import io.apicurio.datamodels.models.Node;
  */
 public class NodeUtil {
 
+    public static Object getProperty(Object node, String propertyName) {
+        if (isNode(node)) {
+            return getNodeProperty((Node) node, propertyName);
+        }
+        if (node instanceof List) {
+            int idx = Integer.parseInt(propertyName);
+            List<?> list = (List<?>) node;
+            return list.get(idx);
+        }
+        if (node instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, ?> map = (Map<String, ?>) node;
+            return map.get(propertyName);
+        }
+
+        return null;
+    }
+
     /**
-     * Returns the value for a given node property.  Also supports List and Map as the input "node".
+     * Returns the value for a given node property.
      * @param node
      * @param propertyName
      */
-    public static Object getProperty(Node node, String propertyName) {
+    public static Object getNodeProperty(Node node, String propertyName) {
         // Access the value of the property by invoking its Getter
         String getterName = "get" + StringUtils.capitalize(propertyName);
         try {
@@ -102,6 +124,82 @@ public class NodeUtil {
      */
     public static int toInteger(String value) {
         return Integer.parseInt(value);
+    }
+
+    /**
+     * Returns true if the given value is null or undefined.
+     * @param value
+     */
+    public static boolean isNullOrUndefined(Object value) {
+        return value == null;
+    }
+
+    /**
+     * Returns true if the given value is defined (ie if the value is NOT null or undefined).
+     * @param value
+     */
+    public static boolean isDefined(Object value) {
+        return !isNullOrUndefined(value);
+    }
+
+    /**
+     * Creates a list from a bunch of argument items.
+     * @param items
+     */
+    public static List<String> asList(String ...items) {
+        return Arrays.asList(items);
+    }
+
+    /**
+     * Turns a list into an array.
+     * @param list
+     */
+    public static String[] asArray(List<String> list) {
+        return list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * Makes a copy of a list.
+     * @param list
+     */
+    public static List<String> copyList(List<String> list) {
+        List<String> rval = new ArrayList<>();
+        rval.addAll(list);
+        return rval;
+    }
+
+    /**
+     * Tests two objects for equality.
+     * @param value1
+     * @param value2
+     */
+    public static boolean equals(Object value1, Object value2) {
+        if (value1 == value2) {
+            return true;
+        }
+        return value1 != null && value1.equals(value2);
+    }
+
+    /**
+     * Gets the keys from the given map.
+     * @param map
+     */
+    public static Collection<String> getMapKeys(Map<String, ?> map) {
+        if (map == null) {
+            return Collections.emptyList();
+        }
+        return map.keySet();
+    }
+
+    /**
+     * Gets the values from the given map.
+     * @param map
+     */
+    public static <T> Collection<T> getMapValues(Map<String, T> map) {
+        if (map == null) {
+            return Collections.emptyList();
+        }
+        return map.values();
     }
 
 }

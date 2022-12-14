@@ -1,0 +1,17 @@
+{
+  "swagger": "2.0",
+  "responses": {
+    "NotFound": {
+      "description": "Entity not found."
+    },
+    "IllegalInput": {
+      "description": "Illegal input for operation."
+    },
+    "GeneralError": {
+      "description": "General Error",
+      "schema": {
+        "$ref": "#/definitions/GeneralError"
+      }
+    }
+  }
+}
