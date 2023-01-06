@@ -1,0 +1,11 @@
+{
+    "id": "not-simple",
+    "description": "Oh yeah",
+    "unionProp1": "foo",
+    "unionProp2": "bar",
+    "unionProp3": false,
+    "unionProp4": {
+        "name": "prop4-child",
+        "origin": "json"
+    }
+}

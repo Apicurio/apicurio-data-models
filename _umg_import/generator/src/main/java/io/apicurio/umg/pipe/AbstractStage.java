@@ -17,8 +17,9 @@ public abstract class AbstractStage implements Stage {
     private GeneratorState state;
 
     @Override
-    public void process(GeneratorState state) {
+    public final void process(GeneratorState state) {
         this.state = state;
+        debug("Executing stage.");
         this.doProcess();
     }
 
@@ -45,6 +46,10 @@ public abstract class AbstractStage implements Stage {
 
     protected boolean isEntity(PropertyModel property) {
         return property.getType().isEntityType();
+    }
+
+    protected boolean isUnion(PropertyModel property) {
+        return property.getType().isUnion();
     }
 
     protected boolean isPrimitive(PropertyModel property) {

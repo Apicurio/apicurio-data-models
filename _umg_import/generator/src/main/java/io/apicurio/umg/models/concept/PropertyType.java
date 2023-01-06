@@ -167,4 +167,5 @@ public class PropertyType {
     public boolean isEntityType() {
         return isSimple() && !isPrimitiveType();
     }
+
 }

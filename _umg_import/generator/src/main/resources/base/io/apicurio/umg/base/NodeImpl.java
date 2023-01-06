@@ -133,4 +133,22 @@ public abstract class NodeImpl implements Node {
         this._parent = parent;
     }
 
+    /*
+     * Some methods that must be implemented on an entity only when the entity is part 
+     * of a union type.  We put them here so we don't have to generate them.  But perhaps
+     * we *should* generate them only on the appropriate entity implementation classes.
+     */
+    
+    public boolean isEntity() {
+        return true;
+    }
+
+    public boolean isEntityList() {
+        return false;
+    }
+
+    public boolean isEntityMap() {
+        return false;
+    }
+
 }

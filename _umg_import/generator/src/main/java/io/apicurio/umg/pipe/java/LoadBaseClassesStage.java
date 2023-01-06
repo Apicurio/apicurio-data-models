@@ -24,7 +24,8 @@ public class LoadBaseClassesStage extends AbstractStage {
     protected void doProcess() {
         try {
             loadBaseEnums(
-                    "io.apicurio.umg.base.visitors.TraversalStepType");
+                    "io.apicurio.umg.base.visitors.TraversalStepType"
+                    );
             loadBaseClasses(
                     "io.apicurio.umg.base.NodeImpl",
                     "io.apicurio.umg.base.RootNodeImpl",
@@ -34,7 +35,17 @@ public class LoadBaseClassesStage extends AbstractStage {
                     "io.apicurio.umg.base.visitors.AbstractTraverser",
                     "io.apicurio.umg.base.visitors.TraversalStep",
                     "io.apicurio.umg.base.visitors.TraversalContextImpl",
-                    "io.apicurio.umg.base.visitors.ReverseTraverser");
+                    "io.apicurio.umg.base.visitors.ReverseTraverser",
+                    "io.apicurio.umg.base.union.BooleanUnionValueImpl",
+                    "io.apicurio.umg.base.union.ListUnionValueImpl",
+                    "io.apicurio.umg.base.union.MapUnionValueImpl",
+                    "io.apicurio.umg.base.union.EntityListUnionValueImpl",
+                    "io.apicurio.umg.base.union.EntityMapUnionValueImpl",
+                    "io.apicurio.umg.base.union.PrimitiveUnionValueImpl",
+                    "io.apicurio.umg.base.union.StringListUnionValueImpl",
+                    "io.apicurio.umg.base.union.StringUnionValueImpl",
+                    "io.apicurio.umg.base.union.UnionValueImpl"
+                    );
             loadBaseInterfaces(
                     "io.apicurio.umg.base.Node",
                     "io.apicurio.umg.base.MappedNode",
@@ -44,7 +55,18 @@ public class LoadBaseClassesStage extends AbstractStage {
                     "io.apicurio.umg.base.visitors.TraversalContext",
                     "io.apicurio.umg.base.visitors.TraversingVisitor",
                     "io.apicurio.umg.base.io.ModelReader",
-                    "io.apicurio.umg.base.io.ModelWriter");
+                    "io.apicurio.umg.base.io.ModelWriter",
+                    "io.apicurio.umg.base.union.BooleanUnionValue",
+                    "io.apicurio.umg.base.union.EntityListUnionValue",
+                    "io.apicurio.umg.base.union.EntityMapUnionValue",
+                    "io.apicurio.umg.base.union.ListUnionValue",
+                    "io.apicurio.umg.base.union.MapUnionValue",
+                    "io.apicurio.umg.base.union.PrimitiveUnionValue",
+                    "io.apicurio.umg.base.union.StringListUnionValue",
+                    "io.apicurio.umg.base.union.StringUnionValue",
+                    "io.apicurio.umg.base.union.Union",
+                    "io.apicurio.umg.base.union.UnionValue"
+                    );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

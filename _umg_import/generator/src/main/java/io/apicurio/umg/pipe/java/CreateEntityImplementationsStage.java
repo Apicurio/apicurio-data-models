@@ -14,7 +14,7 @@ import io.apicurio.umg.pipe.java.method.BodyBuilder;
  *
  * @author eric.wittmann@gmail.com
  */
-public class CreateEntityImplStage extends AbstractJavaStage {
+public class CreateEntityImplementationsStage extends AbstractJavaStage {
 
     @Override
     protected void doProcess() {

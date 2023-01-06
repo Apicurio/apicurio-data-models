@@ -1,0 +1,35 @@
+name: Union Test API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/Union/versions/1.0.md
+prefix: Utm10
+namespace: org.example.union.v10
+
+entities:
+  - name: Document
+    root: true
+    properties:
+      - name: id
+        type: string
+      - name: description
+        type: string
+      - name: unionProp1
+        type: 'string|boolean'
+      - name: unionProp2
+        type: 'string|[string]'
+      - name: unionProp3
+        type: 'boolean|ChildEntity'
+      - name: unionProp4
+        type: 'ChildEntity|[ChildEntity]'
+    propertyOrder:
+      - $this
+
+  - name: ChildEntity
+    properties:
+      - name: name
+        type: string
+      - name: origin
+        type: string
+    propertyOrder:
+      - $this

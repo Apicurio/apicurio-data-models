@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -162,7 +163,7 @@ public class JsonUtil {
         }
     }
     public static List<String> consumeStringArrayProperty(ObjectNode json, String propertyName) {
-        ObjectNode node = (ObjectNode) json;
+        ObjectNode node = json;
         if (node.has(propertyName)) {
             List<String> rval = getStringArrayProperty(json, propertyName);
             node.remove(propertyName);
@@ -191,7 +192,7 @@ public class JsonUtil {
         }
     }
     public static List<Integer> consumeIntegerArrayProperty(ObjectNode json, String propertyName) {
-        ObjectNode node = (ObjectNode) json;
+        ObjectNode node = json;
         if (node.has(propertyName)) {
             List<Integer> rval = getIntegerArrayProperty(json, propertyName);
             node.remove(propertyName);
@@ -226,7 +227,7 @@ public class JsonUtil {
         }
     }
     public static List<Number> consumeNumberArrayProperty(ObjectNode json, String propertyName) {
-        ObjectNode node = (ObjectNode) json;
+        ObjectNode node = json;
         if (node.has(propertyName)) {
             List<Number> rval = getNumberArrayProperty(json, propertyName);
             node.remove(propertyName);
@@ -256,7 +257,7 @@ public class JsonUtil {
         }
     }
     public static List<Boolean> consumeBooleanArrayProperty(ObjectNode json, String propertyName) {
-        ObjectNode node = (ObjectNode) json;
+        ObjectNode node = json;
         if (node.has(propertyName)) {
             List<Boolean> rval = getBooleanArrayProperty(json, propertyName);
             node.remove(propertyName);
@@ -712,7 +713,72 @@ public class JsonUtil {
             return false;
         }
     }
-    
+
+    public static boolean isString(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isTextual();
+    }
+
+    public static String toString(JsonNode value) {
+        return value.asText();
+    }
+
+    public static boolean isBoolean(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isBoolean();
+    }
+
+    public static Boolean toBoolean(JsonNode value) {
+        return value.asBoolean();
+    }
+
+    public static boolean isNumber(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isNumber();
+    }
+
+    public static Number toNumber(JsonNode value) {
+        return value.asDouble();
+    }
+
+    public static boolean isObject(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isObject();
+    }
+
+    public static ObjectNode toObject(JsonNode value) {
+        return (ObjectNode) value;
+    }
+
+    public static boolean isArray(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isArray();
+    }
+
+    public static ArrayNode toArray(JsonNode value) {
+        return (ArrayNode) value;
+    }
+
+    public static List<JsonNode> toList(JsonNode value) {
+        List<JsonNode> rval = new LinkedList<>();
+        ArrayNode array = (ArrayNode) value;
+        for (int idx = 0; idx < array.size(); idx++) {
+            JsonNode node = array.get(idx);
+            rval.add(node);
+        }
+        return rval;
+    }
+
 
     private static class PrettyPrinter extends MinimalPrettyPrinter {
         private static final long serialVersionUID = -4446121026177697380L;

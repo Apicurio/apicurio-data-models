@@ -5,6 +5,10 @@ import java.util.Map;
 
 import io.apicurio.umg.base.MappedNode;
 import io.apicurio.umg.base.Node;
+import io.apicurio.umg.base.Visitable;
+import io.apicurio.umg.base.union.EntityListUnionValue;
+import io.apicurio.umg.base.union.EntityMapUnionValue;
+import io.apicurio.umg.base.union.Union;
 
 /**
  * Base class for all traversers.
@@ -31,7 +35,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      *
      * @param node
      */
-    protected void doTraverseNode(Node node) {
+    protected void doTraverseNode(Visitable node) {
         node.accept(this);
     }
 
@@ -41,7 +45,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      * @param propertyName
      * @param node
      */
-    protected void traverse(String propertyName, Node node) {
+    protected void traverse(String propertyName, Visitable node) {
         if (node != null) {
             traversalContext.pushProperty(propertyName);
             doTraverseNode(node);
@@ -107,6 +111,27 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
                     this.traversalContext.pop();
                 }
             });
+        }
+    }
+
+    /**
+     * Traverse a union property.  Traversal of a union property only needs to happen if
+     * the value of the union is an entity or an entity collection.
+     * @param propertyName
+     * @param union
+     */
+    @SuppressWarnings("unchecked")
+    protected void traverseUnion(String propertyName, Union union) {
+        if (union != null) {
+            if (union.isEntity()) {
+                this.traverse(propertyName, union);
+            } else if (union.isEntityList()) {
+                EntityListUnionValue<? extends Node> value = (EntityListUnionValue<? extends Node>) union;
+                this.traverseList(propertyName, value.getValue());
+            } else if (union.isEntityMap()) {
+                EntityMapUnionValue<? extends Node> value = (EntityMapUnionValue<? extends Node>) union;
+                this.traverseMap(propertyName, value.getValue());
+            }
         }
     }
 

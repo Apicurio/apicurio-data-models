@@ -1,6 +1,12 @@
 package io.apicurio.umg.pipe.java;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+import org.jboss.forge.roaster.model.source.Importer;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
@@ -10,6 +16,7 @@ import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
+import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.models.concept.VisitorModel;
@@ -190,6 +197,14 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return getState().getConfig().getRootNamespace() + ".visitors.AbstractTraverser";
     }
 
+    protected String getUnionInterfaceFQN() {
+        return getUnionTypesPackageName() + ".Union";
+    }
+
+    protected String getUnionValueInterfaceFQN() {
+        return getUnionTypesPackageName() + ".UnionValue";
+    }
+
     protected String createMethodName(EntityModel entityModel) {
         return createMethodName(entityModel.getName());
     }
@@ -282,12 +297,20 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return resolveJavaEntityType(namespace, property.getType());
     }
 
+    protected JavaInterfaceSource resolveJavaEntityType(NamespaceModel namespace, PropertyType type) {
+        return resolveJavaEntity(namespace.fullName(), type.getSimpleType());
+    }
+
     protected JavaInterfaceSource resolveJavaEntityType(String namespace, PropertyType type) {
         return resolveJavaEntity(namespace, type.getSimpleType());
     }
 
     protected JavaInterfaceSource resolveJavaEntity(EntityModel entityModel) {
         return resolveJavaEntity(entityModel.getNamespace().fullName(), entityModel.getName());
+    }
+
+    protected JavaClassSource resolveJavaEntityImpl(EntityModel entityModel) {
+        return resolveJavaEntityImpl(entityModel.getNamespace().fullName(), entityModel.getName());
     }
 
     protected JavaInterfaceSource resolveJavaEntity(String namespace, String entityName) {
@@ -297,8 +320,20 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return lookupJavaEntity(fqn);
     }
 
+    protected JavaClassSource resolveJavaEntityImpl(String namespace, String entityName) {
+        String _package = namespace;
+        String prefix = getPrefix(namespace);
+        String fqn = _package + "." + prefix + entityName + "Impl";
+        return lookupJavaEntityImpl(fqn);
+    }
+
     protected JavaInterfaceSource resolveCommonJavaEntity(EntityModel entityModel) {
         return resolveCommonJavaEntity(entityModel.getNamespace().fullName(), entityModel.getName());
+    }
+
+    protected JavaInterfaceSource resolveCommonJavaEntity(NamespaceModel namespace, String entityName) {
+        EntityModel commonEntity = getState().getConceptIndex().lookupCommonEntity(namespace.fullName(), entityName);
+        return lookupJavaEntity(commonEntity);
     }
 
     protected JavaInterfaceSource resolveCommonJavaEntity(String namespace, String entityName) {
@@ -346,6 +381,223 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String prefixToModelType(String prefix) {
         return prefix.toUpperCase();
+    }
+
+    protected String getUnionTypesPackageName() {
+        return getState().getConfig().getRootNamespace() + ".union";
+    }
+
+    protected String getUnionTypeFQN(String name) {
+        return getUnionTypesPackageName() + "." + name;
+    }
+
+
+    public class JavaType {
+        private final PropertyType propertyType;
+        private final String namespaceContext;
+
+        public JavaType(PropertyType type, String namespaceContext) {
+            this.propertyType = type;
+            this.namespaceContext = namespaceContext;
+        }
+
+        public JavaType(PropertyType type, NamespaceModel namespace) {
+            this(type, namespace.fullName());
+        }
+
+        public JavaType(PropertyModelWithOrigin property) {
+            this(property.getProperty().getType(), property.getOrigin().getNamespace());
+        }
+
+        public boolean isEntityList() {
+            return propertyType.isList() && propertyType.getNested().iterator().next().isEntityType();
+        }
+
+        public boolean isEntityMap() {
+            return propertyType.isMap() && propertyType.getNested().iterator().next().isEntityType();
+        }
+
+        public boolean isEntity() {
+            return propertyType.isEntityType();
+        }
+
+        public boolean isUnion() {
+            return propertyType.isUnion();
+        }
+
+        public boolean isPrimitive() {
+            return propertyType.isPrimitiveType();
+        }
+
+        public boolean isPrimitiveList() {
+            return propertyType.isList() && propertyType.getNested().iterator().next().isPrimitiveType();
+        }
+
+        public boolean isPrimitiveMap() {
+            return propertyType.isMap() && propertyType.getNested().iterator().next().isPrimitiveType();
+        }
+
+        public Class<?> toClass() {
+            return toClass(propertyType);
+        }
+
+        private Class<?> toClass(PropertyType type) {
+            if (!type.isPrimitiveType()) {
+                throw new UnsupportedOperationException("Only allowed for primitive types: " + type);
+            }
+            Class<?> rval = Util.PRIMITIVE_TYPE_MAP.get(type.getSimpleType());
+            if (rval == null) {
+                throw new UnsupportedOperationException("Primitive-to-class mapping not found for: " + type.getSimpleType());
+            }
+            return rval;
+        }
+
+        public void addImportsTo(Importer<?> importer) {
+            // Handle map of list of primitives.
+            if (propertyType.isMap() && propertyType.getNested().iterator().next().isList() &&
+                    propertyType.getNested().iterator().next().getNested().iterator().next().isPrimitiveType()) {
+                PropertyType listType = propertyType.getNested().iterator().next().getNested().iterator().next();
+                Class<?> pType = primitiveTypeToClass(listType);
+                importer.addImport(pType);
+                importer.addImport(List.class);
+                importer.addImport(Map.class);
+            } else if (isPrimitiveList()) {
+                Class<?> listType = primitiveTypeToClass(propertyType.getNested().iterator().next());
+                importer.addImport(List.class);
+                importer.addImport(listType);
+            } else if (isPrimitiveMap()) {
+                Class<?> mapType = primitiveTypeToClass(propertyType.getNested().iterator().next());
+                importer.addImport(Map.class);
+                importer.addImport(mapType);
+            } else if (isPrimitive()) {
+                Class<?> returnType = primitiveTypeToClass(propertyType);
+                importer.addImport(returnType);
+            } else if (isEntity()) {
+                JavaInterfaceSource entityType = resolveJavaEntityType(namespaceContext, propertyType);
+                if (entityType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    importer.addImport(entityType);
+                }
+            } else if (isEntityList()) {
+                JavaInterfaceSource listType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                if (listType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    importer.addImport(List.class);
+                    importer.addImport(listType);
+                }
+            } else if (isEntityMap()) {
+                JavaInterfaceSource mapType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                if (mapType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    importer.addImport(Map.class);
+                    importer.addImport(mapType);
+                }
+            } else {
+                throw new UnsupportedOperationException("Java type not supported: " + propertyType);
+            }
+        }
+
+        public String toJavaTypeString() {
+            if (propertyType.isMap() && propertyType.getNested().iterator().next().isList() &&
+                    propertyType.getNested().iterator().next().getNested().iterator().next().isPrimitiveType()) {
+                PropertyType listType = propertyType.getNested().iterator().next().getNested().iterator().next();
+                Class<?> pType = primitiveTypeToClass(listType);
+                return "Map<String, List<" + pType.getSimpleName() + ">>";
+            } else if (isPrimitiveList()) {
+                Class<?> listType = primitiveTypeToClass(propertyType.getNested().iterator().next());
+                return "List<" + listType.getSimpleName() + ">";
+            } else if (isPrimitiveMap()) {
+                Class<?> mapType = primitiveTypeToClass(propertyType.getNested().iterator().next());
+                return "Map<String, " + mapType.getSimpleName() + ">";
+            } else if (isPrimitive()) {
+                Class<?> returnType = primitiveTypeToClass(propertyType);
+                return returnType.getSimpleName();
+            } else if (isEntity()) {
+                JavaInterfaceSource entityType = resolveJavaEntityType(namespaceContext, propertyType);
+                if (entityType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    return entityType.getName();
+                }
+            } else if (isEntityList()) {
+                JavaInterfaceSource listType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                if (listType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    return "List<" + listType.getName() + ">";
+                }
+            } else if (isEntityMap()) {
+                JavaInterfaceSource mapType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                if (mapType == null) {
+                    throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
+                } else {
+                    return "Map<String, " + mapType.getName() + ">";
+                }
+            } else {
+                throw new UnsupportedOperationException("Java type not supported: " + propertyType);
+            }
+        }
+
+    }
+
+    public static String getTypeName(PropertyType type) {
+        if (type.isEntityType()) {
+            return type.getSimpleType();
+        } else if (type.isPrimitiveType()) {
+            return StringUtils.capitalize(type.getSimpleType());
+        } else if (type.isList()) {
+            return getTypeName(type.getNested().iterator().next()) + "List";
+        } else if (type.isMap()) {
+            return getTypeName(type.getNested().iterator().next()) + "Map";
+        } else {
+            throw new RuntimeException("Unsupported type in union: " + type);
+        }
+    }
+
+    private static String getUnionTypeName(List<PropertyType> unionNestedTypes) {
+        return unionNestedTypes.stream().map(pt -> getTypeName(pt)).reduce((t, u) -> t + u).orElseThrow() + "Union";
+    }
+
+    public class UnionPropertyType {
+
+        public UnionPropertyType(PropertyType pType) {
+            List<PropertyType> nt = new ArrayList<>(pType.getNested().size());
+            nt.addAll(pType.getNested());
+            nt.sort(new Comparator<PropertyType>() {
+                @Override
+                public int compare(PropertyType o1, PropertyType o2) {
+                    return o1.toString().compareToIgnoreCase(o2.toString());
+                }
+            });
+
+            String name = getUnionTypeName(nt);
+            this.name = name;
+            this.nestedTypes = nt;
+        }
+
+        private final String name;
+        private final List<PropertyType> nestedTypes;
+
+        public void addImportsTo(Importer<?> importer) {
+            String unionTypeFQN = getUnionTypeFQN(name);
+            importer.addImport(unionTypeFQN);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<PropertyType> getNestedTypes() {
+            return nestedTypes;
+        }
+
+        public String toJavaTypeString() {
+            return name;
+        }
+
     }
 
 }

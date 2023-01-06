@@ -39,7 +39,6 @@ public class JavaIndex {
     @Getter
     private Map<String, JavaEnumSource> enums = new HashMap<>();
 
-
     public JavaInterfaceSource lookupInterface(String fullyQualifiedName) {
         return this.interfaces.get(fullyQualifiedName);
     }

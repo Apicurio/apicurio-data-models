@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
+import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
 import io.apicurio.umg.models.concept.PropertyType;
@@ -473,10 +474,135 @@ public class CreateWritersStage extends AbstractJavaStage {
         }
 
         private void handleUnionProperty(BodyBuilder body) {
-            // TODO Auto-generated method stub
             PropertyModel property = propertyWithOrigin.getProperty();
-            warn("UNION Entity property '" + property.getName() + "' not written (unsupported) for entity: " + entityModel.fullyQualifiedName());
-            warn("       property type: " + property.getType());
+            NamespaceModel nsContext = propertyWithOrigin.getOrigin().getNamespace();
+            UnionPropertyType ut = new UnionPropertyType(property.getType());
+
+            body.addContext("unionJavaType", ut.toJavaTypeString());
+            body.addContext("propertyName", property.getName());
+            body.addContext("getterMethodName", getterMethodName(property));
+
+            body.append("{");
+            body.append("    ${unionJavaType} union = node.${getterMethodName}();");
+            body.append("    if (union != null) {");
+
+            ut.getNestedTypes().forEach(nestedType -> {
+                String typeName = getTypeName(nestedType);
+                String isMethodName = "is" + typeName;
+                String asMethodName = "as" + typeName;
+                JavaType jt = new JavaType(nestedType, nsContext);
+                String asMethodReturnType = jt.toJavaTypeString();
+
+                body.addContext("isMethodName", isMethodName);
+                body.addContext("asMethodName", asMethodName);
+                body.addContext("asMethodReturnType", asMethodReturnType);
+
+                body.append("   if (union.${isMethodName}()) {");
+
+                if (jt.isPrimitive() || jt.isPrimitiveList() || jt.isPrimitiveMap()) {
+                    body.addContext("setPropertyMethodName", determineSetPropertyVariant(nestedType));
+                    body.addContext("propertyName", property.getName());
+
+                    body.append("JsonUtil.${setPropertyMethodName}(json, \"${propertyName}\", union.${asMethodName}());");
+                } else if (jt.isEntity()) {
+                    String propertyTypeEntityName = entityModel.getNamespace().fullName() + "." + nestedType.getSimpleType();
+                    EntityModel propertyTypeEntity = getState().getConceptIndex().lookupEntity(propertyTypeEntityName);
+                    if (propertyTypeEntity == null) {
+                        warn("UNION Entity property '" + property.getName() + "' not fully written for entity: " + entityModel.fullyQualifiedName());
+                        warn("       property union type contains entity but not found in index: " + nestedType);
+                    } else {
+                        JavaInterfaceSource propertyTypeJavaEntity = resolveJavaEntityType(entityModel.getNamespace(), nestedType);
+                        writerClassSource.addImport(propertyTypeJavaEntity);
+
+                        body.addContext("propertyName", property.getName());
+                        body.addContext("writeMethodName", writeMethodName(propertyTypeEntity));
+                        body.addContext("propertyTypeJavaEntity", propertyTypeJavaEntity.getName());
+
+                        body.append("ObjectNode jsonValue = JsonUtil.objectNode();");
+                        body.append("this.${writeMethodName}((${propertyTypeJavaEntity}) union.${asMethodName}(), jsonValue);");
+                        body.append("JsonUtil.setObjectProperty(json, \"${propertyName}\", jsonValue);");
+                    }
+                } else if (jt.isEntityList()) {
+                    PropertyType listValuePropertyType = nestedType.getNested().iterator().next();
+                    String entityTypeName = listValuePropertyType.getSimpleType();
+                    String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
+                    EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
+                    if (entityTypeModel == null) {
+                        warn("UNION Entity property '" + property.getName() + "' not fully written for entity: " + entityModel.fullyQualifiedName());
+                        warn("       property union type contains entity but not found in index: " + nestedType);
+                    }
+                    JavaInterfaceSource entityTypeJavaModel = resolveJavaEntity(entityTypeModel);
+                    if (entityTypeJavaModel == null) {
+                        warn("UNION Entity property '" + property.getName() + "' not fully written for entity: " + entityModel.fullyQualifiedName());
+                        warn("       property union type contains entity but not found in JAVA index: " + nestedType);
+                    }
+                    JavaInterfaceSource commonEntityTypeJavaModel = resolveCommonJavaEntity(entityTypeModel);
+
+                    writerClassSource.addImport(entityTypeJavaModel);
+                    writerClassSource.addImport(commonEntityTypeJavaModel);
+                    writerClassSource.addImport(List.class);
+                    writerClassSource.addImport(ArrayNode.class);
+
+                    body.addContext("propertyName", property.getName());
+                    body.addContext("listValueJavaType", entityTypeJavaModel.getName());
+                    body.addContext("listValueCommonJavaType", commonEntityTypeJavaModel.getName());
+                    body.addContext("writeMethodName", writeMethodName(entityTypeModel));
+
+                    body.append("    List<? extends ${listValueCommonJavaType}> models = union.${asMethodName}();");
+                    body.append("    ArrayNode array = JsonUtil.arrayNode();");
+                    body.append("    models.forEach(model -> {");
+                    body.append("        ObjectNode object = JsonUtil.objectNode();");
+                    body.append("        this.${writeMethodName}((${listValueJavaType}) model, object);");
+                    body.append("        JsonUtil.addToArray(array, object);");
+                    body.append("    });");
+                    body.append("    JsonUtil.setAnyProperty(json, \"${propertyName}\", array);");
+                } else if (jt.isEntityMap()) {
+                    PropertyType mapValuePropertyType = nestedType;
+                    String entityTypeName = mapValuePropertyType.getSimpleType();
+                    String fqEntityName = entityModel.getNamespace().fullName() + "." + entityTypeName;
+                    EntityModel entityTypeModel = getState().getConceptIndex().lookupEntity(fqEntityName);
+                    if (entityTypeModel == null) {
+                        warn("UNION Entity property '" + property.getName() + "' not fully written for entity: " + entityModel.fullyQualifiedName());
+                        warn("       property union type contains entity but not found in index: " + nestedType);
+                    }
+                    JavaInterfaceSource entityTypeJavaModel = getState().getJavaIndex().lookupInterface(getJavaEntityInterfaceFQN(entityTypeModel));
+                    if (entityTypeJavaModel == null) {
+                        warn("UNION Entity property '" + property.getName() + "' not fully written for entity: " + entityModel.fullyQualifiedName());
+                        warn("       property union type contains entity but not found in JAVA index: " + nestedType);
+                    }
+                    JavaInterfaceSource commonEntityTypeJavaModel = resolveCommonJavaEntity(entityTypeModel);
+
+                    writerClassSource.addImport(Map.class);
+                    writerClassSource.addImport(entityTypeJavaModel);
+                    writerClassSource.addImport(commonEntityTypeJavaModel);
+
+                    body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
+                    body.addContext("mapValueCommonJavaType", commonEntityTypeJavaModel.getName());
+                    body.addContext("writeMethodName", "write" + entityTypeName);
+
+                    body.append("    Map<String, ? extends ${mapValueCommonJavaType}> models = union.${asMethodName}();");
+                    body.append("    ObjectNode object = JsonUtil.objectNode();");
+                    body.append("    models.keySet().forEach(jsonName -> {");
+                    body.append("        ObjectNode jsonValue = JsonUtil.objectNode();");
+                    body.append("        this.${writeMethodName}((${mapValueJavaType}) models.get(jsonName), jsonValue);");
+                    body.append("        JsonUtil.setObjectProperty(object, jsonName, jsonValue);");
+                    body.append("    });");
+                    body.append("    JsonUtil.setObjectProperty(json, \"${propertyName}\", object);");
+                } else {
+                    warn("Nested union type (of property '" + property.getName() + "') not supported: " + nestedType);
+                }
+
+                body.append("   }");
+            });
+
+
+            ut.getNestedTypes().forEach(nestedType -> {
+
+            });
+            body.append("    }");
+            body.append("}");
+
+            ut.addImportsTo(writerClassSource);
         }
 
         /**

@@ -1,8 +1,6 @@
 package io.apicurio.umg.pipe.java;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
@@ -64,6 +62,10 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createAddMethod(javaEntity, propertyWithOrigin);
             createClearMethod(javaEntity, propertyWithOrigin);
             createRemoveMethod(javaEntity, propertyWithOrigin);
+        } else if (isUnion(property)) {
+            createGetter(javaEntity, propertyWithOrigin);
+            createSetter(javaEntity, propertyWithOrigin);
+            createUnionFactoryMethods(javaEntity, propertyWithOrigin);
         } else {
             warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
         }
@@ -85,59 +87,25 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      */
     protected void createGetter(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
         PropertyModel property = propertyWithOrigin.getProperty();
-        String propertyOriginNS = propertyWithOrigin.getOrigin().getNamespace().fullName();
 
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setName(getterMethodName(property)).setPublic();
         addAnnotations(method);
 
-        if (isPrimitiveList(property)) {
-            Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntity.addImport(List.class);
-            javaEntity.addImport(listType);
-            method.setReturnType("List<" + listType.getSimpleName() + ">");
-        } else if (isPrimitiveMap(property)) {
-            Class<?> mapType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntity.addImport(Map.class);
-            javaEntity.addImport(mapType);
-            method.setReturnType("Map<String, " + mapType.getSimpleName() + ">");
-        } else if (isPrimitive(property)) {
-            Class<?> returnType = primitiveTypeToClass(property.getType());
-            javaEntity.addImport(returnType);
-            method.setReturnType(returnType.getSimpleName());
-        } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(propertyOriginNS, property);
-            if (entityType == null) {
-                warn("Java interface for entity type not found: " + property.getType());
-            } else {
-                javaEntity.addImport(entityType);
-                method.setReturnType(entityType.getName());
-            }
-        } else if (isEntityList(property)) {
-            JavaInterfaceSource listType = resolveJavaEntityType(propertyOriginNS, property.getType().getNested().iterator().next());
-            if (listType == null) {
-                warn("Java interface for entity type not found: " + property.getType());
-            } else {
-                javaEntity.addImport(List.class);
-                javaEntity.addImport(listType);
-                method.setReturnType("List<" + listType.getName() + ">");
-            }
-        } else if (isEntityMap(property)) {
-            JavaInterfaceSource mapType = resolveJavaEntityType(propertyOriginNS, property.getType().getNested().iterator().next());
-            if (mapType == null) {
-                warn("Java interface for entity type not found: " + property.getType());
-            } else {
-                javaEntity.addImport(Map.class);
-                javaEntity.addImport(mapType);
-                method.setReturnType("Map<String, " + mapType.getName() + ">");
-            }
+        if (isUnion(property)) {
+            UnionPropertyType ut = new UnionPropertyType(property.getType());
+            ut.addImportsTo(javaEntity);
+            method.setReturnType(ut.toJavaTypeString());
         } else {
-            warn("Return type not supported for getter method: " + method.getName() + " for type: " + property.getType());
+            String propertyOriginNS = propertyWithOrigin.getOrigin().getNamespace().fullName();
+
+            JavaType jt = new JavaType(property.getType(), propertyOriginNS);
+            jt.addImportsTo(javaEntity);
+            method.setReturnType(jt.toJavaTypeString());
         }
 
         createGetterBody(property, method);
     }
-    protected void createGetterBody(PropertyModel property, MethodSource<?> method) {
-    }
+    abstract protected void createGetterBody(PropertyModel property, MethodSource<?> method);
 
     /**
      * Creates a standard java setter method for the given property.
@@ -151,36 +119,19 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setName(setterMethodName(property)).setReturnTypeVoid().setPublic();
         addAnnotations(method);
 
-        if (isPrimitiveList(property)) {
-            Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntity.addImport(List.class);
-            javaEntity.addImport(listType);
-            method.addParameter("List<" + listType.getSimpleName() + ">", "value");
-        } else if (isPrimitiveMap(property)) {
-            Class<?> mapType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntity.addImport(Map.class);
-            javaEntity.addImport(mapType);
-            method.addParameter("Map<String, " + mapType.getSimpleName() + ">", "value");
-        } else if (isPrimitive(property)) {
-            Class<?> paramType = primitiveTypeToClass(property.getType());
-            javaEntity.addImport(paramType);
-            method.addParameter(paramType.getSimpleName(), "value");
-        } else if (isEntity(property)) {
-            JavaInterfaceSource entityType = resolveJavaEntityType(propertyOriginNS, property);
-            if (entityType == null) {
-                warn("Java interface for entity type not found: " + property.getType());
-            } else {
-                javaEntity.addImport(entityType);
-                method.addParameter(entityType.getName(), "value");
-            }
+        if (isUnion(property)) {
+            UnionPropertyType ut = new UnionPropertyType(property.getType());
+            ut.addImportsTo(javaEntity);
+            method.addParameter(ut.toJavaTypeString(), "value");
         } else {
-            warn("[AbstractCreateMethodsStage] Parameter type not supported for setter method: " + method.getName() + " for type: " + property.getType());
+            JavaType jt = new JavaType(property.getType(), propertyOriginNS);
+            jt.addImportsTo(javaEntity);
+            method.addParameter(jt.toJavaTypeString(), "value");
         }
 
         createSetterBody(property, method);
     }
-    protected void createSetterBody(PropertyModel property, MethodSource<?> method) {
-    }
+    abstract protected void createSetterBody(PropertyModel property, MethodSource<?> method);
 
     /**
      * Creates a factory method for the entity type associated with the given
@@ -191,9 +142,11 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      */
     protected void createFactoryMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
         PropertyModel property = propertyWithOrigin.getProperty();
-
+        createFactoryMethod(javaEntity, property.getType());
+    }
+    protected void createFactoryMethod(JavaSource<?> javaEntity, PropertyType propertyType) {
         String _package = javaEntity.getPackage();
-        PropertyType type = property.getType();
+        PropertyType type = propertyType;
         if (type.isMap() || type.isList()) {
             type = type.getNested().iterator().next();
         }
@@ -214,8 +167,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createFactoryMethodBody(javaEntity, entityName, method);
         }
     }
-    protected void createFactoryMethodBody(JavaSource<?> javaEntity, String entityName, MethodSource<?> method) {
-    }
+    abstract protected void createFactoryMethodBody(JavaSource<?> javaEntity, String entityName, MethodSource<?> method);
 
     /**
      * Creates an "add" method for the given property.  The type of the property must be a
@@ -263,8 +215,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
         createAddMethodBody(javaEntity, property, method);
     }
-    protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
-    }
+    abstract protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method);
 
     /**
      * Creates a "clear" method for the given property.  The type of the property must be a
@@ -282,8 +233,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
         createClearMethodBody(property, method);
     }
-    protected void createClearMethodBody(PropertyModel property, MethodSource<?> method) {
-    }
+    abstract protected void createClearMethodBody(PropertyModel property, MethodSource<?> method);
 
     /**
      * Creates a "remove" method for the given property.  The type of the property must be a
@@ -314,7 +264,25 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
         createRemoveMethodBody(property, method);
     }
-    protected void createRemoveMethodBody(PropertyModel property, MethodSource<?> method) {
+    abstract protected void createRemoveMethodBody(PropertyModel property, MethodSource<?> method);
+
+    /**
+     * Create factory methods for any entity types in the union.  If the union is, for example, "boolean|string"
+     * then this will do nothing.  But if the union is "Widget|string" then a factory method for Widgets will
+     * be created.
+     * @param javaEntity
+     * @param propertyWithOrigin
+     */
+    private void createUnionFactoryMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+        UnionPropertyType ut = new UnionPropertyType(property.getType());
+        ut.getNestedTypes().forEach(nestedType -> {
+            if (nestedType.isEntityType()) {
+                createFactoryMethod(javaEntity, nestedType);
+            } else if ((nestedType.isList() || nestedType.isMap()) && nestedType.getNested().iterator().next().isEntityType()) {
+                createFactoryMethod(javaEntity, nestedType.getNested().iterator().next());
+            }
+        });
     }
 
     /**

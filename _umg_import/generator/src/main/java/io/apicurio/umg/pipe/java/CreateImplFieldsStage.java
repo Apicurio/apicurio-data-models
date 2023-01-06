@@ -3,12 +3,9 @@ package io.apicurio.umg.pipe.java;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
@@ -70,48 +67,14 @@ public class CreateImplFieldsStage extends AbstractJavaStage {
             return;
         }
 
-        if (isPrimitive(property)) {
-            Class<?> pType = primitiveTypeToClass(property.getType());
-            javaEntityImpl.addImport(pType);
-            fieldType = pType.getSimpleName();
-        } else if (isEntity(property)) {
-            JavaInterfaceSource javaTypeEntity = resolveJavaEntity(propertyWithOrigin.getOrigin().getNamespace().fullName(), property.getType().getSimpleType());
-            javaEntityImpl.addImport(javaTypeEntity);
-            fieldType = javaTypeEntity.getName();
-        } else if (isPrimitiveList(property)) {
-            Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityImpl.addImport(pType);
-            javaEntityImpl.addImport(List.class);
-            fieldType = "List<" + pType.getSimpleName() + ">";
-        } else if (isPrimitiveMap(property)) {
-            Class<?> pType = primitiveTypeToClass(property.getType().getNested().iterator().next());
-            javaEntityImpl.addImport(pType);
-            javaEntityImpl.addImport(Map.class);
-            fieldType = "Map<String, " + pType.getSimpleName() + ">";
-        } else if (isEntityList(property)) {
-            PropertyType listType = property.getType().getNested().iterator().next();
-            JavaInterfaceSource javaTypeEntity = resolveJavaEntity(propertyWithOrigin.getOrigin().getNamespace().fullName(), listType.getSimpleType());
-            javaEntityImpl.addImport(javaTypeEntity);
-            javaEntityImpl.addImport(List.class);
-            fieldType = "List<" + javaTypeEntity.getName() + ">";
-        } else if (isEntityMap(property)) {
-            PropertyType mapType = property.getType().getNested().iterator().next();
-            JavaInterfaceSource javaTypeEntity = resolveJavaEntity(propertyWithOrigin.getOrigin().getNamespace().fullName(), mapType.getSimpleType());
-            javaEntityImpl.addImport(javaTypeEntity);
-            javaEntityImpl.addImport(Map.class);
-            fieldType = "Map<String, " + javaTypeEntity.getName() + ">";
-        } else if (property.getType().isMap() && property.getType().getNested().iterator().next().isList() &&
-                property.getType().getNested().iterator().next().getNested().iterator().next().isPrimitiveType()) {
-            // Handle map of list of primitives.
-            PropertyType listType = property.getType().getNested().iterator().next().getNested().iterator().next();
-            Class<?> pType = primitiveTypeToClass(listType);
-            javaEntityImpl.addImport(pType);
-            javaEntityImpl.addImport(List.class);
-            javaEntityImpl.addImport(Map.class);
-            fieldType = "Map<String, List<" + pType.getSimpleName() + ">>";
+        if (isUnion(property)) {
+            UnionPropertyType upt = new UnionPropertyType(property.getType());
+            upt.addImportsTo(javaEntityImpl);
+            fieldType = upt.getName();
         } else {
-            warn("Field not created - property type not supported: " + property);
-            return;
+            JavaType jt = new JavaType(property.getType(), propertyWithOrigin.getOrigin().getNamespace().fullName());
+            jt.addImportsTo(javaEntityImpl);
+            fieldType = jt.toJavaTypeString();
         }
 
         FieldSource<JavaClassSource> field = javaEntityImpl.addField().setPrivate().setType(fieldType).setName(fieldName);

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
 
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.PropertyModel;
@@ -51,8 +52,7 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
      * @param propertyWithOrigin
      */
     @Override
-    protected void createMappedNodeMethods(JavaSource<?> javaEntity,
-            PropertyModelWithOrigin propertyWithOrigin) {
+    protected void createMappedNodeMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
         PropertyModel property = propertyWithOrigin.getProperty();
 
         String mappedNodeFQN = getMappedNodeInterfaceFQN();
@@ -60,6 +60,11 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
 
         javaEntity.addImport(mappedNodeInterface);
         String mappedNodeInterfaceWithType;
+
+        // TODO use the JavaType helper instead of the following if/then/else
+        //        JavaType jt = new JavaType(property.getType(), propertyWithOrigin.getOrigin().getNamespace().fullName());
+        //        jt.addImportsTo(javaEntity);
+        //        mappedNodeInterfaceWithType = jt.toJavaTypeString();
 
         if (isPrimitiveList(property)) {
             Class<?> listType = primitiveTypeToClass(property.getType().getNested().iterator().next());
@@ -95,6 +100,35 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
         }
 
         ((JavaInterfaceSource) javaEntity).addInterface(mappedNodeInterfaceWithType);
+    }
+
+    /*
+     * Do nothing for the createXyzMethodBody() methods - we're creating interfaces, so the methods
+     * shouldn't have a body.
+     */
+
+    @Override
+    protected void createGetterBody(PropertyModel property, MethodSource<?> method) {
+    }
+
+    @Override
+    protected void createSetterBody(PropertyModel property, MethodSource<?> method) {
+    }
+
+    @Override
+    protected void createFactoryMethodBody(JavaSource<?> javaEntity, String entityName, MethodSource<?> method) {
+    }
+
+    @Override
+    protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
+    }
+
+    @Override
+    protected void createClearMethodBody(PropertyModel property, MethodSource<?> method) {
+    }
+
+    @Override
+    protected void createRemoveMethodBody(PropertyModel property, MethodSource<?> method) {
     }
 
 }
