@@ -101,6 +101,7 @@
     { "name": "[OpenAPI 3] Paths - Servers", "test": "openapi/3.0/paths/paths-servers.json" },
     { "name": "[OpenAPI 3] Paths - Extensions", "test": "openapi/3.0/paths/paths-with-extensions.json" },
     { "name": "[OpenAPI 3] Discriminator", "test": "openapi/3.0/schemas/discriminator.json" },
+    { "name": "[OpenAPI 3] Additional Properties", "test": "openapi/3.0/schemas/additionalProperties.json" },
     { "name": "[OpenAPI 3] Simple External Docs", "test": "openapi/3.0/simple/simple-externalDocs.json" },
     { "name": "[OpenAPI 3] Simple Info + Extensions", "test": "openapi/3.0/simple/simple-info-extensions.json" },
     { "name": "[OpenAPI 3] Simple Info", "test": "openapi/3.0/simple/simple-info.json" },

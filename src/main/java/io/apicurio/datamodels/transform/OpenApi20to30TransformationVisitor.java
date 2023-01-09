@@ -98,6 +98,8 @@ import io.apicurio.datamodels.models.openapi.v30.OpenApi30SecurityScheme;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Server;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30ServerVariable;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30XML;
+import io.apicurio.datamodels.models.union.BooleanUnionValue;
+import io.apicurio.datamodels.models.union.BooleanUnionValueImpl;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.TraversalContext;
 import io.apicurio.datamodels.models.visitors.TraversingVisitor;
@@ -655,14 +657,13 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
      */
     @Override
     public void visitItems(OpenApi20Items node) {
-        // TODO handle this once union types are supported
-        //        OpenApi30Schema parent30 = this.findItemsParent(node);
-        //        OpenApi30Schema items30 = parent30.createSchema();
-        //        parent30.setItems(items30);
-        //
-        //        this.toSchema(node, items30, false);
-        //
-        //        this.mapNode(node, items30);
+        OpenApi30Schema parent30 = this.findItemsParent(node);
+        OpenApi30Schema items30 = parent30.createSchema();
+        parent30.setItems(items30);
+
+        this.toSchema(node, items30, false);
+
+        this.mapNode(node, items30);
     }
 
     /**
@@ -812,8 +813,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     public void visitAdditionalPropertiesSchema(OpenApiSchema node) {
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(node.parent());
         OpenApi30Schema additionalProps30 = parent30.createSchema();
-        // TODO implement this once Union types are supported
-        //parent30.setAdditionalProperties(additionalProps30);
+        parent30.setAdditionalProperties(additionalProps30);
 
         this.toSchema(node, additionalProps30, true);
 
@@ -834,16 +834,15 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
     public void visitItemsSchema(OpenApiSchema node) {
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(node.parent());
-        OpenApi30Schema items30 = parent30.createSchema();
+        OpenApi30Schema items30 = parent30.getItems();
 
-        // TODO implement this once Union types are supported
-        //        if (!NodeUtil.isNullOrUndefined(parent30.items) && NodeUtil.isNode(parent30.items)) {
-        //            List<OpenApi30ItemsSchema> items = new ArrayList<>();
-        //            items.add(items30);
-        //            parent30.items = items;
-        //        } else {
-        //            parent30.items = items30;
-        //        }
+        // Note: OpenAPI 3+ does not support an array of Schemas for the "items" property.  So this
+        // part of the transformation is potentially lossy.  We'll keep the first schema and drop the
+        // rest (if any).
+        if (items30 == null) {
+            items30 = parent30.createSchema();
+            parent30.setItems(items30);
+        }
 
         this.toSchema(node, items30, true);
 
@@ -874,19 +873,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     public void visitResponseDefinitions(OpenApi20ResponseDefinitions node) {
         // Note: there is no "responses definitions" entity in 3.0, so nothing to do here.
     }
-
-    // TODO handle extensions!!
-    //    /**
-    //     * @see io.apicurio.datamodels.models.visitors.Visitor#visitExtension(io.apicurio.datamodels.core.models.Extension)
-    //     */
-    //    @Override
-    //    public void visitExtension(Extension node) {
-    //        ExtensibleNode parent30 = (ExtensibleNode) this.lookup(node.parent());
-    //        Extension ext30 = parent30.createExtension();
-    //        ext30.name = node.name;
-    //        ext30.value = node.value;
-    //        parent30.addExtension(node.name, ext30);
-    //    }
 
     private boolean isParameterDefinition(Node node) {
         return ("parameters".equals(this.traversalContext.getMostRecentPropertyStep()) && this.traversalContext.getAllSteps().size() == 2);
@@ -924,7 +910,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     private OpenApi30Schema toSchema(Node from, OpenApi30Schema schema30, boolean isSchema) {
         String type = (String) NodeUtil.getProperty(from, "type");
         String format = (String) NodeUtil.getProperty(from, "format");
-        //ObjectNode items = (ObjectNode) NodeUtil.getProperty(from, "items");
+        Object items = NodeUtil.getProperty(from, "items");
         JsonNode default_ = (JsonNode) NodeUtil.getProperty(from, "default");
         Number maximum = (Number) NodeUtil.getProperty(from, "maximum");
         Boolean exclusiveMaximum = (Boolean) NodeUtil.getProperty(from, "exclusiveMaximum");
@@ -946,18 +932,17 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
             schema30.setFormat("binary");
         }
 
-        // TODO fix this once we support Union types
-        //        if (NodeUtil.isNode(items)) {
-        //            // This is done so that we can lookup the appropriate parent for an "Items" object later
-        //            // on in the visit.  This is a special case because we're introducing a new OpenApi30Schema
-        //            // entity in between e.g. a Response and the ItemsSchema - whereas in 2.0 the ItemsSchema
-        //            // is a direct child of Response and Parameter.  So when visiting a Items, we cannot lookup
-        //            // the new 3.0 Schema using the Items' parent (because the parent maps to something else -
-        //            // the grandparent, in fact).  THIS IS ONLY A PROBLEM FOR "ITEMS" ON PARAM AND RESPONSE.
-        //            ((Node) items).setAttribute("_transformation_items-parent", schema30);
-        //        } else if (NodeUtil.isList(items)) {
-        //            // TODO handle the case where "items" is a list of items!!
-        //        }
+        if (NodeUtil.isNode(items)) {
+            // This is done so that we can lookup the appropriate parent for an "Items" object later
+            // on in the visit.  This is a special case because we're introducing a new OpenApi30Schema
+            // entity in between e.g. a Response and the ItemsSchema - whereas in 2.0 the ItemsSchema
+            // is a direct child of Response and Parameter.  So when visiting a Items, we cannot lookup
+            // the new 3.0 Schema using the Items' parent (because the parent maps to something else -
+            // the grandparent, in fact).  THIS IS ONLY A PROBLEM FOR "ITEMS" ON PARAM AND RESPONSE.
+            ((Node) items).setAttribute("_transformation_items-parent", schema30);
+        } else {
+            // TODO handle the case where "items" is a list of items!!
+        }
         // Note: Not sure what to do with the "collectionFormat" of a schema.  Dropping it for now.
         //schema30.collectionFormat = collectionFormat;
         schema30.setDefault(default_);
@@ -977,11 +962,10 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         if (isSchema) {
             OpenApi20Schema schema20 = (OpenApi20Schema) from;
             schema30.set$ref(this.updateRef(schema20.get$ref()));
-
-            // TODO Fix this once we support union types
-            //            if (schema20.hasAdditionalPropertiesBoolean()) {
-            //                schema30.additionalProperties = schema20.additionalProperties;
-            //            }
+            if (schema20.getAdditionalProperties() != null && schema20.getAdditionalProperties().isBoolean()) {
+                BooleanUnionValue booleanValue = new BooleanUnionValueImpl(schema20.getAdditionalProperties().asBoolean());
+                schema30.setAdditionalProperties(booleanValue);
+            }
             schema30.setReadOnly(schema20.isReadOnly());
             schema30.setExample(schema20.getExample());
             schema30.setTitle(schema20.getTitle());

@@ -446,16 +446,76 @@ entities:
       - Extensible
       - Referenceable
     properties:
-      - name: '$ref'
+      - name: format
         type: string
-      - name: discriminator
-        type: Discriminator
+      - name: title
+        type: string
+      - name: description
+        type: string
+      - name: default
+        type: any
+      - name: multipleOf
+        type: number
+      - name: maximum
+        type: number
+      - name: exclusiveMaximum
+        type: boolean
+      - name: minimum
+        type: number
+      - name: exclusiveMinimum
+        type: boolean
+      - name: maxLength
+        type: number
+      - name: minLength
+        type: number
+      - name: pattern
+        type: string
+      - name: maxItems
+        type: number
+      - name: minItems
+        type: number
+      - name: uniqueItems
+        type: boolean
+      - name: maxProperties
+        type: number
+      - name: minProperties
+        type: number
+      - name: required
+        type: '[string]'
+      - name: enum
+        type: '[string]'
+      - name: type
+        type: string
+      - name: items
+        type: Schema
+      - name: allOf
+        type: '[Schema]'
+      - name: properties
+        type: '{Schema}'
+      - name: additionalProperties
+        type: 'boolean|Schema'
+      - name: readOnly
+        type: boolean
       - name: xml
         type: XML
       - name: externalDocs
         type: ExternalDocumentation
       - name: example
         type: any
+      - name: oneOf
+        type: '[Schema]'
+      - name: anyOf
+        type: '[Schema]'
+      - name: not
+        type: Schema
+      - name: discriminator
+        type: Discriminator
+      - name: nullable
+        type: boolean
+      - name: writeOnly
+        type: boolean
+      - name: deprecated
+        type: boolean
     propertyOrder:
       - $Referenceable
       - $this
