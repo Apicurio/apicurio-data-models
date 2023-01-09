@@ -395,6 +395,7 @@ public abstract class AbstractJavaStage extends AbstractStage {
     public class JavaType {
         private final PropertyType propertyType;
         private final String namespaceContext;
+        private boolean useCommonEntityResolution;
 
         public JavaType(PropertyType type, String namespaceContext) {
             this.propertyType = type;
@@ -407,6 +408,11 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
         public JavaType(PropertyModelWithOrigin property) {
             this(property.getProperty().getType(), property.getOrigin().getNamespace());
+        }
+
+        public JavaType useCommonEntityResolution() {
+            this.useCommonEntityResolution = true;
+            return this;
         }
 
         public boolean isEntityList() {
@@ -473,14 +479,18 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 Class<?> returnType = primitiveTypeToClass(propertyType);
                 importer.addImport(returnType);
             } else if (isEntity()) {
-                JavaInterfaceSource entityType = resolveJavaEntityType(namespaceContext, propertyType);
+                JavaInterfaceSource entityType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType);
                 if (entityType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {
                     importer.addImport(entityType);
                 }
             } else if (isEntityList()) {
-                JavaInterfaceSource listType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                JavaInterfaceSource listType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
                 if (listType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {
@@ -488,7 +498,9 @@ public abstract class AbstractJavaStage extends AbstractStage {
                     importer.addImport(listType);
                 }
             } else if (isEntityMap()) {
-                JavaInterfaceSource mapType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                JavaInterfaceSource mapType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
                 if (mapType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {
@@ -516,21 +528,27 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 Class<?> returnType = primitiveTypeToClass(propertyType);
                 return returnType.getSimpleName();
             } else if (isEntity()) {
-                JavaInterfaceSource entityType = resolveJavaEntityType(namespaceContext, propertyType);
+                JavaInterfaceSource entityType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType);
                 if (entityType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {
                     return entityType.getName();
                 }
             } else if (isEntityList()) {
-                JavaInterfaceSource listType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                JavaInterfaceSource listType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
                 if (listType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {
                     return "List<" + listType.getName() + ">";
                 }
             } else if (isEntityMap()) {
-                JavaInterfaceSource mapType = resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
+                JavaInterfaceSource mapType = useCommonEntityResolution ?
+                        resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
+                            resolveJavaEntityType(namespaceContext, propertyType.getNested().iterator().next());
                 if (mapType == null) {
                     throw new UnsupportedOperationException("Java interface for entity type not found: " + propertyType);
                 } else {

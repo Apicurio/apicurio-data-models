@@ -13,8 +13,8 @@ import io.apicurio.umg.models.concept.PropertyType;
  * Ensures that any missing union value/wrapper classes are created.  Some of the wrapper classes
  * are currently manually curated (see {@link LoadBaseClassesStage}) but entity list and map
  * wrappers must be generated.  This stage does that.  It will potentially result in the generation
- * of new wrapper classes (e.g. WidgetListUnionValue and WidgetListUnionValueImpl).  These interfaces
- * and classes will be generated in the <em>{rootPackage}.union</em> package.
+ * of new wrapper interfaces and classes (e.g. WidgetListUnionValue and WidgetListUnionValueImpl).
+ * These interfaces and classes will be generated in the <em>{rootPackage}.union</em> package.
  */
 public class CreateUnionTypeValuesStage extends AbstractUnionTypeJavaStage {
 
@@ -36,8 +36,9 @@ public class CreateUnionTypeValuesStage extends AbstractUnionTypeJavaStage {
                 String unionValueName = typeName + "UnionValue";
                 String unionValueFQN = getUnionTypeFQN(unionValueName);
 
-                JavaInterfaceSource entityListUnionValueSource = getState().getJavaIndex().lookupInterface(unionValueFQN);
-                if (entityListUnionValueSource == null) {
+                JavaInterfaceSource entityCollectionUnionValueSource = getState().getJavaIndex().lookupInterface(unionValueFQN);
+                // Make sure to only create the union value/wrapper once.
+                if (entityCollectionUnionValueSource == null) {
                     createEntityCollectionUnionValue(property.getOrigin().getNamespace(), entityType, nestedJT.isEntityList());
                 }
             }
@@ -56,12 +57,12 @@ public class CreateUnionTypeValuesStage extends AbstractUnionTypeJavaStage {
         String typeName = getTypeName(entityType);
         String mapOrList = isList ? "List" : "Map";
         String unionValueName = typeName + mapOrList + "UnionValue";
-        String unionValueImplName = typeName + mapOrList + "UnionValueImpl";
+        String unionValueImplName = unionValueName + "Impl";
         String unionValuePackage = getUnionTypesPackageName();
 
         // Base class/interface
         String entityCollectionUnionValueName = "Entity" + mapOrList + "UnionValue";
-        String entityCollectionUnionValueImplName = mapOrList + "UnionValueImpl";
+        String entityCollectionUnionValueImplName = entityCollectionUnionValueName + "Impl";
         String entityCollectionUnionValueFQN = getUnionTypeFQN(entityCollectionUnionValueName);
         String entityCollectionUnionValueImplFQN = getUnionTypeFQN(entityCollectionUnionValueImplName);
 
@@ -94,7 +95,7 @@ public class CreateUnionTypeValuesStage extends AbstractUnionTypeJavaStage {
         unionTypeImplClass.addInterface(unionTypeInterface);
         // Extends the right base class.
         if (isList) {
-            unionTypeImplClass.setSuperType(entityCollectionUnionValueImplName+ "<" + entitySource.getName() + ">");
+            unionTypeImplClass.setSuperType(entityCollectionUnionValueImplName + "<" + entitySource.getName() + ">");
         } else {
             unionTypeImplClass.setSuperType(entityCollectionUnionValueImplName + "<String, " + entitySource.getName() + ">");
         }

@@ -56,7 +56,7 @@ public class CreateUnionTypesStage extends AbstractUnionTypeJavaStage {
             String isMethodName = "is" + typeName;
             String asMethodName = "as" + typeName;
 
-            JavaType jt = new JavaType(nestedType, nsContext.fullName());
+            JavaType jt = new JavaType(nestedType, nsContext.fullName()).useCommonEntityResolution();
 
             String asMethodReturnType = jt.toJavaTypeString();
 

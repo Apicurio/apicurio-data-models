@@ -559,14 +559,15 @@ public class CreateReadersStage extends AbstractJavaStage {
                     readerClassSource.addImport(List.class);
                     readerClassSource.addImport(ArrayList.class);
                 } else if (jt.isEntity()) {
-                    String nestedTypeEntityName = nsContext.fullName() + "." + nestedType.getSimpleType();
+                    NamespaceModel nestedTypeEntityNS = entityModel.getNamespace();
+                    String nestedTypeEntityName = nestedTypeEntityNS.fullName() + "." + nestedType.getSimpleType();
                     EntityModel nestedTypeEntity = getState().getConceptIndex().lookupEntity(nestedTypeEntityName);
                     if (nestedTypeEntity == null) {
                         warn("Property union type with entity sub-type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
                         warn("       nested union type: " + nestedType);
                         return;
                     }
-                    JavaInterfaceSource entityJavaSource = resolveJavaEntityType(nsContext, nestedType);
+                    JavaInterfaceSource entityJavaSource = resolveJavaEntityType(nestedTypeEntityNS, nestedType);
                     if (entityJavaSource == null) {
                         warn("Property union type with entity sub-type not found (in java index) for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
                         warn("       nested union type: " + nestedType);
@@ -635,16 +636,20 @@ public class CreateReadersStage extends AbstractJavaStage {
                     body.append("        this.${readMethodName}(object, model);");
                     body.append("        models.add(model);");
                     body.append("    });");
-                    body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}(models);");
+                    body.append("    @SuppressWarnings({ \"unchecked\", \"rawtypes\" })");
+                    body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}((List) models);");
                     body.append("    node.${setterMethodName}(unionValue);");
                     body.append("}");
-
                 } else {
+                    // TODO implement handling for entity maps
                     warn("UNION Entity property '" + property.getName() + "' not read (unsupported union subtype) for entity: " + entityModel.fullyQualifiedName());
                     warn("       property type: " + property.getType());
                     body.append("if (Boolean.TRUE) {}");
                 }
             }
+            body.append("        else {");
+            body.append("            node.addExtraProperty(\"${propertyName}\", value);");
+            body.append("        }");
             body.append("    }");
             body.append("}");
         }
