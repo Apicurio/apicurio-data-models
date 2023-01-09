@@ -341,7 +341,7 @@ entities:
       - name: title
         type: string
       - name: items
-        type: any # TODO Schema|[Schema]
+        type: 'Schema|[Schema]'
       - name: maxProperties
         type: integer
       - name: minProperties
@@ -353,7 +353,7 @@ entities:
       - name: properties
         type: '{Schema}'
       - name: additionalProperties
-        type: any # TODO: boolean|Schema
+        type: 'boolean|Schema'
       - name: discriminator
         type: string
       - name: readOnly

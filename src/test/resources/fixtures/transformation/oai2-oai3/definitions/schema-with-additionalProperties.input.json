@@ -1,7 +1,16 @@
 {
   "swagger": "2.0",
   "definitions": {
-    "Example": {
+    "AdditionalPropertiesBoolean": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties" : true
+    },
+    "AdditionalPropertiesObject": {
       "type": "object",
       "properties": {
         "id": {

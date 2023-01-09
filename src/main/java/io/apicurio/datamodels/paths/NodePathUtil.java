@@ -7,6 +7,7 @@ import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.VisitorUtil;
 import io.apicurio.datamodels.models.MappedNode;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.union.Union;
 import io.apicurio.datamodels.util.NodeUtil;
 
 public class NodePathUtil {
@@ -27,8 +28,13 @@ public class NodePathUtil {
         Object current = from;
         for (NodePathSegment segment : segments) {
             if (!segment.isIndex()) {
-                current = NodeUtil.getProperty((Node) current, segment.getValue());
+                current = NodeUtil.getProperty(current, segment.getValue());
             } else {
+                if (NodeUtil.isUnion(current)) {
+                    Union union = (Union) current;
+                    current = union.unionValue();
+                }
+
                 if (NodeUtil.isNode(current)) {
                     MappedNode mappedNode = (MappedNode) current;
                     current = mappedNode.getItem(segment.getValue());
@@ -42,7 +48,11 @@ public class NodePathUtil {
                 }
             }
         }
-        return (Node) current;
+        if (NodeUtil.isNode(current)) {
+            return (Node) current;
+        } else {
+            return null;
+        }
     }
 
 }

@@ -184,7 +184,7 @@ entities:
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message # TODO Message|OneOfMessages
+        type: Message # TODO 'Message|OneOfMessages'
     propertyOrder:
       - $this
       - $Extensible
@@ -400,6 +400,13 @@ entities:
       - $Referenceable
       - $this
       - $Extensible
+
+  - name: OneOfMessages
+    properties:
+      - name: oneOf
+        type: '[Message]'
+    propertyOrder:
+      - $this
 
   - name: Message
     traits:

@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.union.Union;
 
 /**
  * A utility class containing methods used to interact with data model nodes.  Anything that
@@ -90,6 +91,10 @@ public class NodeUtil {
      */
     public static boolean isNode(Object object) {
         return object != null && object instanceof Node;
+    }
+
+    public static boolean isUnion(Object object) {
+        return object != null && object instanceof Union;
     }
 
     /**
