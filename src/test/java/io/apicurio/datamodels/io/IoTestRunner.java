@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.io;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +33,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.util.JsonUtil;
