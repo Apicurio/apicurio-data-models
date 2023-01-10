@@ -101,7 +101,6 @@ public class ConceptIndex {
         propertyComparatorIndex.put(model.fullyQualifiedName(), comparator);
     }
 
-
     public NamespaceModel lookupNamespace(String namespace) {
         return namespaceIndex.get(namespace);
     }
@@ -175,7 +174,8 @@ public class ConceptIndex {
      */
     public Collection<PropertyModelWithOrigin> getAllEntityProperties(EntityModel entityModel) {
         EntityModel model = entityModel;
-        Set<PropertyModelWithOrigin> models = new TreeSet<>(lookupPropertyComparator(entityModel));
+        PropertyModelWithOriginComparator propertyComparator = lookupPropertyComparator(entityModel);
+        final Set<PropertyModelWithOrigin> models = propertyComparator == null ? new HashSet<>() : new TreeSet<>(propertyComparator);
         while (model != null) {
             final EntityModel _entity = model;
             models.addAll(model.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_entity).build()).collect(Collectors.toList()));

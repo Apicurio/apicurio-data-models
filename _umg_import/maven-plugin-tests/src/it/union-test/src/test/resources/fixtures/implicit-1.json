@@ -1,0 +1,8 @@
+{
+    "id": "implicit-1",
+    "description": "Implicit test #1",
+    "implicit": {
+        "name": "Widget name",
+        "origin": "json"
+    }
+}

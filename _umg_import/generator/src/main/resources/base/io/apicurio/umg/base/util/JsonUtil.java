@@ -754,6 +754,34 @@ public class JsonUtil {
         return value.isObject();
     }
 
+    public static boolean isObjectWithProperty(JsonNode value, String propertyName) {
+        if (value == null) {
+            return false;
+        }
+        if (value.isObject()) {
+            ObjectNode object = (ObjectNode) value;
+            return object.has(propertyName);
+        }
+        return false;
+    }
+
+    public static boolean isObjectWithPropertyValue(JsonNode value, String propertyName, String propertyValue) {
+        if (value == null) {
+            return false;
+        }
+        if (value.isObject()) {
+            ObjectNode object = (ObjectNode) value;
+            if (object.has(propertyName)) {
+                JsonNode pvalue = object.get(propertyName);
+                if (!pvalue.isNull() && pvalue.isTextual()) {
+                    String val = pvalue.asText();
+                    return propertyValue.equals(val);
+                }
+            }
+        }
+        return false;
+    }
+
     public static ObjectNode toObject(JsonNode value) {
         return (ObjectNode) value;
     }

@@ -30,6 +30,17 @@
                     "collection": {
                         "description": "",
                         "type": "string"
+                    },
+                    "discriminator": {
+                        "description": "    ",
+                        "type": "string"
+                    },
+                    "unionRules": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UnionRule"
+                        }
                     }
                 },
                 "example": {
@@ -282,6 +293,40 @@
                 },
                 "example": {
                     "$ref": "./foo.yaml"
+                }
+            },
+            "UnionRuleType": {
+                "description": "",
+                "enum": [
+                    "propertyValue",
+                    "propertyExists"
+                ],
+                "type": "string",
+                "example": "\"propertyExists\""
+            },
+            "UnionRule": {
+                "title": "Root Type for UnionRule",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "unionType": {
+                        "type": "string"
+                    },
+                    "ruleType": {
+                        "$ref": "#/components/schemas/UnionRuleType"
+                    },
+                    "propertyName": {
+                        "type": "string"
+                    },
+                    "propertyValue": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "unionType": "Widget",
+                    "ruleType": "propertyValue",
+                    "propertyName": "type",
+                    "propertyValue": "widget"
                 }
             }
         }

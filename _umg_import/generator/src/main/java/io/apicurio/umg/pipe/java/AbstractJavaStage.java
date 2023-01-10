@@ -558,7 +558,6 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 throw new UnsupportedOperationException("Java type not supported: " + propertyType);
             }
         }
-
     }
 
     public static String getTypeName(PropertyType type) {

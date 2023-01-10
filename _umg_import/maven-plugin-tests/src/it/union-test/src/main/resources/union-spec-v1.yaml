@@ -19,13 +19,17 @@ entities:
       - name: unionProp2
         type: 'string|[string]'
       - name: unionProp3
-        type: 'boolean|ChildEntity'
+        type: 'boolean|Widget'
       - name: unionProp4
-        type: 'ChildEntity|[ChildEntity]'
+        type: 'Widget|[Widget]'
+      - name: vehicle
+        type: 'Car|Truck'
+      - name: implicit
+        type: 'Widget|ImplicitWidget'
     propertyOrder:
       - $this
 
-  - name: ChildEntity
+  - name: Widget
     properties:
       - name: name
         type: string
@@ -33,3 +37,39 @@ entities:
         type: string
     propertyOrder:
       - $this
+
+  - name: ImplicitWidget
+    properties:
+      - name: implicitId
+        type: string
+    propertyOrder:
+      - $this
+
+  - name: Car
+    properties:
+      - name: vehicleType
+        type: string
+        discriminator: car
+      - name: make
+        type: string
+      - name: model
+        type: string
+      - name: color
+        type: string
+    propertyOrder:
+      - $this
+
+  - name: Truck
+    properties:
+      - name: vehicleType
+        type: string
+        discriminator: truck
+      - name: make
+        type: string
+      - name: model
+        type: string
+      - name: bedLength
+        type: number
+    propertyOrder:
+      - $this
+      

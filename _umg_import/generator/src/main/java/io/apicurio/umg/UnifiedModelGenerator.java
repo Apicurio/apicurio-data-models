@@ -23,6 +23,7 @@ import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.GeneratorState;
 import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.concept.CreateEntityModelsStage;
+import io.apicurio.umg.pipe.concept.CreateImplicitUnionRulesStage;
 import io.apicurio.umg.pipe.concept.CreateNamespaceModelsStage;
 import io.apicurio.umg.pipe.concept.CreateParentTraitsStage;
 import io.apicurio.umg.pipe.concept.CreatePropertyComparatorStage;
@@ -111,6 +112,9 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreatePropertyModelsStage());
         pipe.addStage(new CreateParentTraitsStage());
         pipe.addStage(new CreateVisitorsStage());
+
+        // Implicit model creation phase
+        pipe.addStage(new CreateImplicitUnionRulesStage());
 
         // Model optimization phase
         pipe.addStage(new RemoveTransparentTraitsStage());

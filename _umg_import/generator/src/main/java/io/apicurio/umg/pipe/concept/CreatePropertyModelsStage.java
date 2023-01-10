@@ -20,6 +20,8 @@ public class CreatePropertyModelsStage extends AbstractStage {
                     PropertyModel propertyModel = PropertyModel.builder()
                             .name(property.getName())
                             .collection(property.getCollection())
+                            .discriminator(property.getDiscriminator())
+                            .unionRules(property.getUnionRules())
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();
@@ -36,6 +38,8 @@ public class CreatePropertyModelsStage extends AbstractStage {
                     PropertyModel propertyModel = PropertyModel.builder()
                             .name(property.getName())
                             .collection(property.getCollection())
+                            .discriminator(property.getDiscriminator())
+                            .unionRules(property.getUnionRules())
                             .rawType(property.getType())
                             .type(PropertyType.parse(property.getType()))
                             .build();
@@ -43,7 +47,6 @@ public class CreatePropertyModelsStage extends AbstractStage {
                     entityModel.getProperties().put(property.getName(), propertyModel);
                 });
             });
-
         });
     }
 }

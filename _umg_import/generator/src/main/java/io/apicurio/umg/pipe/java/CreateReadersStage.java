@@ -2,8 +2,10 @@ package io.apicurio.umg.pipe.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.umg.beans.SpecificationVersion;
+import io.apicurio.umg.beans.UnionRule;
+import io.apicurio.umg.beans.UnionRuleType;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
@@ -476,7 +480,7 @@ public class CreateReadersStage extends AbstractJavaStage {
             }
         }
 
-        // TODO handle entity maps!
+        // TODO handle entity maps! (we already support entity lists) (note: we already support entity maps in the writers)
         private void handleUnionProperty(BodyBuilder body) {
             PropertyModel property = propertyWithOrigin.getProperty();
             NamespaceModel nsContext = propertyWithOrigin.getOrigin().getNamespace();
@@ -493,8 +497,35 @@ public class CreateReadersStage extends AbstractJavaStage {
             body.append("    JsonNode value = JsonUtil.consumeAnyProperty(json, \"${propertyName}\");");
             body.append("    if (value != null) {");
 
+            // Sort the nested types - make sure any entity types with union rules come first.  This is
+            // also an opportunity to order any of the checks we might need.  E.g. if we need isString()
+            // checks to happen before isNumber() for some reason.  Consider this an area for future
+            // improvement.
+            List<PropertyType> sortedNestedTypes = ut.getNestedTypes().stream().sorted(new Comparator<PropertyType>() {
+                @Override
+                public int compare(PropertyType o1, PropertyType o2) {
+                    if (o1.isEntityType() && o2.isEntityType()) {
+                        UnionRule rule1 = property.getRuleFor(o1.asRawType());
+                        UnionRule rule2 = property.getRuleFor(o2.asRawType());
+                        if (rule1 != null && rule2 == null) {
+                            return -1;
+                        } else if (rule1 == null && rule2 != null) {
+                            return 1;
+                        }
+                    }
+                    return o1.asRawType().compareTo(o2.asRawType());
+                }
+            }).collect(Collectors.toUnmodifiableList());
+
+            // Now generate a block of reader code for each nested type.  Since this
+            // property can be different things, we need to figure out what it is first,
+            // and then properly read it based on that result.  This is easy for things like
+            // 'string|boolean' types.  But for 'Entity1|Entity2' types, we need to
+            // employ the configured union rules.
+            // TODO support union rules for non-entity union types (e.g. maps and lists) for currently
+            //      unsupported use cases (like '[string]|[number]').
             boolean first = true;
-            for (PropertyType nestedType : ut.getNestedTypes()) {
+            for (PropertyType nestedType : sortedNestedTypes) {
                 if (!first) {
                     body.append(" else ");
                 }
@@ -581,7 +612,21 @@ public class CreateReadersStage extends AbstractJavaStage {
                     body.addContext("readMethodName", readMethodName(nestedTypeEntity));
                     body.addContext("propertyEntityType", entityJavaSource.getName());
 
-                    body.append("if (JsonUtil.isObject(value)) {");
+                    UnionRule unionRule = property.getRuleFor(nestedType.asRawType());
+                    if (unionRule == null) {
+                        body.append("if (JsonUtil.isObject(value)) {");
+                    } else {
+                        body.addContext("rulePropertyName", unionRule.getPropertyName());
+                        if (unionRule.getRuleType() == UnionRuleType.propertyExists) {
+                            body.append("if (JsonUtil.isObjectWithProperty(value, \"${rulePropertyName}\")) {");
+                        } else if (unionRule.getRuleType() == UnionRuleType.propertyValue) {
+                            body.addContext("rulePropertyValue", unionRule.getPropertyValue());
+                            body.append("if (JsonUtil.isObjectWithPropertyValue(value, \"${rulePropertyName}\", \"${rulePropertyValue}\")) {");
+                        } else {
+                            throw new RuntimeException("Unsupported union rule: " + unionRule.getRuleType());
+                        }
+                    }
+
                     body.append("    ObjectNode object = JsonUtil.toObject(value);");
                     body.append("    node.${setterMethodName}(node.${createMethodName}());");
                     body.append("    ${readMethodName}(object, (${propertyEntityType}) node.${getterMethodName}());");

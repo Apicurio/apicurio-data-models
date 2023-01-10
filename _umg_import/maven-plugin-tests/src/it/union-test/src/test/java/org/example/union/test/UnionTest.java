@@ -30,26 +30,44 @@ public class UnionTest {
 
     @Test
     public void testReaderSimple() throws Exception {
-        String testContent = loadTestResource("simple.json");
-        Utm10Document document = UnionTestLibrary.readDocument(testContent);
-        Assert.assertNotNull(document);
+        Utm10Document document = doFullTest("simple.json");
         Assert.assertEquals("simple", document.getId());
     }
 
     @Test
     public void testReaderNotSimple() throws Exception {
-        String testContent = loadTestResource("not-simple.json");
-        Utm10Document document = UnionTestLibrary.readDocument(testContent);
-        Assert.assertNotNull(document);
+        Utm10Document document = doFullTest("not-simple.json");
         Assert.assertEquals("not-simple", document.getId());
     }
 
     @Test
     public void testReaderWithChildren() throws Exception {
-        String testContent = loadTestResource("with-children.json");
-        Utm10Document document = UnionTestLibrary.readDocument(testContent);
-        Assert.assertNotNull(document);
+        Utm10Document document = doFullTest("with-children.json");
         Assert.assertEquals("with-children", document.getId());
+    }
+
+    @Test
+    public void testReaderWithCar() throws Exception {
+        Utm10Document document = doFullTest("with-car.json");
+        Assert.assertEquals("with-car", document.getId());
+    }
+
+    @Test
+    public void testReaderWithTruck() throws Exception {
+        Utm10Document document = doFullTest("with-truck.json");
+        Assert.assertEquals("with-truck", document.getId());
+    }
+
+    @Test
+    public void testReaderImplicit1() throws Exception {
+        Utm10Document document = doFullTest("implicit-1.json");
+        Assert.assertEquals("implicit-1", document.getId());
+    }
+
+    @Test
+    public void testReaderImplicit2() throws Exception {
+        Utm10Document document = doFullTest("implicit-2.json");
+        Assert.assertEquals("implicit-2", document.getId());
     }
 
     @Test
@@ -63,12 +81,13 @@ public class UnionTest {
     }
 
 
-    private void doFullTest(String testFile) throws Exception {
+    private Utm10Document doFullTest(String testFile) throws Exception {
         String originalContent = loadTestResource(testFile);
         Utm10Document inputDocument = UnionTestLibrary.readDocument(originalContent);
         String roundTripContent = UnionTestLibrary.writeDocument(inputDocument);
         assertJsonEquals(originalContent, roundTripContent);
         assertEquals(0, countExtraProperties(inputDocument));
+        return inputDocument;
     }
 
     private long countExtraProperties(Utm10Document doc) {

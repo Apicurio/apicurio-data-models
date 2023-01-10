@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.apicurio.umg.pipe.java.Util;
 import lombok.Builder;
@@ -166,6 +167,22 @@ public class PropertyType {
 
     public boolean isEntityType() {
         return isSimple() && !isPrimitiveType();
+    }
+
+    public String asRawType() {
+        if (isSimple()) {
+            return simpleType;
+        }
+        if (isList()) {
+            return "[" + this.getNested().iterator().next().asRawType() + "]";
+        }
+        if (isMap()) {
+            return "{" + this.getNested().iterator().next().asRawType() + "}";
+        }
+        if (isUnion()) {
+            return this.getNested().stream().map(nested -> nested.asRawType()).collect(Collectors.joining("|"));
+        }
+        throw new RuntimeException("Unsupported raw type: " + this);
     }
 
 }
