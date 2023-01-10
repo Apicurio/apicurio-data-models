@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.paths;
+package io.apicurio.datamodels.paths;
 
 import java.io.IOException;
 import java.net.URL;

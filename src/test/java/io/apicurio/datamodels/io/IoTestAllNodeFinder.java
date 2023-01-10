@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.core.paths;
+package io.apicurio.datamodels.io;
 
-import org.junit.runner.RunWith;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.visitors.AllNodeVisitor;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-@RunWith(NodePathIoTestRunner.class)
-public class NodePathIoTest {
+public class IoTestAllNodeFinder extends AllNodeVisitor {
+
+    List<Node> allNodes = new ArrayList<>();
+
+    /**
+     * @see io.apicurio.datamodels.visitors.AllNodeVisitor#visitNode(io.apicurio.datamodels.Node)
+     */
+    @Override
+    protected void visitNode(Node node) {
+        allNodes.add(node);
+    }
 
 }

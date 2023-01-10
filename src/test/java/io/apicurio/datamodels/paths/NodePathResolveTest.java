@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.paths;
 
 import org.junit.runner.RunWith;
 
 /**
  * @author eric.wittmann@gmail.com
  */
-@RunWith(IoTestRunner.class)
-public class IoTest {
+@RunWith(NodePathResolveTestRunner.class)
+public class NodePathResolveTest {
 
 }

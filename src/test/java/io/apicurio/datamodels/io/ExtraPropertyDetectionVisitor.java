@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels;
+package io.apicurio.datamodels.io;
 
 import java.util.ArrayList;
 import java.util.List;
