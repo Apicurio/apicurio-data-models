@@ -139,7 +139,7 @@ public class CreateTraversersStage extends AbstractVisitorStage {
                 } else if (isRegexProperty(_property)) {
                     body.append("this.traverseMap(null, model.${propertyGetter}());");
                 } else {
-                    body.append("this.traverse(\"${propertyName}\", model.${propertyGetter}());");
+                    body.append("this.traverseNode(\"${propertyName}\", model.${propertyGetter}());");
                 }
             } else if (isEntityList(property)) {
                 body.append("this.traverseList(\"${propertyName}\", model.${propertyGetter}());");

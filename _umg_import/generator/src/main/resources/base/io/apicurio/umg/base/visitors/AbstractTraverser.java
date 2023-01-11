@@ -45,7 +45,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      * @param propertyName
      * @param node
      */
-    protected void traverse(String propertyName, Visitable node) {
+    protected void traverseNode(String propertyName, Visitable node) {
         if (node != null) {
             traversalContext.pushProperty(propertyName);
             doTraverseNode(node);
@@ -124,7 +124,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
     protected void traverseUnion(String propertyName, Union union) {
         if (union != null) {
             if (union.isEntity()) {
-                this.traverse(propertyName, union);
+                this.traverseNode(propertyName, union);
             } else if (union.isEntityList()) {
                 EntityListUnionValue<? extends Node> value = (EntityListUnionValue<? extends Node>) union;
                 this.traverseList(propertyName, value.getValue());

@@ -744,6 +744,12 @@ public class JsonUtil {
     }
 
     public static Number toNumber(JsonNode value) {
+        if (value.isInt()) {
+            return value.asInt();
+        }
+        if (value.isLong()) {
+            return value.asLong();
+        }
         return value.asDouble();
     }
 
