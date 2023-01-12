@@ -1,4 +1,3 @@
-
 import {Library} from "../src/io/apicurio/datamodels/Library";
 import {readJSON} from "./util/tutils";
 import {Document} from "../src/io/apicurio/datamodels/models/Document";

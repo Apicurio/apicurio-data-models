@@ -93,6 +93,10 @@ public class NodeUtil {
         return object != null && object instanceof Node;
     }
 
+    /**
+     * Return true if the given object is a Union type.
+     * @param object
+     */
     public static boolean isUnion(Object object) {
         return object != null && object instanceof Union;
     }

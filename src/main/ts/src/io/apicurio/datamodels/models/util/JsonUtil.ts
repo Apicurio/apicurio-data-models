@@ -419,5 +419,79 @@ export class JsonUtil {
     public static isPropertyDefined(json: any, propertyName: string): boolean {
         return json && json[propertyName] != null && json[propertyName] != undefined;
     }
+    
+    public static isString(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return typeof value === "string";
+    }
+
+    public static toString(value: any): string {
+        return value;
+    }
+
+    public static isBoolean(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return typeof value === "boolean";
+    }
+
+    public static toBoolean(value: any): boolean {
+        return value;
+    }
+
+    public static isNumber(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return typeof value === "number";
+    }
+
+    public static toNumber(value: any): number {
+        return value;
+    }
+
+    public static isObject(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return typeof value === "object" && !Array.isArray(value);
+    }
+
+    public static isObjectWithProperty(value: any, propertyName: string): boolean {
+        if (JsonUtil.isObject(value)) {
+            return value.hasOwnProperty(propertyName);
+        }
+        return false;
+    }
+
+    public static isObjectWithPropertyValue(value: any, propertyName: string, propertyValue: string): boolean {
+        if (JsonUtil.isObject(value)) {
+            // Note: intentional use of the "==" operator here.  We want to do the type conversion before comparison in this case.
+            return value[propertyName] == propertyValue;
+        }
+        return false;
+    }
+
+    public static toObject(value: any): object {
+        return value;
+    }
+
+    public static isArray(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return Array.isArray(value);
+    }
+
+    public static toArray(value: any): any[] {
+        return value;
+    }
+
+    public static toList(value: any): any[] {
+        return value;
+    }
 
 }

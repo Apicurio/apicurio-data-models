@@ -30,7 +30,6 @@ import org.junit.runners.model.Statement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.apicurio.datamodels.Library;
-import io.apicurio.datamodels.paths.NodePath;
 
 /**
  * @author eric.wittmann@gmail.com

@@ -1,4 +1,3 @@
-
 import {readJSON} from "./util/tutils";
 import {NodePath} from "../src/io/apicurio/datamodels/paths/NodePath";
 
