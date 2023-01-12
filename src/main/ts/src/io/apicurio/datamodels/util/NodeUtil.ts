@@ -17,7 +17,14 @@ export class NodeUtil {
     }
 
     public static isNode(object: any): boolean {
-        return object !== null && object !== undefined && typeof object === "object" && object["_root"];
+        return object !== null && object !== undefined && typeof object === "object" && object.hasOwnProperty("_root");
+    }
+
+    public static isUnion(object: any): boolean {
+        return object !== null && object !== undefined 
+                && typeof object === "object" 
+                && object.constructor && object.constructor.hasOwnProperty("__interfaces")
+                && object.constructor["__interfaces"].includes("io.apicurio.datamodels.models.union.Union");
     }
 
     public static isList(object: any): boolean {
@@ -28,12 +35,26 @@ export class NodeUtil {
         return object !== null && object !== undefined && typeof object === "object" && !object["_root"];
     }
 
-    public static getMapItem(map: any, key: string): any {
+    public static getMapItem(map: object, key: string): any {
         const value: any = map[key];
         if (value) {
             return value;
         }
         return null;
+    }
+    
+    public static getMapKeys(map: object): string[] {
+        if (map === null || map === undefined) {
+            return [];
+        }
+        return Object.getOwnPropertyNames(map);
+    }
+
+    public static getMapValues<T>(map: object): T[] {
+        if (map === null || map === undefined) {
+            return [];
+        }
+        return Object.values(map);
     }
 
     public static toInteger(value: string): number {
@@ -69,7 +90,7 @@ export class NodeUtil {
     }
 
     public static joinArray(delim: string, values: string[]): string {
-        return NodeCompat.join(delim, values);
+        return NodeUtil.join(delim, values);
     }
 
 }

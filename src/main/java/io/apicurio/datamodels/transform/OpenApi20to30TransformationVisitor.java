@@ -939,7 +939,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
             // is a direct child of Response and Parameter.  So when visiting a Items, we cannot lookup
             // the new 3.0 Schema using the Items' parent (because the parent maps to something else -
             // the grandparent, in fact).  THIS IS ONLY A PROBLEM FOR "ITEMS" ON PARAM AND RESPONSE.
-            ((Node) items).setAttribute("_transformation_items-parent", schema30);
+            ((Node) items).setNodeAttribute("_transformation_items-parent", schema30);
         } else {
             // TODO handle the case where "items" is a list of items!!
         }
@@ -985,7 +985,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     private OpenApi30Schema findItemsParent(OpenApi20Items node) {
-        OpenApi30Schema itemsParent = (OpenApi30Schema) node.getAttribute("_transformation_items-parent");
+        OpenApi30Schema itemsParent = (OpenApi30Schema) node.getNodeAttribute("_transformation_items-parent");
         if (NodeUtil.isNullOrUndefined(itemsParent)) {
             itemsParent = (OpenApi30Schema) this.lookup(node.parent());
         }

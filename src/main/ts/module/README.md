@@ -39,8 +39,8 @@ const openApiData: string = ...;
 const document: Document = Library.readDocumentFromJSONString(openApiData);
 
 // Here you can analyze or manipulate the model.
-document.info.version = "1.7";
-document.info.description = "Made some changes to the OpenAPI document!";
+document.getInfo().setVersion("1.7");
+document.getInfo().setDescription("Made some changes to the OpenAPI document!");
 
 // Validate that your changes are OK.
 const problems = Library.validateDocument(document, null);
@@ -56,10 +56,10 @@ var openApiData = ...; // Get your OpenAPI data somehow (can be string or JS obj
 
 var document = ApicurioDM.Library.readDocumentFromJSONString(openApiData);
 
-document.info.version = "1.1";
-document.info.description = "Made some changes to the OpenAPI document!";
+document.getInfo().setVersion("1.1");
+document.getInfo().setDescription("Made some changes to the OpenAPI document!");
 
-var problems = await ApicurioDM.Library.validateDocument(document, null);
+var problems = ApicurioDM.Library.validateDocument(document, null);
 
 var modifiedOpenApiData = JSON.stringify(ApicurioDM.Library.writeDocumentToJSONString(document));
 ```

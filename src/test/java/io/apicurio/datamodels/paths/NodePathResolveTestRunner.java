@@ -37,7 +37,6 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.util.JsonUtil;
-import io.apicurio.datamodels.paths.NodePath;
 
 /**
  * @author eric.wittmann@gmail.com

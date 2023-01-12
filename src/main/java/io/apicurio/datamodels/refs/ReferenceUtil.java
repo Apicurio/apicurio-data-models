@@ -35,7 +35,7 @@ public class ReferenceUtil {
      * @param node
      */
     public static Node resolveNodeRef(Node node) {
-        return resolveNodeRef(node, ResolverOptions.of(ResolverOptionsType.RECURSIVE));
+        return resolveNodeRefWithOptions(node, ResolverOptions.of(ResolverOptionsType.RECURSIVE));
     }
 
     /**
@@ -44,12 +44,12 @@ public class ReferenceUtil {
      * @param node
      * @param options
      */
-    public static Node resolveNodeRef(Node node, ResolverOptions options) {
+    public static Node resolveNodeRefWithOptions(Node node, ResolverOptions options) {
         if (!hasValue(node)) {
             return null;
         }
         String $ref = (String) NodeUtil.getProperty(node, "$ref");
-        return resolveRef($ref, node, options);
+        return resolveRefWithOptions($ref, node, options);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ReferenceUtil {
         if (!hasValue($ref)) {
             return null;
         }
-        return resolveRef($ref, from, ResolverOptions.of(ResolverOptionsType.RECURSIVE, ResolverOptionsType.NULL_IF_NOT_FOUND));
+        return resolveRefWithOptions($ref, from, ResolverOptions.of(ResolverOptionsType.RECURSIVE, ResolverOptionsType.NULL_IF_NOT_FOUND));
     }
 
     /**
@@ -71,7 +71,7 @@ public class ReferenceUtil {
      * @param from
      * @param options
      */
-    public static Node resolveRef(String $ref, Node from, ResolverOptions options) {
+    public static Node resolveRefWithOptions(String $ref, Node from, ResolverOptions options) {
         IReferenceResolver resolver = ReferenceResolverChain.getInstance();
 
         Node rval = null;
