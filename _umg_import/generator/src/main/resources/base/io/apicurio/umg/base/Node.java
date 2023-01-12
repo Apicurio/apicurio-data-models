@@ -10,10 +10,10 @@ public interface Node extends Visitable {
     public int modelId();
     public RootNode root();
     public Node parent();
-    public Object getAttribute(String attributeName);
-    public void setAttribute(String attributeName, Object attributeValue);
-    public Collection<String> getAttributeNames();
-    public void clearAttributes();
+    public Object getNodeAttribute(String attributeName);
+    public void setNodeAttribute(String attributeName, Object attributeValue);
+    public Collection<String> getNodeAttributeNames();
+    public void clearNodeAttributes();
     public void addExtraProperty(String key, JsonNode value);
     public JsonNode removeExtraProperty(String name);
     public boolean hasExtraProperties();

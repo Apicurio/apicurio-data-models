@@ -65,7 +65,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
             traversalContext.pushProperty(propertyName);
             for (Node node : items) {
                 if (node != null) {
-                    traversalContext.pushIndex(index);
+                    traversalContext.pushListIndex(index);
                     doTraverseNode(node);
                     traversalContext.pop();
                 }
@@ -87,7 +87,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
             items.keySet().forEach(key -> {
                 Node value = items.get(key);
                 if (value != null) {
-                    this.traversalContext.pushIndex(key);
+                    this.traversalContext.pushMapIndex(key);
                     this.doTraverseNode(value);
                     this.traversalContext.pop();
                 }
@@ -106,7 +106,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
             mappedNode.getItemNames().forEach(name -> {
                 Node value = mappedNode.getItem(name);
                 if (value != null) {
-                    this.traversalContext.pushIndex(name);
+                    this.traversalContext.pushMapIndex(name);
                     this.doTraverseNode(value);
                     this.traversalContext.pop();
                 }

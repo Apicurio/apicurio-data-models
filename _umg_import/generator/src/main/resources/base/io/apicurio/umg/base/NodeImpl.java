@@ -44,7 +44,7 @@ public abstract class NodeImpl implements Node {
     }
 
     @Override
-    public Object getAttribute(String attributeName) {
+    public Object getNodeAttribute(String attributeName) {
         if (this._attributes != null) {
             return this._attributes.get(attributeName);
         } else {
@@ -53,7 +53,7 @@ public abstract class NodeImpl implements Node {
     }
 
     @Override
-    public void setAttribute(String attributeName, Object attributeValue) {
+    public void setNodeAttribute(String attributeName, Object attributeValue) {
         if (this._attributes == null) {
             this._attributes = new HashMap<>();
         }
@@ -61,7 +61,7 @@ public abstract class NodeImpl implements Node {
     }
 
     @Override
-    public Collection<String> getAttributeNames() {
+    public Collection<String> getNodeAttributeNames() {
         if (this._attributes != null) {
             return this._attributes.keySet();
         } else {
@@ -70,7 +70,7 @@ public abstract class NodeImpl implements Node {
     }
 
     @Override
-    public void clearAttributes() {
+    public void clearNodeAttributes() {
         if (this._attributes != null) {
             this._attributes.clear();
         }

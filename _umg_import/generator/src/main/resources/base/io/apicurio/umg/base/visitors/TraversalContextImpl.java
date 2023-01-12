@@ -20,10 +20,10 @@ public class TraversalContextImpl implements TraversalContext {
     public void pushProperty(String propertyName) {
         this.stack.push(TraversalStep.fromNodeProperty(propertyName));
     }
-    public void pushIndex(int index) {
+    public void pushListIndex(int index) {
         this.stack.push(TraversalStep.fromListIndex(index));
     }
-    public void pushIndex(String key) {
+    public void pushMapIndex(String key) {
         this.stack.push(TraversalStep.fromMapIndex(key));
     }
 
