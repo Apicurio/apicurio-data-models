@@ -20,7 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.util.RegexUtil;
 
@@ -141,15 +144,15 @@ public class ReferenceUtil {
      * @param contextNode
      * @param fragment
      */
-    public static Object resolveFragmentFromJS(Object contextNode, String fragment) {
+    public static ObjectNode resolveFragmentFromJS(ObjectNode contextNode, String fragment) {
         List<String[]> split = RegexUtil.findMatches(fragment, "([^/]+)/?");
-        Object cnode = contextNode;
+        ObjectNode cnode = contextNode;
         for (String[] mi : split) {
             String seg = mi[1];
             if (NodeUtil.equals(seg, "#")) {
                 cnode = contextNode;
             } else if (cnode != null) {
-                cnode = NodeUtil.getProperty(cnode, seg);
+                cnode = (ObjectNode) JsonUtil.getProperty(cnode, seg);
             }
         }
         return cnode;

@@ -8,7 +8,7 @@
 [LINK-002] |medium| {/paths[/link-002]/get/responses[200]/links[address]->operationId} :: The Operation ID does not refer to an existing Operation.
 [MT-003] |medium| {/paths[/mt-003]/post/requestBody/content[application/json]->encoding} :: Encoding is not allowed for "application/json" media types.
 [OP-009] |medium| {/paths[/op-009]/get->requestBody} :: Request Body is not supported for GET operations.
-[OP-013] |medium| {/paths[/op-013]/get->null} :: Operation must have at least one Response.
+[OP-013] |medium| {/paths[/op-013]/get->responses} :: Operation must have at least one Response.
 [PAR-022] |medium| {/paths[/par-022]/parameters[0]->style} :: Parameter Style must be one of: ["matrix", "label", "form", "simple", "spaceDelimited", "pipeDelimited", "deepObject"] (Found "shallowObject").
 [PAR-023] |medium| {/paths[/par-022]/parameters[0]->style} :: Query Parameter Style must be one of: ["form", "spaceDelimited", "pipeDelimited", "deepObject"] (Found "shallowObject").
 [PAR-003] |medium| {/paths[/par-003/{id}]/parameters[0]->required} :: Path Parameter "id" must be marked as required.

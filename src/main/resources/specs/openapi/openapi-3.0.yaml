@@ -266,6 +266,8 @@ entities:
         type: any
       - name: examples
         type: '{Example}'
+      - name: content
+        type: '{MediaType}'
     propertyOrder:
       - $Referenceable
       - $this

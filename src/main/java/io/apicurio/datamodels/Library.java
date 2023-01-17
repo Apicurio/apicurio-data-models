@@ -16,6 +16,8 @@
 
 package io.apicurio.datamodels;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.models.Document;
@@ -32,7 +34,14 @@ import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
+import io.apicurio.datamodels.refs.IReferenceResolver;
+import io.apicurio.datamodels.refs.ReferenceResolverChain;
 import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
+import io.apicurio.datamodels.util.ValidationUtil;
+import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
+import io.apicurio.datamodels.validation.IValidationSeverityRegistry;
+import io.apicurio.datamodels.validation.ValidationProblem;
+import io.apicurio.datamodels.validation.ValidationVisitor;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -41,6 +50,18 @@ import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
+
+    /**
+     * Adds a reference resolver to the library.  The resolver will be used whenever the library
+     * needs to resolve a $ref reference.
+     * @param resolver
+     */
+    public static void addReferenceResolver(IReferenceResolver resolver) {
+        ReferenceResolverChain.getInstance().addResolver(resolver);
+    }
+    public static void removeReferenceResolver(IReferenceResolver resolver) {
+        ReferenceResolverChain.getInstance().removeResolver(resolver);
+    }
 
     /**
      * Creates a new, empty document of the given type.
@@ -182,6 +203,27 @@ public class Library {
         //      empty model instance from an existing (not empty) model.
         ObjectNode jsObj = writeNode(source);
         return readDocument(jsObj);
+    }
+
+    /**
+     * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
+     * of validation problems found during validation is returned.  In addition, validation problems will be
+     * reported on the individual nodes themselves.  Validation problem severity is determined by checking
+     * with the included severity registry.  If the severity registry is null, a default registry is used.
+     * @param node
+     * @param severityRegistry
+     */
+    public static List<ValidationProblem> validate(Node node, IValidationSeverityRegistry severityRegistry) {
+        if (severityRegistry == null) {
+            severityRegistry = new DefaultSeverityRegistry();
+        }
+
+        // Validate the data model.
+        ValidationVisitor validator = ValidationUtil.createValidationVisitorForNode(node.root());
+        validator.setSeverityRegistry(severityRegistry);
+        visitTree(node, validator, TraverserDirection.down);
+
+        return validator.getValidationProblems();
     }
 
 }
