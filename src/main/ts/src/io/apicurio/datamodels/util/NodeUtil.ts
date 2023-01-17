@@ -1,3 +1,5 @@
+import {DefinitionDetectionVisitor} from "../visitors/DefinitionDetectionVisitor";
+import {Node} from "../models/Node";
 
 export class NodeUtil {
 
@@ -11,7 +13,11 @@ export class NodeUtil {
         }
         return rval;
     }
-    
+
+    public static getNodeProperty(node: Node, propertyName: string): any {
+        return NodeUtil.getProperty(node, propertyName);
+    }
+
     public static setProperty(node: any, propertyName: string, newValue: any): void {
         node[propertyName] = newValue;
     }
@@ -25,6 +31,14 @@ export class NodeUtil {
                 && typeof object === "object" 
                 && object.constructor && object.constructor.hasOwnProperty("__interfaces")
                 && object.constructor["__interfaces"].includes("io.apicurio.datamodels.models.union.Union");
+    }
+
+    public static isDefinition(node: Node): boolean {
+        const detector: DefinitionDetectionVisitor = new DefinitionDetectionVisitor();
+        if (node.parent() != null) {
+            node.parent().accept(detector);
+        }
+        return detector.isDefinitionParentDetected();
     }
 
     public static isList(object: any): boolean {

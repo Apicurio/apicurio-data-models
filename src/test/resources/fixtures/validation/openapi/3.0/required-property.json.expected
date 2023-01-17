@@ -5,6 +5,7 @@
 [OP-007] |medium| {/paths[/op-007]/get->responses} :: Operation must have at least one response.
 [PAR-001] |medium| {/paths[/par-001]/parameters[0]->name} :: Parameter is missing a name.
 [PAR-002] |medium| {/paths[/par-002]/parameters[0]->in} :: Parameter is missing a location (Query, Header, etc).
+[RB-002] |medium| {/components/requestBodies[rb-002]->content} :: Request Body content is missing.
 [RES-001] |medium| {/paths[/res-001]/get/responses[200]->description} :: Response (code 200) is missing a description.
 [SRV-001] |medium| {/servers[0]->url} :: Server is missing a template URL.
 [SVAR-001] |medium| {/servers[1]/variables[username]->default} :: Server Variable "username" is missing a default value.
@@ -15,6 +16,7 @@
 [FLOW-002] |medium| {/components/securitySchemes[flow-002]/flows/clientCredentials->tokenUrl} :: Client Credentials OAuth Flow is missing a Token URL.
 [FLOW-002] |medium| {/components/securitySchemes[flow-002]/flows/authorizationCode->tokenUrl} :: Auth Code OAuth Flow is missing a Token URL.
 [FLOW-006] |medium| {/components/securitySchemes[flow-006]/flows/implicit->scopes} :: OAuth Flow is missing defined scopes.
+[OP-013] |medium| {/paths[/op-007]/get->responses} :: Operation must have at least one Response.
 [SS-001] |medium| {/components/securitySchemes[ss-001]->type} :: Security Scheme is missing a type.
 [SS-002] |medium| {/components/securitySchemes[ss-002]->name} :: API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).
 [SS-003] |medium| {/components/securitySchemes[ss-003]->in} :: API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).

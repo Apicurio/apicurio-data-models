@@ -28,3 +28,4 @@
 [SS-013] |medium| {/components/securitySchemes[Security%Scheme]->name} :: Security Scheme Name is not valid.
 [LDEF-001] |medium| {/components/links[Link*Twelve]->name} :: Link Definition Name is not valid.
 [CDEF-001] |medium| {/components/callbacks[Invalid Callback Name]->name} :: Callback Definition Name is not valid.
+[RB-002] |medium| {/components/requestBodies[Request Body]->content} :: Request Body content is missing.
