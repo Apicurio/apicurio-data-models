@@ -15,7 +15,7 @@
 
     <properties>
         <maven.version>3.8.7</maven.version>
-        <maven-annotations.version>3.7.0</maven-annotations.version>
+        <maven-annotations.version>3.7.1</maven-annotations.version>
     </properties>
 
     <dependencies>
