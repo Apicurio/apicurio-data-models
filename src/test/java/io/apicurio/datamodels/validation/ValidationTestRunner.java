@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30SchemaImpl;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceUtil;
@@ -236,11 +235,9 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
                 Assert.assertNotNull("Failed to load test resource: " + resourceName, resourceContent);
                 ObjectNode content = (ObjectNode) JsonUtil.parseJSON(resourceContent);
                 Assert.assertNotNull("Could not parse test resource: " + resourceName, content);
-                ObjectNode resolvedContent = (ObjectNode) ReferenceUtil.resolveFragmentFromJS(content, fragment);
+                ObjectNode resolvedContent = ReferenceUtil.resolveFragmentFromJS(content, fragment);
                 Assert.assertNotNull("Failed to resolve fragment: " + fragment, resolvedContent);
-                // TODO clone the "from" node to a new empty impl.  For now, hard-code it.
-                //Node emptyClone = ModelCloner.createEmptyClone(from);
-                Node emptyClone = new OpenApi30SchemaImpl();
+                Node emptyClone = from.emptyClone();
                 emptyClone.attach(from.parent());
                 return Library.readNode(resolvedContent, emptyClone);
             }
