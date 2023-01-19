@@ -142,8 +142,17 @@ public class Library {
     }
 
     /**
+     * Visits a node with the given visitor.  Convenience method really - you could just call
+     * node.accept(visitor) ... and probably should.
+     * @param node
+     * @param visitor
+     */
+    public static void visitNode(Node node, Visitor visitor) {
+        node.accept(visitor);
+    }
+
+    /**
      * Visits an entire tree (either up or down).
-     * @param type
      * @param node
      * @param visitor
      * @param direction

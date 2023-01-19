@@ -36,17 +36,17 @@ const openApiData: string = ...;
 // Use the library util to create a data model instance from the given
 // data.  This will convert from the source string into an instance of 
 // the OpenAPI data model.
-const document: Document = Library.readDocumentFromJSONString(openApiData);
+const openApiDoc: Document = Library.readDocumentFromJSONString(openApiData);
 
 // Here you can analyze or manipulate the model.
-document.getInfo().setVersion("1.7");
-document.getInfo().setDescription("Made some changes to the OpenAPI document!");
+openApiDoc.getInfo().setVersion("1.7");
+openApiDoc.getInfo().setDescription("Made some changes to the OpenAPI document!");
 
 // Validate that your changes are OK.
-const problems = Library.validateDocument(document, null);
+const problems = Library.validate(openApiDoc, null);
 
 // And now write the node back out as a JSON string
-let modifiedOpenApiData: string = Library.writeDocumentToJSONString(document);
+let modifiedOpenApiData: string = Library.writeDocumentToJSONString(openApiDoc);
 ```
 
 _Browser (UMD):_
@@ -54,14 +54,14 @@ _Browser (UMD):_
 ```JavaScript
 var openApiData = ...; // Get your OpenAPI data somehow (can be string or JS object)
 
-var document = ApicurioDM.Library.readDocumentFromJSONString(openApiData);
+var openApiDoc = ApicurioDM.Library.readDocumentFromJSONString(openApiData);
 
-document.getInfo().setVersion("1.1");
-document.getInfo().setDescription("Made some changes to the OpenAPI document!");
+openApiDoc.getInfo().setVersion("1.1");
+openApiDoc.getInfo().setDescription("Made some changes to the OpenAPI document!");
 
-var problems = ApicurioDM.Library.validateDocument(document, null);
+var problems = ApicurioDM.Library.validate(openApiDoc, null);
 
-var modifiedOpenApiData = JSON.stringify(ApicurioDM.Library.writeDocumentToJSONString(document));
+var modifiedOpenApiData = ApicurioDM.Library.writeDocumentToJSONString(openApiDoc);
 ```
 
 ## API
@@ -80,10 +80,10 @@ These tasks include:
 
 #### Create Document
 
-`Library.createDocument(DocumentType): Document`
+`Library.createDocument(ModelType): Document`
 
 Use this method to create an empty OpenAPI or AsyncAPI document (data model).  You
-must pass one of the values of the DocumentType enum to indicate what sort of
+must pass one of the values of the ModelType enum to indicate what sort of
 document you want (OpenAPI 2, OpenAPI 3, AsyncAPI 2, etc).
 
 #### Read Document
@@ -99,14 +99,15 @@ properties).
 #### Write Node
 
 `Library.writeNode(Node): any`
-`Library.readDocumentFromJSONString(Document): string`
+`Library.writeDocument(Document): any`
+`Library.writeDocumentToJSONString(Document): string`
 
 Use these method to convert from a data model instance back to a JS object or
 string.  You can pass any node from the data model tree into the `writeNode` method
 and the appropriate JS object will be returned.  If you pass in the root document node, then the
-full OpenAPI JS object will be returned.  If, for example, you pass in only the
-`document.info` child node, then a JS object representing on that portion of the
-data model will be returned.  The `readDocumentFromJSONString` method must be
+full OpenAPI/AsyncAPI JS object will be returned.  If, for example, you pass in only the
+`document.info` child node, then a JS object representing only that portion of the
+data model will be returned.  The `writeDocument` and `writeDocumentToJSONString` methods must be
 sent a full Document, and will return a stringified object.
 
 ### Resolve External References
@@ -132,33 +133,6 @@ You can use this method to apply the appropriate rules to any section of the
 data model.  The return result is an array of validation problems, or an empty
 array if the document is fully valid.
 
-Note that in addition to returning an array of problems, the problems will also
-be stored on the model itself.  Any node that violates a validation rule
-will have the problem object added to a collection of problems stored directly
-on the node itself.  Thus, you can check if an individual node has any 
-validation problems:
-
-```Typescript
-let node: Node = ...;
-let problems: ValidationProblem[] = node.getValidationProblems();
-if (problems && problems.length > 0) {
-    // The node failed validation!
-}
-````
-
-Additionally, convenience methods exist on the node to get a more granular
-list of problems, in the case where you are only interested in problems for a
-specific property of the node (e.g. you might only be interested in problems
-for the `description` property):
-
-```Typescript
-let node: Node = ...;
-let problems: ValidationProblem[] = node.getValidationProblemsFor('description');
-if (problems && problems.length > 0) {
-    // The node failed validation!
-}
-```
-
 #### Create a Node Path
 
 `Library::createNodePath(Node): NodePath`
@@ -175,10 +149,11 @@ model is unique depending on its specification definition, in addition to
 sharing a common set of functionality:
 
 * _Parent_: Every node has a reference to its parent node.
-* _Owner Document_: Every node has a reference to its owning document.
+* _Root_: Every node has a reference to its root node.
 * _Node Attributes_:  Every node has a set of transient attributes which
   are not serialized when converting back to a JS object.
 * _Model ID_: Each node has a unique ID generating when the node is created.
+* _Model Type_: Exists only on the root node - identifies the model type.
 
 
 ### Node Paths
@@ -204,7 +179,7 @@ data model by using the `createNodePath(Node)` method in the
 
 ```Typescript
 let document: Document = ...;
-let node: Node = document.paths.pathItem("/pet/{petId}").get.responses.response("200");
+let node: Node = document.getPaths().getItem("/pet/{petId}").getGet().getResponses().getItem("200");
 let path: NodePath = Library.createNodePath(node);
 ```
 
@@ -215,8 +190,8 @@ In addition to basic reading and writing of a data model, this library also
 includes an implementation of the visitor pattern (useful for more advanced
 analysis or transformation of the data model).
 
-To use this feature, you must create a Typescript class that extends the 
-`IVisitor` interface.  You can then either call `accept` on any node in 
+To use this feature, you must create a Typescript class that implements the 
+`Visitor` interface.  You can then either call `accept` on any node in 
 the model (which will visit just that one node) or else traverse the entire 
 model (either up or down).  Some examples are below.
 
@@ -224,16 +199,16 @@ model (either up or down).  Some examples are below.
 
 ```Typescript
 let document: Document = getOrCreateDocument();
-let visitor: IVisitor = new MyCustomVisitor();
+let visitor: Visitor = new MyCustomVisitor();
 // Visit ONLY the "Info" node.
-Library.visitNode(document.info, visitor);
+Library.visitNode(document.getInfo(), visitor);
 ```
 
 #### Visit the Entire Document
 
 ```Typescript
 let document: Document = getOrCreateDocument();
-let visitor: IVisitor = new MyCustomVisitor();
+let visitor: Visitor = new MyCustomVisitor();
 Library.visitTree(document, visitor, TraverserDirection.down);
 ```
 
@@ -243,5 +218,5 @@ Library.visitTree(document, visitor, TraverserDirection.down);
 let document: Document = getOrCreateDocument();
 let visitor: IVisitor = new MyCustomVisitor();
 // Visit the Info node and then the Document (root) node
-Library.visitTree(document.info, visitor, OasTraverserDirection.up);
+Library.visitTree(document.getInfo(), visitor, OasTraverserDirection.up);
 ```
