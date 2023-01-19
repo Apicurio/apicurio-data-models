@@ -34,6 +34,11 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
         });
     }
 
+    /**
+     * Creates implementations of all methods needed for an implementation of the given
+     * entity model.
+     * @param entity
+     */
     private void createEntityImplMethods(EntityModel entity) {
         JavaClassSource javaEntity = lookupJavaEntityImpl(entity);
 

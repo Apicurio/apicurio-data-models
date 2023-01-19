@@ -19,11 +19,11 @@ public class CreateAcceptMethodStage extends AbstractJavaStage {
     @Override
     protected void doProcess() {
         getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
-            createEntityImplMethods(entity);
+            createAcceptMethod(entity);
         });
     }
 
-    private void createEntityImplMethods(EntityModel entity) {
+    private void createAcceptMethod(EntityModel entity) {
         JavaClassSource javaEntity = lookupJavaEntityImpl(entity);
         createAcceptMethod(entity, javaEntity);
     }

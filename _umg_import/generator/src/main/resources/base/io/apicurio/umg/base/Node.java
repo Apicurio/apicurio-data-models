@@ -21,5 +21,6 @@ public interface Node extends Visitable {
     public JsonNode getExtraProperty(String name);
     public boolean isAttached();
     public void attach(Node parent);
+    public Node emptyClone();
 
 }

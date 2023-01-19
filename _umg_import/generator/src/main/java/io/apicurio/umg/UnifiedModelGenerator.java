@@ -45,6 +45,7 @@ import io.apicurio.umg.pipe.java.ConfigureInterfaceTraitsStage;
 import io.apicurio.umg.pipe.java.CreateAcceptMethodStage;
 import io.apicurio.umg.pipe.java.CreateAllNodeVisitorStage;
 import io.apicurio.umg.pipe.java.CreateCombinedVisitorInterfacesStage;
+import io.apicurio.umg.pipe.java.CreateEmptyCloneMethodStage;
 import io.apicurio.umg.pipe.java.CreateEntityImplementationsStage;
 import io.apicurio.umg.pipe.java.CreateEntityInterfacesStage;
 import io.apicurio.umg.pipe.java.CreateImplFieldsStage;
@@ -149,6 +150,7 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateWritersStage());
         pipe.addStage(new CreateVisitorInterfacesStage());
         pipe.addStage(new CreateAcceptMethodStage());
+        pipe.addStage(new CreateEmptyCloneMethodStage());
         pipe.addStage(new CreateCombinedVisitorInterfacesStage());
         pipe.addStage(new CreateVisitorAdaptersStage());
         pipe.addStage(new CreateAllNodeVisitorStage());
