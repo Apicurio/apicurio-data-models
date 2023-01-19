@@ -6,7 +6,7 @@
     <groupId>io.apicurio</groupId>
     <artifactId>apicurio-data-models</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.28-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <name>apicurio-data-models</name>
 
     <url>https://www.apicur.io/</url>
@@ -55,8 +55,8 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Node Versions -->
         <version.node-js>16.16.0</version.node-js>
@@ -64,11 +64,11 @@
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
+        <version.commons-lang3>3.12.0</version.commons-lang3>
         <version.commons-io>2.11.0</version.commons-io>
         <version.junit>4.13.2</version.junit>
-        <version.org.jsweet>2.3.5</version.org.jsweet>
         <version.org.jsweet-core>6.3.0</version.org.jsweet-core>
-        <version.org.jsweet-transpiler>2.3.7</version.org.jsweet-transpiler>
+        <version.org.jsweet-transpiler>3.1.0</version.org.jsweet-transpiler>
         <version.org.skyscreamer>1.5.1</version.org.skyscreamer>
         
         <!-- Plugin Versions -->
@@ -82,6 +82,8 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.1.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        <version.apicurio-unified-model-generator-plugin>1.0.10.Final</version.apicurio-unified-model-generator-plugin>
+        <version.jsweet-maven-plugin>3.1.1.RedHat</version.jsweet-maven-plugin>
     </properties>
 
     <dependencies>
@@ -96,16 +98,19 @@
             <artifactId>jackson-databind</artifactId>
             <version>${version.com.fasterxml.jackson}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.jsweet/jsweet-core -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.commons-lang3}</version>
+        </dependency>
+        
+        <!-- JSweet -->
         <dependency>
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-core</artifactId>
             <version>${version.org.jsweet-core}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.jsweet/jsweet-transpiler -->
         <dependency>
             <groupId>org.jsweet</groupId>
             <artifactId>jsweet-transpiler</artifactId>
@@ -211,6 +216,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>io.apicurio</groupId>
+                <artifactId>apicurio-unified-model-generator-maven-plugin</artifactId>
+                <version>${version.apicurio-unified-model-generator-plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <specifications>
+                                <specification>${project.basedir}/src/main/resources/specs/openapi.yaml</specification>
+                                <specification>${project.basedir}/src/main/resources/specs/asyncapi.yaml</specification>
+<!--                                 <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>-->
+                            </specifications>
+                            <testSubDir>fixtures</testSubDir>
+                            <rootNamespace>io.apicurio.datamodels.models</rootNamespace>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>${version.org.apache.felix.maven-bundle-plugin}</version>
@@ -242,6 +269,39 @@
                     <niceManifest>true</niceManifest>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/umg</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-test-resources/umg</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -256,29 +316,13 @@
         <profile>
             <id>transpilation</id>
 
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>jsweet-plugins-release</id>
-                    <name>plugins-release</name>
-                    <url>https://repository.jsweet.org/artifactory/plugins-release-local</url>
-                </pluginRepository>
-            </pluginRepositories>
-
-            <repositories>
-                <repository>
-                    <id>jsweet-central</id>
-                    <name>libs-release</name>
-                    <url>https://repository.jsweet.org/artifactory/libs-release-local</url>
-                </repository>
-            </repositories>
-
             <build>
                 <plugins>
-                    <!-- Generate TS from Java -->
+                    <!-- Generate TS from Java using JSweet -->
                     <plugin>
-                        <groupId>org.jsweet</groupId>
+                        <groupId>io.apicurio</groupId>
                         <artifactId>jsweet-maven-plugin</artifactId>
-                        <version>${version.org.jsweet}</version>
+                        <version>${version.jsweet-maven-plugin}</version>
                         <configuration>
                             <verbose>true</verbose>
                             <tsOut>target/ts/src</tsOut>
@@ -286,6 +330,10 @@
                             <module>umd</module>
                             <moduleResolution>classic</moduleResolution>
                             <tsOnly>true</tsOnly>
+                            <allowedDependencyScopes>
+                                <allowedDependencyScope>compile</allowedDependencyScope>
+                                <allowedDependencyScope>provided</allowedDependencyScope>
+                            </allowedDependencyScopes>
                             <excludes>
                                 <exclude>**/_*/**</exclude>
                             </excludes>
@@ -300,6 +348,7 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- Copy some curated TS sources and resources to target/ts -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -343,7 +392,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Generate the core.ts file -->
+                    <!-- Generate the core.ts file using GenerateCoreTs -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
@@ -394,21 +443,21 @@
                                     <arguments>install</arguments>
                                 </configuration>
                             </execution>
-                            <!-- Test the library -->
+                            <!-- Build+package the library -->
                             <execution>
-                                <id>ng test</id>
+                                <id>npm test</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
                                     <workingDirectory>${basedir}/target/ts</workingDirectory>
-                                    <arguments>test</arguments>
+                                    <arguments>run test</arguments>
                                 </configuration>
                             </execution>
                             <!-- Build+package the library -->
                             <execution>
-                                <id>ng build</id>
+                                <id>npm build</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -421,8 +470,6 @@
                         </executions>
                     </plugin>
                 </plugins>
-
-
             </build>
         </profile>
         <profile>

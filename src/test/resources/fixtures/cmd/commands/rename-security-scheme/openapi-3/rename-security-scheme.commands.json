@@ -1,5 +1,0 @@
-[{
-    "__type": "RenameSecuritySchemeCommand",
-    "_oldSchemeName": "APIKey",
-    "_newSchemeName": "CustomKey"
-}]

@@ -1,40 +1,29 @@
-/**
- * @license
- * Copyright 2019 JBoss Inc
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import {Document} from "../src/io/apicurio/datamodels/core/models/Document";
-import {Node} from "../src/io/apicurio/datamodels/core/models/Node";
-import {NodePath} from "../src/io/apicurio/datamodels/core/models/NodePath";
-import {Library} from "../src/io/apicurio/datamodels/Library";
-import {CombinedAllNodeVisitor} from "../src/io/apicurio/datamodels/combined/visitors/CombinedAllNodeVisitor";
-import {TraverserDirection} from "../src/io/apicurio/datamodels/core/visitors/TraverserDirection";
 import {readJSON} from "./util/tutils";
+import {AllNodeVisitor} from "../src/io/apicurio/datamodels/models/visitors/AllNodeVisitor";
+import {Node} from "../src/io/apicurio/datamodels/models/Node";
+import {Library} from "../src/io/apicurio/datamodels/Library";
+import {Document} from "../src/io/apicurio/datamodels/models/Document";
+import {TraverserDirection} from "../src/io/apicurio/datamodels/TraverserDirection";
+import {NodePath} from "../src/io/apicurio/datamodels/paths/NodePath";
 
 
-class ExtraPropertyDetectionVisitor extends CombinedAllNodeVisitor {
+class ExtraPropertyDetectionVisitor extends AllNodeVisitor {
     
-    public extraPropertyCount: number = 0;
-    
+    public extraProperties: string[] = [];
+
+    public getExtraPropertyCount(): number {
+        return this.extraProperties.length;
+    }
+
     visitNode(node: Node): void {
-        this.extraPropertyCount += node.getExtraPropertyNames().length;
+        node.getExtraPropertyNames().forEach(name => {
+            this.extraProperties.push(name);
+        });
     }
 
 }
 
-class AllNodeFinder extends CombinedAllNodeVisitor {
+class AllNodeFinder extends AllNodeVisitor {
     
     allNodes: Node[] = [];
     
@@ -66,9 +55,12 @@ allTests.forEach(spec => {
         // Make sure the correct # of extra properties were read
         let extraPropVis: ExtraPropertyDetectionVisitor = new ExtraPropertyDetectionVisitor();
         Library.visitTree(document, extraPropVis, TraverserDirection.down);
-        let actualExtraProps: number = extraPropVis.extraPropertyCount;
-        let expectedExtraProps: number = spec.extraProperties ? spec.extraProperties : 0;
-        expect(expectedExtraProps).toEqual(actualExtraProps);
+        let actualExtraProps: number = extraPropVis.getExtraPropertyCount();
+        let expectedExtraProps: number = spec.extraProperties || 0;
+        if (actualExtraProps !== expectedExtraProps) {
+            throw Error("Detected unexpected extra properties: " + extraPropVis.extraProperties);
+        }
+        expect(actualExtraProps).toEqual(expectedExtraProps);
 
         // Serialize/write the document
         let jsObj: any = Library.writeNode(document);
@@ -84,8 +76,11 @@ allTests.forEach(spec => {
             expect(nodePath).not.toBeNull();
             let path: string = nodePath.toString();
             expect(path).not.toBeNull();
-            nodePath = new NodePath(path);
-            let resolvedNode: Node = nodePath.resolve(document);
+            nodePath = NodePath.parse(path);
+            let resolvedNode: Node = Library.resolveNodePath(nodePath, document);
+            if (resolvedNode === null) {
+                throw Error("Node Path failed to resolve: " + nodePath.toString());
+            }
             expect(resolvedNode).not.toBeNull();
             expect(resolvedNode).toBe(node);
         });

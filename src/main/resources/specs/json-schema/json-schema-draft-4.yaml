@@ -1,0 +1,196 @@
+name: JSON Schema Draft 4
+version: draft-4
+versions:
+  - version: draft-4
+    url: https://tools.ietf.org/html/draft-fge-json-schema-validation-00
+prefix: JsonSchemaDraft4
+namespace: io.apicurio.datamodels.models.jsonschema.draft4
+# NOTES:
+# - Keep everything in alphabetical order please
+traits:
+
+  - name: AllOfTrait
+    properties:
+      - name: allOf
+        type: "[JsonSchemaNode]"
+
+  - name: AnyOfTrait
+    properties:
+      - name: anyOf
+        type: "[JsonSchemaNode]"
+
+  - name: DefinitionsTrait
+    properties:
+      - name: definitions
+        type: "[any]"
+
+  - name: EnumTrait
+    properties:
+      - name: enum
+        type: "[any]"
+
+  - name: FormatTrait
+    properties:
+      - name: format
+        type: string
+
+  - name: JsonSchemaNode
+
+  - name: MetadataTrait
+    transparent: true
+    properties:
+      - name: default
+        type: string
+      - name: description
+        type: string
+      - name: title
+        type: string
+
+  - name: NotTrait
+    properties:
+      - name: not
+        type: JsonSchemaNode
+
+  - name: NumericTrait
+    transparent: true
+    properties:
+      - name: exclusiveMaximum
+        type: boolean
+      - name: exclusiveMinimum
+        type: boolean
+      - name: maximum
+        type: number
+      - name: minimum
+        type: number
+      - name: multipleOf
+        type: integer
+
+  - name: OneOfTrait
+    properties:
+      - name: oneOf
+        type: "[JsonSchemaNode]"
+
+entities:
+
+  - name: ArraySchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+    properties:
+      - name: additionalItems
+        type: boolean|JsonSchemaNode
+      - name: items
+        type: JsonSchemaNode|[JsonSchemaNode]
+      - name: maxItems
+        type: integer
+      - name: minItems
+        type: integer
+      - name: uniqueItems
+        type: boolean
+
+  - name: Document
+    properties:
+      - name: id
+        type: string
+      - name: $schema
+        type: string
+      - name: __root
+        type: JsonSchemaNode
+
+  - name: EmptySchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+
+  - name: IntegerSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - NumericTrait
+      - OneOfTrait
+
+  - name: NumberSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - NumericTrait
+      - OneOfTrait
+
+  - name: ObjectSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+    properties:
+      - name: additionalProperties
+        type: boolean|{JsonSchemaNode}
+      - name: dependencies
+        type: "{ObjectSchemaDependenciesItem}" # FULL: "{JsonSchemaNode|[string]}"
+      - name: maxProperties
+        type: integer
+      - name: minProperties
+        type: integer
+      - name: patternProperties
+        type: "{JsonSchemaNode}"
+      - name: properties
+        type: "{JsonSchemaNode}"
+      - name: required
+        type: "[string]"
+  - name: ObjectSchemaDependenciesItem
+    properties:
+      - name: value
+        type: JsonSchemaNode|[string]
+
+  - name: ReferenceSchema
+    traits:
+      - JsonSchemaNode
+      - MetadataTrait
+    properties:
+      - name: $ref
+        type: string
+
+  - name: StringSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - DefinitionsTrait
+      - EnumTrait
+      - FormatTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+    properties:
+      - name: maxLength
+        type: integer
+      - name: minLength
+        type: integer
+      - name: pattern
+        type: string

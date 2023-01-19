@@ -1,8 +1,0 @@
-{
-  "asyncapi": "2.0.0",
-  "info": {
-    "title": "DeleteSchemaDefinitionCommand_Aai20 test",
-    "version": "1.0.0"
-  },
-  "components": {}
-}

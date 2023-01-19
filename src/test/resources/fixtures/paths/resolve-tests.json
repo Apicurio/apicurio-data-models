@@ -1,4 +1,7 @@
 [
 	{ "name": "[AsyncAPI 2.0] Root Path", "test": "asyncapi/2.0/root.json", "path": "/" },
-	{ "name": "[AsyncAPI 2.0] Info", "test": "asyncapi/2.0/info.json", "path": "/info" }
+	{ "name": "[AsyncAPI 2.0] Info", "test": "asyncapi/2.0/info.json", "path": "/info" },
+    { "name": "[OpenAPI 2.0] Items SchemaList", "test": "openapi/2.0/items-schemaList.json", "path": "/definitions[ItemsTest2]/items[2]" },
+    { "name": "[OpenAPI 3.0] Additional Properties Schema", "test": "openapi/3.0/additionalProperties.json", "path": "/components/schemas[WidgetWithAdditionalProperties]/additionalProperties" },
+    { "name": "[OpenAPI 3.0] Items Schema", "test": "openapi/3.0/items.json", "path": "/components/schemas[ItemsTest1]/items" }
 ]

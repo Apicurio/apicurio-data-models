@@ -1,0 +1,71 @@
+/*
+ * Copyright 2019 Red Hat
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.apicurio.datamodels.validation.rules.other;
+
+import java.util.List;
+
+import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.validation.ValidationRule;
+import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+import io.apicurio.datamodels.visitors.ParametersFromParentVisitor;
+
+/**
+ * Implements the Body Parameter Uniqueness validation rule (can only have 1 body param).
+ * @author eric.wittmann@gmail.com
+ */
+public class OasBodyParameterUniquenessValidationRule extends ValidationRule {
+
+    /**
+     * Constructor.
+     * @param ruleInfo
+     */
+    public OasBodyParameterUniquenessValidationRule(ValidationRuleMetaData ruleInfo) {
+        super(ruleInfo);
+    }
+
+    /**
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitParameter(io.apicurio.datamodels.models.Parameter)
+     */
+    @Override
+    public void visitParameter(Parameter node) {
+        OpenApiParameter param = (OpenApiParameter) node;
+        if (equals(param.getIn(), "body")) {
+            ParametersFromParentVisitor paramsViz = new ParametersFromParentVisitor();
+            node.parent().accept(paramsViz);
+            List<OpenApiParameter> params = paramsViz.getParameters();
+            int count = countBodyParams(params);
+            this.reportIf(count > 1, node, "in", map());
+        }
+    }
+
+    /**
+     * Counts the # of body style params.
+     */
+    private int countBodyParams(List<OpenApiParameter> params) {
+        int count = 0;
+        if (isDefined(params)) {
+            for (OpenApiParameter parameter : params) {
+                if (equals(parameter.getIn(), "body")) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+}

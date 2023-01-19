@@ -1,0 +1,53 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Demo API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "components": {
+        "schemas": {
+            "WidgetWithBooleanAdditionalProperties": {
+                "title": "WidgetWithAdditionalProperties",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "additionalProperties": true,
+                "example": {
+                    "name": "Foo",
+                    "id": 12345
+                }
+            },
+            "WidgetWithAdditionalProperties": {
+                "title": "WidgetWithAdditionalProperties",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "additionalProperties": {
+                    "format": "date",
+                    "type": "object"
+                },
+                "example": {
+                    "name": "Foo",
+                    "id": 12345
+                }
+            }
+        }
+    }
+}

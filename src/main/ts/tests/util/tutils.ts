@@ -1,26 +1,7 @@
-/**
- * @license
- * Copyright 2019 JBoss Inc
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import {ValidationProblemSeverity} from "../../src/io/apicurio/datamodels/validation/ValidationProblemSeverity";
+import {ValidationProblem} from "../../src/io/apicurio/datamodels/validation/ValidationProblem";
 
-import {Document} from "../../src/io/apicurio/datamodels/core/models/Document";
-import {Library} from "../../src/io/apicurio/datamodels/Library";
-import {ValidationProblem} from "../../src/io/apicurio/datamodels/core/models/ValidationProblem";
-import {ValidationProblemSeverity} from "../../src/io/apicurio/datamodels/core/models/ValidationProblemSeverity";
-
-var fs = require("fs");
+const fs = require("fs");
 
 export function readJSON(path: string): any {
     let fileContent: string = fs.readFileSync(path);
@@ -66,12 +47,8 @@ export function readSeverity(severity: string): ValidationProblemSeverity {
 export function formatProblems(problems: ValidationProblem[]): string[] {
     let es: string[] = [];
     problems.forEach(problem => {
-        es.push(`[${problem.errorCode}] |${formatSeverity(problem.severity)}| {${problem.nodePath.toString()}->${problem.property}} :: ${problem.message}`);
+        es.push(`[${problem.errorCode}] |${formatSeverity(problem.severity)}| {${problem.nodePath.toString(true)}->${problem.property}} :: ${problem.message}`);
     });
     return es;
 }
 
-
-export function normalize(value: string): string {
-    return value.trim().replace("\r\n", "\n");
-}

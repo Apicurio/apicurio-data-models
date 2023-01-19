@@ -1,5 +1,0 @@
-[{
-    "__type": "RenameSecuritySchemeCommand",
-    "_oldSchemeName": "myApiScheme",
-    "_newSchemeName": "myRenamedApiScheme"
-}]

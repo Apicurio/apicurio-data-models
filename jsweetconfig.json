@@ -1,3 +1,5 @@
 {
-  "adapters": ["io.apicurio.PromiseAdapter"]
+  "adapters": [
+    "io.apicurio.JacksonAdapter"
+  ]
 }

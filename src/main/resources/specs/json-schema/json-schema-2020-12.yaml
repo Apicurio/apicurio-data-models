@@ -1,0 +1,322 @@
+name: JSON Schema 2020-12
+version: 2020-12
+versions:
+  - version: 2020-12
+    url: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-01
+prefix: JsonSchema202012
+namespace: io.apicurio.datamodels.models.jsonschema.v202012
+# NOTES:
+# - Keep everything in alphabetical order please
+# - Release notes: https://json-schema.org/draft/2020-12/release-notes.html
+traits:
+
+  - name: AllOfTrait
+    properties:
+      - name: allOf
+        type: "[JsonSchemaNode]"
+
+  - name: AnyOfTrait
+    properties:
+      - name: anyOf
+        type: "[JsonSchemaNode]"
+
+  - name: ConstTrait
+    properties:
+      - name: const
+        type: "any"
+
+  - name: DefinitionsTrait
+    properties:
+      - name: $defs
+        type: "[any]"
+
+  - name: ElseTrait
+    properties:
+      - name: else
+        type: JsonSchemaNode
+
+  - name: EnumTrait
+    properties:
+      - name: enum
+        type: "[any]"
+
+  - name: FormatTrait
+    properties:
+      - name: format
+        type: string
+
+  - name: IfTrait
+    properties:
+      - name: if
+        type: JsonSchemaNode
+
+  - name: JsonSchemaNode
+
+  - name: MetadataTrait
+    transparent: true
+    properties:
+      - name: default
+        type: string
+      - name: deprecated
+        type: boolean
+      - name: description
+        type: string
+      - name: examples
+        type: "[any]"
+      - name: readOnly
+        type: boolean
+      - name: title
+        type: string
+      - name: writeOnly
+        type: boolean
+      - name: $anchor
+        type: string
+      - name: $comment
+        type: string
+      - name: $dynamicAnchor
+        type: string
+
+  - name: NotTrait
+    properties:
+      - name: not
+        type: JsonSchemaNode
+
+  - name: NumericTrait
+    transparent: true
+    properties:
+      - name: exclusiveMaximum
+        type: number
+      - name: exclusiveMinimum
+        type: number
+      - name: maximum
+        type: number
+      - name: minimum
+        type: number
+      - name: multipleOf
+        type: integer
+
+  - name: OneOfTrait
+    properties:
+      - name: oneOf
+        type: "[JsonSchemaNode]"
+
+  - name: ReferenceTrait
+    properties:
+      - name: $dynamicRef
+        type: string
+      - name: $ref
+        type: string
+
+  - name: ThenTrait
+    properties:
+      - name: then
+        type: JsonSchemaNode
+
+entities:
+
+  - name: ArraySchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+    properties:
+      - name: contains
+        type: JsonSchemaNode
+      - name: items
+        type: JsonSchemaNode
+      - name: maxContains
+        type: integer
+      - name: maxItems
+        type: integer
+      - name: minContains
+        type: integer
+      - name: minItems
+        type: integer
+      - name: prefixItems
+        type: JsonSchemaNode|[JsonSchemaNode]
+      - name: unevaluatedItems
+        type: JsonSchemaNode
+      - name: uniqueItems
+        type: boolean
+
+  - name: BooleanSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+
+  - name: Document
+    properties:
+      - name: $id
+        type: string
+      - name: $schema
+        type: string
+      - name: __root
+        type: JsonSchemaNode
+
+  - name: EmptySchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+
+  - name: FalseSchema
+    traits:
+      - JsonSchemaNode
+
+  - name: IntegerSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - NumericTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+
+  - name: NullSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - NumericTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+
+  - name: NumberSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - NumericTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+
+  - name: ObjectSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+    properties:
+      - name: additionalProperties
+        type: "{JsonSchemaNode}"
+      - name: dependentRequired
+        type: "{ObjectSchemaDependentRequiredItem}" # FULL: "{[string]}"
+      - name: dependentSchemas
+        type: "{JsonSchemaNode}"
+      - name: maxProperties
+        type: integer
+      - name: minProperties
+        type: integer
+      - name: patternProperties
+        type: "{JsonSchemaNode}"
+      - name: properties
+        type: "{JsonSchemaNode}"
+      - name: propertyNames
+        type: EmptySchema|FalseSchema|StringSchema|TrueSchema
+      - name: required
+        type: "[string]"
+      - name: unevaluatedProperties
+        type: JsonSchemaNode
+  - name: ObjectSchemaDependentRequiredItem
+    properties:
+      - name: value
+        type: "[string]"
+
+  - name: StringSchema
+    traits:
+      - AllOfTrait
+      - AnyOfTrait
+      - ConstTrait
+      - DefinitionsTrait
+      - ElseTrait
+      - EnumTrait
+      - FormatTrait
+      - IfTrait
+      - JsonSchemaNode
+      - MetadataTrait
+      - NotTrait
+      - OneOfTrait
+      - ReferenceTrait
+      - ThenTrait
+    properties:
+      - name: contentEncoding
+        type: string
+      - name: contentMediaType
+        type: string
+      - name: contentSchema
+        type: string
+      - name: maxLength
+        type: integer
+      - name: minLength
+        type: integer
+      - name: pattern
+        type: string
+
+  # If a property type is defined as e.g. `boolean|JsonSchemaNode`; `JsonSchemaNode` can be used instead
+  - name: TrueSchema
+    traits:
+      - JsonSchemaNode

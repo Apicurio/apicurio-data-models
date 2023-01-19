@@ -1,5 +1,0 @@
-[{
-    "__type": "NewMediaTypeCommand",
-    "_nodePath": "/paths[/foo]/get/responses[200]",
-    "_newMediaType": "application/xml"
-}]

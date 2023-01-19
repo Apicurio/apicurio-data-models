@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2022 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,42 +17,31 @@
 package io.apicurio.datamodels;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
-import io.apicurio.datamodels.compat.JsonCompat;
-import io.apicurio.datamodels.compat.LoggerCompat;
-import io.apicurio.datamodels.core.Constants;
-import io.apicurio.datamodels.core.factories.DocumentFactory;
-import io.apicurio.datamodels.core.factories.VisitorFactory;
-import io.apicurio.datamodels.core.io.DataModelReader;
-import io.apicurio.datamodels.core.io.DataModelReaderDispatcher;
-import io.apicurio.datamodels.core.io.DataModelWriter;
-import io.apicurio.datamodels.core.models.Document;
-import io.apicurio.datamodels.core.models.DocumentType;
-import io.apicurio.datamodels.core.models.Node;
-import io.apicurio.datamodels.core.models.NodePath;
-import io.apicurio.datamodels.core.models.ValidationProblem;
-import io.apicurio.datamodels.core.util.IReferenceResolver;
-import io.apicurio.datamodels.core.util.NodePathUtil;
-import io.apicurio.datamodels.core.util.ReferenceResolverChain;
-import io.apicurio.datamodels.core.util.VisitorUtil;
-import io.apicurio.datamodels.core.validation.DefaultSeverityRegistry;
-import io.apicurio.datamodels.core.validation.IDocumentValidatorExtension;
-import io.apicurio.datamodels.core.validation.IValidationSeverityRegistry;
-import io.apicurio.datamodels.core.validation.ValidationProblemsResetVisitor;
-import io.apicurio.datamodels.core.validation.ValidationVisitor;
-import io.apicurio.datamodels.core.visitors.IVisitor;
-import io.apicurio.datamodels.core.visitors.TraverserDirection;
-import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Document;
-import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
-import io.apicurio.datamodels.openapi.visitors.dereference.Dereferencer;
-import io.apicurio.datamodels.openapi.visitors.transform.Oas20to30TransformationVisitor;
-import jsweet.lang.Async;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static jsweet.util.Lang.await;
+import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.ModelType;
+import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.RootNode;
+import io.apicurio.datamodels.models.io.ModelReader;
+import io.apicurio.datamodels.models.io.ModelReaderFactory;
+import io.apicurio.datamodels.models.io.ModelWriter;
+import io.apicurio.datamodels.models.io.ModelWriterFactory;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.util.JsonUtil;
+import io.apicurio.datamodels.models.visitors.Visitor;
+import io.apicurio.datamodels.paths.NodePath;
+import io.apicurio.datamodels.paths.NodePathUtil;
+import io.apicurio.datamodels.refs.IReferenceResolver;
+import io.apicurio.datamodels.refs.ReferenceResolverChain;
+import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
+import io.apicurio.datamodels.util.ValidationUtil;
+import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
+import io.apicurio.datamodels.validation.IValidationSeverityRegistry;
+import io.apicurio.datamodels.validation.ValidationProblem;
+import io.apicurio.datamodels.validation.ValidationVisitor;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -61,7 +50,7 @@ import static jsweet.util.Lang.await;
  * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Library {
-    
+
     /**
      * Adds a reference resolver to the library.  The resolver will be used whenever the library
      * needs to resolve a $ref reference.
@@ -73,24 +62,105 @@ public class Library {
     public static void removeReferenceResolver(IReferenceResolver resolver) {
         ReferenceResolverChain.getInstance().removeResolver(resolver);
     }
-    
+
     /**
      * Creates a new, empty document of the given type.
      * @param type
      */
-    public static Document createDocument(DocumentType type) {
-        switch (type) {
-            case asyncapi2:
-                return new Aai20Document();
-            case openapi2:
-                return new Oas20Document();
-            case openapi3:
-                return new Oas30Document();
-            default:
-                throw new RuntimeException("Unknown document type: " + type);
-        }
+    public static Document createDocument(ModelType type) {
+        ModelReader reader = ModelReaderFactory.createModelReader(type);
+        return (Document) reader.readRoot(JsonUtil.objectNode());
     }
-    
+
+    /**
+     * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
+     * read as a data model {@link Document} and returned.
+     * @param json
+     */
+    public static Document readDocument(ObjectNode json) {
+        // Clone the input because the reader is destructive to the source data.
+        ObjectNode clonedJson = (ObjectNode) JsonUtil.clone(json);
+        ModelType type = ModelTypeDetector.discoverModelType(clonedJson);
+
+        ModelReader reader = ModelReaderFactory.createModelReader(type);
+        return (Document) reader.readRoot(clonedJson);
+    }
+
+    /**
+     * Reads an entire document from a JSON formatted string.  This will parse the given string into
+     * JSON data and then call Library.readDocument.
+     * @param jsonString
+     */
+    public static Document readDocumentFromJSONString(String jsonString) {
+        ObjectNode json = (ObjectNode) JsonUtil.parseJSON(jsonString);
+        return readDocument(json);
+    }
+
+    /**
+     * Called to serialize a given data model node to a JSON object.
+     * @param node
+     */
+    public static ObjectNode writeDocument(Document document) {
+        ModelWriter writer = ModelWriterFactory.createModelWriter(document.root().modelType());
+        return writer.writeRoot((RootNode) document);
+    }
+
+    /**
+     * Called to serialize a given data model to a JSON formatted string.
+     * @param document
+     */
+    public static String writeDocumentToJSONString(Document document) {
+        ObjectNode json = Library.writeDocument( document);
+        return JsonUtil.stringify(json);
+    }
+
+    /**
+     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node
+     * type and an empty instance of the node class.  For example, you could read just an
+     * Operation by passing the JSON data for the operation along with an instance of e.g.
+     * {@link OpenApi30Operation} and this will read the data and store it in the instance.
+     * @param json
+     * @param node
+     */
+    public static Node readNode(ObjectNode json, Node node) {
+        // Clone the input because the reader is destructive to the source data.
+        ObjectNode clonedJson = (ObjectNode) JsonUtil.clone(json);
+        Visitor readerDispatcher = ModelReaderFactory.createModelReaderDispatcher(node.root().modelType(), clonedJson);
+        node.accept(readerDispatcher);
+        return node;
+    }
+
+    /**
+     * Called to serialize a given data model node to a JSON object.
+     * @param node
+     */
+    public static ObjectNode writeNode(Node node) {
+        ObjectNode json = JsonUtil.objectNode();
+        Visitor writerDispatcher = ModelWriterFactory.createModelWriterDispatcher(node.root().modelType(), json);
+        node.accept(writerDispatcher);
+        return json;
+    }
+
+    /**
+     * Visits a node with the given visitor.  Convenience method really - you could just call
+     * node.accept(visitor) ... and probably should.
+     * @param node
+     * @param visitor
+     */
+    public static void visitNode(Node node, Visitor visitor) {
+        node.accept(visitor);
+    }
+
+    /**
+     * Visits an entire tree (either up or down).
+     * @param node
+     * @param visitor
+     * @param direction
+     */
+    public static void visitTree(Node node, Visitor visitor, TraverserDirection direction) {
+        VisitorUtil.visitTree(node, visitor, direction);
+    }
+
     /**
      * Called to create a node path for a given data model node.
      * @param node
@@ -100,30 +170,51 @@ public class Library {
     }
 
     /**
-     * Convenience method for visiting a single data model nodel.
+     * Called to create a node path instance for a stringified node path.
      * @param node
-     * @param visitor
      */
-    public static void visitNode(Node node, IVisitor visitor) {
-        VisitorUtil.visitNode(node, visitor);
-    }
-    
-    /**
-     * Convenience method for visiting a data model tree.  Supports traversing the data model either
-     * up or down the tree.
-     * @param node
-     * @param visitor
-     * @param direction
-     */
-    public static void visitTree(Node node, IVisitor visitor, TraverserDirection direction) {
-        VisitorUtil.visitTree(node, visitor, direction);
+    public static NodePath parseNodePath(String path) {
+        return NodePathUtil.parseNodePath(path);
     }
 
     /**
-     * @deprecated
-     * This method has been deprecated. It will continue to be supported but will be removed in a future release.
-     * <p> Use {@link Library#validateDocument(Node, IValidationSeverityRegistry, List)} instead.
-     * 
+     * Resolves the given node path relative to a root document.
+     * @param nodePath
+     * @param doc
+     */
+    public static Node resolveNodePath(NodePath nodePath, Document doc) {
+        return NodePathUtil.resolveNodePath(nodePath, doc);
+    }
+
+    /**
+     * Transforms from an OpenAPI 2.0 document into a 3.0 document.
+     * @param source
+     */
+    public static Document transformDocument(Document source, ModelType toType) {
+        if (source.root().modelType() != ModelType.OPENAPI20 || toType != ModelType.OPENAPI30) {
+            throw new RuntimeException("Transformation not supported.");
+        }
+
+        // Transform from OpenApi20 to OpenApi30
+        OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
+        OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
+        VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
+        return transformer.getResult();
+    }
+
+    /**
+     * Clones the given document by serializing it to a JS object, and then re-parsing it.
+     * @param source
+     */
+    public static Document cloneDocument(Document source) {
+        // TODO have the code generator produce a Cloner of some kind that knows how to clone any Node.
+        //      We already have reader/writer dispatchers.  We only need something that can create a new,
+        //      empty model instance from an existing (not empty) model.
+        ObjectNode jsObj = writeNode(source);
+        return readDocument(jsObj);
+    }
+
+    /**
      * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
      * of validation problems found during validation is returned.  In addition, validation problems will be
      * reported on the individual nodes themselves.  Validation problem severity is determined by checking
@@ -135,210 +226,13 @@ public class Library {
         if (severityRegistry == null) {
             severityRegistry = new DefaultSeverityRegistry();
         }
-        
-        // Clear/reset any problems that may have been found before.
-        ValidationProblemsResetVisitor resetter = VisitorFactory.createValidationProblemsResetVisitor(node.ownerDocument());
-        visitTree(node, resetter, TraverserDirection.down);
-        
+
         // Validate the data model.
-        ValidationVisitor validator = VisitorFactory.createValidationVisitor(node.ownerDocument());
+        ValidationVisitor validator = ValidationUtil.createValidationVisitorForNode(node.root());
         validator.setSeverityRegistry(severityRegistry);
         visitTree(node, validator, TraverserDirection.down);
-        
+
         return validator.getValidationProblems();
     }
 
-    /**
-     * Called to validate a data model node.  All validation rules will be evaluated and reported.  The list
-     * of validation problems found during validation is returned.  In addition, validation problems will be
-     * reported on the individual nodes themselves.  Validation problem severity is determined by checking
-     * with the included severity registry.  If the severity registry is null, a default registry is used.
-     * Custom validators can be passed to provide additional validation rules beyond what this Library offers out of the box.
-     *
-     * @param node The document to be validated
-     * @param severityRegistry Supply a custom severity registry. If nothing is passed, the default severity registry will be used
-     * @param extensions Supply an optional list of validation extensions, enabling the use of 3rd-party validators or custom validation rules
-     * @return full list of the validation problems found in the document
-     */
-    @Async
-    public static CompletableFuture<List<ValidationProblem>> validateDocument(Node node, IValidationSeverityRegistry severityRegistry, List<IDocumentValidatorExtension> extensions) {
-        List<ValidationProblem> problems = Library.validate(node, severityRegistry);
-        node.addValidationProblems(problems);
-
-        if (extensions == null || extensions.isEmpty()) {
-            return CompletableFuture.completedFuture(problems);
-        }
-
-        for (IDocumentValidatorExtension extension : extensions) {
-            try {
-                List<ValidationProblem> extProblems = extension.validateDocument(node).get();
-                node.addValidationProblems(extProblems);
-            } catch (Exception e) {
-                LoggerCompat.info("Error occurred in validation extension '%o': %o", extension.getClass().getName(), e.getMessage());
-            }
-        }
-
-        return CompletableFuture.completedFuture(node.getValidationProblems());
-    }
-
-    /**
-     * Reads an entire document from JSON data.  The JSON data (already parsed, not in string format) is
-     * read as a data model {@link Document} and returned.
-     * @param json
-     */
-    public static Document readDocument(Object json) {
-        // Clone the input because the reader is destructive to the source data.
-        Object clonedJson = JsonCompat.clone(json);
-        DocumentType type = discoverDocumentType(clonedJson);
-        DataModelReader reader = VisitorFactory.createDataModelReader(type);
-        Document document = DocumentFactory.create(type);
-        reader.readDocument(clonedJson, document);
-        return document;
-    }
-    
-    /**
-     * Reads an entire document from a JSON formatted string.  This will parse the given string into
-     * JSON data and then call Library.readDocument.
-     * @param jsonString
-     */
-    public static Document readDocumentFromJSONString(String jsonString) {
-        Object json = JsonCompat.parseJSON(jsonString);
-        return readDocument(json);
-    }
-    
-    /**
-     * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node 
-     * type and an empty instance of the property node class.  For example, you could read just an
-     * Operation by passing the JSON data for the operation along with an instance of e.g. 
-     * {@link Oas30Operation} and this will read the data and store it in the instance.
-     * @param json
-     * @param node
-     */
-    public static Node readNode(Object json, Node node) {
-        // Clone the input because the reader is destructive to the source data.
-        Object clonedJson = JsonCompat.clone(json);
-        DocumentType type = node.ownerDocument().getDocumentType();
-        DataModelReader reader = VisitorFactory.createDataModelReader(type);
-        DataModelReaderDispatcher dispatcher = VisitorFactory.createDataModelReaderDispatcher(type, clonedJson, reader);
-        Library.visitNode(node, dispatcher);
-        return node;
-    }
-    
-    /**
-     * Called to serialize a given data model node to a JSON object.
-     * @param node
-     */
-    public static Object writeNode(Node node) {
-        DataModelWriter writer = VisitorFactory.createDataModelWriter(node.ownerDocument());
-        visitTree(node, writer, TraverserDirection.down);
-        return writer.getResult();
-    }
-    
-    /**
-     * Called to serialize a given data model to a JSON formatted string.
-     * @param document
-     */
-    public static String writeDocumentToJSONString(Document document) {
-        Object json = Library.writeNode(document);
-        return JsonCompat.stringify(json);
-    }
-
-    /**
-     * Called to discover what type of document the given JSON data represents.  This method
-     * interrogates the following appropriate top level properties:
-     * 
-     * - asyncapi
-     * - openapi
-     * - swagger
-     * 
-     * Based on which property is defined, and the value of that property, the correct document
-     * type is determined and returned.
-     * 
-     * @param json
-     */
-    public static DocumentType discoverDocumentType(Object json) {
-        String asyncapi = JsonCompat.getPropertyString(json, Constants.PROP_ASYNCAPI);
-        String openapi = JsonCompat.getPropertyString(json, Constants.PROP_OPENAPI);
-        String swagger = JsonCompat.getPropertyString(json, Constants.PROP_SWAGGER);
-        if (asyncapi != null && asyncapi.startsWith("2.")) {
-            return DocumentType.asyncapi2;
-        }
-        if (openapi != null) {
-            if (openapi.startsWith("2.")) {
-                return DocumentType.openapi2;
-            }
-            if (openapi.startsWith("3.0")) {
-                return DocumentType.openapi3;
-            }
-        }
-        if (swagger != null) {
-            if (swagger.startsWith("2.")) {
-                return DocumentType.openapi2;
-            }
-        }
-        
-        throw new RuntimeException("Unknown data model type or version.");
-    }
-
-    /**
-     * Clones the given document by serializing it to a JS object, and then re-parsing it.
-     * @param source
-     */
-    public static Document cloneDocument(Document source) {
-        Object jsObj = writeNode(source);
-        return readDocument(jsObj);
-    }
-
-    /**
-     * Transforms from an OpenAPI 2.0 document into a 3.0 document.
-     * @param source
-     */
-    public static Oas30Document transformDocument(Oas20Document source) {
-        Oas20Document clone = (Oas20Document) cloneDocument(source);
-        Oas20to30TransformationVisitor transformer = new Oas20to30TransformationVisitor();
-        VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
-        return transformer.getResult();
-    }
-
-    /**
-     * Dereferences a document - this will take all external references ($ref) found in
-     * the document and pull them into this document.  It will then update any external
-     * reference to instead point to the local copy.  The result is a functionally
-     * equivalent document with all resolvable external references removed.
-     *
-     * @param source the source document
-     */
-    public static Document dereferenceDocument(Document source) {
-        Dereferencer rl = new Dereferencer(source);
-        return rl.dereference();
-    }
-
-    /**
-     * Dereferences a document - this will take all external references ($ref) found in
-     * the document and pull them into this document.  It will then update any external
-     * reference to instead point to the local copy.  The result is a functionally
-     * equivalent document with all resolvable external references removed.
-     *
-     * @param source the source document
-     * @param strict if true, throws an exception if unresolvable references remain
-     */
-    public static Document dereferenceDocument(Document source, boolean strict) {
-        Dereferencer rl = new Dereferencer(source, ReferenceResolverChain.getInstance(), strict);
-        return rl.dereference();
-    }
-
-    /**
-     * Dereferences a document - this will take all external references ($ref) found in
-     * the document and pull them into this document.  It will then update any external
-     * reference to instead point to the local copy.  The result is a functionally
-     * equivalent document with all resolvable external references removed.
-     *
-     * @param source the source document
-     * @param resolver a custom reference resolver to use on this dereference operation
-     * @param strict if true, throws an exception if unresolvable references remain
-     */
-    public static Document dereferenceDocument(Document source, IReferenceResolver resolver, boolean strict) {
-        Dereferencer rl = new Dereferencer(source, resolver, strict);
-        return rl.dereference();
-    }
 }

@@ -33,8 +33,7 @@
             "type": "object",
             "properties": {
                "key": {
-                  "type": "string",
-                  "additionalProperties": false
+                  "type": "string"
                }
             }
          },

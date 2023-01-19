@@ -1,7 +1,0 @@
-[
-  {
-    "__type": "NewMessageTraitDefinitionCommand",
-    "_newName": "commonHeaders",
-    "_newDescription": "This trait is holding common headers for Messages"
-  }
-]

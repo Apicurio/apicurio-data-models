@@ -51,8 +51,8 @@ project as a dependency in your projects without worrying about conflicts or dep
 Currently, the data model fully supports the following formats:
 
 * OpenAPI 2.0
-* OpenAPI 3.0.x
-* AsyncAPI 2.0.0
+* OpenAPI 3.0.x, 3.1.x
+* AsyncAPI 2.0, 2.1, 2.2, 2.3, 2.4, 2.5
 
 Barring oversights or bugs, the full OpenAPI/AsyncAPI document can be read and written successfully.  In 
 addition, the visitor pattern has been fully implemented (along with both up and down traversing).
@@ -65,12 +65,13 @@ current status of the project.
 
 ## OpenAPI Versions
 One of the design goals of this library is to simultaneously support multiple versions of the OpenAPI
-specification.  At the time of this writing, there are two versions of the OpenAPI specification:
+specification.  At the time of this writing, there are multiple versions of the OpenAPI specification:
 
-* [OpenAPI Version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
-* [OpenAPI Version 3.0.2](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
+* [OpenAPI Version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)
+* [OpenAPI Version 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)
+* [OpenAPI Version 3.1.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md)
 
-Both of these versions are supported by the library.  As new versions of the specification are 
+All of these versions are supported by the library.  As new versions of the specification are 
 released, the library will be updated to include support for them.
 
 ## AsyncAPI Versions
@@ -78,7 +79,12 @@ As of the time of this writing, the AsyncAPI specification is in the process of 
 This will be the first version of AsyncAPI supported by this library.  As other versions are released,
 the library will be updated to support them.  There are currently no plans to support older versions.
 
-* [AsyncAPI Version 2.0.0](https://www.asyncapi.com/docs/specifications/2.0.0/)
+* [AsyncAPI Version 2.0.0](https://github.com/asyncapi/spec/blob/v2.0.0/versions/2.0.0/asyncapi.md)
+* [AsyncAPI Version 2.1.0](https://github.com/asyncapi/spec/blob/v2.1.0/spec/asyncapi.md)
+* [AsyncAPI Version 2.2.0](https://github.com/asyncapi/spec/blob/v2.2.0/spec/asyncapi.md)
+* [AsyncAPI Version 2.3.0](https://github.com/asyncapi/spec/blob/v2.3.0/spec/asyncapi.md)
+* [AsyncAPI Version 2.4.0](https://github.com/asyncapi/spec/blob/v2.4.0/spec/asyncapi.md)
+* [AsyncAPI Version 2.5.0](https://github.com/asyncapi/spec/blob/v2.5.0/spec/asyncapi.md)
 
 ## Building the Library
 This section explains how to build, package, test, and publish the library.  If you are a developer
@@ -87,15 +93,15 @@ looking to make changes, this is a great place to start.
 ### Pre-Requisites
 In order to build the library you will need to install the following tools:
 
-* Java 8 (versions of Java greater than 8 can be used when **running** the library, but not for building it)
-* Maven 3.5+
+* Java 11+
+* Maven 3.8+
 * Node.js 16+
 
 ### Clone and Configure
 The first thing to do (obviously) is clone the repository.  Once you've cloned the git repository,
 you can use maven to build the library into its two forms:  a Java JAR and a javascript library module.
 This library is written using Java, but is then [transpiled from Java into Typescript using jsweet](http://www.jsweet.org/)
-and then compiled and bundled using typescript and rollup.  All of this is done as part of the standard
+and then compiled and bundled using typescript and webpack.  All of this is done as part of the standard
 maven build process:
 
 ```bash
@@ -103,6 +109,9 @@ git clone https://github.com/Apicurio/apicurio-data-models.git
 cd apicurio-data-models
 mvn clean package -Ptranspilation
 ```
+
+**Note**: if using more recent versions of Java, there may be problems during the transpilation phase.  In that case,
+you can try using the `build.sh` script provided at the root of the project.
 
 ### Test the Library
 All testing is integrated into the maven build, so the standard `mvn clean package -Ptranspilation` will also execute
