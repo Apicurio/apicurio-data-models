@@ -83,7 +83,7 @@
         <version.com.github.eirslett.frontend-maven-plugin>1.12.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
         <version.apicurio-unified-model-generator-plugin>1.0.10.Final</version.apicurio-unified-model-generator-plugin>
-        <version.jsweet-maven-plugin>3.2.0-SNAPSHOT</version.jsweet-maven-plugin>
+        <version.jsweet-maven-plugin>3.1.1.RedHat</version.jsweet-maven-plugin>
     </properties>
 
     <dependencies>
@@ -320,7 +320,7 @@
                 <plugins>
                     <!-- Generate TS from Java using JSweet -->
                     <plugin>
-                        <groupId>org.jsweet</groupId>
+                        <groupId>io.apicurio</groupId>
                         <artifactId>jsweet-maven-plugin</artifactId>
                         <version>${version.jsweet-maven-plugin}</version>
                         <configuration>
