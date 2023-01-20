@@ -36,8 +36,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -98,6 +98,16 @@ public class TransformTestRunner extends ParentRunner<TransformTestCase> {
                 URL testUrl = Thread.currentThread().getContextClassLoader().getResource(testCP);
                 Assert.assertNotNull("Could not load test resource: " + testCP, testUrl);
 
+                if (child.getFromType() == null) {
+                    child.setFromType(ModelType.OPENAPI20.name());
+                }
+                if (child.getToType() == null) {
+                    child.setToType(ModelType.OPENAPI30.name());
+                }
+
+                ModelType fromType = ModelTypeUtil.fromString(child.getFromType());
+                ModelType toType = ModelTypeUtil.fromString(child.getToType());
+
                 // Read the test source
                 String original = loadResource(testUrl);
                 Assert.assertNotNull(original);
@@ -105,15 +115,16 @@ public class TransformTestRunner extends ParentRunner<TransformTestCase> {
                 ObjectNode originalParsed = (ObjectNode) JsonUtil.parseJSON(original);
 
                 // Read into a data model
-                Document doc20 = Library.readDocument(originalParsed);
-                Assert.assertEquals(ModelType.OPENAPI20, doc20.root().modelType());
+                Document fromDoc = Library.readDocument(originalParsed);
+                Assert.assertEquals(fromType, fromDoc.root().modelType());
 
                 // Transform the document
-                OpenApi30Document doc30 = (OpenApi30Document) Library.transformDocument(doc20, ModelType.OPENAPI30);
-                Assert.assertNotNull(doc30);
+                Document toDoc = Library.transformDocument(fromDoc, toType);
+                Assert.assertNotNull(toDoc);
+                Assert.assertEquals(toType, toDoc.root().modelType());
 
                 // Now compare with expected
-                String actual = Library.writeDocumentToJSONString(doc30);
+                String actual = Library.writeDocumentToJSONString(toDoc);
                 String expectedCP = "fixtures/transformation/" + child.getExpected();
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
                 Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);

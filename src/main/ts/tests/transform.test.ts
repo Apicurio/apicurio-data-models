@@ -2,6 +2,7 @@ import {Library} from "../src/io/apicurio/datamodels/Library";
 import {readJSON} from "./util/tutils";
 import {Document} from "../src/io/apicurio/datamodels/models/Document";
 import {ModelType} from "../src/io/apicurio/datamodels/models/ModelType";
+import {ModelTypeUtil} from "../src/io/apicurio/datamodels/util/ModelTypeUtil";
 import {
     OpenApi20to30TransformationVisitor
 } from "../src/io/apicurio/datamodels/transform/OpenApi20to30TransformationVisitor";
@@ -12,6 +13,8 @@ interface TestSpec {
     name: string;
     input: string;
     expected: string;
+    fromType: string;
+    toType: string;
 }
 
 
@@ -23,18 +26,25 @@ allTests.forEach(spec => {
         let originalJson: any = readJSON(testPath);
         expect(originalJson).not.toBeNull();
 
+        if (!spec.fromType) {
+            spec.fromType = "OPENAPI20";
+        }
+        if (!spec.toType) {
+            spec.toType = "OPENAPI30";
+        }
+        const fromType: ModelType = ModelTypeUtil.fromString(spec.fromType);
+        const toType: ModelType = ModelTypeUtil.fromString(spec.toType);
+
         // Parse/read the document
-        let doc20: Document = Library.readDocument(originalJson);
-        expect(doc20.root().modelType()).toEqual(ModelType.OPENAPI20);
+        let fromDoc: Document = Library.readDocument(originalJson);
+        expect(fromDoc.root().modelType()).toEqual(fromType);
 
         // Transform the document
-        let transformer: OpenApi20to30TransformationVisitor = new OpenApi20to30TransformationVisitor();
-        Library.visitTree(doc20, transformer, TraverserDirection.down);
-        let doc30: Document = transformer.getResult();
-        expect(doc30.root().modelType()).toEqual(ModelType.OPENAPI30);
+        let toDoc: Document = Library.transformDocument(fromDoc, toType);
+        expect(toDoc.root().modelType()).toEqual(toType);
 
         // Serialize/write the document
-        let actual: any = Library.writeNode(doc30);
+        let actual: any = Library.writeDocument(toDoc);
         expect(actual).not.toBeNull();
 
         let expectedPath: string = "tests/fixtures/transformation/" + spec.expected;

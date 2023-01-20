@@ -23,6 +23,8 @@ public class TransformTestCase {
 
     private String name;
     private String input;
+    private String fromType;
+    private String toType;
     private String expected;
 
     /**
@@ -71,6 +73,22 @@ public class TransformTestCase {
      */
     public void setExpected(String expected) {
         this.expected = expected;
+    }
+
+    public String getFromType() {
+        return fromType;
+    }
+
+    public void setFromType(String fromType) {
+        this.fromType = fromType;
+    }
+
+    public String getToType() {
+        return toType;
+    }
+
+    public void setToType(String toType) {
+        this.toType = toType;
     }
 
 }

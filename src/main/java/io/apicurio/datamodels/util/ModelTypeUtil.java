@@ -1,8 +1,38 @@
 package io.apicurio.datamodels.util;
 
+import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Node;
 
 public class ModelTypeUtil {
+
+    public static ModelType fromString(String type) {
+        return ModelType.valueOf(type);
+    }
+
+    public static String getVersion(ModelType type) {
+        switch (type) {
+            case ASYNCAPI20:
+                return "2.0.0";
+            case ASYNCAPI21:
+                return "2.1.0";
+            case ASYNCAPI22:
+                return "2.2.0";
+            case ASYNCAPI23:
+                return "2.3.0";
+            case ASYNCAPI24:
+                return "2.4.0";
+            case ASYNCAPI25:
+                return "2.5.0";
+            case OPENAPI20:
+                return "2.0";
+            case OPENAPI30:
+                return "3.0.3";
+            case OPENAPI31:
+                return "3.1.0";
+            default:
+                return null;
+        }
+    }
 
     public static boolean isOpenApiModel(Node node) {
         switch (node.root().modelType()) {

@@ -24,12 +24,15 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.RootNode;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.io.ModelReader;
 import io.apicurio.datamodels.models.io.ModelReaderFactory;
 import io.apicurio.datamodels.models.io.ModelWriter;
 import io.apicurio.datamodels.models.io.ModelWriterFactory;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
@@ -37,6 +40,7 @@ import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceResolverChain;
 import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.ValidationUtil;
 import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
 import io.apicurio.datamodels.validation.IValidationSeverityRegistry;
@@ -187,19 +191,51 @@ public class Library {
     }
 
     /**
-     * Transforms from an OpenAPI 2.0 document into a 3.0 document.
+     * Transforms from older versions of specs to newer versions.  Currently supports:
+     *
+     *  - OpenAPI 2.0 document into a 3.0 document
+     *  - OpenAPI 3.0 document into a 3.1 document
+     *  - AsyncAPI early version to any later version
      * @param source
      */
     public static Document transformDocument(Document source, ModelType toType) {
-        if (source.root().modelType() != ModelType.OPENAPI20 || toType != ModelType.OPENAPI30) {
-            throw new RuntimeException("Transformation not supported.");
+        if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI30) {
+            // Transform from OpenApi20 to OpenApi30
+            OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
+            OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
+            VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
+            return transformer.getResult();
         }
 
-        // Transform from OpenApi20 to OpenApi30
-        OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
-        OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
-        VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
-        return transformer.getResult();
+        if (source.root().modelType() == ModelType.OPENAPI30 && toType == ModelType.OPENAPI31) {
+            // Transform from OpenApi30 to OpenApi31
+            OpenApi30Document doc30 = (OpenApi30Document) source;
+            String oldVersion = doc30.getOpenapi();
+            doc30.setOpenapi("3.1.0");
+            OpenApi31Document doc31 = (OpenApi31Document) cloneDocument(source);
+            doc30.setOpenapi(oldVersion);
+            return doc31;
+        }
+
+        if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI31) {
+            // Transform to 3.0 first, then from 3.0 to 3.1
+            return Library.transformDocument(
+                    Library.transformDocument(source, ModelType.OPENAPI30),
+                    toType);
+        }
+
+        if (ModelTypeUtil.isAsyncApiModel(source)) {
+            AsyncApiDocument doc = (AsyncApiDocument) source;
+            String oldVersion = doc.getAsyncapi();
+            String newVersion = ModelTypeUtil.getVersion(toType);
+
+            doc.setAsyncapi(newVersion);
+            AsyncApiDocument newDoc = (AsyncApiDocument) cloneDocument(source);
+            doc.setAsyncapi(oldVersion);
+            return newDoc;
+        }
+
+        throw new RuntimeException("Transformation not supported.");
     }
 
     /**

@@ -253,5 +253,27 @@
         "name" : "[OpenAPI 2->3] References [Form Data Parameter]",
         "input" : "oai2-oai3/references/formDataParam-reference.input.json",
         "expected" : "oai2-oai3/references/formDataParam-reference.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 30->31] Tenant Management",
+        "input" : "oai30-oai31/tenant-management.input.json",
+        "fromType": "OPENAPI30",
+        "toType": "OPENAPI31",
+        "expected" : "oai30-oai31/tenant-management.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 20->31] Pet Store",
+        "input" : "oai20-oai31/petstore.input.json",
+        "fromType": "OPENAPI20",
+        "toType": "OPENAPI31",
+        "expected" : "oai20-oai31/petstore.expected.json"
+    }, 
+    {
+        "name" : "[AsyncAPI 24->25] Streetlights",
+        "input" : "aai24-aai25/streetlights.input.json",
+        "fromType": "ASYNCAPI24",
+        "toType": "ASYNCAPI25",
+        "expected" : "aai24-aai25/streetlights.expected.json"
     }
+    
 ]
