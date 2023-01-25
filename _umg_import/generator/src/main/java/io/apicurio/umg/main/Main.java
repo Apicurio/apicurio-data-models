@@ -41,7 +41,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Logger.info("=== START ===");
         //        generate("org.example.smoke", "../maven-plugin-tests/src/it/smoke-test/src/main/resources/smoke-spec.yaml");
-        generate("org.example.union", "../maven-plugin-tests/src/it/union-test/src/main/resources/union-spec.yaml");
+        //        generate("org.example.union", "../maven-plugin-tests/src/it/union-test/src/main/resources/union-spec.yaml");
         //        generate("org.example.io", "../maven-plugin-tests/src/it/io-test/src/main/resources/io-spec.yaml");
         //        generate("org.example.multi", "../maven-plugin-tests/src/it/multi-spec-test/src/main/resources/multi-spec.yaml");
         //        generate("org.example.multil",
@@ -50,6 +50,9 @@ public class Main {
         //        generate("org.example.pt", "../maven-plugin-tests/src/it/parent-trait-test/src/main/resources/parent-trait-spec.yaml");
         //        generate("io.apicurio.datamodels.models", "../maven-plugin-tests/src/it/openapi-test/src/main/resources/openapi.yaml");
         //        generate("io.apicurio.datamodels.models", "../maven-plugin-tests/src/it/asyncapi-test/src/main/resources/asyncapi.yaml");
+        generate("io.apicurio.datamodels.models",
+                "../maven-plugin-tests/src/it/all-test/src/main/resources/openapi.yaml",
+                "../maven-plugin-tests/src/it/all-test/src/main/resources/asyncapi.yaml");
         Logger.info("=== END ===");
     }
 

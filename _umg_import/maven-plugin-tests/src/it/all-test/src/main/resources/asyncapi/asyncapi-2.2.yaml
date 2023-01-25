@@ -184,7 +184,7 @@ entities:
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message # TODO Message|OneOfMessages
+        type: Message # TODO 'Message|OneOfMessages'
     propertyOrder:
       - $this
       - $Extensible
@@ -401,6 +401,13 @@ entities:
       - $this
       - $Extensible
 
+  - name: OneOfMessages
+    properties:
+      - name: oneOf
+        type: '[Message]'
+    propertyOrder:
+      - $this
+
   - name: Message
     traits:
       - Extensible
@@ -609,7 +616,7 @@ entities:
       - name: additionalItems
         type: Schema
       - name: items
-        type: any
+        type: 'Schema|[Schema]'
       - name: propertyNames
         type: Schema
       - name: contains

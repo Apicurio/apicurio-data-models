@@ -182,7 +182,7 @@ entities:
       - name: traits
         type: '[OperationTrait]'
       - name: message
-        type: Message # TODO Message|OneOfMessages
+        type: Message # TODO 'Message|OneOfMessages'
     propertyOrder:
       - $this
       - $Extensible
@@ -354,6 +354,13 @@ entities:
         type: Binding
       - name: redis
         type: Binding
+    propertyOrder:
+      - $this
+
+  - name: OneOfMessages
+    properties:
+      - name: oneOf
+        type: '[Message]'
     propertyOrder:
       - $this
 
@@ -549,7 +556,7 @@ entities:
       - name: additionalItems
         type: Schema
       - name: items
-        type: any
+        type: 'Schema|[Schema]'
       - name: propertyNames
         type: Schema
       - name: contains

@@ -643,7 +643,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     }
 
                     PropertyType listItemType = nestedType.getNested().iterator().next();
-                    String listItemEntityName = nsContext.fullName() + "." + listItemType.getSimpleType();
+                    String listItemEntityName = entityModel.getNamespace().fullName() + "." + listItemType.getSimpleType();
                     EntityModel listItemEntity = getState().getConceptIndex().lookupEntity(listItemEntityName);
                     if (listItemEntity == null) {
                         warn("Property union type with entity sub-type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
@@ -677,7 +677,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     body.append("    List<${listValueJavaType}> models = new ArrayList<>();");
                     body.append("    array.forEach(item -> {");
                     body.append("        ObjectNode object = JsonUtil.toObject(item);");
-                    body.append("        ${listValueJavaType} model = node.${createMethodName}();");
+                    body.append("        ${listValueJavaType} model = (${listValueJavaType}) node.${createMethodName}();");
                     body.append("        this.${readMethodName}(object, model);");
                     body.append("        models.add(model);");
                     body.append("    });");

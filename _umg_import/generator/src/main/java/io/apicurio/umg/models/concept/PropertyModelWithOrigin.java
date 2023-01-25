@@ -12,6 +12,7 @@ public class PropertyModelWithOrigin {
 
     @Include
     private PropertyModel property;
+    @Include
     private EntityOrTraitModel origin;
 
 }

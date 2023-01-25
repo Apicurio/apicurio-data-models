@@ -266,6 +266,8 @@ entities:
         type: any
       - name: examples
         type: '{Example}'
+      - name: content
+        type: '{MediaType}'
     propertyOrder:
       - $Referenceable
       - $this
@@ -497,13 +499,13 @@ entities:
       - name: type
         type: string
       - name: items
-        type: object
+        type: Schema
       - name: allOf
         type: '[Schema]'
       - name: properties
         type: '{Schema}'
       - name: additionalProperties
-        type: any # TODO: boolean|Schema
+        type: 'boolean|Schema'
       - name: readOnly
         type: boolean
       - name: xml
