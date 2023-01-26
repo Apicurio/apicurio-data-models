@@ -32,10 +32,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
+public class NodePointerIoTestRunner extends ParentRunner<NodePointerIoTestCase> {
 
     private Class<?> testClass;
-    private List<NodePathIoTestCase> children;
+    private List<NodePointerIoTestCase> children;
     private ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -43,16 +43,16 @@ public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
      * @param testClass
      * @throws InitializationError
      */
-    public NodePathIoTestRunner(Class<?> testClass) throws InitializationError {
+    public NodePointerIoTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         this.testClass = testClass;
         this.children = loadTests();
     }
 
-    private List<NodePathIoTestCase> loadTests() throws InitializationError {
+    private List<NodePointerIoTestCase> loadTests() throws InitializationError {
         try {
-            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/io-tests.json");
-            List<NodePathIoTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePathIoTestCase.class));
+            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/pointers/io-tests.json");
+            List<NodePointerIoTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePointerIoTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);
@@ -63,7 +63,7 @@ public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
      * @see org.junit.runners.ParentRunner#getChildren()
      */
     @Override
-    protected List<NodePathIoTestCase> getChildren() {
+    protected List<NodePointerIoTestCase> getChildren() {
         return children;
     }
 
@@ -71,7 +71,7 @@ public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
      * @see org.junit.runners.ParentRunner#describeChild(java.lang.Object)
      */
     @Override
-    protected Description describeChild(NodePathIoTestCase child) {
+    protected Description describeChild(NodePointerIoTestCase child) {
         return Description.createTestDescription(this.testClass, child.getName());
     }
 
@@ -79,21 +79,21 @@ public class NodePathIoTestRunner extends ParentRunner<NodePathIoTestCase> {
      * @see org.junit.runners.ParentRunner#runChild(java.lang.Object, org.junit.runner.notification.RunNotifier)
      */
     @Override
-    protected void runChild(NodePathIoTestCase child, RunNotifier notifier) {
+    protected void runChild(NodePointerIoTestCase child, RunNotifier notifier) {
         Description description = this.describeChild(child);
         Statement statement = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                String path = child.getPath();
+                String pointer = child.getPointer();
 
-                // Parse the path
-                NodePath np = NodePathUtil.parseNodePath(path);
+                // Parse the pointer
+                NodePointer np = NodePointerUtil.parse(pointer);
 
-                // Write that path back out to a string
-                String actual = np.toString(true);
+                // Write that pointer back out to a string
+                String actual = np.toString();
 
                 // Compare
-                String expected = path;
+                String expected = pointer;
                 Assert.assertEquals(expected, actual);
 
                 // Get the sequence of segments from the path

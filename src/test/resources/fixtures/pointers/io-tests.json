@@ -1,0 +1,10 @@
+[
+	{ "name": "Root Path", "pointer": "/", "segments": [] },
+	{ "name": "Info", "pointer": "/info", "segments": [ "info" ] },
+	{ "name": "Path Segments", "pointer": "/foo/bar/baz", "segments": [ "foo", "bar", "baz" ] },
+	{ "name": "Path and Index Segments", "pointer": "/foo/bar/10/baz/zippy/crash", "segments": [ "foo", "bar", "10", "baz", "zippy", "crash" ] },
+	{ "name": "Escaped ~", "pointer": "/~0foo/bar", "segments": [ "~foo", "bar"] },
+	{ "name": "Escaped /", "pointer": "/~1foo/bar", "segments": [ "/foo", "bar"] },
+	{ "name": "Double escaped 1", "pointer": "/foo/~03bar", "segments": [ "foo", "~3bar"] },
+	{ "name": "Double escaped 2", "pointer": "/foo/~10bar", "segments": [ "foo", "/0bar"] }
+]

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.apicurio.datamodels.models.MappedNode;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.union.Union;
 import io.apicurio.datamodels.visitors.DefinitionDetectionVisitor;
@@ -92,6 +93,14 @@ public class NodeUtil {
      */
     public static boolean isNode(Object object) {
         return object != null && object instanceof Node;
+    }
+
+    /**
+     * Return true if the given object is a MappedNode.
+     * @param object
+     */
+    public static boolean isMappedNode(Object object) {
+        return object != null && object instanceof MappedNode;
     }
 
     /**

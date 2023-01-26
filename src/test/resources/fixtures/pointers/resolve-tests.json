@@ -1,0 +1,7 @@
+[
+	{ "name": "[AsyncAPI 2.0] Root Path", "test": "asyncapi/2.0/root.json", "pointer": "/" },
+	{ "name": "[AsyncAPI 2.0] Info", "test": "asyncapi/2.0/info.json", "pointer": "/info" },
+    { "name": "[OpenAPI 2.0] Items SchemaList", "test": "openapi/2.0/items-schemaList.json", "pointer": "/definitions/ItemsTest2/items/2" },
+    { "name": "[OpenAPI 3.0] Additional Properties Schema", "test": "openapi/3.0/additionalProperties.json", "pointer": "/components/schemas/WidgetWithAdditionalProperties/additionalProperties" },
+    { "name": "[OpenAPI 3.0] Items Schema", "test": "openapi/3.0/items.json", "pointer": "/components/schemas/ItemsTest1/items" }
+]

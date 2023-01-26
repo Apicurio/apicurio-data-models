@@ -334,14 +334,12 @@ entities:
   - name: Responses
     traits:
       - Extensible
-      - Referenceable
     properties:
       - name: default
         type: Response
       - name: '*'
         type: Response
     propertyOrder:
-      - $Referenceable
       - $this
       - $Extensible
 

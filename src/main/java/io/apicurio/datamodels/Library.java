@@ -35,8 +35,8 @@ import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
-import io.apicurio.datamodels.paths.NodePath;
-import io.apicurio.datamodels.paths.NodePathUtil;
+import io.apicurio.datamodels.paths.NodePointer;
+import io.apicurio.datamodels.paths.NodePointerUtil;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceResolverChain;
 import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
@@ -169,25 +169,25 @@ public class Library {
      * Called to create a node path for a given data model node.
      * @param node
      */
-    public static NodePath createNodePath(Node node) {
-        return NodePathUtil.createNodePath(node);
+    public static NodePointer createNodePointer(Node node) {
+        return NodePointerUtil.create(node);
     }
 
     /**
      * Called to create a node path instance for a stringified node path.
      * @param node
      */
-    public static NodePath parseNodePath(String path) {
-        return NodePathUtil.parseNodePath(path);
+    public static NodePointer parseNodePointer(String path) {
+        return NodePointerUtil.parse(path);
     }
 
     /**
      * Resolves the given node path relative to a root document.
-     * @param nodePath
+     * @param nodePointer
      * @param doc
      */
-    public static Node resolveNodePath(NodePath nodePath, Document doc) {
-        return NodePathUtil.resolveNodePath(nodePath, doc);
+    public static Node resolveNodePointer(NodePointer nodePointer, Document doc) {
+        return NodePointerUtil.resolve(nodePointer, doc);
     }
 
     /**

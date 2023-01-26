@@ -3,20 +3,19 @@ package io.apicurio.datamodels.paths;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.models.visitors.TraversalContext;
-import io.apicurio.datamodels.models.visitors.TraversalStepType;
 import io.apicurio.datamodels.models.visitors.TraversingVisitor;
 
-public class NodePathVisitor extends AllNodeVisitor implements TraversingVisitor {
+public class NodePointerVisitor extends AllNodeVisitor implements TraversingVisitor {
 
     private TraversalContext traversalContext;
     private Node targetNode;
-    private NodePath nodePath;
+    private NodePointer nodePointer;
 
     /**
      * Constructor.
      * @param target
      */
-    public NodePathVisitor(Node target) {
+    public NodePointerVisitor(Node target) {
         this.targetNode = target;
     }
 
@@ -28,21 +27,21 @@ public class NodePathVisitor extends AllNodeVisitor implements TraversingVisitor
     @Override
     protected void visitNode(Node node) {
         if (node.modelId() == targetNode.modelId()) {
-            this.nodePath = createNodePath();
+            this.nodePointer = createNodePointer();
         }
     }
 
-    private NodePath createNodePath() {
-        NodePath path = new NodePath();
+    private NodePointer createNodePointer() {
+        NodePointer pointer = new NodePointer();
         this.traversalContext.getAllSteps().forEach(step -> {
-            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() != TraversalStepType.property);
-            path.append(segment);
+            NodePointerSegment segment = new NodePointerSegment(step.getValue().toString());
+            pointer.append(segment);
         });
-        return path;
+        return pointer;
     }
 
-    public NodePath getNodePath() {
-        return this.nodePath;
+    public NodePointer getNodePointer() {
+        return this.nodePointer;
     }
 
 }

@@ -1,0 +1,43 @@
+{
+    "openapi": "2.0.0",
+    "info": {
+        "title": "Temporary API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "definitions": {
+        "ItemsTest1": {
+            "description": "",
+            "type": "array",
+            "items": {
+                "format": "date",
+                "type": "string"
+            }
+        },
+        "ItemsTest2": {
+            "description": "",
+            "type": "array",
+            "items": [
+                {
+                    "format": "date",
+                    "type": "string"
+                },
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "format": "int32",
+                            "type": "integer"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

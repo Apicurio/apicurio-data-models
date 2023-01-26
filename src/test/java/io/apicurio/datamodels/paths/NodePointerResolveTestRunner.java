@@ -41,10 +41,10 @@ import io.apicurio.datamodels.models.util.JsonUtil;
 /**
  * @author eric.wittmann@gmail.com
  */
-public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestCase> {
+public class NodePointerResolveTestRunner extends ParentRunner<NodePointerResolveTestCase> {
 
     private Class<?> testClass;
-    private List<NodePathResolveTestCase> children;
+    private List<NodePointerResolveTestCase> children;
     private ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -52,16 +52,16 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
      * @param testClass
      * @throws InitializationError
      */
-    public NodePathResolveTestRunner(Class<?> testClass) throws InitializationError {
+    public NodePointerResolveTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         this.testClass = testClass;
         this.children = loadTests();
     }
 
-    private List<NodePathResolveTestCase> loadTests() throws InitializationError {
+    private List<NodePointerResolveTestCase> loadTests() throws InitializationError {
         try {
-            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/paths/resolve-tests.json");
-            List<NodePathResolveTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePathResolveTestCase.class));
+            URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/pointers/resolve-tests.json");
+            List<NodePointerResolveTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, NodePointerResolveTestCase.class));
             return allTests;
         } catch (IOException e) {
             throw new InitializationError(e);
@@ -72,7 +72,7 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
      * @see org.junit.runners.ParentRunner#getChildren()
      */
     @Override
-    protected List<NodePathResolveTestCase> getChildren() {
+    protected List<NodePointerResolveTestCase> getChildren() {
         return children;
     }
 
@@ -80,7 +80,7 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
      * @see org.junit.runners.ParentRunner#describeChild(java.lang.Object)
      */
     @Override
-    protected Description describeChild(NodePathResolveTestCase child) {
+    protected Description describeChild(NodePointerResolveTestCase child) {
         return Description.createTestDescription(this.testClass, child.getName());
     }
 
@@ -88,12 +88,12 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
      * @see org.junit.runners.ParentRunner#runChild(java.lang.Object, org.junit.runner.notification.RunNotifier)
      */
     @Override
-    protected void runChild(NodePathResolveTestCase child, RunNotifier notifier) {
+    protected void runChild(NodePointerResolveTestCase child, RunNotifier notifier) {
         Description description = this.describeChild(child);
         Statement statement = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                String testCP = "fixtures/paths/" + child.getTest();
+                String testCP = "fixtures/pointers/" + child.getTest();
                 URL testUrl = Thread.currentThread().getContextClassLoader().getResource(testCP);
                 Assert.assertNotNull(testUrl);
 
@@ -108,22 +108,22 @@ public class NodePathResolveTestRunner extends ParentRunner<NodePathResolveTestC
                 Assert.assertNotNull(doc);
 
                 // Parse the test path
-                NodePath np = NodePathUtil.parseNodePath(child.getPath());
+                NodePointer np = NodePointerUtil.parse(child.getPointer());
 
                 // Resolve the path to a node in the source
-                Node resolvedNode = NodePathUtil.resolveNodePath(np, doc);
+                Node resolvedNode = NodePointerUtil.resolve(np, doc);
                 Assert.assertNotNull(resolvedNode);
 
                 // Compare source path to node path (test generating a node path from a node)
-                NodePath createdPath = NodePathUtil.createNodePath(resolvedNode);
-                String expectedPath = child.getPath();
-                String actualPath = createdPath.toString(true);
-                Assert.assertEquals(expectedPath, actualPath);
+                NodePointer createdPointer = NodePointerUtil.create(resolvedNode);
+                String expectedPointer = child.getPointer();
+                String actualPointer = createdPointer.toString();
+                Assert.assertEquals(expectedPointer, actualPointer);
 
                 // Verify that the resolved node is what we expected it to be
                 Object actualObj = Library.writeNode(resolvedNode);
                 String actual = mapper.writeValueAsString(actualObj);
-                String expectedCP = "fixtures/paths/" + child.getTest() + ".expected.json";
+                String expectedCP = "fixtures/pointers/" + child.getTest() + ".expected.json";
                 URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
                 Assert.assertNotNull(testUrl);
                 String expected = loadResource(expectedUrl);

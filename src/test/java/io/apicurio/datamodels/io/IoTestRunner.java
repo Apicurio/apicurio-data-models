@@ -38,7 +38,7 @@ import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.util.JsonUtil;
-import io.apicurio.datamodels.paths.NodePath;
+import io.apicurio.datamodels.paths.NodePointer;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -132,16 +132,16 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
 
                 for (Node node : allNodes) {
                     try {
-                        NodePath nodePath = Library.createNodePath(node);
-                        Assert.assertNotNull(nodePath);
-                        String path = nodePath.toString();
-                        Assert.assertNotNull(nodePath);
-                        nodePath = Library.parseNodePath(path);
-                        Node resolvedNode = Library.resolveNodePath(nodePath, doc);
-                        Assert.assertNotNull("Failed to resolve node: " + nodePath.toString(), resolvedNode);
-                        Assert.assertTrue("Path failed to resolve [" + node.getClass().getSimpleName() + "] to the proper node: " + path, node == resolvedNode);
+                        NodePointer nodePointer = Library.createNodePointer(node);
+                        Assert.assertNotNull(nodePointer);
+                        String pointer = nodePointer.toString();
+                        Assert.assertNotNull(nodePointer);
+                        nodePointer = Library.parseNodePointer(pointer);
+                        Node resolvedNode = Library.resolveNodePointer(nodePointer, doc);
+                        Assert.assertNotNull("Failed to resolve node: " + nodePointer.toString(), resolvedNode);
+                        Assert.assertTrue("Path failed to resolve [" + node.getClass().getSimpleName() + "] to the proper node: " + pointer, node == resolvedNode);
                     } catch (Throwable t) {
-                        System.err.println("Failure/error testing node path: " + Library.createNodePath(node).toString());
+                        System.err.println("Failure/error testing node path: " + Library.createNodePointer(node).toString());
                         throw t;
                     }
                 }
