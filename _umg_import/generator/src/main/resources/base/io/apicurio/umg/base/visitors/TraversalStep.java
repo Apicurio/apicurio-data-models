@@ -10,11 +10,11 @@ public class TraversalStep {
     }
 
     public static TraversalStep fromListIndex(int index) {
-        return new TraversalStep(TraversalStepType.index, index);
+        return new TraversalStep(TraversalStepType.arrayIndex, index);
     }
 
     public static TraversalStep fromMapIndex(String key) {
-        return new TraversalStep(TraversalStepType.index, key);
+        return new TraversalStep(TraversalStepType.mapIndex, key);
     }
 
     private TraversalStep(TraversalStepType type, Object value) {
