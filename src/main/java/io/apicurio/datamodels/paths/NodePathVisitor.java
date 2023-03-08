@@ -35,7 +35,7 @@ public class NodePathVisitor extends AllNodeVisitor implements TraversingVisitor
     private NodePath createNodePath() {
         NodePath path = new NodePath();
         this.traversalContext.getAllSteps().forEach(step -> {
-            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() == TraversalStepType.index);
+            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() != TraversalStepType.property);
             path.append(segment);
         });
         return path;
