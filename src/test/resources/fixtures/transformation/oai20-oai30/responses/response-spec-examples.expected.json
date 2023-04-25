@@ -5,7 +5,7 @@
       "ArrayComplexType": {
         "description": "A complex object array response",
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "type": "array",
               "items": {
@@ -18,7 +18,7 @@
       "StringType": {
         "description": "A simple string response",
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "type": "string"
             }
@@ -48,7 +48,7 @@
           }
         },
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "type": "string"
             }

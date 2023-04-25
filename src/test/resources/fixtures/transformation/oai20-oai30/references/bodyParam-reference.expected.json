@@ -25,7 +25,7 @@
       "Widget": {
         "description": "the body of the POST operation",
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "type": "object",
               "properties": {

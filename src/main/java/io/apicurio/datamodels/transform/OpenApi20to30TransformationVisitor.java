@@ -1004,7 +1004,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         List<String> produces = finder.produces;
         if (NodeUtil.isNullOrUndefined(produces) || produces.size() == 0) {
             produces = new ArrayList<>();
-            produces.add("*/*");
+            produces.add("application/json");
         }
         return produces;
     }
@@ -1015,7 +1015,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         List<String> consumes = finder.consumes;
         if (NodeUtil.isNullOrUndefined(consumes) || consumes.size() == 0) {
             consumes = new ArrayList<>();
-            consumes.add("*/*");
+            consumes.add("application/json");
         }
         return consumes;
     }

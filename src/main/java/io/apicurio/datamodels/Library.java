@@ -219,9 +219,8 @@ public class Library {
 
         if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI31) {
             // Transform to 3.0 first, then from 3.0 to 3.1
-            return Library.transformDocument(
-                    Library.transformDocument(source, ModelType.OPENAPI30),
-                    toType);
+            Document doc30 = Library.transformDocument(source, ModelType.OPENAPI30);
+            return Library.transformDocument(doc30, toType);
         }
 
         if (ModelTypeUtil.isAsyncApiModel(source)) {

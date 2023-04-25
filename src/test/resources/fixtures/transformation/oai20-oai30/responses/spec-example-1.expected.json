@@ -11,7 +11,7 @@
       "GeneralError": {
         "description": "General Error",
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "$ref": "#/components/schemas/GeneralError"
             }

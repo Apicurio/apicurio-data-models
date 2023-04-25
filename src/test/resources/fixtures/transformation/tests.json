@@ -1,258 +1,258 @@
 [
     {
         "name" : "[OpenAPI 2->3] Simple [Easy 2.0 spec]",
-        "input" : "oai2-oai3/simple/simplest.input.json",
-        "expected" : "oai2-oai3/simple/simplest.expected.json"
+        "input" : "oai20-oai30/simple/simplest.input.json",
+        "expected" : "oai20-oai30/simple/simplest.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Simple [Info]",
-        "input" : "oai2-oai3/simple/simple-info.input.json",
-        "expected" : "oai2-oai3/simple/simple-info.expected.json"
+        "input" : "oai20-oai30/simple/simple-info.input.json",
+        "expected" : "oai20-oai30/simple/simple-info.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Simple [Info+Extensions]",
-        "input" : "oai2-oai3/simple/simple-info-extensions.input.json",
-        "expected" : "oai2-oai3/simple/simple-info-extensions.expected.json"
+        "input" : "oai20-oai30/simple/simple-info-extensions.input.json",
+        "expected" : "oai20-oai30/simple/simple-info-extensions.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Simple [Server]",
-        "input" : "oai2-oai3/simple/simple-server.input.json",
-        "expected" : "oai2-oai3/simple/simple-server.expected.json"
+        "input" : "oai20-oai30/simple/simple-server.input.json",
+        "expected" : "oai20-oai30/simple/simple-server.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Simple [Server+Schemes]",
-        "input" : "oai2-oai3/simple/simple-server-with-schemes.input.json",
-        "expected" : "oai2-oai3/simple/simple-server-with-schemes.expected.json"
+        "input" : "oai20-oai30/simple/simple-server-with-schemes.input.json",
+        "expected" : "oai20-oai30/simple/simple-server-with-schemes.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [GET]",
-        "input" : "oai2-oai3/paths/paths-get.input.json",
-        "expected" : "oai2-oai3/paths/paths-get.expected.json"
+        "input" : "oai20-oai30/paths/paths-get.input.json",
+        "expected" : "oai20-oai30/paths/paths-get.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [All Operations]",
-        "input" : "oai2-oai3/paths/paths-all-operations.input.json",
-        "expected" : "oai2-oai3/paths/paths-all-operations.expected.json"
+        "input" : "oai20-oai30/paths/paths-all-operations.input.json",
+        "expected" : "oai20-oai30/paths/paths-all-operations.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Default Response]",
-        "input" : "oai2-oai3/paths/paths-default-response.input.json",
-        "expected" : "oai2-oai3/paths/paths-default-response.expected.json"
+        "input" : "oai20-oai30/paths/paths-default-response.input.json",
+        "expected" : "oai20-oai30/paths/paths-default-response.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [External Docs]",
-        "input" : "oai2-oai3/paths/paths-externalDocs.input.json",
-        "expected" : "oai2-oai3/paths/paths-externalDocs.expected.json"
+        "input" : "oai20-oai30/paths/paths-externalDocs.input.json",
+        "expected" : "oai20-oai30/paths/paths-externalDocs.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [GET+Params]",
-        "input" : "oai2-oai3/paths/paths-get-with-params.input.json",
-        "expected" : "oai2-oai3/paths/paths-get-with-params.expected.json"
+        "input" : "oai20-oai30/paths/paths-get-with-params.input.json",
+        "expected" : "oai20-oai30/paths/paths-get-with-params.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [GET+Tags]",
-        "input" : "oai2-oai3/paths/paths-get-with-tags.input.json",
-        "expected" : "oai2-oai3/paths/paths-get-with-tags.expected.json"
+        "input" : "oai20-oai30/paths/paths-get-with-tags.input.json",
+        "expected" : "oai20-oai30/paths/paths-get-with-tags.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Path Params]",
-        "input" : "oai2-oai3/paths/paths-path-with-params.input.json",
-        "expected" : "oai2-oai3/paths/paths-path-with-params.expected.json"
+        "input" : "oai20-oai30/paths/paths-path-with-params.input.json",
+        "expected" : "oai20-oai30/paths/paths-path-with-params.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Path Ref]",
-        "input" : "oai2-oai3/paths/paths-ref.input.json",
-        "expected" : "oai2-oai3/paths/paths-ref.expected.json"
+        "input" : "oai20-oai30/paths/paths-ref.input.json",
+        "expected" : "oai20-oai30/paths/paths-ref.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Response+Examples]",
-        "input" : "oai2-oai3/paths/paths-response-with-examples.input.json",
-        "expected" : "oai2-oai3/paths/paths-response-with-examples.expected.json"
+        "input" : "oai20-oai30/paths/paths-response-with-examples.input.json",
+        "expected" : "oai20-oai30/paths/paths-response-with-examples.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Response+Headers]",
-        "input" : "oai2-oai3/paths/paths-response-with-headers.input.json",
-        "expected" : "oai2-oai3/paths/paths-response-with-headers.expected.json"
+        "input" : "oai20-oai30/paths/paths-response-with-headers.input.json",
+        "expected" : "oai20-oai30/paths/paths-response-with-headers.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Response+Schema]",
-        "input" : "oai2-oai3/paths/paths-response-with-schema.input.json",
-        "expected" : "oai2-oai3/paths/paths-response-with-schema.expected.json"
+        "input" : "oai20-oai30/paths/paths-response-with-schema.input.json",
+        "expected" : "oai20-oai30/paths/paths-response-with-schema.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Responses]",
-        "input" : "oai2-oai3/paths/paths-responses.input.json",
-        "expected" : "oai2-oai3/paths/paths-responses.expected.json"
+        "input" : "oai20-oai30/paths/paths-responses.input.json",
+        "expected" : "oai20-oai30/paths/paths-responses.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Responses+Extensions]",
-        "input" : "oai2-oai3/paths/paths-responses-with-extensions.input.json",
-        "expected" : "oai2-oai3/paths/paths-responses-with-extensions.expected.json"
+        "input" : "oai20-oai30/paths/paths-responses-with-extensions.input.json",
+        "expected" : "oai20-oai30/paths/paths-responses-with-extensions.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Security]",
-        "input" : "oai2-oai3/paths/paths-security.input.json",
-        "expected" : "oai2-oai3/paths/paths-security.expected.json"
+        "input" : "oai20-oai30/paths/paths-security.input.json",
+        "expected" : "oai20-oai30/paths/paths-security.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [Extensions]",
-        "input" : "oai2-oai3/paths/paths-with-extensions.input.json",
-        "expected" : "oai2-oai3/paths/paths-with-extensions.expected.json"
+        "input" : "oai20-oai30/paths/paths-with-extensions.input.json",
+        "expected" : "oai20-oai30/paths/paths-with-extensions.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [POST+FormData]",
-        "input" : "oai2-oai3/paths/paths-post-with-formData.input.json",
-        "expected" : "oai2-oai3/paths/paths-post-with-formData.expected.json"
+        "input" : "oai20-oai30/paths/paths-post-with-formData.input.json",
+        "expected" : "oai20-oai30/paths/paths-post-with-formData.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [POST+FormData+Multi]",
-        "input" : "oai2-oai3/paths/paths-post-with-formData-multi.input.json",
-        "expected" : "oai2-oai3/paths/paths-post-with-formData-multi.expected.json"
+        "input" : "oai20-oai30/paths/paths-post-with-formData-multi.input.json",
+        "expected" : "oai20-oai30/paths/paths-post-with-formData-multi.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Paths [GET+Schemes]",
-        "input" : "oai2-oai3/paths/paths-get-with-schemes.input.json",
-        "expected" : "oai2-oai3/paths/paths-get-with-schemes.expected.json"
+        "input" : "oai20-oai30/paths/paths-get-with-schemes.input.json",
+        "expected" : "oai20-oai30/paths/paths-get-with-schemes.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Responses [Spec Examples]",
-        "input" : "oai2-oai3/responses/response-spec-examples.input.json",
-        "expected" : "oai2-oai3/responses/response-spec-examples.expected.json"
+        "input" : "oai20-oai30/responses/response-spec-examples.input.json",
+        "expected" : "oai20-oai30/responses/response-spec-examples.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Responses [Example 1]",
-        "input" : "oai2-oai3/responses/spec-example-1.input.json",
-        "expected" : "oai2-oai3/responses/spec-example-1.expected.json"
+        "input" : "oai20-oai30/responses/spec-example-1.input.json",
+        "expected" : "oai20-oai30/responses/spec-example-1.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Responses [Array Param]",
-        "input" : "oai2-oai3/responses/response-array-param.input.json",
-        "expected" : "oai2-oai3/responses/response-array-param.expected.json"
+        "input" : "oai20-oai30/responses/response-array-param.input.json",
+        "expected" : "oai20-oai30/responses/response-array-param.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [JSON Schema::basic]",
-        "input" : "oai2-oai3/definitions/json-schema-basic.input.json",
-        "expected" : "oai2-oai3/definitions/json-schema-basic.expected.json"
+        "input" : "oai20-oai30/definitions/json-schema-basic.input.json",
+        "expected" : "oai20-oai30/definitions/json-schema-basic.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [JSON Schema::fstab]",
-        "input" : "oai2-oai3/definitions/json-schema-fstab.input.json",
-        "expected" : "oai2-oai3/definitions/json-schema-fstab.expected.json"
+        "input" : "oai20-oai30/definitions/json-schema-fstab.input.json",
+        "expected" : "oai20-oai30/definitions/json-schema-fstab.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [JSON Schema::products]",
-        "input" : "oai2-oai3/definitions/json-schema-products.input.json",
-        "expected" : "oai2-oai3/definitions/json-schema-products.expected.json"
+        "input" : "oai20-oai30/definitions/json-schema-products.input.json",
+        "expected" : "oai20-oai30/definitions/json-schema-products.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Primitive]",
-        "input" : "oai2-oai3/definitions/primitive.input.json",
-        "expected" : "oai2-oai3/definitions/primitive.expected.json"
+        "input" : "oai20-oai30/definitions/primitive.input.json",
+        "expected" : "oai20-oai30/definitions/primitive.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Additional Props]",
-        "input" : "oai2-oai3/definitions/schema-with-additionalProperties.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-additionalProperties.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-additionalProperties.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-additionalProperties.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [All Of]",
-        "input" : "oai2-oai3/definitions/schema-with-allOf.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-allOf.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-allOf.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-allOf.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Composition]",
-        "input" : "oai2-oai3/definitions/schema-with-composition.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-composition.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-composition.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-composition.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Example]",
-        "input" : "oai2-oai3/definitions/schema-with-example.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-example.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-example.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-example.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Extension]",
-        "input" : "oai2-oai3/definitions/schema-with-extension.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-extension.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-extension.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-extension.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [External Docs]",
-        "input" : "oai2-oai3/definitions/schema-with-externalDocs.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-externalDocs.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-externalDocs.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-externalDocs.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Meta Data]",
-        "input" : "oai2-oai3/definitions/schema-with-metaData.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-metaData.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-metaData.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-metaData.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Polymorphism]",
-        "input" : "oai2-oai3/definitions/schema-with-polymorphism.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-polymorphism.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-polymorphism.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-polymorphism.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [XML]",
-        "input" : "oai2-oai3/definitions/schema-with-xml.input.json",
-        "expected" : "oai2-oai3/definitions/schema-with-xml.expected.json"
+        "input" : "oai20-oai30/definitions/schema-with-xml.input.json",
+        "expected" : "oai20-oai30/definitions/schema-with-xml.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Definitions [Spec Example 1]",
-        "input" : "oai2-oai3/definitions/spec-example-1.input.json",
-        "expected" : "oai2-oai3/definitions/spec-example-1.expected.json"
+        "input" : "oai20-oai30/definitions/spec-example-1.input.json",
+        "expected" : "oai20-oai30/definitions/spec-example-1.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Parameters [Single Array]",
-        "input" : "oai2-oai3/parameters/single-array-param.input.json",
-        "expected" : "oai2-oai3/parameters/single-array-param.expected.json"
+        "input" : "oai20-oai30/parameters/single-array-param.input.json",
+        "expected" : "oai20-oai30/parameters/single-array-param.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Parameters [Array]",
-        "input" : "oai2-oai3/parameters/array-param.input.json",
-        "expected" : "oai2-oai3/parameters/array-param.expected.json"
+        "input" : "oai20-oai30/parameters/array-param.input.json",
+        "expected" : "oai20-oai30/parameters/array-param.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Parameters [Spec Example]",
-        "input" : "oai2-oai3/parameters/spec-example-1.input.json",
-        "expected" : "oai2-oai3/parameters/spec-example-1.expected.json"
+        "input" : "oai20-oai30/parameters/spec-example-1.input.json",
+        "expected" : "oai20-oai30/parameters/spec-example-1.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Parameters [Body Param]",
-        "input" : "oai2-oai3/parameters/body-param.input.json",
-        "expected" : "oai2-oai3/parameters/body-param.expected.json"
+        "input" : "oai20-oai30/parameters/body-param.input.json",
+        "expected" : "oai20-oai30/parameters/body-param.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Parameters [File]",
-        "input" : "oai2-oai3/parameters/file-param.input.json",
-        "expected" : "oai2-oai3/parameters/file-param.expected.json"
+        "input" : "oai20-oai30/parameters/file-param.input.json",
+        "expected" : "oai20-oai30/parameters/file-param.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] Security Schemes [All]",
-        "input" : "oai2-oai3/security/security-allSchemes.input.json",
-        "expected" : "oai2-oai3/security/security-allSchemes.expected.json"
+        "input" : "oai20-oai30/security/security-allSchemes.input.json",
+        "expected" : "oai20-oai30/security/security-allSchemes.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] References [Schema]",
-        "input" : "oai2-oai3/references/schema-reference.input.json",
-        "expected" : "oai2-oai3/references/schema-reference.expected.json"
+        "input" : "oai20-oai30/references/schema-reference.input.json",
+        "expected" : "oai20-oai30/references/schema-reference.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] References [Response]",
-        "input" : "oai2-oai3/references/response-reference.input.json",
-        "expected" : "oai2-oai3/references/response-reference.expected.json"
+        "input" : "oai20-oai30/references/response-reference.input.json",
+        "expected" : "oai20-oai30/references/response-reference.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] References [Parameter]",
-        "input" : "oai2-oai3/references/parameter-reference.input.json",
-        "expected" : "oai2-oai3/references/parameter-reference.expected.json"
+        "input" : "oai20-oai30/references/parameter-reference.input.json",
+        "expected" : "oai20-oai30/references/parameter-reference.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] References [Body Parameter]",
-        "input" : "oai2-oai3/references/bodyParam-reference.input.json",
-        "expected" : "oai2-oai3/references/bodyParam-reference.expected.json"
+        "input" : "oai20-oai30/references/bodyParam-reference.input.json",
+        "expected" : "oai20-oai30/references/bodyParam-reference.expected.json"
     },
     {
         "name" : "[OpenAPI 2->3] References [Form Data Parameter]",
-        "input" : "oai2-oai3/references/formDataParam-reference.input.json",
-        "expected" : "oai2-oai3/references/formDataParam-reference.expected.json"
+        "input" : "oai20-oai30/references/formDataParam-reference.input.json",
+        "expected" : "oai20-oai30/references/formDataParam-reference.expected.json"
     },
     {
         "name" : "[OpenAPI 30->31] Tenant Management",

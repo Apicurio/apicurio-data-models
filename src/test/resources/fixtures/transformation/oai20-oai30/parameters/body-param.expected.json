@@ -17,7 +17,7 @@
       "BodyParam": {
         "description": "a re-usable request body parameter",
         "content": {
-          "*/*": {
+          "application/json": {
             "schema": {
               "format": "int32",
               "type": "integer"
