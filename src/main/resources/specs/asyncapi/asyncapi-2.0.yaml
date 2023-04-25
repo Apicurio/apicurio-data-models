@@ -552,7 +552,7 @@ entities:
       - name: patternProperties
         type: '{string}'
       - name: additionalProperties
-        type: Schema
+        type: 'boolean|Schema'
       - name: additionalItems
         type: Schema
       - name: items
