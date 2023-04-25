@@ -403,6 +403,13 @@ export class JsonUtil {
     public static clone(json: any): any {
         return JSON.parse(JSON.stringify(json));
     }
+    
+    public static cloneCollection(collection: Array<any>): Array<any> {
+        if (!collection) {
+            return [];
+        }
+        return [...collection];
+    }
 
     public static objectNode(): any {
         return {};
