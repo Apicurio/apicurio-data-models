@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.apicurio</groupId>
         <artifactId>apicurio-unified-model-generator-parent</artifactId>
-        <version>1.0.13-SNAPSHOT</version>
+        <version>1.0.13.Final</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
