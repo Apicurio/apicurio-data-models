@@ -60,6 +60,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      * @param propertyName
      * @param items
      */
+    @SuppressWarnings("unchecked")
     protected void traverseList(String propertyName, Collection<? extends Node> items) {
         if (items != null) {
             int index = 0;
@@ -83,6 +84,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      * @param propertyName
      * @param items
      */
+    @SuppressWarnings("unchecked")
     protected void traverseMap(String propertyName, Map<String, ? extends Node> items) {
         if (items != null) {
             traversalContext.pushProperty(propertyName);
@@ -104,6 +106,7 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      *
      * @param items
      */
+    @SuppressWarnings("unchecked")
     protected void traverseMappedNode(MappedNode<? extends Node> mappedNode) {
         if (mappedNode != null) {
             Collection<String> names = (Collection<String>) JsonUtil.cloneCollection(mappedNode.getItemNames());
