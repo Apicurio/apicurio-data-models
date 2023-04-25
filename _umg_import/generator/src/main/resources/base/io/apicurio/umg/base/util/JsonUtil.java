@@ -2,6 +2,7 @@ package io.apicurio.umg.base.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -23,7 +24,7 @@ public class JsonUtil {
 
     private static final JsonNodeFactory factory = JsonNodeFactory.instance;
     private static final ObjectMapper mapper = new ObjectMapper();
-    
+
     public static List<String> keys(ObjectNode json) {
         List<String> rval = new ArrayList<>();
         if (json != null) {
@@ -35,7 +36,7 @@ public class JsonUtil {
         }
         return rval;
     }
-    
+
     public static List<String> matchingKeys(String regex, ObjectNode json) {
         return keys(json).stream().filter(key -> Pattern.matches(regex, key)).collect(Collectors.toList());
     }
@@ -46,7 +47,7 @@ public class JsonUtil {
         }
         return null;
     }
-    
+
     public static void setProperty(ObjectNode json, String propertyName, JsonNode value) {
         if (value != null) {
             json.set(propertyName, value);
@@ -92,7 +93,7 @@ public class JsonUtil {
         }
         return null;
     }
-    
+
     /* Get/consume an array of anys property. */
     public static List<JsonNode> getAnyArrayProperty(ObjectNode json, String propertyName) {
         if (!json.has(propertyName)) {
@@ -235,7 +236,6 @@ public class JsonUtil {
         }
         return null;
     }
-    
 
     /* Get/consume an array of booleans property. */
     public static List<Boolean> getBooleanArrayProperty(ObjectNode json, String propertyName) {
@@ -265,8 +265,7 @@ public class JsonUtil {
         }
         return null;
     }
-    
-    
+
     /* Get/Consume a string property. */
     public static String getStringProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
@@ -288,7 +287,6 @@ public class JsonUtil {
         return null;
     }
 
-
     /* Get/Consume an Integer property. */
     public static Integer getIntegerProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
@@ -309,7 +307,6 @@ public class JsonUtil {
         }
         return null;
     }
-
 
     /* Get/Consume a Number property. */
     public static Number getNumberProperty(ObjectNode json, String propertyName) {
@@ -338,7 +335,6 @@ public class JsonUtil {
         return null;
     }
 
-
     /* Get/Consume a Boolean property. */
     public static Boolean getBooleanProperty(ObjectNode json, String propertyName) {
         if (json.has(propertyName)) {
@@ -359,7 +355,6 @@ public class JsonUtil {
         }
         return null;
     }
-
 
     /* Get/consume a map of anys property. */
     public static Map<String, JsonNode> getAnyMapProperty(ObjectNode json, String propertyName) {
@@ -413,7 +408,6 @@ public class JsonUtil {
         return rval;
     }
 
-
     /* Get/consume a map of strings property. */
     public static Map<String, String> getStringMapProperty(ObjectNode json, String propertyName) {
         if (!json.has(propertyName)) {
@@ -466,7 +460,6 @@ public class JsonUtil {
         return rval;
     }
 
-
     /* Get/consume a map of numbers property. */
     public static Map<String, Number> getNumberMapProperty(ObjectNode json, String propertyName) {
         if (!json.has(propertyName)) {
@@ -492,7 +485,6 @@ public class JsonUtil {
         }
         return rval;
     }
-
 
     /* Get/consume a map of numbers property. */
     public static Map<String, Boolean> getBooleanMapProperty(ObjectNode json, String propertyName) {
@@ -520,7 +512,6 @@ public class JsonUtil {
         return rval;
     }
 
-    
     /* Set a JSON (Object) property. */
     public static void setObjectProperty(ObjectNode json, String propertyName, ObjectNode value) {
         if (value != null) {
@@ -674,7 +665,7 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static JsonNode parseJSON(String jsonString) {
         try {
             return mapper.readTree(jsonString);
@@ -682,7 +673,7 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static JsonNode clone(JsonNode json) {
         try {
             TokenBuffer tb = new TokenBuffer(mapper, false);
@@ -691,6 +682,13 @@ public class JsonUtil {
         } catch (IOException e) {
             throw new RuntimeException("Error cloning JSON node.", e);
         }
+    }
+
+    public static Collection<?> cloneCollection(Collection<?> collection) {
+        if (collection == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(collection);
     }
 
     public static ObjectNode objectNode() {
@@ -813,12 +811,11 @@ public class JsonUtil {
         return rval;
     }
 
-
     private static class PrettyPrinter extends MinimalPrettyPrinter {
         private static final long serialVersionUID = -4446121026177697380L;
 
         private int indentLevel = 0;
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeStartObject(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -828,9 +825,10 @@ public class JsonUtil {
             indentLevel++;
             g.writeRaw("\n");
         }
-        
+
         /**
-         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndObject(com.fasterxml.jackson.core.JsonGenerator, int)
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndObject(com.fasterxml.jackson.core.JsonGenerator,
+         *      int)
          */
         @Override
         public void writeEndObject(JsonGenerator g, int nrOfEntries) throws IOException {
@@ -839,7 +837,7 @@ public class JsonUtil {
             writeIndent(g);
             super.writeEndObject(g, nrOfEntries);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeStartArray(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -848,9 +846,10 @@ public class JsonUtil {
             super.writeStartArray(g);
             indentLevel++;
         }
-        
+
         /**
-         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndArray(com.fasterxml.jackson.core.JsonGenerator, int)
+         * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeEndArray(com.fasterxml.jackson.core.JsonGenerator,
+         *      int)
          */
         @Override
         public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException {
@@ -859,7 +858,7 @@ public class JsonUtil {
             writeIndent(g);
             super.writeEndArray(g, nrOfValues);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#beforeObjectEntries(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -867,7 +866,7 @@ public class JsonUtil {
         public void beforeObjectEntries(JsonGenerator g) throws IOException {
             writeIndent(g);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#beforeArrayValues(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -876,7 +875,7 @@ public class JsonUtil {
             g.writeRaw("\n");
             writeIndent(g);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeArrayValueSeparator(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -886,7 +885,7 @@ public class JsonUtil {
             g.writeRaw("\n");
             writeIndent(g);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeObjectEntrySeparator(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -896,7 +895,7 @@ public class JsonUtil {
             g.writeRaw("\n");
             writeIndent(g);
         }
-        
+
         /**
          * @see com.fasterxml.jackson.core.util.MinimalPrettyPrinter#writeObjectFieldValueSeparator(com.fasterxml.jackson.core.JsonGenerator)
          */
@@ -905,12 +904,12 @@ public class JsonUtil {
             super.writeObjectFieldValueSeparator(g);
             g.writeRaw(" ");
         }
-        
+
         private void writeIndent(JsonGenerator g) throws IOException {
             for (int idx = 0; idx < this.indentLevel; idx++) {
                 g.writeRaw("    ");
             }
         }
     }
-    
+
 }

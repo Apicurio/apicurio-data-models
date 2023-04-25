@@ -9,6 +9,7 @@ import io.apicurio.umg.base.Visitable;
 import io.apicurio.umg.base.union.EntityListUnionValue;
 import io.apicurio.umg.base.union.EntityMapUnionValue;
 import io.apicurio.umg.base.union.Union;
+import io.apicurio.umg.base.util.JsonUtil;
 
 /**
  * Base class for all traversers.
@@ -63,7 +64,8 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
         if (items != null) {
             int index = 0;
             traversalContext.pushProperty(propertyName);
-            for (Node node : items) {
+            Collection<? extends Node> clonedItems = (Collection<? extends Node>) JsonUtil.cloneCollection(items);
+            for (Node node : clonedItems) {
                 if (node != null) {
                     traversalContext.pushListIndex(index);
                     doTraverseNode(node);
@@ -84,7 +86,8 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
     protected void traverseMap(String propertyName, Map<String, ? extends Node> items) {
         if (items != null) {
             traversalContext.pushProperty(propertyName);
-            items.keySet().forEach(key -> {
+            Collection<String> keys = (Collection<String>) JsonUtil.cloneCollection(items.keySet());
+            keys.forEach(key -> {
                 Node value = items.get(key);
                 if (value != null) {
                     this.traversalContext.pushMapIndex(key);
@@ -103,7 +106,8 @@ public abstract class AbstractTraverser implements Traverser, Visitor {
      */
     protected void traverseMappedNode(MappedNode<? extends Node> mappedNode) {
         if (mappedNode != null) {
-            mappedNode.getItemNames().forEach(name -> {
+            Collection<String> names = (Collection<String>) JsonUtil.cloneCollection(mappedNode.getItemNames());
+            names.forEach(name -> {
                 Node value = mappedNode.getItem(name);
                 if (value != null) {
                     this.traversalContext.pushMapIndex(name);
