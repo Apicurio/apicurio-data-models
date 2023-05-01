@@ -16,7 +16,15 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.type;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.BiConsumer;
+
 import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -29,6 +37,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 public abstract class OasInvalidPropertyTypeValidationRule extends ValidationRule {
 
     protected static final String[] ALLOWED_TYPES = {"string", "number", "integer", "boolean", "array", "object"};
+    protected static final String[] ALLOWED_TYPES31 = {"string", "number", "integer", "boolean", "array", "object", "null"};
 
     /**
      * Constructor.
@@ -38,22 +47,36 @@ public abstract class OasInvalidPropertyTypeValidationRule extends ValidationRul
         super(ruleInfo);
     }
 
-    /**
-     * Returns true if the type node has a valid type.
-     * @param type
-     * @return {boolean}
-     */
-    protected boolean isValidType(String type) {
-        if (hasValue(type)) {
-            return isValidEnumItem(type, ALLOWED_TYPES);
-        }
-        return true;
-    }
+    public static void getTypes(Schema node, BiConsumer<List<String>, String[]> handler) {
+        final String[] allowedTypes;
+        final List<String> types;
 
-    @Override
-    public void visitSchema(Schema node) {
-        if (!isValidType(node.getType())) {
-            // TODO implement this!
+        if (node instanceof OpenApi31Schema) {
+            allowedTypes = ALLOWED_TYPES31;
+            OpenApi31Schema schema = (OpenApi31Schema) node;
+            types = Optional.of(schema)
+                    .map(OpenApi31Schema::getType)
+                    .map(type -> type.isString() ? Collections.singletonList(type.asString()) : type.asStringList())
+                    .orElseGet(Collections::emptyList);
+        } else if (node instanceof OpenApi30Schema) {
+            allowedTypes = ALLOWED_TYPES;
+            OpenApi30Schema schema = (OpenApi30Schema) node;
+            types = Optional.of(schema)
+                    .map(OpenApi30Schema::getType)
+                    .map(Collections::singletonList)
+                    .orElseGet(Collections::emptyList);
+        } else if (node instanceof OpenApi20Schema) {
+            allowedTypes = ALLOWED_TYPES;
+            OpenApi20Schema schema = (OpenApi20Schema) node;
+            types = Optional.of(schema)
+                    .map(OpenApi20Schema::getType)
+                    .map(Collections::singletonList)
+                    .orElseGet(Collections::emptyList);
+        } else {
+            allowedTypes = null;
+            types = Collections.emptyList();
         }
+
+        handler.accept(types, allowedTypes);
     }
 }

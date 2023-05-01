@@ -48,7 +48,7 @@ traits:
       - name: uniqueItems
         type: boolean
       - name: enum
-        type: '[string]'
+        type: '[any]'
       - name: multipleOf
         type: number
 
@@ -263,7 +263,7 @@ entities:
   - name: Responses
     traits:
       - Extensible
-    properties: 
+    properties:
       - name: default
         type: Response
       - name: '*'

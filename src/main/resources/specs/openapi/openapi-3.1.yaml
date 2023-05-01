@@ -479,33 +479,35 @@ entities:
       - name: maximum
         type: number
       - name: exclusiveMaximum
-        type: boolean
+        type: number
       - name: minimum
         type: number
       - name: exclusiveMinimum
-        type: boolean
+        type: number
       - name: maxLength
-        type: number
+        type: integer
       - name: minLength
-        type: number
+        type: integer
       - name: pattern
         type: string
       - name: maxItems
-        type: number
+        type: integer
       - name: minItems
-        type: number
+        type: integer
       - name: uniqueItems
         type: boolean
       - name: maxProperties
-        type: number
+        type: integer
       - name: minProperties
-        type: number
+        type: integer
       - name: required
         type: '[string]'
       - name: enum
-        type: '[string]'
+        type: '[any]'
+      - name: const
+        type: any
       - name: type
-        type: string
+        type: 'string|[string]'
       - name: items
         type: Schema
       - name: allOf
@@ -530,8 +532,6 @@ entities:
         type: Schema
       - name: discriminator
         type: Discriminator
-      - name: nullable
-        type: boolean
       - name: writeOnly
         type: boolean
       - name: deprecated

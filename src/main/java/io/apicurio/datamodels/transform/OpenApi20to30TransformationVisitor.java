@@ -916,13 +916,13 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         Boolean exclusiveMaximum = (Boolean) NodeUtil.getProperty(from, "exclusiveMaximum");
         Number minimum = (Number) NodeUtil.getProperty(from, "minimum");
         Boolean exclusiveMinimum = (Boolean) NodeUtil.getProperty(from, "exclusiveMinimum");
-        Number maxLength = (Number) NodeUtil.getProperty(from, "maxLength");
-        Number minLength = (Number) NodeUtil.getProperty(from, "minLength");
+        Integer maxLength = (Integer) NodeUtil.getProperty(from, "maxLength");
+        Integer minLength = (Integer) NodeUtil.getProperty(from, "minLength");
         String pattern = (String) NodeUtil.getProperty(from, "pattern");
-        Number maxItems = (Number) NodeUtil.getProperty(from, "maxItems");
-        Number minItems = (Number) NodeUtil.getProperty(from, "minItems");
+        Integer maxItems = (Integer) NodeUtil.getProperty(from, "maxItems");
+        Integer minItems = (Integer) NodeUtil.getProperty(from, "minItems");
         Boolean uniqueItems = (Boolean) NodeUtil.getProperty(from, "uniqueItems");
-        List<String> enum_ = (List<String>) NodeUtil.getProperty(from, "enum");
+        List<JsonNode> enum_ = (List<JsonNode>) NodeUtil.getProperty(from, "enum");
         Number multipleOf = (Number) NodeUtil.getProperty(from, "multipleOf");
 
         schema30.setType(type);

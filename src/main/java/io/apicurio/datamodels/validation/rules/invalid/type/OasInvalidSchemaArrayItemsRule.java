@@ -16,6 +16,9 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.type;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -40,8 +43,13 @@ public class OasInvalidSchemaArrayItemsRule extends OasInvalidPropertyTypeValida
     @Override
     public void visitSchema(Schema node) {
         Schema items = (Schema) NodeUtil.getNodeProperty(node, "items");
-        if (isDefined(items) && !equals(node.getType(), "array")) {
-            this.report(node, "items", map());
+
+        if (isDefined(items)) {
+            getTypes(node, (types, allowedTypes) -> {
+                if (types.stream().anyMatch(Predicate.not(List.of("array", "null")::contains))) {
+                    this.report(node, "items", map());
+                }
+            });
         }
     }
 

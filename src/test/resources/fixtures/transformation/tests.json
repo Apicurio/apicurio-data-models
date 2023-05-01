@@ -256,10 +256,17 @@
     },
     {
         "name" : "[OpenAPI 30->31] Tenant Management",
-        "input" : "oai30-oai31/tenant-management.input.json",
+        "input" : "oai30-oai31/tenant-management/tenant-management.input.json",
         "fromType": "OPENAPI30",
         "toType": "OPENAPI31",
-        "expected" : "oai30-oai31/tenant-management.expected.json"
+        "expected" : "oai30-oai31/tenant-management/tenant-management.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 30->31] Schema Transformations",
+        "input" : "oai30-oai31/transformations/transformation.input.json",
+        "fromType": "OPENAPI30",
+        "toType": "OPENAPI31",
+        "expected" : "oai30-oai31/transformations/transformation.expected.json"
     },
     {
         "name" : "[OpenAPI 20->31] Pet Store",
@@ -267,7 +274,7 @@
         "fromType": "OPENAPI20",
         "toType": "OPENAPI31",
         "expected" : "oai20-oai31/petstore.expected.json"
-    }, 
+    },
     {
         "name" : "[AsyncAPI 24->25] Streetlights",
         "input" : "aai24-aai25/streetlights.input.json",
@@ -275,5 +282,5 @@
         "toType": "ASYNCAPI25",
         "expected" : "aai24-aai25/streetlights.expected.json"
     }
-    
+
 ]

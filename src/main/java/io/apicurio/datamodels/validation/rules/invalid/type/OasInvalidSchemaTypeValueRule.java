@@ -39,8 +39,10 @@ public class OasInvalidSchemaTypeValueRule extends OasInvalidPropertyTypeValidat
      */
     @Override
     public void visitSchema(Schema node) {
-        this.reportIfInvalid(isValidType(node.getType()), node, "type",
-                map("type", node.getType(), "allowedTypes", ValidationUtil.joinArray(", ", ALLOWED_TYPES)));
+        getTypes(node, (types, allowedTypes) ->
+            types.forEach(type ->
+                this.reportIfInvalid(isValidEnumItem(type, allowedTypes), node, "type",
+                        map("type", type, "allowedTypes", ValidationUtil.joinArray(", ", allowedTypes)))));
     }
 
 }
