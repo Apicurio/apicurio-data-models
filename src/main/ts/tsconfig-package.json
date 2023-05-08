@@ -6,7 +6,6 @@
     "experimentalDecorators": true,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "module": "es2015",
