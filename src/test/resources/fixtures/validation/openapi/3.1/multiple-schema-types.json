@@ -1,0 +1,26 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Simple Data Type Reference Test",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": [ "array", "null" ],
+                                    "items": { }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

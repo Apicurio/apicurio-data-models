@@ -17,7 +17,9 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Operation;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -37,9 +39,18 @@ public class OasUnexpectedRequestBodyRule extends AbstractInvalidPropertyValueRu
      * Returns true if the given operation is one of:  POST, PUT, OPTIONS
      * @param operation
      */
-    protected boolean isValidRequestBodyOperation(OpenApi30Operation operation) {
+    protected boolean isValidRequestBodyOperation(OpenApiOperation operation) {
         String method = getOperationMethod(operation);
         return isValidEnumItem(method, array("put", "post", "options", "patch"));
+    }
+
+    protected boolean hasRequestBody(Operation node) {
+        if (node instanceof OpenApi31Operation) {
+            return hasValue(((OpenApi31Operation) node).getRequestBody());
+        } else if (node instanceof OpenApi30Operation) {
+            return hasValue(((OpenApi30Operation) node).getRequestBody());
+        }
+        return false;
     }
 
     /**
@@ -47,8 +58,9 @@ public class OasUnexpectedRequestBodyRule extends AbstractInvalidPropertyValueRu
      */
     @Override
     public void visitOperation(Operation node) {
-        OpenApi30Operation operation = (OpenApi30Operation) node;
-        if (hasValue(operation.getRequestBody())) {
+        if (hasRequestBody(node)) {
+            OpenApiOperation operation = (OpenApiOperation) node;
+
             String method = getOperationMethod(operation);
             this.reportIfInvalid(isValidRequestBodyOperation(operation), operation,
                     "requestBody", map("method", method.toUpperCase()));

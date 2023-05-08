@@ -17,6 +17,7 @@
 package io.apicurio.datamodels;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -32,7 +33,6 @@ import io.apicurio.datamodels.models.io.ModelWriterFactory;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
@@ -40,6 +40,7 @@ import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceResolverChain;
 import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
+import io.apicurio.datamodels.transform.OpenApi30to31TransformationVisitor;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.ValidationUtil;
 import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
@@ -209,12 +210,9 @@ public class Library {
 
         if (source.root().modelType() == ModelType.OPENAPI30 && toType == ModelType.OPENAPI31) {
             // Transform from OpenApi30 to OpenApi31
-            OpenApi30Document doc30 = (OpenApi30Document) source;
-            String oldVersion = doc30.getOpenapi();
-            doc30.setOpenapi("3.1.0");
-            OpenApi31Document doc31 = (OpenApi31Document) cloneDocument(source);
-            doc30.setOpenapi(oldVersion);
-            return doc31;
+            OpenApi30to31TransformationVisitor transformer = new OpenApi30to31TransformationVisitor((OpenApi30Document) source);
+            VisitorUtil.visitTree(source, transformer, TraverserDirection.down);
+            return transformer.getResult();
         }
 
         if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI31) {
@@ -242,10 +240,19 @@ public class Library {
      * @param source
      */
     public static Document cloneDocument(Document source) {
+        return cloneDocument(source, UnaryOperator.identity());
+    }
+
+    /**
+     * Clones the given document by serializing it to a JS object, and then re-parsing it.
+     * @param source
+     * @param transformer
+     */
+    public static Document cloneDocument(Document source, UnaryOperator<ObjectNode> transformer) {
         // TODO have the code generator produce a Cloner of some kind that knows how to clone any Node.
         //      We already have reader/writer dispatchers.  We only need something that can create a new,
         //      empty model instance from an existing (not empty) model.
-        ObjectNode jsObj = writeNode(source);
+        ObjectNode jsObj = transformer.apply(writeNode(source));
         return readDocument(jsObj);
     }
 

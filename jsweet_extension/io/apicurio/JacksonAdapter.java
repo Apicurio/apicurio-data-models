@@ -17,6 +17,8 @@ package io.apicurio;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import javax.lang.model.element.Element;
 
@@ -34,5 +36,56 @@ public class JacksonAdapter extends PrinterAdapter {
         addTypeMapping("com.fasterxml.jackson.databind.node.ObjectNode", "object");
         addTypeMapping("com.fasterxml.jackson.databind.node.ArrayNode", "Array<any>");
         addTypeMapping("com.fasterxml.jackson.databind.JsonNode", "any");
+        addTypeMapping(Predicate.class.getName(), "(any) => boolean");
+        addTypeMapping(UnaryOperator.class.getName(), "(any) => any");
+    }
+
+    @Override
+    public boolean substituteMethodInvocation(MethodInvocationElement invocation) {
+        java.util.Set<String> excludedJavaSuperTypes = new java.util.HashSet<>();
+        String targetMethodName = invocation.getMethodName();
+        String targetClassName = invocation.getMethod().getEnclosingElement().toString();
+        org.jsweet.transpiler.model.ExtendedElement targetExpression = invocation.getTargetExpression();
+        if (targetExpression != null && targetExpression.getTypeAsElement() != null) {
+            targetClassName = targetExpression.getTypeAsElement().toString();
+        }
+        javax.lang.model.type.TypeMirror jdkSuperclass = context.getJdkSuperclass(targetClassName, excludedJavaSuperTypes);
+        boolean delegate = jdkSuperclass != null;
+        if (delegate) {
+            targetClassName = jdkSuperclass.toString();
+        }
+
+        javax.lang.model.type.TypeMirror targetType = invocation.getTargetType();
+
+        if (targetClassName != null
+                && (targetExpression != null || invocation.getMethod().getModifiers().contains(javax.lang.model.element.Modifier.STATIC))) {
+            switch (targetClassName) {
+            case "com.fasterxml.jackson.databind.node.ObjectNode":
+                if ("put".equals(targetMethodName)) {
+                    printMacroName(targetMethodName);
+                    print(invocation.getTargetExpression().toString());
+                    print("[").print(invocation.getArgument(0)).print("] = ").print(invocation.getArgument(1));
+                    return true;
+                }
+                break;
+            case "java.util.List":
+            case "java.util.Set":
+                if ("of".equals(targetMethodName)) {
+                    printMacroName(targetMethodName);
+                    print("[").printArgList(invocation.getArguments()).print("]");
+                    return true;
+                }
+                break;
+            case "java.util.function.UnaryOperator":
+                if ("identity".equals(targetMethodName)) {
+                    printMacroName(targetMethodName);
+                    print("(x=>x)");
+                    return true;
+                }
+                break;
+            }
+        }
+
+        return super.substituteMethodInvocation(invocation);
     }
 }

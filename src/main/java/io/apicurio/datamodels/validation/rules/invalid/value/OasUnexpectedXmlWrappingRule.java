@@ -19,6 +19,7 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.OpenApiXML;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+import io.apicurio.datamodels.validation.rules.invalid.type.OasInvalidPropertyTypeValidationRule;
 
 /**
  * Implements the Unexpected XML Wrapping rule.
@@ -35,22 +36,13 @@ public class OasUnexpectedXmlWrappingRule extends AbstractInvalidPropertyValueRu
     }
 
     /**
-     * Returns true if it's OK to use "wrapped" in the XML node.  It's only OK to do this if
-     * the type being defined is an 'array' type.
-     * @param xml
-     */
-    protected boolean isWrappedOK(OpenApiXML xml) {
-        Schema schema = (Schema) xml.parent();
-        return equals(schema.getType(), "array");
-    }
-
-    /**
      * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitXML(io.apicurio.datamodels.models.openapi.OpenApiXML)
      */
     @Override
     public void visitXML(OpenApiXML node) {
         if (hasValue(node.isWrapped())) {
-            this.reportIfInvalid(this.isWrappedOK(node), node, "wrapped", map());
+            OasInvalidPropertyTypeValidationRule.getTypes((Schema) node.parent(), (types, allowedTypes) ->
+                this.reportIfInvalid(types.contains("array"), node, "wrapped", map()));
         }
     }
 

@@ -477,25 +477,25 @@ entities:
       - name: exclusiveMinimum
         type: boolean
       - name: maxLength
-        type: number
+        type: integer
       - name: minLength
-        type: number
+        type: integer
       - name: pattern
         type: string
       - name: maxItems
-        type: number
+        type: integer
       - name: minItems
-        type: number
+        type: integer
       - name: uniqueItems
         type: boolean
       - name: maxProperties
-        type: number
+        type: integer
       - name: minProperties
-        type: number
+        type: integer
       - name: required
         type: '[string]'
       - name: enum
-        type: '[string]'
+        type: '[any]'
       - name: type
         type: string
       - name: items
