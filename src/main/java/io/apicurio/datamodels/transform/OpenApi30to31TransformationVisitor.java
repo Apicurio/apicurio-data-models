@@ -28,15 +28,17 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringListUnionValueImpl;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
-import io.apicurio.datamodels.paths.NodePath;
+import io.apicurio.datamodels.models.visitors.TraversalContext;
+import io.apicurio.datamodels.models.visitors.TraversingVisitor;
 import io.apicurio.datamodels.paths.NodePathUtil;
 
 /**
  * A visitor used to transform an OpenAPI 3.0.x document into an OpenAPI 3.1.x document.
  */
-public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter implements OpenApi30Visitor {
+public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter implements OpenApi30Visitor, TraversingVisitor {
 
     private OpenApi31Document doc31;
+    private TraversalContext traversalContext;
 
     public OpenApi30to31TransformationVisitor(OpenApi30Document source) {
         doc31 = (OpenApi31Document) Library.cloneDocument(source, rawJson -> {
@@ -52,23 +54,29 @@ public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter 
         return this.doc31;
     }
 
+    @Override
+    public void setTraversalContext(TraversalContext context) {
+        this.traversalContext = context;
+    }
+
     /**
      * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
      */
     @Override
     public void visitSchema(Schema node) {
-        mapSchema((OpenApi30Schema) node, findMatchingNode(node));
+        mapSchema((OpenApi30Schema) node, findMatchingNode());
     }
 
-    private OpenApi31Schema findMatchingNode(Schema node) {
-        NodePath nodePath = NodePathUtil.createNodePath(node);
-        return (OpenApi31Schema) NodePathUtil.resolveNodePath(nodePath, doc31);
+    private OpenApi31Schema findMatchingNode() {
+        return (OpenApi31Schema) NodePathUtil.resolveNodePath(NodePathUtil.createNodePath(traversalContext), doc31);
     }
 
     private void mapSchema(OpenApi30Schema from, OpenApi31Schema schema31) {
         schema31.getExtraPropertyNames().forEach(schema31::removeExtraProperty);
 
-        if (Boolean.TRUE.equals(from.isNullable())) {
+        if (from.getType() == null) {
+            schema31.setType(new StringUnionValueImpl(from.getType()));
+        } else if (Boolean.TRUE.equals(from.isNullable())) {
             schema31.setType(new StringListUnionValueImpl(List.of(from.getType(), "null")));
         } else {
             schema31.setType(new StringUnionValueImpl(from.getType()));

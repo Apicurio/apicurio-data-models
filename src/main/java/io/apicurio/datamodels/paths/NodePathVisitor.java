@@ -3,7 +3,6 @@ package io.apicurio.datamodels.paths;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.models.visitors.TraversalContext;
-import io.apicurio.datamodels.models.visitors.TraversalStepType;
 import io.apicurio.datamodels.models.visitors.TraversingVisitor;
 
 public class NodePathVisitor extends AllNodeVisitor implements TraversingVisitor {
@@ -28,17 +27,8 @@ public class NodePathVisitor extends AllNodeVisitor implements TraversingVisitor
     @Override
     protected void visitNode(Node node) {
         if (node.modelId() == targetNode.modelId()) {
-            this.nodePath = createNodePath();
+            this.nodePath = NodePathUtil.createNodePath(this.traversalContext);
         }
-    }
-
-    private NodePath createNodePath() {
-        NodePath path = new NodePath();
-        this.traversalContext.getAllSteps().forEach(step -> {
-            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() != TraversalStepType.property);
-            path.append(segment);
-        });
-        return path;
     }
 
     public NodePath getNodePath() {
