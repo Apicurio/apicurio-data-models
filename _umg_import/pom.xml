@@ -67,7 +67,7 @@
         <version.roaster>2.28.0.Final</version.roaster>
         <version.modeshape-common>5.4.1.Final</version.modeshape-common>
         <version.junit>4.13.2</version.junit>
-        <version.lombok>1.18.26</version.lombok>
+        <version.lombok>1.18.28</version.lombok>
         <version.rgxgen>1.4</version.rgxgen>
 
         <!-- Plugin Versions -->
