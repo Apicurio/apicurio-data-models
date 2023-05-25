@@ -8,6 +8,8 @@ import io.apicurio.datamodels.VisitorUtil;
 import io.apicurio.datamodels.models.MappedNode;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.union.Union;
+import io.apicurio.datamodels.models.visitors.TraversalContext;
+import io.apicurio.datamodels.models.visitors.TraversalStepType;
 import io.apicurio.datamodels.util.NodeUtil;
 
 public class NodePathUtil {
@@ -16,6 +18,15 @@ public class NodePathUtil {
         NodePathVisitor visitor = new NodePathVisitor(node);
         VisitorUtil.visitTree(node.root(), visitor, TraverserDirection.down);
         return visitor.getNodePath();
+    }
+
+    public static NodePath createNodePath(TraversalContext traversalContext) {
+        NodePath path = new NodePath();
+        traversalContext.getAllSteps().forEach(step -> {
+            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() != TraversalStepType.property);
+            path.append(segment);
+        });
+        return path;
     }
 
     public static NodePath parseNodePath(String path) {
