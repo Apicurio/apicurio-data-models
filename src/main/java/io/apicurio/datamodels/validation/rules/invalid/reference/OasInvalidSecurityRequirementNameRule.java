@@ -61,7 +61,7 @@ public class OasInvalidSecurityRequirementNameRule extends ValidationRule {
             return hasValue(doc31.getComponents()) &&
                     isDefined(doc31.getComponents()) &&
                     isDefined(doc31.getComponents().getSecuritySchemes().get(securityReqName));
-        } else if (dt == ModelType.ASYNCAPI20 || dt == ModelType.ASYNCAPI21 || dt == ModelType.ASYNCAPI22 || dt == ModelType.ASYNCAPI23 || dt == ModelType.ASYNCAPI24 || dt == ModelType.ASYNCAPI25) {
+        } else if (dt == ModelType.ASYNCAPI20 || dt == ModelType.ASYNCAPI21 || dt == ModelType.ASYNCAPI22 || dt == ModelType.ASYNCAPI23 || dt == ModelType.ASYNCAPI24 || dt == ModelType.ASYNCAPI25 || dt == ModelType.ASYNCAPI26) {
             // TODO implement this
         }
         return false;

@@ -24,6 +24,7 @@ import io.apicurio.datamodels.models.asyncapi.v22.visitors.AsyncApi22Traverser;
 import io.apicurio.datamodels.models.asyncapi.v23.visitors.AsyncApi23Traverser;
 import io.apicurio.datamodels.models.asyncapi.v24.visitors.AsyncApi24Traverser;
 import io.apicurio.datamodels.models.asyncapi.v25.visitors.AsyncApi25Traverser;
+import io.apicurio.datamodels.models.asyncapi.v26.visitors.AsyncApi26Traverser;
 import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20Traverser;
 import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v31.visitors.OpenApi31Traverser;
@@ -60,6 +61,9 @@ public class VisitorUtil {
                     break;
                 case ASYNCAPI25:
                     traverser = new AsyncApi25Traverser(visitor);
+                    break;
+                case ASYNCAPI26:
+                    traverser = new AsyncApi26Traverser(visitor);
                     break;
                 case OPENAPI20:
                     traverser = new OpenApi20Traverser(visitor);

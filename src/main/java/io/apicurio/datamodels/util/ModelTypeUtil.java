@@ -23,6 +23,8 @@ public class ModelTypeUtil {
                 return "2.4.0";
             case ASYNCAPI25:
                 return "2.5.0";
+            case ASYNCAPI26:
+                return "2.6.0";
             case OPENAPI20:
                 return "2.0";
             case OPENAPI30:
@@ -53,6 +55,7 @@ public class ModelTypeUtil {
             case ASYNCAPI23:
             case ASYNCAPI24:
             case ASYNCAPI25:
+            case ASYNCAPI26:
                 return true;
             default:
                 return false;
