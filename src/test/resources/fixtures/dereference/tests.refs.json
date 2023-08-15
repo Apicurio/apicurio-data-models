@@ -147,16 +147,22 @@
 			}
 		}
 	},
-	"https://schemas.example.org/responses.json#/components/responses/NotFound": {
-		"content": {
-			"application/json": {
-				"schema": {
-					"$ref": "#/components/schemas/Error"
-				}
-			}
-		},
-		"description": ""
-	},
+    "https://schemas.example.org/responses.json#/components/responses/NotFound": {
+        "content": {
+            "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/Error"
+                }
+            }
+        },
+        "description": ""
+    },
+    "https://schemas.example.org/responses.json#/components/schemas/Error": {
+        "description": "Common Response Error",
+        "schema": {
+            "type": "string"
+        }
+    },
 	"https://apis.example.com/common.js#/components/schemas/Widget": {
 		"type": "object",
 		"properties": {

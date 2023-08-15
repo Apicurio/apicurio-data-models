@@ -22,8 +22,7 @@ import io.apicurio.datamodels.models.Node;
  * Used to resolve references ($ref or operationRef) to a JSON object.  Users of the
  * apicurio-data-models library can provide zero or more custom implementations of
  * this interface in order to provide a way to resolve reference URI formats that
- * are not supported by default.  However, internal references and external http[s]
- * based references are supported by default.
+ * are not supported by default. Internal references are supported by default.
  *
  * When providing custom reference resolvers, those custom resolvers will be used
  * before any default/built-in resolvers.
@@ -33,11 +32,11 @@ import io.apicurio.datamodels.models.Node;
 public interface IReferenceResolver {
 
     /**
-     * Resolves a reference to a JSON object or {@link Node}.
+     * Resolves a reference to a {@link Node}.
      * @param reference
      * @param from
      * @return null if the resolver cannot resolve the reference
      */
-    public Node resolveRef(String reference, Node from); // TODO if can return JSON object, why Node return type?
+    public Node resolveRef(String reference, Node from);
 
 }

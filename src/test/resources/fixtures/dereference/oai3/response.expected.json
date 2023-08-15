@@ -45,6 +45,12 @@
                     }
                 }
             },
+            "Error1": {
+                "description": "Common Response Error",
+                "schema": {
+                    "type": "string"
+                }
+            },
             "Invoice": {
                 "description": "",
                 "type": "object"
@@ -55,7 +61,7 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "#/components/schemas/Error"
+                            "$ref": "#/components/schemas/Error1"
                         }
                     }
                 },

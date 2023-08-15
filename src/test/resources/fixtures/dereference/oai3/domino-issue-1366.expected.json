@@ -7371,6 +7371,12 @@
                 }
             },
             "Alert": {
+                "$ref": "#/components/schemas/Alert1"
+            },
+            "CalendarEvent": {
+                "$ref": "#/components/schemas/CalendarEvent1"
+            },
+            "Alert1": {
                 "type": "object",
                 "properties": {
                     "foo": {
@@ -7387,7 +7393,7 @@
                     "bar"
                 ]
             },
-            "CalendarEvent": {
+            "CalendarEvent1": {
                 "type": "object",
                 "properties": {
                     "flerg": {

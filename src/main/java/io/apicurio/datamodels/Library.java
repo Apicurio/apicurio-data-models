@@ -21,6 +21,7 @@ import java.util.function.UnaryOperator;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import io.apicurio.datamodels.deref.Dereferencer;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Node;
@@ -144,6 +145,15 @@ public class Library {
         Visitor writerDispatcher = ModelWriterFactory.createModelWriterDispatcher(node.root().modelType(), json);
         node.accept(writerDispatcher);
         return json;
+    }
+
+    /**
+     * Called to serialize a given data model node to a JSON string.
+     * @param node
+     */
+    public static String writeNodeToString(Node node) {
+        ObjectNode json = writeNode(node);
+        return JsonUtil.stringify(json);
     }
 
     /**
@@ -277,4 +287,43 @@ public class Library {
         return validator.getValidationProblems();
     }
 
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with all resolvable external references removed.
+     *
+     * @param source the source document
+     */
+    public static Document dereferenceDocument(Document source) {
+        return dereferenceDocument(source, ReferenceResolverChain.getInstance(), false);
+    }
+
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with all resolvable external references removed.
+     *
+     * @param source the source document
+     * @param strict if true, throws an exception if unresolvable references remain
+     */
+    public static Document dereferenceDocument(Document source, boolean strict) {
+        return dereferenceDocument(source, ReferenceResolverChain.getInstance(), strict);
+    }
+
+    /**
+     * Dereferences a document - this will take all external references ($ref) found in
+     * the document and pull them into this document.  It will then update any external
+     * reference to instead point to the local copy.  The result is a functionally
+     * equivalent document with all resolvable external references removed.
+     *
+     * @param source the source document
+     * @param resolver a custom reference resolver to use on this dereference operation
+     * @param strict if true, throws an exception if unresolvable references remain
+     */
+    public static Document dereferenceDocument(Document source, IReferenceResolver resolver, boolean strict) {
+        Dereferencer rl = new Dereferencer(resolver, strict);
+        return rl.dereference(cloneDocument(source));
+    }
 }

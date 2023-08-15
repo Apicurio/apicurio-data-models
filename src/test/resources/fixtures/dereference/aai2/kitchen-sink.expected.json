@@ -40,10 +40,13 @@
 	},
 	"components": {
 		"schemas": {
+            "lightMeasuredPayload": {
+                "$ref": "#/components/schemas/lightMeasuredPayload1"
+            },
 			"dimLightPayload": {
 				"type": "string"
 			},
-			"lightMeasuredPayload": {
+			"lightMeasuredPayload1": {
 				"type": "object",
 				"properties": {
 					"id": {
