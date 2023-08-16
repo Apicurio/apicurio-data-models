@@ -21,6 +21,9 @@ public abstract class AllReferenceableNodeVisitor extends AllNodeVisitor {
         }
     }
 
+    // TODO how to include asyncapi message payloads here?
+    // TODO support openapi operationRef, which is a $ref with a different name, on the openapi Link object.
+
     protected abstract void visitReferenceableNode(Referenceable refNode);
 
 }

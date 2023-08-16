@@ -93,6 +93,7 @@ public class Dereferencer {
         Reference canonicalReference = refContext.canonicalizeRef(reference);
         System.out.println("RES: Canonical ref: " + canonicalReference);
 
+        boolean inlined = false;
         String newRefValue = null;
 
         if (rnm.containsKey(canonicalReference)) {
@@ -107,24 +108,30 @@ public class Dereferencer {
                 return false;
             }
 
+            // Node was resolved, insert it into the source document (eg. into the #/components section of the source doc)
+            inlined = shouldInlineNode(nodeWithUnresolvedRef);
+            ReferencedNodeImporter importer = createImporter(doc, nodeWithUnresolvedRef, ref, inlined);
+            importer.importNode(resolvedNode);
+            Node importedNode = importer.getImportedNode();
+            newRefValue = importer.getPathToImportedNode();
+
             // Set appropriate context information on any Referenceable nodes in the resolved node.  This
-            // will allow us to handle importing nodes that have additional references (either internal or
-            // external) to even more nodes.
+            // will allow us to handle importing nodes that have additional references to even more nodes
+            // (either internal or external).
             ReferenceContext resolvedNodeRefContext = refContext.append(reference);
             Visitor scv = new SetContextVisitor(resolvedNodeRefContext);
-            VisitorUtil.visitTree(resolvedNode, scv, TraverserDirection.down);
-
-            // Node was resolved, insert it into the source document (eg. into the #/components section of the source doc)
-            // TODO if the nodeWithUnresolvedRef is a definition and "$ref" is the only property, then INLINE the resolvedNode instead of IMPORT
-            ReferencedNodeImporter importer = createImporter(doc, ref);
-            newRefValue = importer.importNode(resolvedNode);
+            VisitorUtil.visitTree(importedNode, scv, TraverserDirection.down);
 
             // Cache the resolved reference in the resolved node map
             rnm.put(canonicalReference, newRefValue);
         }
 
-        // We have a new value for the $ref
-        ((Referenceable) nodeWithUnresolvedRef).set$ref(newRefValue);
+        // We have a new value for the $ref (unless we inlined the imported node).
+        if (inlined) {
+            ((Referenceable) nodeWithUnresolvedRef).set$ref(null);
+        } else {
+            ((Referenceable) nodeWithUnresolvedRef).set$ref(newRefValue);
+        }
 
         // Resolution complete, make sure to mark it as resolved.
         nodeWithUnresolvedRef.setNodeAttribute(DereferenceConstants.KEY_RESOLUTION, DereferenceConstants.VALUE_RESOLVED);
@@ -132,15 +139,30 @@ public class Dereferencer {
         return true;
     }
 
-    private ReferencedNodeImporter createImporter(Document doc, String ref) {
+    private ReferencedNodeImporter createImporter(Document doc, Node nodeWithUnresolvedRef, String ref, boolean shouldInline) {
         if (ModelTypeUtil.isAsyncApiModel(doc)) {
-            return new AsyncApi2NodeImporter(doc, ref);
+            return new AsyncApi2NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         } else if (ModelTypeUtil.isOpenApi2Model(doc)) {
-            return new OpenApi2NodeImporter(doc, ref);
+            return new OpenApi2NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         } else if (ModelTypeUtil.isOpenApi3Model(doc)) {
-            return new OpenApi3NodeImporter(doc, ref);
+            return new OpenApi3NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         }
         throw new RuntimeException("Unsupported model type: " + doc.root().modelType());
+    }
+
+    /**
+     * Returns true if the node being imported should be inlined or false if the node should
+     * be imported.  An imported node should be inlined if:
+     *
+     *  - the node with the $ref is a definition with no properties other than the $ref.
+     *  - the type of node being imported cannot be put in #/components
+     *
+     * @param nodeWithUnresolvedRef
+     */
+    private boolean shouldInlineNode(Node nodeWithUnresolvedRef) {
+        InlineOrImportVisitor viz = new InlineOrImportVisitor();
+        nodeWithUnresolvedRef.accept(viz);
+        return viz.shouldInline();
     }
 
 }

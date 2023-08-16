@@ -121,9 +121,6 @@
                 "in": "header"
             },
             "BASIC": {
-                "$ref": "#/components/securitySchemes/BASIC1"
-            },
-            "BASIC1": {
                 "scheme": "basic",
                 "type": "http"
             }

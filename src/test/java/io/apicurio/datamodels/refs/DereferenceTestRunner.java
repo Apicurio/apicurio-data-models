@@ -127,18 +127,24 @@ public class DereferenceTestRunner extends ParentRunner<DereferenceTestCase> {
                 Assert.assertNotNull(srcDoc.root().modelType());
 
                 // Dereference the document
-                Document dereferencedDoc = Library.dereferenceDocument(srcDoc, true);
-                Assert.assertNotNull(dereferencedDoc);
-                Assert.assertNotSame(srcDoc, dereferencedDoc);
+                try {
+                    Document dereferencedDoc = Library.dereferenceDocument(srcDoc, true);
+                    Assert.assertNotNull(dereferencedDoc);
+                    Assert.assertNotSame(srcDoc, dereferencedDoc);
 
-                // Now compare with expected
-                String actual = Library.writeDocumentToJSONString(dereferencedDoc);
-                String expectedCP = "fixtures/dereference/" + child.getExpected();
-                URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
-                Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
-                String expected = loadResource(expectedUrl);
 
-                assertJsonEquals(expected, actual);
+                    // Now compare with expected
+                    String actual = Library.writeDocumentToJSONString(dereferencedDoc);
+                    String expectedCP = "fixtures/dereference/" + child.getExpected();
+                    URL expectedUrl = Thread.currentThread().getContextClassLoader().getResource(expectedCP);
+                    Assert.assertNotNull("Could not load test resource: " + expectedCP, expectedUrl);
+                    String expected = loadResource(expectedUrl);
+
+                    assertJsonEquals(expected, actual);
+                } catch (RuntimeException re) {
+                    re.printStackTrace();
+                    Assert.fail(re.toString());
+                }
             }
         };
         runLeaf(statement, description, notifier);

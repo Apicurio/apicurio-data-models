@@ -41,30 +41,27 @@
 	"components": {
 		"schemas": {
             "lightMeasuredPayload": {
-                "$ref": "#/components/schemas/lightMeasuredPayload1"
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Id of the streetlight."
+                    },
+                    "lumens": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Light intensity measured in lumens."
+                    },
+                    "sentAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the message was sent."
+                    }
+                }
             },
 			"dimLightPayload": {
 				"type": "string"
-			},
-			"lightMeasuredPayload1": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"minimum": 0,
-						"description": "Id of the streetlight."
-					},
-					"lumens": {
-						"type": "integer",
-						"minimum": 0,
-						"description": "Light intensity measured in lumens."
-					},
-					"sentAt": {
-						"type": "string",
-						"format": "date-time",
-						"description": "Date and time when the message was sent."
-					}
-				}
 			}
 		},
 		"messages": {
@@ -103,11 +100,8 @@
 		},
 		"securitySchemes": {
 			"ltoken": {
-				"$ref": "#/components/securitySchemes/token"
-			},
-			"token": {
-				"type": "http",
-				"scheme": "bearer"
+                "type": "http",
+                "scheme": "bearer"
 			}
 		},
 		"parameters": {

@@ -1,6 +1,10 @@
 package io.apicurio.datamodels.deref;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.SecurityScheme;
@@ -20,21 +24,26 @@ import io.apicurio.datamodels.models.asyncapi.AsyncApiServerBindings;
 
 public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
-    public AsyncApi2NodeImporter(Document doc, String ref) {
-        super(doc, ref);
+    public AsyncApi2NodeImporter(Document doc, Node nodeWithUnresolvedRef, String ref, boolean shouldInline) {
+        super(doc, nodeWithUnresolvedRef, ref, shouldInline);
     }
 
-    private void setPathToImportedNode(String type, String name) {
-        setPathToImportedNode("#/components/" + type + "/" + name);
+    private void setPathToImportedNode(Node importedNode, String type, String name) {
+        setPathToImportedNode(importedNode, "#/components/" + type + "/" + name);
     }
 
     @Override
     public void visitChannelBindings(AsyncApiChannelBindings node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedChannelBinding"), getComponentNames(components.getChannelBindings()));
-        components.addChannelBinding(name, node);
-        node.attach(components);
-        setPathToImportedNode("channelBindings", name);
+        String componentType = "channelBindings";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedChannelBinding"), getComponentNames(components.getChannelBindings()));
+            components.addChannelBinding(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
@@ -44,83 +53,128 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitCorrelationID(AsyncApiCorrelationID node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedCorrelationID"), getComponentNames(components.getCorrelationIds()));
-        components.addCorrelationId(name, node);
-        node.attach(components);
-        setPathToImportedNode("correlationIds", name);
+        String componentType = "correlationIds";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedCorrelationID"), getComponentNames(components.getCorrelationIds()));
+            components.addCorrelationId(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitMessage(AsyncApiMessage node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedMessage"), getComponentNames(components.getMessages()));
-        components.addMessage(name, node);
-        node.attach(components);
-        setPathToImportedNode("messages", name);
+        String componentType = "messages";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedMessage"), getComponentNames(components.getMessages()));
+            components.addMessage(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitMessageBindings(AsyncApiMessageBindings node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedMessageBinding"), getComponentNames(components.getMessageBindings()));
-        components.addMessageBinding(name, node);
-        node.attach(components);
-        setPathToImportedNode("messageBindings", name);
+        String componentType = "messageBindings";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedMessageBinding"), getComponentNames(components.getMessageBindings()));
+            components.addMessageBinding(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitMessageTrait(AsyncApiMessageTrait node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedMessageTrait"), getComponentNames(components.getMessageTraits()));
-        components.addMessageTrait(name, node);
-        node.attach(components);
-        setPathToImportedNode("messageTraits", name);
+        String componentType = "messageTraits";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedMessageTrait"), getComponentNames(components.getMessageTraits()));
+            components.addMessageTrait(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitOperationBindings(AsyncApiOperationBindings node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedOperationBinding"), getComponentNames(components.getOperationBindings()));
-        components.addOperationBinding(name, node);
-        node.attach(components);
-        setPathToImportedNode("operationBindings", name);
+        String componentType = "operationBindings";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedOperationBinding"), getComponentNames(components.getOperationBindings()));
+            components.addOperationBinding(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitOperationTrait(AsyncApiOperationTrait node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedOperationTrait"), getComponentNames(components.getOperationTraits()));
-        components.addOperationTrait(name, node);
-        node.attach(components);
-        setPathToImportedNode("operationTraits", name);
+        String componentType = "operationTraits";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedOperationTrait"), getComponentNames(components.getOperationTraits()));
+            components.addOperationTrait(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitParameter(Parameter node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
-        components.addParameter(name, node);
-        node.attach(components);
-        setPathToImportedNode("parameters", name);
+        String componentType = "parameters";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
+            components.addParameter(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitSchema(Schema node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
-        components.addSchema(name, node);
-        node.attach(components);
-        setPathToImportedNode("schemas", name);
+        String componentType = "schemas";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
+            components.addSchema(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
-        components.addSecurityScheme(name, node);
-        node.attach(components);
-        setPathToImportedNode("securitySchemes", name);
+        String componentType = "securitySchemes";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
+            components.addSecurityScheme(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
@@ -130,11 +184,16 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitServerBindings(AsyncApiServerBindings node) {
-        AsyncApiComponents components = ensureAsyncApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedServerBinding"), getComponentNames(components.getServerBindings()));
-        components.addServerBinding(name, node);
-        node.attach(components);
-        setPathToImportedNode("serverBindings", name);
+        String componentType = "serverBindings";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            AsyncApiComponents components = ensureAsyncApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedServerBinding"), getComponentNames(components.getServerBindings()));
+            components.addServerBinding(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
@@ -148,6 +207,12 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
             doc.setComponents(doc.createComponents());
         }
         return doc.getComponents();
+    }
+
+    private void inlineComponent(String componentType, Node node) {
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), componentType, getComponentName(getNodeWithUnresolvedRef()));
     }
 
 }

@@ -1,6 +1,10 @@
 package io.apicurio.datamodels.deref;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.SecurityScheme;
@@ -22,111 +26,152 @@ import io.apicurio.datamodels.util.ModelTypeUtil;
  * an external reference.  This importer figures out what kind of thing is being internalized
  * so it can be put in the right place.
  *
- * TODO when the source of the $ref is a definition/component *and* the only property is the $ref,
- *      we can just replace the contents of the source with the external content rather than import
- *      as a new definition/component and change the pointer
- *
  * @author eric.wittmann@gmail.com
  */
 public class OpenApi3NodeImporter extends ReferencedNodeImporter {
 
-    public OpenApi3NodeImporter(Document doc, String ref) {
-        super(doc, ref);
+    public OpenApi3NodeImporter(Document doc, Node nodeWithUnresolvedRef, String ref, boolean shouldInline) {
+        super(doc, nodeWithUnresolvedRef, ref, shouldInline);
     }
 
-    private void setPathToImportedNode(String type, String name) {
-        setPathToImportedNode("#/components/" + type + "/" + name);
+    private void setPathToImportedNode(Node importedNode, String type, String name) {
+        setPathToImportedNode(importedNode, "#/components/" + type + "/" + name);
     }
 
     @Override
     public void visitSchema(Schema node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
-        components.addSchema(name, node);
-        node.attach(components);
-        setPathToImportedNode("schemas", name);
+        String componentType = "schemas";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
+            components.addSchema(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitCallback(OpenApiCallback node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedCallback"), getComponentNames(components.getCallbacks()));
-        components.addCallback(name, node);
-        node.attach(components);
-        setPathToImportedNode("callbacks", name);
+        String componentType = "callbacks";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedCallback"), getComponentNames(components.getCallbacks()));
+            components.addCallback(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitExample(OpenApiExample node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedExample"), getComponentNames(components.getExamples()));
-        components.addExample(name, node);
-        node.attach(components);
-        setPathToImportedNode("examples", name);
+        String componentType = "examples";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedExample"), getComponentNames(components.getExamples()));
+            components.addExample(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitHeader(OpenApiHeader node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedHeader"), getComponentNames(components.getHeaders()));
-        components.addHeader(name, node);
-        node.attach(components);
-        setPathToImportedNode("headers", name);
+        String componentType = "headers";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedHeader"), getComponentNames(components.getHeaders()));
+            components.addHeader(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitLink(OpenApiLink node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedLink"), getComponentNames(components.getLinks()));
-        components.addLink(name, node);
-        node.attach(components);
-        setPathToImportedNode("links", name);
+        String componentType = "links";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedLink"), getComponentNames(components.getLinks()));
+            components.addLink(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitParameter(Parameter node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
-        components.addParameter(name, node);
-        node.attach(components);
-        setPathToImportedNode("parameters", name);
+        String componentType = "parameters";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
+            components.addParameter(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        // TODO support importing path items!  these cannot be put into #/components
+        // TODO support importing path items - inline only here I guess
     }
 
     @Override
     public void visitRequestBody(OpenApiRequestBody node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedRequestBody"), getComponentNames(components.getRequestBodies()));
-        components.addRequestBody(name, node);
-        node.attach(components);
-        setPathToImportedNode("requestBodies", name);
+        String componentType = "requestBodies";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedRequestBody"), getComponentNames(components.getRequestBodies()));
+            components.addRequestBody(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitResponse(OpenApiResponse node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedResponse"), getComponentNames(components.getResponses()));
-        components.addResponse(name, node);
-        node.attach(components);
-        setPathToImportedNode("responses", name);
+        String componentType = "responses";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedResponse"), getComponentNames(components.getResponses()));
+            components.addResponse(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     @Override
     public void visitResponses(OpenApiResponses node) {
-        // TODO support responses
+        // TODO support responses - inline only here I guess
     }
 
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        OpenApiComponents components = ensureOpenApiComponents();
-        String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
-        components.addSecurityScheme(name, node);
-        node.attach(components);
-        setPathToImportedNode("securitySchemes", name);
+        String componentType = "securitySchemes";
+        if (shouldInline()) {
+            inlineComponent(componentType, node);
+        } else {
+            OpenApiComponents components = ensureOpenApiComponents();
+            String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
+            components.addSecurityScheme(name, node);
+            node.attach(components);
+            setPathToImportedNode(node, componentType, name);
+        }
     }
 
     private OpenApiComponents ensureOpenApiComponents() {
@@ -145,6 +190,12 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
             return doc.getComponents();
         }
         return null;
+    }
+
+    private void inlineComponent(String componentType, Node node) {
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), componentType, getComponentName(getNodeWithUnresolvedRef()));
     }
 
 }
