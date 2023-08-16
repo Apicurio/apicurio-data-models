@@ -15,18 +15,13 @@ public abstract class NodeImpl implements Node {
     private static int __modelIdCounter = 0;
 
     protected int _modelId = __modelIdCounter++;
-    private RootNode _root;
     private Node _parent;
     private Map<String, JsonNode> _extraProperties;
     private Map<String, Object> _attributes;
 
     @Override
     public RootNode root() {
-        return this._root;
-    }
-    
-    public void setRoot(RootNode root) {
-        this._root = root;
+        return this._parent.root();
     }
 
     @Override
@@ -115,11 +110,8 @@ public abstract class NodeImpl implements Node {
 
     @Override
     public boolean isAttached() {
-        if (_parent == null || _root == null) {
-            if (_parent == null && _root == null)
-                return false;
-            else
-                throw new IllegalStateException("Partially attached.");
+        if (_parent == null) {
+            return false;
         }
         return true;
     }
@@ -129,8 +121,7 @@ public abstract class NodeImpl implements Node {
         if (!parent.isAttached())
             throw new IllegalArgumentException(
                     "Target parent node (method argument) is not itself attached.");
-        this._root = parent.root();
-        this._parent = parent;
+        this.setParent(parent);
     }
 
     /*

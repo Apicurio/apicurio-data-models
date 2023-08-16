@@ -185,7 +185,6 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
         body.addContext("implClass", entityImpl.getName());
         body.append("${implClass} node = new ${implClass}();");
         body.append("node.setParent(this);");
-        body.append("node.setRoot(this.root());");
         body.append("return node;");
         method.setBody(body.toString());
     }
