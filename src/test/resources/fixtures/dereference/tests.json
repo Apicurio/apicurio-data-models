@@ -93,5 +93,10 @@
         "name" : "[OpenAPI 3] 3-level Dereference (Issue 1366)",
         "input" : "oai3/3-level-dereference.input.json",
         "expected" : "oai3/3-level-dereference.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Inlined Path Item",
+        "input" : "oai3/inlined-path-item.input.json",
+        "expected" : "oai3/inlined-path-item.expected.json"
     }
 ]

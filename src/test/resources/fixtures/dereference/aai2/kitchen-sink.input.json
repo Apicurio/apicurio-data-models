@@ -1,5 +1,5 @@
 {
-	"asyncapi": "2.0.0",
+	"asyncapi": "2.3.0",
 	"info": {
 		"title": "AsyncAPI 2.0 App",
 		"description": "This is a very simple AsyncAPI file.",
@@ -15,7 +15,10 @@
 					"ltoken": []
 				}
 			]
-		}
+		},
+        "staging": {
+            "$ref": "https://schemas.example.org/servers.json#/servers/staging"
+        }
 	},
 	"channels": {
 		"smartylighting/streetlights/1/0/event/{streetlightId}/lighting/measured": {
