@@ -48,7 +48,10 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitChannelItem(AsyncApiChannelItem node) {
-        // TODO support importing ChannelItem - needs to be inlined?
+        // Note: there is no place in #/components to store channel items, so they must be inlined.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override
@@ -179,7 +182,10 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitServer(Server node) {
-        // TODO support importing Server - needs to be inlined??
+        // Note: there is no place in #/components to store servers, so they must be inlined.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override
@@ -198,7 +204,10 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitServerVariable(ServerVariable node) {
-        // TODO support importing ServerVariable - needs to be inlined?
+        // Note: there is no place in #/components to store server variables, so they must be inlined.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     private AsyncApiComponents ensureAsyncApiComponents() {

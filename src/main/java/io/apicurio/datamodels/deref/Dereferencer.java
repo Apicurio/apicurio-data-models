@@ -123,7 +123,9 @@ public class Dereferencer {
             VisitorUtil.visitTree(importedNode, scv, TraverserDirection.down);
 
             // Cache the resolved reference in the resolved node map
-            rnm.put(canonicalReference, newRefValue);
+            if (newRefValue != null) {
+                rnm.put(canonicalReference, newRefValue);
+            }
         }
 
         // We have a new value for the $ref (unless we inlined the imported node).

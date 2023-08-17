@@ -124,7 +124,10 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        // TODO support importing path items - inline only here I guess
+        // Note: there is no place in #/components to store path items, so they must be inlined.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override
@@ -157,7 +160,10 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitResponses(OpenApiResponses node) {
-        // TODO support responses - inline only here I guess
+        // Note: there is no place in #/components to store a Responses node, so inline it
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override

@@ -26,7 +26,10 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitItems(OpenApi20Items node) {
-        // TODO how to import an "items" object?  Do we import it as a schema definition?
+        // Note: there is no place in #/components to store items, so we will inline them.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override
@@ -50,7 +53,10 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        // TODO how to import a path item?  inline it??
+        // Note: there is no place in #/components to store path items, so they must be inlined.
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), null);
     }
 
     @Override

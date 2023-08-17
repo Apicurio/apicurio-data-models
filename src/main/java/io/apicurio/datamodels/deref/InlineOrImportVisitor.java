@@ -3,9 +3,11 @@ package io.apicurio.datamodels.deref;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Server;
+import io.apicurio.datamodels.models.ServerVariable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponses;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
 
 /**
  * Determines if a Node being dereferenced should be inlined or imported.  Certain types of
@@ -33,6 +35,17 @@ public class InlineOrImportVisitor extends AllReferenceableNodeVisitor {
         this.inline = idpv.isDefinitionParent();
     }
 
+    /*
+     * The following types can only be inlined because there is no place in the source
+     * document to import them.  For example, in OpenAPI there is no "pathItems" collection
+     * in the #/components entity.
+     */
+
+    @Override
+    public void visitItems(OpenApi20Items node) {
+        this.inline = true;
+    }
+
     @Override
     public void visitPathItem(OpenApiPathItem node) {
         this.inline = true;
@@ -50,6 +63,11 @@ public class InlineOrImportVisitor extends AllReferenceableNodeVisitor {
 
     @Override
     public void visitServer(Server node) {
+        this.inline = true;
+    }
+
+    @Override
+    public void visitServerVariable(ServerVariable node) {
         this.inline = true;
     }
 
