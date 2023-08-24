@@ -1,5 +1,7 @@
 package io.apicurio.datamodels.refs;
 
+import java.util.Objects;
+
 /**
  * Encapsulates a reference string in OpenAPI/AsyncAPI schema,
  * for easier manipulation and parsing.
@@ -62,8 +64,7 @@ public class Reference {
      * @throws java.lang.RuntimeException if the reference does not contain relative part
      */
     public String getName() {
-        if (rel == null)
-            throw new RuntimeException("No relative part in the reference.");
+        Objects.requireNonNull(rel, "No relative part in the reference.");
         String[] parts = rel.split("/");
         return parts[parts.length - 1];
     }
