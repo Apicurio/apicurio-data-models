@@ -97,14 +97,13 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
         }
     }
 
-    private void setPathToImportedNode(Node importedNode, String collection, String name) {
+    @Override
+    protected void setPathToImportedNode(Node importedNode, String collection, String name) {
         setPathToImportedNode(importedNode, "#/" + collection + "/" + name);
     }
 
     private void inlineDefinition(String collection, Node node) {
-        ObjectNode json = Library.writeNode(node);
-        Library.readNode(json, getNodeWithUnresolvedRef());
-        setPathToImportedNode(getNodeWithUnresolvedRef(), collection, getComponentName(getNodeWithUnresolvedRef()));
+        inlineComponent(collection, node);
     }
 
 }

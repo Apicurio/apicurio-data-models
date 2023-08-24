@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 
-public class ReferencedNodeImporter extends CombinedVisitorAdapter {
+public abstract class ReferencedNodeImporter extends CombinedVisitorAdapter {
 
     private final Document doc;
     private final Node nodeWithUnresolvedRef;
@@ -92,5 +95,13 @@ public class ReferencedNodeImporter extends CombinedVisitorAdapter {
         NodePath nodePath = NodePathUtil.createNodePath(getNodeWithUnresolvedRef());
         return nodePath.getLastSegment().getValue();
     }
+
+    protected void inlineComponent(String componentType, Node node) {
+        ObjectNode json = Library.writeNode(node);
+        Library.readNode(json, getNodeWithUnresolvedRef());
+        setPathToImportedNode(getNodeWithUnresolvedRef(), componentType, getComponentName(getNodeWithUnresolvedRef()));
+    }
+
+    protected abstract void setPathToImportedNode(Node nodeWithUnresolvedRef, String componentType, String componentName);
 
 }

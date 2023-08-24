@@ -28,7 +28,8 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
         super(doc, nodeWithUnresolvedRef, ref, shouldInline);
     }
 
-    private void setPathToImportedNode(Node importedNode, String type, String name) {
+    @Override
+    protected void setPathToImportedNode(Node importedNode, String type, String name) {
         setPathToImportedNode(importedNode, "#/components/" + type + "/" + name);
     }
 
@@ -216,12 +217,6 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
             doc.setComponents(doc.createComponents());
         }
         return doc.getComponents();
-    }
-
-    private void inlineComponent(String componentType, Node node) {
-        ObjectNode json = Library.writeNode(node);
-        Library.readNode(json, getNodeWithUnresolvedRef());
-        setPathToImportedNode(getNodeWithUnresolvedRef(), componentType, getComponentName(getNodeWithUnresolvedRef()));
     }
 
 }
