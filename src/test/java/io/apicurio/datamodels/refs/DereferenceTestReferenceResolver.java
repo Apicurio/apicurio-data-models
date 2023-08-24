@@ -32,9 +32,6 @@ public class DereferenceTestReferenceResolver implements IReferenceResolver {
 
     public static Map<String, ObjectNode> refs = new HashMap<>();
 
-    /**
-     * @see io.apicurio.datamodels.core.util.IReferenceResolver#resolveRef(java.lang.String, io.apicurio.datamodels.core.models.Node)
-     */
     @Override
     public Node resolveRef(String reference, Node from) {
         if (refs.containsKey(reference)) {
