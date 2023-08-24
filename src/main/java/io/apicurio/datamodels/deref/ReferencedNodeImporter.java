@@ -58,8 +58,7 @@ public abstract class ReferencedNodeImporter extends CombinedVisitorAdapter {
     public String getNameHintFromRef(String defaultHint) {
         int idx = this.ref.lastIndexOf('/');
         if (idx > 0) {
-            String nameHint = this.ref.substring(idx + 1);
-            return nameHint;
+            return this.ref.substring(idx + 1);
         }
         return defaultHint;
     }
