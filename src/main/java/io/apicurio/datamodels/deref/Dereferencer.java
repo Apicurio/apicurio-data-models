@@ -91,7 +91,6 @@ public class Dereferencer {
             refContext = new ReferenceContext();
         }
         Reference canonicalReference = refContext.canonicalizeRef(reference);
-        System.out.println("RES: Canonical ref: " + canonicalReference);
 
         boolean inlined = false;
         String newRefValue = null;
