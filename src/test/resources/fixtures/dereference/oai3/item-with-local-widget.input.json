@@ -9,7 +9,7 @@
 						"type": "string"
 					},
 					"widget": {
-						"$ref": "#!/components/schemas/Widget"
+						"$ref": "#/components/schemas/Widget"
 					},
 					"item": {
 					    "$ref": "https://www.example.com/schemas.json#/components/schemas/Item"

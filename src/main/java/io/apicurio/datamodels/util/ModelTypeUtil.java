@@ -81,4 +81,22 @@ public class ModelTypeUtil {
         }
     }
 
+    public static boolean isOpenApi30Model(Node node) {
+        switch (node.root().modelType()) {
+            case OPENAPI30:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isOpenApi31Model(Node node) {
+        switch (node.root().modelType()) {
+            case OPENAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }

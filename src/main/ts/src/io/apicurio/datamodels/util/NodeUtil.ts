@@ -23,7 +23,7 @@ export class NodeUtil {
     }
 
     public static isNode(object: any): boolean {
-        return object !== null && object !== undefined && typeof object === "object" && object.hasOwnProperty("_root");
+        return object !== null && object !== undefined && typeof object === "object" && object.hasOwnProperty("_parent");
     }
 
     public static isUnion(object: any): boolean {
@@ -46,7 +46,7 @@ export class NodeUtil {
     }
 
     public static isMap(object: any): boolean {
-        return object !== null && object !== undefined && typeof object === "object" && !object["_root"];
+        return object !== null && object !== undefined && typeof object === "object" && !object["_parent"];
     }
 
     public static getMapItem(map: object, key: string): any {

@@ -49,6 +49,13 @@ public class NodePath {
         return this.segments;
     }
 
+    public NodePathSegment getLastSegment() {
+        if (segments.size() > 0) {
+            return segments.get(segments.size() - 1);
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return toString(false);

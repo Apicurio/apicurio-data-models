@@ -1,363 +1,369 @@
 {
-	"http://www.example.com/schemas/foo.json#/components/schemas/Person": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"age": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"address": {
-				"type": "string"
-			}
-		},
-		"example": {
-			"name": "John",
-			"age": 48,
-			"address": "12345 Main St"
-		}
-	},
-	"http://www.example.com/other-schemas/schemas.json#/components/schemas/Person": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"age": {
-				"format": "int32",
-				"type": "integer"
-			}
-		}
-	},
-	"http://www.example.com/schemas/foo.json#/components/schemas/Address": {
-		"type": "object",
-		"properties": {
-			"street": {
-				"type": "string"
-			},
-			"city": {
-				"type": "string"
-			},
-			"state": {
-				"type": "string"
-			},
-			"zip": {
-				"type": "string"
-			}
-		}
-	},
-	"http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddress": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"age": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"address": {
-				"$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
-			}
-		},
-		"example": {
-			"name": "John",
-			"age": 48,
-			"address": "12345 Main St"
-		}
-	},
-	"http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddressAndSpouse": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"age": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"address": {
-				"$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
-			},
-			"spouse": {
-				"$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Person"
-			}
-		},
-		"example": {
-			"name": "John",
-			"age": 48,
-			"address": "12345 Main St"
-		}
-	},
-	"http://www.example.com/schemas/foo.json#/components/schemas/PersonWithRelativeAddressAndSpouse": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"age": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"address": {
-				"$ref": "#/components/schemas/Address"
-			},
-			"spouse": {
-				"$ref": "#/components/schemas/Person"
-			}
-		},
-		"example": {
-			"name": "John",
-			"age": 48,
-			"address": "12345 Main St"
-		}
-	},
-	"https://www.example.com/schemas.json#/components/schemas/Item": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"description": {
-				"format": "string"
-			},
-			"widget": {
-				"$ref": "#/components/schemas/Widget"
-			}
-		}
-	},
-	"https://www.example.com/schemas.json#/components/schemas/Widget": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			}
-		}
-	},
-	"https://www.example.com/schemas.json#/components/schemas/SelfWidget": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			},
-			"widget": {
-				"$ref": "#/components/schemas/SelfWidget"
-			}
-		}
-	},
-	"https://schemas.example.org/responses.json#/components/responses/NotFound": {
-		"content": {
-			"application/json": {
-				"schema": {
-					"$ref": "#/components/schemas/Error"
-				}
-			}
-		},
-		"description": ""
-	},
-	"https://apis.example.com/common.js#/components/schemas/Widget": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"type": "string"
-			}
-		}
-	},
-	"https://apis.example.com/common.js#/components/responses/PetResponse": {
-		"description": "a pet to be returned",
-		"content": {
-			"application/json": {
-				"schema": {
-					"type": "string"
-				}
-			}
-		}
-	},
-	"https://apis.example.com/common.js#/components/parameters/Param": {
-		"name": "username",
-		"in": "path",
-		"description": "username to fetch",
-		"required": true,
-		"schema": {
-			"type": "string"
-		}
-	},
-	"https://apis.example.com/common.js#/components/examples/Example": {
-		"summary": "Example 1 Summary",
-		"description": "Example 1 description.",
-		"value": "Example1Value"
-	},
-	"https://apis.example.com/common.js#/components/requestBodies/MyRequestBody": {
-		"description": "The request body.",
-		"content": {
-			"application/json": {
-				"schema": {
-					"$ref": "#/components/schemas/Widget"
-				}
-			}
-		},
-		"required": true
-	},
-	"https://apis.example.com/common.js#/components/headers/Header": {
-		"description": "The number of allowed requests in the current period",
-		"schema": {
-			"type": "integer"
-		}
-	},
-	"https://apis.example.com/common.js#/components/securitySchemes/BASIC": {
-		"type": "http",
-		"scheme": "basic"
-	},
-	"https://apis.example.com/common.js#/components/links/SomeLink": {
-		"operationRef": "#paths~12.0~1repositories~1{$response.body#/username}",
-		"operationId": "getRepositoriesByOwner",
-		"parameters": {
-			"username": "$response.body#/username"
-		},
-		"description": "The link1 description.",
-		"server": {
-			"url": "https://development.gigantic-server.com/v1",
-			"description": "Development server"
-		}
-	},
-	"https://apis.example.com/common.js#/components/callbacks/TheCallback": {
-		"$request.header#/put-url": {
-			"put": {
-				"requestBody": {
-					"description": "Callback payload",
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Widget"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "webhook successfully processed and no retries will be performed"
-					}
-				}
-			}
-		}
-	},
-	"https://apis20.example.com/components.js#/definitions/Widget20": {
-		"title": "Example Schema",
-		"type": "object",
-		"minProperties": 2,
-		"maxProperties": 3,
-		"readOnly": false,
-		"properties": {
-			"firstName": {
-				"type": "string"
-			},
-			"lastName": {
-				"type": "string",
-				"minLength": 1,
-				"maxLength": 128
-			},
-			"age": {
-				"description": "Age in years",
-				"type": "integer",
-				"minimum": 0
-			}
-		},
-		"required": [
-			"firstName",
-			"lastName"
-		]
-	},
-	"https://apis20.example.com/components.js#/parameters/skipParam": {
-		"name": "skip",
-		"in": "query",
-		"description": "number of items to skip",
-		"required": true,
-		"type": "integer",
-		"format": "int32"
-	},
-	"https://apis20.example.com/components.js#/responses/GeneralError": {
-		"description": "General Error",
-		"schema": {
-			"type": "string"
-		}
-	},
-	"https://asyncapi.example.com/common#/components/messages/lightMeasured": {
-		"name": "lightMeasured",
-		"title": "Light measured",
-		"summary": "Inform about environmental lighting conditions of a particular streetlight.",
-		"contentType": "application/json",
-		"traits": [
-			{
-				"$ref": "#/components/messageTraits/commonHeaders"
-			}
-		],
-		"payload": {
-			"$ref": "#/components/schemas/lightMeasuredPayload"
-		}
-	},
-	"https://asyncapi.example.com/common#/components/schemas/lightMeasuredPayload": {
-		"type": "object",
-		"properties": {
-			"id": {
-				"type": "integer",
-				"minimum": 0,
-				"description": "Id of the streetlight."
-			},
-			"lumens": {
-				"type": "integer",
-				"minimum": 0,
-				"description": "Light intensity measured in lumens."
-			},
-			"sentAt": {
-				"type": "string",
-				"format": "date-time",
-				"description": "Date and time when the message was sent."
-			}
-		}
-	},
-	"https://asyncapi.example.com/common#/components/securitySchemes/token": {
-		"type": "http",
-		"scheme": "bearer"
-	},
-	"https://asyncapi.example.com/common#/components/parameters/streetlightId": {
-		"description": "The ID of the streetlight.",
-		"schema": {
-			"type": "string"
-		}
-	},
-	"https://asyncapi.example.com/common#/components/correlationIds/sentAtCorrelator": {
-		"description": "Data from message payload used as correlation ID",
-		"location": "$message.payload#/sentAt"
-	},
-	"https://asyncapi.example.com/common#/components/operationTraits/kafka": {
-		"bindings": {
-			"kafka": {
-				"clientId": "my-app-id"
-			}
-		}
-	},
-	"https://asyncapi.example.com/common#/components/messageTraits/commonHeaders": {
-		"headers": {
-			"type": "object",
-			"properties": {
-				"my-app-header": {
-					"type": "integer",
-					"minimum": 0,
-					"maximum": 100
-				}
-			}
-		}
-	},
-	"https://asyncapi.example.com/common#/components/messageBindings/streamingHeaders": {
-		"http": {
-			"headers": {
-				"Transfer-Encoding": "chunked",
-				"Trailer": "\\r\\n"
-			}
-		}
-	},
+    "http://www.example.com/schemas/foo.json#/components/schemas/Person": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "type": "string"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/other-schemas/schemas.json#/components/schemas/Person": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            }
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/Address": {
+        "type": "object",
+        "properties": {
+            "street": {
+                "type": "string"
+            },
+            "city": {
+                "type": "string"
+            },
+            "state": {
+                "type": "string"
+            },
+            "zip": {
+                "type": "string"
+            }
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddress": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithAddressAndSpouse": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Address"
+            },
+            "spouse": {
+                "$ref": "http://www.example.com/schemas/foo.json#/components/schemas/Person"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "http://www.example.com/schemas/foo.json#/components/schemas/PersonWithRelativeAddressAndSpouse": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "format": "int32",
+                "type": "integer"
+            },
+            "address": {
+                "$ref": "#/components/schemas/Address"
+            },
+            "spouse": {
+                "$ref": "#/components/schemas/Person"
+            }
+        },
+        "example": {
+            "name": "John",
+            "age": 48,
+            "address": "12345 Main St"
+        }
+    },
+    "https://www.example.com/schemas.json#/components/schemas/Item": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "description": {
+                "format": "string"
+            },
+            "widget": {
+                "$ref": "#/components/schemas/Widget"
+            }
+        }
+    },
+    "https://www.example.com/schemas.json#/components/schemas/Widget": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            }
+        }
+    },
+    "https://www.example.com/schemas.json#/components/schemas/SelfWidget": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "widget": {
+                "$ref": "#/components/schemas/SelfWidget"
+            }
+        }
+    },
+    "https://schemas.example.org/responses.json#/components/responses/NotFound": {
+        "content": {
+            "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/Error"
+                }
+            }
+        },
+        "description": ""
+    },
+    "https://schemas.example.org/responses.json#/components/schemas/Error": {
+        "description": "Common Response Error",
+        "schema": {
+            "type": "string"
+        }
+    },
+    "https://apis.example.com/common.js#/components/schemas/Widget": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            }
+        }
+    },
+    "https://apis.example.com/common.js#/components/responses/PetResponse": {
+        "description": "a pet to be returned",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "https://apis.example.com/common.js#/components/parameters/Param": {
+        "name": "username",
+        "in": "path",
+        "description": "username to fetch",
+        "required": true,
+        "schema": {
+            "type": "string"
+        }
+    },
+    "https://apis.example.com/common.js#/components/examples/Example": {
+        "summary": "Example 1 Summary",
+        "description": "Example 1 description.",
+        "value": "Example1Value"
+    },
+    "https://apis.example.com/common.js#/components/requestBodies/MyRequestBody": {
+        "description": "The request body.",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/Widget"
+                }
+            }
+        },
+        "required": true
+    },
+    "https://apis.example.com/common.js#/components/headers/Header": {
+        "description": "The number of allowed requests in the current period",
+        "schema": {
+            "type": "integer"
+        }
+    },
+    "https://apis.example.com/common.js#/components/securitySchemes/BASIC": {
+        "type": "http",
+        "scheme": "basic"
+    },
+    "https://apis.example.com/common.js#/components/links/SomeLink": {
+        "operationRef": "#paths~12.0~1repositories~1{$response.body#/username}",
+        "operationId": "getRepositoriesByOwner",
+        "parameters": {
+            "username": "$response.body#/username"
+        },
+        "description": "The link1 description.",
+        "server": {
+            "url": "https://development.gigantic-server.com/v1",
+            "description": "Development server"
+        }
+    },
+    "https://apis.example.com/common.js#/components/callbacks/TheCallback": {
+        "$request.header#/put-url": {
+            "put": {
+                "requestBody": {
+                    "description": "Callback payload",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Widget"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "webhook successfully processed and no retries will be performed"
+                    }
+                }
+            }
+        }
+    },
+    "https://apis20.example.com/components.js#/definitions/Widget20": {
+        "title": "Example Schema",
+        "type": "object",
+        "minProperties": 2,
+        "maxProperties": 3,
+        "readOnly": false,
+        "properties": {
+            "firstName": {
+                "type": "string"
+            },
+            "lastName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+            },
+            "age": {
+                "description": "Age in years",
+                "type": "integer",
+                "minimum": 0
+            }
+        },
+        "required": [
+            "firstName",
+            "lastName"
+        ]
+    },
+    "https://apis20.example.com/components.js#/parameters/skipParam": {
+        "name": "skip",
+        "in": "query",
+        "description": "number of items to skip",
+        "required": true,
+        "type": "integer",
+        "format": "int32"
+    },
+    "https://apis20.example.com/components.js#/responses/GeneralError": {
+        "description": "General Error",
+        "schema": {
+            "type": "string"
+        }
+    },
+    "https://asyncapi.example.com/common#/components/messages/lightMeasured": {
+        "name": "lightMeasured",
+        "title": "Light measured",
+        "summary": "Inform about environmental lighting conditions of a particular streetlight.",
+        "contentType": "application/json",
+        "traits": [
+            {
+                "$ref": "#/components/messageTraits/commonHeaders"
+            }
+        ],
+        "payload": {
+            "$ref": "#/components/schemas/lightMeasuredPayload"
+        }
+    },
+    "https://asyncapi.example.com/common#/components/schemas/lightMeasuredPayload": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Id of the streetlight."
+            },
+            "lumens": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Light intensity measured in lumens."
+            },
+            "sentAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Date and time when the message was sent."
+            }
+        }
+    },
+    "https://asyncapi.example.com/common#/components/securitySchemes/token": {
+        "type": "http",
+        "scheme": "bearer"
+    },
+    "https://asyncapi.example.com/common#/components/parameters/streetlightId": {
+        "description": "The ID of the streetlight.",
+        "schema": {
+            "type": "string"
+        }
+    },
+    "https://asyncapi.example.com/common#/components/correlationIds/sentAtCorrelator": {
+        "description": "Data from message payload used as correlation ID",
+        "location": "$message.payload#/sentAt"
+    },
+    "https://asyncapi.example.com/common#/components/operationTraits/kafka": {
+        "bindings": {
+            "kafka": {
+                "clientId": "my-app-id"
+            }
+        }
+    },
+    "https://asyncapi.example.com/common#/components/messageTraits/commonHeaders": {
+        "headers": {
+            "type": "object",
+            "properties": {
+                "my-app-header": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                }
+            }
+        }
+    },
+    "https://asyncapi.example.com/common#/components/messageBindings/streamingHeaders": {
+        "http": {
+            "headers": {
+                "Transfer-Encoding": "chunked",
+                "Trailer": "\\r\\n"
+            }
+        }
+    },
     "apicurio:39013#/components/schemas/Alert": {
         "type": "object",
         "properties": {
@@ -383,23 +389,60 @@
             }
         }
     },
-	"apicurio:41205#/components/schemas/CalendarEvent": {
-		"type": "object",
-		"allOf": [
-			{
-				"$ref": "#/components/schemas/JSEvent"
-			}
-		]
-	},
-	"apicurio:41205#/components/schemas/JSCalendar": {
-		"type": "object"
-	},
-	"apicurio:41205#/components/schemas/JSEvent": {
-		"type": "object",
-		"allOf": [
-			{
-				"$ref": "#/components/schemas/JSCalendar"
-			}
-		]
-	}
+    "apicurio:41205#/components/schemas/CalendarEvent": {
+        "type": "object",
+        "allOf": [
+            {
+                "$ref": "#/components/schemas/JSEvent"
+            }
+        ]
+    },
+    "apicurio:41205#/components/schemas/JSCalendar": {
+        "type": "object"
+    },
+    "apicurio:41205#/components/schemas/JSEvent": {
+        "type": "object",
+        "allOf": [
+            {
+                "$ref": "#/components/schemas/JSCalendar"
+            }
+        ]
+    },
+    "https://schemas.example.org/path-items.json#/paths/WidgetsWidgetId": {
+        "summary": "Path used to manage a single Widget.",
+        "description": "The REST endpoint/path used to get, update, and delete single instances of an `Widget`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+        "get": {
+            "responses": {
+                "200": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "https://www.example.com/schemas.json#/components/schemas/Widget"
+                            }
+                        }
+                    },
+                    "description": "Successful response - returns a single `Widget`."
+                }
+            },
+            "operationId": "getWidget",
+            "summary": "Get a Widget",
+            "description": "Gets the details of a single instance of a `Widget`."
+        },
+        "parameters": [
+            {
+                "name": "widgetId",
+                "description": "A unique identifier for a `Widget`.",
+                "schema": {
+                    "type": "string"
+                },
+                "in": "path",
+                "required": true
+            }
+        ]
+    },
+    "https://schemas.example.org/servers.json#/servers/staging": {
+        "url": "https://slack.com/api/rtm.connect.stage",
+        "protocol": "http",
+        "protocolVersion": "1.1"
+    }
 }

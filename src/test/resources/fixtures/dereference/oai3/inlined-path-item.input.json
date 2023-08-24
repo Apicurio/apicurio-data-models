@@ -1,0 +1,58 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "My Test API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "paths": {
+        "/widgets": {
+            "summary": "Path used to manage the list of widgets.",
+            "description": "The REST endpoint/path used to list and create zero or more `Widget` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "https://www.example.com/schemas.json#/components/schemas/Widget"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Widget` entities."
+                    }
+                },
+                "operationId": "getWidgets",
+                "summary": "List All Widgets",
+                "description": "Gets a list of all `Widget` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Widget` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "https://www.example.com/schemas.json#/components/schemas/Widget"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createWidget",
+                "summary": "Create a Widget",
+                "description": "Creates a new instance of a `Widget`."
+            }
+        },
+        "/widgets/{widgetId}": {
+            "$ref": "https://schemas.example.org/path-items.json#/paths/WidgetsWidgetId"
+        }
+    }
+}

@@ -1,148 +1,150 @@
 {
-	"asyncapi": "2.0.0",
-	"info": {
-		"title": "AsyncAPI 2.0 App",
-		"description": "This is a very simple AsyncAPI file.",
-		"version": "1.0.1"
-	},
-	"servers": {
-		"production": {
-			"url": "https://slack.com/api/rtm.connect",
-			"protocol": "https",
-			"protocolVersion": "1.1",
-			"security": [
-				{
-					"ltoken": []
-				}
-			]
-		}
-	},
-	"channels": {
-		"smartylighting/streetlights/1/0/event/{streetlightId}/lighting/measured": {
-			"parameters": {
-				"streetlightId": {
-					"$ref": "#/components/parameters/streetlightId"
-				}
-			},
-			"publish": {
-				"summary": "Inform about environmental lighting conditions of a particular streetlight.",
-				"operationId": "receiveLightMeasurement",
-				"traits": [
-					{
-						"$ref": "#/components/operationTraits/kafka"
-					}
-				],
-				"message": {
-					"$ref": "#/components/messages/lightMeasured"
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"dimLightPayload": {
-				"type": "string"
-			},
-			"lightMeasuredPayload": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "integer",
-						"minimum": 0,
-						"description": "Id of the streetlight."
-					},
-					"lumens": {
-						"type": "integer",
-						"minimum": 0,
-						"description": "Light intensity measured in lumens."
-					},
-					"sentAt": {
-						"type": "string",
-						"format": "date-time",
-						"description": "Date and time when the message was sent."
-					}
-				}
-			}
-		},
-		"messages": {
-			"lightMeasured": {
-				"name": "lightMeasured",
-				"title": "Light measured",
-				"summary": "Inform about environmental lighting conditions of a particular streetlight.",
-				"contentType": "application/json",
-				"traits": [
-					{
-						"$ref": "#/components/messageTraits/commonHeaders"
-					}
-				],
-				"payload": {
-					"$ref": "#/components/schemas/lightMeasuredPayload"
-				}
-			},
-			"dimLight": {
-				"name": "dimLight",
-				"title": "Dim light",
-				"summary": "Command a particular streetlight to dim the lights.",
-				"correlationId": {
-					"$ref": "#/components/correlationIds/sentAtCorrelator"
-				}
-			},
-			"heartbeat": {
-				"schemaFormat": "application/schema+yaml;version=draft-07",
-				"summary": "Its purpose is to keep the connection alive.",
-				"payload": {
-					"type": "string",
-					"enum": [
-						"\r\n"
-					]
-				}
-			}
-		},
-		"securitySchemes": {
-			"ltoken": {
-				"$ref": "#/components/securitySchemes/token"
-			},
-			"token": {
-				"type": "http",
-				"scheme": "bearer"
-			}
-		},
-		"parameters": {
-			"streetlightId": {
-				"description": "The ID of the streetlight.",
-				"schema": {
-					"type": "string"
-				}
-			}
-		},
-		"correlationIds": {
-			"sentAtCorrelator": {
-				"description": "Data from message payload used as correlation ID",
-				"location": "$message.payload#/sentAt"
-			}
-		},
-		"operationTraits": {
-			"kafka": {
-				"bindings": {
-					"kafka": {
-						"clientId": "my-app-id"
-					}
-				}
-			}
-		},
-		"messageTraits": {
-			"commonHeaders": {
-				"headers": {
-					"type": "object",
-					"properties": {
-						"my-app-header": {
-							"type": "integer",
-							"minimum": 0,
-							"maximum": 100
-						}
-					}
-				}
-			}
-		}
-	}
+    "asyncapi": "2.3.0",
+    "info": {
+        "title": "AsyncAPI 2.0 App",
+        "description": "This is a very simple AsyncAPI file.",
+        "version": "1.0.1"
+    },
+    "servers": {
+        "production": {
+            "url": "https://slack.com/api/rtm.connect",
+            "protocol": "https",
+            "protocolVersion": "1.1",
+            "security": [
+                {
+                    "ltoken": []
+                }
+            ]
+        },
+        "staging": {
+            "url": "https://slack.com/api/rtm.connect.stage",
+            "protocol": "http",
+            "protocolVersion": "1.1"
+        }
+    },
+    "channels": {
+        "smartylighting/streetlights/1/0/event/{streetlightId}/lighting/measured": {
+            "parameters": {
+                "streetlightId": {
+                    "$ref": "#/components/parameters/streetlightId"
+                }
+            },
+            "publish": {
+                "summary": "Inform about environmental lighting conditions of a particular streetlight.",
+                "operationId": "receiveLightMeasurement",
+                "traits": [
+                    {
+                        "$ref": "#/components/operationTraits/kafka"
+                    }
+                ],
+                "message": {
+                    "$ref": "#/components/messages/lightMeasured"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "lightMeasuredPayload": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Id of the streetlight."
+                    },
+                    "lumens": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Light intensity measured in lumens."
+                    },
+                    "sentAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the message was sent."
+                    }
+                }
+            },
+            "dimLightPayload": {
+                "type": "string"
+            }
+        },
+        "messages": {
+            "lightMeasured": {
+                "name": "lightMeasured",
+                "title": "Light measured",
+                "summary": "Inform about environmental lighting conditions of a particular streetlight.",
+                "contentType": "application/json",
+                "traits": [
+                    {
+                        "$ref": "#/components/messageTraits/commonHeaders"
+                    }
+                ],
+                "payload": {
+                    "$ref": "#/components/schemas/lightMeasuredPayload"
+                }
+            },
+            "dimLight": {
+                "name": "dimLight",
+                "title": "Dim light",
+                "summary": "Command a particular streetlight to dim the lights.",
+                "correlationId": {
+                    "$ref": "#/components/correlationIds/sentAtCorrelator"
+                }
+            },
+            "heartbeat": {
+                "schemaFormat": "application/schema+yaml;version=draft-07",
+                "summary": "Its purpose is to keep the connection alive.",
+                "payload": {
+                    "type": "string",
+                    "enum": [
+                        "\r\n"
+                    ]
+                }
+            }
+        },
+        "securitySchemes": {
+            "ltoken": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        },
+        "parameters": {
+            "streetlightId": {
+                "description": "The ID of the streetlight.",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "correlationIds": {
+            "sentAtCorrelator": {
+                "description": "Data from message payload used as correlation ID",
+                "location": "$message.payload#/sentAt"
+            }
+        },
+        "operationTraits": {
+            "kafka": {
+                "bindings": {
+                    "kafka": {
+                        "clientId": "my-app-id"
+                    }
+                }
+            }
+        },
+        "messageTraits": {
+            "commonHeaders": {
+                "headers": {
+                    "type": "object",
+                    "properties": {
+                        "my-app-header": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 100
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
