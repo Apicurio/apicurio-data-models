@@ -65,8 +65,7 @@ public class DereferenceTestRunner extends ParentRunner<DereferenceTestCase> {
         try {
             URL testsJsonUrl = Thread.currentThread().getContextClassLoader().getResource("fixtures/dereference/tests.json");
             Assert.assertNotNull(testsJsonUrl);
-            List<DereferenceTestCase> allTests = mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, DereferenceTestCase.class));
-            return allTests;
+            return mapper.readValue(testsJsonUrl, mapper.getTypeFactory().constructCollectionType(List.class, DereferenceTestCase.class));
         } catch (IOException e) {
             throw new InitializationError(e);
         }
