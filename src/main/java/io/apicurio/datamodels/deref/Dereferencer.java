@@ -1,6 +1,8 @@
 package io.apicurio.datamodels.deref;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.TraverserDirection;
@@ -30,7 +32,7 @@ public class Dereferencer {
      */
     public Document dereference(final Document source) {
         Document doc = Library.cloneDocument(source);
-        ResolvedNodeMap rnm = new ResolvedNodeMap();
+        Map<Reference, String> rnm = new HashMap<>();
 
         // Mark all internal references as already "resolved"
         InternalRefResolverVisitor irrv = new InternalRefResolverVisitor();
@@ -78,7 +80,7 @@ public class Dereferencer {
      * @param rnm
      * @param nodeWithUnresolvedRef
      */
-    private boolean resolveNodeWithRef(Document doc, ResolvedNodeMap rnm, Node nodeWithUnresolvedRef) {
+    private boolean resolveNodeWithRef(Document doc, Map<Reference, String> rnm, Node nodeWithUnresolvedRef) {
         String ref = ((Referenceable) nodeWithUnresolvedRef).get$ref();
         Reference reference = new Reference(ref);
 
