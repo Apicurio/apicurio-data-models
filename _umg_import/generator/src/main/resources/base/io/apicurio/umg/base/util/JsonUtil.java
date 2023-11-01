@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 
 public class JsonUtil {
@@ -697,6 +698,10 @@ public class JsonUtil {
 
     public static ArrayNode arrayNode() {
         return factory.arrayNode();
+    }
+
+    public static TextNode textNode(String value) {
+        return factory.textNode(value);
     }
 
     public static void addToArray(ArrayNode array, JsonNode value) {
