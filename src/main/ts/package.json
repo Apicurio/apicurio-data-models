@@ -21,7 +21,7 @@
     "core-js": "3.33.2"
   },
   "devDependencies": {
-    "@types/filesystem": "0.0.34",
+    "@types/filesystem": "0.0.35",
     "@types/jest": "29.5.7",
     "cpx": "1.5.0",
     "diff": "5.1.0",
