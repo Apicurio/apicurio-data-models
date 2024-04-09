@@ -60,7 +60,7 @@
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.17.0</version.com.fasterxml.jackson>
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
-        <version.commons-io>2.16.0</version.commons-io>
+        <version.commons-io>2.16.1</version.commons-io>
         <version.commons-beanutils>1.8.3</version.commons-beanutils>
         <version.commons-lang3>3.14.0</version.commons-lang3>
         <version.commons-collections4>4.4</version.commons-collections4>
