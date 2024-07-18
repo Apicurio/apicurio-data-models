@@ -71,7 +71,7 @@ jobs:
           retry_on: error
           command: |
             cd umg
-            mvn deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
+            mvn -e deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
 
       - name: Google Chat Notification
         if: ${{ failure() }}
