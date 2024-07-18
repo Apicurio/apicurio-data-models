@@ -69,6 +69,7 @@ jobs:
           timeout_minutes: 10
           max_attempts: 5
           retry_on: error
+          retry_wait_seconds: 120
           command: |
             cd umg
             mvn -e deploy -Prelease,!plugin-tests --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
