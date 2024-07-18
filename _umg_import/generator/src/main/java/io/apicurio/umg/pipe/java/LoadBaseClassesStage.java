@@ -44,6 +44,8 @@ public class LoadBaseClassesStage extends AbstractStage {
                     "io.apicurio.umg.base.union.PrimitiveUnionValueImpl",
                     "io.apicurio.umg.base.union.StringListUnionValueImpl",
                     "io.apicurio.umg.base.union.StringUnionValueImpl",
+                    "io.apicurio.umg.base.union.ObjectUnionValueImpl",
+                    "io.apicurio.umg.base.union.AnyUnionValueImpl",
                     "io.apicurio.umg.base.union.UnionValueImpl"
                     );
             loadBaseInterfaces(
@@ -64,6 +66,8 @@ public class LoadBaseClassesStage extends AbstractStage {
                     "io.apicurio.umg.base.union.PrimitiveUnionValue",
                     "io.apicurio.umg.base.union.StringListUnionValue",
                     "io.apicurio.umg.base.union.StringUnionValue",
+                    "io.apicurio.umg.base.union.ObjectUnionValue",
+                    "io.apicurio.umg.base.union.AnyUnionValue",
                     "io.apicurio.umg.base.union.Union",
                     "io.apicurio.umg.base.union.UnionValue"
                     );

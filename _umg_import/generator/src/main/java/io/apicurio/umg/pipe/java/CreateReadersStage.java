@@ -50,6 +50,8 @@ public class CreateReadersStage extends AbstractJavaStage {
         String readerPackageName = getReaderPackageName(specVersion);
         String readerClassName = getReaderClassName(specVersion);
 
+        debug("Creating reader: " + readerPackageName + "." + readerClassName);
+
         // Create java source code for the reader
         JavaClassSource readerClassSource = Roaster.create(JavaClassSource.class)
                 .setPackage(readerPackageName)
@@ -59,11 +61,13 @@ public class CreateReadersStage extends AbstractJavaStage {
         readerClassSource.addImport(getState().getConfig().getRootNamespace() + ".util." + "ReaderUtil");
 
         // Implements the ModelReader interface
+        debug("Reader implements: " + getModelReaderInterfaceFQN());
         JavaInterfaceSource modelReaderInterfaceSource = getState().getJavaIndex().lookupInterface(getModelReaderInterfaceFQN());
         readerClassSource.addImport(modelReaderInterfaceSource);
         readerClassSource.addInterface(modelReaderInterfaceSource);
 
         // Create the readXYZ methods - one for each entity
+        debug("Creating readXYZ methods...");
         specVersion.getEntities().forEach(entity -> {
             EntityModel entityModel = getState().getConceptIndex().lookupEntity(specVersion.getNamespace() + "." + entity.getName());
             if (entityModel == null) {
@@ -128,6 +132,8 @@ public class CreateReadersStage extends AbstractJavaStage {
         String entityFQN = getJavaEntityInterfaceFQN(entityModel);
         String readMethodName = readMethodName(entityModel);
 
+        debug("Creating read method: " + readMethodName);
+
         JavaInterfaceSource javaEntity = getState().getJavaIndex().lookupInterface(entityFQN);
         if (javaEntity == null) {
             warn("Java interface for entity not found: " + entityFQN);
@@ -160,7 +166,8 @@ public class CreateReadersStage extends AbstractJavaStage {
      *
      * @param body
      * @param property
-     * @param javaEntityModel
+     * @param entityModel
+     * @param javaEntity
      * @param readerClassSource
      */
     private void createReadPropertyCode(BodyBuilder body, PropertyModelWithOrigin property, EntityModel entityModel,
@@ -480,7 +487,6 @@ public class CreateReadersStage extends AbstractJavaStage {
             }
         }
 
-        // TODO handle entity maps! (we already support entity lists) (note: we already support entity maps in the writers)
         private void handleUnionProperty(BodyBuilder body) {
             PropertyModel property = propertyWithOrigin.getProperty();
             NamespaceModel nsContext = propertyWithOrigin.getOrigin().getNamespace();
@@ -535,10 +541,13 @@ public class CreateReadersStage extends AbstractJavaStage {
                     String javaTypeName = jt.toJavaTypeString();
                     String isMethodName = "is" + javaTypeName;
                     String toMethodName = "to" + javaTypeName;
-                    String unionValueInterfaceName = javaTypeName + "UnionValue";
+                    String typeName = getTypeName(nestedType);
+                    String unionValueInterfaceName = typeName + "UnionValue";
+                    String unionValueInterfaceFQN = getUnionTypeFQN(typeName + "UnionValue");
                     String unionValueClassName = unionValueInterfaceName + "Impl";
-                    JavaInterfaceSource unionValueInterface = getState().getJavaIndex().lookupInterface(getUnionTypeFQN(unionValueInterfaceName));
-                    JavaClassSource unionValueClass = getState().getJavaIndex().lookupClass(getUnionTypeFQN(unionValueClassName));
+                    String unionValueClassFQN = unionValueInterfaceFQN + "Impl";
+                    JavaInterfaceSource unionValueInterface = getState().getJavaIndex().lookupInterface(unionValueInterfaceFQN);
+                    JavaClassSource unionValueClass = getState().getJavaIndex().lookupClass(unionValueClassFQN);
 
                     body.addContext("javaTypeName", javaTypeName);
                     body.addContext("isMethodName", isMethodName);

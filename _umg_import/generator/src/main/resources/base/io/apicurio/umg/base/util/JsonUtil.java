@@ -724,8 +724,30 @@ public class JsonUtil {
         return value.isTextual();
     }
 
+    public static boolean isJsonNode(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isObjectNode(JsonNode value) {
+        if (value == null) {
+            return false;
+        }
+        return value.isObject();
+    }
+
     public static String toString(JsonNode value) {
         return value.asText();
+    }
+
+    public static JsonNode toJsonNode(JsonNode value) {
+        return value;
+    }
+
+    public static ObjectNode toObjectNode(JsonNode value) {
+        return (ObjectNode) value;
     }
 
     public static boolean isBoolean(JsonNode value) {
