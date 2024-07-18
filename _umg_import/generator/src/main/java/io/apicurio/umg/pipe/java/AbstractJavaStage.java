@@ -391,7 +391,6 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return getUnionTypesPackageName() + "." + name;
     }
 
-
     public class JavaType {
         private final PropertyType propertyType;
         private final String namespaceContext;

@@ -26,6 +26,18 @@ entities:
         type: 'Car|Truck'
       - name: implicit
         type: 'Widget|ImplicitWidget'
+      - name: widgetAnyUnion
+        type: 'Widget|any'
+        unionRules:
+          - unionType: 'Widget'
+            ruleType: propertyExists
+            propertyName: origin
+      - name: widgetObjectUnion
+        type: 'Widget|object'
+        unionRules:
+          - unionType: 'Widget'
+            ruleType: propertyExists
+            propertyName: origin
     propertyOrder:
       - $this
 

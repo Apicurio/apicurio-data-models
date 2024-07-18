@@ -44,7 +44,7 @@ public class ApplyUnionTypesStage extends AbstractUnionTypeJavaStage {
                 unionValueSource = getState().getJavaIndex().lookupInterface(unionValueFQN);
             }
             if (unionValueSource == null) {
-                throw new RuntimeException("[ApplyUnionTypesStage] Union type value not supported: " + nestedType);
+                throw new RuntimeException("[ApplyUnionTypesStage] Union type value NOT supported: " + nestedType);
             }
 
             unionValueSource.addImport(unionTypeSource);
