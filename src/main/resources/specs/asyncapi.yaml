@@ -11,4 +11,4 @@ versions:
   - $ref: ./asyncapi/asyncapi-2.4.yaml
   - $ref: ./asyncapi/asyncapi-2.5.yaml
   - $ref: ./asyncapi/asyncapi-2.6.yaml
-  
+  - $ref: ./asyncapi/asyncapi-3.0.yaml

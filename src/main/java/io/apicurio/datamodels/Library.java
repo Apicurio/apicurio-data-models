@@ -104,7 +104,7 @@ public class Library {
 
     /**
      * Called to serialize a given data model node to a JSON object.
-     * @param node
+     * @param document
      */
     public static ObjectNode writeDocument(Document document) {
         ModelWriter writer = ModelWriterFactory.createModelWriter(document.root().modelType());
@@ -186,7 +186,7 @@ public class Library {
 
     /**
      * Called to create a node path instance for a stringified node path.
-     * @param node
+     * @param path
      */
     public static NodePath parseNodePath(String path) {
         return NodePathUtil.parseNodePath(path);

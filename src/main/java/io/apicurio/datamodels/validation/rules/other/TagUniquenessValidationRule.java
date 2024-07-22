@@ -16,12 +16,14 @@
 
 package io.apicurio.datamodels.validation.rules.other;
 
-import java.util.List;
-
-import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Tag;
+import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.openapi.OpenApiTag;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.List;
 
 /**
  * Implements the Tag Name Uniqueness validation rule.
@@ -42,14 +44,16 @@ public class TagUniquenessValidationRule extends ValidationRule {
      */
     @Override
     public void visitTag(Tag node) {
-        List<Tag> tags = ((Document) node.root()).getTags();
-        int tcount = 0;
-        for (Tag tag : tags) {
-            if (equals(tag.getName(), node.getName())) {
-                tcount++;
+        if (ModelTypeUtil.isOpenApiModel(node)) {
+            List<OpenApiTag> tags = ((OpenApiDocument) node.root()).getTags();
+            int tcount = 0;
+            for (Tag tag : tags) {
+                if (equals(tag.getName(), node.getName())) {
+                    tcount++;
+                }
             }
+            this.reportIf(tcount > 1, node, node.getName(), map("tagName", node.getName()));
         }
-        this.reportIf(tcount > 1, node, node.getName(), map("tagName", node.getName()));
     }
 
 }

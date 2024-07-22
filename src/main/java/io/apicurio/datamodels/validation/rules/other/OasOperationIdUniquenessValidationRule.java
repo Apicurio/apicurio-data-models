@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -46,16 +47,17 @@ public class OasOperationIdUniquenessValidationRule extends ValidationRule {
      */
     @Override
     public void visitOperation(Operation node) {
-        if (hasValue(node.getOperationId())) {
-            List<Operation> dupes = this.indexedOperations.get(node.getOperationId());
+        OpenApiOperation operation = (OpenApiOperation) node;
+        if (hasValue(operation.getOperationId())) {
+            List<Operation> dupes = this.indexedOperations.get(operation.getOperationId());
             if (hasValue(dupes)) {
-                this.reportIfInvalid(dupes.size() > 1, dupes.get(0), "operationId", map("operationId", node.getOperationId()));
-                this.report(node, "operationId", map("operationId", node.getOperationId()));
+                this.reportIfInvalid(dupes.size() > 1, dupes.get(0), "operationId", map("operationId", operation.getOperationId()));
+                this.report(node, "operationId", map("operationId", operation.getOperationId()));
                 dupes.add(node);
             } else {
                 dupes = new ArrayList<>();
                 dupes.add(node);
-                this.indexedOperations.put(node.getOperationId(), dupes);
+                this.indexedOperations.put(operation.getOperationId(), dupes);
             }
         }
     }

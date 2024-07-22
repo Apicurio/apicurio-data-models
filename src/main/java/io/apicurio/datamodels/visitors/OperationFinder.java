@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.visitors;
 
 import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.util.NodeUtil;
 
@@ -45,12 +46,9 @@ public class OperationFinder extends CombinedVisitorAdapter {
         this.operationId = operationId;
     }
 
-    /**
-     * @see io.apicurio.datamodels.core.visitors.VisitorAdapter#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
-     */
     @Override
     public void visitOperation(Operation node) {
-        if (this.operationId == null || NodeUtil.equals(this.operationId, node.getOperationId())) {
+        if (this.operationId == null || NodeUtil.equals(this.operationId, ((OpenApiOperation) node).getOperationId())) {
             if (found == null) {
                 this.found = node;
             }

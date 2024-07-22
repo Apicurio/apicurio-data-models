@@ -4,6 +4,11 @@
 	{ "name": "[AsyncAPI 2] Simple Info With Extra Properties", "test": "asyncapi/2.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
 	{ "name": "[AsyncAPI 2] Simple Info With Extensions", "test": "asyncapi/2.0/simple/simple-info-extensions.json" },
 
+    { "name": "[AsyncAPI 3] Simplest", "test": "asyncapi/3.0/simple/simplest.json" },
+    { "name": "[AsyncAPI 3] Simple Info", "test": "asyncapi/3.0/simple/simple-info.json" },
+    { "name": "[AsyncAPI 3] Simple Info With Extra Properties", "test": "asyncapi/3.0/simple/simple-info-extraProperties.json", "extraProperties": 4 },
+    { "name": "[AsyncAPI 3] Simple Info With Extensions", "test": "asyncapi/3.0/simple/simple-info-extensions.json" },
+
     { "name": "[AsyncAPI 2] Complete anyof", "test": "asyncapi/2.0/complete/anyof.json" },
     { "name": "[AsyncAPI 2] Complete application-headers", "test": "asyncapi/2.0/complete/application-headers.json" },
     { "name": "[AsyncAPI 2] Complete Info", "test": "asyncapi/2.0/complete/complete-info.json" },
@@ -15,7 +20,25 @@
     { "name": "[AsyncAPI 2] Complete rpc-server", "test": "asyncapi/2.0/complete/rpc-server.json" },
     { "name": "[AsyncAPI 2] Complete slack-rtm", "test": "asyncapi/2.0/complete/slack-rtm.json" },
     { "name": "[AsyncAPI 2] Complete streetlights", "test": "asyncapi/2.0/complete/streetlights.json" },
-    
+
+    { "name": "[AsyncAPI 3] Adeo Kafka Request", "test": "asyncapi/3.0/complete/adeo-kafka-request-reply-asyncapi.json" },
+    { "name": "[AsyncAPI 3] AnyOf", "test": "asyncapi/3.0/complete/anyof-asyncapi.json" },
+    { "name": "[AsyncAPI 3] App Headers", "test": "asyncapi/3.0/complete/application-headers-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Correlation ID", "test": "asyncapi/3.0/complete/correlation-id-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Gitter Streaming", "test": "asyncapi/3.0/complete/gitter-streaming-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Mercure", "test": "asyncapi/3.0/complete/mercure-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Not", "test": "asyncapi/3.0/complete/not-asyncapi.json" },
+    { "name": "[AsyncAPI 3] OneOf", "test": "asyncapi/3.0/complete/oneof-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Operation Security", "test": "asyncapi/3.0/complete/operation-security-asyncapi.json" },
+    { "name": "[AsyncAPI 3] RPC Client", "test": "asyncapi/3.0/complete/rpc-client-asyncapi.json" },
+    { "name": "[AsyncAPI 3] RPC Server", "test": "asyncapi/3.0/complete/rpc-server-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Simple", "test": "asyncapi/3.0/complete/simple-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Slack RTM", "test": "asyncapi/3.0/complete/slack-rtm-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Streetlights Kafka", "test": "asyncapi/3.0/complete/streetlights-kafka-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Streetlights MQTT", "test": "asyncapi/3.0/complete/streetlights-mqtt-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Streetlights OpSec", "test": "asyncapi/3.0/complete/streetlights-operation-security-asyncapi.json" },
+    { "name": "[AsyncAPI 3] Websocket Gemini", "test": "asyncapi/3.0/complete/websocket-gemini-asyncapi.json" },
+
     { "name": "[OpenAPI 2] Simple - External Docs", "test": "openapi/2.0/simple/simple-externalDocs.json" },
     { "name": "[OpenAPI 2] Simple - Info + Extensions", "test": "openapi/2.0/simple/simple-info-extensions.json" },
     { "name": "[OpenAPI 2] Simple - Info", "test": "openapi/2.0/simple/simple-info.json" },

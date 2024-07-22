@@ -5,6 +5,8 @@ import io.apicurio.datamodels.models.ExternalDocumentation;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.Tag;
+import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.openapi.OpenApiExternalDocumentation;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 
 public class ExternalDocsCreator extends CombinedVisitorAdapter {
@@ -19,8 +21,8 @@ public class ExternalDocsCreator extends CombinedVisitorAdapter {
 
     @Override
     public void visitDocument(Document node) {
-        externalDocs = node.createExternalDocumentation();
-        node.setExternalDocs(externalDocs);
+        externalDocs = ((OpenApiDocument) node).createExternalDocumentation();
+        ((OpenApiDocument) node).setExternalDocs((OpenApiExternalDocumentation) externalDocs);
     }
 
     @Override

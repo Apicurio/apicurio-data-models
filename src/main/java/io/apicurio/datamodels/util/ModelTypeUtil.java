@@ -25,6 +25,8 @@ public class ModelTypeUtil {
                 return "2.5.0";
             case ASYNCAPI26:
                 return "2.6.0";
+            case ASYNCAPI30:
+                return "3.0.0";
             case OPENAPI20:
                 return "2.0";
             case OPENAPI30:
@@ -56,6 +58,31 @@ public class ModelTypeUtil {
             case ASYNCAPI24:
             case ASYNCAPI25:
             case ASYNCAPI26:
+            case ASYNCAPI30:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isAsyncApi2Model(Node node) {
+        switch (node.root().modelType()) {
+            case ASYNCAPI20:
+            case ASYNCAPI21:
+            case ASYNCAPI22:
+            case ASYNCAPI23:
+            case ASYNCAPI24:
+            case ASYNCAPI25:
+            case ASYNCAPI26:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isAsyncApi3Model(Node node) {
+        switch (node.root().modelType()) {
+            case ASYNCAPI30:
                 return true;
             default:
                 return false;
