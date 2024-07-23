@@ -434,7 +434,29 @@ export class JsonUtil {
         return typeof value === "string";
     }
 
+    public static isJsonNode(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public static isObjectNode(value: any): boolean {
+        if (value == null) {
+            return false;
+        }
+        return typeof value === "object";
+    }
+
     public static toString(value: any): string {
+        return value;
+    }
+
+    public static toJsonNode(value: any): any {
+        return value;
+    }
+
+    public static toObjectNode(value: any): object {
         return value;
     }
 
