@@ -17,6 +17,15 @@
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Server;
+import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Server;
+import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Server;
+import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Server;
+import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Server;
+import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Server;
+import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Server;
+import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Server;
+import io.apicurio.datamodels.models.openapi.OpenApiServer;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -39,9 +48,40 @@ public class InvalidServerUrlRule extends ValidationRule {
      */
     @Override
     public void visitServer(Server node) {
-        if (hasValue(node.getUrl())) {
-            this.reportIfInvalid(isValidUrlTemplate(node.getUrl()), node, "url", map());
+        String url = getUrl(node);
+        if (hasValue(url)) {
+            this.reportIfInvalid(isValidUrlTemplate(url), node, "url", map());
         }
+    }
+
+    private String getUrl(Server node) {
+        if (ModelTypeUtil.isOpenApiModel(node)) {
+            return ((OpenApiServer) node).getUrl();
+        }
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            if (node instanceof AsyncApi20Server) {
+                return ((AsyncApi20Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi21Server) {
+                return ((AsyncApi21Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi22Server) {
+                return ((AsyncApi22Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi23Server) {
+                return ((AsyncApi23Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi24Server) {
+                return ((AsyncApi24Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi25Server) {
+                return ((AsyncApi25Server) node).getUrl();
+            }
+            if (node instanceof AsyncApi26Server) {
+                return ((AsyncApi26Server) node).getUrl();
+            }
+        }
+        return null;
     }
 
 }

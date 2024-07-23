@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -47,8 +48,9 @@ public class OasInvalidOperationIdRule extends AbstractInvalidPropertyValueRule 
      */
     @Override
     public void visitOperation(Operation node) {
-        if (hasValue(node.getOperationId())) {
-            this.reportIfInvalid(isValidOperationId(node.getOperationId()), node, "operationId", map());
+        OpenApiOperation operation = (OpenApiOperation) node;
+        if (hasValue(operation.getOperationId())) {
+            this.reportIfInvalid(isValidOperationId(operation.getOperationId()), node, "operationId", map());
         }
     }
 

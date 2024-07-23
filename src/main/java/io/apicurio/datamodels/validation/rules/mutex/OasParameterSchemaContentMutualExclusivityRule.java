@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.validation.rules.mutex;
 
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -47,7 +48,8 @@ public class OasParameterSchemaContentMutualExclusivityRule extends ValidationRu
      */
     @Override
     public void visitParameter(Parameter node) {
-        this.reportIf(hasValue(node.getSchema()) && hasContent((OpenApi30Parameter) node), node, "schema", map());
+        OpenApiParameter parameter = (OpenApiParameter) node;
+        this.reportIf(hasValue(parameter.getSchema()) && hasContent((OpenApi30Parameter) node), node, "schema", map());
     }
 
 }

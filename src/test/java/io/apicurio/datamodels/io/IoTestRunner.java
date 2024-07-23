@@ -114,6 +114,11 @@ public class IoTestRunner extends ParentRunner<IoTestCase> {
                 Library.visitTree(doc, epv, TraverserDirection.down);
                 int actualExtraProps = epv.getExtraPropertyCount();
                 int expectedExtraProps = child.getExtraProperties();
+                if (actualExtraProps != expectedExtraProps) {
+                    epv.extraProperties.forEach(ep -> {
+                        System.out.println("DETECTED EXTRA PROPERTY: " + ep);
+                    });
+                }
                 Assert.assertEquals("Wrong number of extra properties found: " + epv.extraProperties, expectedExtraProps, actualExtraProps);
 
                 // Write the data model back to JSON

@@ -45,11 +45,13 @@ import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
+import io.apicurio.datamodels.models.openapi.OpenApiOAuthFlow;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiPaths;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.OpenApiResponses;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.OpenApiTag;
 import io.apicurio.datamodels.models.openapi.OpenApiXML;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Contact;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
@@ -139,7 +141,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitDocument(io.apicurio.datamodels.core.models.Document)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitDocument(Document) 
      */
     @Override
     public void visitDocument(Document node) {
@@ -176,7 +178,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitInfo(io.apicurio.datamodels.core.models.common.Info)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitInfo(Info)
      */
     @Override
     public void visitInfo(Info node) {
@@ -194,7 +196,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitContact(io.apicurio.datamodels.core.models.common.Contact)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitContact(Contact)
      */
     @Override
     public void visitContact(Contact node) {
@@ -210,7 +212,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitLicense(License)
      */
     @Override
     public void visitLicense(License node) {
@@ -249,7 +251,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitOperation(Operation)
      */
     @Override
     public void visitOperation(Operation node) {
@@ -311,7 +313,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitParameter(Parameter)
      */
     @Override
     public void visitParameter(Parameter node) {
@@ -484,7 +486,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitExternalDocumentation(ExternalDocumentation) 
      */
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
@@ -501,9 +503,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(node, externalDocs30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
-     */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         OpenApi20SecurityRequirement req = (OpenApi20SecurityRequirement) node;
@@ -598,7 +597,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(Schema)
      */
     @Override
     public void visitSchema(Schema node) {
@@ -620,9 +619,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         }
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitHeaders(io.apicurio.datamodels.openapi.v2.models.OpenApi20Headers)
-     */
     @Override
     public void visitHeaders(OpenApi20Headers node) {
         OpenApi30Response parent30 = (OpenApi30Response) this.lookup(node.parent());
@@ -652,9 +648,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         // Examples are processed as part of "transformResponse"
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitItems(io.apicurio.datamodels.openapi.v2.models.OpenApi20Items)
-     */
     @Override
     public void visitItems(OpenApi20Items node) {
         OpenApi30Schema parent30 = this.findItemsParent(node);
@@ -667,28 +660,25 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitTag(io.apicurio.datamodels.core.models.common.Tag)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitTag(Tag)
      */
     @Override
     public void visitTag(Tag node) {
         OpenApi30Document parent30 = this.doc30;
-        Tag tag30 = parent30.createTag();
+        OpenApiTag tag30 = parent30.createTag();
         tag30.setName(node.getName());
         tag30.setDescription(node.getDescription());
         parent30.addTag(tag30);
         this.mapNode(node, tag30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitSecurityDefinitions(io.apicurio.datamodels.openapi.v2.models.OpenApi20SecurityDefinitions)
-     */
     @Override
     public void visitSecurityDefinitions(OpenApi20SecurityDefinitions node) {
         // OpenAPI 3 has no "Security Definitions" wrapper entity.
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSecurityScheme(SecurityScheme)
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
@@ -710,9 +700,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 flows30.setImplicit(flows30.createOAuthFlow());
                 flows30.getImplicit().setAuthorizationUrl(scheme.getAuthorizationUrl());
                 if (!NodeUtil.isNullOrUndefined(scheme.getScopes())) {
-                    flows30.getImplicit().setScopes(new LinkedHashMap<>());
+                    ((OpenApiOAuthFlow) flows30.getImplicit()).setScopes(new LinkedHashMap<>());
                     scheme.getScopes().getItemNames().forEach(scopeName -> {
-                        flows30.getImplicit().getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
+                        ((OpenApiOAuthFlow) flows30.getImplicit()).getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
                     });
                 }
             }
@@ -722,9 +712,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 flows30.getAuthorizationCode().setAuthorizationUrl(scheme.getAuthorizationUrl());
                 flows30.getAuthorizationCode().setTokenUrl(scheme.getTokenUrl());
                 if (!NodeUtil.isNullOrUndefined(scheme.getScopes())) {
-                    flows30.getAuthorizationCode().setScopes(new LinkedHashMap<>());
+                    ((OpenApiOAuthFlow) flows30.getAuthorizationCode()).setScopes(new LinkedHashMap<>());
                     scheme.getScopes().getItemNames().forEach(scopeName -> {
-                        flows30.getAuthorizationCode().getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
+                        ((OpenApiOAuthFlow) flows30.getAuthorizationCode()).getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
                     });
                 }
             }
@@ -733,9 +723,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 flows30.setPassword(flows30.createOAuthFlow());
                 flows30.getPassword().setTokenUrl(scheme.getTokenUrl());
                 if (!NodeUtil.isNullOrUndefined(scheme.getScopes())) {
-                    flows30.getPassword().setScopes(new LinkedHashMap<>());
+                    ((OpenApiOAuthFlow) flows30.getPassword()).setScopes(new LinkedHashMap<>());
                     scheme.getScopes().getItemNames().forEach(scopeName -> {
-                        flows30.getPassword().getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
+                        ((OpenApiOAuthFlow) flows30.getPassword()).getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
                     });
                 }
             }
@@ -744,9 +734,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 flows30.setClientCredentials(flows30.createOAuthFlow());
                 flows30.getClientCredentials().setTokenUrl(scheme.getTokenUrl());
                 if (!NodeUtil.isNullOrUndefined(scheme.getScopes())) {
-                    flows30.getClientCredentials().setScopes(new LinkedHashMap<>());
+                    ((OpenApiOAuthFlow) flows30.getClientCredentials()).setScopes(new LinkedHashMap<>());
                     scheme.getScopes().getItemNames().forEach(scopeName -> {
-                        flows30.getClientCredentials().getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
+                        ((OpenApiOAuthFlow) flows30.getClientCredentials()).getScopes().put(scopeName, scheme.getScopes().getItem(scopeName));
                     });
                 }
             }
@@ -755,9 +745,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(scheme, scheme30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitScopes(io.apicurio.datamodels.openapi.v2.models.OpenApi20Scopes)
-     */
     @Override
     public void visitScopes(OpenApi20Scopes node) {
         // Note: scopes are handled during the processing of the security scheme.  See `visitSecurityScheme` for details.
@@ -850,25 +837,16 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(node, items30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitDefinitions(io.apicurio.datamodels.openapi.v2.models.OpenApi20Definitions)
-     */
     @Override
     public void visitDefinitions(OpenApi20Definitions node) {
         // Note: there is no "definitions" entity in 3.0, so nothing to do here.
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitParameterDefinitions(io.apicurio.datamodels.openapi.v2.models.OpenApi20ParameterDefinitions)
-     */
     @Override
     public void visitParameterDefinitions(OpenApi20ParameterDefinitions node) {
         // Note: there is no "parameters definitions" entity in 3.0, so nothing to do here.
     }
 
-    /**
-     * @see io.apicurio.datamodels.openapi.v2.visitors.IOpenApi20Visitor#visitResponseDefinitions(io.apicurio.datamodels.openapi.v2.models.OpenApi20ResponseDefinitions)
-     */
     @Override
     public void visitResponseDefinitions(OpenApi20ResponseDefinitions node) {
         // Note: there is no "responses definitions" entity in 3.0, so nothing to do here.

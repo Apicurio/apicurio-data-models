@@ -1,16 +1,13 @@
 package io.apicurio.datamodels.visitors;
 
-import java.util.List;
-
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.SecurityRequirement;
-import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
-import io.apicurio.datamodels.util.ModelTypeUtil;
+
+import java.util.List;
 
 public class SecurityRequirementsFromParentVisitor extends CombinedVisitorAdapter {
 
@@ -18,14 +15,6 @@ public class SecurityRequirementsFromParentVisitor extends CombinedVisitorAdapte
 
     public List<? extends SecurityRequirement> getSecurityRequirements() {
         return securityRequirements;
-    }
-
-    @Override
-    public void visitServer(Server node) {
-        if (ModelTypeUtil.isAsyncApiModel(node)) {
-            AsyncApiServer server = (AsyncApiServer) node;
-            securityRequirements = server.getSecurity();
-        }
     }
 
     @Override
