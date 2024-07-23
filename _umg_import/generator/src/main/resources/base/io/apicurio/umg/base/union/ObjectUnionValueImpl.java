@@ -8,8 +8,8 @@ public class ObjectUnionValueImpl extends PrimitiveUnionValueImpl<ObjectNode> im
         super();
     }
 
-    public ObjectUnionValueImpl(ObjectNode value) {
-        super(value);
+    public ObjectUnionValueImpl(Object value) {
+        super((ObjectNode) value);
     }
 
 }
