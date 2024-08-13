@@ -85,6 +85,7 @@ public class ChangePayloadRefCommand_Aai20 extends AbstractCommand {
       Object payload = message.payload;
       if (payload == null) {
          payload = JsonCompat.objectNode();
+         message.payload = payload;
       }
       Object oldValue = JsonCompat.getProperty(payload, "$ref");
       if (oldValue != null && JsonCompat.isString(oldValue)) {
