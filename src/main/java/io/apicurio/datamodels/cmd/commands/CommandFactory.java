@@ -670,13 +670,15 @@ public class CommandFactory {
     }
 
     /**
-     * @deprecated Use createChangePropertyCommand instead
+     * @deprecated Use the AaiMessage variant
      */
     @Deprecated
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, operation);
     }
-
+    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiMessage message) {
+        return new ChangeHeadersRefCommand_Aai20(headersRef, message);
+    }
 
     /* ***  Delete Commands  *** */
 
