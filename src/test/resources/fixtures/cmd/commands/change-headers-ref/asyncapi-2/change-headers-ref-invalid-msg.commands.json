@@ -1,0 +1,5 @@
+[{
+  "__type": "ChangeHeadersRefCommand_Aai20",
+  "_headersRef": "NotAReference",
+  "_messagePath": "/channels[myChannel]/subscribe/message"
+}]
