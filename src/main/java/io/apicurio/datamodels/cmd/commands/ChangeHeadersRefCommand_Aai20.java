@@ -17,6 +17,7 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
+import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
@@ -28,12 +29,11 @@ import io.apicurio.datamodels.core.models.NodePath;
 /**
  * A command used to change the $ref inside an AsyncAPI message headers.
  * @author laurent.broudoux@gmail.com
- * @deprecated Use {@link ChangePropertyCommand} instead.
  */
-@Deprecated
 public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
 
    public NodePath _operationPath;
+   public NodePath _messagePath;
    public String _headersRef;
    public String _oldHeadersRef = null;
 
@@ -47,22 +47,27 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
       this._headersRef = headersRef;
    }
 
+   ChangeHeadersRefCommand_Aai20(String headersRef, AaiMessage messageNode) {
+      this._messagePath = Library.createNodePath(messageNode);
+      this._headersRef = headersRef;
+   }
+
    @Override
    public void execute(Document document) {
       LoggerCompat.info("[ChangeHeadersRefCommand_Aai20] Executing.");
 
-      AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
       this._changed = false;
-
-      if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message) || !isValidRef(this._headersRef)) {
+      
+      AaiMessage message = getMessage(document);
+      if (this.isNullOrUndefined(message) || !isValidRef(this._headersRef)) {
          return;
       }
 
-      AaiHeaderItem headerItem = operation.message.headers;
+      AaiHeaderItem headerItem = message.headers;
       if (headerItem == null) {
          Aai20NodeFactory nodeFactory = new Aai20NodeFactory();
-         headerItem = nodeFactory.createHeaderItem(operation.message);
-         operation.message.headers = headerItem;
+         headerItem = nodeFactory.createHeaderItem(message);
+         message.headers = headerItem;
       }
       if (headerItem.$ref != null) {
          this._oldHeadersRef = headerItem.$ref;
@@ -75,19 +80,33 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
    public void undo(Document document) {
       LoggerCompat.info("[ChangeHeadersRefCommand_Aai20] Reverting.");
 
-      AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
+      AaiMessage message = getMessage(document);
 
-      if (!this._changed || this.isNullOrUndefined(operation)
-            || this.isNullOrUndefined(operation.message)) {
+      if (!this._changed || this.isNullOrUndefined(message)) {
          return;
       }
 
-      AaiHeaderItem headerItem = operation.message.headers;
+      AaiHeaderItem headerItem = message.headers;
       if (this._oldHeadersRef != null) {
          headerItem.$ref = this._oldHeadersRef;
       } else {
          headerItem.$ref = null;
       }
+   }
+   
+   private AaiMessage getMessage(Document document) {
+      if (!this.isNullOrUndefined(this._operationPath)) {
+         AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
+
+         if (this.isNullOrUndefined(operation) || this.isNullOrUndefined(operation.message)) {
+            return null;
+         }
+
+         return operation.message;
+      } else {
+         return  (AaiMessage) this._messagePath.resolve(document);
+      }
+      
    }
 
    private boolean isValidRef(String refCandidate) {
