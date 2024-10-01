@@ -304,6 +304,8 @@ public class CommandFactory {
             case "DeleteTagCommand_20":
             case "DeleteTagCommand_30":
             { return new DeleteTagCommand(); }
+            case "DeleteTagCommand_Aai20":
+            { return new DeleteTagCommand_Aai20(); }
             case "DeleteChildSchemaCommand":
             { return new DeleteChildSchemaCommand(); }
             case "DeleteChannelCommand":
@@ -880,6 +882,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
+    }
+    
+    public static final ICommand createDeleteTagCommand_Aai20(String tagName, Node node) {
+        return new DeleteTagCommand_Aai20(tagName, node);
     }
 
     public static final ICommand createDeleteChannelCommand(String channelName) {

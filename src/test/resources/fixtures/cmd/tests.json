@@ -170,6 +170,8 @@
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Path Item", "test": "commands/delete-server/openapi-3/delete-server-pathItem" },
     { "name": "[OpenAPI 2] {Delete Tag} - Delete Tag", "test": "commands/delete-tag/openapi-2/delete-tag" },
     { "name": "[OpenAPI 3] {Delete Tag} - Delete Tag", "test": "commands/delete-tag/openapi-3/delete-tag" },
+    { "name": "[AsyncAPI 2] {Delete Tag} - Delete Tag of Message", "test": "commands/delete-tag/asyncapi-2/delete-tag-msg" },
+    { "name": "[AsyncAPI 2] {Delete Tag} - Delete Tag of Operation", "test": "commands/delete-tag/asyncapi-2/delete-tag-op" },
     { "name": "[OpenAPI 3] {Delete Child Schema} - Any Of", "test": "commands/delete-child-schema/openapi-3/delete-child-schema" },
     { "name": "[OpenAPI 3] {New Media Type} - New Media Type Parameter", "test": "commands/new-media-type/openapi-3/new-media-type-parameter" },
     { "name": "[OpenAPI 3] {New Media Type} - New Media Type Request Body", "test": "commands/new-media-type/openapi-3/new-media-type-requestBody" },
