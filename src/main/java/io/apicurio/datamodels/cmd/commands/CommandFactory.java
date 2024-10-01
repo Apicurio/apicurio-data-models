@@ -373,6 +373,8 @@ public class CommandFactory {
             case "NewTagCommand_20":
             case "NewTagCommand_30":
             { return new NewTagCommand(); }
+            case "NewTagCommand_Aai20":
+            { return new NewTagCommand_Aai20(); }
             case "NewResponseDefinitionCommand_20":
             { return new NewResponseDefinitionCommand_20(); }
             case "NewResponseDefinitionCommand_30":
@@ -1003,6 +1005,10 @@ public class CommandFactory {
 
     public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
+    }
+
+    public static final ICommand createNewTagCommand_Aai20(String name, String description, Node node) {
+        return new NewTagCommand_Aai20(name, description, node);
     }
 
     public static final ICommand createNewExtensionCommand(ExtensibleNode parent, String name, Object value) {

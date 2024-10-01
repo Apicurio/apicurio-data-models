@@ -218,6 +218,8 @@
     { "name": "[OpenAPI 3] {New Server} - New Server Path Item", "test": "commands/new-server/openapi-3/new-server-pathItem" },
     { "name": "[OpenAPI 2] {New Tag} - New Tag", "test": "commands/new-tag/openapi-2/new-tag" },
     { "name": "[OpenAPI 3] {New Tag} - New Tag", "test": "commands/new-tag/openapi-3/new-tag" },
+    { "name": "[AsyncAPI 2] {New Tag} - New Tag on Message", "test": "commands/new-tag/asyncapi-2/new-tag-msg" },
+    { "name": "[AsyncAPI 2] {New Tag} - New Tag on Operation", "test": "commands/new-tag/asyncapi-2/new-tag-op" },
     { "name": "[OpenAPI 3] {New Extension} - New Extension", "test": "commands/new-extension/openapi-3/new-extension" },
     { "name": "[OpenAPI 3] {New Extension} - New Extension Object", "test": "commands/new-extension/openapi-3/new-extension-object" },
     { "name": "[OpenAPI 2] {Rename Param} - Refactor Operation Parameter", "test": "commands/rename-parameter/openapi-2/refactor-operation-parameter" },
