@@ -1,0 +1,27 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "Blank API",
+        "version": "1.0.0"
+    },
+    "channels": {
+        "myChannel": {
+            "description": "This is myChannel description",
+            "subscribe": {
+                "message":{
+                    "payload": {},
+                    "tags": [
+                        {
+                            "name": "tag1",
+                            "description": "desc1"
+                        },
+                        {
+                            "name": "tag2",
+                            "description": "desc2"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

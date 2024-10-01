@@ -1,5 +1,6 @@
 package io.apicurio.datamodels.asyncapi.models;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
  * @author Jakub Senko <jsenko@redhat.com>
  * @author Laurent Broudoux <laurent.broudoux@gmail.com>
  */
-public abstract class AaiMessageBase extends ExtensibleNode implements IReferenceNode, INamed {
+public abstract class AaiMessageBase extends ExtensibleNode implements IReferenceNode, INamed, IAaiTagged {
 
     public String _name; // Map
     public String $ref;
@@ -103,4 +104,14 @@ public abstract class AaiMessageBase extends ExtensibleNode implements IReferenc
     }
 
     public abstract void addTag(AaiTag tag);
+
+    @Override
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    @Override
+    public void deleteAllTags() {
+        this.tags = new LinkedList<>();
+    }
 }

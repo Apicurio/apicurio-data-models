@@ -231,6 +231,8 @@ public class CommandFactory {
             { return new DeleteAllServersCommand_Aai20(); }
             case "DeleteAllTagsCommand":
             { return new DeleteAllTagsCommand(); }
+            case "DeleteAllTagsCommand_Aai20":
+            { return new DeleteAllTagsCommand_Aai20();}
             case "DeleteAllChildSchemasCommand":
             { return new DeleteAllChildSchemasCommand(); }
             case "DeleteExampleCommand_20":
@@ -750,6 +752,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllTagsCommand() {
         return new DeleteAllTagsCommand();
+    }
+
+    public static final ICommand createDeleteAllTagsCommand_Aai20(Node node) {
+        return new DeleteAllTagsCommand_Aai20(node);
     }
 
     public static final ICommand createDeleteAllChildSchemasCommand(OasSchema parent, String type) {
