@@ -231,6 +231,8 @@ public class CommandFactory {
             { return new DeleteAllServersCommand_Aai20(); }
             case "DeleteAllTagsCommand":
             { return new DeleteAllTagsCommand(); }
+            case "DeleteAllTagsCommand_Aai20":
+            { return new DeleteAllTagsCommand_Aai20();}
             case "DeleteAllChildSchemasCommand":
             { return new DeleteAllChildSchemasCommand(); }
             case "DeleteExampleCommand_20":
@@ -302,6 +304,8 @@ public class CommandFactory {
             case "DeleteTagCommand_20":
             case "DeleteTagCommand_30":
             { return new DeleteTagCommand(); }
+            case "DeleteTagCommand_Aai20":
+            { return new DeleteTagCommand_Aai20(); }
             case "DeleteChildSchemaCommand":
             { return new DeleteChildSchemaCommand(); }
             case "DeleteChannelCommand":
@@ -369,6 +373,8 @@ public class CommandFactory {
             case "NewTagCommand_20":
             case "NewTagCommand_30":
             { return new NewTagCommand(); }
+            case "NewTagCommand_Aai20":
+            { return new NewTagCommand_Aai20(); }
             case "NewResponseDefinitionCommand_20":
             { return new NewResponseDefinitionCommand_20(); }
             case "NewResponseDefinitionCommand_30":
@@ -752,6 +758,10 @@ public class CommandFactory {
         return new DeleteAllTagsCommand();
     }
 
+    public static final ICommand createDeleteAllTagsCommand_Aai20(Node node) {
+        return new DeleteAllTagsCommand_Aai20(node);
+    }
+
     public static final ICommand createDeleteAllChildSchemasCommand(OasSchema parent, String type) {
         return new DeleteAllChildSchemasCommand(parent, type);
     }
@@ -875,6 +885,10 @@ public class CommandFactory {
     public static final ICommand createDeleteTagCommand(String tagName) {
         return new DeleteTagCommand(tagName);
     }
+    
+    public static final ICommand createDeleteTagCommand_Aai20(String tagName, Node node) {
+        return new DeleteTagCommand_Aai20(tagName, node);
+    }
 
     public static final ICommand createDeleteChannelCommand(String channelName) {
         return new DeleteChannelCommand(channelName);
@@ -991,6 +1005,10 @@ public class CommandFactory {
 
     public static final ICommand createNewTagCommand(String name, String description) {
         return new NewTagCommand(name, description);
+    }
+
+    public static final ICommand createNewTagCommand_Aai20(String name, String description, Node node) {
+        return new NewTagCommand_Aai20(name, description, node);
     }
 
     public static final ICommand createNewExtensionCommand(ExtensibleNode parent, String name, Object value) {

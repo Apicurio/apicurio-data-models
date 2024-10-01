@@ -28,7 +28,7 @@ import io.apicurio.datamodels.core.models.common.Tag;
 /**
  * @author Jakub Senko <jsenko@redhat.com>
  */
-public abstract class AaiOperationBase extends Operation implements IReferenceNode {
+public abstract class AaiOperationBase extends Operation implements IReferenceNode, IAaiTagged {
 
     public String $ref;
     public List<Tag> tags;
@@ -100,4 +100,14 @@ public abstract class AaiOperationBase extends Operation implements IReferenceNo
     }
     
     public abstract AaiTag createTag();
+
+    @Override
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    @Override
+    public void deleteAllTags() {
+        this.tags = new LinkedList<>();
+    }
 }
