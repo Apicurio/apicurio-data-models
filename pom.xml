@@ -84,6 +84,21 @@
         <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</version.org.sonatype.plugins.nexus-staging-maven-plugin>
     </properties>
 
+    <repositories>
+        <!-- use project local repo to get maven artifacts previously hosted on disconnected jsweet repo (https://github.com/cincheo/jsweet/issues/780) -->
+        <repository>
+            <id>local-repo</id>
+            <url>file:${basedir}/dependencies</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>local-repo</id>
+            <url>file:${basedir}/dependencies</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <dependencies>
         <!-- Third Party Deps -->
         <dependency>
@@ -255,23 +270,6 @@
     <profiles>
         <profile>
             <id>transpilation</id>
-
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>jsweet-plugins-release</id>
-                    <name>plugins-release</name>
-                    <url>https://repository.jsweet.org/artifactory/plugins-release-local</url>
-                </pluginRepository>
-            </pluginRepositories>
-
-            <repositories>
-                <repository>
-                    <id>jsweet-central</id>
-                    <name>libs-release</name>
-                    <url>https://repository.jsweet.org/artifactory/libs-release-local</url>
-                </repository>
-            </repositories>
-
             <build>
                 <plugins>
                     <!-- Generate TS from Java -->
