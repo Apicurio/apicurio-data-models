@@ -6,7 +6,7 @@ on:
 
 jobs:
   update-website:
-    if: github.repository_owner == 'Apicurio'
+    if: github.repository_owner == 'Apicurio' && (github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '1.'))
     runs-on: ubuntu-latest
     steps:
 
