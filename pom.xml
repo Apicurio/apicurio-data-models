@@ -86,6 +86,21 @@
         <version.jsweet-maven-plugin>3.1.1.RedHat</version.jsweet-maven-plugin>
     </properties>
 
+    <repositories>
+        <!-- use project local repo to get maven artifacts previously hosted on disconnected jsweet repo (https://github.com/cincheo/jsweet/issues/780) -->
+        <repository>
+            <id>local-repo</id>
+            <url>file:${basedir}/dependencies</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>local-repo</id>
+            <url>file:${basedir}/dependencies</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <dependencies>
         <!-- Third Party Deps -->
         <dependency>
@@ -315,7 +330,6 @@
     <profiles>
         <profile>
             <id>transpilation</id>
-
             <build>
                 <plugins>
                     <!-- Generate TS from Java using JSweet -->
