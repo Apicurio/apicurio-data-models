@@ -129,10 +129,6 @@ jobs:
         run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.ACCESS_TOKEN }}
 
 
-      - name: Generate Release Notes
-        run: gren release --token=${{ secrets.GITHUB_TOKEN }} --override --prefix=v             
-
-
       - name: Maven Deploy
         run: |
           # Retry 3 times before the steps actually fails
