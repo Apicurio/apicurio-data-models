@@ -22,7 +22,7 @@ npmjs.com:
 
 This documentation can also be found in this repository here:
 
-  [./README.md](https://github.com/Apicurio/apicurio-data-models/blob/master/README.md)
+  [./src/main/ts/module/README.md](https://github.com/Apicurio/apicurio-data-models/blob/master/src/main/ts/module/README.md)
 
 ## Project Goals
 
