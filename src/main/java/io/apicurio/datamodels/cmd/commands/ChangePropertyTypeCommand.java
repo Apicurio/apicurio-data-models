@@ -98,6 +98,9 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
             // Going from required to optional - remove property name from required list.
             if (Boolean.FALSE.equals(this._newType.required) && this._oldRequired) {
                 required.remove(this._oldRequiredIndex.intValue());
+                if (required.isEmpty()) {
+                    parent.setRequiredProperties(null);
+                }
             }
         }
     }
@@ -134,6 +137,10 @@ public abstract class ChangePropertyTypeCommand extends AbstractCommand {
                 }
                 // Restoring required from optional
                 if (!currentlyRequired && this._oldRequired) {
+                    if (this.isNullOrUndefined(required) ) {
+                        required = new ArrayList<>();
+                        parent.setRequiredProperties(required);
+                    }
                     ModelUtils.restoreListEntry(this._oldRequiredIndex, prop.getPropertyName(), required);
                 }
             }
