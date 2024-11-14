@@ -1,5 +1,6 @@
 name: Verify Build Workflow
 on:
+  workflow_dispatch: {}
   push:
     paths-ignore:
       - '.github/**'
