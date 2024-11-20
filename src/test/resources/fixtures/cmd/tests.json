@@ -87,6 +87,8 @@
     { "name": "[OpenAPI 2] {Change Schema Type} - Change Schema Type", "test": "commands/change-schema-type/openapi-2/change-schema-type" },
     { "name": "[OpenAPI 3] {Change Schema Type} - Change Schema Type Enum", "test": "commands/change-schema-type/openapi-3/change-schema-type-enum" },
     { "name": "[OpenAPI 3] {Change Schema Type} - Change Schema Type", "test": "commands/change-schema-type/openapi-3/change-schema-type" },
+    { "name": "[Asyncapi 2] {Change Schema Type} - Change Schema Type", "test": "commands/change-schema-type/asyncapi-2/change-schema-type" },
+    { "name": "[Asyncapi 2] {Change Schema Type} - Change Schema Type Enum", "test": "commands/change-schema-type/asyncapi-2/change-schema-type-enum" },
     { "name": "[OpenAPI 2] {Change ResponseType} - Change Response Def Type", "test": "commands/change-response-type/openapi-2/change-response-definition-type" },
     { "name": "[OpenAPI 2] {Change ResponseType} - Change Response Type Enum", "test": "commands/change-response-type/openapi-2/change-response-type-enum" },
     { "name": "[OpenAPI 2] {Change ResponseType} - Change Response Type", "test": "commands/change-response-type/openapi-2/change-response-type" },

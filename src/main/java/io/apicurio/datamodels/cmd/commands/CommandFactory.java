@@ -183,6 +183,8 @@ public class CommandFactory {
             { return new ChangeServerCommand_Aai20(); }
             case "ChangeSchemaTypeCommand":
             { return new ChangeSchemaTypeCommand(); }
+            case "ChangeSchemaTypeCommand_Aai20":
+            { return new ChangeSchemaTypeCommand_Aai20(); }
             case "ChangeSchemaInheritanceCommand":
             { return new ChangeSchemaInheritanceCommand(); }
             case "ChangeSchemaInheritanceCommand_Aai20":
@@ -652,8 +654,17 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    public static final ICommand createChangeSchemaTypeCommand(OasSchema schema, SimplifiedType newType) {
-        return new ChangeSchemaTypeCommand(schema, newType);
+    public static final ICommand createChangeSchemaTypeCommand(Schema schema, SimplifiedType newType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new ChangeSchemaTypeCommand_Aai20((AaiSchema) schema, newType);
+            case openapi2:
+            case openapi3:
+                return new ChangeSchemaTypeCommand((OasSchema) schema, newType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createChangeResponseTypeCommand(Oas20Response response,
