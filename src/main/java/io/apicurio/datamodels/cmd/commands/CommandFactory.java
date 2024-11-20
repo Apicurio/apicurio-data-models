@@ -316,6 +316,8 @@ public class CommandFactory {
             { return new DeleteTagCommand_Aai20(); }
             case "DeleteChildSchemaCommand":
             { return new DeleteChildSchemaCommand(); }
+            case "DeleteChildSchemaCommand_Aai20":
+            { return new DeleteChildSchemaCommand_Aai20(); }
             case "DeleteChannelCommand":
             case "DeleteChannelCommand_Aai20":
             { return new DeleteChannelCommand(); }
@@ -727,8 +729,17 @@ public class CommandFactory {
         return new DeleteContactCommand(info);
     }
 
-    public static final ICommand createDeleteChildSchemaCommand(OasSchema schema) {
-        return new DeleteChildSchemaCommand(schema);
+    public static final ICommand createDeleteChildSchemaCommand(Schema schema) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new DeleteChildSchemaCommand_Aai20((AaiSchema) schema);
+            case openapi2:
+            case openapi3:
+                return new DeleteChildSchemaCommand((OasSchema) schema);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createDeleteAllExtensionsCommand(ExtensibleNode fromNode) {
