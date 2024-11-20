@@ -185,6 +185,8 @@ public class CommandFactory {
             { return new ChangeSchemaTypeCommand(); }
             case "ChangeSchemaInheritanceCommand":
             { return new ChangeSchemaInheritanceCommand(); }
+            case "ChangeSchemaInheritanceCommand_Aai20":
+            { return new ChangeSchemaInheritanceCommand_Aai20(); }
             case "ChangePayloadRefCommand_Aai20":
             { return new ChangePayloadRefCommand_Aai20(); }
             case "ChangeHeadersRefCommand_Aai20":
@@ -585,10 +587,19 @@ public class CommandFactory {
         return new ChangeLicenseCommand(name, url);
     }
 
-    public static final ICommand createChangeSchemaInheritanceCommand(OasSchema schema, String inheritanceType) {
-        return new ChangeSchemaInheritanceCommand(schema, inheritanceType);
+    public static final ICommand createChangeSchemaInheritanceCommand(Schema schema, String inheritanceType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new ChangeSchemaInheritanceCommand_Aai20((AaiSchema) schema, inheritanceType);
+            case openapi2:
+            case openapi3:
+                return new ChangeSchemaInheritanceCommand((OasSchema) schema, inheritanceType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
-
+    
     public static final ICommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
     }

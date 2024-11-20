@@ -1,0 +1,28 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "Schema Inheritance",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "DataType": {
+                "description": "",
+                "type": "object",
+                "required": [
+                    "property-1"
+                ],
+                "properties": {
+                    "property-1": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "property-2": {
+                        "description": "",
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}

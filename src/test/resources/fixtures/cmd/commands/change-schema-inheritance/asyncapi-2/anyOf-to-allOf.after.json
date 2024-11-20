@@ -1,0 +1,39 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "Schema Inheritance",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "DataType": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Address1"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Address2"
+                    },
+                    {
+                        "required": [
+                            "property-1"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "property-1": {
+                                "description": "",
+                                "type": "string"
+                            },
+                            "property-2": {
+                                "description": "",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

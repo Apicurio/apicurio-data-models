@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "ChangeSchemaInheritanceCommand_Aai20",
+        "_schemaPath": "/components/schemas[DataType]",
+        "_newInheritanceType": "allOf"
+    }
+]
