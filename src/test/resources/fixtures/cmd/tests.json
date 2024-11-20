@@ -135,6 +135,7 @@
     { "name": "[AsyncAPI 2] {Delete All Tags} - Delete All Tags of Message", "test": "commands/delete-all-tags/asyncapi-2/delete-all-tags-msg" },
     { "name": "[AsyncAPI 2] {Delete All Tags} - Delete All Tags of Operation", "test": "commands/delete-all-tags/asyncapi-2/delete-all-tags-op" },
     { "name": "[OpenAPI 3] {Delete All Child Schemas} - All Of", "test": "commands/delete-all-child-schemas/openapi-3/delete-all-schemas" },
+    { "name": "[Asyncapi 2] {Delete All Child Schemas} - All Of", "test": "commands/delete-all-child-schemas/asyncapi-2/delete-all-schemas" },
     { "name": "[OpenAPI 2] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-2/delete-contact" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact NA", "test": "commands/delete-contact/openapi-3/delete-contact-na" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" },

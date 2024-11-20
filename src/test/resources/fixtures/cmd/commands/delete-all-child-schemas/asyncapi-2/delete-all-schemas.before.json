@@ -1,0 +1,26 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "Delete All Schemas API",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "SampleDataType": {
+                "anyOf": [
+                    {
+                        "$ref": "#!/components/schemas/Foo"
+                    },
+                    {
+                        "$ref": "#!/components/schemas/Bar"
+                    },
+                    {
+                        "$ref": "#!/components/schemas/Baz"
+                    }
+                ],
+                "description": "",
+                "type": "object"
+            }
+        }
+    }
+}

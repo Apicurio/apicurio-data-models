@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteAllChildSchemasCommand_Aai20",
+    "_schemaPath": "/components/schemas[SampleDataType]",
+    "_childSchemaType": "anyOf"
+}]

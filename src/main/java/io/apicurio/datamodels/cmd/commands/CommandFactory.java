@@ -241,6 +241,8 @@ public class CommandFactory {
             { return new DeleteAllTagsCommand_Aai20();}
             case "DeleteAllChildSchemasCommand":
             { return new DeleteAllChildSchemasCommand(); }
+            case "DeleteAllChildSchemasCommand_Aai20":
+            { return new DeleteAllChildSchemasCommand_Aai20(); }
             case "DeleteExampleCommand_20":
             { return new DeleteExampleCommand_20(); }
             case "DeleteExampleCommand_30":
@@ -795,8 +797,17 @@ public class CommandFactory {
         return new DeleteAllTagsCommand_Aai20(node);
     }
 
-    public static final ICommand createDeleteAllChildSchemasCommand(OasSchema parent, String type) {
-        return new DeleteAllChildSchemasCommand(parent, type);
+    public static final ICommand createDeleteAllChildSchemasCommand(Schema parent, String type) {
+        DocumentType docType = parent.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new DeleteAllChildSchemasCommand_Aai20((AaiSchema) parent, type);
+            case openapi2:
+            case openapi3:
+                return new DeleteAllChildSchemasCommand((OasSchema) parent, type);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createDelete20ExampleCommand(Oas20Response response, String contentType) {
