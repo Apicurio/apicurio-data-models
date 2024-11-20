@@ -112,6 +112,8 @@ public class CommandFactory {
             { return new AddResponseDefinitionCommand_30(); }
             case "AddChildSchemaCommand":
             { return new AddChildSchemaCommand(); }
+            case "AddChildSchemaCommand_Aai20":
+            { return new AddChildSchemaCommand_Aai20(); }
             case "AddChannelItemCommand":
             case "AddChannelItemCommand_Aai20":
             { return new AddChannelItemCommand(); }
@@ -543,8 +545,17 @@ public class CommandFactory {
         return new AddSecurityRequirementCommand(parent, requirement);
     }
 
-    public static final ICommand createAddChildSchemaCommand(OasSchema schema, OasSchema childSchema, String childType) {
-        return new AddChildSchemaCommand(schema, childSchema, childType);
+    public static final ICommand createAddChildSchemaCommand(Schema schema, Schema childSchema, String childType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new AddChildSchemaCommand_Aai20((AaiSchema) schema, (AaiSchema) childSchema, childType);
+            case openapi2:
+            case openapi3:
+                return new AddChildSchemaCommand((OasSchema) schema, (OasSchema) childSchema, childType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createAddChannelItemCommand(String channelItemName, Object from) {

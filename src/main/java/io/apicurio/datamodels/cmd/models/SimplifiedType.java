@@ -19,6 +19,7 @@ package io.apicurio.datamodels.cmd.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.openapi.models.OasSchema;
@@ -87,6 +88,31 @@ public class SimplifiedType {
         }
         if (ModelUtils.isDefined(schema) && ModelUtils.isDefined(schema.type) && !NodeCompat.equals(schema.type, "array") &&
             !NodeCompat.equals(schema.type, "object"))
+        {
+            rval.type = schema.type;
+            if (ModelUtils.isDefined(schema.format)) {
+                rval.as = schema.format;
+            }
+        }
+        // TODO handle the case where .items is a list of schemas
+        if (ModelUtils.isDefined(schema) && NodeCompat.equals(schema.type, "array") && ModelUtils.isDefined(schema.items)) {
+            rval.type = "array";
+            rval.of = SimplifiedType.fromSchema((OasSchema)schema.items);
+        }
+        return rval;
+    }
+
+    public static SimplifiedType fromAaiSchema(AaiSchema schema) {
+        SimplifiedType rval = new SimplifiedType();
+        if (ModelUtils.isDefined(schema) && ModelUtils.isDefined(schema.$ref)) {
+            rval.type = schema.$ref;
+        }
+        if (ModelUtils.isDefined(schema) && ModelUtils.isDefined(schema.enum_) && schema.enum_.size() >= 0) {
+            // Need to clone the enum values
+            rval.enum_ = new ArrayList<>(schema.enum_);
+        }
+        if (ModelUtils.isDefined(schema) && ModelUtils.isDefined(schema.type) && !NodeCompat.equals(schema.type, "array") &&
+                !NodeCompat.equals(schema.type, "object"))
         {
             rval.type = schema.type;
             if (ModelUtils.isDefined(schema.format)) {

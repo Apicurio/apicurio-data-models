@@ -162,7 +162,7 @@ public class ChangeSchemaInheritanceCommand extends AbstractSchemaInhCommand {
         // when switching FROM "none" - wrap any properties this schema has into another
         // schema and add it to the list of schemas
         if (NodeCompat.equals(TYPE_NONE, fromType)) {
-            OasSchema wrapperSchema = createSchema(schema, fromType);
+            OasSchema wrapperSchema = (OasSchema) createSchema(schema, fromType);
             wrapperSchema.type = "object";
             moveProperties(schema, wrapperSchema);
             

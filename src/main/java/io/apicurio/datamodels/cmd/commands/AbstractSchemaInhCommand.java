@@ -19,10 +19,12 @@ package io.apicurio.datamodels.cmd.commands;
 import java.util.List;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.compat.NodeCompat;
 import io.apicurio.datamodels.core.models.DocumentType;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
@@ -42,19 +44,32 @@ public abstract class AbstractSchemaInhCommand extends AbstractCommand {
      * Determines the current inheritance type for the given schema.
      * @param schema
      */
-    static String getInheritanceType(OasSchema schema) {
-        if (ModelUtils.isDefined(schema.allOf)) {
-            return TYPE_ALL_OF;
-        }
-        if (schema.ownerDocument().getDocumentType() == DocumentType.openapi3) {
-            Oas30Schema schema30 = (Oas30Schema) schema;
-            if (ModelUtils.isDefined(schema30.anyOf)) {
+    static String getInheritanceType(Schema schema) {
+        if (schema instanceof OasSchema) {
+            if (ModelUtils.isDefined(((OasSchema) schema).allOf)) {
+                return TYPE_ALL_OF;
+            }
+            if (schema.ownerDocument().getDocumentType() == DocumentType.openapi3) {
+                Oas30Schema schema30 = (Oas30Schema) schema;
+                if (ModelUtils.isDefined(schema30.anyOf)) {
+                    return TYPE_ANY_OF;
+                }
+                if (ModelUtils.isDefined(schema30.oneOf)) {
+                    return TYPE_ONE_OF;
+                }
+            }
+        } else if (schema instanceof AaiSchema) {
+            if (ModelUtils.isDefined(((AaiSchema) schema).allOf)) {
+                return TYPE_ALL_OF;
+            }
+            if (ModelUtils.isDefined(((AaiSchema) schema).anyOf)) {
                 return TYPE_ANY_OF;
             }
-            if (ModelUtils.isDefined(schema30.oneOf)) {
+            if (ModelUtils.isDefined(((AaiSchema) schema).oneOf)) {
                 return TYPE_ONE_OF;
             }
         }
+
         return TYPE_NONE;
     }
 
@@ -63,20 +78,18 @@ public abstract class AbstractSchemaInhCommand extends AbstractCommand {
      * @param parentSchema
      * @param inheritanceType
      */
-    protected OasSchema createSchema(OasSchema parentSchema, String inheritanceType) {
+    protected Schema createSchema(Schema parentSchema, String inheritanceType) {
         if (NodeCompat.equals(TYPE_ALL_OF, inheritanceType)) {
-            return parentSchema.createAllOfSchema();
+            return createAllOfSchema(parentSchema);
         }
         if (NodeCompat.equals(TYPE_ANY_OF, inheritanceType)) {
-            Oas30Schema schema30 = (Oas30Schema) parentSchema;
-            return schema30.createAnyOfSchema();
+            return createAnyOfSchema(parentSchema);
         }
         if (NodeCompat.equals(TYPE_ONE_OF, inheritanceType)) {
-            Oas30Schema schema30 = (Oas30Schema) parentSchema;
-            return schema30.createOneOfSchema();
+            return createOneOfSchema(parentSchema);
         }
         // TODO is it possible to get here?  if so what should we do?
-        return parentSchema.createAllOfSchema();
+        return createAllOfSchema(parentSchema);
     }
 
     /**
@@ -85,24 +98,73 @@ public abstract class AbstractSchemaInhCommand extends AbstractCommand {
      * @param targetSchema 
      * @param inheritanceType
      */
-    protected void copySchemaJsTo(List<Object> schemas, OasSchema targetSchema, String inheritanceType) {
+    protected void copySchemaJsTo(List<Object> schemas, Schema targetSchema, String inheritanceType) {
         if (NodeCompat.equals(TYPE_ALL_OF, inheritanceType)) {
             schemas.forEach(ser -> {
-                targetSchema.addAllOfSchema((OasSchema) Library.readNode(ser, targetSchema.createAllOfSchema()));
+                addAllOfSchema(targetSchema, (Schema) Library.readNode(ser, createAllOfSchema(targetSchema)));
             });
         }
         if (NodeCompat.equals(TYPE_ANY_OF, inheritanceType)) {
-            Oas30Schema targetSchema30 = (Oas30Schema) targetSchema;
             schemas.forEach(ser -> {
-                targetSchema30.addAnyOfSchema((Oas30AnyOfSchema) Library.readNode(ser, targetSchema30.createAnyOfSchema()));
+                addAnyOfSchema(targetSchema, (Schema) Library.readNode(ser, createAnyOfSchema(targetSchema)));
             });
         }
         if (NodeCompat.equals(TYPE_ONE_OF, inheritanceType)) {
-            Oas30Schema targetSchema30 = (Oas30Schema) targetSchema;
             schemas.forEach(ser -> {
-                targetSchema30.addOneOfSchema((Oas30OneOfSchema) Library.readNode(ser, targetSchema30.createOneOfSchema()));
+                addOneOfSchema(targetSchema, (Schema) Library.readNode(ser, createOneOfSchema(targetSchema)));
             });
         }        
+    }
+    
+    private static void addAllOfSchema(Schema to, Schema from) {
+        if (to instanceof OasSchema) {
+            ((OasSchema) to).addAllOfSchema((OasSchema) from);
+        } else if (to instanceof AaiSchema) {
+            ((AaiSchema) to).addAllOfSchema((AaiSchema) from);
+        }
+    }
+    
+    private static Schema createAllOfSchema(Schema schema) {
+        if (schema instanceof OasSchema) {
+            return ((OasSchema) schema).createAllOfSchema();
+        } else if (schema instanceof AaiSchema) {
+            return ((AaiSchema) schema).createAllOfSchema();
+        }
+        return null;
+    }
+    
+    private static void addAnyOfSchema(Schema to, Schema from) {
+        if (to instanceof Oas30Schema) {
+            ((Oas30Schema) to).addAnyOfSchema((Oas30AnyOfSchema) from);
+        } else if (to instanceof AaiSchema) {
+            ((AaiSchema) to).addAnyOfSchema((AaiSchema) from);
+        }
+    }
+    
+    private static Schema createAnyOfSchema(Schema schema) {
+        if (schema instanceof Oas30Schema) {
+            return ((Oas30Schema) schema).createAnyOfSchema();
+        } else if (schema instanceof AaiSchema) {
+            return ((AaiSchema) schema).createAnyOfSchema();
+        }
+        return null;
+    }
+    
+    private static void addOneOfSchema(Schema to, Schema from) {
+        if (to instanceof Oas30Schema) {
+            ((Oas30Schema) to).addOneOfSchema((Oas30OneOfSchema) from);
+        } else if (to instanceof AaiSchema) {
+            ((AaiSchema) to).addOneOfSchema((AaiSchema) from);
+        }
+    }
+    
+    private static Schema createOneOfSchema(Schema schema) {
+        if (schema instanceof Oas30Schema) {
+            return ((Oas30Schema) schema).createOneOfSchema();
+        } else if (schema instanceof AaiSchema) {
+            return ((AaiSchema) schema).createOneOfSchema();
+        }
+        return null;
     }
 
 }

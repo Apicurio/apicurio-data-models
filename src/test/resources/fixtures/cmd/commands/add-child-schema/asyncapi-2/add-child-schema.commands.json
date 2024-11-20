@@ -1,0 +1,10 @@
+[
+	{
+		"__type": "AddChildSchemaCommand_Aai20",
+		"_schemaPath": "/components/schemas[AllOfDataType]",
+		"_newChildSchemaType": "allOf",
+		"_newChildSchemaObj": {
+			"$ref": "#!/components/schemas/Baz"
+		}
+	}
+]

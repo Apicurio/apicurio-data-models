@@ -24,6 +24,7 @@ import io.apicurio.datamodels.compat.LoggerCompat;
 import io.apicurio.datamodels.compat.MarshallCompat.NullableJsonNodeDeserializer;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.NodePath;
+import io.apicurio.datamodels.core.models.common.Schema;
 import io.apicurio.datamodels.openapi.models.OasSchema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Schema.Oas30AnyOfSchema;
@@ -89,7 +90,7 @@ public class DeleteChildSchemaCommand extends AbstractSchemaInhCommand {
         }
 
         // Create the schema and unmarshal it from the saved JSON data
-        OasSchema schema = this.createSchema(parent, this._oldSchemaType);
+        Schema schema = this.createSchema(parent, this._oldSchemaType);
         Library.readNode(this._oldSchema, schema);
         
         // Add the schema back to the parent

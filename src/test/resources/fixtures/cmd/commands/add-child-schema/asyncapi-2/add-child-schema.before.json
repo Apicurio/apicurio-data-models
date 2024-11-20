@@ -1,0 +1,24 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "Add Child Schema API",
+        "version": "1.0.0",
+        "description": "This is a cool api."
+    },
+    "components": {
+        "schemas": {
+            "AllOfDataType": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#!/components/schemas/Foo"
+                    },
+                    {
+                        "$ref": "#!/components/schemas/Bar"
+                    }
+                ]
+            }
+        }
+    }
+}
