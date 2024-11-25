@@ -1,0 +1,17 @@
+{
+  "swagger": "2.0",
+  "responses": {
+    "NotFound": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+         }
+      },
+      "description": "Response used when some server data could not be found!"
+    },
+    "Error": {
+      "description": "An error occurred."
+    }
+  }
+}

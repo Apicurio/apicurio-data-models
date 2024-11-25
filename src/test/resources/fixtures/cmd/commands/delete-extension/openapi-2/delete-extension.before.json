@@ -1,0 +1,49 @@
+{
+    "swagger":"2.0",
+    "paths":{
+        "/pet/findByStatus":{
+            "get":{
+                "tags":[
+                    "pet"
+                ],
+                "summary":"Finds Pets by status",
+                "description":"Multiple status values can be provided with comma seperated strings",
+                "operationId":"findPetsByStatus",
+                "consumes":[
+                    "application/xml",
+                    "application/json",
+                    "multipart/form-data",
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces":[
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description":"successful operation",
+                        "schema":{
+                            "type":"array",
+                            "items":{
+                                "$ref":"#/definitions/Pet"
+                            }
+                        },
+                        "examples": {
+                            "application/json": {
+                                "foo": "bar",
+                                "hello": "world",
+                                "int-property": 17
+                            },
+                            "application/xml": "<xml>blah</xml>"
+                        }
+                    },
+                    "400":{
+                        "description":"Invalid status value"
+                    }
+                },
+                "x-existing-extension": [ "value", "doesn't", "matter" ],
+                "x-other-extension": "hello world"
+            }
+        }
+    }
+}

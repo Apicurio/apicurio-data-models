@@ -1,0 +1,166 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Test 3.0 API",
+    "description": "Just a test of a **3.0** API!",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/resources/{resId}/beers": {
+      "summary": "Path used to manage the list of Beers.",
+      "description": "The REST endpoint/path used to list and create zero or more `Beer` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+      "get": {
+        "summary": "List All Beers",
+        "description": "Gets a list of all `Beer` entities.",
+        "operationId": "getBeers",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns an array of `Beer` entities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Beer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a Beer",
+        "description": "Creates a new instance of a `Beer`.",
+        "operationId": "createBeer",
+        "requestBody": {
+          "description": "A new `Beer` to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Beer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "resId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/resources/{resId}/foos/{fooId}": {
+      "summary": "Path used to manage a single Beer.",
+      "description": "The REST endpoint/path used to get, update, and delete single instances of an `Beer`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+      "get": {
+        "summary": "Get a Beer",
+        "description": "Gets the details of a single instance of a `Beer`.",
+        "operationId": "getBeer",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns a single `Beer`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Beer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Beer",
+        "description": "Updates an existing `Beer`.",
+        "operationId": "updateBeer",
+        "requestBody": {
+          "description": "Updated `Beer` information.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Beer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Beer",
+        "description": "Deletes an existing `Beer`.",
+        "operationId": "deleteBeer",
+        "responses": {
+          "204": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "resId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "fooId",
+          "in": "path",
+          "description": "A unique identifier for a `Beer`.",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "Beer": {
+        "title": "Root Type for Beer",
+        "description": "The root of the Beer type's schema.",
+        "required": [],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ibu": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "brewery": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "example": "{\n    \"name\": \"beer\",\n    \"description\": \"beer\",\n    \"ibu\": 17,\n    \"brewery\": 1\n}"
+      }
+    }
+  }
+}

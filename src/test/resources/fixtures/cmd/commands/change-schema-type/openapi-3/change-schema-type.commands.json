@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "ChangeSchemaTypeCommand",
+        "_schemaPath": "/components/schemas[MySchema1]",
+        "_newType": {
+            "type": "integer",
+            "as" : "int32"
+        }
+    }
+]

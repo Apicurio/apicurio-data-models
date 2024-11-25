@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteOperationCommand_30",
+    "_property": "get",
+    "_parentPath": "/paths[/foo]"
+}]

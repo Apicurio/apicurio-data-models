@@ -21,8 +21,10 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.type.TypeMirror;
 
 import org.jsweet.transpiler.extension.PrinterAdapter;
+import org.jsweet.transpiler.model.ExtendedElement;
 import org.jsweet.transpiler.model.MethodInvocationElement;
 import org.jsweet.transpiler.model.NewClassElement;
 
@@ -49,13 +51,13 @@ public class JacksonAdapter extends PrinterAdapter {
         if (targetExpression != null && targetExpression.getTypeAsElement() != null) {
             targetClassName = targetExpression.getTypeAsElement().toString();
         }
-        javax.lang.model.type.TypeMirror jdkSuperclass = context.getJdkSuperclass(targetClassName, excludedJavaSuperTypes);
+        TypeMirror jdkSuperclass = context.getJdkSuperclass(targetClassName, excludedJavaSuperTypes);
         boolean delegate = jdkSuperclass != null;
         if (delegate) {
             targetClassName = jdkSuperclass.toString();
         }
 
-        javax.lang.model.type.TypeMirror targetType = invocation.getTargetType();
+        TypeMirror targetType = invocation.getTargetType();
 
         if (targetClassName != null
                 && (targetExpression != null || invocation.getMethod().getModifiers().contains(javax.lang.model.element.Modifier.STATIC))) {
@@ -88,4 +90,22 @@ public class JacksonAdapter extends PrinterAdapter {
 
         return super.substituteMethodInvocation(invocation);
     }
+
+    public boolean substituteInstanceof(String exprStr, ExtendedElement expr, TypeMirror type) {
+        String typeName = type.toString();
+        switch (typeName) {
+            case "com.fasterxml.jackson.databind.node.ObjectNode":
+                print("typeof ");
+                print(exprStr);
+                print(" === 'object'");
+                return true;
+            case "com.fasterxml.jackson.databind.node.ArrayNode":
+                print("typeof ");
+                print(exprStr);
+                print(" === 'array'");
+                return true;
+        }
+        return super.substituteInstanceof(exprStr, expr, type);
+    }
+
 }

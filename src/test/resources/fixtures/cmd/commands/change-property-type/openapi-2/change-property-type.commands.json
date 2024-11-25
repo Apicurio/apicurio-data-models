@@ -1,0 +1,12 @@
+[
+    {
+        "__type": "ChangePropertyTypeCommand_20",
+        "_propPath": "/definitions[Person]/properties[id]",
+        "_propName": "id",
+        "_newType": {
+            "type": "string",
+            "as": "date-time",
+            "required": false
+        }
+    }
+]

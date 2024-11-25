@@ -1,0 +1,5 @@
+[{
+    "__type": "NewMediaTypeCommand",
+    "_nodePath": "/paths[/foo]/get/parameters[0]",
+    "_newMediaType": "application/json"
+}]

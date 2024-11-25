@@ -1,0 +1,6 @@
+[{
+    "__type": "RenamePathItemCommand",
+    "_oldPath": "/widgets/{widgetId}/gizmos/{gizmoId}",
+    "_newPath": "/resources/{resId}/justOne",
+    "_alsoRenameSubpaths": true
+}]

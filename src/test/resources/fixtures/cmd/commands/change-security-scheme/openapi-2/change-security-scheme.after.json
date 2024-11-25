@@ -1,0 +1,15 @@
+{
+  "swagger" : "2.0",
+  "securityDefinitions" : {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    },
+    "petstore_auth": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  }
+}

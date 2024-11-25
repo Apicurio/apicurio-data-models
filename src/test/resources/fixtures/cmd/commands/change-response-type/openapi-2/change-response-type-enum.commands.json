@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "ChangeResponseTypeCommand_20",
+        "_responsePath": "/paths[/pets]/get/responses[200]",
+        "_newType": {
+            "type": "string",
+            "enum": [ "option1", "option2" ]
+        }
+    }
+]

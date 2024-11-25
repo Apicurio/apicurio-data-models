@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Simple API 2.0",
+    "description": "Just a simple API in 2.0 (swagger) format.",
+    "version": "1.0.0"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+        "/examples/{exampleId}": {
+      "get": {
+        "summary": "Get a Example",
+        "description": "Gets the details of a single instance of a `Example`.",
+        "operationId": "getExample",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns a single `Example`.",
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Example",
+        "description": "Updates an existing `Example`.",
+        "operationId": "updateExample",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated `Example` information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Example",
+        "description": "Deletes an existing `Example`.",
+        "operationId": "deleteExample",
+        "responses": {
+          "204": {
+            "description": "Successful response."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "exampleId",
+          "in": "path",
+          "description": "A unique identifier for a `Example`.",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/examples": {
+      "get": {
+        "summary": "List All Examples",
+        "description": "Gets a list of all `Example` entities.",
+        "operationId": "getExamples",
+        "responses": {
+          "200": {
+            "description": "Successful response - returns an array of `Example` entities.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Example"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a Example",
+        "description": "Creates a new instance of a `Example`.",
+        "operationId": "createExample",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "A new `Example` to be created.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Example"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful response."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Example": {
+      "title": "Root Type for Example",
+      "description": "The root of the Example type's schema.",
+      "type": "object",
+      "properties": {
+        "prop1": {
+          "type": "string"
+        },
+        "prop2": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "example": "{\n    \"prop1\": \"foo\",\n    \"prop2\": 17\n}"
+    }
+  }
+}

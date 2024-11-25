@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "AddResponseDefinitionCommand_20",
+        "_newDefinitionName" : "NotFound",
+        "_newDefinitionObj" : {}
+    }
+]

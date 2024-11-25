@@ -1,0 +1,6 @@
+[
+	{
+		"__type": "ChangeTitleCommand",
+		"_newTitle": "Updated Title"
+	}
+]

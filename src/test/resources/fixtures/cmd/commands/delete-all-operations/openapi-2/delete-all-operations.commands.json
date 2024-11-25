@@ -1,0 +1,4 @@
+[{
+    "__type": "DeleteAllOperationsCommand",
+    "_parentPath": "/paths[/pet/{petId}]"
+}]

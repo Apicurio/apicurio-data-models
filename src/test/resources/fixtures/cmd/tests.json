@@ -1,0 +1,23 @@
+[
+    { "name": "[OpenAPI 2] {Change Property} - Add Property", "test": "commands/change-property/openapi-2/add-property" },
+    { "name": "[OpenAPI 2] {Change Property} - Change Property", "test": "commands/change-property/openapi-2/change-property" },
+    { "name": "[OpenAPI 3] {Change Property} - Add Property", "test": "commands/change-property/openapi-3/add-property" },
+    { "name": "[OpenAPI 3] {Change Property} - Change Property", "test": "commands/change-property/openapi-3/change-property" },
+    { "name": "[AsyncAPI 2] {Change Property} - Change $ref", "test": "commands/change-property/asyncapi-2/change-ref-messages" },
+    { "name": "[OpenAPI 2] {Change Description} - Add Description", "test": "commands/change-description/openapi-2/add-description" },
+    { "name": "[OpenAPI 2] {Change Description} - Change Description", "test": "commands/change-description/openapi-2/change-description" },
+    { "name": "[OpenAPI 3] {Change Description} - Add Description", "test": "commands/change-description/openapi-3/add-description" },
+    { "name": "[OpenAPI 3] {Change Description} - Change Description", "test": "commands/change-description/openapi-3/change-description" },
+    { "name": "[OpenAPI 2] {Change Title} - Add Title", "test": "commands/change-title/openapi-2/add-title" },
+    { "name": "[OpenAPI 2] {Change Title} - Change Title", "test": "commands/change-title/openapi-2/change-title" },
+    { "name": "[OpenAPI 3] {Change Title} - Add Title", "test": "commands/change-title/openapi-3/add-title" },
+    { "name": "[OpenAPI 3] {Change Title} - Change Title", "test": "commands/change-title/openapi-3/change-title" },
+    { "name": "[OpenAPI 2] {Change Version} - Add Version", "test": "commands/change-version/openapi-2/add-version" },
+    { "name": "[OpenAPI 2] {Change Version} - Change Version", "test": "commands/change-version/openapi-2/change-version" },
+    { "name": "[OpenAPI 3] {Change Version} - Add Version", "test": "commands/change-version/openapi-3/add-version" },
+    { "name": "[OpenAPI 3] {Change Version} - Change Version", "test": "commands/change-version/openapi-3/change-version" },
+    { "name": "[OpenAPI 2] {Change Contact Info} - Add Contact Info", "test": "commands/change-contact-info/openapi-2/add-contact-info" },
+    { "name": "[OpenAPI 2] {Change Contact Info} - Update Contact Info", "test": "commands/change-contact-info/openapi-2/update-contact-info" },
+    { "name": "[OpenAPI 3] {Change Contact Info} - Add Contact Info", "test": "commands/change-contact-info/openapi-3/add-contact-info" },
+    { "name": "[OpenAPI 3] {Change Contact Info} - Update Contact Info", "test": "commands/change-contact-info/openapi-3/update-contact-info" }
+]

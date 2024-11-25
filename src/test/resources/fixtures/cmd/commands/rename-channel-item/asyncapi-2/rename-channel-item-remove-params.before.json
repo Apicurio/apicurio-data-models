@@ -1,0 +1,18 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "empty aai",
+        "version": "1.0.0"
+    },
+    "channels": {
+        "user/{userId}/signedin": {
+            "parameters": {
+                "userId": {
+                    "description": "Data to be recovered on undo"
+                }
+            }
+        }
+    },
+    "components": {
+    }
+}

@@ -1,0 +1,6 @@
+[{
+    "__type": "RenameResponseDefinitionCommand_20",
+    "_oldName": "Error",
+    "_newName": "Failure",
+    "_references": []
+}]

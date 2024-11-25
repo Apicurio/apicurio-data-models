@@ -1,0 +1,8 @@
+[
+    {
+        "__type": "ChangeContactCommand",
+        "_newName" : "New Contact",
+        "_newEmail" : "new.contact@example.com",
+        "_newUrl" : "urn:example.org/newContact"
+    }
+]

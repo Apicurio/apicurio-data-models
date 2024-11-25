@@ -1,0 +1,10 @@
+[
+	{
+		"__type": "ChangeSchemaTypeCommand",
+		"_schemaPath": "/definitions[Person]",
+		"_newType": {
+			"type": "string",
+			"enum": [ "option1", "option2", "option3", "option4" ]
+		}
+	}
+]

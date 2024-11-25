@@ -1,0 +1,18 @@
+[
+	{
+		"__type": "NewParamCommand_30",
+		"_parentPath": "/paths[/foo]/get",
+		"_paramName": "newParameter",
+		"_paramType": "query",
+		"_description": "Hello World.",
+		"_newType": {
+			"type": "array",
+			"of": {
+				"type": "string",
+				"of": null
+			},
+			"required": true
+		},
+		"_override": false
+	}
+]

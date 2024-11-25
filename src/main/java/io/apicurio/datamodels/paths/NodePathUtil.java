@@ -1,5 +1,6 @@
 package io.apicurio.datamodels.paths;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import io.apicurio.datamodels.models.union.Union;
 import io.apicurio.datamodels.models.visitors.TraversalContext;
 import io.apicurio.datamodels.models.visitors.TraversalStepType;
 import io.apicurio.datamodels.util.NodeUtil;
+import io.apicurio.datamodels.util.RegexUtil;
 
 public class NodePathUtil {
 
@@ -64,6 +66,16 @@ public class NodePathUtil {
         } else {
             return null;
         }
+    }
+
+    public static List<String> detectPathParamNames(String path) {
+        List<String> paramNames = new ArrayList<>();
+        List<String[]> matches = RegexUtil.findMatches(path, "\\{([^\\}]+)\\}");
+        for (String[] match : matches) {
+            String name = match[1];
+            paramNames.add(name.trim());
+        }
+        return paramNames;
     }
 
 }

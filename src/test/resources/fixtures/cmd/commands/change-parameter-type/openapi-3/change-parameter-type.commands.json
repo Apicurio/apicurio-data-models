@@ -1,0 +1,9 @@
+[
+    {
+        "__type": "ChangeParameterTypeCommand_30",
+        "_paramPath" : "/paths[/foo]/get/parameters[0]",
+        "_newType" : {
+          "type": "string"
+        }
+    }
+]

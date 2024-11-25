@@ -1,0 +1,14 @@
+[{
+    "__type": "SetExampleCommand_30",
+    "_parentPath": "/paths[/foo]/get/requestBody/content[application/json]",
+    "_newExample": {
+        "property1": "foo",
+        "property2": "bar",
+        "property3": 17,
+        "property4": true,
+        "property5": {
+            "sub1": "hello",
+            "sub2": "world"
+        }
+    }
+}]

@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "The replaced content."
+      },
+      "Error": {
+        "description": "An error occurred."
+      }
+    }
+  }
+}
