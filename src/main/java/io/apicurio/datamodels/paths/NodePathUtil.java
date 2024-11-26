@@ -17,18 +17,9 @@ import io.apicurio.datamodels.util.RegexUtil;
 public class NodePathUtil {
 
     public static NodePath createNodePath(Node node) {
-        NodePathVisitor visitor = new NodePathVisitor(node);
-        VisitorUtil.visitTree(node.root(), visitor, TraverserDirection.down);
-        return visitor.getNodePath();
-    }
-
-    public static NodePath createNodePath(TraversalContext traversalContext) {
-        NodePath path = new NodePath();
-        traversalContext.getAllSteps().forEach(step -> {
-            NodePathSegment segment = new NodePathSegment(step.getValue().toString(), step.getType() != TraversalStepType.property);
-            path.append(segment);
-        });
-        return path;
+        NodePathCreationVisitor visitor = new NodePathCreationVisitor();
+        VisitorUtil.visitTree(node, visitor, TraverserDirection.up);
+        return visitor.path;
     }
 
     public static NodePath parseNodePath(String path) {

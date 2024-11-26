@@ -19,6 +19,7 @@ package io.apicurio.datamodels.transform;
 import java.util.List;
 
 import io.apicurio.datamodels.Library;
+import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
@@ -28,17 +29,14 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringListUnionValueImpl;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
-import io.apicurio.datamodels.models.visitors.TraversalContext;
-import io.apicurio.datamodels.models.visitors.TraversingVisitor;
 import io.apicurio.datamodels.paths.NodePathUtil;
 
 /**
  * A visitor used to transform an OpenAPI 3.0.x document into an OpenAPI 3.1.x document.
  */
-public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter implements OpenApi30Visitor, TraversingVisitor {
+public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter implements OpenApi30Visitor {
 
     private OpenApi31Document doc31;
-    private TraversalContext traversalContext;
 
     public OpenApi30to31TransformationVisitor(OpenApi30Document source) {
         doc31 = (OpenApi31Document) Library.cloneDocument(source, rawJson -> {
@@ -54,21 +52,16 @@ public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter 
         return this.doc31;
     }
 
-    @Override
-    public void setTraversalContext(TraversalContext context) {
-        this.traversalContext = context;
-    }
-
     /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
+     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(Schema)
      */
     @Override
     public void visitSchema(Schema node) {
-        mapSchema((OpenApi30Schema) node, findMatchingNode());
+        mapSchema((OpenApi30Schema) node, findMatchingNode(node));
     }
 
-    private OpenApi31Schema findMatchingNode() {
-        return (OpenApi31Schema) NodePathUtil.resolveNodePath(NodePathUtil.createNodePath(traversalContext), doc31);
+    private OpenApi31Schema findMatchingNode(Node node) {
+        return (OpenApi31Schema) NodePathUtil.resolveNodePath(NodePathUtil.createNodePath(node), doc31);
     }
 
     private void mapSchema(OpenApi30Schema from, OpenApi31Schema schema31) {

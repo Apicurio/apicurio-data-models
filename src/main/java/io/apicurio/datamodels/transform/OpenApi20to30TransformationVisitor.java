@@ -241,7 +241,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
         OpenApi30Paths paths30 = (OpenApi30Paths) this.lookup(pathItem20.parent());
         OpenApi30PathItem pathItem30 = (OpenApi30PathItem) paths30.createPathItem();
-        String pathName = (String) this.traversalContext.getMostRecentStep().getValue();
+        String pathName = node.mapPropertyName();
         paths30.addItem(pathName, pathItem30);
 
         pathItem30.set$ref(this.updateRef(pathItem20.get$ref()));
@@ -259,7 +259,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         OpenApi30PathItem pathItem30 = (OpenApi30PathItem) this.lookup(node.parent());
         OpenApi30Operation operation30 = pathItem30.createOperation();
 
-        String operationType = (String) this.traversalContext.getMostRecentStep().getValue();
+        String operationType = node.parentPropertyName();
         if (operationType.equals("get")) {
             pathItem30.setGet(operation30);
         } else if (operationType.equals("put")) {
@@ -449,7 +449,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     public void visitParameterDefinition(Parameter node) {
-        String name = (String) this.traversalContext.getMostRecentStep().getValue();
+        String name = node.mapPropertyName();
         OpenApi20Parameter pd20 = (OpenApi20Parameter) node;
         if (NodeUtil.equals(pd20.getIn(), "body")) {
             OpenApi30Components parent30 = this.getOrCreateComponents();
@@ -540,7 +540,10 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         OpenApi30Responses parent30 = (OpenApi30Responses) this.lookup(node.parent());
         OpenApi30Response response30 = (OpenApi30Response) parent30.createResponse();
 
-        String statusCode = (String) this.traversalContext.getMostRecentStep().getValue();
+        String statusCode = node.mapPropertyName();
+        if (statusCode == null) {
+            statusCode = node.parentPropertyName();
+        }
         if ("default".equals(statusCode)) {
             parent30.setDefault(response30);
         } else {
@@ -555,7 +558,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     public void visitResponseDefinition(OpenApiResponse node) {
-        String name = (String) this.traversalContext.getMostRecentStep().getValue();
+        String name = node.mapPropertyName();
         OpenApi30Components parent30 = this.getOrCreateComponents();
         OpenApi30Response responseDef30 = (OpenApi30Response) parent30.createResponse();
         parent30.addResponse(name, responseDef30);
@@ -606,7 +609,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         } else {
             OpenApi20Schema schema20 = (OpenApi20Schema) node;
             // It's a property schema
-            String propertyName = this.traversalContext.getMostRecentPropertyStep();
+            String propertyName = node.parentPropertyName();
             if ("properties".equals(propertyName)) {
                 visitPropertySchema(schema20);
             } else if ("allOf".equals(propertyName)) {
@@ -631,7 +634,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     @Override
     public void visitHeader(OpenApiHeader node) {
         OpenApi20Header header20 = (OpenApi20Header) node;
-        String headerName = (String) this.traversalContext.getMostRecentStep().getValue();
+        String headerName = node.mapPropertyName();
         OpenApi30Response parent30 = (OpenApi30Response) this.lookup(node.parent());
         OpenApi30Header header30 = parent30.createHeader();
         parent30.addHeader(headerName, header30);
@@ -682,7 +685,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
      */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        String name = (String) this.traversalContext.getMostRecentStep().getValue();
+        String name = node.mapPropertyName();
         OpenApi20SecurityScheme scheme = (OpenApi20SecurityScheme) node;
         OpenApi30Components parent30 = this.getOrCreateComponents();
         OpenApi30SecurityScheme scheme30 = (OpenApi30SecurityScheme) parent30.createSecurityScheme();
@@ -769,7 +772,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     public void visitSchemaDefinition(OpenApiSchema node) {
-        String name = (String) this.traversalContext.getMostRecentStep().getValue();
+        String name = node.mapPropertyName();
         OpenApi20Schema sd20 = (OpenApi20Schema) node;
 
         OpenApi30Components parent30 = this.getOrCreateComponents();
@@ -785,7 +788,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     public void visitPropertySchema(OpenApiSchema node) {
         OpenApi20Schema ps20 = (OpenApi20Schema) node;
 
-        String name = (String) this.traversalContext.getMostRecentStep().getValue();
+        String name = node.mapPropertyName();
 
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(ps20.parent());
         OpenApi30Schema property30 = parent30.createSchema();
@@ -851,6 +854,8 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     public void visitResponseDefinitions(OpenApi20ResponseDefinitions node) {
         // Note: there is no "responses definitions" entity in 3.0, so nothing to do here.
     }
+
+    // TODO we have a visitor to determine if the parent node is a definition container. Should use that instead.
 
     private boolean isParameterDefinition(Node node) {
         return ("parameters".equals(this.traversalContext.getMostRecentPropertyStep()) && this.traversalContext.getAllSteps().size() == 2);
