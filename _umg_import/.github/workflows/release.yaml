@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '11'
 
       - name: Check Java Version
