@@ -17,6 +17,7 @@ package io.apicurio.datamodels.asyncapi.v2.models;
 
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.visitors.IAaiVisitor;
+import io.apicurio.datamodels.cmd.util.ModelUtils;
 import io.apicurio.datamodels.core.models.common.ExternalDocumentation;
 import io.apicurio.datamodels.core.models.common.INamed;
 import io.apicurio.datamodels.core.models.common.IPropertySchema;
@@ -91,6 +92,22 @@ public class Aai20Schema extends AaiSchema {
         rval._ownerDocument = this.ownerDocument();
         rval._parent = this;
         return rval;
+    }
+
+    /**
+     * Restores a deleted oneOf schema at the position it was originally at.
+     * @param schema
+     */
+    public void restoreOneOfSchema(Integer index, AaiSchema schema) {
+        this.oneOf = ModelUtils.restoreListEntry(index, schema, this.oneOf);
+    }
+
+    public void restoreAnyOfSchema(Integer index, AaiSchema schema) {
+        this.anyOf = ModelUtils.restoreListEntry(index, schema, this.anyOf);
+    }
+
+    public void restoreAllOfSchema(Integer index, AaiSchema schema) {
+        this.allOf = ModelUtils.restoreListEntry(index, schema, this.allOf);
     }
 
     /* ************************************************************************

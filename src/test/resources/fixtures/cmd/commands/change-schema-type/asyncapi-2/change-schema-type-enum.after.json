@@ -1,0 +1,23 @@
+{
+  "asyncapi": "2.0.0",
+  "components": {
+    "schemas": {
+      "MySchema1" : {
+        "type": "string",
+        "enum": [
+            "option1",
+            "option2",
+            "option3",
+            "option4"
+        ]
+      },
+      "MySchema2": {
+        "type": "string",
+        "format": "email"
+      },
+      "RefSchema":{
+        "$ref": "#/other/Ref"
+      }
+    }
+  }
+}

@@ -112,6 +112,8 @@ public class CommandFactory {
             { return new AddResponseDefinitionCommand_30(); }
             case "AddChildSchemaCommand":
             { return new AddChildSchemaCommand(); }
+            case "AddChildSchemaCommand_Aai20":
+            { return new AddChildSchemaCommand_Aai20(); }
             case "AddChannelItemCommand":
             case "AddChannelItemCommand_Aai20":
             { return new AddChannelItemCommand(); }
@@ -181,8 +183,12 @@ public class CommandFactory {
             { return new ChangeServerCommand_Aai20(); }
             case "ChangeSchemaTypeCommand":
             { return new ChangeSchemaTypeCommand(); }
+            case "ChangeSchemaTypeCommand_Aai20":
+            { return new ChangeSchemaTypeCommand_Aai20(); }
             case "ChangeSchemaInheritanceCommand":
             { return new ChangeSchemaInheritanceCommand(); }
+            case "ChangeSchemaInheritanceCommand_Aai20":
+            { return new ChangeSchemaInheritanceCommand_Aai20(); }
             case "ChangePayloadRefCommand_Aai20":
             { return new ChangePayloadRefCommand_Aai20(); }
             case "ChangeHeadersRefCommand_Aai20":
@@ -235,6 +241,8 @@ public class CommandFactory {
             { return new DeleteAllTagsCommand_Aai20();}
             case "DeleteAllChildSchemasCommand":
             { return new DeleteAllChildSchemasCommand(); }
+            case "DeleteAllChildSchemasCommand_Aai20":
+            { return new DeleteAllChildSchemasCommand_Aai20(); }
             case "DeleteExampleCommand_20":
             { return new DeleteExampleCommand_20(); }
             case "DeleteExampleCommand_30":
@@ -308,6 +316,8 @@ public class CommandFactory {
             { return new DeleteTagCommand_Aai20(); }
             case "DeleteChildSchemaCommand":
             { return new DeleteChildSchemaCommand(); }
+            case "DeleteChildSchemaCommand_Aai20":
+            { return new DeleteChildSchemaCommand_Aai20(); }
             case "DeleteChannelCommand":
             case "DeleteChannelCommand_Aai20":
             { return new DeleteChannelCommand(); }
@@ -543,8 +553,17 @@ public class CommandFactory {
         return new AddSecurityRequirementCommand(parent, requirement);
     }
 
-    public static final ICommand createAddChildSchemaCommand(OasSchema schema, OasSchema childSchema, String childType) {
-        return new AddChildSchemaCommand(schema, childSchema, childType);
+    public static final ICommand createAddChildSchemaCommand(Schema schema, Schema childSchema, String childType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new AddChildSchemaCommand_Aai20((AaiSchema) schema, (AaiSchema) childSchema, childType);
+            case openapi2:
+            case openapi3:
+                return new AddChildSchemaCommand((OasSchema) schema, (OasSchema) childSchema, childType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createAddChannelItemCommand(String channelItemName, Object from) {
@@ -574,10 +593,19 @@ public class CommandFactory {
         return new ChangeLicenseCommand(name, url);
     }
 
-    public static final ICommand createChangeSchemaInheritanceCommand(OasSchema schema, String inheritanceType) {
-        return new ChangeSchemaInheritanceCommand(schema, inheritanceType);
+    public static final ICommand createChangeSchemaInheritanceCommand(Schema schema, String inheritanceType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new ChangeSchemaInheritanceCommand_Aai20((AaiSchema) schema, inheritanceType);
+            case openapi2:
+            case openapi3:
+                return new ChangeSchemaInheritanceCommand((OasSchema) schema, inheritanceType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
-
+    
     public static final ICommand createChangeContactCommand(String name, String email, String url) {
         return new ChangeContactCommand(name, email, url);
     }
@@ -630,8 +658,17 @@ public class CommandFactory {
         throw new RuntimeException("Document type not supported by this command.");
     }
 
-    public static final ICommand createChangeSchemaTypeCommand(OasSchema schema, SimplifiedType newType) {
-        return new ChangeSchemaTypeCommand(schema, newType);
+    public static final ICommand createChangeSchemaTypeCommand(Schema schema, SimplifiedType newType) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new ChangeSchemaTypeCommand_Aai20((AaiSchema) schema, newType);
+            case openapi2:
+            case openapi3:
+                return new ChangeSchemaTypeCommand((OasSchema) schema, newType);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createChangeResponseTypeCommand(Oas20Response response,
@@ -692,8 +729,17 @@ public class CommandFactory {
         return new DeleteContactCommand(info);
     }
 
-    public static final ICommand createDeleteChildSchemaCommand(OasSchema schema) {
-        return new DeleteChildSchemaCommand(schema);
+    public static final ICommand createDeleteChildSchemaCommand(Schema schema) {
+        DocumentType docType = schema.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new DeleteChildSchemaCommand_Aai20((AaiSchema) schema);
+            case openapi2:
+            case openapi3:
+                return new DeleteChildSchemaCommand((OasSchema) schema);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createDeleteAllExtensionsCommand(ExtensibleNode fromNode) {
@@ -762,8 +808,17 @@ public class CommandFactory {
         return new DeleteAllTagsCommand_Aai20(node);
     }
 
-    public static final ICommand createDeleteAllChildSchemasCommand(OasSchema parent, String type) {
-        return new DeleteAllChildSchemasCommand(parent, type);
+    public static final ICommand createDeleteAllChildSchemasCommand(Schema parent, String type) {
+        DocumentType docType = parent.ownerDocument().getDocumentType();
+        switch (docType) {
+            case asyncapi2:
+                return new DeleteAllChildSchemasCommand_Aai20((AaiSchema) parent, type);
+            case openapi2:
+            case openapi3:
+                return new DeleteAllChildSchemasCommand((OasSchema) parent, type);
+            default:
+                throw new RuntimeException("Document type not supported by this command.");
+        }
     }
 
     public static final ICommand createDelete20ExampleCommand(Oas20Response response, String contentType) {
