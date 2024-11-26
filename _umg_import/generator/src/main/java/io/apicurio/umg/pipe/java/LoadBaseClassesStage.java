@@ -24,7 +24,8 @@ public class LoadBaseClassesStage extends AbstractStage {
     protected void doProcess() {
         try {
             loadBaseEnums(
-                    "io.apicurio.umg.base.visitors.TraversalStepType"
+                    "io.apicurio.umg.base.visitors.TraversalStepType",
+                    "io.apicurio.umg.base.ParentPropertyType"
                     );
             loadBaseClasses(
                     "io.apicurio.umg.base.NodeImpl",

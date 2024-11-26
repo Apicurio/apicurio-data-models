@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.JavaEnumSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodHolderSource;
@@ -135,6 +136,18 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
             method.addParameter(mappedNodeType, "item");
             BodyBuilder body = new BodyBuilder();
             body.append("this._items.put(name, item);");
+            if (isEntity(property)) {
+                JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
+                javaEntity.addImport(parentPropertyTypeSource);
+                JavaClassSource nodeImplSource = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+                javaEntity.addImport(nodeImplSource);
+
+                body.append("if (item != null) {");
+                body.append("    ((NodeImpl) item)._setParentPropertyName(null);");
+                body.append("    ((NodeImpl) item)._setParentPropertyType(ParentPropertyType.map);");
+                body.append("    ((NodeImpl) item)._setMapPropertyName(name);");
+                body.append("}");
+            }
             method.setBody(body.toString());
         }
 
@@ -160,11 +173,60 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     }
 
     @Override
-    protected void createSetterBody(PropertyModel property, MethodSource<?> method) {
+    protected void createSetterBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
         String fieldName = getFieldName(property);
+        String propertyName = property.getName();
+
         BodyBuilder body = new BodyBuilder();
         body.addContext("fieldName", fieldName);
+        body.addContext("propertyName", propertyName);
         body.append("this.${fieldName} = value;");
+        if (isEntity(property)) {
+            JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
+            javaEntity.addImport(parentPropertyTypeSource);
+            JavaClassSource nodeImplSource = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+            javaEntity.addImport(nodeImplSource);
+
+            body.append("if (value != null) {");
+            body.append("    ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+            body.append("}");
+        } else if (isUnion(property)) {
+            JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
+            javaEntity.addImport(parentPropertyTypeSource);
+            JavaClassSource nodeImplSource = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+            javaEntity.addImport(nodeImplSource);
+            JavaInterfaceSource unionValueSource = getState().getJavaIndex().lookupInterface(getUnionValueInterfaceFQN());
+            javaEntity.addImport(unionValueSource);
+
+            javaEntity.addImport(Collection.class);
+            javaEntity.addImport(List.class);
+            javaEntity.addImport(Map.class);
+
+            body.append("if (value != null) {");
+            body.append("    if (value.isEntity()) {");
+            body.append("        ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+            body.append("    } else if (value.isEntityList()) {");
+            body.append("        List<?> entityList = (List<?>) ((UnionValue<?>) value).getValue();");
+            body.append("        for (Object entity : entityList) {");
+            body.append("            if (entity != null) {");
+            body.append("                ((NodeImpl) entity)._setParentPropertyName(\"${propertyName}\");");
+            body.append("                ((NodeImpl) entity)._setParentPropertyType(ParentPropertyType.array);");
+            body.append("            }");
+            body.append("        }");
+            body.append("    } else if (value.isEntityMap()) {");
+            body.append("        Map<String, ?> entityMap = (Map<String, ?>) ((UnionValue<?>) value).getValue();");
+            body.append("        Collection<String> keys = entityMap.keySet();");
+            body.append("        for (String key : keys) {");
+            body.append("            NodeImpl entity = (NodeImpl) entityMap.get(key);");
+            body.append("            if (entity != null) {");
+            body.append("                entity._setParentPropertyName(\"${propertyName}\");");
+            body.append("                entity._setParentPropertyType(ParentPropertyType.map);");
+            body.append("                entity._setMapPropertyName(key);");
+            body.append("            }");
+            body.append("        }");
+            body.append("    }");
+            body.append("}");
+        }
         method.setBody(body.toString());
     }
 
@@ -192,23 +254,51 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
     @Override
     protected void createAddMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
         PropertyType type = property.getType().getNested().iterator().next();
+        String fieldName = getFieldName(property);
+        String propertyName = property.getName();
 
         BodyBuilder body = new BodyBuilder();
-        body.addContext("fieldName", getFieldName(property));
+        body.addContext("fieldName", fieldName);
+        body.addContext("propertyName", propertyName);
 
         if (type.isEntityType() || type.isPrimitiveType()) {
             if (property.getType().isMap()) {
                 javaEntity.addImport(LinkedHashMap.class);
+
                 body.append("if (this.${fieldName} == null) {");
                 body.append("    this.${fieldName} = new LinkedHashMap<>();");
                 body.append("}");
                 body.append("this.${fieldName}.put(name, value);");
+                if (type.isEntityType()) {
+                    JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
+                    javaEntity.addImport(parentPropertyTypeSource);
+                    JavaClassSource nodeImplSource = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+                    javaEntity.addImport(nodeImplSource);
+
+                    body.append("if (value != null) {");
+                    body.append("    ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+                    body.append("    ((NodeImpl) value)._setParentPropertyType(ParentPropertyType.map);");
+                    body.append("    ((NodeImpl) value)._setMapPropertyName(name);");
+                    body.append("}");
+                }
             } else {
                 javaEntity.addImport(ArrayList.class);
+
                 body.append("if (this.${fieldName} == null) {");
                 body.append("    this.${fieldName} = new ArrayList<>();");
                 body.append("}");
                 body.append("this.${fieldName}.add(value);");
+                if (type.isEntityType()) {
+                    JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
+                    javaEntity.addImport(parentPropertyTypeSource);
+                    JavaClassSource nodeImplSource = getState().getJavaIndex().lookupClass(getNodeEntityClassFQN());
+                    javaEntity.addImport(nodeImplSource);
+
+                    body.append("if (value != null) {");
+                    body.append("    ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+                    body.append("    ((NodeImpl) value)._setParentPropertyType(ParentPropertyType.array);");
+                    body.append("}");
+                }
             }
         }
 

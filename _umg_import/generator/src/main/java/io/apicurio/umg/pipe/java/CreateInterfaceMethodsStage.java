@@ -112,7 +112,7 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
     }
 
     @Override
-    protected void createSetterBody(PropertyModel property, MethodSource<?> method) {
+    protected void createSetterBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
     }
 
     @Override

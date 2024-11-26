@@ -177,6 +177,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return getState().getConfig().getRootNamespace() + ".RootNodeImpl";
     }
 
+    protected String getParentPropertyTypeEnumFQN() {
+        return getState().getConfig().getRootNamespace() + ".ParentPropertyType";
+    }
+
     protected String getModelTypeEnumFQN() {
         return getState().getConfig().getRootNamespace() + ".ModelType";
     }

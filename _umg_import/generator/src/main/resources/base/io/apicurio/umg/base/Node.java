@@ -10,6 +10,9 @@ public interface Node extends Visitable {
     public int modelId();
     public RootNode root();
     public Node parent();
+    public String parentPropertyName();
+    public ParentPropertyType parentPropertyType();
+    public String mapPropertyName();
     public Object getNodeAttribute(String attributeName);
     public void setNodeAttribute(String attributeName, Object attributeValue);
     public Collection<String> getNodeAttributeNames();

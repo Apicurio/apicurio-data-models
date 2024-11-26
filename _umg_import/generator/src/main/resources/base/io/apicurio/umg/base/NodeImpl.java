@@ -15,6 +15,9 @@ public abstract class NodeImpl implements Node {
     private static int __modelIdCounter = 0;
 
     protected int _modelId = __modelIdCounter++;
+    private String _parentPropertyName;
+    private String _mapPropertyName;
+    private ParentPropertyType _parentPropertyType = ParentPropertyType.standard;
     private Node _parent;
     private Map<String, JsonNode> _extraProperties;
     private Map<String, Object> _attributes;
@@ -28,9 +31,36 @@ public abstract class NodeImpl implements Node {
     public Node parent() {
         return this._parent;
     }
-    
+
+    @Override
+    public String parentPropertyName() {
+        return this._parentPropertyName;
+    }
+
+    @Override
+    public ParentPropertyType parentPropertyType() {
+        return this._parentPropertyType;
+    }
+
+    @Override
+    public String mapPropertyName() {
+        return this._mapPropertyName;
+    }
+
     public void setParent(Node parent) {
         this._parent = parent;
+    }
+
+    public void _setParentPropertyName(String name) {
+        this._parentPropertyName = name;
+    }
+
+    public void _setParentPropertyType(ParentPropertyType type) {
+        this._parentPropertyType = type;
+    }
+
+    public void _setMapPropertyName(String name) {
+        this._mapPropertyName = name;
     }
 
     @Override
@@ -119,17 +149,17 @@ public abstract class NodeImpl implements Node {
     @Override
     public void attach(Node parent) {
         if (!parent.isAttached())
-            throw new IllegalArgumentException(
-                    "Target parent node (method argument) is not itself attached.");
+            throw new IllegalArgumentException("Target parent node (method argument) is not itself attached.");
         this.setParent(parent);
     }
 
     /*
-     * Some methods that must be implemented on an entity only when the entity is part 
-     * of a union type.  We put them here so we don't have to generate them.  But perhaps
-     * we *should* generate them only on the appropriate entity implementation classes.
+     * Some methods that must be implemented on an entity only when the entity is
+     * part of a union type. We put them here so we don't have to generate them. But
+     * perhaps we *should* generate them only on the appropriate entity
+     * implementation classes.
      */
-    
+
     public boolean isEntity() {
         return true;
     }

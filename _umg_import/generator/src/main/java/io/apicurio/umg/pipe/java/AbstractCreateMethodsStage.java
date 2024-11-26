@@ -129,9 +129,9 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             method.addParameter(jt.toJavaTypeString(), "value");
         }
 
-        createSetterBody(property, method);
+        createSetterBody(javaEntity, property, method);
     }
-    abstract protected void createSetterBody(PropertyModel property, MethodSource<?> method);
+    abstract protected void createSetterBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method);
 
     /**
      * Creates a factory method for the entity type associated with the given
