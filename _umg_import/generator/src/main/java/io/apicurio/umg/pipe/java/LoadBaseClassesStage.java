@@ -30,6 +30,7 @@ public class LoadBaseClassesStage extends AbstractStage {
             loadBaseClasses(
                     "io.apicurio.umg.base.NodeImpl",
                     "io.apicurio.umg.base.RootNodeImpl",
+                    "io.apicurio.umg.base.util.DataModelUtil",
                     "io.apicurio.umg.base.util.JsonUtil",
                     "io.apicurio.umg.base.util.ReaderUtil",
                     "io.apicurio.umg.base.util.WriterUtil",

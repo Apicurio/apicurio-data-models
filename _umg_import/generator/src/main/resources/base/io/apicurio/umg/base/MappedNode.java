@@ -30,6 +30,15 @@ public interface MappedNode<T> {
     public void addItem(String name, T item);
 
     /**
+     * Inserts a child item.
+     *
+     * @param name
+     * @param item
+     * @param atIndex
+     */
+    public void insertItem(String name, T item, int atIndex);
+
+    /**
      * Removes a child item by name and returns the deleted child or undefined if there wasn't one.
      * 
      * @param name

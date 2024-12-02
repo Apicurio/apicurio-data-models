@@ -131,4 +131,7 @@ public class CreateInterfaceMethodsStage extends AbstractCreateMethodsStage {
     protected void createRemoveMethodBody(PropertyModel property, MethodSource<?> method) {
     }
 
+    @Override
+    protected void createInsertMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method) {
+    }
 }

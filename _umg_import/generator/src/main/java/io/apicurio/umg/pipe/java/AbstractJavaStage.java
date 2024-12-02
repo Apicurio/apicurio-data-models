@@ -177,6 +177,10 @@ public abstract class AbstractJavaStage extends AbstractStage {
         return getState().getConfig().getRootNamespace() + ".RootNodeImpl";
     }
 
+    protected String getDataModelUtilFQCN() {
+        return getState().getConfig().getRootNamespace() + ".util.DataModelUtil";
+    }
+
     protected String getParentPropertyTypeEnumFQN() {
         return getState().getConfig().getRootNamespace() + ".ParentPropertyType";
     }
@@ -231,6 +235,18 @@ public abstract class AbstractJavaStage extends AbstractStage {
 
     protected String addMethodName(String name) {
         return "add" + StringUtils.capitalize(name);
+    }
+
+    protected String insertMethodName(EntityModel entityModel) {
+        return insertMethodName(entityModel.getName());
+    }
+
+    protected String insertMethodName(PropertyModel propertyModel) {
+        return insertMethodName(propertyModel.getName());
+    }
+
+    protected String insertMethodName(String name) {
+        return "insert" + StringUtils.capitalize(name);
     }
 
     protected String clearMethodName(EntityModel entityModel) {

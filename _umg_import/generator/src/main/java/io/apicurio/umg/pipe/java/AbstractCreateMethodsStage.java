@@ -49,6 +49,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createAddMethod(javaEntity, collectionPropertyWithOrigin);
             createClearMethod(javaEntity, collectionPropertyWithOrigin);
             createRemoveMethod(javaEntity, collectionPropertyWithOrigin);
+            createInsertMethod(javaEntity, collectionPropertyWithOrigin);
         } else if (isPrimitive(property) || isPrimitiveList(property) || isPrimitiveMap(property)) {
             createGetter(javaEntity, propertyWithOrigin);
             createSetter(javaEntity, propertyWithOrigin);
@@ -62,6 +63,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createAddMethod(javaEntity, propertyWithOrigin);
             createClearMethod(javaEntity, propertyWithOrigin);
             createRemoveMethod(javaEntity, propertyWithOrigin);
+            createInsertMethod(javaEntity, propertyWithOrigin);
         } else if (isUnion(property)) {
             createGetter(javaEntity, propertyWithOrigin);
             createSetter(javaEntity, propertyWithOrigin);
@@ -171,7 +173,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
     /**
      * Creates an "add" method for the given property.  The type of the property must be a
-     * list of entities.  The add method would accept a single entity and add it to the list.
+     * collection of entities.  The add method will accept a single entity and add it to the collection.
      * @param javaEntity
      * @param propertyWithOrigin
      */
@@ -219,7 +221,7 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
     /**
      * Creates a "clear" method for the given property.  The type of the property must be a
-     * list of entities.  The clear method will remove all items from the list.
+     * collection of entities.  The clear method will remove all items from the collection.
      * @param javaEntity
      * @param propertyWithOrigin
      */
@@ -237,8 +239,8 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
     /**
      * Creates a "remove" method for the given property.  The type of the property must be a
-     * list of entities.  The remove method will remove one item from the list.
-     * @param entity
+     * collection of entities.  The remove method will remove one item from the collection.
+     * @param javaEntity
      * @param propertyWithOrigin
      */
     protected void createRemoveMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
@@ -265,6 +267,56 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
         createRemoveMethodBody(property, method);
     }
     abstract protected void createRemoveMethodBody(PropertyModel property, MethodSource<?> method);
+
+    /**
+     * Creates an "insert" method for the given property.  The type of the property must be a
+     * collection of entities.  The insert method will add one item to the collection at
+     * a specific index (if possible).
+     * @param javaEntity
+     * @param propertyWithOrigin
+     */
+    protected void createInsertMethod(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
+        PropertyModel property = propertyWithOrigin.getProperty();
+
+        String _package = propertyWithOrigin.getOrigin().getNamespace().fullName();
+        PropertyType type = property.getType().getNested().iterator().next();
+        String methodName = insertMethodName(singularize(property.getName()));
+        MethodSource<?> method;
+
+        if (type.isEntityType()) {
+            JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
+            if (entityType == null) {
+                error("Could not resolve entity type: " + _package + "::" + type);
+                return;
+            }
+
+            javaEntity.addImport(entityType);
+
+            method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
+            addAnnotations(method);
+            if (property.getType().isMap()) {
+                method.addParameter("String", "name");
+            }
+            method.addParameter(entityType.getName(), "value");
+        } else if (type.isPrimitiveType()) {
+            Class<?> primitiveType = primitiveTypeToClass(type);
+            javaEntity.addImport(primitiveType);
+
+            method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
+            addAnnotations(method);
+            if (property.getType().isMap()) {
+                method.addParameter("String", "name");
+            }
+            method.addParameter(primitiveType.getSimpleName(), "value");
+        } else {
+            warn("Type not supported for 'add' method: " + methodName + " with type: " + property.getType());
+            return;
+        }
+        method.addParameter("int", "atIndex");
+
+        createInsertMethodBody(javaEntity, property, method);
+    }
+    abstract protected void createInsertMethodBody(JavaSource<?> javaEntity, PropertyModel property, MethodSource<?> method);
 
     /**
      * Create factory methods for any entity types in the union.  If the union is, for example, "boolean|string"
