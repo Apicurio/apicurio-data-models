@@ -28,5 +28,7 @@
     { "name": "[OpenAPI 3] {Delete License} - Delete License", "test": "commands/delete-license/openapi-3/delete-license" },
     { "name": "[OpenAPI 2] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-2/delete-contact" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact NA", "test": "commands/delete-contact/openapi-3/delete-contact-na" },
-    { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" }
+    { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" },
+    { "name": "[OpenAPI 2] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-2/delete-extension" },
+    { "name": "[OpenAPI 3] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-3/delete-extension" }
 ]

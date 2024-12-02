@@ -9,10 +9,14 @@ import io.apicurio.datamodels.cmd.commands.ChangePropertyCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
+import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.util.CommandUtil;
+
+import java.security.cert.Extension;
 
 public class CommandFactory {
 
@@ -58,6 +62,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteContactCommand(Info info) {
         return new DeleteContactCommand(info);
+    }
+
+    public static final ICommand createDeleteExtensionCommand(Extensible parent, String extensionName) {
+        return new DeleteExtensionCommand(parent, extensionName);
     }
 
 }

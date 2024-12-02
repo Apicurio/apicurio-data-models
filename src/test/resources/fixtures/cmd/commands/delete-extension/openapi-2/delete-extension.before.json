@@ -41,8 +41,8 @@
                         "description":"Invalid status value"
                     }
                 },
-                "x-existing-extension": [ "value", "doesn't", "matter" ],
-                "x-other-extension": "hello world"
+                "x-other-extension": "hello world",
+                "x-existing-extension": [ "value", "doesn't", "matter" ]
             }
         }
     }
