@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangeSecuritySchemeCommand_20",
+        "__type": "ChangeSecuritySchemeCommand",
         "_schemeName": "petstore_auth",
         "_schemeObj": {
             "type": "apiKey",

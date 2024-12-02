@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangeParameterTypeCommand_30",
+        "__type": "ChangeParameterTypeCommand",
         "_paramPath" : "/paths[/foo]/get/parameters[0]",
         "_newType" : {
           "type": "string"

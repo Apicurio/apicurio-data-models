@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "NewTagCommand_20",
+		"__type": "NewTagCommand",
 		"_tagName": "tag3",
 		"_tagDescription": "Tag 3 description"
 	}

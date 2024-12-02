@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "AddParameterExampleCommand_30",
+		"__type": "AddParameterExampleCommand",
 		"_parentPath": "/paths[/test]/parameters[0]",
 		"_newExampleValue": {
 			"property1": "hello",

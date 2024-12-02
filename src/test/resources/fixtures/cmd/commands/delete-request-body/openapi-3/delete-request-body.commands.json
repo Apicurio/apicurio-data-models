@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteRequestBodyCommand_30",
+    "__type": "DeleteRequestBodyCommand",
     "_property": "requestBody",
     "_parentPath": "/paths[/v2]/put"
 }]

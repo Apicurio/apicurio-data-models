@@ -5,7 +5,7 @@
         "info": null,
         "_commands": [
             {
-                "__type": "NewResponseCommand_30",
+                "__type": "NewResponseCommand",
                 "_operationPath": "/paths[/foo]/get",
                 "_statusCode": "404"
             },

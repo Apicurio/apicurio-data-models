@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangeResponseDefinitionTypeCommand_20",
+        "__type": "ChangeResponseDefinitionTypeCommand",
         "_responsePath": "/responses[ArrayComplexType]",
         "_newType": {
             "type": "string",

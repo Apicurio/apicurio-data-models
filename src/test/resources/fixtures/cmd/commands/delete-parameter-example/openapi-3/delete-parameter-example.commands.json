@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteParameterExampleCommand_30",
+    "__type": "DeleteParameterExampleCommand",
     "_exampleName": "bar",
     "_parameterPath": "/paths[/test]/parameters[0]"
 }]

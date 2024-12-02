@@ -23,5 +23,7 @@
     { "name": "[OpenAPI 2] {Change License} - Add License", "test": "commands/change-license/openapi-2/add-license" },
     { "name": "[OpenAPI 2] {Change License} - Change License", "test": "commands/change-license/openapi-2/change-license" },
     { "name": "[OpenAPI 3] {Change License} - Add License", "test": "commands/change-license/openapi-3/add-license" },
-    { "name": "[OpenAPI 3] {Change License} - Change License", "test": "commands/change-license/openapi-3/change-license" }
+    { "name": "[OpenAPI 3] {Change License} - Change License", "test": "commands/change-license/openapi-3/change-license" },
+    { "name": "[OpenAPI 2] {Delete License} - Delete License", "test": "commands/delete-license/openapi-2/delete-license" },
+    { "name": "[OpenAPI 3] {Delete License} - Delete License", "test": "commands/delete-license/openapi-3/delete-license" }
 ]

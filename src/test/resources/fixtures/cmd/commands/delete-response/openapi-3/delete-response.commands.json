@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteResponseCommand_30",
+    "__type": "DeleteResponseCommand",
     "_responseCode": "200",
     "_responsePath": "/paths[/foo]/get/responses[200]",
     "_responsesPath": "/paths[/foo]/get/responses"

@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteAllPropertiesCommand_30",
+    "__type": "DeleteAllPropertiesCommand",
     "_schemaPath": "/components/schemas[MySchema1]"
 }]

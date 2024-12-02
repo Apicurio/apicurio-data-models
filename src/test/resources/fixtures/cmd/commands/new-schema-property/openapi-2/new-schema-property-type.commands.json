@@ -1,5 +1,5 @@
 [{
-    "__type": "NewSchemaPropertyCommand_20",
+    "__type": "NewSchemaPropertyCommand",
     "_schemaPath": "/definitions[Person]",
     "_propertyName": "newProperty",
     "_description": null,

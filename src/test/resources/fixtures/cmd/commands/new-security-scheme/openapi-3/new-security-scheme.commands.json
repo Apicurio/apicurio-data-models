@@ -1,5 +1,5 @@
 [{
-    "__type": "NewSecuritySchemeCommand_30",
+    "__type": "NewSecuritySchemeCommand",
     "_scheme": {
         "type": "http",
         "scheme": "bearer",

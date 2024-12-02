@@ -1,6 +1,6 @@
 [
     {
-        "__type": "DeleteContactCommand_30",
+        "__type": "DeleteContactCommand",
         "_property" : "contact",
         "_parentPath" : "/info"
     }

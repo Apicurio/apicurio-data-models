@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "ReplacePathItemCommand_20",
+		"__type": "ReplacePathItemCommand",
 		"_nodePath": "/paths[/pets]",
 		"_new": {
 			"put": {

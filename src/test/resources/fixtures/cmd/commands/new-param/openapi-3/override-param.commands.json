@@ -1,5 +1,5 @@
 [{
-    "__type": "NewParamCommand_30",
+    "__type": "NewParamCommand",
     "_parentPath": "/paths[/foo]/get",
     "_paramName": "username",
     "_paramType": "path",

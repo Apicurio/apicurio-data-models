@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangeResponseTypeCommand_20",
+        "__type": "ChangeResponseTypeCommand",
         "_responsePath": "/paths[/pets]/get/responses[200]",
         "_newType": {
             "type": "string",

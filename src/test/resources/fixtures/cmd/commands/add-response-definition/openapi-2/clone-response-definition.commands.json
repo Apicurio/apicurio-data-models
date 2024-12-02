@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "AddResponseDefinitionCommand_20",
+		"__type": "AddResponseDefinitionCommand",
 		"_newDefinitionName": "NotFound",
 		"_newDefinitionObj": {
 			"description": "The cloned response."

@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "AddPathItemCommand_30",
+		"__type": "AddPathItemCommand",
 		"_newPathItemName": "/clonedFoo",
 		"_newPathItemObj": {
 			"summary": "Foo Resource",

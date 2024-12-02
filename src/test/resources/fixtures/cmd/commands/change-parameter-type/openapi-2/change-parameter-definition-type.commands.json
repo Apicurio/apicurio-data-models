@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangeParameterDefinitionTypeCommand_20",
+        "__type": "ChangeParameterDefinitionTypeCommand",
         "_paramPath" : "/parameters[skipParam]",
         "_newType" : {
           "type": "integer",

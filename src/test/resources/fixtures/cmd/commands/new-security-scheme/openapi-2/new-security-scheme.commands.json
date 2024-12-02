@@ -1,5 +1,5 @@
 [{
-    "__type": "NewSecuritySchemeCommand_20",
+    "__type": "NewSecuritySchemeCommand",
     "_scheme": {
         "type": "apiKey",
         "name": "key",

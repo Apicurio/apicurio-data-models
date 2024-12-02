@@ -1,6 +1,6 @@
 [
     {
-        "__type": "AddExampleCommand_30",
+        "__type": "AddExampleCommand",
         "_parentPath": "/paths[/]/get/responses[300]/content[application/json]",
         "_newExampleValue": "{ \"prop\": true }",
         "_newExampleName": "FOOF",

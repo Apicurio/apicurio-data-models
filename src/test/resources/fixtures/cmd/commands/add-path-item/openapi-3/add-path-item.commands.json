@@ -1,6 +1,6 @@
 [
     {
-        "__type": "AddPathItemCommand_30",
+        "__type": "AddPathItemCommand",
         "_newPathItemName": "/newPath",
         "_newPathItemObj": {}
     }

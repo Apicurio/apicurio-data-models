@@ -8,6 +8,8 @@ import io.apicurio.datamodels.cmd.commands.ChangeLicenseCommand;
 import io.apicurio.datamodels.cmd.commands.ChangePropertyCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.util.CommandUtil;
 
@@ -47,6 +49,10 @@ public class CommandFactory {
 
     public static final ICommand createChangeLicenseCommand(String name, String url) {
         return new ChangeLicenseCommand(name, url);
+    }
+
+    public static final ICommand createDeleteLicenseCommand(Info info) {
+        return new DeleteLicenseCommand(info);
     }
 
 }

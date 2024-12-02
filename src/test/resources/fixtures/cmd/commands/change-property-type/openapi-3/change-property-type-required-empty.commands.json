@@ -1,6 +1,6 @@
 [
     {
-        "__type": "ChangePropertyTypeCommand_30",
+        "__type": "ChangePropertyTypeCommand",
         "_propPath": "/components/schemas[MySchema1]/properties[name]",
         "_propName": "name",
         "_newType": {

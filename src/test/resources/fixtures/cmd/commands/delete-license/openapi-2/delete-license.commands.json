@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteLicenseCommand_20",
+    "__type": "DeleteLicenseCommand",
     "_property": "license",
     "_parentPath": "/info"
 }]

@@ -1,5 +1,5 @@
 [{
-    "__type": "NewResponseDefinitionCommand_20",
+    "__type": "NewResponseDefinitionCommand",
     "_newDefinitionName": "NewResponse",
     "_newDefinitionDescription": "Just a description of a new response."
 }]

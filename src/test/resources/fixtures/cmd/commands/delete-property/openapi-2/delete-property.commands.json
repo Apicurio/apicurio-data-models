@@ -1,5 +1,5 @@
 [{
-    "__type": "DeletePropertyCommand_20",
+    "__type": "DeletePropertyCommand",
     "_propertyName": "petId",
     "_propertyPath": "/definitions[Order]/properties[petId]",
     "_schemaPath": "/definitions[Order]"

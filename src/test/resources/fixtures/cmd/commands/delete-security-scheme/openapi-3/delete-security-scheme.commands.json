@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteSecuritySchemeCommand_30",
+    "__type": "DeleteSecuritySchemeCommand",
     "_schemeName": "JWT"
 }]

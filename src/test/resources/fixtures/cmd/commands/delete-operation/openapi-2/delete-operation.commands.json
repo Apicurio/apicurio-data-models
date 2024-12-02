@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteOperationCommand_20",
+    "__type": "DeleteOperationCommand",
     "_property": "post",
     "_parentPath": "/paths[/pet]"
 }]

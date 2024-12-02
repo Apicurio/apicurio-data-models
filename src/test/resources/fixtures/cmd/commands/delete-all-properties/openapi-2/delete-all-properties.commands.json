@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "DeleteAllPropertiesCommand_20",
+		"__type": "DeleteAllPropertiesCommand",
 		"_schemaPath": "/definitions[Order]"
 	}
 ]

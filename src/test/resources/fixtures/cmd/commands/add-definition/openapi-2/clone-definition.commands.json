@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "AddSchemaDefinitionCommand_20",
+		"__type": "AddSchemaDefinitionCommand",
 		"_newDefinitionName": "CategoryClone",
 		"_newDefinitionObj": {
 			"type": "object",

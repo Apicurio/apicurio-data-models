@@ -1,5 +1,5 @@
 [{
-    "__type": "SetExampleCommand_20",
+    "__type": "SetExampleCommand",
     "_parentPath": "/paths[/pet/{petId}]/get/responses[200]",
     "_newExample": {
         "property1": "foo",

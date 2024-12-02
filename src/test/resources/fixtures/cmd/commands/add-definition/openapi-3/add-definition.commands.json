@@ -1,6 +1,6 @@
 [
     {
-        "__type": "AddSchemaDefinitionCommand_30",
+        "__type": "AddSchemaDefinitionCommand",
         "_newDefinitionName" : "EmptySchema",
         "_newDefinitionObj" : {}
     }

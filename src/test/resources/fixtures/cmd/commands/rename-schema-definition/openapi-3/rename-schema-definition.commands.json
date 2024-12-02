@@ -1,5 +1,5 @@
 [{
-    "__type": "RenameSchemaDefinitionCommand_30",
+    "__type": "RenameSchemaDefinitionCommand",
     "_oldName": "User",
     "_newName": "Dude",
     "_references": [],

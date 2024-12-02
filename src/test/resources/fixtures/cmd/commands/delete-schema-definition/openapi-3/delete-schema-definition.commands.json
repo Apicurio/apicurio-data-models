@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteSchemaDefinitionCommand_30",
+    "__type": "DeleteSchemaDefinitionCommand",
     "_definitionName": "MySchema2"
 }]

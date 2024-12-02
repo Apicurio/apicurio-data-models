@@ -1,5 +1,5 @@
 [{
-    "__type": "RenameSchemaDefinitionCommand_20",
+    "__type": "RenameSchemaDefinitionCommand",
     "_oldName": "Pet",
     "_newName": "Kangaroo",
     "_references": [],

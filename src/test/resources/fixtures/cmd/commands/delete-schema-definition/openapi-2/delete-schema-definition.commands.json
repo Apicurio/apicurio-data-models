@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteSchemaDefinitionCommand_20",
+    "__type": "DeleteSchemaDefinitionCommand",
     "_definitionName": "Order"
 }]

@@ -1,5 +1,5 @@
 [{
-    "__type": "ReplacePathItemCommand_30",
+    "__type": "ReplacePathItemCommand",
     "_nodePath": "/paths[/foo]",
     "_new": {
         "summary": "The Foo Resource",

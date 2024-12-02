@@ -1,5 +1,5 @@
 [{
-    "__type": "SetExampleCommand_30",
+    "__type": "SetExampleCommand",
     "_parentPath": "/paths[/foo]/get/requestBody/content[application/json]",
     "_newExample": {
         "foo": "bar",

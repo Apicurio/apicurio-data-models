@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "AddPathItemCommand_20",
+		"__type": "AddPathItemCommand",
 		"_newPathItemName": "/clonedPets",
 		"_newPathItemObj": {
 			"get": {

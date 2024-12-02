@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteSecuritySchemeCommand_20",
+    "__type": "DeleteSecuritySchemeCommand",
     "_schemeName": "petstore_auth"
 }]

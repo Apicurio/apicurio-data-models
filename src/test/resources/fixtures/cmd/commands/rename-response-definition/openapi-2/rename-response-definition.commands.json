@@ -1,5 +1,5 @@
 [{
-    "__type": "RenameResponseDefinitionCommand_20",
+    "__type": "RenameResponseDefinitionCommand",
     "_oldName": "Error",
     "_newName": "Failure",
     "_references": []

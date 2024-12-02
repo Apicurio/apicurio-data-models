@@ -1,6 +1,6 @@
 [
 	{
-		"__type": "ChangePropertyTypeCommand_20",
+		"__type": "ChangePropertyTypeCommand",
 		"_propPath": "/definitions[Person]/properties[name]",
 		"_propName": "name",
 		"_newType": {

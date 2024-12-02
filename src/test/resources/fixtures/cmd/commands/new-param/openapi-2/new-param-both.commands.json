@@ -1,5 +1,5 @@
 [{
-    "__type": "NewParamCommand_20",
+    "__type": "NewParamCommand",
     "_parentPath": "/paths[/pets]/get",
     "_paramName": "newParameter",
     "_paramType": "query",

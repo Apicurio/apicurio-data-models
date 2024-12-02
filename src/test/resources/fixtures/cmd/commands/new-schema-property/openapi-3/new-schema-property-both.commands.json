@@ -1,5 +1,5 @@
 [{
-    "__type": "NewSchemaPropertyCommand_30",
+    "__type": "NewSchemaPropertyCommand",
     "_schemaPath": "/components/schemas[MySchema1]",
     "_propertyName": "newProperty",
     "_description": "Hello 3.0 world.",

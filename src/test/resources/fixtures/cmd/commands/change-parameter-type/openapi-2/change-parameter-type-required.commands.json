@@ -1,6 +1,6 @@
 [
     {
-        "__type" : "ChangeParameterTypeCommand_20",
+        "__type" : "ChangeParameterTypeCommand",
         "_paramPath" : "/paths[/pets]/get/parameters[1]",
         "_newType" : {
           "type": "#/definitions/User",

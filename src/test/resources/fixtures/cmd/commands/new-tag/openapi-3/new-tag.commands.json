@@ -1,5 +1,5 @@
 [{
-    "__type": "NewTagCommand_30",
+    "__type": "NewTagCommand",
     "_tagName": "tag3",
     "_tagDescription": "Tag 3 description"
 }]

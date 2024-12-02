@@ -1,5 +1,5 @@
 [{
-    "__type": "DeleteExampleCommand_30",
+    "__type": "DeleteExampleCommand",
     "_exampleName": "foo",
     "_mediaTypePath": "/paths[/]/get/responses[200]/content[application/json]"
 }]

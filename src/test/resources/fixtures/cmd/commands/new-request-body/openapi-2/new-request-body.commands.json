@@ -1,4 +1,4 @@
 [{
-    "__type": "NewRequestBodyCommand_20",
+    "__type": "NewRequestBodyCommand",
     "_operationPath": "/paths[/pets]/get"
 }]

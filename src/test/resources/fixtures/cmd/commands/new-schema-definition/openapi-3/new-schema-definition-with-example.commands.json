@@ -1,5 +1,5 @@
 [{
-    "__type": "NewSchemaDefinitionCommand_30",
+    "__type": "NewSchemaDefinitionCommand",
     "_newDefinitionName": "NewType",
     "_newDefinitionExample": {
         "name": "Jason Bourne",

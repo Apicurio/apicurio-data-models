@@ -1,5 +1,5 @@
 [{
-    "__type": "ReplaceSchemaDefinitionCommand_30",
+    "__type": "ReplaceSchemaDefinitionCommand",
     "_nodePath": "/components/schemas[MySchema2]",
     "_new": {
         "required": [

@@ -1,5 +1,5 @@
 [{
-    "__type": "ReplaceSchemaDefinitionCommand_20",
+    "__type": "ReplaceSchemaDefinitionCommand",
     "_nodePath": "/definitions[Person]",
     "_new": {
         "required": [
