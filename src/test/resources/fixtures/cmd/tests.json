@@ -19,5 +19,9 @@
     { "name": "[OpenAPI 2] {Change Contact Info} - Add Contact Info", "test": "commands/change-contact-info/openapi-2/add-contact-info" },
     { "name": "[OpenAPI 2] {Change Contact Info} - Update Contact Info", "test": "commands/change-contact-info/openapi-2/update-contact-info" },
     { "name": "[OpenAPI 3] {Change Contact Info} - Add Contact Info", "test": "commands/change-contact-info/openapi-3/add-contact-info" },
-    { "name": "[OpenAPI 3] {Change Contact Info} - Update Contact Info", "test": "commands/change-contact-info/openapi-3/update-contact-info" }
+    { "name": "[OpenAPI 3] {Change Contact Info} - Update Contact Info", "test": "commands/change-contact-info/openapi-3/update-contact-info" },
+    { "name": "[OpenAPI 2] {Change License} - Add License", "test": "commands/change-license/openapi-2/add-license" },
+    { "name": "[OpenAPI 2] {Change License} - Change License", "test": "commands/change-license/openapi-2/change-license" },
+    { "name": "[OpenAPI 3] {Change License} - Add License", "test": "commands/change-license/openapi-3/add-license" },
+    { "name": "[OpenAPI 3] {Change License} - Change License", "test": "commands/change-license/openapi-3/change-license" }
 ]

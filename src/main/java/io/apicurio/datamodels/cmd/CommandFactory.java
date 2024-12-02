@@ -2,7 +2,9 @@ package io.apicurio.datamodels.cmd;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
+import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
+import io.apicurio.datamodels.cmd.commands.ChangeLicenseCommand;
 import io.apicurio.datamodels.cmd.commands.ChangePropertyCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
@@ -37,6 +39,14 @@ public class CommandFactory {
 
     public static ICommand createChangeVersionCommand(String newVersion) {
         return new ChangeVersionCommand(newVersion);
+    }
+
+    public static final ICommand createChangeContactCommand(String name, String email, String url) {
+        return new ChangeContactCommand(name, email, url);
+    }
+
+    public static final ICommand createChangeLicenseCommand(String name, String url) {
+        return new ChangeLicenseCommand(name, url);
     }
 
 }
