@@ -25,5 +25,8 @@
     { "name": "[OpenAPI 3] {Change License} - Add License", "test": "commands/change-license/openapi-3/add-license" },
     { "name": "[OpenAPI 3] {Change License} - Change License", "test": "commands/change-license/openapi-3/change-license" },
     { "name": "[OpenAPI 2] {Delete License} - Delete License", "test": "commands/delete-license/openapi-2/delete-license" },
-    { "name": "[OpenAPI 3] {Delete License} - Delete License", "test": "commands/delete-license/openapi-3/delete-license" }
+    { "name": "[OpenAPI 3] {Delete License} - Delete License", "test": "commands/delete-license/openapi-3/delete-license" },
+    { "name": "[OpenAPI 2] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-2/delete-contact" },
+    { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact NA", "test": "commands/delete-contact/openapi-3/delete-contact-na" },
+    { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" }
 ]
