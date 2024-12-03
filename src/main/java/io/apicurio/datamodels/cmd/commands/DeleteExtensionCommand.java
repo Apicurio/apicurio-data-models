@@ -23,6 +23,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
 
     public boolean _hasOldValue;
     public JsonNode _oldValue;
+    public int _oldValueIndex;
 
     public DeleteExtensionCommand() {
     }
@@ -53,10 +54,12 @@ public class DeleteExtensionCommand extends AbstractCommand {
         if (extensions.containsKey(this._name)) {
             this._hasOldValue = true;
             this._oldValue = extensions.get(this._name);
+            this._oldValueIndex = indexOf(extensions.keySet(), this._name);
             extensible.removeExtension(this._name);
         } else {
             this._oldValue = null;
             this._hasOldValue = false;
+            this._oldValueIndex = -1;
         }
     }
 
@@ -75,7 +78,11 @@ public class DeleteExtensionCommand extends AbstractCommand {
             return;
         }
         Extensible extensible = (Extensible) parent;
-        extensible.addExtension(this._name, this._oldValue);
+        if (this._oldValueIndex > -1) {
+            extensible.insertExtension(this._name, this._oldValue, this._oldValueIndex);
+        } else {
+            extensible.addExtension(this._name, this._oldValue);
+        }
     }
 
 }

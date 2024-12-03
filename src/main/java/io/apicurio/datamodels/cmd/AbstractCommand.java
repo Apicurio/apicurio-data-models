@@ -2,6 +2,8 @@ package io.apicurio.datamodels.cmd;
 
 import io.apicurio.datamodels.util.NodeUtil;
 
+import java.util.Set;
+
 /**
  * A base class for all command implementations.
  * @author eric.wittmann@gmail.com
@@ -28,6 +30,17 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public final String type() {
         return this.getClass().getSimpleName();
+    }
+
+    protected static int indexOf(Set<String> names, String name) {
+        int idx = 0;
+        for (String n : names) {
+            if (n.equals(name)) {
+                return idx;
+            }
+            idx++;
+        }
+        return -1;
     }
 
 }

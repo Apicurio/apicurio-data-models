@@ -1,13 +1,22 @@
 import {ICommand} from '../cmd/ICommand';
 import {NodePath} from '../paths/NodePath';
+import {NodePathUtil} from "../paths/NodePathUtil";
+
 import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
+
 import {ChangeDescriptionCommand} from "../cmd/commands/ChangeDescriptionCommand";
 import {ChangePropertyCommand} from "../cmd/commands/ChangePropertyCommand";
 import {ChangeTitleCommand} from "../cmd/commands/ChangeTitleCommand";
 import {ChangeVersionCommand} from "../cmd/commands/ChangeVersionCommand";
-import {SetPropertyCommand} from "../cmd/commands/SetPropertyCommand";
 import {ChangeContactCommand} from "../cmd/commands/ChangeContactCommand";
-import {NodePathUtil} from "../paths/NodePathUtil";
+import {ChangeLicenseCommand} from "../cmd/commands/ChangeLicenseCommand";
+
+import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
+import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
+import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
+import {DeleteMediaTypeCommand} from "../cmd/commands/DeleteMediaTypeCommand";
+
+import {SetPropertyCommand} from "../cmd/commands/SetPropertyCommand";
 
 
 const pathKeys: string[] = [
@@ -15,19 +24,26 @@ const pathKeys: string[] = [
     "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath"
 ];
 const pathListKeys: string[] = [ "_references" ];
-const typeKeys: string[] = [ "_newType" ];
 const cmdListKeys: string[] = [ "_commands" ];
 
 type Supplier = () => ICommand;
 
 const commandSuppliers: { [key: string]: Supplier } = {
     "AddChannelItemCommand": () => { return new AddChannelItemCommand(); },
+
     "ChangeDescriptionCommand": () => { return new ChangeDescriptionCommand(); },
     "ChangePropertyCommand": () => { return new ChangePropertyCommand(); },
     "ChangeTitleCommand": () => { return new ChangeTitleCommand(); },
     "ChangeVersionCommand": () => { return new ChangeVersionCommand(); },
-    "SetPropertyCommand": () => { return new SetPropertyCommand(); },
     "ChangeContactCommand": () => { return new ChangeContactCommand(); },
+    "ChangeLicenseCommand": () => { return new ChangeLicenseCommand(); },
+
+    "DeleteContactCommand": () => { return new DeleteContactCommand(); },
+    "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
+    "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },
+    "DeleteMediaTypeCommand": () => { return new DeleteMediaTypeCommand(); },
+
+    "SetPropertyCommand": () => { return new SetPropertyCommand(); },
 };
 
 export class CommandUtil {
@@ -57,8 +73,8 @@ export class CommandUtil {
                         newValue.push(NodePathUtil.parseNodePath(np));
                     });
                     value = newValue;
-                // } else if (typeKeys.indexOf(key) != -1 && value) {
-                //     value = MarshallCompat.unmarshallSimplifiedType(value);
+                    // } else if (typeKeys.indexOf(key) != -1 && value) {
+                    //     value = MarshallCompat.unmarshallSimplifiedType(value);
                 } else if (cmdListKeys.indexOf(key) != -1 && value) {
                     let newValue: ICommand[] = [];
                     (<any[]>value).forEach(mcmd => {

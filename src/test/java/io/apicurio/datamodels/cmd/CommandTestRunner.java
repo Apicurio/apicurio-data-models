@@ -158,7 +158,7 @@ public class CommandTestRunner extends ParentRunner<CommandTestCase> {
 
                     actual = Library.writeDocumentToJSONString(document);
                     expected = beforeJson;
-                    
+
                     assertJsonEquals("After undo", expected, actual);
                 }
             }

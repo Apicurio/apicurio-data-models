@@ -30,5 +30,7 @@
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact NA", "test": "commands/delete-contact/openapi-3/delete-contact-na" },
     { "name": "[OpenAPI 3] {Delete Contact} - Delete Contact", "test": "commands/delete-contact/openapi-3/delete-contact" },
     { "name": "[OpenAPI 2] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-2/delete-extension" },
-    { "name": "[OpenAPI 3] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-3/delete-extension" }
+    { "name": "[OpenAPI 3] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-3/delete-extension" },
+    { "name": "[OpenAPI 3] {Delete Media Type} - Delete Media Type Request Body", "test": "commands/delete-media-type/openapi-3/delete-media-type-requestBody" },
+    { "name": "[OpenAPI 3] {Delete Media Type} - Delete Media Type Response", "test": "commands/delete-media-type/openapi-3/delete-media-type-response" }
 ]

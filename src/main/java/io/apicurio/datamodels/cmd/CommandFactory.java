@@ -11,9 +11,11 @@ import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
 import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.util.CommandUtil;
 
 import java.security.cert.Extension;
@@ -66,6 +68,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteExtensionCommand(Extensible parent, String extensionName) {
         return new DeleteExtensionCommand(parent, extensionName);
+    }
+
+    public static final ICommand createDeleteMediaTypeCommand(OpenApiMediaType mediaType) {
+        return new DeleteMediaTypeCommand(mediaType);
     }
 
 }
