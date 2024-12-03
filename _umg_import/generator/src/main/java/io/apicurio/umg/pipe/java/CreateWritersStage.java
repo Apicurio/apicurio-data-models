@@ -299,7 +299,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
                 body.append("{");
                 body.append("    Map<String, ? extends ${mapValueCommonJavaType}> models = node.${getterMethodName}();");
-                body.append("    if (models != null) {");
+                body.append("    if (models != null && !models.isEmpty()) {");
                 body.append("        models.keySet().forEach(propertyName -> {");
                 body.append("            ObjectNode object = JsonUtil.objectNode();");
                 body.append("            this.${writeMethodName}((${mapValueJavaType}) models.get(propertyName), object);");
@@ -316,7 +316,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
                 body.append("{");
                 body.append("    Map<String, ${valueType}> values = node.${getterMethodName}();");
-                body.append("    if (values != null) {");
+                body.append("    if (values != null && !values.isEmpty()) {");
                 body.append("        values.keySet().forEach(propertyName -> {");
                 body.append("            ${valueType} value = values.get(propertyName);");
                 body.append("            JsonUtil.${setPropertyMethodName}(json, propertyName, value);");
@@ -403,7 +403,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
                 body.append("{");
                 body.append("    List<? extends ${listValueCommonJavaType}> models = node.${getterMethodName}();");
-                body.append("    if (models != null) {");
+                body.append("    if (models != null && !models.isEmpty()) {");
                 body.append("        ArrayNode array = JsonUtil.arrayNode();");
                 body.append("        models.forEach(model -> {");
                 body.append("            ObjectNode object = JsonUtil.objectNode();");
@@ -457,7 +457,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
                 body.append("{");
                 body.append("    Map<String, ? extends ${mapValueCommonJavaType}> models = node.${getterMethodName}();");
-                body.append("    if (models != null) {");
+                body.append("    if (models != null && !models.isEmpty()) {");
                 body.append("        ObjectNode object = JsonUtil.objectNode();");
                 body.append("        models.keySet().forEach(jsonName -> {");
                 body.append("            ObjectNode jsonValue = JsonUtil.objectNode();");
