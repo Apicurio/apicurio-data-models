@@ -1,0 +1,10 @@
+[
+  {
+    "__type": "AddTraitCommand",
+    "_operationPath": "/channels[999testtest99]/publish",
+    "_newTrait":
+          {
+            "$ref": "#/components/operationTraits/commonBindings"
+          }
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "__type": "AddTraitCommand",
+    "_messagePath": "/channels[999testtest99]/publish/message",
+    "_newTrait":
+          {
+            "$ref": "#/components/messageTraits/commonHeaders"
+          }
+  }
+]

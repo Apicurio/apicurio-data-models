@@ -1,0 +1,34 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "TopicMultiEvent-oneOf",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "999testtest99": {
+      "publish": {
+        "summary": "All updates about the user",
+        "message": {
+          "payload": {},
+          "traits": [{
+            "$ref": "#/components/messageTraits/commonHeaders"
+          }]
+        }
+      }
+    }
+  },
+  "components": {
+    "messageTraits": {
+      "commonHeaders": {
+        "headers": {
+          "type": "object",
+          "properties": {
+            "content-type": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}
