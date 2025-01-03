@@ -12,6 +12,7 @@ import {ChangeContactCommand} from "../cmd/commands/ChangeContactCommand";
 import {ChangeLicenseCommand} from "../cmd/commands/ChangeLicenseCommand";
 
 import {DeleteAllChildSchemasCommand} from "../cmd/commands/DeleteAllChildSchemasCommand";
+import {DeleteAllExamplesCommand} from "../cmd/commands/DeleteAllExamplesCommand";
 import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
 import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
@@ -40,6 +41,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "ChangeLicenseCommand": () => { return new ChangeLicenseCommand(); },
 
     "DeleteAllChildSchemasCommand": () => { return new DeleteAllChildSchemasCommand(); },
+    "DeleteAllExamplesCommand": () => { return new DeleteAllExamplesCommand(); },
     "DeleteContactCommand": () => { return new DeleteContactCommand(); },
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },

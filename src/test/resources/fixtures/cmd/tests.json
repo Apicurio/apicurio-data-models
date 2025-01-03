@@ -33,5 +33,6 @@
     { "name": "[OpenAPI 3] {Delete Extension} - Delete Extension", "test": "commands/delete-extension/openapi-3/delete-extension" },
     { "name": "[OpenAPI 3] {Delete Media Type} - Delete Media Type Request Body", "test": "commands/delete-media-type/openapi-3/delete-media-type-requestBody" },
     { "name": "[OpenAPI 3] {Delete Media Type} - Delete Media Type Response", "test": "commands/delete-media-type/openapi-3/delete-media-type-response" },
-    { "name": "[OpenAPI 3] {Delete All Child Schemas} - All Of", "test": "commands/delete-all-child-schemas/openapi-3/delete-all-schemas" }
+    { "name": "[OpenAPI 3] {Delete All Child Schemas} - All Of", "test": "commands/delete-all-child-schemas/openapi-3/delete-all-schemas" },
+    { "name": "[OpenAPI 3] {Delete All Examples} - Delete All Examples", "test": "commands/delete-all-examples/openapi-3/delete-all-examples" }
 ]
