@@ -1,4 +1,3 @@
-
 package io.apicurio.datamodels.cmd.commands;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
