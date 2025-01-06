@@ -12,6 +12,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllChildSchemasCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllExamplesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllHeadersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllOperationsCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteAllParametersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
@@ -22,6 +23,7 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
@@ -103,6 +105,14 @@ public class CommandFactory {
 
     public static ICommand createDeleteAllPathItemOperationsCommand(OpenApiPathItem pathItem) {
         return new DeleteAllOperationsCommand(pathItem);
+    }
+
+    public static final ICommand createDeleteAllPathItemParametersCommand(OpenApiPathItem parent, String type) {
+        return new DeleteAllParametersCommand(parent, type);
+    }
+
+    public static final ICommand createDeleteAllOperationParametersCommand(OpenApiOperation parent, String type) {
+        return new DeleteAllParametersCommand(parent, type);
     }
 
 }
