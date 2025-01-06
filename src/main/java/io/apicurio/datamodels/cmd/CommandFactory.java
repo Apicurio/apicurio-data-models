@@ -15,6 +15,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllOperationsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllParametersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllPropertiesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllResponsesCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteAllSecurityRequirementsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
@@ -23,6 +24,8 @@ import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
+import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
@@ -123,6 +126,16 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllResponsesCommand(OpenApiOperation operation) {
         return new DeleteAllResponsesCommand(operation);
+    }
+
+    public static final ICommand createDeleteAllServerSecurityRequirementsCommand(AsyncApiServer server) {
+        return new DeleteAllSecurityRequirementsCommand(server);
+    }
+    public static final ICommand createDeleteAllOperationSecurityRequirementsCommand(OpenApiOperation operation) {
+        return new DeleteAllSecurityRequirementsCommand(operation);
+    }
+    public static final ICommand createDeleteAllDocumentSecurityRequirementsCommand(OpenApiDocument document) {
+        return new DeleteAllSecurityRequirementsCommand(document);
     }
 
 }

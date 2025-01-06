@@ -19,6 +19,7 @@ import {DeleteAllOperationsCommand} from "../cmd/commands/DeleteAllOperationsCom
 import {DeleteAllParametersCommand} from "../cmd/commands/DeleteAllParametersCommand";
 import {DeleteAllPropertiesCommand} from "../cmd/commands/DeleteAllPropertiesCommand";
 import {DeleteAllResponsesCommand} from "../cmd/commands/DeleteAllResponsesCommand";
+import {DeleteAllSecurityRequirementsCommand} from "../cmd/commands/DeleteAllSecurityRequirementsCommand";
 import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
 import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
@@ -54,6 +55,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteAllParametersCommand": () => { return new DeleteAllParametersCommand(); },
     "DeleteAllPropertiesCommand": () => { return new DeleteAllPropertiesCommand(); },
     "DeleteAllResponsesCommand": () => { return new DeleteAllResponsesCommand(); },
+    "DeleteAllSecurityRequirementsCommand": () => { return new DeleteAllSecurityRequirementsCommand(); },
     "DeleteContactCommand": () => { return new DeleteContactCommand(); },
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },
