@@ -15,6 +15,7 @@ import {DeleteAllChildSchemasCommand} from "../cmd/commands/DeleteAllChildSchema
 import {DeleteAllExamplesCommand} from "../cmd/commands/DeleteAllExamplesCommand";
 import {DeleteAllExtensionsCommand} from "../cmd/commands/DeleteAllExtensionsCommand";
 import {DeleteAllHeadersCommand} from "../cmd/commands/DeleteAllHeadersCommand";
+import {DeleteAllOperationsCommand} from "../cmd/commands/DeleteAllOperationsCommand";
 import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
 import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
@@ -46,6 +47,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteAllExamplesCommand": () => { return new DeleteAllExamplesCommand(); },
     "DeleteAllExtensionsCommand": () => { return new DeleteAllExtensionsCommand(); },
     "DeleteAllHeadersCommand": () => { return new DeleteAllHeadersCommand(); },
+    "DeleteAllOperationsCommand": () => { return new DeleteAllOperationsCommand(); },
     "DeleteContactCommand": () => { return new DeleteContactCommand(); },
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },

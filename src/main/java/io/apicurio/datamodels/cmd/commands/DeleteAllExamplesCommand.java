@@ -39,15 +39,15 @@ public class DeleteAllExamplesCommand extends AbstractCommand {
     }
 
     public DeleteAllExamplesCommand(OpenApiMediaType parent) {
-        this._parentPath = Library.createNodePath(parent);
+        this._parentPath = NodePathUtil.createNodePath(parent);
     }
 
     public DeleteAllExamplesCommand(OpenApiParameter parent) {
-        this._parentPath = Library.createNodePath(parent);
+        this._parentPath = NodePathUtil.createNodePath(parent);
     }
 
     public DeleteAllExamplesCommand(OpenApiHeader parent) {
-        this._parentPath = Library.createNodePath(parent);
+        this._parentPath = NodePathUtil.createNodePath(parent);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package io.apicurio.datamodels.cmd.commands;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Extensible;
@@ -29,7 +28,7 @@ public class DeleteExtensionCommand extends AbstractCommand {
     }
 
     public DeleteExtensionCommand(Extensible parent, String extensionName) {
-        this._parentPath = Library.createNodePath((Node) parent);
+        this._parentPath = NodePathUtil.createNodePath((Node) parent);
         this._name = extensionName;
     }
     

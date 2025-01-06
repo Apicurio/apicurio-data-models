@@ -37,8 +37,8 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
     public DeleteMediaTypeCommand(OpenApiMediaType mediaType) {
         this._mediaTypeName = mediaType.mapPropertyName();
-        this._mediaTypePath = Library.createNodePath(mediaType);
-        this._parentPath = Library.createNodePath(mediaType.parent());
+        this._mediaTypePath = NodePathUtil.createNodePath(mediaType);
+        this._parentPath = NodePathUtil.createNodePath(mediaType.parent());
     }
     
     /**

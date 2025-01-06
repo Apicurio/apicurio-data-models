@@ -1,6 +1,5 @@
 package io.apicurio.datamodels.cmd.commands;
 
-import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
@@ -36,7 +35,7 @@ public class ChangePropertyCommand<T> extends AbstractCommand {
     public ChangePropertyCommand(Node node, String property, T newValue) {
         super();
         if (NodeUtil.isDefined(node)) {
-            this._nodePath = Library.createNodePath(node);
+            this._nodePath = NodePathUtil.createNodePath(node);
         }
         this._property = property;
         this._newValue = newValue;

@@ -33,7 +33,7 @@ public class DeleteAllChildSchemasCommand extends AbstractSchemaInhCommand {
     }
 
     public DeleteAllChildSchemasCommand(Schema parent, String type) {
-        this._schemaPath = Library.createNodePath((Node) parent);
+        this._schemaPath = NodePathUtil.createNodePath((Node) parent);
         this._childSchemaType = type;
     }
     

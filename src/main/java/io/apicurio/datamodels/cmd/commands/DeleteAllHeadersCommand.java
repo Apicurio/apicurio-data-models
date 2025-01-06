@@ -36,7 +36,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     }
 
     public DeleteAllHeadersCommand(OpenApiResponse parent) {
-        this._parentPath = Library.createNodePath(parent);
+        this._parentPath = NodePathUtil.createNodePath(parent);
     }
     
     /**

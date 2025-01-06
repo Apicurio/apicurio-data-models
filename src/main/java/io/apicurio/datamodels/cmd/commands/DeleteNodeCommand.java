@@ -26,7 +26,7 @@ public abstract class DeleteNodeCommand<T extends Node> extends AbstractCommand 
 
     public DeleteNodeCommand(String property, Node from) {
         this._property = property;
-        this._parentPath = Library.createNodePath(from);
+        this._parentPath = NodePathUtil.createNodePath(from);
     }
     
     /**

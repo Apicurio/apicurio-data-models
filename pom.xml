@@ -59,7 +59,7 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Node Versions -->
-        <version.node-js>16.16.0</version.node-js>
+        <version.node-js>20.18.1</version.node-js>
 
         <!-- Dependency Versions -->
         <version.com.fasterxml.jackson>2.12.5</version.com.fasterxml.jackson>
