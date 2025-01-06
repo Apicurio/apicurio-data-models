@@ -40,5 +40,8 @@
     { "name": "[OpenAPI 2] {Delete All Operations} - Delete All Operations", "test": "commands/delete-all-operations/openapi-2/delete-all-operations" },
     { "name": "[OpenAPI 3] {Delete All Operations} - Delete All Operations", "test": "commands/delete-all-operations/openapi-3/delete-all-operations" },
     { "name": "[OpenAPI 2] {Delete All Params} - Delete All Params", "test": "commands/delete-all-parameters/openapi-2/delete-all-parameters" },
-    { "name": "[OpenAPI 3] {Delete All Params} - Delete All Params", "test" : "commands/delete-all-parameters/openapi-3/delete-all-parameters" }
+    { "name": "[OpenAPI 3] {Delete All Params} - Delete All Params", "test" : "commands/delete-all-parameters/openapi-3/delete-all-parameters" },
+    { "name": "[OpenAPI 2] {Delete All Properties} - Delete All Properties", "test": "commands/delete-all-properties/openapi-2/delete-all-properties" },
+    { "name": "[OpenAPI 3] {Delete All Properties} - Delete All Properties", "test": "commands/delete-all-properties/openapi-3/delete-all-properties" },
+    { "name": "[AsyncAPI 2] {Delete All Properties} - Delete All Properties", "test": "commands/delete-all-properties/asyncapi-2/delete-all-properties" }
 ]
