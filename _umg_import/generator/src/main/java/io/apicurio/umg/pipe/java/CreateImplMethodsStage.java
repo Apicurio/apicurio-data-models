@@ -189,6 +189,16 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
             body.append("return this._items.remove(name);");
             method.setBody(body.toString());
         }
+
+        // void clearItems()
+        {
+            MethodSource<?> method = ((MethodHolderSource<?>) javaEntity).addMethod().setName("clearItems").setPublic();
+            method.addAnnotation(Override.class);
+            method.setReturnTypeVoid();
+            BodyBuilder body = new BodyBuilder();
+            body.append("this._items.clear();");
+            method.setBody(body.toString());
+        }
     }
 
     @Override

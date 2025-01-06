@@ -45,4 +45,9 @@ public interface MappedNode<T> {
      */
     public T removeItem(String name);
 
+    /**
+     * Removes all children.
+     */
+    public void clearItems();
+
 }
