@@ -16,6 +16,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllParametersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllPropertiesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllResponsesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllSecurityRequirementsCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteAllSecuritySchemesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
@@ -136,6 +137,10 @@ public class CommandFactory {
     }
     public static final ICommand createDeleteAllDocumentSecurityRequirementsCommand(OpenApiDocument document) {
         return new DeleteAllSecurityRequirementsCommand(document);
+    }
+
+    public static final ICommand createDeleteAllSecuritySchemesCommand() {
+        return new DeleteAllSecuritySchemesCommand();
     }
 
 }

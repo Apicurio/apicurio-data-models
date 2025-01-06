@@ -49,5 +49,8 @@
     { "name": "[OpenAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/openapi-2/delete-all-security-requirements" },
     { "name": "[OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements Op", "test": "commands/delete-all-security-requirements/openapi-3/delete-all-security-requirements-op" },
     { "name": "[OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/openapi-3/delete-all-security-requirements" },
-    { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" }
+    { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" },
+    { "name": "[OpenAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/openapi-2/delete-all-security-schemes" },
+    { "name": "[OpenAPI 3] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/openapi-3/delete-all-security-schemes" },
+    { "name": "[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/asyncapi-2/delete-all-security-schemes" }
 ]
