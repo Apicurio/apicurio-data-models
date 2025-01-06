@@ -14,6 +14,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllHeadersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllOperationsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllParametersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllPropertiesCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteAllResponsesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
@@ -118,6 +119,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllPropertiesCommand(Schema schema) {
         return new DeleteAllPropertiesCommand(schema);
+    }
+
+    public static final ICommand createDeleteAllResponsesCommand(OpenApiOperation operation) {
+        return new DeleteAllResponsesCommand(operation);
     }
 
 }
