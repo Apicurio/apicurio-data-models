@@ -10,6 +10,7 @@ import io.apicurio.datamodels.cmd.commands.ChangeTitleCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllChildSchemasCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllExamplesCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteAllHeadersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
@@ -21,6 +22,7 @@ import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.util.CommandUtil;
 
 public class CommandFactory {
@@ -91,6 +93,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteAllHeaderExamplesCommand(OpenApiHeader header) {
         return new DeleteAllExamplesCommand(header);
+    }
+
+    public static final ICommand createDeleteAllHeadersCommand(OpenApiResponse header) {
+        return new DeleteAllHeadersCommand(header);
     }
 
 }
