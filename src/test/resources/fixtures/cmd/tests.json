@@ -52,5 +52,10 @@
     { "name": "[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements", "test": "commands/delete-all-security-requirements/asyncapi-2/delete-all-security-requirements" },
     { "name": "[OpenAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/openapi-2/delete-all-security-schemes" },
     { "name": "[OpenAPI 3] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/openapi-3/delete-all-security-schemes" },
-    { "name": "[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/asyncapi-2/delete-all-security-schemes" }
+    { "name": "[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes", "test": "commands/delete-all-security-schemes/asyncapi-2/delete-all-security-schemes" },
+    { "name": "[OpenAPI 2] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/openapi-2/delete-all-tags" },
+    { "name": "[OpenAPI 3] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/openapi-3/delete-all-tags" },
+    { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Document", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-document" },
+    { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Operation", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-operation" },
+    { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-pathItem" }
 ]
