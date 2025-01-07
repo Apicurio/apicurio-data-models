@@ -1,10 +1,10 @@
-name: Parent Trait Test API 1.0
-version: 1.0
+name: Parent Trait Test API 2.0
+version: 2.0
 versions:
-  - version: 1.0
-    url: https://example.com/ParentTrait/versions/1.0.md
-prefix: Pt10
-namespace: org.example.pt.v10
+  - version: 2.0
+    url: https://example.com/ParentTrait/versions/2.0.md
+prefix: Pt20
+namespace: io.apicurio.umg.test.v20
 
 traits:
   - name: FooParent
@@ -48,9 +48,13 @@ entities:
       - $this
 
   - name: Baz
+    traits:
+      - FooParent
     properties:
       - name: length
         type: number
+      - name: foo
+        type: Foo
     propertyOrder:
       - $this
 

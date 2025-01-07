@@ -16,8 +16,6 @@
 
 package io.apicurio.umg;
 
-import java.util.Collection;
-
 import io.apicurio.umg.logging.Logger;
 import io.apicurio.umg.models.spec.SpecificationModel;
 import io.apicurio.umg.pipe.GeneratorState;
@@ -25,7 +23,6 @@ import io.apicurio.umg.pipe.Pipeline;
 import io.apicurio.umg.pipe.concept.CreateEntityModelsStage;
 import io.apicurio.umg.pipe.concept.CreateImplicitUnionRulesStage;
 import io.apicurio.umg.pipe.concept.CreateNamespaceModelsStage;
-import io.apicurio.umg.pipe.concept.CreateParentTraitsStage;
 import io.apicurio.umg.pipe.concept.CreatePropertyComparatorStage;
 import io.apicurio.umg.pipe.concept.CreatePropertyModelsStage;
 import io.apicurio.umg.pipe.concept.CreateTraitModelsStage;
@@ -36,6 +33,7 @@ import io.apicurio.umg.pipe.concept.NormalizeEntitiesStage;
 import io.apicurio.umg.pipe.concept.NormalizePropertiesStage;
 import io.apicurio.umg.pipe.concept.NormalizeTraitsStage;
 import io.apicurio.umg.pipe.concept.NormalizeVisitorsStage;
+import io.apicurio.umg.pipe.concept.RemoveShadedPropertyModelsStage;
 import io.apicurio.umg.pipe.concept.RemoveTransparentTraitsStage;
 import io.apicurio.umg.pipe.concept.ResolveVisitorEntityStage;
 import io.apicurio.umg.pipe.concept.SpecificationValidationStage;
@@ -70,6 +68,8 @@ import io.apicurio.umg.pipe.java.JavaWriteStage;
 import io.apicurio.umg.pipe.java.LoadBaseClassesStage;
 import io.apicurio.umg.pipe.java.OrganizeImportsStage;
 import io.apicurio.umg.pipe.java.RemoveUnusedImportsStage;
+
+import java.util.Collection;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -110,9 +110,10 @@ public class UnifiedModelGenerator {
         pipe.addStage(new CreateNamespaceModelsStage());
         pipe.addStage(new CreateTraitModelsStage());
         pipe.addStage(new CreateEntityModelsStage());
+//        pipe.addStage(new CreateParentTraitsStage());
         pipe.addStage(new CreatePropertyModelsStage());
-        pipe.addStage(new CreateParentTraitsStage());
         pipe.addStage(new CreateVisitorsStage());
+        pipe.addStage(new RemoveShadedPropertyModelsStage());
 
         // Implicit model creation phase
         pipe.addStage(new CreateImplicitUnionRulesStage());

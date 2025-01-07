@@ -62,10 +62,10 @@ public class CreateParentTraitsStage extends AbstractStage {
      * Returns true if the given entity/property combination is not unique across the models.  If the
      * combination is unique, then no parent trait is needed.  If it is NOT unique (meaning there
      * are other entities with the same property) then a parent IS needed.
-     *
+     * <br/>
      * In other words, we're trying to find multiple entities that share a child entity property.
      * So if "Foo" and "Bar" entities both have a property called "widget" of type "Widget", then
-     * we want those entities to both have a "WigetParent" trait.
+     * we want those entities to both have a "WidgetParent" trait.
      *
      * @param entity
      * @param property
@@ -90,7 +90,8 @@ public class CreateParentTraitsStage extends AbstractStage {
                 .filter(e -> !e.getName().equals(entity.getName()))
                 .filter(e -> e.hasProperty(property.getName()))
                 .filter(e -> e.getProperties().get(property.getName()).equals(property))
-                .count() > 0;
+                .findFirst()
+                .isPresent();
     }
 
 }

@@ -227,6 +227,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
 
             body.append("if (value != null) {");
             body.append("    ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+            body.append("    ((NodeImpl) value)._setParentPropertyType(ParentPropertyType.standard);");
             body.append("}");
         } else if (isUnion(property)) {
             JavaEnumSource parentPropertyTypeSource = getState().getJavaIndex().lookupEnum(getParentPropertyTypeEnumFQN());
@@ -243,6 +244,7 @@ public class CreateImplMethodsStage extends AbstractCreateMethodsStage {
             body.append("if (value != null) {");
             body.append("    if (value.isEntity()) {");
             body.append("        ((NodeImpl) value)._setParentPropertyName(\"${propertyName}\");");
+            body.append("        ((NodeImpl) value)._setParentPropertyType(ParentPropertyType.standard);");
             body.append("    } else if (value.isEntityList()) {");
             body.append("        List<?> entityList = (List<?>) ((UnionValue<?>) value).getValue();");
             body.append("        for (Object entity : entityList) {");

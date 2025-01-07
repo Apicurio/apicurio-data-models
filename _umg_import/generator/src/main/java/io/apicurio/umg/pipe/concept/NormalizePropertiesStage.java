@@ -12,6 +12,22 @@ import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
+/**
+ * This stage is responsible for pushing properties as far up the trait and entity
+ * hierarchies as possible, to facilitate sharing across the specifications as best we can.
+ * For example, if v1 and v2 of a specification both define a "Foo" entity with a
+ * "widget" property, the definition of the property should ultimately live on a shared
+ * parent interface.  So the following interfaces will be generated:
+ *
+ * <ul>
+ *     <li>V1Foo</li>
+ *     <li>V2Foo</li>
+ *     <li>Foo</li>
+ * </ul>
+ *
+ * This stage ensures that, in the example above, the "widget" property will live
+ * on "Foo" rather than living separately on both "V1Foo" and "V2Foo".
+ */
 public class NormalizePropertiesStage extends AbstractStage {
     @Override
     protected void doProcess() {

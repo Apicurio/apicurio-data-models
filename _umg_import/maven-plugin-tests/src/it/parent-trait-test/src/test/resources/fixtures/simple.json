@@ -1,0 +1,20 @@
+{
+    "id": "simple",
+    "foo": {
+        "name": "root-foo",
+        "description": "The foo at the root"
+    },
+    "bar": {
+        "type": "large",
+        "color": "orange"
+    },
+    "definitions": {
+        "foo": {
+            "name": "definition-foo",
+            "description": "The foo in definitions"
+        },
+        "baz": {
+            "length": 17
+        }
+    }
+}

@@ -4,7 +4,7 @@ versions:
   - version: 1.0
     url: https://example.com/ParentTrait/versions/1.0.md
 prefix: Pt10
-namespace: org.example.pt.v10
+namespace: io.apicurio.umg.test.v10
 
 traits:
   - name: FooParent

@@ -10,6 +10,12 @@ import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.TraitModel;
 import io.apicurio.umg.pipe.AbstractStage;
 
+/**
+ * This stage is responsible for generating a hierarchy of traits from the
+ * collection of traits defined in the various specification configs being
+ * processed.  It tries to identify commonalities between all spec versions
+ * so that traits can be shared across them.
+ */
 public class NormalizeTraitsStage extends AbstractStage {
 
     @Override

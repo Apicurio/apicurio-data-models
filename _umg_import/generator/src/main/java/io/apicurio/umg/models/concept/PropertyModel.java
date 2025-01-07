@@ -25,6 +25,8 @@ public class PropertyModel {
 
     private PropertyType type;
 
+    private boolean shaded;
+
     public UnionRule getRuleFor(String rawUnionSubtype) {
         if (unionRules != null) {
             return unionRules.stream().filter(rule -> rule.getUnionType().equals(rawUnionSubtype)).findFirst().orElse(null);

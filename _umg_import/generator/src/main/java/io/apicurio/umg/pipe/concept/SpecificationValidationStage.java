@@ -58,6 +58,27 @@ public class SpecificationValidationStage extends AbstractStage {
             fail("Entity '%s' in specification '%s' is missing its property ordering.", entity.getName(), specVer.getName());
         }
 
+        // Check for any properties that are shaded by a Trait but with a different type.  Traits
+        // can shade Entity properties by the types must be exactly the same.
+        {
+            List<Property> entityProperties = entity.getProperties();
+            for (Property entityProperty : entityProperties) {
+                List<String> traitNames = entity.getTraits();
+                for (String traitName : traitNames ) {
+                    Trait trait = specVer.getTraits().stream().filter(t -> t.getName().equals(traitName)).findFirst().get();
+                    List<Property> traitProperties = trait.getProperties();
+                    for (Property traitProperty : traitProperties) {
+                        if (traitProperty.getName().equals(entityProperty.getName())) {
+                            if (!entityProperty.getType().equals(traitProperty.getType())) {
+                                fail("Entity '%s' in specification '%s' contains a property '%s' that is illegally shaded by trait '%s' (types do not match).",
+                                        entity.getName(), specVer.getName(), entityProperty.getName(), traitName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // Validate the "propertyOrder" field.
         {
             List<String> propertyOrder = entity.getPropertyOrder();
