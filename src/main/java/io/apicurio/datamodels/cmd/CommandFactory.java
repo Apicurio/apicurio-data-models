@@ -1,7 +1,10 @@
 package io.apicurio.datamodels.cmd;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
+import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
+import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeLicenseCommand;
@@ -29,12 +32,14 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.openapi.OpenApiExamplesParent;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
+import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
 import io.apicurio.datamodels.util.CommandUtil;
 
 public class CommandFactory {
@@ -47,12 +52,29 @@ public class CommandFactory {
         return CommandUtil.unmarshall(from);
     }
 
+    public static ICommand createAddHeaderExampleCommand(OpenApiHeader header, JsonNode example,
+                                                         String exampleName, String exampleSummary, String exampleDescription) {
+        return new AddExampleCommand((OpenApiExamplesParent) header, example, exampleName, exampleSummary, exampleDescription);
+    }
+    public static ICommand createAddParameterExampleCommand(OpenApiParameter parameter, JsonNode example,
+                                                            String exampleName, String exampleSummary, String exampleDescription) {
+        return new AddExampleCommand((OpenApiExamplesParent) parameter, example, exampleName, exampleSummary, exampleDescription);
+    }
+    public static ICommand createAddHeaderExampleCommand(OpenApiMediaType mediaType, JsonNode example,
+                                                         String exampleName, String exampleSummary, String exampleDescription) {
+        return new AddExampleCommand((OpenApiExamplesParent) mediaType, example, exampleName, exampleSummary, exampleDescription);
+    }
+
     public static <T> ICommand createChangePropertyCommand(Node node, String property, T newValue) {
         return new ChangePropertyCommand<T>(node, property, newValue);
     }
 
     public static ICommand createAddChannelItemCommand(String channelItemName, ObjectNode from) {
         return new AddChannelItemCommand(channelItemName, from);
+    }
+
+    public static ICommand createAddPathItemCommand(String pathItemName, ObjectNode from) {
+        return new AddPathItemCommand(pathItemName, from);
     }
 
     public static ICommand createChangeTitleCommand(String newTitle) {
@@ -96,15 +118,15 @@ public class CommandFactory {
     }
 
     public static ICommand createDeleteAllMediaTypeExamplesCommand(OpenApiMediaType mediaType) {
-        return new DeleteAllExamplesCommand(mediaType);
+        return new DeleteAllExamplesCommand((OpenApiExamplesParent) mediaType);
     }
 
     public static ICommand createDeleteAllParameterExamplesCommand(OpenApiParameter parameter) {
-        return new DeleteAllExamplesCommand(parameter);
+        return new DeleteAllExamplesCommand((OpenApiExamplesParent) parameter);
     }
 
     public static ICommand createDeleteAllHeaderExamplesCommand(OpenApiHeader header) {
-        return new DeleteAllExamplesCommand(header);
+        return new DeleteAllExamplesCommand((OpenApiExamplesParent) header);
     }
 
     public static ICommand createDeleteAllHeadersCommand(OpenApiResponse header) {
@@ -115,48 +137,48 @@ public class CommandFactory {
         return new DeleteAllOperationsCommand(pathItem);
     }
 
-    public static final ICommand createDeleteAllPathItemParametersCommand(OpenApiPathItem parent, String type) {
+    public static ICommand createDeleteAllPathItemParametersCommand(OpenApiPathItem parent, String type) {
         return new DeleteAllParametersCommand(parent, type);
     }
 
-    public static final ICommand createDeleteAllOperationParametersCommand(OpenApiOperation parent, String type) {
+    public static ICommand createDeleteAllOperationParametersCommand(OpenApiOperation parent, String type) {
         return new DeleteAllParametersCommand(parent, type);
     }
 
-    public static final ICommand createDeleteAllPropertiesCommand(Schema schema) {
+    public static ICommand createDeleteAllPropertiesCommand(Schema schema) {
         return new DeleteAllPropertiesCommand(schema);
     }
 
-    public static final ICommand createDeleteAllResponsesCommand(OpenApiOperation operation) {
+    public static ICommand createDeleteAllResponsesCommand(OpenApiOperation operation) {
         return new DeleteAllResponsesCommand(operation);
     }
 
-    public static final ICommand createDeleteAllServerSecurityRequirementsCommand(AsyncApiServer server) {
+    public static ICommand createDeleteAllServerSecurityRequirementsCommand(AsyncApiServer server) {
         return new DeleteAllSecurityRequirementsCommand(server);
     }
-    public static final ICommand createDeleteAllOperationSecurityRequirementsCommand(OpenApiOperation operation) {
+    public static ICommand createDeleteAllOperationSecurityRequirementsCommand(OpenApiOperation operation) {
         return new DeleteAllSecurityRequirementsCommand(operation);
     }
-    public static final ICommand createDeleteAllDocumentSecurityRequirementsCommand(OpenApiDocument document) {
+    public static ICommand createDeleteAllDocumentSecurityRequirementsCommand(OpenApiDocument document) {
         return new DeleteAllSecurityRequirementsCommand(document);
     }
 
-    public static final ICommand createDeleteAllSecuritySchemesCommand() {
+    public static ICommand createDeleteAllSecuritySchemesCommand() {
         return new DeleteAllSecuritySchemesCommand();
     }
 
-    public static final ICommand createDeleteAllTagsCommand() {
+    public static ICommand createDeleteAllTagsCommand() {
         return new DeleteAllTagsCommand();
     }
 
-    public static final ICommand createDeleteAllDocumentServersCommand(OpenApiDocument document) {
-        return new DeleteAllServersCommand(document);
+    public static ICommand createDeleteAllDocumentServersCommand(OpenApiDocument document) {
+        return new DeleteAllServersCommand((OpenApiServersParent) document);
     }
-    public static final ICommand createDeleteAllPathItemServersCommand(OpenApiPathItem pathItem) {
-        return new DeleteAllServersCommand(pathItem);
+    public static ICommand createDeleteAllPathItemServersCommand(OpenApiPathItem pathItem) {
+        return new DeleteAllServersCommand((OpenApiServersParent) pathItem);
     }
-    public static final ICommand createDeleteAllOperationServersCommand(OpenApiOperation operation) {
-        return new DeleteAllServersCommand(operation);
+    public static ICommand createDeleteAllOperationServersCommand(OpenApiOperation operation) {
+        return new DeleteAllServersCommand((OpenApiServersParent) operation);
     }
 
 

@@ -3,6 +3,8 @@ import {NodePath} from '../paths/NodePath';
 import {NodePathUtil} from "../paths/NodePathUtil";
 
 import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
+import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
+import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
 
 import {ChangeDescriptionCommand} from "../cmd/commands/ChangeDescriptionCommand";
 import {ChangePropertyCommand} from "../cmd/commands/ChangePropertyCommand";
@@ -42,6 +44,8 @@ type Supplier = () => ICommand;
 
 const commandSuppliers: { [key: string]: Supplier } = {
     "AddChannelItemCommand": () => { return new AddChannelItemCommand(); },
+    "AddExampleCommand": () => { return new AddExampleCommand(); },
+    "AddPathItemCommand": () => { return new AddPathItemCommand(); },
 
     "ChangeDescriptionCommand": () => { return new ChangeDescriptionCommand(); },
     "ChangePropertyCommand": () => { return new ChangePropertyCommand(); },

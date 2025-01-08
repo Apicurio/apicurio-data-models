@@ -57,5 +57,15 @@
     { "name": "[OpenAPI 3] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/openapi-3/delete-all-tags" },
     { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Document", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-document" },
     { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Operation", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-operation" },
-    { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-pathItem" }
+    { "name": "[OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item", "test": "commands/delete-all-servers/openapi-3/delete-all-servers-pathItem" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Example Exists", "test": "commands/add-example/openapi-3/add-example-exists" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Example First", "test": "commands/add-example/openapi-3/add-example-first" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Example", "test": "commands/add-example/openapi-3/add-example" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Param Example", "test": "commands/add-parameter-example/openapi-3/add-parameter-example" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Param Example Multi", "test": "commands/add-parameter-example/openapi-3/add-parameter-example-multi" },
+    { "name": "[OpenAPI 3] {Add Example} - Add Param Example Exists", "test": "commands/add-parameter-example/openapi-3/add-parameter-example-exists" },
+    { "name": "[OpenAPI 2] {Add Path Item} - Add Path Item", "test": "commands/add-path-item/openapi-2/add-path-item" },
+    { "name": "[OpenAPI 2] {Add Path Item} - Clone Path Item", "test": "commands/add-path-item/openapi-2/clone-path-item" },
+    { "name": "[OpenAPI 3] {Add Path Item} - Add Path Item", "test": "commands/add-path-item/openapi-3/add-path-item" },
+    { "name": "[OpenAPI 3] {Add Path Item} - Clone Path Item", "test": "commands/add-path-item/openapi-3/clone-path-item" }
 ]

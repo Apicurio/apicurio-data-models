@@ -159,7 +159,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 schemes = NodeUtil.asList("http");
             }
 
-            OpenApi30Server server30 = this.doc30.createServer();
+            OpenApi30Server server30 = (OpenApi30Server) this.doc30.createServer();
             this.doc30.addServer(server30);
             if (schemes.size() == 1) {
                 server30.setUrl(schemes.get(0) + "://" + doc20.getHost() + basePath);
@@ -289,7 +289,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 !NodeUtil.isNullOrUndefined(this.doc30.getServers()) &&
                 this.doc30.getServers().size() > 0)
         {
-            OpenApi30Server server30 = operation30.createServer();
+            OpenApi30Server server30 = (OpenApi30Server) operation30.createServer();
             operation30.addServer(server30);
 
             server30.setUrl(this.doc30.getServers().get(0).getUrl());

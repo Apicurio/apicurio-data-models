@@ -20,12 +20,21 @@ traits:
         type: string
       - name: description
         type: string
+  - name: ExamplesParent
+    properties:
+      - name: examples
+        type: '{Example}'
+  - name: ServersParent
+    properties:
+      - name: servers
+        type: '[Server]'
 
 entities:
   - name: Document
     root: true
     traits:
       - Extensible
+      - ServersParent
     properties:
       - name: openapi
         type: string
@@ -171,6 +180,7 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - ServersParent
     properties:
       - name: summary
         type: string
@@ -204,6 +214,7 @@ entities:
   - name: Operation
     traits:
       - Extensible
+      - ServersParent
     properties:
       - name: tags
         type: '[string]'
@@ -249,6 +260,7 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - ExamplesParent
     properties:
       - name: name
         type: string
@@ -300,6 +312,7 @@ entities:
   - name: MediaType
     traits:
       - Extensible
+      - ExamplesParent
     properties:
       - name: schema
         type: Schema
@@ -419,6 +432,7 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - ExamplesParent
     properties:
       - name: description
         type: string
