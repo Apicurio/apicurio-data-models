@@ -196,6 +196,31 @@ public class ConceptIndex {
     }
 
     /**
+     * Gets a list of all Trait properties for the given entity.  This returns only the
+     * properties an entity contains from its Traits, thus excluding properties defined
+     * on the entity model itself.
+     */
+    public Collection<PropertyModelWithOrigin> getEntityPropertiesFromTraits(EntityModel entityModel) {
+        EntityModel model = entityModel;
+        PropertyModelWithOriginComparator propertyComparator = lookupPropertyComparator(entityModel);
+        final Set<PropertyModelWithOrigin> models = propertyComparator == null ? new HashSet<>() : new TreeSet<>(propertyComparator);
+        while (model != null) {
+            // Include properties from all traits.
+            model.getTraits().forEach(trait -> {
+                TraitModel t = trait;
+                while (t != null) {
+                    final TraitModel _trait = t;
+                    models.addAll(t.getProperties().values().stream().map(property -> PropertyModelWithOrigin.builder().property(property).origin(_trait).build()).collect(Collectors.toList()));
+                    t = t.getParent();
+                }
+            });
+
+            model = (EntityModel) model.getParent();
+        }
+        return models;
+    }
+
+    /**
      * Given a starting namespace and an entity name, search up the entity hierarchy for
      * entities matching the name.  Returns the common-most one.
      * @param namespace
