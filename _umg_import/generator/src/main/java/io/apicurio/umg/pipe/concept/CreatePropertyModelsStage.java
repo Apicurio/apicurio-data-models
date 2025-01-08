@@ -83,6 +83,9 @@ public class CreatePropertyModelsStage extends AbstractStage {
      * out into a shared Trait.
      */
     private boolean isPropertyShaded(Property property, EntityModel entityModel) {
+        if (isPrimitiveType(property)) {
+            return false;
+        }
         Collection<TraitModel> traits = entityModel.getTraits();
         if (traits != null) {
             for (TraitModel trait : traits) {
@@ -93,5 +96,11 @@ public class CreatePropertyModelsStage extends AbstractStage {
             }
         }
         return false;
+    }
+
+    private boolean isPrimitiveType(Property property) {
+        String type = property.getType();
+        PropertyType propertyType = PropertyType.parse(type);
+        return propertyType != null && propertyType.isPrimitiveType();
     }
 }
