@@ -23,6 +23,7 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
@@ -58,9 +59,9 @@ public class OasParameterUniquenessValidationRule extends ValidationRule {
 
     /**
      * Validates that all parameter name and "in" combinations are unique
-     * @param params
      */
-    private void ensureUnique(List<OpenApiParameter> params) {
+    private void ensureUnique(OpenApiParametersParent paramsParent) {
+        List<OpenApiParameter> params = paramsParent.getParameters();
         if (!hasValue(params)) {
             return;
         }
@@ -96,7 +97,7 @@ public class OasParameterUniquenessValidationRule extends ValidationRule {
      */
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        this.ensureUnique(node.getParameters());
+        this.ensureUnique((OpenApiParametersParent) node);
     }
 
     /**
@@ -105,7 +106,7 @@ public class OasParameterUniquenessValidationRule extends ValidationRule {
     @Override
     public void visitOperation(Operation node) {
         OpenApiOperation op = (OpenApiOperation) node;
-        this.ensureUnique(op.getParameters());
+        this.ensureUnique((OpenApiParametersParent) op);
     }
 
 }

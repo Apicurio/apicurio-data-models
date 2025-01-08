@@ -16,13 +16,13 @@
 
 package io.apicurio.datamodels.validation.rules.other;
 
-import java.util.List;
-
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.visitors.ParametersFromParentVisitor;
+
+import java.util.List;
 
 /**
  * Implements the Body Parameter Uniqueness validation rule (can only have 1 body param).
@@ -45,9 +45,7 @@ public class OasBodyParameterUniquenessValidationRule extends ValidationRule {
     public void visitParameter(Parameter node) {
         OpenApiParameter param = (OpenApiParameter) node;
         if (equals(param.getIn(), "body")) {
-            ParametersFromParentVisitor paramsViz = new ParametersFromParentVisitor();
-            node.parent().accept(paramsViz);
-            List<OpenApiParameter> params = paramsViz.getParameters();
+            List<OpenApiParameter> params = ((OpenApiParametersParent) node.parent()).getParameters();
             int count = countBodyParams(params);
             this.reportIf(count > 1, node, "in", map());
         }

@@ -46,6 +46,7 @@ import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiOAuthFlow;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiPaths;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
@@ -419,7 +420,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
             // Now we have normal handling of a parameter, examples include path params, query params, header params, etc.
             Node parent30 = this.lookup(param20.parent());
-            OpenApi30Parameter param30 = createAndAddParameter(parent30);
+            OpenApi30Parameter param30 = createAndAddParameter((OpenApiParametersParent) parent30);
             this.transformParam(param20, param30);
 
             this.copyExtensions(param20, param30);
@@ -427,10 +428,10 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         }
     }
 
-    private OpenApi30Parameter createAndAddParameter(Node parent30) {
-        OpenApiParameterCreator paramCreator = new OpenApiParameterCreator();
-        parent30.accept(paramCreator);
-        return (OpenApi30Parameter) paramCreator.parameter;
+    private OpenApi30Parameter createAndAddParameter(OpenApiParametersParent parent30) {
+        OpenApi30Parameter newParam = (OpenApi30Parameter) parent30.createParameter();
+        parent30.addParameter(newParam);
+        return newParam;
     }
 
     private OpenApi30Parameter transformParam(OpenApi20Parameter node, OpenApi30Parameter param30) {

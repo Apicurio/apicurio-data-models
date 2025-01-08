@@ -28,6 +28,10 @@ traits:
     properties:
       - name: servers
         type: '[Server]'
+  - name: ParametersParent
+    properties:
+      - name: parameters
+        type: '[Parameter]'
 
 entities:
   - name: Document
@@ -181,6 +185,7 @@ entities:
       - Extensible
       - Referenceable
       - ServersParent
+      - ParametersParent
     properties:
       - name: summary
         type: string
@@ -215,6 +220,7 @@ entities:
     traits:
       - Extensible
       - ServersParent
+      - ParametersParent
     properties:
       - name: tags
         type: '[string]'

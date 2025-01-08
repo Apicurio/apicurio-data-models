@@ -37,6 +37,7 @@ import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
@@ -138,11 +139,11 @@ public class CommandFactory {
     }
 
     public static ICommand createDeleteAllPathItemParametersCommand(OpenApiPathItem parent, String type) {
-        return new DeleteAllParametersCommand(parent, type);
+        return new DeleteAllParametersCommand((OpenApiParametersParent) parent, type);
     }
 
     public static ICommand createDeleteAllOperationParametersCommand(OpenApiOperation parent, String type) {
-        return new DeleteAllParametersCommand(parent, type);
+        return new DeleteAllParametersCommand((OpenApiParametersParent) parent, type);
     }
 
     public static ICommand createDeleteAllPropertiesCommand(Schema schema) {

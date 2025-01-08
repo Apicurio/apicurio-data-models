@@ -23,7 +23,7 @@ import java.util.Map;
 
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
-import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -56,7 +56,7 @@ public abstract class AbstractInvalidPropertyValueRule extends ValidationRule {
      */
     protected List<OpenApiParameter> mergeParameters(OpenApiOperation node) {
         Map<String, OpenApiParameter> indexedParams = new HashMap<>();
-        OpenApiPathItem parentNode = (OpenApiPathItem) node.parent();
+        OpenApiParametersParent parentNode = (OpenApiParametersParent) node.parent();
         // Get the parameters from pathItem
         if (hasValue(parentNode.getParameters())) {
             for (OpenApiParameter param : parentNode.getParameters()) {
@@ -68,8 +68,8 @@ public abstract class AbstractInvalidPropertyValueRule extends ValidationRule {
             }
         }
         // Overwrite parameters from parent
-        if (hasValue(node.getParameters())) {
-            for (OpenApiParameter param : node.getParameters()) {
+        if (hasValue(((OpenApiParametersParent) node).getParameters())) {
+            for (OpenApiParameter param : ((OpenApiParametersParent) node).getParameters()) {
                 OpenApiParameter resolutionResult = (OpenApiParameter) ReferenceUtil.resolveNodeRef(param);
                 if (hasValue(resolutionResult)) {
                     String key = resolutionResult.getIn() + "-" + resolutionResult.getName();

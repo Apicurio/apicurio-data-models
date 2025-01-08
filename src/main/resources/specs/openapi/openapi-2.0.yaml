@@ -16,6 +16,10 @@ traits:
     properties:
       - name: '$ref'
         type: string
+  - name: ParametersParent
+    properties:
+      - name: parameters
+        type: '[Parameter]'
   - name: SchemaLike
     transparent: true
     properties:
@@ -152,6 +156,7 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - ParametersParent
     properties:
       - name: get
         type: Operation
@@ -177,6 +182,7 @@ entities:
   - name: Operation
     traits:
       - Extensible
+      - ParametersParent
     properties:
       - name: tags
         type: '[string]'
