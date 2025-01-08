@@ -1,0 +1,28 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "TopicMultiEvent-oneOf",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "999testtest99": {
+      "publish": {
+        "summary": "All updates about the user",
+        "message": {
+          "payload": {}
+        }
+      }
+    }
+  },
+  "components": {
+    "operationTraits": {
+      "commonBindings": {
+        "bindings": {
+          "amqp": {
+            "ack": false
+          }
+        }
+      }
+    }
+  }
+}

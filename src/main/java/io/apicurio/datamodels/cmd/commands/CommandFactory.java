@@ -20,7 +20,9 @@ import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
@@ -119,6 +121,8 @@ public class CommandFactory {
             { return new AddChannelItemCommand(); }
             case "AddSchemaDefinitionCommand_Aai20":
             { return new AddSchemaDefinitionCommand_Aai20(); }
+            case "AddTraitCommand":
+            { return new AddTraitCommand(); }
 
             /** Change Commands **/
 
@@ -332,6 +336,8 @@ public class CommandFactory {
             case "DeleteOperationTraitDefinitionCommand":
             case "DeleteOperationTraitDefinitionCommand_Aai20":
             { return new DeleteOperationTraitDefinitionCommand(); }
+            case "DeleteTraitCommand":
+            { return new DeleteTraitCommand(); }
 
             /** New Commands **/
 
@@ -570,6 +576,13 @@ public class CommandFactory {
         return new AddChannelItemCommand(channelItemName, from);
     }
 
+    public static final ICommand createAddTraitCommand(AaiOperationTrait trait, AaiOperation operation) {
+        return new AddTraitCommand(trait, operation);
+    }
+
+    public static final ICommand createAddTraitCommand(AaiMessageTrait trait, AaiMessage message) {
+        return new AddTraitCommand(trait, message);
+    }
 
     /* ***  Change Commands  *** */
 
@@ -943,6 +956,14 @@ public class CommandFactory {
     
     public static final ICommand createDeleteTagCommand_Aai20(String tagName, Node node) {
         return new DeleteTagCommand_Aai20(tagName, node);
+    }
+
+    public static final ICommand createDeleteTraitCommand(AaiOperation operation, int traitIdx) {
+        return new DeleteTraitCommand(operation, traitIdx);
+    }
+    
+    public static final ICommand createDeleteTraitCommand(AaiMessage message, int traitIdx) {
+        return new DeleteTraitCommand(message, traitIdx);
     }
 
     public static final ICommand createDeleteChannelCommand(String channelName) {

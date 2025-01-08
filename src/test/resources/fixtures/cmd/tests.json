@@ -39,6 +39,8 @@
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Doc2", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-doc2" },
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Op", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-op" },
     { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/openapi-3/add-security-requirement" },
+    { "name": "[AsyncAPI 2] {Add Trait} - Add Trait on message", "test": "commands/add-trait/asyncapi-2/add-trait-message" },
+    { "name": "[AsyncAPI 2] {Add Trait} - Add Trait on operation", "test": "commands/add-trait/asyncapi-2/add-trait-operation" },
     { "name": "[OpenAPI 3] {Add Child Schema} - Add to AllOf", "test": "commands/add-child-schema/openapi-3/add-child-schema" },
     { "name": "[AsyncAPI 2] {Add Child Schema} - Add to AllOf", "test": "commands/add-child-schema/asyncapi-2/add-child-schema" },
     { "name": "[OpenAPI 3] {Aggregate} - Aggregate Ordering", "test": "commands/aggregate/openapi-3/aggregate-ordering" },
