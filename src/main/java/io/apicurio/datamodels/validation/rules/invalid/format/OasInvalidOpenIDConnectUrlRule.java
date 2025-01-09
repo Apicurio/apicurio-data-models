@@ -38,9 +38,6 @@ public class OasInvalidOpenIDConnectUrlRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
-     */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         if (node.root().modelType() == ModelType.OPENAPI30) {

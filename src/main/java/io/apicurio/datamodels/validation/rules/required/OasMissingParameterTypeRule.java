@@ -34,9 +34,6 @@ public class OasMissingParameterTypeRule extends RequiredPropertyValidationRule 
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitParameter(io.apicurio.datamodels.core.models.common.Parameter)
-     */
     @Override
     public void visitParameter(Parameter node) {
         if (hasValue(NodeUtil.getNodeProperty(node, "$ref"))) {

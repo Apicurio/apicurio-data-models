@@ -29,9 +29,6 @@ import io.apicurio.datamodels.util.RegexUtil;
  */
 public class LocalReferenceResolver implements IReferenceResolver {
 
-    /**
-     * @see io.apicurio.datamodels.core.util.IReferenceResolver#resolveRef(java.lang.String, io.apicurio.datamodels.core.models.Node)
-     */
     @SuppressWarnings("rawtypes")
     @Override
     public Node resolveRef(String $ref, Node from) {

@@ -36,9 +36,6 @@ public class OasInvalidSchemaArrayItemsRule extends OasInvalidPropertyTypeValida
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
-     */
     @Override
     public void visitSchema(Schema node) {
         Schema items = (Schema) NodeUtil.getNodeProperty(node, "items");

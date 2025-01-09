@@ -35,9 +35,6 @@ public class OasInvalidOperationProducesRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
-     */
     @Override
     public void visitOperation(Operation node) {
         OpenApi20Operation op = (OpenApi20Operation) node;

@@ -35,9 +35,6 @@ public class OasInvalidSecuritySchemeTokenUrlRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
-     */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         OpenApi20SecurityScheme scheme = (OpenApi20SecurityScheme) node;

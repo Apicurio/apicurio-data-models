@@ -34,9 +34,6 @@ public class OasInvalidExternalDocsUrlRule extends ValidationRule {
         super(ruleInfo);
     }
     
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
-     */
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
         if (hasValue(node.getUrl())) {

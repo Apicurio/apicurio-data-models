@@ -34,9 +34,6 @@ public class OasMissingOpenApiPropertyRule extends RequiredPropertyValidationRul
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
-     */
     @Override
     public void visitDocument(Document node) {
         ModelType mt = node.root().modelType();

@@ -33,9 +33,6 @@ public class MissingServerTemplateUrlRule extends RequiredPropertyValidationRule
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServer(io.apicurio.datamodels.core.models.common.Server)
-     */
     @Override
     public void visitServer(Server node) {
         this.requireProperty(node, "url", map());

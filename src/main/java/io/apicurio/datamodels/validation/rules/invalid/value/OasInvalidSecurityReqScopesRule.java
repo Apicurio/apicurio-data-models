@@ -35,9 +35,6 @@ public class OasInvalidSecurityReqScopesRule extends AbstractInvalidPropertyValu
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
-     */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         List<String> snames = node.getItemNames();

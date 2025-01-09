@@ -32,9 +32,6 @@ public class OasMissingSchemaArrayInformationRule extends RequiredPropertyValida
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
-     */
     @Override
     public void visitSchema(Schema node) {
         this.requirePropertyWhen(node, "items", "type", "array", map());

@@ -53,7 +53,7 @@ import io.apicurio.datamodels.validation.ValidationVisitor;
  * The most common entry points into using the data models library.  Provides convenience methods
  * for performing common actions such as i/o, visiting, and validation.
  * @author eric.wittmann@gmail.com
- * @author Jakub Senko <jsenko@redhat.com>
+ * @author jsenko@redhat.com
  */
 public class Library {
 

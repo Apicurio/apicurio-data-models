@@ -28,7 +28,7 @@ import io.apicurio.datamodels.models.visitors.Visitor;
  * A composite visitor base class useful for any data model type.
  *
  * @author eric.wittmann@gmail.com
- * @author Jakub Senko <jsenko@redhat.com>
+ * @author jsenko@redhat.com
  */
 public class CompositeAllNodeVisitor extends AllNodeVisitor {
 

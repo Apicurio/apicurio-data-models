@@ -32,9 +32,6 @@ public class OasMissingApiInformationRule extends RequiredPropertyValidationRule
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitDocument(io.apicurio.datamodels.core.models.Document)
-     */
     @Override
     public void visitDocument(Document node) {
         this.requireProperty(node, "info", map());

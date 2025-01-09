@@ -207,7 +207,6 @@ public abstract class ValidationRule extends AllNodeVisitor implements Visitor, 
      * Returns the name of an encoding.  This can only be determined using the traversal
      * context because the encoding name is the key for this encoding in the Map of
      * encodings for a media type.
-     * @param pathItem
      */
     protected String getEncodingName(OpenApiEncoding encoding) {
         return getMappedNodeName(encoding);
@@ -227,7 +226,6 @@ public abstract class ValidationRule extends AllNodeVisitor implements Visitor, 
 
     /**
      * Returns the status code of the given response.
-     * @param pathItem
      */
     protected String getStatusCode(OpenApiResponse response) {
         if (isDefinition(response)) {
@@ -239,7 +237,6 @@ public abstract class ValidationRule extends AllNodeVisitor implements Visitor, 
 
     /**
      * Returns the operation method (get, put, post, etc) for the given operation.
-     * @param pathItem
      */
     protected String getOperationMethod(Operation operation) {
         return (String) this.traversalContext.getMostRecentStep().getValue();

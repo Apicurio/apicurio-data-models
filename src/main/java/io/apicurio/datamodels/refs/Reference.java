@@ -5,8 +5,6 @@ import java.util.Objects;
 /**
  * Encapsulates a reference string in OpenAPI/AsyncAPI schema,
  * for easier manipulation and parsing.
- *
- * @author Jakub Senko <jsenko@redhat.com>
  */
 public class Reference {
 

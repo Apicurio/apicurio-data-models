@@ -32,9 +32,6 @@ public class OasMissingServerVarDefaultValueRule extends RequiredPropertyValidat
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
     public void visitServerVariable(ServerVariable node) {
         String variableName = getMappedNodeName(node);

@@ -32,9 +32,6 @@ public class MissingLicenseNameRule extends RequiredPropertyValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitLicense(io.apicurio.datamodels.core.models.common.License)
-     */
     @Override
     public void visitLicense(License node) {
         this.requireProperty(node, "name", map());

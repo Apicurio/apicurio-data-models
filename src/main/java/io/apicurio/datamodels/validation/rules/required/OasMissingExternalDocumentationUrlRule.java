@@ -32,9 +32,6 @@ public class OasMissingExternalDocumentationUrlRule extends RequiredPropertyVali
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitExternalDocumentation(io.apicurio.datamodels.core.models.common.ExternalDocumentation)
-     */
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
         this.requireProperty(node, "url", map());

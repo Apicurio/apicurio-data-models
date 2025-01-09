@@ -65,9 +65,6 @@ public class OasServerVarNotFoundInTemplateRule extends AbstractInvalidPropertyV
         return vars;
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
     public void visitServerVariable(ServerVariable node) {
         String varName = getMappedNodeName(node);

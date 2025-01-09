@@ -57,9 +57,6 @@ public class OasSecurityRequirementScopesMustBeEmptyRule extends AbstractInvalid
         return null;
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityRequirement(io.apicurio.datamodels.core.models.common.SecurityRequirement)
-     */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         List<String> allowedTypes = new ArrayList<>();

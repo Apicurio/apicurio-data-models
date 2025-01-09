@@ -32,9 +32,6 @@ public class MissingOpenIdConnectSecuritySchemeConnectUrlRule extends RequiredPr
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
-     */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         this.requirePropertyWhen(node, "openIdConnectUrl", "type", "openIdConnect", map());

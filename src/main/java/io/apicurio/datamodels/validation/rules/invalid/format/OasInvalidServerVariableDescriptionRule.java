@@ -34,9 +34,6 @@ public class OasInvalidServerVariableDescriptionRule extends ValidationRule {
         super(ruleInfo);
     }
     
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitServerVariable(io.apicurio.datamodels.core.models.common.ServerVariable)
-     */
     @Override
     public void visitServerVariable(ServerVariable node) {
         if (hasValue(node.getDescription())) {

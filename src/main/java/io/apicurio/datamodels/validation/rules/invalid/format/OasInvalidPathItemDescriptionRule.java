@@ -37,9 +37,6 @@ public class OasInvalidPathItemDescriptionRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitPathItem(io.apicurio.datamodels.openapi.models.OasPathItem)
-     */
     @Override
     public void visitPathItem(OpenApiPathItem node) {
         String description = null;

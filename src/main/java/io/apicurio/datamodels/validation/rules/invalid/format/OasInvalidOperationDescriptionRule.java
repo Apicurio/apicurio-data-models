@@ -34,9 +34,6 @@ public class OasInvalidOperationDescriptionRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
-     */
     @Override
     public void visitOperation(Operation node) {
         if (hasValue(node.getDescription())) {

@@ -33,9 +33,6 @@ public class MissingSecuritySchemeTypeRule extends RequiredPropertyValidationRul
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSecurityScheme(io.apicurio.datamodels.core.models.common.SecurityScheme)
-     */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         if (hasValue(NodeUtil.getProperty(node, "$ref"))) {

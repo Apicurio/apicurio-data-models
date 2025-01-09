@@ -34,9 +34,6 @@ public class ConsumesProducesFinder extends OpenApi20VisitorAdapter {
     public List<String> consumes;
     public List<String> produces;
 
-    /**
-     * @see io.apicurio.datamodels.core.visitors.VisitorAdapter#visitDocument(io.apicurio.datamodels.core.models.Document)
-     */
     @Override
     public void visitDocument(Document node) {
         OpenApi20Document doc = (OpenApi20Document) node;
@@ -48,9 +45,6 @@ public class ConsumesProducesFinder extends OpenApi20VisitorAdapter {
         }
     }
 
-    /**
-     * @see io.apicurio.datamodels.core.visitors.VisitorAdapter#visitOperation(io.apicurio.datamodels.core.models.common.Operation)
-     */
     @Override
     public void visitOperation(Operation node) {
         consumes = ((OpenApi20Operation) node).getConsumes();

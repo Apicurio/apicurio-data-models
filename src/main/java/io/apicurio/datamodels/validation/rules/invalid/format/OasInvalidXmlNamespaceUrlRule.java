@@ -34,9 +34,6 @@ public class OasInvalidXmlNamespaceUrlRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitXML(io.apicurio.datamodels.openapi.models.OasXML)
-     */
     @Override
     public void visitXML(OpenApiXML node) {
         if (hasValue(node.getNamespace())) {

@@ -24,9 +24,6 @@ package io.apicurio.datamodels.validation;
  */
 public class DefaultSeverityRegistry implements IValidationSeverityRegistry {
 
-    /**
-     * @see io.apicurio.datamodels.core.validation.IValidationSeverityRegistry#lookupSeverity(io.apicurio.datamodels.core.validation.ValidationRuleMetaData)
-     */
     @Override
     public ValidationProblemSeverity lookupSeverity(ValidationRuleMetaData rule) {
         if (rule.specMandated) {

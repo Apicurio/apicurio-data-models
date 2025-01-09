@@ -33,9 +33,6 @@ public class OasUnexpectedArrayCollectionFormatRule extends AbstractInvalidPrope
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitItems(io.apicurio.datamodels.openapi.v2.models.OpenApi20Items)
-     */
     @Override
     public void visitItems(OpenApi20Items node) {
         if (hasValue(node.getCollectionFormat())) {

@@ -448,7 +448,6 @@ public class ValidationRuleSet {
 
     /**
      * Gets the actual rule instances (visitors) that should be applied to the given document.
-     * @param document
      */
     public List<ValidationRule> getRulesFor(ModelType type) {
         List<ValidationRule> rval = new ArrayList<>();

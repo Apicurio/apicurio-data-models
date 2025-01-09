@@ -34,9 +34,6 @@ public class OasInvalidSchemaTypeValueRule extends OasInvalidPropertyTypeValidat
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.combined.visitors.CombinedAllNodeVisitor#visitSchema(io.apicurio.datamodels.core.models.common.Schema)
-     */
     @Override
     public void visitSchema(Schema node) {
         getTypes(node, (types, allowedTypes) ->
