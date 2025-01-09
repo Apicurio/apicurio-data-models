@@ -67,5 +67,9 @@
     { "name": "[OpenAPI 2] {Add Path Item} - Add Path Item", "test": "commands/add-path-item/openapi-2/add-path-item" },
     { "name": "[OpenAPI 2] {Add Path Item} - Clone Path Item", "test": "commands/add-path-item/openapi-2/clone-path-item" },
     { "name": "[OpenAPI 3] {Add Path Item} - Add Path Item", "test": "commands/add-path-item/openapi-3/add-path-item" },
-    { "name": "[OpenAPI 3] {Add Path Item} - Clone Path Item", "test": "commands/add-path-item/openapi-3/clone-path-item" }
+    { "name": "[OpenAPI 3] {Add Path Item} - Clone Path Item", "test": "commands/add-path-item/openapi-3/clone-path-item" },
+    { "name": "[OpenAPI 2] {Add Response Definition} - Add Response Definition", "test": "commands/add-response-definition/openapi-2/add-response-definition" },
+    { "name": "[OpenAPI 2] {Add Response Definition} - Clone Response Definition", "test": "commands/add-response-definition/openapi-2/clone-response-definition" },
+    { "name": "[OpenAPI 3] {Add Response Definition} - Add Response Definition", "test": "commands/add-response-definition/openapi-3/add-response-definition" },
+    { "name": "[OpenAPI 3] {Add Response Definition} - Clone Response Definition", "test": "commands/add-response-definition/openapi-3/clone-response-definition" }
 ]

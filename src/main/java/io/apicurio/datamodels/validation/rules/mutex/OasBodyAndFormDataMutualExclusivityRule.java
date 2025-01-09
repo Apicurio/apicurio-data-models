@@ -16,15 +16,15 @@
 
 package io.apicurio.datamodels.validation.rules.mutex;
 
-import java.util.List;
-
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
-import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.List;
 
 /**
  * Implements the Body and Form Data Mutual Exclusivity Rule.
@@ -40,9 +40,9 @@ public class OasBodyAndFormDataMutualExclusivityRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    private void visitParameterParent(Node paramParent) {
+    private void visitParameterParent(OpenApiParametersParent paramParent) {
         @SuppressWarnings("unchecked")
-        List<OpenApiParameter> parameters = (List<OpenApiParameter>) NodeUtil.getNodeProperty(paramParent, "parameters");
+        List<OpenApiParameter> parameters = paramParent.getParameters();
         if (hasValue(parameters)) {
             boolean hasBodyParam = false;
             boolean hasFormDataParam = false;
@@ -54,7 +54,7 @@ public class OasBodyAndFormDataMutualExclusivityRule extends ValidationRule {
                     hasFormDataParam = true;
                 }
             }
-            this.reportIf(hasBodyParam && hasFormDataParam, paramParent, "in", map());
+            this.reportIf(hasBodyParam && hasFormDataParam, (Node) paramParent, "in", map());
         }
     }
 
@@ -63,7 +63,7 @@ public class OasBodyAndFormDataMutualExclusivityRule extends ValidationRule {
      */
     @Override
     public void visitOperation(Operation node) {
-        visitParameterParent(node);
+        visitParameterParent((OpenApiParametersParent) node);
     }
 
     /**
@@ -71,7 +71,7 @@ public class OasBodyAndFormDataMutualExclusivityRule extends ValidationRule {
      */
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        visitParameterParent(node);
+        visitParameterParent((OpenApiParametersParent) node);
     }
 
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
 import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
+import io.apicurio.datamodels.cmd.commands.AddResponseDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeLicenseCommand;
@@ -64,6 +65,10 @@ public class CommandFactory {
     public static ICommand createAddHeaderExampleCommand(OpenApiMediaType mediaType, JsonNode example,
                                                          String exampleName, String exampleSummary, String exampleDescription) {
         return new AddExampleCommand((OpenApiExamplesParent) mediaType, example, exampleName, exampleSummary, exampleDescription);
+    }
+
+    public static ICommand createAddResponseDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddResponseDefinitionCommand(definitionName, from);
     }
 
     public static <T> ICommand createChangePropertyCommand(Node node, String property, T newValue) {
