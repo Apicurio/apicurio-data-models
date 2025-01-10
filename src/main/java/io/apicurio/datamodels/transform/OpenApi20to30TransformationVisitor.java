@@ -41,6 +41,7 @@ import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.SecurityRequirement;
+import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
@@ -507,12 +508,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
         OpenApi20SecurityRequirement req = (OpenApi20SecurityRequirement) node;
-
-        Node parent30 = this.lookup(req.parent());
-
-        SecurityRequirementCreator securityRequirementCreator = new SecurityRequirementCreator();
-        parent30.accept(securityRequirementCreator);
-        OpenApi30SecurityRequirement securityRequirement30 = (OpenApi30SecurityRequirement) securityRequirementCreator.securityRequirement;
+        SecurityRequirementsParent parent30 = (SecurityRequirementsParent) this.lookup(req.parent());
+        OpenApi30SecurityRequirement securityRequirement30 = (OpenApi30SecurityRequirement) parent30.createSecurityRequirement();
+        parent30.addSecurity(securityRequirement30);
 
         req.getItemNames().forEach( name -> {
             securityRequirement30.addItem(name, req.getItem(name));

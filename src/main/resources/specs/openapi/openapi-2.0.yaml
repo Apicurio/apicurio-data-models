@@ -20,6 +20,10 @@ traits:
     properties:
       - name: parameters
         type: '[Parameter]'
+  - name: SecurityRequirementsParent
+    properties:
+      - name: security
+        type: '[SecurityRequirement]'
   - name: SchemaLike
     transparent: true
     properties:
@@ -61,6 +65,7 @@ entities:
     root: true
     traits:
       - Extensible
+      - SecurityRequirementsParent
     properties:
       - name: swagger
         type: string
@@ -183,6 +188,7 @@ entities:
     traits:
       - Extensible
       - ParametersParent
+      - SecurityRequirementsParent
     properties:
       - name: tags
         type: '[string]'

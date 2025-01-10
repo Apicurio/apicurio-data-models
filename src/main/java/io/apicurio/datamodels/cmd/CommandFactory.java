@@ -6,6 +6,8 @@ import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
 import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.AddSchemaDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.AddSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeLicenseCommand;
@@ -27,10 +29,13 @@ import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
+import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.SecurityRequirement;
+import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiExamplesParent;
@@ -69,6 +74,23 @@ public class CommandFactory {
 
     public static ICommand createAddResponseDefinitionCommand(String definitionName, ObjectNode from) {
         return new AddResponseDefinitionCommand(definitionName, from);
+    }
+
+    public static ICommand createAddSchemaDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddSchemaDefinitionCommand(definitionName, from);
+    }
+
+    public static ICommand createAddDocumentSecurityRequirementCommand(
+            OpenApiDocument document, SecurityRequirement requirement) {
+        return new AddSecurityRequirementCommand((SecurityRequirementsParent) document, requirement);
+    }
+    public static ICommand createAddOperationSecurityRequirementCommand(
+            OpenApiOperation operation, SecurityRequirement requirement) {
+        return new AddSecurityRequirementCommand((SecurityRequirementsParent) operation, requirement);
+    }
+    public static ICommand createAddServerSecurityRequirementCommand(
+            AsyncApiServer server, SecurityRequirement requirement) {
+        return new AddSecurityRequirementCommand((SecurityRequirementsParent) server, requirement);
     }
 
     public static <T> ICommand createChangePropertyCommand(Node node, String property, T newValue) {

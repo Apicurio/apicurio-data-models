@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 import io.apicurio.datamodels.models.SecurityRequirement;
+import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
-import io.apicurio.datamodels.visitors.SecurityRequirementsFromParentVisitor;
 
 /**
  * @author cfoskin@redhat.com
@@ -93,9 +93,8 @@ public class SecurityRequirementUniquenessValidationRule extends ValidationRule 
      */
     @Override
     public void visitSecurityRequirement(SecurityRequirement node) {
-        SecurityRequirementsFromParentVisitor visitor = new SecurityRequirementsFromParentVisitor();
-        node.parent().accept(visitor);
-        List<? extends SecurityRequirement> securityRequirements = visitor.getSecurityRequirements();
+        SecurityRequirementsParent parent = (SecurityRequirementsParent) node.parent();
+        List<? extends SecurityRequirement> securityRequirements = parent.getSecurity();
 
         if (securityRequirements.size() <= 1) {
             return;

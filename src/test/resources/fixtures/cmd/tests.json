@@ -71,5 +71,13 @@
     { "name": "[OpenAPI 2] {Add Response Definition} - Add Response Definition", "test": "commands/add-response-definition/openapi-2/add-response-definition" },
     { "name": "[OpenAPI 2] {Add Response Definition} - Clone Response Definition", "test": "commands/add-response-definition/openapi-2/clone-response-definition" },
     { "name": "[OpenAPI 3] {Add Response Definition} - Add Response Definition", "test": "commands/add-response-definition/openapi-3/add-response-definition" },
-    { "name": "[OpenAPI 3] {Add Response Definition} - Clone Response Definition", "test": "commands/add-response-definition/openapi-3/clone-response-definition" }
+    { "name": "[OpenAPI 3] {Add Response Definition} - Clone Response Definition", "test": "commands/add-response-definition/openapi-3/clone-response-definition" },
+    { "name": "[OpenAPI 2] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openapi-2/add-definition" },
+    { "name": "[OpenAPI 2] {Add Schema Definition} - Clone Definition", "test": "commands/add-definition/openapi-2/clone-definition" },
+    { "name": "[OpenAPI 3] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openapi-3/add-definition" },
+    { "name": "[OpenAPI 3] {Add Schema Definition} - Clone Definition", "test": "commands/add-definition/openapi-3/clone-definition" },
+    { "name": "[OpenAPI 2] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/openapi-2/add-security-requirement" },
+    { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Doc2", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-doc2" },
+    { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req Op", "test": "commands/add-security-requirement/openapi-3/add-security-requirement-op" },
+    { "name": "[OpenAPI 3] {Add Security Requirement} - Add Security Req", "test": "commands/add-security-requirement/openapi-3/add-security-requirement" }
 ]

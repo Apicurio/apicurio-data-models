@@ -34,6 +34,10 @@ traits:
     properties:
       - name: parameters
         type: '[Parameter]'
+  - name: SecurityRequirementsParent
+    properties:
+      - name: security
+        type: '[SecurityRequirement]'
 
 
 entities:
@@ -42,6 +46,7 @@ entities:
     traits:
       - Extensible
       - ServersParent
+      - SecurityRequirementsParent
     properties:
       - name: openapi
         type: string
@@ -214,6 +219,7 @@ entities:
       - Extensible
       - ServersParent
       - ParametersParent
+      - SecurityRequirementsParent
     properties:
       - name: tags
         type: '[string]'

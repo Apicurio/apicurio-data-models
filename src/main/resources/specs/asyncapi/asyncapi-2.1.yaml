@@ -16,6 +16,10 @@ traits:
     properties:
       - name: '$ref'
         type: string
+  - name: SecurityRequirementsParent
+    properties:
+      - name: security
+        type: '[SecurityRequirement]'
 
 entities:
   - name: Document
@@ -101,6 +105,7 @@ entities:
   - name: Server
     traits:
       - Extensible
+      - SecurityRequirementsParent
     properties:
       - name: url
         type: string

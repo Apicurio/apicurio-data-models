@@ -6,6 +6,8 @@ import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
 import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
 import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
 import {AddResponseDefinitionCommand} from "../cmd/commands/AddResponseDefinitionCommand";
+import {AddSchemaDefinitionCommand} from "../cmd/commands/AddSchemaDefinitionCommand";
+import {AddSecurityRequirementCommand} from "../cmd/commands/AddSecurityRequirementCommand";
 
 import {ChangeDescriptionCommand} from "../cmd/commands/ChangeDescriptionCommand";
 import {ChangePropertyCommand} from "../cmd/commands/ChangePropertyCommand";
@@ -48,6 +50,8 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddExampleCommand": () => { return new AddExampleCommand(); },
     "AddPathItemCommand": () => { return new AddPathItemCommand(); },
     "AddResponseDefinitionCommand": () => { return new AddResponseDefinitionCommand(); },
+    "AddSchemaDefinitionCommand": () => { return new AddSchemaDefinitionCommand(); },
+    "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
 
     "ChangeDescriptionCommand": () => { return new ChangeDescriptionCommand(); },
     "ChangePropertyCommand": () => { return new ChangePropertyCommand(); },
