@@ -38,6 +38,10 @@ traits:
     properties:
       - name: security
         type: '[SecurityRequirement]'
+  - name: HeadersParent
+    properties:
+      - name: headers
+        type: '{Header}'
 
 
 entities:
@@ -334,6 +338,7 @@ entities:
   - name: Encoding
     traits:
       - Extensible
+      - HeadersParent
     properties:
       - name: contentType
         type: string
@@ -367,6 +372,7 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - HeadersParent
     properties:
       - name: description
         type: string

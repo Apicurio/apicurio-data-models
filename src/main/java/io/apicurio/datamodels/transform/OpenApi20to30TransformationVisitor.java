@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 Red Hat
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.apicurio.datamodels.transform;
 
 import java.util.ArrayList;
@@ -60,7 +44,6 @@ import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20ExternalDocumentation;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Header;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Headers;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Info;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20License;
@@ -619,15 +602,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 visitAdditionalPropertiesSchema(schema20);
             }
         }
-    }
-
-    @Override
-    public void visitHeaders(OpenApi20Headers node) {
-        OpenApi30Response parent30 = (OpenApi30Response) this.lookup(node.parent());
-        // No processing to do here, because 3.0 doesn't have a "headers" node.  So instead
-        // we'll map the headers node to the 3.0 response node, because that will be the
-        // effective parent for any 3.0 Header nodes.
-        this.mapNode(node, parent30);
     }
 
     @Override

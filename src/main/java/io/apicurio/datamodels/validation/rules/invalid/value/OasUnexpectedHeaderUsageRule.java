@@ -17,6 +17,7 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.openapi.OpenApiEncoding;
+import io.apicurio.datamodels.models.openapi.OpenApiHeadersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -49,7 +50,8 @@ public class OasUnexpectedHeaderUsageRule extends AbstractInvalidPropertyValueRu
      */
     @Override
     public void visitEncoding(OpenApiEncoding node) {
-        if (isDefined(node.getHeaders()) && node.getHeaders().size() > 0) {
+        OpenApiHeadersParent headersParent = (OpenApiHeadersParent) node;
+        if (isDefined(headersParent.getHeaders()) && !headersParent.getHeaders().isEmpty()) {
             this.reportIfInvalid(mediaTypeName.indexOf("multipart") == 0, node, "headers",
                     map("name", mediaTypeName));
         }

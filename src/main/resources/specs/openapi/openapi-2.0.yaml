@@ -24,6 +24,10 @@ traits:
     properties:
       - name: security
         type: '[SecurityRequirement]'
+  - name: HeadersParent
+    properties:
+      - name: headers
+        type: '{Header}'
   - name: SchemaLike
     transparent: true
     properties:
@@ -288,26 +292,20 @@ entities:
     traits:
       - Extensible
       - Referenceable
+      - HeadersParent
     properties:
       - name: description
         type: string
       - name: schema
         type: Schema
       - name: headers
-        type: Headers
+        type: '{Header}'
       - name: examples
         type: Example
     propertyOrder:
       - $Referenceable
       - $this
       - $Extensible
-
-  - name: Headers
-    properties:
-      - name: '*'
-        type: Header
-    propertyOrder:
-      - $this
 
   - name: Example
     properties:

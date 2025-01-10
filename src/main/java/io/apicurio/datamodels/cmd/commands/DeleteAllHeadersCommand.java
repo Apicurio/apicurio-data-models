@@ -5,21 +5,13 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
-import io.apicurio.datamodels.models.openapi.OpenApiResponse;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Header;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Headers;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Response;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Response;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Response;
+import io.apicurio.datamodels.models.openapi.OpenApiHeader;
+import io.apicurio.datamodels.models.openapi.OpenApiHeadersParent;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
-import io.apicurio.datamodels.util.ModelTypeUtil;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,8 +27,8 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     public DeleteAllHeadersCommand() {
     }
 
-    public DeleteAllHeadersCommand(OpenApiResponse parent) {
-        this._parentPath = NodePathUtil.createNodePath(parent);
+    public DeleteAllHeadersCommand(OpenApiHeadersParent parent) {
+        this._parentPath = NodePathUtil.createNodePath((Node) parent);
     }
     
     /**
@@ -46,12 +38,12 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
     public void execute(Document document) {
         LoggerUtil.info("[DeleteAllHeadersCommand] Executing.");
 
-        Node parent = NodePathUtil.resolveNodePath(this._parentPath, document);
+        OpenApiHeadersParent parent = (OpenApiHeadersParent) NodePathUtil.resolveNodePath(this._parentPath, document);
         if (this.isNullOrUndefined(parent)) {
             return;
         }
 
-        Map<String, ? extends Node> headers = getHeaders(parent);
+        Map<String, ? extends Node> headers = parent.getHeaders();
         if (this.isNullOrUndefined(headers) || headers.size() == 0) {
             return;
         }
@@ -65,7 +57,7 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             this._oldHeaders.put(name, Library.writeNode(header));
         });
 
-        clearHeaders(parent);
+        parent.clearHeaders();
     }
 
     /**
@@ -79,101 +71,17 @@ public class DeleteAllHeadersCommand extends AbstractCommand {
             return;
         }
 
-        Node parent = NodePathUtil.resolveNodePath(this._parentPath, document);
+        OpenApiHeadersParent parent = (OpenApiHeadersParent) NodePathUtil.resolveNodePath(this._parentPath, document);
         if (this.isNullOrUndefined(parent)) {
             return;
         }
 
         for (String k : this._oldHeaders.keySet()) {
-            Node header = createHeader(parent, k);
+            OpenApiHeader header = parent.createHeader();
             Library.readNode(this._oldHeaders.get(k), header);
-            addHeader(parent, k, header);
+            parent.addHeader(k, header);
         }
 
-    }
-
-    private Map<String, ? extends Node> getHeaders(Node parent) {
-        if (ModelTypeUtil.isOpenApi2Model(parent)) {
-            OpenApi20Response response = (OpenApi20Response) parent;
-            OpenApi20Headers headers = response.getHeaders();
-            if (headers == null) {
-                return null;
-            }
-            Map<String, Node> rval = new LinkedHashMap<>();
-            List<String> headerNames = headers.getItemNames();
-            for (String headerName : headerNames) {
-                OpenApi20Header header = headers.getItem(headerName);
-                rval.put(headerName, header);
-            }
-            return rval;
-        }
-        if (ModelTypeUtil.isOpenApi30Model(parent)) {
-            OpenApi30Response response = (OpenApi30Response) parent;
-            return response.getHeaders();
-        }
-        if (ModelTypeUtil.isOpenApi31Model(parent)) {
-            OpenApi31Response response = (OpenApi31Response) parent;
-            return response.getHeaders();
-        }
-        return null;
-    }
-
-    private void clearHeaders(Node parent) {
-        if (ModelTypeUtil.isOpenApi2Model(parent)) {
-            OpenApi20Response response = (OpenApi20Response) parent;
-            OpenApi20Headers headers = response.getHeaders();
-            if (headers == null) {
-                return;
-            }
-            headers.clearItems();
-        }
-        if (ModelTypeUtil.isOpenApi30Model(parent)) {
-            OpenApi30Response response = (OpenApi30Response) parent;
-            response.clearHeaders();
-        }
-        if (ModelTypeUtil.isOpenApi31Model(parent)) {
-            OpenApi31Response response = (OpenApi31Response) parent;
-            response.clearHeaders();
-        }
-    }
-
-    private Node createHeader(Node parent, String k) {
-        if (ModelTypeUtil.isOpenApi2Model(parent)) {
-            OpenApi20Response response = (OpenApi20Response) parent;
-            OpenApi20Headers headers = response.getHeaders();
-            if (headers == null) {
-                return null;
-            }
-            return headers.createHeader();
-        }
-        if (ModelTypeUtil.isOpenApi30Model(parent)) {
-            OpenApi30Response response = (OpenApi30Response) parent;
-            return response.createHeader();
-        }
-        if (ModelTypeUtil.isOpenApi31Model(parent)) {
-            OpenApi31Response response = (OpenApi31Response) parent;
-            return response.createHeader();
-        }
-        return null;
-    }
-
-    private void addHeader(Node parent, String name, Node header) {
-        if (ModelTypeUtil.isOpenApi2Model(parent)) {
-            OpenApi20Response response = (OpenApi20Response) parent;
-            OpenApi20Headers headers = response.getHeaders();
-            if (headers == null) {
-                return;
-            }
-            headers.addItem(name, (OpenApi20Header) header);
-        }
-        if (ModelTypeUtil.isOpenApi30Model(parent)) {
-            OpenApi30Response response = (OpenApi30Response) parent;
-            response.addHeader(name, (OpenApi30Header) header);
-        }
-        if (ModelTypeUtil.isOpenApi31Model(parent)) {
-            OpenApi31Response response = (OpenApi31Response) parent;
-            response.addHeader(name, (OpenApi31Header) header);
-        }
     }
 
 }

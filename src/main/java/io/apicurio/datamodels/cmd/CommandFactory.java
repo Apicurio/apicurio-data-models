@@ -29,7 +29,6 @@ import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
-import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
@@ -38,8 +37,10 @@ import io.apicurio.datamodels.models.SecurityRequirement;
 import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.openapi.OpenApiEncoding;
 import io.apicurio.datamodels.models.openapi.OpenApiExamplesParent;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
+import io.apicurio.datamodels.models.openapi.OpenApiHeadersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
@@ -157,8 +158,11 @@ public class CommandFactory {
         return new DeleteAllExamplesCommand((OpenApiExamplesParent) header);
     }
 
-    public static ICommand createDeleteAllHeadersCommand(OpenApiResponse header) {
-        return new DeleteAllHeadersCommand(header);
+    public static ICommand createDeleteAllResponseHeadersCommand(OpenApiResponse header) {
+        return new DeleteAllHeadersCommand((OpenApiHeadersParent) header);
+    }
+    public static ICommand createDeleteAllEncodingHeadersCommand(OpenApiEncoding header) {
+        return new DeleteAllHeadersCommand((OpenApiHeadersParent) header);
     }
 
     public static ICommand createDeleteAllPathItemOperationsCommand(OpenApiPathItem pathItem) {
