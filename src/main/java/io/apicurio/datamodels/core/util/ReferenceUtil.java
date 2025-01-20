@@ -147,7 +147,7 @@ public class ReferenceUtil {
         List<String[]> split = RegexCompat.findMatches(fragment, "([^/]+)/?");
         Object cnode = contextNode;
         for (String[] mi : split) {
-            String seg = mi[1];
+            String seg = mi[1].replaceAll("~1", "/").replaceAll("~0", "~");
             if (NodeCompat.equals(seg, "#")) {
                 cnode = contextNode;
             } else if (cnode != null) {
