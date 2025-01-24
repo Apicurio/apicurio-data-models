@@ -61,7 +61,7 @@ public class Reference {
         if (rel == null)
             throw new RuntimeException("No relative part in the reference.");
         String[] parts = rel.split("/");
-        return parts[parts.length - 1];
+        return parts[parts.length - 1].replaceAll("~1", "/").replaceAll("~0", "~");
     }
 
     /**

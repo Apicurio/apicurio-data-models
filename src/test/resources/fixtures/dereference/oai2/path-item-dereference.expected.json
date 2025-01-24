@@ -1,0 +1,125 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "token to be passed as a header",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "csv"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "user to add to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Widget20"
+            },
+            "allowEmptyValue": false
+          },
+          {
+            "$ref": "#/parameters/skipParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A simple string response",
+            "schema": {
+              "$ref": "#/definitions/Widget20"
+            }
+          },
+          "500": {
+            "$ref": "#/responses/GeneralError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add Pet",
+        "description": "Add a pet",
+        "operationId": "AddPets",
+        "parameters": [
+          {
+            "name": "pet",
+            "in": "body",
+            "description": "pet to add to the system",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A simple string response"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Widget20": {
+      "title": "Example Schema",
+      "type": "object",
+      "minProperties": 2,
+      "maxProperties": 3,
+      "readOnly": false,
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "age": {
+          "description": "Age in years",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName"
+      ]
+    }
+  },
+  "parameters": {
+    "skipParam": {
+      "name": "skip",
+      "in": "query",
+      "description": "number of items to skip",
+      "required": true,
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "responses": {
+    "GeneralError": {
+      "description": "General Error",
+      "schema": {
+        "type": "string"
+      }
+    }
+  }
+}

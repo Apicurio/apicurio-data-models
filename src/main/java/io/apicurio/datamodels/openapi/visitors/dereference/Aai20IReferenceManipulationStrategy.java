@@ -226,4 +226,9 @@ public class Aai20IReferenceManipulationStrategy extends AbstractReferenceLocali
         if(removed != null) return true;
         return model.components.messageBindings.remove(name) != null;
     }
+
+    @Override
+    public boolean mergeNode(Node from, Node to) {
+        return false;
+    }
 }
