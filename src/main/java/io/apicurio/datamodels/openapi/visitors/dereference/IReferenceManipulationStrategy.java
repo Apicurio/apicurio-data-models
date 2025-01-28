@@ -63,6 +63,13 @@ public interface IReferenceManipulationStrategy {
      */
     boolean removeComponent(Document document, String name);
 
+     /**
+     * Merge nodes from given <code>from</code> node to give <code>to</code> node. Merge is non-recursive, a property of
+     * <code>from</code> node will be added to <code>to</code> node only it doesn't already appear in it.
+     *
+     * @return <code>true</code> if operation succeed, <code>false</code> otherwise
+     */
+    boolean mergeNode(Node from, Node to);
 
     class ReferenceAndNode {
         private final String ref;

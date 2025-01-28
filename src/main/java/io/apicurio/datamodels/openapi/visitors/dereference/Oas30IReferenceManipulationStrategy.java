@@ -14,8 +14,10 @@ import io.apicurio.datamodels.openapi.v3.models.Oas30Header;
 import io.apicurio.datamodels.openapi.v3.models.Oas30HeaderDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Link;
 import io.apicurio.datamodels.openapi.v3.models.Oas30LinkDefinition;
+import io.apicurio.datamodels.openapi.v3.models.Oas30Operation;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Parameter;
 import io.apicurio.datamodels.openapi.v3.models.Oas30ParameterDefinition;
+import io.apicurio.datamodels.openapi.v3.models.Oas30PathItem;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBody;
 import io.apicurio.datamodels.openapi.v3.models.Oas30RequestBodyDefinition;
 import io.apicurio.datamodels.openapi.v3.models.Oas30Response;
@@ -37,6 +39,10 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
             throw new IllegalArgumentException("Oas30Document expected.");
         Oas30Document model = (Oas30Document) document;
 
+        if (model.components == null) {
+            model.components = model.createComponents();
+        }
+        
         if (component instanceof Oas30Schema) {
             if (model.components.getSchemaDefinition(name) != null)
                 throw new IllegalArgumentException("Definition with that name already exists: " + name);
@@ -174,5 +180,55 @@ public class Oas30IReferenceManipulationStrategy extends AbstractReferenceLocali
         removed = model.components.links.remove(name);
         if (removed != null) return true;
         return model.components.callbacks.remove(name) != null;
+    }
+
+
+    @Override
+    public boolean mergeNode(Node from, Node to) {
+        if (to instanceof Oas30PathItem && from instanceof Oas30PathItem) {
+            mergePathItem((Oas30PathItem) from, (Oas30PathItem) to);
+            return true;
+        }
+        return false;
+    }
+    
+    private static void mergePathItem(Oas30PathItem from, Oas30PathItem to) {
+        if (to.get == null && from.get != null) {
+            to.get = cloneNode(from.get, () -> to.createOperation("get"));
+        }
+        if (to.put == null && from.put != null) {
+            to.put = cloneNode(from.put, () -> to.createOperation("put"));
+        }
+        if (to.post == null && from.post != null) {
+            to.post = cloneNode(from.post, () -> to.createOperation("post"));
+        }
+        if (to.delete == null && from.delete != null) {
+            to.delete = cloneNode(from.delete, () -> to.createOperation("delete"));
+        }
+        if (to.options == null && from.options != null) {
+            to.options = cloneNode(from.options, () -> to.createOperation("options"));
+        }
+        if (to.head == null && from.head != null) {
+            to.head = cloneNode(from.head, () -> to.createOperation("head"));
+        }
+        if (to.patch == null && from.patch != null) {
+            to.patch = cloneNode(from.patch, () -> to.createOperation("patch"));
+        }
+        if (to.parameters == null && from.parameters != null) {
+            to.parameters = cloneNodes(from.parameters, to::createParameter);
+        }
+        if (to.summary == null && from.summary != null) {
+            to.summary = from.summary;
+        }
+        if (to.description == null && from.description != null) {
+            to.description = from.description;
+        }
+        if (to.trace == null && from.trace != null) {
+            to.trace = cloneNode(from.trace, () -> new Oas30Operation("trace"));
+        }
+        if (to.servers == null && from.servers != null) {
+            to.servers = from.servers;
+        }
+        to.setReference(null);
     }
 }

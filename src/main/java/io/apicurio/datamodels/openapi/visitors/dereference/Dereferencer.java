@@ -157,10 +157,13 @@ public class Dereferencer {
                             // TODO maybe avoid exceptions?
                         }
                     }
-
-                    if (localRef == null) {
+                    
+                    // if reference can't be attached to components try to merge external node
+                    boolean canMerge = localRef == null && strategy.mergeNode(resolved, (Node) node);
+                    
+                    if (localRef == null && !canMerge) {
                         unresolvable.add(node.getReference());
-                    } else {
+                    } else if (localRef != null) {
                         // success!
                         // rename the original reference
                         if(!nameReused) {
@@ -170,6 +173,9 @@ public class Dereferencer {
                         processQueue.add(new Context(originalRef.getRef(), localRef.getNode()));
                         // remember, to prevent cycles
                         resolvedToLocalMap.put(originalRef.getRef(), localRef.getRef());
+                    } else {
+                        // in case of merge
+                        processQueue.add(new Context(originalRef.getRef(), (Node) node));
                     }
                 }
             }
