@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "An example API."
+  },
+  "paths": {
+    "/invoices": {
+      "$ref": "https://schemas.example.org/responses.json#/paths/~1invoices",
+      "description": "Another description about invoice operations",
+      "post": {
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "CREATED"
+          }
+        },
+        "operationId": "AddInvoice"
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import io.apicurio.datamodels.core.models.common.IDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Document;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Parameter;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ParameterDefinition;
+import io.apicurio.datamodels.openapi.v2.models.Oas20PathItem;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Response;
 import io.apicurio.datamodels.openapi.v2.models.Oas20ResponseDefinition;
 import io.apicurio.datamodels.openapi.v2.models.Oas20Schema;
@@ -96,5 +97,42 @@ public class Oas20IReferenceManipulationStrategy extends AbstractReferenceLocali
         removed = model.parameters.items.remove(name);
         if (removed != null) return true;
         return model.responses.items.remove(name) != null;
+    }
+
+    @Override
+    public boolean mergeNode(Node from, Node to) {
+        if (to instanceof Oas20PathItem && from instanceof Oas20PathItem) {
+            mergePathItem((Oas20PathItem) from, (Oas20PathItem) to);
+            return true;
+        }
+        return false;
+    }
+
+    private static void mergePathItem(Oas20PathItem from, Oas20PathItem to) {
+        if (to.get == null && from.get != null) {
+            to.get = cloneNode(from.get, () -> to.createOperation("get"));
+        }
+        if (to.put == null && from.put != null) {
+            to.put = cloneNode(from.put, () -> to.createOperation("put"));
+        }
+        if (to.post == null && from.post != null) {
+            to.post = cloneNode(from.post, () -> to.createOperation("post"));
+        }
+        if (to.delete == null && from.delete != null) {
+            to.delete = cloneNode(from.delete, () -> to.createOperation("delete"));
+        }
+        if (to.options == null && from.options != null) {
+            to.options = cloneNode(from.options, () -> to.createOperation("options"));
+        }
+        if (to.head == null && from.head != null) {
+            to.head = cloneNode(from.head, () -> to.createOperation("head"));
+        }
+        if (to.patch == null && from.patch != null) {
+            to.patch = cloneNode(from.patch, () -> to.createOperation("patch"));
+        }
+        if (to.parameters == null && from.parameters != null) {
+            to.parameters = cloneNodes(from.parameters, to::createParameter);
+        }
+        to.setReference(null);
     }
 }

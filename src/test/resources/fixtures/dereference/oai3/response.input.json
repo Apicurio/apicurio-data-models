@@ -32,19 +32,6 @@
     },
     "components": {
         "schemas": {
-            "Error": {
-                "description": "",
-                "required": [
-                    "code"
-                ],
-                "type": "object",
-                "properties": {
-                    "code": {
-                        "description": "",
-                        "type": "string"
-                    }
-                }
-            },
             "Invoice": {
                 "description": "",
                 "type": "object"
