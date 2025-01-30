@@ -36,6 +36,17 @@
       ]
     },
     {
+      "groupName": "Dependencies: All (major)",
+      "matchFileNames": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "schedule": [ "* 0 1 * *" ]
+    },
+    {
       "groupName": "Dependencies: Roaster (disabled)",
       "matchFileNames": [
         "**/pom.xml"
