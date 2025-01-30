@@ -4,11 +4,13 @@
     "config:recommended"
   ],
   "enabledManagers": [
-    "maven"
+    "maven", "npm"
   ],
   "dependencyDashboard": true,
   "rangeStrategy": "bump",
   "ignorePaths": [
+    "jsweet_extension/**",
+    "dependencies/**"
   ],
   "prConcurrentLimit": 5,
   "prHourlyLimit": 5,
@@ -37,6 +39,27 @@
       "groupName": "Dependencies: All (major)",
       "matchFileNames": [
         "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "schedule": [ "* 0 1 * *" ]
+    },
+    {
+      "groupName": "Dependencies: Typescript",
+      "matchFileNames": [
+        "src/main/ts/**"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "patch", "minor"
+      ]
+    },
+    {
+      "groupName": "Dependencies: Typescript (Major)",
+      "matchFileNames": [
+        "src/main/ts/**"
       ],
       "enabled": true,
       "matchUpdateTypes": [
