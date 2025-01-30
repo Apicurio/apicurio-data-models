@@ -29,6 +29,11 @@ import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
+import io.apicurio.datamodels.cmd.commands.ReplaceOperationCommand;
+import io.apicurio.datamodels.cmd.commands.ReplacePathItemCommand;
+import io.apicurio.datamodels.cmd.commands.ReplaceResponseDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.ReplaceSchemaDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.ReplaceSecurityRequirementCommand;
 import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
@@ -47,6 +52,7 @@ import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
+import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
 import io.apicurio.datamodels.util.CommandUtil;
 
@@ -213,5 +219,26 @@ public class CommandFactory {
         return new DeleteAllServersCommand((OpenApiServersParent) operation);
     }
 
+    public static ICommand createReplacePathItemCommand(OpenApiPathItem old, OpenApiPathItem replacement) {
+        return new ReplacePathItemCommand(old, replacement);
+    }
+
+    public static ICommand createReplaceOperationCommand(OpenApiOperation old,
+                                                               OpenApiOperation replacement) {
+        return new ReplaceOperationCommand(old, replacement);
+    }
+
+    public static ICommand createReplaceSchemaDefinitionCommand(OpenApiSchema old, OpenApiSchema replacement) {
+        return new ReplaceSchemaDefinitionCommand(old, replacement);
+    }
+
+    public static ICommand createReplaceResponseDefinitionCommand(OpenApiResponse old, OpenApiResponse replacement) {
+        return new ReplaceResponseDefinitionCommand(old, replacement);
+    }
+
+    public static ICommand createReplaceSecurityRequirementCommand(SecurityRequirement old,
+                                                                         SecurityRequirement replacement) {
+        return new ReplaceSecurityRequirementCommand(old, replacement);
+    }
 
 }

@@ -1,6 +1,11 @@
 import {DefinitionDetectionVisitor} from "../visitors/DefinitionDetectionVisitor";
 import {Node} from "../models/Node";
 
+function capitalize(str: string): string {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export class NodeUtil {
 
     public static getProperty(node: any, propertyName: string): any {
@@ -19,7 +24,17 @@ export class NodeUtil {
     }
 
     public static setProperty(node: any, propertyName: string, newValue: any): void {
-        node[propertyName] = newValue;
+        const setter: string = "set" + capitalize(propertyName);
+        const method = node[setter];
+        if (typeof method === "function") {
+            try {
+                method.apply(node, [newValue]);
+            } catch (e) {
+                console.error(`Error setting property ${propertyName} on a Node: `, e);
+            }
+        } else {
+            console.error(`Error setting a property on a Node: property ${propertyName} has no setter.`);
+        }
     }
 
     public static isNode(object: any): boolean {

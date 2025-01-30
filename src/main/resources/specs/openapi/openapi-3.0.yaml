@@ -9,6 +9,8 @@ versions:
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
   - version: 3.0.3
     url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
+  - version: 3.0.4
+    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.4.md
 prefix: OpenApi30
 namespace: io.apicurio.datamodels.models.openapi.v30
 

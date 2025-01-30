@@ -33,6 +33,12 @@ import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
 import {DeleteMediaTypeCommand} from "../cmd/commands/DeleteMediaTypeCommand";
 
+import {ReplaceOperationCommand} from "../cmd/commands/ReplaceOperationCommand";
+import {ReplacePathItemCommand} from "../cmd/commands/ReplacePathItemCommand";
+import {ReplaceResponseDefinitionCommand} from "../cmd/commands/ReplaceResponseDefinitionCommand";
+import {ReplaceSchemaDefinitionCommand} from "../cmd/commands/ReplaceSchemaDefinitionCommand";
+import {ReplaceSecurityRequirementCommand} from "../cmd/commands/ReplaceSecurityRequirementCommand";
+
 import {SetPropertyCommand} from "../cmd/commands/SetPropertyCommand";
 
 
@@ -76,6 +82,12 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },
     "DeleteMediaTypeCommand": () => { return new DeleteMediaTypeCommand(); },
+
+    "ReplaceOperationCommand": () => { return new ReplaceOperationCommand(); },
+    "ReplacePathItemCommand": () => { return new ReplacePathItemCommand(); },
+    "ReplaceResponseDefinitionCommand": () => { return new ReplaceResponseDefinitionCommand(); },
+    "ReplaceSchemaDefinitionCommand": () => { return new ReplaceSchemaDefinitionCommand(); },
+    "ReplaceSecurityRequirementCommand": () => { return new ReplaceSecurityRequirementCommand(); },
 
     "SetPropertyCommand": () => { return new SetPropertyCommand(); },
 };

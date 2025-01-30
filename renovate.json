@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "maven"
+  ],
+  "dependencyDashboard": true,
+  "rangeStrategy": "bump",
+  "ignorePaths": [
+  ],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 5,
+  "packageRules": [
+    {
+      "groupName": "Dependencies: All (patch)",
+      "matchFileNames": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "patch"
+      ]
+    },
+    {
+      "groupName": "Dependencies: All (minor)",
+      "matchFileNames": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "minor"
+      ]
+    },
+    {
+      "groupName": "Dependencies: All (major)",
+      "matchFileNames": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "schedule": [ "* 0 1 * *" ]
+    }
+  ]
+}
