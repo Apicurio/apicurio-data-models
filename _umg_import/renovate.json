@@ -17,26 +17,32 @@
   "packageRules": [
     {
       "groupName": "Dependencies: All (patch)",
-      "matchPaths": [
+      "matchFileNames": [
         "**/pom.xml"
       ],
       "enabled": true,
-      "matchUpdateTypes": ["patch"]
+      "matchUpdateTypes": [
+        "patch"
+      ]
     },
     {
       "groupName": "Dependencies: All (minor)",
-      "matchPaths": [
+      "matchFileNames": [
         "**/pom.xml"
       ],
       "enabled": true,
-      "matchUpdateTypes": ["minor"]
+      "matchUpdateTypes": [
+        "minor"
+      ]
     },
     {
       "groupName": "Dependencies: Roaster (disabled)",
-      "matchPaths": [
+      "matchFileNames": [
         "**/pom.xml"
       ],
-      "matchPackageNames": ["org.jboss.forge.roaster:*"],
+      "matchPackageNames": [
+        "org.jboss.forge.roaster:*"
+      ],
       "enabled": false
     }
   ]
