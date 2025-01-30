@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.curiousoddman.rgxgen.RgxGen;
 
+import com.github.curiousoddman.rgxgen.config.RgxGenProperties;
 import io.apicurio.umg.beans.SpecificationVersion;
 import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
@@ -181,7 +182,7 @@ public class CreateTestFixturesStage extends AbstractStage {
         PropertyModel primitiveProperty = PropertyModel.builder().name("_tmp").type(
                 property.getType().getNested().iterator().next()).build();
         if (property.getCollection() != null) {
-            RgxGen rgxGen = new RgxGen(extractRegex(property.getCollection()));
+            RgxGen rgxGen = RgxGen.parse(extractRegex(property.getCollection()));
             return generateMapValue((index) -> {
                 return rgxGen.generate(random);
             },() -> {
@@ -201,7 +202,7 @@ public class CreateTestFixturesStage extends AbstractStage {
         };
 
         if (property.getCollection() != null) {
-            RgxGen rgxGen = new RgxGen(extractRegex(property.getCollection()));
+            RgxGen rgxGen = RgxGen.parse(extractRegex(property.getCollection()));
             return generateMapValue((index) -> {
                 return rgxGen.generate(random);
             }, supplier);
