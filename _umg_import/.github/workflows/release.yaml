@@ -75,3 +75,21 @@ jobs:
           git add .
           git commit -m"Automated version update: ${{ github.event.inputs.snapshot-version}}"
           git push
+
+      - name: Slack Notification (Always)
+        if: always()
+        run: |
+          MESSAGE="${{ github.repository }} :: '${{ github.workflow }}/${{ github.job }}' job completed with status: ${{ job.status }}"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}
+
+      - name: Slack Notification (Error)
+        if: failure()
+        run: |
+          MESSAGE="${{ github.repository }} :: '${{ github.workflow }}/${{ github.job }}' job FAILED!"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_ERROR_WEBHOOK }}
