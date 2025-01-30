@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "maven"
+  ],
+  "dependencyDashboard": true,
+  "rangeStrategy": "bump",
+  "ignorePaths": [
+    "maven-plugin-tests/src/it/**",
+    "maven-plugin-tests/target/**"
+  ],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 5
+}
