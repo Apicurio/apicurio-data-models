@@ -62,7 +62,7 @@
         <version.yarn>1.22.5</version.yarn>
 
         <!-- Dependency Versions -->
-        <version.com.fasterxml.jackson>2.12.4</version.com.fasterxml.jackson>
+        <version.com.fasterxml.jackson>2.18.2</version.com.fasterxml.jackson>
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
         <version.commons-io>2.18.0</version.commons-io>
         <version.junit>4.13.2</version.junit>
@@ -72,14 +72,14 @@
         <!-- Plugin Versions -->
         <version.org.eclipse.m2e.lifecycle-mapping>1.0.0</version.org.eclipse.m2e.lifecycle-mapping>
         <version.org.apache.felix.maven-bundle-plugin>5.1.2</version.org.apache.felix.maven-bundle-plugin>
-        <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+        <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
         <version.maven-source-plugin>3.3.1</version.maven-source-plugin>
-        <version.maven-javadoc-plugin>3.3.0</version.maven-javadoc-plugin>
+        <version.maven-javadoc-plugin>3.11.2</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.12.0</version.com.github.eirslett.frontend-maven-plugin>
-        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.6.8</version.org.sonatype.plugins.nexus-staging-maven-plugin>
+        <version.org.sonatype.plugins.nexus-staging-maven-plugin>1.7.0</version.org.sonatype.plugins.nexus-staging-maven-plugin>
         
     </properties>
 
