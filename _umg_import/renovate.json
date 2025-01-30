@@ -13,5 +13,31 @@
     "maven-plugin-tests/target/**"
   ],
   "prConcurrentLimit": 5,
-  "prHourlyLimit": 5
+  "prHourlyLimit": 5,
+  "packageRules": [
+    {
+      "groupName": "Dependencies: All (patch)",
+      "matchPaths": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": ["patch"]
+    },
+    {
+      "groupName": "Dependencies: All (minor)",
+      "matchPaths": [
+        "**/pom.xml"
+      ],
+      "enabled": true,
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "groupName": "Dependencies: Roaster (disabled)",
+      "matchPaths": [
+        "**/pom.xml"
+      ],
+      "matchPackageNames": ["org.jboss.forge.roaster:*"],
+      "enabled": false
+    }
+  ]
 }
