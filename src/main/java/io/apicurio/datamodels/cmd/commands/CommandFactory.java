@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
@@ -732,7 +733,7 @@ public class CommandFactory {
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, operation);
     }
-    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiMessage message) {
+    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiMessageBase message) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, message);
     }
 
