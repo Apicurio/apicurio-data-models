@@ -23,14 +23,15 @@ import io.apicurio.datamodels.core.validation.ValidationRuleMetaData;
 /**
  * @author cfoskin@redhat.com
  */
-public class AaMissingCorrelationIdRule extends RequiredPropertyValidationRule {
+public class AaiMissingCorrelationIdLocationRule extends RequiredPropertyValidationRule {
 
-    public AaMissingCorrelationIdRule(ValidationRuleMetaData ruleInfo) {
+    public AaiMissingCorrelationIdLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     public void visitCorrelationId(Aai20CorrelationId node) {
-        this.requireProperty(node, Constants.PROP_CORRELATION_ID, map());
+        if (!hasValue(node.$ref)) {
+            this.requireProperty(node, Constants.PROP_LOCATION, map());
+        }
     }
-
 }
