@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "ChangeCorrelationIdRefCommand",
+    "_messagePath": "/components/messages[testMessages]",
+    "_correlationIdRef": "#/components/correlationIds/corrId1"
+  }
+]

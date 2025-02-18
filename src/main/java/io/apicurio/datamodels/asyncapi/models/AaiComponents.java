@@ -277,6 +277,28 @@ public abstract class AaiComponents extends Components {
             correlationIds = new LinkedHashMap<>();
         correlationIds.put(key, value);
     }
+    
+    public AaiCorrelationId removeCorrelationId(String name) {
+        if (correlationIds != null) {
+            return correlationIds.remove(name);
+        }
+        return null;
+    }
+
+    public void renameCorrelationId(String fromName, String toName, Consumer<AaiCorrelationId> corrIdConsumer) {
+        this.correlationIds = ModelUtils.renameMapKey(fromName, toName, this.correlationIds, corrIdConsumer);
+    }
+
+    public void restoreCorrelationId(Integer index, String name, AaiCorrelationId correlationId) {
+        this.correlationIds = ModelUtils.restoreMapEntry(index, name, correlationId, this.correlationIds);
+    }
+
+    public AaiCorrelationId getCorrelationId(String name) {
+        if (correlationIds != null) {
+            return correlationIds.get(name);
+        }
+        return null;
+    }
 
     public void addMessageTraitDefinition(String key, AaiMessageTraitDefinition value) {
         if(messageTraits == null)
