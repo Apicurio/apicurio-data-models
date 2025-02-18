@@ -17,7 +17,7 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.asyncapi.models.AaiHeaderItem;
-import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20NodeFactory;
 import io.apicurio.datamodels.cmd.AbstractCommand;
@@ -47,7 +47,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
       this._headersRef = headersRef;
    }
 
-   ChangeHeadersRefCommand_Aai20(String headersRef, AaiMessage messageNode) {
+   ChangeHeadersRefCommand_Aai20(String headersRef, AaiMessageBase messageNode) {
       this._messagePath = Library.createNodePath(messageNode);
       this._headersRef = headersRef;
    }
@@ -58,7 +58,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
 
       this._changed = false;
       
-      AaiMessage message = getMessage(document);
+      AaiMessageBase message = getMessage(document);
       if (this.isNullOrUndefined(message) || !isValidRef(this._headersRef)) {
          return;
       }
@@ -80,7 +80,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
    public void undo(Document document) {
       LoggerCompat.info("[ChangeHeadersRefCommand_Aai20] Reverting.");
 
-      AaiMessage message = getMessage(document);
+      AaiMessageBase message = getMessage(document);
 
       if (!this._changed || this.isNullOrUndefined(message)) {
          return;
@@ -94,7 +94,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
       }
    }
    
-   private AaiMessage getMessage(Document document) {
+   private AaiMessageBase getMessage(Document document) {
       if (!this.isNullOrUndefined(this._operationPath)) {
          AaiOperation operation = (AaiOperation) this._operationPath.resolve(document);
 
@@ -104,7 +104,7 @@ public class ChangeHeadersRefCommand_Aai20 extends AbstractCommand {
 
          return operation.message;
       } else {
-         return  (AaiMessage) this._messagePath.resolve(document);
+         return  (AaiMessageBase) this._messagePath.resolve(document);
       }
       
    }
