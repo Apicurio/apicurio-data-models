@@ -21,8 +21,10 @@ import java.util.List;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
 import io.apicurio.datamodels.asyncapi.models.AaiOperationTrait;
+import io.apicurio.datamodels.asyncapi.models.AaiOperationTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiSchema;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20Document;
 import io.apicurio.datamodels.asyncapi.v2.models.Aai20SchemaDefinition;
@@ -460,6 +462,12 @@ public class CommandFactory {
             { return new ReplaceOperationCommand(); }
             case "ReplaceDocumentCommand":
             { return new ReplaceDocumentCommand(); }
+            case "ReplaceMessageCommand":
+            { return new ReplaceMessageCommand(); }
+            case "ReplaceMessageTraitDefinitionCommand":
+            { return new ReplaceMessageTraitDefinitionCommand(); }
+            case "ReplaceOperationTraitDefinitionCommand":
+            { return new ReplaceOperationTraitDefinitionCommand(); }
             case "ReplacePathItemCommand_20":
             case "ReplacePathItemCommand_30":
             case "ReplacePathItemCommand":
@@ -1199,6 +1207,18 @@ public class CommandFactory {
 
     public static final ICommand createReplaceDocumentCommand(Document old, Document replacement) {
         return new ReplaceDocumentCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceMessageCommand(AaiMessage old, AaiMessage replacement) {
+        return new ReplaceMessageCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceMessageTraitDefinitionCommand(AaiMessageTraitDefinition old, AaiMessageTraitDefinition replacement) {
+        return new ReplaceMessageTraitDefinitionCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceOperationTraitDefinitionCommand(AaiOperationTraitDefinition old, AaiOperationTraitDefinition replacement) {
+        return new ReplaceOperationTraitDefinitionCommand(old, replacement);
     }
 
     public static final ICommand createReplacePathItemCommand(OasPathItem old, OasPathItem replacement) {

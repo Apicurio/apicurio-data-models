@@ -1,0 +1,9 @@
+[{
+    "__type": "ReplaceOperationTraitDefinitionCommand",
+    "_nodePath": "/components/operationTraits[testOperationTrait]",
+    "_new": {
+        "summary": "testOtherSummary",
+        "description": "testOtherDesc"
+    },
+    "_operationTraitName": "testOperationTrait"
+}]
