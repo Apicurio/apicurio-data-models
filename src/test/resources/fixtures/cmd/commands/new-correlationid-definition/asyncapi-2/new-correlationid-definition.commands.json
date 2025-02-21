@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "NewCorrelationIdDefinitionCommand",
+    "_newName": "corrId2",
+    "_newDescription": "corrId2 desc"
+  }
+]

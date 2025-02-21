@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "RenameCorrelationIdDefinitionCommand",
+    "_oldName": "corrId1",
+    "_newName": "corrIdNext"
+  }
+]

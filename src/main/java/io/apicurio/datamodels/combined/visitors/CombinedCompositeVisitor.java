@@ -19,6 +19,7 @@ package io.apicurio.datamodels.combined.visitors;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.v2.visitors.IAai20Visitor;
 import io.apicurio.datamodels.core.models.Document;
 import io.apicurio.datamodels.core.models.Extension;
@@ -598,6 +599,11 @@ public class CombinedCompositeVisitor extends CombinedAllNodeVisitor implements 
      */
     @Override
     public void visitResponseDefinitions(Oas20ResponseDefinitions node) {
+        this.acceptAll(node);
+    }
+
+    @Override
+    public void visitCorrelationId(AaiCorrelationId node) {
         this.acceptAll(node);
     }
 
