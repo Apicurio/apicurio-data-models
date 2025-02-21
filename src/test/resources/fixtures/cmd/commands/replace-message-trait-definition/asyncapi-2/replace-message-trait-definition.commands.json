@@ -1,0 +1,11 @@
+[{
+    "__type": "ReplaceMessageTraitDefinitionCommand",
+    "_nodePath": "/components/messageTraits[testMessageTrait]",
+    "_new": {
+        "name": "testOtherName",
+        "title": "testOtherTitle",
+        "summary": "testOtherSummary",
+        "description": "testOtherDesc"
+    },
+    "_messageTraitName": "testMessageTrait"
+}]

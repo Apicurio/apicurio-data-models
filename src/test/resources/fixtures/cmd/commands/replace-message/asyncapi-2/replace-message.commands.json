@@ -1,0 +1,11 @@
+[{
+    "__type": "ReplaceMessageCommand",
+    "_nodePath": "/components/messages[testMessages]",
+    "_new": {
+        "name": "testOtherName",
+        "title": "testOtherTitle",
+        "summary": "testOtherSummary",
+        "description": "testOtherDesc"
+    },
+    "_messageName": "testMessages"
+}]
