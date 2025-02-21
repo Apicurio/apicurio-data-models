@@ -18,6 +18,7 @@ package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
@@ -475,6 +476,8 @@ public class CommandFactory {
             { return new ReplacePathItemCommand(); }
             case "ReplaceChannelItemCommand":
             { return new ReplaceChannelItemCommand(); }
+            case "ReplaceCorrelationIdDefinitionCommand":
+            { return new ReplaceCorrelationIdDefinitionCommand(); }
             case "ReplaceSchemaDefinitionCommand_20":
             { return new ReplaceSchemaDefinitionCommand_20(); }
             case "ReplaceSchemaDefinitionCommand_30":
@@ -1232,6 +1235,10 @@ public class CommandFactory {
 
     public static final ICommand createReplaceChannelItemCommand(AaiChannelItem old, AaiChannelItem replacement) {
         return new ReplaceChannelItemCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceCorrelationIdDefinitionCommand(AaiCorrelationId old, AaiCorrelationId replacement) {
+        return new ReplaceCorrelationIdDefinitionCommand(old, replacement);
     }
 
     public static final ICommand createReplaceSchemaDefinitionCommand(DocumentType docType,
