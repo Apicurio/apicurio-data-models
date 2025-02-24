@@ -1,0 +1,9 @@
+[{
+    "__type": "ReplaceCorrelationIdDefinitionCommand",
+    "_nodePath": "/components/correlationIds[testCorrelationId]",
+    "_new": {
+        "location": "$message.header#/here/it/is",
+        "description": "testOtherDesc"
+    },
+    "_correlationIdName": "testCorrelationId"
+}]

@@ -74,6 +74,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.name.OasInvalidScope
 import io.apicurio.datamodels.core.validation.rules.invalid.name.OasInvalidSecuritySchemeNameRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.name.OasUnmatchedEncodingPropertyRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.name.OasUnmatchedExampleTypeRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.reference.AaiInvalidCorrelationIdReferenceRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.reference.OasInvalidCallbackReferenceRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.reference.OasInvalidExampleReferenceRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.reference.OasInvalidHeaderReferenceRule;
@@ -172,7 +173,7 @@ import io.apicurio.datamodels.core.validation.rules.required.OasMissingHeaderTyp
 import io.apicurio.datamodels.core.validation.rules.required.MissingHttpSecuritySchemeTypeRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsArrayInformationRule;
 import io.apicurio.datamodels.core.validation.rules.required.OasMissingItemsTypeRule;
-import io.apicurio.datamodels.core.validation.rules.required.AaMissingCorrelationIdRule;
+import io.apicurio.datamodels.core.validation.rules.required.AaiMissingCorrelationIdLocationRule;
 import io.apicurio.datamodels.core.validation.rules.required.AasMissingServerProtocolRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingLicenseNameRule;
 import io.apicurio.datamodels.core.validation.rules.required.MissingOAuthFlowAuthUrlRule;
@@ -411,7 +412,8 @@ public class ValidationRuleSet {
         this.rules.add(md("SS-020", "Missing OAuth Security Scheme Flows", "Required Property", "Security Scheme", new DocumentType[] { oai30, aai20 }, true, "OAuth Security Scheme does not define any OAuth flows.", MissingOAuthSecuritySchemeFlowsRule.class));
         this.rules.add(md("SS-021", "Missing OID Connect Security Scheme Connect URL", "Required Property", "Security Scheme", new DocumentType[] { oai30, aai20 }, true, "OpenID Connect Security Scheme is missing a Connect URL.", MissingOpenIdConnectSecuritySchemeConnectUrlRule.class));
         this.rules.add(md("SVAR-001", "Missing Server Variable Default Value", "Required Property", "Server Variable", new DocumentType[] { oai30 }, true, "Server Variable \"${'name'}\" is missing a default value.", OasMissingServerVarDefaultValueRule.class));
-        this.rules.add(md("CID-001", "Missing Correlation ID Location", "Required Property", "Correlation ID", new DocumentType[] { aai20 }, true, "Correlation ID is missing a Location", AaMissingCorrelationIdRule.class));
+        this.rules.add(md("CID-001", "Missing Correlation ID Location", "Required Property", "Correlation ID", new DocumentType[] { aai20 }, true, "Correlation ID is missing a Location", AaiMissingCorrelationIdLocationRule.class));
+        this.rules.add(md("CID-002", "Invalid Correlation ID Reference", "Invalid Reference", "Correlation ID", new DocumentType[] { aai20 }, true, "Correlation ID Reference must refer to a valid Correlation ID Definition.", AaiInvalidCorrelationIdReferenceRule.class));
 
         /** Ignored Property **/
         this.rules.add(md("HEAD-008", "Ignored Content-Type Header", "Ignored Property", "Header", new DocumentType[] { oai30 }, true, "The \"Content-Type\" header will be ignored.", OasIgnoredContentTypeHeaderRule.class));
