@@ -1,0 +1,37 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Channel example",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "test": {
+      "publish": {
+        "message": {
+          "$ref": "#/components/messages/testMessages"
+        }
+      }
+    }
+  },
+  "components": {
+    "correlationIds": {
+      "corrIdNext": {
+        "location": "$message.header#/there/it/is",
+        "description": "corrId1 desc"
+      }
+    },
+    "messages": {
+      "testMessages": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
