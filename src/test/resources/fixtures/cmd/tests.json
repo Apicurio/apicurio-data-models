@@ -368,5 +368,8 @@
     { "name": "[AsyncAPI 2] {Replace Document} - Replace Document", "test": "commands/replace-document/asyncapi-2/replace-document" },
     { "name": "[AsyncAPI 2] {Replace Security Requirement} - Replace Security Requirement", "test": "commands/replace-security-requirement/asyncapi-2/replace-security-requirement" },
     { "name": "[AsyncAPI 2] {Replace Channel Item} - Replace Channel Item", "test": "commands/replace-channel-item/asyncapi-2/replace-channel-item" },
-    { "name": "[AsyncAPI 2] {Replace Correlation Id Definition} - Replace Correlation Id Definition", "test": "commands/replace-correlationid-definition/asyncapi-2/replace-correlationid-definition" }
+    { "name": "[AsyncAPI 2] {Replace Correlation Id Definition} - Replace Correlation Id Definition", "test": "commands/replace-correlationid-definition/asyncapi-2/replace-correlationid-definition" },
+    { "name": "[AsyncAPI 2] {Replace Message} - Replace Message", "test": "commands/replace-message/asyncapi-2/replace-message" },
+    { "name": "[AsyncAPI 2] {Replace Message Trait Definition} - Replace Message Trait Definition", "test": "commands/replace-message-trait-definition/asyncapi-2/replace-message-trait-definition" },
+    { "name": "[AsyncAPI 2] {Replace Operation Trait Definition} - Replace Operation Trait Definition", "test": "commands/replace-operation-trait-definition/asyncapi-2/replace-operation-trait-definition" }
 ]
