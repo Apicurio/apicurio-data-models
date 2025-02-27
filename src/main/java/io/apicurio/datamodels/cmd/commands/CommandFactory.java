@@ -18,8 +18,10 @@ package io.apicurio.datamodels.cmd.commands;
 
 import java.util.List;
 
+import io.apicurio.datamodels.asyncapi.models.AaiCorrelationId;
 import io.apicurio.datamodels.asyncapi.models.AaiChannelItem;
 import io.apicurio.datamodels.asyncapi.models.AaiMessage;
+import io.apicurio.datamodels.asyncapi.models.AaiMessageBase;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTrait;
 import io.apicurio.datamodels.asyncapi.models.AaiMessageTraitDefinition;
 import io.apicurio.datamodels.asyncapi.models.AaiOperation;
@@ -148,6 +150,8 @@ public class CommandFactory {
             case "ChangeContactCommand_30":
             case "ChangeContactCommand":
             { return new ChangeContactCommand(); }
+            case "ChangeCorrelationIdRefCommand":
+            { return new ChangeCorrelationIdRefCommand(); }
             case "ChangeLicenseCommand_20":
             case "ChangeLicenseCommand_30":
             case "ChangeLicenseCommand":
@@ -207,6 +211,8 @@ public class CommandFactory {
             case "DeleteContactCommand_30":
             case "DeleteContactCommand":
             { return new DeleteContactCommand(); }
+            case "DeleteCorrelationIdDefinitionCommand":
+            { return new DeleteCorrelationIdDefinitionCommand(); }
             case "DeleteAllExamplesCommand_30":
             case "DeleteAllExamplesCommand":
             { return new DeleteAllExamplesCommand(); }
@@ -400,6 +406,8 @@ public class CommandFactory {
             case "NewChannelCommand":
             case "NewChannelCommand_Aai20":
             { return new NewChannelCommand(); }
+            case "NewCorrelationIdDefinitionCommand":
+            { return new NewCorrelationIdDefinitionCommand(); }
             case "NewSchemaDefinitionCommand_Aai20":
             { return new NewSchemaDefinitionCommand_Aai20(); }
             case "NewSchemaPropertyCommand_Aai20":
@@ -424,6 +432,8 @@ public class CommandFactory {
             { return new RenameHeaderCommand(); }
             case "RenameChannelItemCommand":
             { return new RenameChannelItemCommand(); }
+            case "RenameCorrelationIdDefinitionCommand":
+            { return new RenameCorrelationIdDefinitionCommand(); }
             case "RenamePathItemCommand":
             { return new RenamePathItemCommand(); }
             case "RenamePropertyCommand":
@@ -474,6 +484,8 @@ public class CommandFactory {
             { return new ReplacePathItemCommand(); }
             case "ReplaceChannelItemCommand":
             { return new ReplaceChannelItemCommand(); }
+            case "ReplaceCorrelationIdDefinitionCommand":
+            { return new ReplaceCorrelationIdDefinitionCommand(); }
             case "ReplaceSchemaDefinitionCommand_20":
             { return new ReplaceSchemaDefinitionCommand_20(); }
             case "ReplaceSchemaDefinitionCommand_30":
@@ -631,6 +643,10 @@ public class CommandFactory {
         return new ChangeContactCommand(name, email, url);
     }
 
+    public static final ICommand createChangeCorrelationIdRefCommand(String correlationIdRef, AaiMessageBase message) {
+        return new ChangeCorrelationIdRefCommand(correlationIdRef, message);
+    }
+
     public static final ICommand createChangeHeaderCommand(OasHeader header, OasHeader newHeader) {
         return new ChangeHeaderCommand(header, newHeader);
     }
@@ -740,7 +756,7 @@ public class CommandFactory {
     public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiOperation operation) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, operation);
     }
-    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiMessage message) {
+    public static final ICommand createChangeHeadersRefCommand_Aai20(String headersRef, AaiMessageBase message) {
         return new ChangeHeadersRefCommand_Aai20(headersRef, message);
     }
 
@@ -748,6 +764,10 @@ public class CommandFactory {
 
     public static final ICommand createDeleteContactCommand(Info info) {
         return new DeleteContactCommand(info);
+    }
+
+    public static final ICommand createDeleteCorrelationIdDefinitionCommand(String correlationIdName) {
+        return new DeleteCorrelationIdDefinitionCommand(correlationIdName);
     }
 
     public static final ICommand createDeleteChildSchemaCommand(Schema schema) {
@@ -1103,6 +1123,10 @@ public class CommandFactory {
         return new NewChannelCommand(name);
     }
 
+    public static final ICommand createNewCorrelationIdDefinitionCommand(String name, String description) {
+        return new NewCorrelationIdDefinitionCommand(name, description);
+    }
+
     public static final ICommand createNewSchemaDefinitionCommand_Aai20(String name, Object example, String descriptioon) {
         return new NewSchemaDefinitionCommand_Aai20(name, example, descriptioon);
     }
@@ -1133,6 +1157,10 @@ public class CommandFactory {
 
     public static final ICommand createRenameChannelItemCommand(String oldChannelName, String newChannelName) {
         return new RenameChannelItemCommand(oldChannelName, newChannelName);
+    }
+
+    public static final ICommand createRenameCorrelationIdDefinitionCommand(String oldCorrIdName, String newCorrIdName) {
+        return new RenameCorrelationIdDefinitionCommand(oldCorrIdName, newCorrIdName);
     }
 
     public static final ICommand createRenamePathItemCommand(String oldPath, String newPath,
@@ -1227,6 +1255,10 @@ public class CommandFactory {
 
     public static final ICommand createReplaceChannelItemCommand(AaiChannelItem old, AaiChannelItem replacement) {
         return new ReplaceChannelItemCommand(old, replacement);
+    }
+
+    public static final ICommand createReplaceCorrelationIdDefinitionCommand(AaiCorrelationId old, AaiCorrelationId replacement) {
+        return new ReplaceCorrelationIdDefinitionCommand(old, replacement);
     }
 
     public static final ICommand createReplaceSchemaDefinitionCommand(DocumentType docType,

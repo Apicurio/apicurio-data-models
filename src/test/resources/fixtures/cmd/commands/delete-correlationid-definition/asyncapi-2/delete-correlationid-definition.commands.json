@@ -1,0 +1,6 @@
+[
+  {
+    "__type": "DeleteCorrelationIdDefinitionCommand",
+    "_name": "corrId1"
+  }
+]
