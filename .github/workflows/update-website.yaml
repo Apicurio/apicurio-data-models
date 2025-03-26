@@ -46,10 +46,20 @@ jobs:
           git commit -m "Automated Update For Apicurio Data Models Release Version: ${{ env.RELEASE_VERSION }}"
           git push
 
-      - name: Google Chat Notification
-        if: ${{ failure() }}
-        uses: Co-qn/google-chat-notification@releases/v1
-        with:
-          name: ${{ github.workflow }}
-          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
-          status: ${{ job.status }}
+      - name: Slack Notification (Always)
+        if: always()
+        run: |
+          MESSAGE="'${{ github.workflow }}/${{ github.job }}' job completed with status: ${{ job.status }}"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}
+
+      - name: Slack Notification (Error)
+        if: failure()
+        run: |
+          MESSAGE="'${{ github.workflow }}/${{ github.job }}' job FAILED!"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_ERROR_WEBHOOK }}
