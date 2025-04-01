@@ -104,6 +104,7 @@ import io.apicurio.datamodels.core.validation.rules.invalid.value.OasInvalidLink
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasInvalidOperationIdRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasInvalidOperationSchemeRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasInvalidSecurityReqScopesRule;
+import io.apicurio.datamodels.core.validation.rules.invalid.value.OasInvalidSpecVersionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasMissingPathParamDefinitionRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasMissingResponseForOperationRule;
 import io.apicurio.datamodels.core.validation.rules.invalid.value.OasOperationSummaryTooLongRule;
@@ -345,6 +346,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SS-017", "Unexpected Usage of 'bearerFormat'", "Invalid Property Value", "Security Scheme", new DocumentType[] { oai30 }, true, "Security Scheme \"Bearer Format\" only allowed for HTTP Bearer auth scheme.", OasUnexpectedUsageOfBearerTokenRule.class));
         this.rules.add(md("SREQ-004", "Invalid Security Requirement Scopes", "Invalid Property Value", "Security Requirement", new DocumentType[] { oai30 }, true, "Value (scopes) for Security Requirement \"${'name'}\" must be an array.", OasInvalidSecurityReqScopesRule.class));
         this.rules.add(md("SVAR-003", "Server Variable Not Found in Template", "Invalid Property Value", "XXX", new DocumentType[] { oai30 }, true, "Server Variable \"${'name'}\" is not found in the server url template.", OasServerVarNotFoundInTemplateRule.class));
+        this.rules.add(md("DOC-001", "Invalid openapi version", "Invalid Property Value", "Document", new DocumentType[] { oai30 }, true, "openapi version \"${'openapi'}\" is not supported. Please use a version in the 3.0.* range." , OasInvalidSpecVersionRule.class));
         /** Invalid Reference **/
         this.rules.add(md("PAR-018", "Invalid Parameter Reference", "Invalid Reference", "Parameter", new DocumentType[] { oai20, oai30 }, true, "Parameter Reference must refer to a valid Parameter Definition.", OasInvalidParameterReferenceRule.class));
         this.rules.add(md("PATH-001", "Invalid Path Item Reference", "Invalid Reference", "Path Item", new DocumentType[] { oai20, oai30 }, true, "Path Item Reference must refer to a valid Path Item Definition.", OasInvalidPathItemReferenceRule.class));

@@ -39,6 +39,7 @@
     { "name": "[OpenAPI 3.0] Operation Properties", "test": "openapi/3.0/operation-properties.json", "severity": "high" },
     { "name": "[OpenAPI 3.0] Data Type Reference", "test": "openapi/3.0/data-type-reference.json" },
     { "name": "[OpenAPI 3.0] OAuth Flow With Scopes", "test": "openapi/3.0/oauth-flow-scopes.json" },
+    { "name": "[OpenAPI 3.0] Invalid spec version", "test": "openapi/3.0/invalid-spec-version-property-value.json" },
         
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" },
     { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" }

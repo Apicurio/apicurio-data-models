@@ -267,7 +267,7 @@ public class Library {
             if (openapi.startsWith("2.")) {
                 return DocumentType.openapi2;
             }
-            if (openapi.startsWith("3.0")) {
+            if (openapi.startsWith("3.")) {
                 return DocumentType.openapi3;
             }
         }
