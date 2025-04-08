@@ -208,8 +208,14 @@ public class Library {
      *  - OpenAPI 3.0 document into a 3.1 document
      *  - AsyncAPI early version to any later version
      * @param source
+     * @param toType
      */
     public static Document transformDocument(Document source, ModelType toType) {
+        // No need to transform if the from and to versions are the same.
+        if (source.root().modelType() == toType) {
+            return source;
+        }
+
         if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI30) {
             // Transform from OpenApi20 to OpenApi30
             OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
