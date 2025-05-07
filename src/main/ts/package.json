@@ -18,7 +18,7 @@
     "package": "rimraf dist && tsc -p tsconfig-package.json && cpx package.json dist && cpx module/*.* dist && mkdirp ./dist/bundles && webpack"
   },
   "dependencies": {
-    "core-js": "3.41.0"
+    "core-js": "3.42.0"
   },
   "devDependencies": {
     "@types/filesystem": "0.0.36",
@@ -30,7 +30,7 @@
     "rimraf": "6.0.1",
     "ts-jest": "29.3.2",
     "typescript": "5.8.3",
-    "webpack": "5.99.7",
+    "webpack": "5.99.8",
     "webpack-cli": "6.0.1"
   }
 }
