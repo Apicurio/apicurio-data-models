@@ -19,7 +19,7 @@ env:
 jobs:
   release-maven:
     if: github.repository_owner == 'Apicurio'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       RELEASE_TYPE: release
