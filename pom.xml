@@ -82,7 +82,7 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.5.1</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.15.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.central-publishing-maven-plugin>0.7.0</version.org.sonatype.central-publishing-maven-plugin>
-        <version.apicurio-unified-model-generator-plugin>1.2.7</version.apicurio-unified-model-generator-plugin>
+        <version.apicurio-unified-model-generator-plugin>1.2.11</version.apicurio-unified-model-generator-plugin>
         <version.jsweet-maven-plugin>3.1.1.RedHat</version.jsweet-maven-plugin>
     </properties>
 
