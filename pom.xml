@@ -523,7 +523,6 @@
                             <publishingServerId>central</publishingServerId>
                             <waitUntil>published</waitUntil>
                             <autoPublish>true</autoPublish>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -538,6 +537,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
+                                    <passphraseEnvName>MAVEN_GPG_PASSPHRASE</passphraseEnvName>
                                     <!-- Prevent `gpg` from using pinentry programs -->
                                     <gpgArguments>
                                         <arg>--pinentry-mode</arg>
