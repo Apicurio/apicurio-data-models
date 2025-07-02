@@ -62,7 +62,7 @@
         <version.node-js>20.18.1</version.node-js>
 
         <!-- Dependency Versions -->
-        <version.com.fasterxml.jackson>2.19.0</version.com.fasterxml.jackson>
+        <version.com.fasterxml.jackson>2.19.1</version.com.fasterxml.jackson>
         <version.com.fasterxml.jackson.dataformat>2.10.0.pr1</version.com.fasterxml.jackson.dataformat>
         <version.commons-lang3>3.17.0</version.commons-lang3>
         <version.commons-io>2.19.0</version.commons-io>
@@ -78,7 +78,7 @@
         <version.maven-source-plugin>3.3.1</version.maven-source-plugin>
         <version.maven-javadoc-plugin>3.11.2</version.maven-javadoc-plugin>
         <version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
-        <version.maven-gpg-plugin>3.2.7</version.maven-gpg-plugin>
+        <version.maven-gpg-plugin>3.2.8</version.maven-gpg-plugin>
         <version.org.codehaus.mojo.exec-maven-plugin>3.5.1</version.org.codehaus.mojo.exec-maven-plugin>
         <version.com.github.eirslett.frontend-maven-plugin>1.15.1</version.com.github.eirslett.frontend-maven-plugin>
         <version.org.sonatype.central-publishing-maven-plugin>0.8.0</version.org.sonatype.central-publishing-maven-plugin>
