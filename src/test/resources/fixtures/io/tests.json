@@ -132,6 +132,7 @@
     { "name": "[OpenAPI 3] Simple Servers", "test": "openapi/3.0/simple/simple-servers.json" },
     { "name": "[OpenAPI 3] Simple Tags", "test": "openapi/3.0/simple/simple-tags.json" },
     { "name": "[OpenAPI 3] Simplest", "test": "openapi/3.0/simple/simplest.json" },
-    { "name": "[OpenAPI 3] Extra Properties", "test": "openapi/3.0/extra-properties/extra-properties.json", "extraProperties": 3 }
-    
+    { "name": "[OpenAPI 3] Extra Properties", "test": "openapi/3.0/extra-properties/extra-properties.json", "extraProperties": 3 },
+
+    { "name": "[OpenAPI 3.1] All Of Self Ref", "test": "openapi/3.1/recursive/allof-self-ref.json" }
 ]

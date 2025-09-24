@@ -1,0 +1,45 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Recursive Example API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/example": {
+      "get": {
+        "summary": "Get Something",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              " application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Something"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Something": {
+        "type": "object",
+        "properties": {
+          "someGroup": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Something"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
