@@ -18,7 +18,12 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -38,9 +43,14 @@ public class OasUnexpectedNumOfParamMTsRule extends AbstractInvalidPropertyValue
      */
     @Override
     public void visitParameter(Parameter node) {
-        OpenApi30Parameter param = (OpenApi30Parameter) node;
-        if (hasValue(param.getContent())) {
-            this.reportIfInvalid(param.getContent().size() < 2, node, "content", map());
+        Map<String, ?> content = new HashMap<>();
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            content = ((OpenApi30Parameter) node).getContent();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            content = ((OpenApi31Parameter) node).getContent();
+        }
+        if (hasValue(content)) {
+            this.reportIfInvalid(content.size() < 2, node, "content", map());
         }
     }
 

@@ -16,10 +16,16 @@
 
 package io.apicurio.datamodels.validation.rules.mutex;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implements the Parameter Example/Examples Mutual Exclusivity Rule.
@@ -40,8 +46,16 @@ public class OasParameterExamplesMutualExclusivityRule extends ValidationRule {
      */
     @Override
     public void visitParameter(Parameter node) {
-        OpenApi30Parameter param = (OpenApi30Parameter) node;
-        this.reportIf(hasValue(param.getExample()) && param.getExamples().size() > 0, node, "example", map());
+        JsonNode example = null;
+        Map<String, ?> examples = new HashMap<>();
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            example = ((OpenApi30Parameter) node).getExample();
+            examples = ((OpenApi30Parameter) node).getExamples();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            example = ((OpenApi31Parameter) node).getExample();
+            examples = ((OpenApi31Parameter) node).getExamples();
+        }
+        this.reportIf(hasValue(example) && !examples.isEmpty(), node, "example", map());
     }
 
 }

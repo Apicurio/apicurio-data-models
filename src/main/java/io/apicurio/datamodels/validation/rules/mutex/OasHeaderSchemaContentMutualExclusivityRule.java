@@ -18,8 +18,13 @@ package io.apicurio.datamodels.validation.rules.mutex;
 
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30MediaType;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.Map;
 
 /**
  * Implements the Header Schema/Content Mutual Exclusivity Rule.
@@ -35,8 +40,8 @@ public class OasHeaderSchemaContentMutualExclusivityRule extends ValidationRule 
         super(ruleInfo);
     }
 
-    private boolean hasContent(OpenApi30Header contentParent) {
-        return isDefined(contentParent.getContent()) && contentParent.getContent().size() > 0;
+    private boolean hasContent(Map<String, ?> content) {
+        return isDefined(content) && !content.isEmpty();
     }
 
     /**
@@ -44,7 +49,17 @@ public class OasHeaderSchemaContentMutualExclusivityRule extends ValidationRule 
      */
     @Override
     public void visitHeader(OpenApiHeader node) {
-        OpenApi30Header header = (OpenApi30Header) node;
-        this.reportIf(hasValue(header.getSchema()) && hasContent(header), node, "schema", map());
+        Object schema = null;
+        Map<String, ?> content = null;
+
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            schema = ((OpenApi30Header) node).getSchema();
+            content = ((OpenApi30Header) node).getContent();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            schema = ((OpenApi31Header) node).getSchema();
+            content = ((OpenApi31Header) node).getContent();
+        }
+
+        this.reportIf(hasValue(schema) && hasContent(content), node, "schema", map());
     }
 }

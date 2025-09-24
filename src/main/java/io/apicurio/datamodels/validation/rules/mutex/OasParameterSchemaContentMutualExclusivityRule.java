@@ -19,8 +19,12 @@ package io.apicurio.datamodels.validation.rules.mutex;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.Map;
 
 /**
  * Implements the Parameter Schema/Content Mutual Exclusivity Rule.
@@ -36,11 +40,18 @@ public class OasParameterSchemaContentMutualExclusivityRule extends ValidationRu
         super(ruleInfo);
     }
 
-    private boolean hasContent(OpenApi30Parameter contentParent) {
-        if (!isDefined(contentParent.getContent())) {
+    private boolean hasContent(OpenApiParameter contentParent) {
+        Map<String, ?> content = null;
+        if (ModelTypeUtil.isOpenApi30Model(contentParent)) {
+            content = ((OpenApi30Parameter) contentParent).getContent();
+        } else if (ModelTypeUtil.isOpenApi31Model(contentParent)) {
+            content = ((OpenApi31Parameter) contentParent).getContent();
+        }
+
+        if (!isDefined(content)) {
             return false;
         }
-        return contentParent.getContent().size() > 0;
+        return !content.isEmpty();
     }
 
     /**
@@ -49,7 +60,7 @@ public class OasParameterSchemaContentMutualExclusivityRule extends ValidationRu
     @Override
     public void visitParameter(Parameter node) {
         OpenApiParameter parameter = (OpenApiParameter) node;
-        this.reportIf(hasValue(parameter.getSchema()) && hasContent((OpenApi30Parameter) node), node, "schema", map());
+        this.reportIf(hasValue(parameter.getSchema()) && hasContent(parameter), node, "schema", map());
     }
 
 }

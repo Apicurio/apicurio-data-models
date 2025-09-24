@@ -17,7 +17,12 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -38,8 +43,16 @@ public class OasAllowReservedNotAllowedForParamRule extends AbstractInvalidPrope
      */
     @Override
     public void visitParameter(Parameter node) {
-        OpenApi30Parameter param = (OpenApi30Parameter) node;
-        if (hasValue(param.isAllowReserved())) {
+        OpenApiParameter param = (OpenApiParameter) node;
+
+        Boolean isAllowReserved = null;
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            isAllowReserved = ((OpenApi30Parameter) node).isAllowReserved();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            isAllowReserved = ((OpenApi31Parameter) node).isAllowReserved();
+        }
+
+        if (hasValue(isAllowReserved)) {
             this.reportIfInvalid(equals(param.getIn(), "query"), node, "allowReserved", map());
         }
     }
