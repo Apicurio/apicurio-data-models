@@ -22,6 +22,7 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,7 +43,7 @@ public class OasUnexpectedNumOfParamMTsRule extends AbstractInvalidPropertyValue
      */
     @Override
     public void visitParameter(Parameter node) {
-        Map<String, ?> content = Map.of();
+        Map<String, ?> content = new HashMap<>();
         if (ModelTypeUtil.isOpenApi30Model(node)) {
             content = ((OpenApi30Parameter) node).getContent();
         } else if (ModelTypeUtil.isOpenApi31Model(node)) {

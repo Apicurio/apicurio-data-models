@@ -24,6 +24,7 @@ import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +47,7 @@ public class OasParameterExamplesMutualExclusivityRule extends ValidationRule {
     @Override
     public void visitParameter(Parameter node) {
         JsonNode example = null;
-        Map<String, ?> examples = Map.of();
+        Map<String, ?> examples = new HashMap<>();
         if (ModelTypeUtil.isOpenApi30Model(node)) {
             example = ((OpenApi30Parameter) node).getExample();
             examples = ((OpenApi30Parameter) node).getExamples();
