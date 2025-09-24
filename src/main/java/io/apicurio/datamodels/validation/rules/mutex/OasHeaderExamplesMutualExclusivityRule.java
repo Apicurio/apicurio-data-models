@@ -16,10 +16,16 @@
 
 package io.apicurio.datamodels.validation.rules.mutex;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.Map;
 
 /**
  * Implements the Header Example/Examples Mutual Exclusivity Rule.
@@ -40,8 +46,18 @@ public class OasHeaderExamplesMutualExclusivityRule extends ValidationRule {
      */
     @Override
     public void visitHeader(OpenApiHeader node) {
-        OpenApi30Header header = (OpenApi30Header) node;
-        this.reportIf(hasValue(header.getExample()) && header.getExamples().size() > 0, node, "example", map());
+        JsonNode example = null;
+        Map<String, OpenApiExample> examples = Map.of();
+
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            example = ((OpenApi30Header) node).getExample();
+            examples = ((OpenApi30Header) node).getExamples();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            example = ((OpenApi31Header) node).getExample();
+            examples = ((OpenApi31Header) node).getExamples();
+        }
+
+        this.reportIf(hasValue(example) && !examples.isEmpty(), node, "example", map());
     }
 
 }

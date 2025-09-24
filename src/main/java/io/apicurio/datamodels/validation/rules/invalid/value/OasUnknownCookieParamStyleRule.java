@@ -17,8 +17,15 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.Map;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -38,11 +45,19 @@ public class OasUnknownCookieParamStyleRule extends AbstractInvalidPropertyValue
      */
     @Override
     public void visitParameter(Parameter node) {
-        OpenApi30Parameter param = (OpenApi30Parameter) node;
-        if (hasValue(param.getStyle())) {
-            if (equals(param.getIn(), "cookie")) {
-                this.reportIfInvalid(isValidEnumItem(param.getStyle(), array("form")), node, "style",
-                        map("style", param.getStyle()));
+        String style = null;
+        String in = null;
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            style = ((OpenApi30Parameter) node).getStyle();
+            in = ((OpenApi30Parameter) node).getIn();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            style = ((OpenApi31Parameter) node).getStyle();
+            in = ((OpenApi31Parameter) node).getIn();
+        }
+        if (hasValue(style)) {
+            if (equals(in, "cookie")) {
+                this.reportIfInvalid(isValidEnumItem(style, array("form")), node, "style",
+                        map("style", style));
             }
         }
     }

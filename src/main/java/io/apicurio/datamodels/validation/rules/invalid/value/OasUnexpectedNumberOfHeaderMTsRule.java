@@ -18,7 +18,12 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30MediaType;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.Map;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -38,9 +43,15 @@ public class OasUnexpectedNumberOfHeaderMTsRule extends AbstractInvalidPropertyV
      */
     @Override
     public void visitHeader(OpenApiHeader node) {
-        OpenApi30Header header = (OpenApi30Header) node;
-        if (isDefined(header.getContent())) {
-            this.reportIfInvalid(header.getContent().size() < 2, node, "content", map());
+        Map<String, ?> content = null;
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            content = ((OpenApi30Header) node).getContent();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            content = ((OpenApi31Header) node).getContent();
+        }
+
+        if (isDefined(content)) {
+            this.reportIfInvalid(content.size() < 2, node, "content", map());
         }
     }
 

@@ -18,6 +18,8 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -38,10 +40,15 @@ public class OasUnknownParamStyleRule extends AbstractInvalidPropertyValueRule {
      */
     @Override
     public void visitParameter(Parameter node) {
-        OpenApi30Parameter param = (OpenApi30Parameter) node;
-        if (hasValue(param.getStyle())) {
-            this.reportIfInvalid(isValidEnumItem(param.getStyle(), array("matrix", "label", "form", "simple", "spaceDelimited", "pipeDelimited", "deepObject")),
-                    node, "style", map("style", param.getStyle()));
+        String style = null;
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            style = ((OpenApi30Parameter) node).getStyle();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            style = ((OpenApi31Parameter) node).getStyle();
+        }
+        if (hasValue(style)) {
+            this.reportIfInvalid(isValidEnumItem(style, array("matrix", "label", "form", "simple", "spaceDelimited", "pipeDelimited", "deepObject")),
+                    node, "style", map("style", style));
         }
     }
 

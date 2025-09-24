@@ -18,6 +18,8 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -38,9 +40,15 @@ public class OasInvalidHeaderStyleRule extends AbstractInvalidPropertyValueRule 
      */
     @Override
     public void visitHeader(OpenApiHeader node) {
-        OpenApi30Header header = (OpenApi30Header) node;
-        if (hasValue(header.getStyle())) {
-            this.reportIfInvalid(isValidEnumItem(header.getStyle(), array("simple")), node, "style", map());
+        String style = null;
+        if (ModelTypeUtil.isOpenApi30Model(node)) {
+            style = ((OpenApi30Header) node).getStyle();
+        } else if (ModelTypeUtil.isOpenApi31Model(node)) {
+            style = ((OpenApi31Header) node).getStyle();
+        }
+
+        if (hasValue(style)) {
+            this.reportIfInvalid(isValidEnumItem(style, array("simple")), node, "style", map());
         }
     }
 
