@@ -13,6 +13,10 @@ on:
         required: true
         default: 'main'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -41,10 +45,10 @@ jobs:
         run: mvn --version
 
 
-      - name: Set up Node.js v12
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
 
 
       - name: Check Node Version
