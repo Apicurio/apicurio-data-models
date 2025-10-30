@@ -9,6 +9,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid AsyncAPI Version Format", "test": "asyncapi/2.0/invalid-asyncapi-version-format.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Document ID Format", "test": "asyncapi/2.0/invalid-document-id-format.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Default Content Type", "test": "asyncapi/2.0/invalid-default-content-type.json" },
+	{ "name": "[AsyncAPI 2.0] Operations Only in 3.0", "test": "asyncapi/2.0/operations-only-in-30.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },
