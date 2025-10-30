@@ -1,2 +1,2 @@
-[OP-003] |high| {/channels[userSignup]/subscribe->operationId} :: Duplicate operationId 'handleUserEvent' found (operation IDs must be unique across all operations in the API).
-[OP-003] |high| {/channels[userLogin]/subscribe->operationId} :: Duplicate operationId 'handleUserEvent' found (operation IDs must be unique across all operations in the API).
+[OP-003] |medium| {/channels[userSignup]/subscribe->operationId} :: Duplicate operationId 'handleUserEvent' found (operation IDs must be unique across all operations in the API).
+[OP-003] |medium| {/channels[userLogin]/subscribe->operationId} :: Duplicate operationId 'handleUserEvent' found (operation IDs must be unique across all operations in the API).

@@ -13,6 +13,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Description", "test": "asyncapi/2.0/invalid-channel-description.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Operation Description", "test": "asyncapi/2.0/invalid-operation-description.json" },
 	{ "name": "[AsyncAPI 2.0] Duplicate Operation ID", "test": "asyncapi/2.0/duplicate-operation-id.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Operation Trait Reference", "test": "asyncapi/2.0/invalid-operation-trait-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Reference", "test": "asyncapi/2.0/invalid-channel-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Server Reference in Channel", "test": "asyncapi/2.0/invalid-server-reference-in-channel.json" },
 	{ "name": "[AsyncAPI 2.0] Servers Property Only in 2.2+", "test": "asyncapi/2.0/servers-property-only-in-22-plus.json" },
