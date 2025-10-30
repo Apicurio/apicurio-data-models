@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -41,7 +42,7 @@ public class AaInvalidDefaultContentTypeRule extends ValidationRule {
 
     @Override
     public void visitDocument(Document node) {
-        if (node instanceof AsyncApiDocument) {
+        if (ModelTypeUtil.isAsyncApiModel(node)) {
             AsyncApiDocument doc = (AsyncApiDocument) node;
             if (hasValue(doc.getDefaultContentType())) {
                 // Default content type should be a valid MIME type

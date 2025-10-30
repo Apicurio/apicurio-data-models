@@ -18,6 +18,7 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -39,7 +40,7 @@ public class AaInvalidDocumentIdFormatRule extends ValidationRule {
 
     @Override
     public void visitDocument(Document node) {
-        if (node instanceof AsyncApiDocument) {
+        if (ModelTypeUtil.isAsyncApiModel(node)) {
             AsyncApiDocument doc = (AsyncApiDocument) node;
             if (hasValue(doc.getId())) {
                 // Document ID should be a valid URI

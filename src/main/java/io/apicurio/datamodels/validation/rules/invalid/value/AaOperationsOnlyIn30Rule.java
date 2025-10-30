@@ -19,6 +19,7 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -41,7 +42,7 @@ public class AaOperationsOnlyIn30Rule extends ValidationRule {
 
     @Override
     public void visitDocument(Document node) {
-        if (node instanceof AsyncApiDocument) {
+        if (ModelTypeUtil.isAsyncApiModel(node)) {
             // Check if 'operations' property exists (as an extra property)
             if (node.getExtraProperty("operations") != null) {
                 // If operations exists, document must be AsyncAPI 3.0
