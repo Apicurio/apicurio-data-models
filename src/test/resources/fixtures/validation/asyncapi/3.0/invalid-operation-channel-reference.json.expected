@@ -1,0 +1,1 @@
+[AAO-007] |medium| {/operations[sendUserSignup]->channel} :: Operation channel reference must point to valid channel.
