@@ -95,6 +95,7 @@ import io.apicurio.datamodels.validation.rules.invalid.type.OasInvalidSchemaArra
 import io.apicurio.datamodels.validation.rules.invalid.type.OasInvalidSchemaTypeValueRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaChannelMessagesOnlyIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaChannelOperationsIn2xOnlyRule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaInvalidOperationActionValueRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaOperationsOnlyIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServersPropertyOnlyIn22PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedForParamRule;
@@ -314,6 +315,7 @@ public class ValidationRuleSet {
         this.rules.add(md("R-008", "Invalid 'Produces' Mime-Type", "Invalid Property Value", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "API \"produces\" must be a valid mime-type.", OasInvalidApiProducesMTRule.class));
         this.rules.add(md("OP-001", "Operation Summary Too Long", "Invalid Property Value", "Operation", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Operation Summary should be less than 120 characters.", OasOperationSummaryTooLongRule.class));
         this.rules.add(md("OP-004", "Invalid Operation ID", "Invalid Property Value", "Operation", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Operation ID is an invalid format.", OasInvalidOperationIdRule.class));
+        this.rules.add(md("AAO-004", "Invalid Operation Action Value", "Invalid Property Value", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation action '${'action'}' is invalid. Must be one of: send, receive.", AaInvalidOperationActionValueRule.class));
         this.rules.add(md("OP-010", "Invalid Operation Scheme", "Invalid Property Value", "Operation", new ModelType[] { ModelType.OPENAPI20 }, true, "Operation scheme \"${'scheme'}\" not allowed.  Must be one of: http, https, ws, wss", OasInvalidOperationSchemeRule.class));
         this.rules.add(md("PAR-007", "Path Parameter Not Found", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path Parameter \"${'name'}\" not found in path template.", OasPathParamNotFoundRule.class));
         this.rules.add(md("PAR-008", "Form Data Parameter Not Allowed", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.OPENAPI20 }, true, "Form Data Parameters are only used in 'application/x-www-form-urlencoded' or 'multipart/form-data' requests.", OasFormDataParamNotAllowedRule.class));

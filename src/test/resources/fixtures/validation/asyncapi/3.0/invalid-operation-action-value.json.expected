@@ -1,0 +1,1 @@
+[AAO-004] |medium| {/operations[onUserSignup]->action} :: Operation action 'subscribe' is invalid. Must be one of: send, receive.
