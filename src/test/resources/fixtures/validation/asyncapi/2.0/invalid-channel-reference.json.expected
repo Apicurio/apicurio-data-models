@@ -1,0 +1,1 @@
+[CHAN-003] |medium| {/channels[/user/signup]->$ref} :: Channel Reference must refer to a valid Channel definition.

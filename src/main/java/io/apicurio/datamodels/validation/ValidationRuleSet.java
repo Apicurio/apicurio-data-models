@@ -77,6 +77,7 @@ import io.apicurio.datamodels.validation.rules.invalid.name.OasInvalidScopeNameR
 import io.apicurio.datamodels.validation.rules.invalid.name.OasInvalidSecuritySchemeNameRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasUnmatchedEncodingPropertyRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasUnmatchedExampleTypeRule;
+import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidCallbackReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidExampleReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidHeaderReferenceRule;
@@ -354,6 +355,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SREQ-004", "Invalid Security Requirement Scopes", "Invalid Property Value", "Security Requirement", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Value (scopes) for Security Requirement \"${'name'}\" must be an array.", OasInvalidSecurityReqScopesRule.class));
         this.rules.add(md("SVAR-003", "Server Variable Not Found in Template", "Invalid Property Value", "XXX", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Server Variable \"${'name'}\" is not found in the server url template.", OasServerVarNotFoundInTemplateRule.class));
         /** Invalid Reference **/
+        this.rules.add(md("CHAN-003", "Invalid Channel Reference", "Invalid Reference", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Channel Reference must refer to a valid Channel definition.", AaInvalidChannelReferenceRule.class));
         this.rules.add(md("PAR-018", "Invalid Parameter Reference", "Invalid Reference", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Parameter Reference must refer to a valid Parameter Definition.", OasInvalidParameterReferenceRule.class));
         this.rules.add(md("PATH-001", "Invalid Path Item Reference", "Invalid Reference", "Path Item", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path Item Reference must refer to a valid Path Item Definition.", OasInvalidPathItemReferenceRule.class));
         this.rules.add(md("RES-002", "Invalid Response Reference", "Invalid Reference", "Response", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Response Reference must refer to a valid Response Definition.", OasInvalidResponseReferenceRule.class));
