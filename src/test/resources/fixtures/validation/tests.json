@@ -7,6 +7,7 @@
 	{ "name": "[AsyncAPI 2.0] Missing Info Property", "test": "asyncapi/2.0/missing-info-property.json" },
 	{ "name": "[AsyncAPI 2.0] Missing Channels Property", "test": "asyncapi/2.0/missing-channels-property.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid AsyncAPI Version Format", "test": "asyncapi/2.0/invalid-asyncapi-version-format.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Document ID Format", "test": "asyncapi/2.0/invalid-document-id-format.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },

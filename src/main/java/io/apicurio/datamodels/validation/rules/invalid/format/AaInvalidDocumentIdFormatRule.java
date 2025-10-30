@@ -18,24 +18,22 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
-import io.apicurio.datamodels.util.RegexUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: AAD-004
- * Validates that the AsyncAPI version property matches the expected pattern.
- * Valid formats: "2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0", "2.5.0", "2.6.0", "3.0.0"
+ * Rule: AAD-005
+ * Validates that the AsyncAPI document ID property is a valid URI/identifier if provided.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaInvalidAsyncApiVersionFormatRule extends ValidationRule {
+public class AaInvalidDocumentIdFormatRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaInvalidAsyncApiVersionFormatRule(ValidationRuleMetaData ruleInfo) {
+    public AaInvalidDocumentIdFormatRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -43,13 +41,9 @@ public class AaInvalidAsyncApiVersionFormatRule extends ValidationRule {
     public void visitDocument(Document node) {
         if (node instanceof AsyncApiDocument) {
             AsyncApiDocument doc = (AsyncApiDocument) node;
-            if (hasValue(doc.getAsyncapi())) {
-                String version = doc.getAsyncapi();
-                // AsyncAPI version should match pattern: major.minor.patch
-                // Valid examples: 2.0.0, 2.1.0, 2.6.0, 3.0.0
-                boolean isValid = RegexUtil.matches(version, "^\\d+\\.\\d+\\.\\d+$");
-                this.reportIfInvalid(isValid, node, "asyncapi",
-                    map("version", version));
+            if (hasValue(doc.getId())) {
+                // Document ID should be a valid URI
+                this.reportIfInvalid(isValidUrl(doc.getId()), node, "id", map());
             }
         }
     }

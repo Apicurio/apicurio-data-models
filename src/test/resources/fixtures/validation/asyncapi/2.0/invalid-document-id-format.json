@@ -1,0 +1,13 @@
+{
+  "asyncapi": "2.0.0",
+  "id": "not a valid uri",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "/example": {
+      "description": "Example channel"
+    }
+  }
+}

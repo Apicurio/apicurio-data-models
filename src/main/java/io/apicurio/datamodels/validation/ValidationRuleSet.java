@@ -24,6 +24,7 @@ import java.util.Set;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.util.ValidationUtil;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidAsyncApiVersionFormatRule;
+import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidDocumentIdFormatRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidApiDescriptionRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidContactEmailRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidContactUrlRule;
@@ -238,6 +239,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SREQ-005", "Duplicate Security Requirements", "Uniqueness", "Security Requirement", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Duplicate Security Requirement '${'securityReq'}' in Security field", SecurityRequirementUniquenessValidationRule.class));
         /** Invalid Property Format **/
         this.rules.add(md("AAD-004", "Invalid AsyncAPI Version Format", "Invalid Property Format", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "AsyncAPI version '${'version'}' is an incorrect format (must be major.minor.patch).", AaInvalidAsyncApiVersionFormatRule.class));
+        this.rules.add(md("AAD-005", "Invalid Document ID Format", "Invalid Property Format", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Document ID should be a valid URI.", AaInvalidDocumentIdFormatRule.class));
         this.rules.add(md("R-004", "Invalid API Host", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Host not properly formatted - only the host name (and optionally port) should be specified.", OasInvalidApiHostRule.class));
         this.rules.add(md("R-005", "Invalid API Base Path", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Base Path should being with a '/' character.", OasInvalidApiBasePathRule.class));
         this.rules.add(md("INF-003", "Invalid API Description", "Invalid Property Format", "Info", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31, ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "API description is an incorrect format.", InvalidApiDescriptionRule.class));
