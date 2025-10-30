@@ -18,6 +18,7 @@ package io.apicurio.datamodels.validation.rules.required;
 
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -39,17 +40,8 @@ public class AaMissingChannelsPropertyRule extends RequiredPropertyValidationRul
 
     @Override
     public void visitDocument(Document node) {
-        ModelType modelType = node.root().modelType();
-
         // Channels are required in AsyncAPI 2.x but optional in 3.0
-        if (modelType == ModelType.ASYNCAPI20 ||
-            modelType == ModelType.ASYNCAPI21 ||
-            modelType == ModelType.ASYNCAPI22 ||
-            modelType == ModelType.ASYNCAPI23 ||
-            modelType == ModelType.ASYNCAPI24 ||
-            modelType == ModelType.ASYNCAPI25 ||
-            modelType == ModelType.ASYNCAPI26) {
-
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
             this.requireProperty(node, "channels", map());
         }
     }
