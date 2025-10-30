@@ -1,0 +1,1 @@
+[AAO-001] |medium| {/operations[onUserSignup]->action} :: Operation is missing a required 'action' property.
