@@ -24,6 +24,7 @@ import java.util.Set;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.util.ValidationUtil;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidAsyncApiVersionFormatRule;
+import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidChannelDescriptionRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidDefaultContentTypeRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidDocumentIdFormatRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidApiDescriptionRule;
@@ -244,6 +245,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AAD-004", "Invalid AsyncAPI Version Format", "Invalid Property Format", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "AsyncAPI version '${'version'}' is an incorrect format (must be major.minor.patch).", AaInvalidAsyncApiVersionFormatRule.class));
         this.rules.add(md("AAD-005", "Invalid Document ID Format", "Invalid Property Format", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Document ID should be a valid URI.", AaInvalidDocumentIdFormatRule.class));
         this.rules.add(md("AAD-006", "Invalid Default Content Type", "Invalid Property Format", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Default Content Type should be a valid MIME type.", AaInvalidDefaultContentTypeRule.class));
+        this.rules.add(md("CHAN-002", "Invalid Channel Description", "Invalid Property Format", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Channel description is an incorrect format.", AaInvalidChannelDescriptionRule.class));
         this.rules.add(md("AAD-007", "Operations Property Only in 3.0", "Invalid Property Value", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "The 'operations' property is only valid in AsyncAPI 3.0, not in version '${'version'}'.", AaOperationsOnlyIn30Rule.class));
         this.rules.add(md("R-004", "Invalid API Host", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Host not properly formatted - only the host name (and optionally port) should be specified.", OasInvalidApiHostRule.class));
         this.rules.add(md("R-005", "Invalid API Base Path", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Base Path should being with a '/' character.", OasInvalidApiBasePathRule.class));
