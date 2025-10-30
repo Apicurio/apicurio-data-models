@@ -93,6 +93,7 @@ import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidSecur
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidSecuritySchemeReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.type.OasInvalidSchemaArrayItemsRule;
 import io.apicurio.datamodels.validation.rules.invalid.type.OasInvalidSchemaTypeValueRule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaChannelMessagesOnlyIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaChannelOperationsIn2xOnlyRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaOperationsOnlyIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServersPropertyOnlyIn22PlusRule;
@@ -252,6 +253,7 @@ public class ValidationRuleSet {
         this.rules.add(md("CHAN-002", "Invalid Channel Description", "Invalid Property Format", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Channel description is an incorrect format.", AaInvalidChannelDescriptionRule.class));
         this.rules.add(md("AAD-007", "Operations Property Only in 3.0", "Invalid Property Value", "API", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "The 'operations' property is only valid in AsyncAPI 3.0, not in version '${'version'}'.", AaOperationsOnlyIn30Rule.class));
         this.rules.add(md("CHAN-006", "Servers Property Only in 2.2+", "Invalid Property Value", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21 }, true, "The 'servers' property is only allowed in AsyncAPI 2.2 and later.", AaServersPropertyOnlyIn22PlusRule.class));
+        this.rules.add(md("CHAN-008", "Channel Messages Property (3.0 Only)", "Invalid Property Value", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "The 'messages' property is only allowed in AsyncAPI 3.0, not in 2.x.", AaChannelMessagesOnlyIn30Rule.class));
         this.rules.add(md("CHAN-009", "Channel Operations in 2.x Only", "Invalid Property Value", "Channel", new ModelType[] { ModelType.ASYNCAPI30 }, true, "The '${'property'}' operation is only allowed in AsyncAPI 2.x, not in 3.0.", AaChannelOperationsIn2xOnlyRule.class));
         this.rules.add(md("R-004", "Invalid API Host", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Host not properly formatted - only the host name (and optionally port) should be specified.", OasInvalidApiHostRule.class));
         this.rules.add(md("R-005", "Invalid API Base Path", "Invalid Property Format", "API", new ModelType[] { ModelType.OPENAPI20 }, true, "Base Path should being with a '/' character.", OasInvalidApiBasePathRule.class));
