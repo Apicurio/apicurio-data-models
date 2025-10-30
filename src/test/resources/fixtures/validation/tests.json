@@ -11,6 +11,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid Default Content Type", "test": "asyncapi/2.0/invalid-default-content-type.json" },
 	{ "name": "[AsyncAPI 2.0] Operations Only in 3.0", "test": "asyncapi/2.0/operations-only-in-30.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Description", "test": "asyncapi/2.0/invalid-channel-description.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Operation Description", "test": "asyncapi/2.0/invalid-operation-description.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Reference", "test": "asyncapi/2.0/invalid-channel-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Server Reference in Channel", "test": "asyncapi/2.0/invalid-server-reference-in-channel.json" },
 	{ "name": "[AsyncAPI 2.0] Servers Property Only in 2.2+", "test": "asyncapi/2.0/servers-property-only-in-22-plus.json" },
