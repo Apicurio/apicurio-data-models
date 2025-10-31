@@ -81,6 +81,7 @@ import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidChanne
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMessageReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidOperationChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidOperationTraitReferenceRule;
+import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidReplyChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidServerReferenceInChannelRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidCallbackReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidExampleReferenceRule;
@@ -386,6 +387,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AAO-006", "Invalid Operation Trait Reference", "Invalid Reference", "Operation Trait", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Operation trait reference must point to a valid operation trait definition.", AaInvalidOperationTraitReferenceRule.class));
         this.rules.add(md("AAO-007", "Invalid Operation Channel Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation channel reference must point to valid channel.", AaInvalidOperationChannelReferenceRule.class));
         this.rules.add(md("AAO-008", "Invalid Message Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Message references must point to valid messages.", AaInvalidMessageReferenceRule.class));
+        this.rules.add(md("AAREPLY-001", "Invalid Reply Channel Reference", "Invalid Reference", "Operation Reply", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Reply channel reference must point to valid channel.", AaInvalidReplyChannelReferenceRule.class));
         this.rules.add(md("PAR-018", "Invalid Parameter Reference", "Invalid Reference", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Parameter Reference must refer to a valid Parameter Definition.", OasInvalidParameterReferenceRule.class));
         this.rules.add(md("PATH-001", "Invalid Path Item Reference", "Invalid Reference", "Path Item", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path Item Reference must refer to a valid Path Item Definition.", OasInvalidPathItemReferenceRule.class));
         this.rules.add(md("RES-002", "Invalid Response Reference", "Invalid Reference", "Response", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Response Reference must refer to a valid Response Definition.", OasInvalidResponseReferenceRule.class));
