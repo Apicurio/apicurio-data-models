@@ -19,6 +19,7 @@
 	{ "name": "[AsyncAPI 2.0] Operation Referenceable Only in 3.0", "test": "asyncapi/2.0/operation-referenceable-only-in-30.json" },
 	{ "name": "[AsyncAPI 2.0] Operation Reply Only in 3.0", "test": "asyncapi/2.0/operation-reply-only-in-30.json" },
 	{ "name": "[AsyncAPI 2.0] Operation Messages in 2.x", "test": "asyncapi/2.0/operation-messages-in-2x.json" },
+	{ "name": "[AsyncAPI 2.0] Operation Trait Security in 2.4+", "test": "asyncapi/2.0/operation-trait-security-in-24-plus.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Reference", "test": "asyncapi/2.0/invalid-channel-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Server Reference in Channel", "test": "asyncapi/2.0/invalid-server-reference-in-channel.json" },
 	{ "name": "[AsyncAPI 2.0] Servers Property Only in 2.2+", "test": "asyncapi/2.0/servers-property-only-in-22-plus.json" },
