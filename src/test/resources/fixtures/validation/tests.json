@@ -18,6 +18,7 @@
 	{ "name": "[AsyncAPI 2.0] Operation Security Property Only in 2.4+", "test": "asyncapi/2.0/operation-security-property-only-in-24-plus.json" },
 	{ "name": "[AsyncAPI 2.0] Operation Referenceable Only in 3.0", "test": "asyncapi/2.0/operation-referenceable-only-in-30.json" },
 	{ "name": "[AsyncAPI 2.0] Operation Reply Only in 3.0", "test": "asyncapi/2.0/operation-reply-only-in-30.json" },
+	{ "name": "[AsyncAPI 2.0] Operation Messages in 2.x", "test": "asyncapi/2.0/operation-messages-in-2x.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Channel Reference", "test": "asyncapi/2.0/invalid-channel-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Server Reference in Channel", "test": "asyncapi/2.0/invalid-server-reference-in-channel.json" },
 	{ "name": "[AsyncAPI 2.0] Servers Property Only in 2.2+", "test": "asyncapi/2.0/servers-property-only-in-22-plus.json" },
@@ -31,6 +32,7 @@
 	{ "name": "[AsyncAPI 3.0] Invalid Operation Action Value", "test": "asyncapi/3.0/invalid-operation-action-value.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Operation Channel Reference", "test": "asyncapi/3.0/invalid-operation-channel-reference.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Message Reference", "test": "asyncapi/3.0/invalid-message-reference.json" },
+	{ "name": "[AsyncAPI 3.0] Operation Message in 3.0", "test": "asyncapi/3.0/operation-message-in-30.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },
