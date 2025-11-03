@@ -192,6 +192,7 @@ import io.apicurio.datamodels.validation.rules.required.AaMissingAsyncApiPropert
 import io.apicurio.datamodels.validation.rules.required.AaMissingChannelAddressRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingChannelsPropertyRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingCorrelationIdRule;
+import io.apicurio.datamodels.validation.rules.required.AaMissingMessagePayloadOrHeadersRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingOperationActionRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingOperationChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingParameterLocationRule;
@@ -483,6 +484,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SS-021", "Missing OID Connect Security Scheme Connect URL", "Required Property", "Security Scheme", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31, ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "OpenID Connect Security Scheme is missing a Connect URL.", MissingOpenIdConnectSecuritySchemeConnectUrlRule.class));
         this.rules.add(md("SVAR-001", "Missing Server Variable Default Value", "Required Property", "Server Variable", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Server Variable \"${'name'}\" is missing a default value.", OasMissingServerVarDefaultValueRule.class));
         this.rules.add(md("CID-001", "Missing Correlation ID Location", "Required Property", "Correlation ID", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Correlation ID is missing a Location", AaMissingCorrelationIdRule.class));
+        this.rules.add(md("AAM-001", "Missing Message Payload or Headers", "Required Property", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, false, "Message should have either payload or headers defined.", AaMissingMessagePayloadOrHeadersRule.class));
 
         /** Ignored Property **/
         this.rules.add(md("HEAD-008", "Ignored Content-Type Header", "Ignored Property", "Header", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "The \"Content-Type\" header will be ignored.", OasIgnoredContentTypeHeaderRule.class));
