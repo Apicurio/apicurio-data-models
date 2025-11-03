@@ -53,6 +53,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid Message Content Type", "test": "asyncapi/2.0/invalid-message-content-type.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Message Schema Format", "test": "asyncapi/2.0/invalid-message-schema-format.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Message Trait Reference", "test": "asyncapi/2.0/invalid-message-trait-reference.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Correlation ID Reference", "test": "asyncapi/2.0/invalid-correlation-id-reference.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },

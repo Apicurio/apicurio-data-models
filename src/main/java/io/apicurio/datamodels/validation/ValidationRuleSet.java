@@ -83,6 +83,7 @@ import io.apicurio.datamodels.validation.rules.invalid.name.OasInvalidSecuritySc
 import io.apicurio.datamodels.validation.rules.invalid.name.OasUnmatchedEncodingPropertyRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasUnmatchedExampleTypeRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidChannelReferenceRule;
+import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidCorrelationIdReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMessageReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMessageTraitReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidOperationChannelReferenceRule;
@@ -412,6 +413,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AAO-007", "Invalid Operation Channel Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation channel reference must point to valid channel.", AaInvalidOperationChannelReferenceRule.class));
         this.rules.add(md("AAO-008", "Invalid Message Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Message references must point to valid messages.", AaInvalidMessageReferenceRule.class));
         this.rules.add(md("AAM-006", "Invalid Message Trait Reference", "Invalid Reference", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Message trait references must point to valid message traits.", AaInvalidMessageTraitReferenceRule.class));
+        this.rules.add(md("AAM-007", "Invalid Correlation ID Reference", "Invalid Reference", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Correlation ID reference must point to valid correlation ID.", AaInvalidCorrelationIdReferenceRule.class));
         this.rules.add(md("AAREPLY-001", "Invalid Reply Channel Reference", "Invalid Reference", "Operation Reply", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Reply channel reference must point to valid channel.", AaInvalidReplyChannelReferenceRule.class));
         this.rules.add(md("AAREPLY-002", "Invalid Reply Message References", "Invalid Reference", "Operation Reply", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Reply message references must point to valid messages.", AaInvalidReplyMessageReferencesRule.class));
         this.rules.add(md("AAREPLY-003", "Invalid Reply Reference", "Invalid Reference", "Operation Reply", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Reply $ref must point to valid reply in components.", AaInvalidReplyReferenceRule.class));

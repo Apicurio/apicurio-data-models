@@ -1,0 +1,1 @@
+[AAM-007] |high| {/channels[user~1signup]/publish/message} :: Correlation ID reference must point to valid correlation ID.
