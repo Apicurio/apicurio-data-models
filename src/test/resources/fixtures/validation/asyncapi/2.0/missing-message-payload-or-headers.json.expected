@@ -1,1 +1,1 @@
-[AAM-001] |medium| {/channels[user~1signup]/publish/message} :: Message should have either payload or headers defined.
+[AAM-001] |medium| {/channels[user/signup]/publish/message->null} :: Message should have either payload or headers defined.
