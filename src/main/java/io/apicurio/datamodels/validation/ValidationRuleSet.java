@@ -190,6 +190,7 @@ import io.apicurio.datamodels.validation.rules.required.AaMissingCorrelationIdRu
 import io.apicurio.datamodels.validation.rules.required.AaMissingOperationActionRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingOperationChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingParameterLocationRule;
+import io.apicurio.datamodels.validation.rules.required.AaMissingParameterSchemaRule;
 import io.apicurio.datamodels.validation.rules.required.AasMissingServerProtocolRule;
 import io.apicurio.datamodels.validation.rules.required.MissingApiKeySchemeParamLocationRule;
 import io.apicurio.datamodels.validation.rules.required.MissingApiKeySchemeParamNameRule;
@@ -437,6 +438,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AAO-001", "Missing Operation Action", "Required Property", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation is missing a required 'action' property.", AaMissingOperationActionRule.class));
         this.rules.add(md("AAO-002", "Missing Operation Channel Reference", "Required Property", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation is missing a required 'channel' reference.", AaMissingOperationChannelReferenceRule.class));
         this.rules.add(md("AAPARAM-001", "Missing Parameter Location (AsyncAPI 2.x)", "Required Property", "Parameter", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Parameter is missing the 'location' property.", AaMissingParameterLocationRule.class));
+        this.rules.add(md("AAPARAM-002", "Missing Parameter Schema (AsyncAPI 2.x)", "Required Property", "Parameter", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Parameter is missing the 'schema' property.", AaMissingParameterSchemaRule.class));
         this.rules.add(md("ED-001", "Missing External Documentation URL", "Required Property", "External Documentation", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "External Documentation is missing a URL.", OasMissingExternalDocumentationUrlRule.class));
         this.rules.add(md("PAR-001", "Missing Parameter Name", "Required Property", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Parameter is missing a name.", OasMissingParameterNameRule.class));
         this.rules.add(md("PAR-002", "Missing Parameter Location", "Required Property", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Parameter is missing a location (Query, Header, etc).", OasMissingParameterLocationRule.class));
