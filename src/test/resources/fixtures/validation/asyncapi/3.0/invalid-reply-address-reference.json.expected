@@ -1,0 +1,1 @@
+[AARADDR-001] |medium| {/operations[signupOperation]/reply/address->$ref} :: Reply address $ref must point to valid reply address in components.
