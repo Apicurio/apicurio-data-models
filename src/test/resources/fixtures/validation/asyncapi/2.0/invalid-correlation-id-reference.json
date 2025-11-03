@@ -12,7 +12,8 @@
             "type": "object"
           },
           "correlationId": {
-            "$ref": "#/components/correlationIds/nonExistentCorrelationId"
+            "$ref": "#/components/correlationIds/nonExistentCorrelationId",
+            "location": "$message.header#/correlationId"
           }
         }
       }

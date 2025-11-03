@@ -16,15 +16,15 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import java.util.List;
-
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessageTrait;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.util.ReferenceUtil;
+import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.List;
 
 /**
  * Implements the Invalid Message Trait Reference rule for AsyncAPI.

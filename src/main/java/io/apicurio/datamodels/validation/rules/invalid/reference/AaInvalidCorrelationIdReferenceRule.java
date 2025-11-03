@@ -17,10 +17,10 @@
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiCorrelationId;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiCorrelationID;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.util.ReferenceUtil;
+import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -50,7 +50,7 @@ public class AaInvalidCorrelationIdReferenceRule extends ValidationRule {
         }
 
         // Check correlationId reference
-        AsyncApiCorrelationId correlationId = node.getCorrelationId();
+        AsyncApiCorrelationID correlationId = node.getCorrelationId();
         if (hasValue(correlationId) && correlationId instanceof Referenceable) {
             String ref = ((Referenceable) correlationId).get$ref();
             if (hasValue(ref)) {

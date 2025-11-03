@@ -21,6 +21,8 @@ import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
+import java.util.List;
+
 /**
  * Implements the Invalid Message Content Type rule for AsyncAPI.
  * Message content type must be a valid MIME type.
@@ -49,7 +51,7 @@ public class AaInvalidMessageContentTypeRule extends ValidationRule {
         // Validate contentType if present
         String contentType = node.getContentType();
         if (hasValue(contentType)) {
-            this.reportIfInvalid(isValidMimeType(contentType), node, "contentType", map());
+            this.reportIfInvalid(isValidMimeType(List.of(contentType)), node, "contentType", map());
         }
     }
 
