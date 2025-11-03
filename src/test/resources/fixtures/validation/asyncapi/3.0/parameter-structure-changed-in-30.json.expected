@@ -1,0 +1,1 @@
+[AAPARAM-007] |medium| {/channels[userStatus]/parameters[userId]->schema} :: Parameter structure changed in AsyncAPI 3.0 - use direct properties instead of schema.

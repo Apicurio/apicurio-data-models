@@ -115,6 +115,7 @@ import io.apicurio.datamodels.validation.rules.invalid.value.AaOperationTraitOpe
 import io.apicurio.datamodels.validation.rules.invalid.value.AaOperationTraitSecurityIn24PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaInvalidParameterLocationValueRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaParameterDefaultNotInEnumRule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaParameterStructureChangedIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServersPropertyOnlyIn22PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedForParamRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedRule;
@@ -346,6 +347,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AATRT-003", "Operation Trait Structure in 3.0", "Invalid Property Value", "Operation Trait", new ModelType[] { ModelType.ASYNCAPI30 }, true, "The 'operationId' property is not allowed for operation traits in AsyncAPI 3.0.", AaOperationTraitOperationIdIn2xOnlyRule.class));
         this.rules.add(md("AAPARAM-005", "Parameter Default Not in Enum (AsyncAPI 3.0)", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter default value must be one of the enum values.", AaParameterDefaultNotInEnumRule.class));
         this.rules.add(md("AAPARAM-006", "Invalid Parameter Location Value (AsyncAPI 3.0)", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter location must be a valid runtime expression.", AaInvalidParameterLocationValueRule.class));
+        this.rules.add(md("AAPARAM-007", "Parameter Structure Changed in 3.0", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter structure changed in AsyncAPI 3.0 - use direct properties instead of schema.", AaParameterStructureChangedIn30Rule.class));
         this.rules.add(md("OP-010", "Invalid Operation Scheme", "Invalid Property Value", "Operation", new ModelType[] { ModelType.OPENAPI20 }, true, "Operation scheme \"${'scheme'}\" not allowed.  Must be one of: http, https, ws, wss", OasInvalidOperationSchemeRule.class));
         this.rules.add(md("PAR-007", "Path Parameter Not Found", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path Parameter \"${'name'}\" not found in path template.", OasPathParamNotFoundRule.class));
         this.rules.add(md("PAR-008", "Form Data Parameter Not Allowed", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.OPENAPI20 }, true, "Form Data Parameters are only used in 'application/x-www-form-urlencoded' or 'multipart/form-data' requests.", OasFormDataParamNotAllowedRule.class));
