@@ -51,6 +51,7 @@
 	{ "name": "[AsyncAPI 2.0] Missing Message Payload or Headers", "test": "asyncapi/2.0/missing-message-payload-or-headers.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Message Description", "test": "asyncapi/2.0/invalid-message-description.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Message Content Type", "test": "asyncapi/2.0/invalid-message-content-type.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Message Schema Format", "test": "asyncapi/2.0/invalid-message-schema-format.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },
