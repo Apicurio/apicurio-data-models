@@ -36,6 +36,7 @@
 	{ "name": "[AsyncAPI 3.0] Operation Message in 3.0", "test": "asyncapi/3.0/operation-message-in-30.json" },
 	{ "name": "[AsyncAPI 3.0] Operation Trait OperationId in 2.x Only", "test": "asyncapi/3.0/operation-trait-operationid-in-2x-only.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Reply Channel Reference", "test": "asyncapi/3.0/invalid-reply-channel-reference.json" },
+	{ "name": "[AsyncAPI 3.0] Invalid Reply Message References", "test": "asyncapi/3.0/invalid-reply-message-references.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },
