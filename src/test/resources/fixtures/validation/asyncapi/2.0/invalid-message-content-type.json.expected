@@ -1,0 +1,1 @@
+[AAM-003] |high| {/channels[user~1signup]/publish/message} :: Message content type must be a valid MIME type.
