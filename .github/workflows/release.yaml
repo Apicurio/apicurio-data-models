@@ -51,6 +51,10 @@ jobs:
           node-version: 20
 
 
+      - name: Update npm
+        run: npm install -g npm@latest
+
+
       - name: Check Node Version
         run: node --version
 
