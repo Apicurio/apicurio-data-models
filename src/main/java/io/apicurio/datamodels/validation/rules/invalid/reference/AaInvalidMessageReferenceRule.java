@@ -16,18 +16,9 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import java.util.List;
-
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Operation;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Operation;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Operation;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Operation;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Operation;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Operation;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Operation;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
 import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
 import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Reference;
 import io.apicurio.datamodels.refs.ReferenceUtil;
@@ -35,9 +26,13 @@ import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
+import java.util.List;
+
 /**
- * Implements the Invalid Message Reference rule for AsyncAPI.
- * Validates message references in both 2.x (message property) and 3.0 (messages array).
+ * Implements the Invalid Message Reference rule for AsyncAPI (AAO-008).
+ * Validates that when a Message object has a $ref property, it points to a valid message in components.
+ * This applies to both AsyncAPI 2.x and 3.0.
+ *
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidMessageReferenceRule extends ValidationRule {
@@ -51,58 +46,33 @@ public class AaInvalidMessageReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitOperation(io.apicurio.datamodels.models.Operation)
+     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitMessage(io.apicurio.datamodels.models.asyncapi.AsyncApiMessage)
      */
     @Override
-    public void visitOperation(Operation node) {
-        // AsyncAPI 2.x: single message property
-        if (ModelTypeUtil.isAsyncApi2Model(node)) {
-            AsyncApiMessage message = getMessage2x(node);
-            if (hasValue(message) && message instanceof Referenceable) {
-                String ref = ((Referenceable) message).get$ref();
-                if (hasValue(ref)) {
-                    this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, message), node, "message", map());
-                }
+    public void visitMessage(AsyncApiMessage node) {
+        // Check if this message has a $ref
+        if (node instanceof AsyncApiReferenceable) {
+            String ref = ((AsyncApiReferenceable) node).get$ref();
+            if (hasValue(ref)) {
+                this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
             }
         }
+    }
 
-        // AsyncAPI 3.0: messages array
+    @Override
+    public void visitOperation(Operation node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
             AsyncApi30Operation op = (AsyncApi30Operation) node;
             List<AsyncApi30Reference> messages = op.getMessages();
             if (hasValue(messages)) {
-                for (AsyncApi30Reference messageRef : messages) {
-                    if (hasValue(messageRef)) {
-                        String ref = messageRef.get$ref();
-                        if (hasValue(ref)) {
-                            this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, messageRef), node, "messages", map());
-                        }
+                for (int i = 0; i < messages.size(); i++) {
+                    AsyncApi30Reference message = messages.get(i);
+                    String ref = message.get$ref();
+                    if (hasValue(ref)) {
+                        this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, message), message, "$ref", map());
                     }
                 }
             }
         }
     }
-
-    /**
-     * Gets the message from an AsyncAPI 2.x operation.
-     */
-    private AsyncApiMessage getMessage2x(Operation node) {
-        if (node instanceof AsyncApi20Operation) {
-            return ((AsyncApi20Operation) node).getMessage();
-        } else if (node instanceof AsyncApi21Operation) {
-            return ((AsyncApi21Operation) node).getMessage();
-        } else if (node instanceof AsyncApi22Operation) {
-            return ((AsyncApi22Operation) node).getMessage();
-        } else if (node instanceof AsyncApi23Operation) {
-            return ((AsyncApi23Operation) node).getMessage();
-        } else if (node instanceof AsyncApi24Operation) {
-            return ((AsyncApi24Operation) node).getMessage();
-        } else if (node instanceof AsyncApi25Operation) {
-            return ((AsyncApi25Operation) node).getMessage();
-        } else if (node instanceof AsyncApi26Operation) {
-            return ((AsyncApi26Operation) node).getMessage();
-        }
-        return null;
-    }
-
 }

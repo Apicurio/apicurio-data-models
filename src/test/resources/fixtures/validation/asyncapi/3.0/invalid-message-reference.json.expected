@@ -1,1 +1,1 @@
-[AAO-008] |medium| {/operations[sendUserSignup]->messages} :: Message references must point to valid messages.
+[AAO-008] |medium| {/operations[sendUserSignup]/messages[0]->$ref} :: Message references must point to valid messages.
