@@ -60,6 +60,7 @@
 	{ "name": "[AsyncAPI 2.0] Message OneOf Mutually Exclusive", "test": "asyncapi/2.0/message-oneof-mutually-exclusive.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Correlation ID Reference", "test": "asyncapi/2.0/invalid-correlation-id-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Server Reference", "test": "asyncapi/2.0/invalid-server-reference.json" },
+	{ "name": "[AsyncAPI 2.0] Server Referenceable Only in 2.3+", "test": "asyncapi/2.0/server-referenceable-only-in-23-plus.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },
