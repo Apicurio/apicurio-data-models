@@ -1,0 +1,1 @@
+[SVAR-004] |medium| {/servers[production]/variables[environment]->default} :: Server variable default value must be one of the enum values.
