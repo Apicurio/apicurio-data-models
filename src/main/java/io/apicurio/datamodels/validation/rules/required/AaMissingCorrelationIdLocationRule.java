@@ -22,9 +22,9 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 /**
  * @author cfoskin@redhat.com
  */
-public class AaMissingCorrelationIdRule extends RequiredPropertyValidationRule {
+public class AaMissingCorrelationIdLocationRule extends RequiredPropertyValidationRule {
 
-    public AaMissingCorrelationIdRule(ValidationRuleMetaData ruleInfo) {
+    public AaMissingCorrelationIdLocationRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
@@ -33,7 +33,7 @@ public class AaMissingCorrelationIdRule extends RequiredPropertyValidationRule {
      */
     @Override
     public void visitCorrelationID(AsyncApiCorrelationID node) {
-        this.requireProperty(node, "correlationId", map());
+        this.requireProperty(node, "location", map());
     }
 
 }
