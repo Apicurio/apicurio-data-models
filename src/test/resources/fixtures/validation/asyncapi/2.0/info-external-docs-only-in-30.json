@@ -1,0 +1,12 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0",
+    "externalDocs": {
+      "url": "https://example.com/docs",
+      "description": "API Documentation"
+    }
+  },
+  "channels": {}
+}
