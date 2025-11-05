@@ -10,6 +10,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid Document ID Format", "test": "asyncapi/2.0/invalid-document-id-format.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Default Content Type", "test": "asyncapi/2.0/invalid-default-content-type.json" },
 	{ "name": "[AsyncAPI 2.0] Operations Only in 3.0", "test": "asyncapi/2.0/operations-only-in-30.json" },
+	{ "name": "[AsyncAPI 2.0] Info Tags Only in 3.0", "test": "asyncapi/2.0/info-tags-only-in-30.json" },
 	{ "name": "[AsyncAPI 2.0] Duplicate Operation ID", "test": "asyncapi/2.0/duplicate-operation-id.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Operation Trait Reference", "test": "asyncapi/2.0/invalid-operation-trait-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Message Reference", "test": "asyncapi/2.0/invalid-message-reference.json" },
