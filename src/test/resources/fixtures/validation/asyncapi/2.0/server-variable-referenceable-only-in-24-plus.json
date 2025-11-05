@@ -1,0 +1,19 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "production": {
+      "url": "https://{environment}.example.com",
+      "protocol": "https",
+      "variables": {
+        "environment": {
+          "$ref": "#/components/serverVariables/envVar"
+        }
+      }
+    }
+  },
+  "channels": {}
+}

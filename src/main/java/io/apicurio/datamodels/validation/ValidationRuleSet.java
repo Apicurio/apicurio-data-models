@@ -134,6 +134,7 @@ import io.apicurio.datamodels.validation.rules.invalid.value.AaServerReferenceab
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerStructureChangedIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerTagsOnlyIn25PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerVariableDefaultNotInEnumRule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaServerVariableReferenceableOnlyIn24PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServersPropertyOnlyIn22PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedForParamRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedRule;
@@ -378,6 +379,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SRV-010", "Server Tags Only in 2.5+", "Invalid Property Value", "Server", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24 }, true, "Server tags are only allowed in AsyncAPI 2.5 and later.", AaServerTagsOnlyIn25PlusRule.class));
         this.rules.add(md("SRV-012", "Server Structure Changed in 3.0", "Invalid Property Value", "Server", new ModelType[] { ModelType.ASYNCAPI30 }, true, "In AsyncAPI 3.0, use 'host', 'pathname', and 'protocol' instead of 'url'.", AaServerStructureChangedIn30Rule.class));
         this.rules.add(md("SVAR-004", "Server Variable Default Not in Enum", "Invalid Property Value", "Server Variable", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Server variable default value must be one of the enum values.", AaServerVariableDefaultNotInEnumRule.class));
+        this.rules.add(md("SVAR-006", "Server Variable Referenceable Only in 2.4+", "Invalid Property Value", "Server Variable", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23 }, true, "Server variable $ref is only allowed in AsyncAPI 2.4 and later.", AaServerVariableReferenceableOnlyIn24PlusRule.class));
         this.rules.add(md("AAPARAM-005", "Parameter Default Not in Enum (AsyncAPI 3.0)", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter default value must be one of the enum values.", AaParameterDefaultNotInEnumRule.class));
         this.rules.add(md("AAPARAM-006", "Invalid Parameter Location Value (AsyncAPI 3.0)", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter location must be a valid runtime expression.", AaInvalidParameterLocationValueRule.class));
         this.rules.add(md("AAPARAM-007", "Parameter Structure Changed in 3.0", "Invalid Property Value", "Parameter", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Parameter structure changed in AsyncAPI 3.0 - use direct properties instead of schema.", AaParameterStructureChangedIn30Rule.class));
