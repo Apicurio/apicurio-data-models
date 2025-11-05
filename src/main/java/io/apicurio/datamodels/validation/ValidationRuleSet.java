@@ -33,6 +33,7 @@ import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidMessageSc
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidParameterDescriptionRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidReplyAddressLocationRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidServerHostFormatRule;
+import io.apicurio.datamodels.validation.rules.invalid.format.AaInvalidServerPathnameFormatRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidApiDescriptionRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidContactEmailRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.InvalidContactUrlRule;
@@ -331,6 +332,7 @@ public class ValidationRuleSet {
         this.rules.add(md("SRV-003", "Invalid Server Description", "Invalid Property Format", "Server", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31, ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Server Description is an incorrect format.", InvalidServerDescriptionRule.class));
         this.rules.add(md("SRV-002", "Invalid Server URL", "Invalid Property Format", "Server", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31, ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Server URL is an incorrect format.", InvalidServerUrlRule.class));
         this.rules.add(md("SRV-006", "Invalid Server Host Format", "Invalid Property Format", "Server", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Server host must be a valid hostname or IP address.", AaInvalidServerHostFormatRule.class));
+        this.rules.add(md("SRV-007", "Invalid Server Pathname Format", "Invalid Property Format", "Server", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Server pathname must begin with '/'.", AaInvalidServerPathnameFormatRule.class));
         this.rules.add(md("SVAR-002", "Invalid Server Variable Description", "Invalid Property Format", "Server Variable", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Server Variable Description is an incorrect format.", OasInvalidServerVariableDescriptionRule.class));
         /** Invalid Property Name **/
         this.rules.add(md("PATH-006", "Empty Path Segment", "Invalid Property Name", "Path Item", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path template \"${'path'}\" contains one or more empty segment.", OasEmptyPathSegmentRule.class));

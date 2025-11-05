@@ -47,6 +47,7 @@
 	{ "name": "[AsyncAPI 3.0] Parameter Structure Changed in 3.0", "test": "asyncapi/3.0/parameter-structure-changed-in-30.json" },
 	{ "name": "[AsyncAPI 3.0] Missing Server Host", "test": "asyncapi/3.0/missing-server-host.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Server Host Format", "test": "asyncapi/3.0/invalid-server-host-format.json" },
+	{ "name": "[AsyncAPI 3.0] Invalid Server Pathname Format", "test": "asyncapi/3.0/invalid-server-pathname-format.json" },
 
 	{ "name": "[AsyncAPI 2.0] Missing Parameter Location", "test": "asyncapi/2.0/missing-parameter-location.json" },
 	{ "name": "[AsyncAPI 2.0] Missing Parameter Schema", "test": "asyncapi/2.0/missing-parameter-schema.json" },
