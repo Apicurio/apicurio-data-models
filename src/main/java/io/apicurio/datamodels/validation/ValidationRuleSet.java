@@ -176,6 +176,7 @@ import io.apicurio.datamodels.validation.rules.invalid.value.OasUnknownParamType
 import io.apicurio.datamodels.validation.rules.invalid.value.OasUnknownPathParamStyleRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasUnknownQueryParamStyleRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasUnknownSecuritySchemeTypeRule;
+import io.apicurio.datamodels.validation.rules.mutex.AaMessageOneOfMutualExclusivityRule;
 import io.apicurio.datamodels.validation.rules.mutex.OasBodyAndFormDataMutualExclusivityRule;
 import io.apicurio.datamodels.validation.rules.mutex.OasExampleValueMutualExclusivityRule;
 import io.apicurio.datamodels.validation.rules.mutex.OasHeaderExamplesMutualExclusivityRule;
@@ -432,6 +433,7 @@ public class ValidationRuleSet {
         this.rules.add(md("LINK-003", "Invalid Link Operation Reference", "Invalid Reference", "Link", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Link \"Operation Reference\" must refer to a valid Operation Definition.", OasInvalidLinkOperationReferenceRule.class));
         this.rules.add(md("RB-003", "Invalid Request Body Reference", "Invalid Reference", "Request Body", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Request Body Reference must refer to a valid Request Body Definition.", OasInvalidRequestBodyReferenceRule.class));
         /** Mutual Exclusivity **/
+        this.rules.add(md("AAM-009", "Message OneOf and Properties are Mutually Exclusive", "Mutual Exclusivity", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Message \"oneOf\" and \"${'property'}\" are mutually exclusive.", AaMessageOneOfMutualExclusivityRule.class));
         this.rules.add(md("PATH-002", "Body and Form Data Params are Mutually Exclusive", "Mutual Exclusivity", "Operation", new ModelType[] { ModelType.OPENAPI20 }, true, "Operation may not have both Body and Form Data parameters.", OasBodyAndFormDataMutualExclusivityRule.class));
         this.rules.add(md("EX-004", "Example Value and External Value are Mutually Exclusive", "Mutual Exclusivity", "Example", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Example \"Value\" and \"External Value\" are mutually exclusive.", OasExampleValueMutualExclusivityRule.class));
         this.rules.add(md("HEAD-013", "Header Example and Examples are Mutually Exclusive", "Mutual Exclusivity", "Header", new ModelType[] { ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Header \"Example\" and \"Examples\" are mutually exclusive.", OasHeaderExamplesMutualExclusivityRule.class));
