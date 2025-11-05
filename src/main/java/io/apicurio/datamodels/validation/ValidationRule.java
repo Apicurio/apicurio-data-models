@@ -24,6 +24,7 @@ import java.util.Map;
 
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.openapi.OpenApiEncoding;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
@@ -249,6 +250,20 @@ public abstract class ValidationRule extends AllNodeVisitor implements Visitor, 
      */
     protected boolean hasValue(Object propertyValue) {
         return isDefined(propertyValue);
+    }
+
+    /**
+     * Check if the given node is Referenceable *and* has a value set for "$ref".
+     * @param node
+     */
+    protected boolean hasRef(Node node) {
+        if (node instanceof Referenceable) {
+            Referenceable ref = (Referenceable) node;
+            if (hasValue(ref.get$ref())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

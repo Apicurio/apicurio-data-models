@@ -14,38 +14,39 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.validation.rules.required;
+package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
-import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
+import io.apicurio.datamodels.refs.ReferenceUtil;
+import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: SRV-005
- * Validates that a Server has a 'host' property in AsyncAPI 3.0.
- * In AsyncAPI 3.0, the 'host' property replaces the 'url' property used in 2.x.
+ * Rule: SRV-008
+ * Validates that a Server's $ref property points to a valid server definition in components.
+ * Servers became referenceable in AsyncAPI 2.3, so this applies to 2.3-2.6 and 3.0.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaMissingServerHostRule extends RequiredPropertyValidationRule {
+public class AaInvalidServerReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      *
      * @param ruleInfo
      */
-    public AaMissingServerHostRule(ValidationRuleMetaData ruleInfo) {
+    public AaInvalidServerReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
     public void visitServer(Server node) {
-        if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            if (hasValue(((AsyncApi30Server) node).get$ref())) {
-                return;
+        if (node instanceof AsyncApiReferenceable) {
+            String ref = ((AsyncApiReferenceable) node).get$ref();
+            if (hasValue(ref)) {
+                this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
             }
-            this.requireProperty(node, "host", map());
         }
     }
 

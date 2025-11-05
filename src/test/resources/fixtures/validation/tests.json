@@ -48,6 +48,7 @@
 	{ "name": "[AsyncAPI 3.0] Missing Server Host", "test": "asyncapi/3.0/missing-server-host.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Server Host Format", "test": "asyncapi/3.0/invalid-server-host-format.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Server Pathname Format", "test": "asyncapi/3.0/invalid-server-pathname-format.json" },
+	{ "name": "[AsyncAPI 3.0] Invalid Server Reference", "test": "asyncapi/3.0/invalid-server-reference.json" },
 
 	{ "name": "[AsyncAPI 2.0] Missing Parameter Location", "test": "asyncapi/2.0/missing-parameter-location.json" },
 	{ "name": "[AsyncAPI 2.0] Missing Parameter Schema", "test": "asyncapi/2.0/missing-parameter-schema.json" },
@@ -58,6 +59,7 @@
 	{ "name": "[AsyncAPI 2.0] Invalid Message Trait Reference", "test": "asyncapi/2.0/invalid-message-trait-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Message OneOf Mutually Exclusive", "test": "asyncapi/2.0/message-oneof-mutually-exclusive.json" },
 	{ "name": "[AsyncAPI 2.0] Invalid Correlation ID Reference", "test": "asyncapi/2.0/invalid-correlation-id-reference.json" },
+	{ "name": "[AsyncAPI 2.0] Invalid Server Reference", "test": "asyncapi/2.0/invalid-server-reference.json" },
 
 	{ "name": "[OpenAPI 2.0] Document [Invalid Property Format]", "test": "openapi/2.0/document-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Document [Required Properties]", "test": "openapi/2.0/document-required-properties.json" },

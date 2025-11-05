@@ -96,6 +96,7 @@ import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidReplyC
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidReplyMessageReferencesRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidReplyReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidServerReferenceInChannelRule;
+import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidServerReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidCallbackReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidExampleReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.OasInvalidHeaderReferenceRule;
@@ -421,6 +422,7 @@ public class ValidationRuleSet {
         /** Invalid Reference **/
         this.rules.add(md("CHAN-003", "Invalid Channel Reference", "Invalid Reference", "Channel", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Channel Reference must refer to a valid Channel definition.", AaInvalidChannelReferenceRule.class));
         this.rules.add(md("CHAN-004", "Invalid Server Reference in Channel", "Invalid Reference", "Channel", new ModelType[] { ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Server reference '${'server'}' must point to a valid Server.", AaInvalidServerReferenceInChannelRule.class));
+        this.rules.add(md("SRV-008", "Invalid Server Reference", "Invalid Reference", "Server", new ModelType[] { ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Server Reference must refer to a valid Server definition.", AaInvalidServerReferenceRule.class));
         this.rules.add(md("AAO-006", "Invalid Operation Trait Reference", "Invalid Reference", "Operation Trait", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Operation trait reference must point to a valid operation trait definition.", AaInvalidOperationTraitReferenceRule.class));
         this.rules.add(md("AAO-007", "Invalid Operation Channel Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Operation channel reference must point to valid channel.", AaInvalidOperationChannelReferenceRule.class));
         this.rules.add(md("AAO-008", "Invalid Message Reference", "Invalid Reference", "Operation", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Message references must point to valid messages.", AaInvalidMessageReferenceRule.class));
