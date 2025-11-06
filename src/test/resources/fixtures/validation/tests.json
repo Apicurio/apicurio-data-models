@@ -66,6 +66,7 @@
 	{ "name": "[AsyncAPI 2.0] Server Tags Only in 2.5+", "test": "asyncapi/2.0/server-tags-only-in-25-plus.json" },
 	{ "name": "[AsyncAPI 3.0] Server Structure Changed in 3.0", "test": "asyncapi/3.0/server-structure-changed-in-30.json" },
 	{ "name": "[AsyncAPI 3.0] Invalid Tag Reference", "test": "asyncapi/3.0/invalid-tag-reference.json" },
+	{ "name": "[AsyncAPI 3.0] Message No MessageId in 3.0", "test": "asyncapi/3.0/message-no-messageid-in-30.json" },
 	{ "name": "[AsyncAPI 2.4] Invalid Server Variable Reference", "test": "asyncapi/2.4/invalid-server-variable-reference.json" },
 	{ "name": "[AsyncAPI 2.0] Server Variable Referenceable Only in 2.4+", "test": "asyncapi/2.0/server-variable-referenceable-only-in-24-plus.json" },
 	{ "name": "[AsyncAPI 2.0] Message Trait MessageId in 2.4-2.6", "test": "asyncapi/2.0/message-trait-messageid-in-24-26.json" },
