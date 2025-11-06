@@ -1,0 +1,19 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "test": {
+      "publish": {
+        "message": {
+          "messageId": "testMessage",
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}
