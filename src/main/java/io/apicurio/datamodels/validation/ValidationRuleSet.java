@@ -137,6 +137,7 @@ import io.apicurio.datamodels.validation.rules.invalid.value.AaServerVariableDef
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerVariableReferenceableOnlyIn24PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServersPropertyOnlyIn22PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaMessageTraitMessageIdIn24To26Rule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaMessageTraitNoMessageIdIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaMessageMessageIdIn24To26Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaMessageNoMessageIdIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.OasAllowReservedNotAllowedForParamRule;
@@ -467,6 +468,7 @@ public class ValidationRuleSet {
         /** Mutual Exclusivity **/
         this.rules.add(md("AAM-009", "Message OneOf and Properties are Mutually Exclusive", "Mutual Exclusivity", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26 }, true, "Message \"oneOf\" and \"${'property'}\" are mutually exclusive.", AaMessageOneOfMutualExclusivityRule.class));
         this.rules.add(md("AAMTRT-002", "Message Trait MessageId in 2.4-2.6", "Invalid Property Value", "Message Trait", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23 }, true, "The 'messageId' property is only allowed for message traits in AsyncAPI 2.4-2.6.", AaMessageTraitMessageIdIn24To26Rule.class));
+        this.rules.add(md("AAMTRT-004", "Message Trait No MessageId in 3.0", "Invalid Property Value", "Message Trait", new ModelType[] { ModelType.ASYNCAPI30 }, true, "The 'messageId' property is not allowed for message traits in AsyncAPI 3.0.", AaMessageTraitNoMessageIdIn30Rule.class));
         this.rules.add(md("AAM-014", "Message MessageId Only in 2.4-2.6", "Invalid Property Value", "Message", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23 }, true, "The 'messageId' property is only allowed for messages in AsyncAPI 2.4-2.6.", AaMessageMessageIdIn24To26Rule.class));
         this.rules.add(md("AAM-013", "Message No MessageId in 3.0", "Invalid Property Value", "Message", new ModelType[] { ModelType.ASYNCAPI30 }, true, "The 'messageId' property is not allowed for messages in AsyncAPI 3.0.", AaMessageNoMessageIdIn30Rule.class));
         this.rules.add(md("PATH-002", "Body and Form Data Params are Mutually Exclusive", "Mutual Exclusivity", "Operation", new ModelType[] { ModelType.OPENAPI20 }, true, "Operation may not have both Body and Form Data parameters.", OasBodyAndFormDataMutualExclusivityRule.class));

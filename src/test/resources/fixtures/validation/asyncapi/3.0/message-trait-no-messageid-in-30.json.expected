@@ -1,0 +1,1 @@
+[AAMTRT-004] |medium| {/channels[test]/messages[testMessage]/traits[0]->messageId} :: The 'messageId' property is not allowed for message traits in AsyncAPI 3.0.
