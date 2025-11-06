@@ -1,0 +1,1 @@
+[AASS-001] |medium| {/components/securitySchemes[oauth2]->$ref} :: Security scheme $ref must point to valid security scheme in components.

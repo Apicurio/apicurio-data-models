@@ -1,0 +1,25 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "test": {
+      "subscribe": {
+        "message": {
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "$ref": "#/components/securitySchemes/nonExistentScheme"
+      }
+    }
+  }
+}
