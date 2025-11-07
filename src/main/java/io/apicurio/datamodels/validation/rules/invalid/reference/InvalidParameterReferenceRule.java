@@ -17,35 +17,45 @@
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Reference rule for AsyncAPI.
+ * Implements the Invalid Parameter Reference Rule.
+ * Validates that parameter $ref properties point to valid parameter definitions.
+ * This rule applies to both OpenAPI and AsyncAPI specifications.
+ *
+ * Rule Codes:
+ * - PAR-018: OpenAPI 2.0, 3.0, 3.1
+ *
  * @author eric.wittmann@gmail.com
  */
-public class AaInvalidParameterReferenceRule extends ValidationRule {
+public class InvalidParameterReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaInvalidParameterReferenceRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidParameterReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitParameter(io.apicurio.datamodels.models.Parameter)
-     */
     @Override
     public void visitParameter(Parameter node) {
+        String ref = null;
+
+        // Handle both OpenAPI (Referenceable) and AsyncAPI (AsyncApiReferenceable)
         if (node instanceof AsyncApiReferenceable) {
-            String ref = ((AsyncApiReferenceable) node).get$ref();
-            if (hasValue(ref)) {
-                this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
-            }
+            ref = ((AsyncApiReferenceable) node).get$ref();
+        } else if (node instanceof Referenceable) {
+            ref = ((Referenceable) node).get$ref();
+        }
+
+        if (hasValue(ref)) {
+            this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
         }
     }
 
