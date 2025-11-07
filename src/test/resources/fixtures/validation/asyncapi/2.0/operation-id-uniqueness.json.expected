@@ -1,1 +1,2 @@
-[AAO-005] |medium| {/channels[user/login]/publish->operationId} :: Duplicate operationId 'userSignup' found (operation IDs must be unique across all operations in the document).
+[OP-003] |medium| {/channels[user/login]/publish->operationId} :: Duplicate operationId 'userSignup' found (operation IDs must be unique across all operations in the API).
+[OP-003] |medium| {/channels[user/signup]/subscribe->operationId} :: Duplicate operationId 'userSignup' found (operation IDs must be unique across all operations in the API).

@@ -30,6 +30,7 @@ import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Operation;
 import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Operation;
 import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Operation;
 import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Operation;
+import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
 import io.apicurio.datamodels.models.openapi.OpenApiOperation;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
