@@ -21,23 +21,26 @@ import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Description rule for AsyncAPI.
+ * Implements the Invalid Parameter Description Rule.
  * Validates that parameter descriptions are valid GitHub-flavored markdown.
+ * This rule applies to both OpenAPI and AsyncAPI specifications.
+ *
+ * Rule Codes:
+ * - PAR-010: OpenAPI 2.0, 3.0, 3.1
+ * - AAPARAM-003: AsyncAPI 2.0-2.6, 3.0
+ *
  * @author eric.wittmann@gmail.com
  */
-public class AaInvalidParameterDescriptionRule extends ValidationRule {
+public class InvalidParameterDescriptionRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaInvalidParameterDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidParameterDescriptionRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitParameter(io.apicurio.datamodels.models.Parameter)
-     */
     @Override
     public void visitParameter(Parameter node) {
         if (hasValue(node.getDescription())) {
