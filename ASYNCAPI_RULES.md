@@ -199,13 +199,13 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description                                                            | Versions | Spec Mandated | Status |
 |-----------|------|----------|------------------------------------------------------------------------|----------|---------------|--------|
-| SVAR-005 | Invalid Server Variable Reference | `$ref` | Server variable $ref must point to valid server variable in components | 2.4-2.6, 3.0 | Yes | ○ |
+| SVAR-005 | Invalid Server Variable Reference | `$ref` | Server variable $ref must point to valid server variable in components | 2.4-2.6, 3.0 | Yes | ✓ |
 
 ### Version-Specific Rules
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| SVAR-006 | Server Variable Referenceable Only in 2.4+ | `$ref` | ServerVariable gained Referenceable trait starting in 2.4 | 2.4-2.6, 3.0 | Yes | ○ |
+| SVAR-006 | Server Variable Referenceable Only in 2.4+ | `$ref` | ServerVariable gained Referenceable trait starting in 2.4 | 2.4-2.6, 3.0 | Yes | ✓ |
 
 ---
 
@@ -415,7 +415,8 @@ package to provide complete validation coverage for AsyncAPI documents.
 | AAM-010 | Message ID Added in 2.4 | `messageId` | Message gained messageId property in 2.4 | 2.4-2.6 | Yes | ○ |
 | AAM-011 | Message Examples Type Changed in 2.2 | `examples` | Examples changed from `{any}` to MessageExample type | 2.2-2.6, 3.0 | Yes | ○ |
 | AAM-012 | Message Structure in 3.0 | `payload`, `headers` | In 3.0, payload/headers can be MultiFormatSchema or Schema | 3.0 | Yes | ○ |
-| AAM-013 | Message No MessageId in 3.0 | `messageId` | In 3.0, message no longer has messageId property | 3.0 | Yes | ○ |
+| AAM-013 | Message No MessageId in 3.0 | `messageId` | In 3.0, message no longer has messageId property | 3.0 | Yes | ✓ |
+| AAM-014 | Message MessageId Only in 2.4-2.6 | `messageId` | Message messageId property only allowed in 2.4-2.6, not in 2.0-2.3 | 2.0-2.3 | Yes | ✓ |
 
 ---
 
@@ -431,8 +432,9 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AAMTRT-002 | Message Trait MessageId in 2.4-2.6 | `messageId` | Message trait gained messageId in 2.4, lost it in 3.0 | 2.4-2.6 | Yes | ○ |
+| AAMTRT-002 | Message Trait MessageId in 2.4-2.6 | `messageId` | Message trait messageId only allowed in 2.4-2.6, not in 2.0-2.3 | 2.0-2.3 | Yes | ✓ |
 | AAMTRT-003 | Message Trait Examples Type Changed | `examples` | Examples changed from `{any}` to MessageExample type | 2.2-2.6, 3.0 | Yes | ○ |
+| AAMTRT-004 | Message Trait No MessageId in 3.0 | `messageId` | In 3.0, message trait no longer has messageId property | 3.0 | Yes | ✓ |
 
 ---
 
@@ -471,7 +473,7 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AATAG-001 | Invalid Tag Reference | `$ref` | Tag $ref must point to valid tag in components | 3.0 | Yes | ○ |
+| AATAG-001 | Invalid Tag Reference | `$ref` | Tag $ref must point to valid tag in components | 3.0 | Yes | ✓ |
 
 ### Version-Specific Rules
 
@@ -500,7 +502,7 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AAED-002 | Invalid External Documentation Reference | `$ref` | External docs $ref must point to valid external docs in components | 3.0 | Yes | ○ |
+| AAED-002 | Invalid External Documentation Reference | `$ref` | External docs $ref must point to valid external docs in components | 3.0 | Yes | ✓ |
 
 ### Version-Specific Rules
 
@@ -603,13 +605,13 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AASS-001 | Invalid Security Scheme Reference | `$ref` | Security scheme $ref must point to valid security scheme in components | All | Yes | ○ |
+| AASS-001 | Invalid Security Scheme Reference | `$ref` | Security scheme $ref must point to valid security scheme in components | All | Yes | ✓ |
 
 ### Version-Specific Rules
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AASS-002 | Security Scheme Scopes in 3.0 | `scopes` | Security scheme gained scopes property in 3.0 | 3.0 | Yes | ○ |
+| AASS-002 | Security Scheme Scopes in 3.0 | `scopes` | Security scheme gained scopes property in 3.0 | 3.0 | Yes | ✓ |
 
 ---
 
@@ -635,7 +637,7 @@ package to provide complete validation coverage for AsyncAPI documents.
 
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
-| AAFLOW-001 | OAuth Flow Scopes vs Available Scopes | `scopes` vs `availableScopes` | OAuth flow changed from 'scopes' to 'availableScopes' in 3.0 | All | Yes | ○ |
+| AAFLOW-001 | OAuth Flow Scopes vs Available Scopes | `scopes` vs `availableScopes` | OAuth flow changed from 'scopes' to 'availableScopes' in 3.0 | All | Yes | ✓ |
 
 ---
 
