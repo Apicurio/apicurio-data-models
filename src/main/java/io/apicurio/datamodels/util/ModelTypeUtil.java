@@ -33,9 +33,8 @@ public class ModelTypeUtil {
                 return "3.0.3";
             case OPENAPI31:
                 return "3.1.0";
-            default:
-                return null;
         }
+        return "unknown";
     }
 
     public static boolean isOpenApiModel(Node node) {

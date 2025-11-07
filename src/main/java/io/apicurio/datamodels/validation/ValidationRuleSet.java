@@ -132,6 +132,7 @@ import io.apicurio.datamodels.validation.rules.invalid.value.AaOperationTraitSec
 import io.apicurio.datamodels.validation.rules.invalid.value.AaInvalidParameterLocationValueRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaParameterDefaultNotInEnumRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaParameterStructureChangedIn30Rule;
+import io.apicurio.datamodels.validation.rules.invalid.value.AaSecuritySchemeScopesOnlyIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerReferenceableOnlyIn23PlusRule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerStructureChangedIn30Rule;
 import io.apicurio.datamodels.validation.rules.invalid.value.AaServerTagsOnlyIn25PlusRule;
@@ -457,6 +458,7 @@ public class ValidationRuleSet {
         this.rules.add(md("AATAG-001", "Invalid Tag Reference", "Invalid Reference", "Tag", new ModelType[] { ModelType.ASYNCAPI30 }, true, "Tag reference must point to a valid tag in components.", AaInvalidTagReferenceRule.class));
         this.rules.add(md("AAED-002", "Invalid External Documentation Reference", "Invalid Reference", "External Documentation", new ModelType[] { ModelType.ASYNCAPI30 }, true, "External docs $ref must point to valid external docs in components.", AaInvalidExternalDocsReferenceRule.class));
         this.rules.add(md("AASS-001", "Invalid Security Scheme Reference (AsyncAPI)", "Invalid Reference", "Security Scheme", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "Security scheme $ref must point to valid security scheme in components.", AaInvalidSecuritySchemeReferenceRule.class));
+        this.rules.add(md("AASS-002", "Security Scheme Scopes Only in 3.0", "Invalid Property Value", "Security Scheme", new ModelType[] { ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30 }, true, "The 'scopes' property is only allowed in security schemes in AsyncAPI 3.0, not in version '${'version'}'.", AaSecuritySchemeScopesOnlyIn30Rule.class));
         this.rules.add(md("PAR-018", "Invalid Parameter Reference", "Invalid Reference", "Parameter", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Parameter Reference must refer to a valid Parameter Definition.", OasInvalidParameterReferenceRule.class));
         this.rules.add(md("PATH-001", "Invalid Path Item Reference", "Invalid Reference", "Path Item", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Path Item Reference must refer to a valid Path Item Definition.", OasInvalidPathItemReferenceRule.class));
         this.rules.add(md("RES-002", "Invalid Response Reference", "Invalid Reference", "Response", new ModelType[] { ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31 }, true, "Response Reference must refer to a valid Response Definition.", OasInvalidResponseReferenceRule.class));
