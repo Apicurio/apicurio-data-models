@@ -19,31 +19,41 @@ package io.apicurio.datamodels.validation.rules.invalid.reference;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
 import io.apicurio.datamodels.refs.ReferenceUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Security Scheme Reference rule.
+ * Implements the Invalid Security Scheme Reference Rule.
+ * Validates that security scheme $ref properties point to valid security scheme definitions.
+ * This rule applies to both OpenAPI and AsyncAPI specifications.
+ *
+ * Rule Codes:
+ * - SS-018: OpenAPI 3.0, 3.1
+ * - AASS-001: AsyncAPI 2.0-2.6, 3.0
+ *
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecuritySchemeReferenceRule extends ValidationRule {
+public class InvalidSecuritySchemeReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidSecuritySchemeReferenceRule(ValidationRuleMetaData ruleInfo) {
+    public InvalidSecuritySchemeReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        if (node.root().modelType() == ModelType.OPENAPI30 || node.root().modelType() == ModelType.OPENAPI31) {
+        if (node instanceof Referenceable) {
             String ref = ((Referenceable) node).get$ref();
             if (hasValue(ref)) {
                 this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
             }
         }
+
     }
 }
