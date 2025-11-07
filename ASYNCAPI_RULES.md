@@ -270,7 +270,7 @@ package to provide complete validation coverage for AsyncAPI documents.
 | Rule Code | Name | Property | Description | Versions | Spec Mandated | Status |
 |-----------|------|----------|-------------|----------|---------------|--------|
 | AAO-004 | Invalid Operation Action Value | `action` | Operation action must be one of: "send", "receive" | 3.0 | Yes | ○ |
-| AAO-005 | Operation ID Uniqueness Across Document | `operationId` | Operation IDs must be unique across all operations | All | Yes | ○ |
+| AAO-005 | Operation ID Uniqueness Across Document | `operationId` | Operation IDs must be unique across all operations | All | Yes | ✓ |
 
 ### Invalid Reference Rules
 

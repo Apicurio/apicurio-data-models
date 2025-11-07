@@ -1,0 +1,1 @@
+[AAO-005] |medium| {/channels[user/login]/publish->operationId} :: Duplicate operationId 'userSignup' found (operation IDs must be unique across all operations in the document).

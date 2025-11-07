@@ -1,0 +1,1 @@
+[AAO-005] |medium| {/operations[login]->operationId} :: Duplicate operationId 'handleUserSignup' found (operation IDs must be unique across all operations in the document).
