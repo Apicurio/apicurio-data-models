@@ -25,6 +25,7 @@ import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -47,10 +48,15 @@ public class OasSecurityRequirementScopesMustBeEmptyRule extends AbstractInvalid
             if (hasValue(doc20.getSecurityDefinitions())) {
                 return doc20.getSecurityDefinitions().getItem(schemeName);
             }
-        } else {
+        } else if (document.root().modelType() == ModelType.OPENAPI30) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (hasValue(doc30.getComponents()) && hasValue(doc30.getComponents().getSecuritySchemes())) {
                 return doc30.getComponents().getSecuritySchemes().get(schemeName);
+            }
+        } else if (document.root().modelType() == ModelType.OPENAPI31) {
+            OpenApi31Document doc31 = (OpenApi31Document) document;
+            if (hasValue(doc31.getComponents()) && hasValue(doc31.getComponents().getSecuritySchemes())) {
+                return doc31.getComponents().getSecuritySchemes().get(schemeName);
             }
         }
 
@@ -62,7 +68,7 @@ public class OasSecurityRequirementScopesMustBeEmptyRule extends AbstractInvalid
         List<String> allowedTypes = new ArrayList<>();
         allowedTypes.add("oauth2");
         String options = "\"oauth2\"";
-        if (node.root().modelType() == ModelType.OPENAPI30) {
+        if (node.root().modelType() == ModelType.OPENAPI30 || node.root().modelType() == ModelType.OPENAPI31) {
             allowedTypes.add("openIdConnect");
             options = "\"oauth2\" or \"openIdConnect\"";
         }

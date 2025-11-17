@@ -42,6 +42,7 @@
 
     { "name": "[OpenAPI 3.1] Multi-typed Schema", "test": "openapi/3.1/multiple-schema-types.json" },
     { "name": "[OpenAPI 3.1] Issue 6612", "test": "openapi/3.1/issue-6612.json" },
+    { "name": "[OpenAPI 3.1] Security Requirements", "test": "openapi/3.1/security-requirements.json" },
 
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" },
     { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" }
