@@ -626,9 +626,9 @@ public class CreateReadersStage extends AbstractJavaStage {
                         body.append("if (JsonUtil.isObject(value)) {");
                     } else {
                         body.addContext("rulePropertyName", unionRule.getPropertyName());
-                        if (unionRule.getRuleType() == UnionRuleType.propertyExists) {
+                        if (unionRule.getRuleType() == UnionRuleType.PROPERTYEXISTS) {
                             body.append("if (JsonUtil.isObjectWithProperty(value, \"${rulePropertyName}\")) {");
-                        } else if (unionRule.getRuleType() == UnionRuleType.propertyValue) {
+                        } else if (unionRule.getRuleType() == UnionRuleType.PROPERTYVALUE) {
                             body.addContext("rulePropertyValue", unionRule.getPropertyValue());
                             body.append("if (JsonUtil.isObjectWithPropertyValue(value, \"${rulePropertyName}\", \"${rulePropertyValue}\")) {");
                         } else {

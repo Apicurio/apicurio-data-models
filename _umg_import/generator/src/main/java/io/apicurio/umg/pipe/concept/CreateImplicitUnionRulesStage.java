@@ -124,9 +124,9 @@ public class CreateImplicitUnionRulesStage extends AbstractStage {
             rule.setUnionType(entityName);
             rule.setPropertyName(discriminatorPropertyName);
             if ("*".equals(discriminatorPropertyValue)) {
-                rule.setRuleType(UnionRuleType.propertyExists);
+                rule.setRuleType(UnionRuleType.PROPERTYEXISTS);
             } else {
-                rule.setRuleType(UnionRuleType.propertyValue);
+                rule.setRuleType(UnionRuleType.PROPERTYVALUE);
                 rule.setPropertyValue(discriminatorPropertyValue);
             }
             return rule;
@@ -140,7 +140,7 @@ public class CreateImplicitUnionRulesStage extends AbstractStage {
             UnionRule rule = new UnionRule();
             rule.setUnionType(entityName);
             rule.setPropertyName(singleProperty.getName());
-            rule.setRuleType(UnionRuleType.propertyExists);
+            rule.setRuleType(UnionRuleType.PROPERTYEXISTS);
             return rule;
         }
 
