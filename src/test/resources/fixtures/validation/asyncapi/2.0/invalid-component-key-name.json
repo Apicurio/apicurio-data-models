@@ -1,0 +1,63 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "subscribe": {
+        "message": {
+          "$ref": "#/components/messages/ValidMessage"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidSchema": {
+        "type": "object"
+      },
+      "Invalid Schema": {
+        "type": "string"
+      }
+    },
+    "messages": {
+      "ValidMessage": {
+        "payload": {
+          "type": "object"
+        }
+      },
+      "Invalid:Message": {
+        "payload": {
+          "type": "string"
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "user"
+      },
+      "invalid scheme": {
+        "type": "httpApiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  },
+  "x-validation-expected": [
+    {
+      "code": "COMP-001",
+      "path": "#/components/schemas"
+    },
+    {
+      "code": "COMP-001",
+      "path": "#/components/messages"
+    },
+    {
+      "code": "COMP-001",
+      "path": "#/components/securitySchemes"
+    }
+  ]
+}

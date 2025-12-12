@@ -16,24 +16,28 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
-import io.apicurio.datamodels.models.asyncapi.AsyncApiCorrelationID;
+import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * @author cfoskin@redhat.com
+ * Rule: AAD-001
+ * Validates that AsyncAPI documents have the required 'asyncapi' property specifying the version.
+ *
+ * @author eric.wittmann@gmail.com
  */
-public class AaMissingCorrelationIdRule extends RequiredPropertyValidationRule {
+public class AaMissingAsyncApiPropertyRule extends RequiredPropertyValidationRule {
 
-    public AaMissingCorrelationIdRule(ValidationRuleMetaData ruleInfo) {
+    /**
+     * Constructor.
+     * @param ruleInfo
+     */
+    public AaMissingAsyncApiPropertyRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitCorrelationID(io.apicurio.datamodels.models.asyncapi.AsyncApiCorrelationID)
-     */
     @Override
-    public void visitCorrelationID(AsyncApiCorrelationID node) {
-        this.requireProperty(node, "correlationId", map());
+    public void visitDocument(Document node) {
+        this.requireProperty(node, "asyncapi", map());
     }
 
 }

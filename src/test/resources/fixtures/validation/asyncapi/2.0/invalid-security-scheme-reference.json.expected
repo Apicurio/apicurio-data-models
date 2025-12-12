@@ -1,0 +1,1 @@
+[SS-018] |medium| {/components/securitySchemes[oauth2]->$ref} :: Security Scheme Reference must refer to a valid Security Scheme Definition.

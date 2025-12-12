@@ -14,30 +14,35 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.validation.rules.invalid.format;
+package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Description Rule
+ * Rule: CHAN-008
+ * Validates that the 'messages' property only exists in AsyncAPI 3.0 channels.
+ * In AsyncAPI 2.x, channels use subscribe/publish operations instead of messages.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidParameterDescriptionRule extends ValidationRule {
+public class AaChannelMessagesOnlyIn30Rule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidParameterDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public AaChannelMessagesOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitParameter(Parameter node) {
-        if (hasValue(node.getDescription())) {
-            this.reportIfInvalid(isValidGFM(node.getDescription()), node, "description", map());
+    public void visitChannelItem(AsyncApiChannelItem node) {
+        // In AsyncAPI 2.x, channels should not have a messages property
+        // This would appear as an extra property if someone incorrectly added it
+        if (node.getExtraProperty("messages") != null) {
+            this.reportIf(true, node, "messages", map());
         }
     }
 

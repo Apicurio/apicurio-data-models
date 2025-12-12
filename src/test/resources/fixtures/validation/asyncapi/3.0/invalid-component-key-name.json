@@ -1,0 +1,73 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userSignup": {
+      "address": "/user/signup"
+    }
+  },
+  "components": {
+    "schemas": {
+      "Valid_Schema.Name-123": {
+        "type": "object"
+      },
+      "Invalid Schema Name": {
+        "type": "string"
+      },
+      "Invalid@Schema": {
+        "type": "number"
+      }
+    },
+    "messages": {
+      "ValidMessage": {
+        "payload": {
+          "type": "object"
+        }
+      },
+      "Invalid/Message": {
+        "payload": {
+          "type": "string"
+        }
+      }
+    },
+    "parameters": {
+      "Valid.Parameter": {
+        "location": "$message.payload#/userId"
+      },
+      "Invalid Parameter!": {
+        "location": "$message.payload#/userName"
+      }
+    },
+    "securitySchemes": {
+      "ValidSecurityScheme_123": {
+        "type": "apiKey",
+        "in": "user"
+      },
+      "Invalid Security$Scheme": {
+        "type": "apiKey",
+        "in": "user"
+      }
+    }
+  },
+  "x-validation-expected": [
+    {
+      "code": "COMP-001",
+      "path": "#/components/schemas"
+    },
+    {
+      "code": "COMP-001",
+      "path": "#/components/messages"
+    },
+    {
+      "code": "COMP-001",
+      "path": "#/components/parameters"
+    },
+    {
+      "code": "COMP-001",
+      "path": "#/components/securitySchemes"
+    }
+  ]
+}

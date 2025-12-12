@@ -1,0 +1,1 @@
+[AAM-001] |medium| {/channels[user/signup]/publish/message->null} :: Message should have either payload or headers defined.

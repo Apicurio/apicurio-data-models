@@ -1,0 +1,1 @@
+[AAREPLY-003] |medium| {/operations[signupOperation]/reply->$ref} :: Reply $ref must point to valid reply in components.

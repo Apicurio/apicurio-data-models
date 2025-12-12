@@ -1,0 +1,43 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "testChannel": {
+      "address": "test/channel",
+      "messages": {
+        "testMessage": {
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "testOperation": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/testChannel"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://example.com/oauth/authorize",
+            "scopes": {
+              "read:users": "Read users",
+              "write:users": "Write users"
+            }
+          }
+        }
+      }
+    }
+  }
+}

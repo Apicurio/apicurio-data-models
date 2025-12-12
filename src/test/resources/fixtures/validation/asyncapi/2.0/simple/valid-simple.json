@@ -4,5 +4,10 @@
     "title": "AsyncAPI 2.0 App",
     "description": "This is a very simple AsyncAPI file.",
     "version": "1.0.1"
+  },
+  "channels": {
+    "/example": {
+      "description": "Example channel"
+    }
   }
 }

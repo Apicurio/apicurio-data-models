@@ -1,0 +1,1 @@
+[SVAR-006] |medium| {/servers[production]/variables[environment]->$ref} :: Server variable $ref is only allowed in AsyncAPI 2.4 and later.

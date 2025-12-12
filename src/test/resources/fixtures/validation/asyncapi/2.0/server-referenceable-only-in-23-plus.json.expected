@@ -1,0 +1,3 @@
+[SRV-001] |medium| {/servers[production]->url} :: Server is missing a template URL.
+[SRV-004] |medium| {/servers[production]->protocol} :: Server is missing a protocol.
+[SRV-009] |medium| {/servers[production]->$ref} :: Server $ref is only allowed in AsyncAPI 2.3 and later.

@@ -16,34 +16,38 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.Server;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Security Scheme Reference rule.
+ * Rule: SRV-008
+ * Validates that a Server's $ref property points to a valid server definition in components.
+ * Servers became referenceable in AsyncAPI 2.3, so this applies to 2.3-2.6 and 3.0.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidSecuritySchemeReferenceRule extends ValidationRule {
+public class AaInvalidServerReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
+     *
      * @param ruleInfo
      */
-    public OasInvalidSecuritySchemeReferenceRule(ValidationRuleMetaData ruleInfo) {
+    public AaInvalidServerReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitSecurityScheme(SecurityScheme node) {
-        if (node.root().modelType() == ModelType.OPENAPI30 || node.root().modelType() == ModelType.OPENAPI31) {
-            String ref = ((Referenceable) node).get$ref();
+    public void visitServer(Server node) {
+        if (node instanceof AsyncApiReferenceable) {
+            String ref = ((AsyncApiReferenceable) node).get$ref();
             if (hasValue(ref)) {
                 this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
             }
         }
     }
+
 }

@@ -18,6 +18,11 @@
  "externalDocs": {
 	"url": "http://dummydocsUrl"
  },
+  "channels": {
+    "/example": {
+      "description": "Example channel"
+    }
+  },
   "components": {
     "securitySchemes": {
       "apiKey": {

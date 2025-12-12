@@ -1,0 +1,22 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "production": {
+      "host": "production.example.com",
+      "protocol": "mqtt"
+    }
+  },
+  "channels": {
+    "userSignup": {
+      "address": "/user/signup",
+      "servers": [
+        { "$ref": "#/servers/production" },
+        { "$ref": "#/servers/nonExistentServer" }
+      ]
+    }
+  }
+}

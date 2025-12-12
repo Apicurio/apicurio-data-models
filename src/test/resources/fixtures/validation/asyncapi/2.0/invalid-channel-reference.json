@@ -1,0 +1,12 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "/user/signup": {
+      "$ref": "#/components/channels/nonExistentChannel"
+    }
+  }
+}

@@ -16,32 +16,32 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Referenceable;
+import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Reference rule.
+ * Implements the Invalid Reply Address Reference rule for AsyncAPI 3.0.
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidParameterReferenceRule extends ValidationRule {
+public class AaInvalidReplyAddressReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidParameterReferenceRule(ValidationRuleMetaData ruleInfo) {
+    public AaInvalidReplyAddressReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitParameter(io.apicurio.datamodels.models.Parameter)
+     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReplyAddress(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress)
      */
     @Override
-    public void visitParameter(Parameter node) {
-        String ref = ((Referenceable) node).get$ref();
+    public void visitOperationReplyAddress(AsyncApi30OperationReplyAddress node) {
+        String ref = node.get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
         }

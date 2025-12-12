@@ -33,6 +33,9 @@ public class AasMissingServerProtocolRule extends RequiredPropertyValidationRule
      */
     @Override
     public void visitServer(Server node) {
+        if (hasRef(node)) {
+            return;
+        }
         this.requireProperty(node, "protocol", map());
     }
 

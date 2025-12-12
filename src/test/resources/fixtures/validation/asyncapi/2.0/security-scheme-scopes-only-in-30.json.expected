@@ -1,0 +1,1 @@
+[AASS-002] |medium| {/components/securitySchemes[oauth2]->scopes} :: The 'scopes' property is only allowed in security schemes in AsyncAPI 3.0, not in version '2.6.0'.

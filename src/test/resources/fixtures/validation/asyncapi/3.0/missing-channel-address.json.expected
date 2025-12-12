@@ -1,0 +1,1 @@
+[CHAN-001] |medium| {/channels[userSignup]->address} :: Channel is missing the 'address' property.
