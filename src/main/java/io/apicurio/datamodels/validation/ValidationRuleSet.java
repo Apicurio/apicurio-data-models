@@ -68,6 +68,7 @@ import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidCorrel
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidExternalDocsReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMessageReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMessageTraitReferenceRule;
+import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidMultiFormatSchemaReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidOperationChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidOperationTraitReferenceRule;
 import io.apicurio.datamodels.validation.rules.invalid.reference.AaInvalidReplyAddressReferenceRule;
@@ -201,6 +202,7 @@ import io.apicurio.datamodels.validation.rules.required.AaMissingOperationAction
 import io.apicurio.datamodels.validation.rules.required.AaMissingOperationChannelReferenceRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingParameterLocationRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingParameterSchemaRule;
+import io.apicurio.datamodels.validation.rules.required.AaMissingSchemaDefinitionRule;
 import io.apicurio.datamodels.validation.rules.required.AaMissingServerHostRule;
 import io.apicurio.datamodels.validation.rules.required.AasMissingServerProtocolRule;
 import io.apicurio.datamodels.validation.rules.required.MissingApiKeySchemeParamLocationRule;
@@ -523,6 +525,8 @@ public class ValidationRuleSet {
         this.rules.add(md("SVAR-001", "Missing Server Variable Default Value", "Required Property", "Server Variable", new ModelType[]{ModelType.OPENAPI30, ModelType.OPENAPI31}, true, "Server Variable \"${'name'}\" is missing a default value.", OasMissingServerVarDefaultValueRule.class));
         this.rules.add(md("CID-001", "Missing Correlation ID Location", "Required Property", "Correlation ID", new ModelType[]{ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26}, true, "Correlation ID is missing a Location", AaMissingCorrelationIdLocationRule.class));
         this.rules.add(md("AAM-001", "Missing Message Payload or Headers", "Required Property", "Message", new ModelType[]{ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30}, true, "Message should have either payload or headers defined.", AaMissingMessagePayloadOrHeadersRule.class));
+        this.rules.add(md("AAMFS-002", "Missing Schema Definition", "Required Property", "Multi-Format Schema", new ModelType[]{ModelType.ASYNCAPI30}, true, "Multi-format schema must have a schema property defined.", AaMissingSchemaDefinitionRule.class));
+        this.rules.add(md("AAMFS-003", "Invalid Multi-Format Schema Reference", "Invalid Reference", "Multi-Format Schema", new ModelType[]{ModelType.ASYNCAPI30}, true, "Multi-format schema $ref must point to valid schema.", AaInvalidMultiFormatSchemaReferenceRule.class));
 
         /** Ignored Property **/
         this.rules.add(md("HEAD-008", "Ignored Content-Type Header", "Ignored Property", "Header", new ModelType[]{ModelType.OPENAPI30, ModelType.OPENAPI31}, true, "The \"Content-Type\" header will be ignored.", OasIgnoredContentTypeHeaderRule.class));
