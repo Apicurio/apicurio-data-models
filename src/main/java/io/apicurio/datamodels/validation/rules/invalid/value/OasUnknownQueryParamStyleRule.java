@@ -41,16 +41,16 @@ public class OasUnknownQueryParamStyleRule extends AbstractInvalidPropertyValueR
     @Override
     public void visitParameter(Parameter node) {
         String style = null;
-        String in = null;
+        String _in = null;
         if (ModelTypeUtil.isOpenApi30Model(node)) {
             style = ((OpenApi30Parameter) node).getStyle();
-            in = ((OpenApi30Parameter) node).getIn();
+            _in = ((OpenApi30Parameter) node).getIn();
         } else if (ModelTypeUtil.isOpenApi31Model(node)) {
             style = ((OpenApi31Parameter) node).getStyle();
-            in = ((OpenApi31Parameter) node).getIn();
+            _in = ((OpenApi31Parameter) node).getIn();
         }
         if (hasValue(style)) {
-            if (equals(in, "query")) {
+            if (equals(_in, "query")) {
                 this.reportIfInvalid(isValidEnumItem(style, array("form", "spaceDelimited", "pipeDelimited", "deepObject")),
                         node, "style", map("style", style));
             }
