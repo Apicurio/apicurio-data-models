@@ -46,6 +46,7 @@ import io.apicurio.datamodels.validation.rules.invalid.format.OasInvalidSecurity
 import io.apicurio.datamodels.validation.rules.invalid.format.OasInvalidSecuritySchemeTokenUrlRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.OasInvalidServerVariableDescriptionRule;
 import io.apicurio.datamodels.validation.rules.invalid.format.OasInvalidXmlNamespaceUrlRule;
+import io.apicurio.datamodels.validation.rules.invalid.name.AaInvalidComponentKeyNameRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasDuplicatePathSegmentRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasEmptyPathSegmentRule;
 import io.apicurio.datamodels.validation.rules.invalid.name.OasIdenticalPathTemplateRule;
@@ -354,6 +355,7 @@ public class ValidationRuleSet {
         this.rules.add(md("LDEF-001", "Invalid Link Definition Name", "Invalid Property Name", "Components", new ModelType[]{ModelType.OPENAPI30, ModelType.OPENAPI31}, true, "Link Definition Name is not valid.", OasInvalidLinkDefinitionNameRule.class));
         this.rules.add(md("CDEF-001", "Invalid Callback Definition Name", "Invalid Property Name", "Components", new ModelType[]{ModelType.OPENAPI30, ModelType.OPENAPI31}, true, "Callback Definition Name is not valid.", OasInvalidCallbackDefinitionNameRule.class));
         this.rules.add(md("ENC-006", "Unmatched Encoding Property", "Invalid Property Name", "Components", new ModelType[]{ModelType.OPENAPI30, ModelType.OPENAPI31}, true, "Encoding Property \"${'name'}\" not found in the associated schema.", OasUnmatchedEncodingPropertyRule.class));
+        this.rules.add(md("COMP-001", "Invalid Component Key Name Pattern", "Invalid Property Name", "Components", new ModelType[]{ModelType.ASYNCAPI20, ModelType.ASYNCAPI21, ModelType.ASYNCAPI22, ModelType.ASYNCAPI23, ModelType.ASYNCAPI24, ModelType.ASYNCAPI25, ModelType.ASYNCAPI26, ModelType.ASYNCAPI30}, true, "Component key \"${'key'}\" does not match the required pattern ^[a-zA-Z0-9\\.\\-_]+$", AaInvalidComponentKeyNameRule.class));
         /** Invalid Property Value **/
         this.rules.add(md("R-006", "Invalid API Scheme", "Invalid Property Value", "API", new ModelType[]{ModelType.OPENAPI20}, true, "API scheme \"${'scheme'}\" not allowed.  Must be one of: http, https, ws, wss", OasInvalidApiSchemeRule.class));
         this.rules.add(md("R-007", "Invalid 'Consumes' Mime-Type", "Invalid Property Value", "API", new ModelType[]{ModelType.OPENAPI20}, true, "API \"consumes\" must be a valid mime-type.", OasInvalidApiConsumesMTRule.class));
