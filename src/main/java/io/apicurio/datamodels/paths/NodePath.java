@@ -45,8 +45,44 @@ public class NodePath {
         this.segments.add(0, segment);
     }
 
+    /**
+     * Removes and returns the first segment from the path.
+     *
+     * @return the first segment, or null if the path is empty
+     */
+    public NodePathSegment removeFirst() {
+        if (segments.size() > 0) {
+            return segments.remove(0);
+        }
+        return null;
+    }
+
+    /**
+     * Removes and returns the last segment from the path.
+     *
+     * @return the last segment, or null if the path is empty
+     */
+    public NodePathSegment removeLast() {
+        if (segments.size() > 0) {
+            return segments.remove(segments.size() - 1);
+        }
+        return null;
+    }
+
     public List<NodePathSegment> getSegments() {
         return this.segments;
+    }
+
+    /**
+     * Returns the first segment in the path without removing it.
+     *
+     * @return the first segment, or null if the path is empty
+     */
+    public NodePathSegment getFirstSegment() {
+        if (segments.size() > 0) {
+            return segments.get(0);
+        }
+        return null;
     }
 
     public NodePathSegment getLastSegment() {

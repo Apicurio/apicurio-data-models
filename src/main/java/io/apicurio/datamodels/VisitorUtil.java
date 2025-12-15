@@ -16,6 +16,10 @@
 
 package io.apicurio.datamodels;
 
+import java.util.List;
+import java.util.Map;
+
+import io.apicurio.datamodels.models.MappedNode;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.asyncapi.v20.visitors.AsyncApi20Traverser;
@@ -29,9 +33,13 @@ import io.apicurio.datamodels.models.asyncapi.v30.visitors.AsyncApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20Traverser;
 import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v31.visitors.OpenApi31Traverser;
+import io.apicurio.datamodels.models.union.Union;
 import io.apicurio.datamodels.models.visitors.ReverseTraverser;
 import io.apicurio.datamodels.models.visitors.Traverser;
 import io.apicurio.datamodels.models.visitors.Visitor;
+import io.apicurio.datamodels.paths.NodePath;
+import io.apicurio.datamodels.paths.NodePathSegment;
+import io.apicurio.datamodels.util.NodeUtil;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -84,6 +92,78 @@ public class VisitorUtil {
             throw new RuntimeException("Traverser not found for type: " + type);
         }
         traverser.traverse(node);
+    }
+
+    /**
+     * Visits nodes along a specific path in the data model tree. Starting from the
+     * given node, this method traverses the tree following the path segments defined
+     * in the NodePath, visiting each node along the way with the provided visitor.
+     * If a node along the path does not exist, traversal stops at the last reachable node.
+     *
+     * @param node The starting node (typically the root document)
+     * @param nodePath The path to traverse through the data model
+     * @param visitor The visitor to apply to each node along the path
+     */
+    @SuppressWarnings("rawtypes")
+    public static void visitPath(Node node, NodePath nodePath, Visitor visitor) {
+        List<NodePathSegment> segments = nodePath.getSegments();
+        Object current = node;
+
+        // Visit the starting node
+        if (NodeUtil.isNode(current)) {
+            ((Node) current).accept(visitor);
+        }
+
+        // Traverse each segment of the path
+        for (NodePathSegment segment : segments) {
+            if (current == null) {
+                // Can't traverse further if current is null
+                break;
+            }
+
+            try {
+                if (!segment.isIndex()) {
+                    // Property access (e.g., /info, /paths)
+                    current = NodeUtil.getProperty(current, segment.getValue());
+                } else {
+                    // Index access (e.g., [0], [petId])
+                    if (NodeUtil.isUnion(current)) {
+                        Union union = (Union) current;
+                        current = union.unionValue();
+                    }
+
+                    if (NodeUtil.isNode(current)) {
+                        MappedNode mappedNode = (MappedNode) current;
+                        current = mappedNode.getItem(segment.getValue());
+                    } else if (NodeUtil.isList(current)) {
+                        int index = NodeUtil.toInteger(segment.getValue());
+                        List list = (List) current;
+                        if (index >= 0 && index < list.size()) {
+                            current = list.get(index);
+                        } else {
+                            // Index out of bounds, stop traversal
+                            break;
+                        }
+                    } else if (NodeUtil.isMap(current)) {
+                        Map map = (Map) current;
+                        current = NodeUtil.getMapItem(map, segment.getValue());
+                    }
+                }
+
+                // If we couldn't resolve this segment, stop traversal
+                if (current == null) {
+                    break;
+                }
+
+                // Visit the node at this segment if it's a Node
+                if (NodeUtil.isNode(current)) {
+                    ((Node) current).accept(visitor);
+                }
+            } catch (Exception e) {
+                // If any error occurs during traversal, stop gracefully
+                break;
+            }
+        }
     }
 
 }
