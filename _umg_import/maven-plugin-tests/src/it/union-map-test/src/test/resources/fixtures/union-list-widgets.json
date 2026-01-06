@@ -1,0 +1,18 @@
+{
+    "id": "union-list-widgets",
+    "description": "Test document with union list of Widgets",
+    "widgets": [
+        {
+            "name": "Widget 1",
+            "price": 19.99
+        },
+        {
+            "name": "Widget 2",
+            "price": 29.99
+        },
+        {
+            "name": "Widget 3",
+            "price": 39.99
+        }
+    ]
+}

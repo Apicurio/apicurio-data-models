@@ -462,6 +462,14 @@ public abstract class AbstractJavaStage extends AbstractStage {
             return propertyType.isMap() && propertyType.getNested().iterator().next().isPrimitiveType();
         }
 
+        public boolean isUnionList() {
+            return propertyType.isList() && propertyType.getNested().iterator().next().isUnion();
+        }
+
+        public boolean isUnionMap() {
+            return propertyType.isMap() && propertyType.getNested().iterator().next().isUnion();
+        }
+
         public Class<?> toClass() {
             return toClass(propertyType);
         }
@@ -506,6 +514,16 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 } else {
                     importer.addImport(entityType);
                 }
+            } else if (isUnionList()) {
+                PropertyType unionType = propertyType.getNested().iterator().next();
+                UnionPropertyType ut = new UnionPropertyType(unionType);
+                ut.addImportsTo(importer);
+                importer.addImport(List.class);
+            } else if (isUnionMap()) {
+                PropertyType unionType = propertyType.getNested().iterator().next();
+                UnionPropertyType ut = new UnionPropertyType(unionType);
+                ut.addImportsTo(importer);
+                importer.addImport(Map.class);
             } else if (isEntityList()) {
                 JavaInterfaceSource listType = useCommonEntityResolution ?
                         resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
@@ -555,6 +573,14 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 } else {
                     return entityType.getName();
                 }
+            } else if (isUnionList()) {
+                PropertyType unionType = propertyType.getNested().iterator().next();
+                UnionPropertyType ut = new UnionPropertyType(unionType);
+                return "List<" + ut.toJavaTypeString() + ">";
+            } else if (isUnionMap()) {
+                PropertyType unionType = propertyType.getNested().iterator().next();
+                UnionPropertyType ut = new UnionPropertyType(unionType);
+                return "Map<String, " + ut.toJavaTypeString() + ">";
             } else if (isEntityList()) {
                 JavaInterfaceSource listType = useCommonEntityResolution ?
                         resolveCommonJavaEntity(namespaceContext, propertyType.getNested().iterator().next().getSimpleType()) :
@@ -584,6 +610,9 @@ public abstract class AbstractJavaStage extends AbstractStage {
             return type.getSimpleType();
         } else if (type.isPrimitiveType()) {
             return StringUtils.capitalize(type.getSimpleType());
+        } else if (type.isUnion()) {
+            List<PropertyType> nestedTypes = new ArrayList<>(type.getNested());
+            return getUnionTypeName(nestedTypes);
         } else if (type.isList()) {
             return getTypeName(type.getNested().iterator().next()) + "List";
         } else if (type.isMap()) {

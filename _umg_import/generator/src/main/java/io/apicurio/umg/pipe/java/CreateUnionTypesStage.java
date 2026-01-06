@@ -5,6 +5,7 @@ import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
+import io.apicurio.umg.models.concept.PropertyType;
 
 /**
  * Creates the union type interface.  For example, if the union type is "boolean|[string]" then
@@ -27,7 +28,13 @@ public class CreateUnionTypesStage extends AbstractUnionTypeJavaStage {
      */
     private void createUnionType(PropertyModelWithOrigin property) {
         debug("Creating union type for: " + property.getProperty().getName());
-        UnionPropertyType unionType = new UnionPropertyType(property.getProperty().getType());
+        // Extract the actual union type: for simple unions it's the property type itself,
+        // for union maps/lists it's the nested type
+        PropertyType actualUnionType = property.getProperty().getType();
+        if (isUnionList(property.getProperty()) || isUnionMap(property.getProperty())) {
+            actualUnionType = property.getProperty().getType().getNested().iterator().next();
+        }
+        UnionPropertyType unionType = new UnionPropertyType(actualUnionType);
 
         String name = unionType.getName();
         String _package = getUnionTypesPackageName();

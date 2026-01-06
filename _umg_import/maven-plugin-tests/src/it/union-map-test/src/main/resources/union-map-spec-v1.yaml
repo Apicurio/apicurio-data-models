@@ -1,0 +1,70 @@
+name: Union Map Test API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/UnionMap/versions/1.0.md
+prefix: Umtm10
+namespace: org.example.unionmap.v10
+
+entities:
+  - name: Document
+    root: true
+    properties:
+      - name: id
+        type: string
+      - name: description
+        type: string
+      - name: schemas
+        type: '{StandardSchema|MultiFormatSchema}'
+        unionRules:
+          - unionType: 'MultiFormatSchema'
+            ruleType: propertyExists
+            propertyName: schemaFormat
+      - name: widgets
+        type: '[Widget|Gadget]'
+        unionRules:
+          - unionType: 'Widget'
+            ruleType: propertyExists
+            propertyName: price
+      - name: mixedItems
+        type: '[string|boolean]'
+    propertyOrder:
+      - $this
+
+  - name: StandardSchema
+    properties:
+      - name: type
+        type: string
+      - name: format
+        type: string
+      - name: description
+        type: string
+    propertyOrder:
+      - $this
+
+  - name: MultiFormatSchema
+    properties:
+      - name: schemaFormat
+        type: string
+      - name: schema
+        type: 'StandardSchema|any'
+    propertyOrder:
+      - $this
+
+  - name: Widget
+    properties:
+      - name: name
+        type: string
+      - name: price
+        type: number
+    propertyOrder:
+      - $this
+
+  - name: Gadget
+    properties:
+      - name: name
+        type: string
+      - name: brand
+        type: string
+    propertyOrder:
+      - $this

@@ -128,7 +128,7 @@ entities:
       - Extensible
     properties:
       - name: schemas
-        type: '{Schema}'
+        type: '{MultiFormatSchema|Schema}'
       - name: responses
         type: '{Response}'
       - name: parameters
@@ -528,6 +528,20 @@ entities:
         type: boolean
       - name: deprecated
         type: boolean
+    propertyOrder:
+      - $Referenceable
+      - $this
+      - $Extensible
+
+  - name: MultiFormatSchema
+    traits:
+      - Extensible
+      - Referenceable
+    properties:
+      - name: schemaFormat
+        type: string
+      - name: schema
+        type: 'Schema|any'
     propertyOrder:
       - $Referenceable
       - $this

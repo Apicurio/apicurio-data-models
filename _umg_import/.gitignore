@@ -10,3 +10,6 @@ target/
 .settings
 .classpath
 website
+.serena/
+PROJECT_INDEX.md
+PROJECT_INDEX.json

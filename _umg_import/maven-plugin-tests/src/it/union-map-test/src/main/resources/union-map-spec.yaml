@@ -1,0 +1,5 @@
+name: Union Map Testing Model
+prefix: Umtm
+namespace: org.example.unionmap
+versions:
+  - $ref: ./union-map-spec-v1.yaml

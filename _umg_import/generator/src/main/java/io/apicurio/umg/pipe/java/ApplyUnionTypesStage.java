@@ -3,6 +3,7 @@ package io.apicurio.umg.pipe.java;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
+import io.apicurio.umg.models.concept.PropertyType;
 
 /**
  * A union type has already been created (as an interface like StringWidgetUnion) and now must be
@@ -25,7 +26,13 @@ public class ApplyUnionTypesStage extends AbstractUnionTypeJavaStage {
      * @param property
      */
     private void applyUnionType(PropertyModelWithOrigin property) {
-        UnionPropertyType unionType = new UnionPropertyType(property.getProperty().getType());
+        // Extract the actual union type: for simple unions it's the property type itself,
+        // for union maps/lists it's the nested type
+        PropertyType actualUnionType = property.getProperty().getType();
+        if (isUnionList(property.getProperty()) || isUnionMap(property.getProperty())) {
+            actualUnionType = property.getProperty().getType().getNested().iterator().next();
+        }
+        UnionPropertyType unionType = new UnionPropertyType(actualUnionType);
         String unionTypeFQN = getUnionTypeFQN(unionType.getName());
         JavaInterfaceSource unionTypeSource = getState().getJavaIndex().lookupInterface(unionTypeFQN);
 

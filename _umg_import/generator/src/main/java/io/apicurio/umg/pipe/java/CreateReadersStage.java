@@ -209,6 +209,10 @@ public class CreateReadersStage extends AbstractJavaStage {
                 handleEntityProperty(body);
             } else if (property.getType().isPrimitiveType()) {
                 handlePrimitiveTypeProperty(body);
+            } else if (isUnionList(propertyWithOrigin.getProperty())) {
+                handleUnionListProperty(body);
+            } else if (isUnionMap(propertyWithOrigin.getProperty())) {
+                handleUnionMapProperty(body);
             } else if (property.getType().isList()) {
                 handleListProperty(body);
             } else if (property.getType().isMap()) {
@@ -704,6 +708,272 @@ public class CreateReadersStage extends AbstractJavaStage {
             body.append("        else {");
             body.append("            node.addExtraProperty(\"${propertyName}\", value);");
             body.append("        }");
+            body.append("    }");
+            body.append("}");
+        }
+
+        private void handleUnionListProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
+            NamespaceModel nsContext = propertyWithOrigin.getOrigin().getNamespace();
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+
+            readerClassSource.addImport(JsonNode.class);
+            readerClassSource.addImport(List.class);
+            readerClassSource.addImport(ArrayList.class);
+            ut.addImportsTo(readerClassSource);
+
+            body.addContext("propertyName", property.getName());
+            body.addContext("setterMethodName", setterMethodName(property));
+            body.addContext("unionJavaType", ut.toJavaTypeString());
+
+            body.append("{");
+            body.append("    List<JsonNode> array = JsonUtil.consumeAnyArrayProperty(json, \"${propertyName}\");");
+            body.append("    if (array != null) {");
+            body.append("        List<${unionJavaType}> items = new ArrayList<>();");
+            body.append("        array.forEach(value -> {");
+
+            // Sort the nested types - make sure any entity types with union rules come first
+            List<PropertyType> sortedNestedTypes = ut.getNestedTypes().stream().sorted(new Comparator<PropertyType>() {
+                @Override
+                public int compare(PropertyType o1, PropertyType o2) {
+                    if (o1.isEntityType() && o2.isEntityType()) {
+                        UnionRule rule1 = property.getRuleFor(o1.asRawType());
+                        UnionRule rule2 = property.getRuleFor(o2.asRawType());
+                        if (rule1 != null && rule2 == null) {
+                            return -1;
+                        } else if (rule1 == null && rule2 != null) {
+                            return 1;
+                        }
+                    }
+                    return o1.asRawType().compareTo(o2.asRawType());
+                }
+            }).collect(Collectors.toUnmodifiableList());
+
+            // Generate a block of reader code for each nested type
+            boolean first = true;
+            for (PropertyType nestedType : sortedNestedTypes) {
+                if (!first) {
+                    body.append(" else ");
+                }
+                first = false;
+                JavaType jt = new JavaType(nestedType, nsContext);
+                if (jt.isPrimitive()) {
+                    String javaTypeName = jt.toJavaTypeString();
+                    String isMethodName = "is" + javaTypeName;
+                    String toMethodName = "to" + javaTypeName;
+                    String typeName = getTypeName(nestedType);
+                    String unionValueInterfaceName = typeName + "UnionValue";
+                    String unionValueInterfaceFQN = getUnionTypeFQN(typeName + "UnionValue");
+                    String unionValueClassName = unionValueInterfaceName + "Impl";
+                    String unionValueClassFQN = unionValueInterfaceFQN + "Impl";
+                    JavaInterfaceSource unionValueInterface = getState().getJavaIndex().lookupInterface(unionValueInterfaceFQN);
+                    JavaClassSource unionValueClass = getState().getJavaIndex().lookupClass(unionValueClassFQN);
+
+                    if (unionValueInterface == null || unionValueClass == null) {
+                        warn("Missing primitive Union Value interface or class: " + typeName);
+                        body.append("if (Boolean.TRUE) {}");
+                    } else {
+                        body.addContext("javaTypeName", javaTypeName);
+                        body.addContext("isMethodName", isMethodName);
+                        body.addContext("toMethodName", toMethodName);
+                        body.addContext("unionValueInterfaceName", unionValueInterfaceName);
+                        body.addContext("unionValueClassName", unionValueClassName);
+
+                        body.append("if (JsonUtil.${isMethodName}(value)) {");
+                        body.append("    ${javaTypeName} pValue = JsonUtil.${toMethodName}(value);");
+                        body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}(pValue);");
+                        body.append("    items.add(unionValue);");
+                        body.append("}");
+
+                        readerClassSource.addImport(unionValueInterface);
+                        readerClassSource.addImport(unionValueClass);
+                    }
+                } else if (jt.isEntity()) {
+                    NamespaceModel nestedTypeEntityNS = entityModel.getNamespace();
+                    String nestedTypeEntityName = nestedTypeEntityNS.fullName() + "." + nestedType.getSimpleType();
+                    EntityModel nestedTypeEntity = getState().getConceptIndex().lookupEntity(nestedTypeEntityName);
+                    if (nestedTypeEntity == null) {
+                        warn("Property union list type with entity sub-type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                        warn("       nested union type: " + nestedType);
+                        return;
+                    }
+                    JavaInterfaceSource entityJavaSource = resolveJavaEntityType(nestedTypeEntityNS, nestedType);
+                    if (entityJavaSource == null) {
+                        warn("Property union list type with entity sub-type not found (in java index) for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                        warn("       nested union type: " + nestedType);
+                        return;
+                    }
+                    readerClassSource.addImport(entityJavaSource);
+
+                    body.addContext("createMethodName", createMethodName(nestedTypeEntity));
+                    body.addContext("readMethodName", readMethodName(nestedTypeEntity));
+                    body.addContext("propertyEntityType", entityJavaSource.getName());
+
+                    UnionRule unionRule = property.getRuleFor(nestedType.asRawType());
+                    if (unionRule == null) {
+                        body.append("if (JsonUtil.isObject(value)) {");
+                    } else {
+                        body.addContext("rulePropertyName", unionRule.getPropertyName());
+                        if (unionRule.getRuleType() == UnionRuleType.PROPERTYEXISTS) {
+                            body.append("if (JsonUtil.isObjectWithProperty(value, \"${rulePropertyName}\")) {");
+                        } else if (unionRule.getRuleType() == UnionRuleType.PROPERTYVALUE) {
+                            body.addContext("rulePropertyValue", unionRule.getPropertyValue());
+                            body.append("if (JsonUtil.isObjectWithPropertyValue(value, \"${rulePropertyName}\", \"${rulePropertyValue}\")) {");
+                        } else {
+                            throw new RuntimeException("Unsupported union rule: " + unionRule.getRuleType());
+                        }
+                    }
+
+                    body.append("    ObjectNode object = JsonUtil.toObject(value);");
+                    body.append("    ${propertyEntityType} model = (${propertyEntityType}) node.${createMethodName}();");
+                    body.append("    ${readMethodName}(object, model);");
+                    body.append("    items.add(model);");
+                    body.append("}");
+                } else {
+                    warn("UNION LIST property '" + property.getName() + "' not read (unsupported union subtype) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
+                    body.append("if (Boolean.TRUE) {}");
+                }
+            }
+            body.append("        });");
+            body.append("        node.${setterMethodName}(items);");
+            body.append("    }");
+            body.append("}");
+        }
+
+        private void handleUnionMapProperty(BodyBuilder body) {
+            PropertyModel property = propertyWithOrigin.getProperty();
+            NamespaceModel nsContext = propertyWithOrigin.getOrigin().getNamespace();
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+
+            readerClassSource.addImport(JsonNode.class);
+            readerClassSource.addImport(Map.class);
+            readerClassSource.addImport(List.class);
+            ut.addImportsTo(readerClassSource);
+
+            body.addContext("propertyName", property.getName());
+            body.addContext("setterMethodName", setterMethodName(property));
+            body.addContext("unionJavaType", ut.toJavaTypeString());
+
+            body.append("{");
+            body.append("    ObjectNode mapObject = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
+            body.append("    if (mapObject != null) {");
+            body.append("        List<String> keys = JsonUtil.keys(mapObject);");
+            body.append("        Map<String, ${unionJavaType}> items = new java.util.LinkedHashMap<>();");
+            body.append("        keys.forEach(key -> {");
+            body.append("            JsonNode value = JsonUtil.consumeAnyProperty(mapObject, key);");
+            body.append("            if (value != null) {");
+
+            // Sort the nested types - make sure any entity types with union rules come first
+            List<PropertyType> sortedNestedTypes = ut.getNestedTypes().stream().sorted(new Comparator<PropertyType>() {
+                @Override
+                public int compare(PropertyType o1, PropertyType o2) {
+                    if (o1.isEntityType() && o2.isEntityType()) {
+                        UnionRule rule1 = property.getRuleFor(o1.asRawType());
+                        UnionRule rule2 = property.getRuleFor(o2.asRawType());
+                        if (rule1 != null && rule2 == null) {
+                            return -1;
+                        } else if (rule1 == null && rule2 != null) {
+                            return 1;
+                        }
+                    }
+                    return o1.asRawType().compareTo(o2.asRawType());
+                }
+            }).collect(Collectors.toUnmodifiableList());
+
+            // Generate a block of reader code for each nested type
+            boolean first = true;
+            for (PropertyType nestedType : sortedNestedTypes) {
+                if (!first) {
+                    body.append(" else ");
+                }
+                first = false;
+                JavaType jt = new JavaType(nestedType, nsContext);
+                if (jt.isPrimitive()) {
+                    String javaTypeName = jt.toJavaTypeString();
+                    String isMethodName = "is" + javaTypeName;
+                    String toMethodName = "to" + javaTypeName;
+                    String typeName = getTypeName(nestedType);
+                    String unionValueInterfaceName = typeName + "UnionValue";
+                    String unionValueInterfaceFQN = getUnionTypeFQN(typeName + "UnionValue");
+                    String unionValueClassName = unionValueInterfaceName + "Impl";
+                    String unionValueClassFQN = unionValueInterfaceFQN + "Impl";
+                    JavaInterfaceSource unionValueInterface = getState().getJavaIndex().lookupInterface(unionValueInterfaceFQN);
+                    JavaClassSource unionValueClass = getState().getJavaIndex().lookupClass(unionValueClassFQN);
+
+                    if (unionValueInterface == null || unionValueClass == null) {
+                        warn("Missing primitive Union Value interface or class: " + typeName);
+                        body.append("if (Boolean.TRUE) {}");
+                    } else {
+                        body.addContext("javaTypeName", javaTypeName);
+                        body.addContext("isMethodName", isMethodName);
+                        body.addContext("toMethodName", toMethodName);
+                        body.addContext("unionValueInterfaceName", unionValueInterfaceName);
+                        body.addContext("unionValueClassName", unionValueClassName);
+
+                        body.append("if (JsonUtil.${isMethodName}(value)) {");
+                        body.append("    ${javaTypeName} pValue = JsonUtil.${toMethodName}(value);");
+                        body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}(pValue);");
+                        body.append("    items.put(key, unionValue);");
+                        body.append("}");
+
+                        readerClassSource.addImport(unionValueInterface);
+                        readerClassSource.addImport(unionValueClass);
+                    }
+                } else if (jt.isEntity()) {
+                    NamespaceModel nestedTypeEntityNS = entityModel.getNamespace();
+                    String nestedTypeEntityName = nestedTypeEntityNS.fullName() + "." + nestedType.getSimpleType();
+                    EntityModel nestedTypeEntity = getState().getConceptIndex().lookupEntity(nestedTypeEntityName);
+                    if (nestedTypeEntity == null) {
+                        warn("Property union map type with entity sub-type not found for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                        warn("       nested union type: " + nestedType);
+                        body.append("if (Boolean.TRUE) {}");
+                    } else {
+                        JavaInterfaceSource entityJavaSource = resolveJavaEntityType(nestedTypeEntityNS, nestedType);
+                        if (entityJavaSource == null) {
+                            warn("Property union map type with entity sub-type not found (in java index) for property: '" + property.getName() + "' of entity: " + entityModel.fullyQualifiedName());
+                            warn("       nested union type: " + nestedType);
+                            body.append("if (Boolean.TRUE) {}");
+                        } else {
+                            readerClassSource.addImport(entityJavaSource);
+
+                            body.addContext("createMethodName", createMethodName(nestedTypeEntity));
+                            body.addContext("readMethodName", readMethodName(nestedTypeEntity));
+                            body.addContext("propertyEntityType", entityJavaSource.getName());
+
+                            UnionRule unionRule = property.getRuleFor(nestedType.asRawType());
+                            if (unionRule == null) {
+                                body.append("if (JsonUtil.isObject(value)) {");
+                            } else {
+                                body.addContext("rulePropertyName", unionRule.getPropertyName());
+                                if (unionRule.getRuleType() == UnionRuleType.PROPERTYEXISTS) {
+                                    body.append("if (JsonUtil.isObjectWithProperty(value, \"${rulePropertyName}\")) {");
+                                } else if (unionRule.getRuleType() == UnionRuleType.PROPERTYVALUE) {
+                                    body.addContext("rulePropertyValue", unionRule.getPropertyValue());
+                                    body.append("if (JsonUtil.isObjectWithPropertyValue(value, \"${rulePropertyName}\", \"${rulePropertyValue}\")) {");
+                                } else {
+                                    throw new RuntimeException("Unsupported union rule: " + unionRule.getRuleType());
+                                }
+                            }
+
+                            body.append("    ObjectNode object = JsonUtil.toObject(value);");
+                            body.append("    ${propertyEntityType} model = (${propertyEntityType}) node.${createMethodName}();");
+                            body.append("    ${readMethodName}(object, model);");
+                            body.append("    items.put(key, model);");
+                            body.append("}");
+                        }
+                    }
+                } else {
+                    warn("UNION MAP property '" + property.getName() + "' not read (unsupported union subtype) for entity: " + entityModel.fullyQualifiedName());
+                    warn("       property type: " + property.getType());
+                    body.append("if (Boolean.TRUE) {}");
+                }
+            }
+            body.append("            }");
+            body.append("        });");
+            body.append("        node.${setterMethodName}(items);");
             body.append("    }");
             body.append("}");
         }
