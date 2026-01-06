@@ -1,0 +1,21 @@
+{
+    "id": "union-map-mixed",
+    "description": "Test document with mixed union map (StandardSchema and MultiFormatSchema)",
+    "schemas": {
+        "StandardSchema1": {
+            "type": "string",
+            "description": "A standard string schema"
+        },
+        "MultiFormatSchema1": {
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=2.6.0",
+            "schema": {
+                "type": "object"
+            }
+        },
+        "StandardSchema2": {
+            "type": "integer",
+            "format": "int32",
+            "description": "A standard integer schema"
+        }
+    }
+}

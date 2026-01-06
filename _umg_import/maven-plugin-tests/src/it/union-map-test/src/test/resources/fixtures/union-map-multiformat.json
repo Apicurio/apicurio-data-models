@@ -1,0 +1,18 @@
+{
+    "id": "union-map-multiformat",
+    "description": "Test document with union map of MultiFormatSchemas",
+    "schemas": {
+        "AsyncAPISchema": {
+            "schemaFormat": "application/vnd.aai.asyncapi+json;version=2.6.0",
+            "schema": {
+                "type": "object"
+            }
+        },
+        "ProtobufSchema": {
+            "schemaFormat": "application/vnd.google.protobuf;version=3",
+            "schema": {
+                "type": "string"
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "union-list-mixed",
+    "description": "Test document with mixed union list (Widgets and Gadgets)",
+    "widgets": [
+        {
+            "name": "Widget 1",
+            "price": 19.99
+        },
+        {
+            "name": "Gadget 1",
+            "brand": "TechCo"
+        },
+        {
+            "name": "Widget 2",
+            "price": 29.99
+        },
+        {
+            "name": "Gadget 2",
+            "brand": "InnovateCorp"
+        }
+    ]
+}

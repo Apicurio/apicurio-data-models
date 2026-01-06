@@ -1,0 +1,10 @@
+{
+    "id": "union-list-primitives",
+    "description": "Test document with union list of primitives (string and boolean)",
+    "mixedItems": [
+        "hello",
+        true,
+        "world",
+        false
+    ]
+}
