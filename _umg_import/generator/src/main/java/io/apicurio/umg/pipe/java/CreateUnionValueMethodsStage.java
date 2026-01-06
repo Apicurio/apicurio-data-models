@@ -9,6 +9,7 @@ import io.apicurio.umg.models.concept.EntityModel;
 import io.apicurio.umg.models.concept.NamespaceModel;
 import io.apicurio.umg.models.concept.PropertyModel;
 import io.apicurio.umg.models.concept.PropertyModelWithOrigin;
+import io.apicurio.umg.models.concept.PropertyType;
 import io.apicurio.umg.pipe.java.method.BodyBuilder;
 
 /**
@@ -26,7 +27,9 @@ public class CreateUnionValueMethodsStage extends AbstractJavaStage {
     protected void doProcess() {
         getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
             Collection<PropertyModelWithOrigin> entityProperties = getState().getConceptIndex().getAllEntityProperties(entity);
-            entityProperties.stream().map(property -> property.getProperty()).filter(property -> isUnion(property)).forEach(property -> {
+            entityProperties.stream().map(property -> property.getProperty()).filter(property ->
+                isUnion(property) || isUnionList(property) || isUnionMap(property)
+            ).forEach(property -> {
                 createUnionValueMethods(property, entity);
             });
         });
@@ -36,7 +39,14 @@ public class CreateUnionValueMethodsStage extends AbstractJavaStage {
      * @param property
      */
     private void createUnionValueMethods(PropertyModel property, EntityModel origin) {
-        UnionPropertyType unionType = new UnionPropertyType(property.getType());
+        // Extract the actual union type: for simple unions it's the property type itself,
+        // for union maps/lists it's the nested type
+        PropertyType actualUnionType = property.getType();
+        if ((property.getType().isList() || property.getType().isMap()) &&
+                property.getType().getNested().iterator().next().isUnion()) {
+            actualUnionType = property.getType().getNested().iterator().next();
+        }
+        UnionPropertyType unionType = new UnionPropertyType(actualUnionType);
 
         debug("Creating union value methods for property '" + property.getName() + "' of type '"
                 + property.getRawType() +"' on entity: " + origin.fullyQualifiedName());

@@ -64,6 +64,14 @@ public abstract class AbstractStage implements Stage {
         return property.getType().isMap() && property.getType().getNested().iterator().next().isPrimitiveType();
     }
 
+    protected boolean isUnionList(PropertyModel property) {
+        return property.getType().isList() && property.getType().getNested().iterator().next().isUnion();
+    }
+
+    protected boolean isUnionMap(PropertyModel property) {
+        return property.getType().isMap() && property.getType().getNested().iterator().next().isUnion();
+    }
+
     protected String singularize(String name) {
         return inflector.singularize(name);
     }

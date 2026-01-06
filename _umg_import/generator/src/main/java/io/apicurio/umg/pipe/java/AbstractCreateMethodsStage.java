@@ -68,6 +68,10 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createGetter(javaEntity, propertyWithOrigin);
             createSetter(javaEntity, propertyWithOrigin);
             createUnionFactoryMethods(javaEntity, propertyWithOrigin);
+        } else if (isUnionList(property) || isUnionMap(property)) {
+            createGetter(javaEntity, propertyWithOrigin);
+            createSetter(javaEntity, propertyWithOrigin);
+            createUnionFactoryMethods(javaEntity, propertyWithOrigin);
         } else {
             warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
         }
@@ -97,6 +101,20 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             UnionPropertyType ut = new UnionPropertyType(property.getType());
             ut.addImportsTo(javaEntity);
             method.setReturnType(ut.toJavaTypeString());
+        } else if (isUnionList(property)) {
+            // Handle [Union] -> List<UnionType>
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+            ut.addImportsTo(javaEntity);
+            javaEntity.addImport(java.util.List.class);
+            method.setReturnType("List<" + ut.toJavaTypeString() + ">");
+        } else if (isUnionMap(property)) {
+            // Handle {Union} -> Map<String, UnionType>
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+            ut.addImportsTo(javaEntity);
+            javaEntity.addImport(java.util.Map.class);
+            method.setReturnType("Map<String, " + ut.toJavaTypeString() + ">");
         } else {
             String propertyOriginNS = propertyWithOrigin.getOrigin().getNamespace().fullName();
 
@@ -125,6 +143,20 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             UnionPropertyType ut = new UnionPropertyType(property.getType());
             ut.addImportsTo(javaEntity);
             method.addParameter(ut.toJavaTypeString(), "value");
+        } else if (isUnionList(property)) {
+            // Handle [Union] -> List<UnionType>
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+            ut.addImportsTo(javaEntity);
+            javaEntity.addImport(java.util.List.class);
+            method.addParameter("List<" + ut.toJavaTypeString() + ">", "value");
+        } else if (isUnionMap(property)) {
+            // Handle {Union} -> Map<String, UnionType>
+            PropertyType unionType = property.getType().getNested().iterator().next();
+            UnionPropertyType ut = new UnionPropertyType(unionType);
+            ut.addImportsTo(javaEntity);
+            javaEntity.addImport(java.util.Map.class);
+            method.addParameter("Map<String, " + ut.toJavaTypeString() + ">", "value");
         } else {
             JavaType jt = new JavaType(property.getType(), propertyOriginNS);
             jt.addImportsTo(javaEntity);
@@ -327,7 +359,19 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
      */
     private void createUnionFactoryMethods(JavaSource<?> javaEntity, PropertyModelWithOrigin propertyWithOrigin) {
         PropertyModel property = propertyWithOrigin.getProperty();
-        UnionPropertyType ut = new UnionPropertyType(property.getType());
+        PropertyType unionType;
+
+        // Extract the union type - it might be directly a union, or wrapped in a list/map
+        if (property.getType().isUnion()) {
+            unionType = property.getType();
+        } else if ((property.getType().isList() || property.getType().isMap()) &&
+                   property.getType().getNested().iterator().next().isUnion()) {
+            unionType = property.getType().getNested().iterator().next();
+        } else {
+            return;
+        }
+
+        UnionPropertyType ut = new UnionPropertyType(unionType);
         ut.getNestedTypes().forEach(nestedType -> {
             if (nestedType.isEntityType()) {
                 createFactoryMethod(javaEntity, nestedType);
