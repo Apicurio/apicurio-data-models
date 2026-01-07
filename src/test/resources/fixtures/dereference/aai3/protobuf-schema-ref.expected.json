@@ -1,0 +1,32 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userEvents": {
+      "address": "user/events",
+      "messages": {
+        "userCreated": {
+          "$ref": "#/components/messages/UserCreatedMessage"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "UserCreatedMessage": {
+        "payload": {
+          "$ref": "#/components/schemas/UserEvent"
+        }
+      }
+    },
+    "schemas": {
+      "UserEvent": {
+        "schemaFormat": "application/vnd.google.protobuf;version=3",
+        "schema": "syntax = \"proto3\";\n\npackage com.example;\n\nmessage UserEvent {\n  string userId = 1;\n  string eventType = 2;\n}\n"
+      }
+    }
+  }
+}

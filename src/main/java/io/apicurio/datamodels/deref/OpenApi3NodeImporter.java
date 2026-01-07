@@ -47,7 +47,8 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             OpenApiComponents components = ensureOpenApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
-            components.addSchema(name, node);
+            // Cast to OpenApiSchema (OpenApi30Schema and OpenApi31Schema implement this)
+            components.addSchema(name, (io.apicurio.datamodels.models.openapi.OpenApiSchema) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }

@@ -1,0 +1,19 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "production": {
+      "host": "production.example.com",
+      "protocol": "kafka",
+      "protocolVersion": "3.0.0"
+    }
+  },
+  "channels": {
+    "userEvents": {
+      "address": "user/events"
+    }
+  }
+}

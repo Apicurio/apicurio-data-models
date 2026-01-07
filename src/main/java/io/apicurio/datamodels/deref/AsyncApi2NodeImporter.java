@@ -155,16 +155,10 @@ public class AsyncApi2NodeImporter extends ReferencedNodeImporter {
 
     @Override
     public void visitSchema(Schema node) {
+        // Note: AsyncAPI 2.x schemas are version-specific and cannot be added to the base AsyncApiComponents.
+        // Always inline schemas for AsyncAPI 2.x.
         String componentType = "schemas";
-        if (shouldInline()) {
-            inlineComponent(componentType, node);
-        } else {
-            AsyncApiComponents components = ensureAsyncApiComponents();
-            String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
-            components.addSchema(name, node);
-            node.attach(components);
-            setPathToImportedNode(node, componentType, name);
-        }
+        inlineComponent(componentType, node);
     }
 
     @Override
