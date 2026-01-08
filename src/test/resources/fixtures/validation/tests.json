@@ -123,6 +123,8 @@
     { "name": "[OpenAPI 3.1] Security Requirements", "test": "openapi/3.1/security-requirements.json" },
 
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" },
-    { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" }
+    { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" },
+    { "name": "[Issues] Issue 953 - Colon in path", "test": "openapi/issues/953/colon-in-path.json" },
+    { "name": "[Issues] Issue 953 - Colon in path after parameter", "test": "openapi/issues/953/colon-in-path-after-parameter.json" }
 
 ]
