@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.ExternalDocumentation;
 import io.apicurio.datamodels.models.union.AnyUnionValueImpl;
 import io.apicurio.datamodels.models.Node;
@@ -37,6 +38,12 @@ import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
 import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30ServerVariable;
 import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Tag;
 import io.apicurio.datamodels.models.union.MultiFormatSchemaSchemaUnion;
+import io.apicurio.datamodels.models.util.JsonUtil;
+import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.NodeUtil;
+import io.apicurio.datamodels.util.RegexUtil;
+
+import java.util.List;
 
 /**
  * Node importer for AsyncAPI 3.0 documents. Handles dereferencing and importing external
@@ -415,12 +422,11 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     private boolean isAvroSchema(Schema schemaNode) {
         try {
             ObjectNode json = Library.writeNode(schemaNode);
-            JsonNode typeNode = json.get("type");
+            String type = JsonUtil.getStringProperty(json, "type");
 
             // Avro schemas have "type": "record", "enum", "fixed", etc.
             // JSON Schema has "type": "object", "array", "string", etc.
-            if (typeNode != null && typeNode.isTextual()) {
-                String type = typeNode.asText();
+            if (type != null) {
                 return "record".equals(type) || "enum".equals(type) || "fixed".equals(type);
             }
 
@@ -441,10 +447,10 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     private String extractAvroSchemaName(Schema schemaNode) {
         try {
             ObjectNode json = Library.writeNode(schemaNode);
-            JsonNode nameNode = json.get("name");
+            String name = JsonUtil.getStringProperty(json, "name");
 
-            if (nameNode != null && nameNode.isTextual()) {
-                return nameNode.asText();
+            if (!NodeUtil.isNullOrUndefined(name)) {
+                return name;
             }
 
             return null;
@@ -461,11 +467,10 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
      */
     private boolean isProtobufSchema(Schema schemaNode) {
         try {
-            ObjectNode json = Library.writeNode(schemaNode);
-            JsonNode protobufContentNode = json.get("x-text-content");
-
             // Protobuf schemas have an "x-text-content" property with the .proto file text
-            return protobufContentNode != null && protobufContentNode.isTextual();
+            ObjectNode json = Library.writeNode(schemaNode);
+            String protoContent = JsonUtil.getStringProperty(json, "x-text-content");
+            return !NodeUtil.isNullOrUndefined(protoContent);
         } catch (Exception e) {
             // If we can't determine, assume it's JSON Schema
             return false;
@@ -482,17 +487,16 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     private String extractProtobufSchemaName(Schema schemaNode) {
         try {
             ObjectNode json = Library.writeNode(schemaNode);
-            JsonNode protobufContentNode = json.get("x-text-content");
+            String protoContent = JsonUtil.getStringProperty(json, "x-text-content");
 
-            if (protobufContentNode != null && protobufContentNode.isTextual()) {
-                String protoContent = protobufContentNode.asText();
-
+            if (!NodeUtil.isNullOrUndefined(protoContent)) {
                 // Simple regex to extract message name from "message MessageName {"
-                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("message\\s+([A-Za-z0-9_]+)\\s*\\{");
-                java.util.regex.Matcher matcher = pattern.matcher(protoContent);
-
-                if (matcher.find()) {
-                    return matcher.group(1);
+                List<String[]> matches = RegexUtil.findMatches(protoContent, "message\\s+([A-Za-z0-9_]+)\\s*\\{");
+                LoggerUtil.debug(">>>> --------------");
+                LoggerUtil.debug(">>>> MATCHES: ", matches);
+                LoggerUtil.debug(">>>> --------------");
+                if (!matches.isEmpty()) {
+                    return matches.get(0)[1];
                 }
             }
 
@@ -511,12 +515,10 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     private String extractProtobufContent(Schema schemaNode) {
         try {
             ObjectNode json = Library.writeNode(schemaNode);
-            JsonNode protobufContentNode = json.get("x-text-content");
-
-            if (protobufContentNode != null && protobufContentNode.isTextual()) {
-                return protobufContentNode.asText();
+            String protoContent = JsonUtil.getStringProperty(json, "x-text-content");
+            if (!NodeUtil.isNullOrUndefined(protoContent)) {
+                return protoContent;
             }
-
             return null;
         } catch (Exception e) {
             return null;
@@ -555,7 +557,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
                 // The schema property in MultiFormatSchema is an AnySchemaUnion, which can be
                 // either a Schema object or any JsonNode. For Protobuf, we use a TextNode
                 // wrapped in an AnyUnionValueImpl.
-                TextNode protobufTextNode = new TextNode(protobufContent);
+                JsonNode protobufTextNode = JsonUtil.textNode(protobufContent);
                 AnyUnionValueImpl schemaValue = new AnyUnionValueImpl(protobufTextNode);
 
                 // Set it as the schema
