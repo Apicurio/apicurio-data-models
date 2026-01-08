@@ -32,7 +32,7 @@ public class Dereferencer {
      */
     public Document dereference(final Document source) {
         Document doc = Library.cloneDocument(source);
-        Map<Reference, String> rnm = new HashMap<>();
+        Map<Reference, String> resolvedNodes = new HashMap<>();
 
         // Mark all internal references as already "resolved"
         InternalRefResolverVisitor irrv = new InternalRefResolverVisitor();
@@ -46,13 +46,13 @@ public class Dereferencer {
             VisitorUtil.visitTree(doc, visitor, TraverserDirection.down);
             List<Node> nodesWithUnresolvedRefs = visitor.getNodesWithUnresolvedRefs();
 
-            // If none were found, we're done.  Otherwise, resolve all of the unresolved refs!
+            // If none were found, we're done.  Otherwise, resolve all unresolved refs!
             if (nodesWithUnresolvedRefs.isEmpty()) {
                 isDone = true;
             } else {
-                // Resolve all of the external refs.
+                // Resolve all external refs.
                 for (Node nodeWithUnresolvedRef : nodesWithUnresolvedRefs) {
-                    if (!resolveNodeWithRef(doc, rnm, nodeWithUnresolvedRef)) {
+                    if (!resolveNodeWithRef(doc, resolvedNodes, nodeWithUnresolvedRef)) {
                         unresolveableRefCount++;
                     }
                 }
@@ -70,17 +70,21 @@ public class Dereferencer {
     /**
      * Resolves external references by loading the external source and pulling out a Node
      * from the resulting model.  That Node is then imported into the original source
-     * document in the appropriate place (e.g. within "components" for OpenApi and AsyncApi
+     * document in the appropriate place (e.g. within "components" for OpenAPI and AsyncAPI
      * documents).  Once that is done, the $ref is updated to point to the new, imported
      * component.
      *
+     * For AsyncAPI 3.0 documents, non-JSON-Schema formats (such as Avro) are automatically
+     * wrapped in Multi-Format Schema Objects with the appropriate schemaFormat property.
+     *
      * Returns true if the ref was successfully resolved.
      *
-     * @param doc
-     * @param rnm
-     * @param nodeWithUnresolvedRef
+     * @param doc the document being dereferenced
+     * @param resolvedNodes resolved node map tracking already-resolved references
+     * @param nodeWithUnresolvedRef the node containing the unresolved reference
+     * @return true if the reference was successfully resolved, false otherwise
      */
-    private boolean resolveNodeWithRef(Document doc, Map<Reference, String> rnm, Node nodeWithUnresolvedRef) {
+    private boolean resolveNodeWithRef(Document doc, Map<Reference, String> resolvedNodes, Node nodeWithUnresolvedRef) {
         String ref = ((Referenceable) nodeWithUnresolvedRef).get$ref();
         Reference reference = new Reference(ref);
 
@@ -97,8 +101,8 @@ public class Dereferencer {
         boolean inlined = false;
         String newRefValue = null;
 
-        if (rnm.containsKey(canonicalReference)) {
-            newRefValue = rnm.get(canonicalReference);
+        if (resolvedNodes.containsKey(canonicalReference)) {
+            newRefValue = resolvedNodes.get(canonicalReference);
         } else {
             // Resolve the ref to a node.
             Node resolvedNode = resolver.resolveRef(canonicalReference.getRef(), nodeWithUnresolvedRef);
@@ -125,7 +129,7 @@ public class Dereferencer {
 
             // Cache the resolved reference in the resolved node map
             if (newRefValue != null) {
-                rnm.put(canonicalReference, newRefValue);
+                resolvedNodes.put(canonicalReference, newRefValue);
             }
         }
 
@@ -143,7 +147,9 @@ public class Dereferencer {
     }
 
     private ReferencedNodeImporter createImporter(Document doc, Node nodeWithUnresolvedRef, String ref, boolean shouldInline) {
-        if (ModelTypeUtil.isAsyncApiModel(doc)) {
+        if (ModelTypeUtil.isAsyncApi3Model(doc)) {
+            return new AsyncApi3NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
+        } else if (ModelTypeUtil.isAsyncApi2Model(doc)) {
             return new AsyncApi2NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         } else if (ModelTypeUtil.isOpenApi2Model(doc)) {
             return new OpenApi2NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);

@@ -415,6 +415,10 @@ export class JsonUtil {
         return {};
     }
 
+    public static textNode(value: string): any {
+        return value;
+    }
+
     public static arrayNode(): any {
         return [];
     }

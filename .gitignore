@@ -12,3 +12,5 @@ website
 /.idea/
 *.iml
 jsweet_extension/io/apicurio/JacksonAdapter.class
+# Serena MCP
+.serena/

@@ -98,5 +98,30 @@
         "name" : "[OpenAPI 3] Inlined Path Item",
         "input" : "oai3/inlined-path-item.input.json",
         "expected" : "oai3/inlined-path-item.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 3] Avro Schema Reference",
+        "input" : "aai3/avro-schema-ref.input.json",
+        "expected" : "aai3/avro-schema-ref.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 3] Protobuf Schema Reference",
+        "input" : "aai3/protobuf-schema-ref.input.json",
+        "expected" : "aai3/protobuf-schema-ref.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 3] JSON Schema Reference",
+        "input" : "aai3/json-schema-ref.input.json",
+        "expected" : "aai3/json-schema-ref.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 3] Channel Reference",
+        "input" : "aai3/channel-ref.input.json",
+        "expected" : "aai3/channel-ref.expected.json"
+    },
+    {
+        "name" : "[AsyncAPI 3] Server Reference",
+        "input" : "aai3/server-ref.input.json",
+        "expected" : "aai3/server-ref.expected.json"
     }
 ]

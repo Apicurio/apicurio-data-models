@@ -23,7 +23,7 @@ public class Reference {
         this.ref = ref;
         // TODO consider using java.net.URL
         String[] parts = ref.split("#");
-        if (parts.length == 0) {
+        if (parts.length == 0 || parts.length == 1) {
             abs = ref;
             rel = null; // TODO is this even valid?
         } else if (parts.length == 2) {

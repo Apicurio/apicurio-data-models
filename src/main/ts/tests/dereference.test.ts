@@ -17,7 +17,14 @@ class DereferenceTestReferenceResolver implements IReferenceResolver {
 
     public resolveRef(reference: string, from: Node): Node {
         if (refs[reference]) {
-            return this.toModel(refs[reference], from);
+            let ref = refs[reference];
+            if (typeof ref === "object") {
+                return this.toModel(ref, from);
+            } else if (typeof ref === "string") {
+                return this.toModel({
+                    "x-text-content": ref
+                }, from);
+            }
         }
         return null;
     }

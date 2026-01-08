@@ -79,7 +79,7 @@ public class DereferenceTestRunner extends ParentRunner<DereferenceTestCase> {
         Iterator<String> fieldNames = root.fieldNames();
         while (fieldNames.hasNext()) {
             String fname = fieldNames.next();
-            ObjectNode val = (ObjectNode) root.get(fname);
+            JsonNode val = root.get(fname);
             DereferenceTestReferenceResolver.refs.put(fname, val);
         }
     }

@@ -644,7 +644,11 @@ entities:
       - Extensible
     properties:
       - name: schemas
-        type: '{Schema}'
+        type: '{Schema|MultiFormatSchema}'
+        unionRules:
+          - unionType: 'MultiFormatSchema'
+            ruleType: propertyExists
+            propertyName: schemaFormat
       - name: servers
         type: '{Server}'
       - name: channels

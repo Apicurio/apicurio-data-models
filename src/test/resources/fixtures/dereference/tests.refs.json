@@ -444,5 +444,52 @@
         "url": "https://slack.com/api/rtm.connect.stage",
         "protocol": "http",
         "protocolVersion": "1.1"
+    },
+    "http://www.example.com/schemas/avro.json": {
+        "type": "record",
+        "name": "UserEvent",
+        "namespace": "com.example",
+        "fields": [
+            {
+                "name": "userId",
+                "type": "string"
+            },
+            {
+                "name": "eventType",
+                "type": "string"
+            }
+        ]
+    },
+    "http://www.example.com/schemas/user-event.proto": "syntax = \"proto3\";\n\npackage com.example;\n\nmessage UserEvent {\n  string userId = 1;\n  string eventType = 2;\n}\n",
+    "http://www.example.com/schemas/json.json#/components/schemas/User": {
+        "type": "object",
+        "properties": {
+            "userId": {
+                "type": "string"
+            },
+            "userName": {
+                "type": "string"
+            }
+        }
+    },
+    "http://www.example.com/channels.json#/components/channels/UserEvents": {
+        "address": "user/events",
+        "messages": {
+            "userCreated": {
+                "payload": {
+                    "type": "object",
+                    "properties": {
+                        "userId": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "http://www.example.com/servers.json#/components/servers/Production": {
+        "host": "production.example.com",
+        "protocol": "kafka",
+        "protocolVersion": "3.0.0"
     }
 }

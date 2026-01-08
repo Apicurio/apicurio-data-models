@@ -19,6 +19,8 @@ package io.apicurio.datamodels.refs;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
@@ -30,12 +32,19 @@ import io.apicurio.datamodels.models.Node;
  */
 public class DereferenceTestReferenceResolver implements IReferenceResolver {
 
-    public static Map<String, ObjectNode> refs = new HashMap<>();
+    public static Map<String, JsonNode> refs = new HashMap<>();
 
     @Override
     public Node resolveRef(String reference, Node from) {
         if (refs.containsKey(reference)) {
-            return toModel(refs.get(reference), from);
+            JsonNode jsonNode = refs.get(reference);
+            if (jsonNode.isObject()) {
+                return toModel((ObjectNode) jsonNode, from);
+            } else if (jsonNode.isTextual()) {
+                ObjectNode wrapper = JsonNodeFactory.instance.objectNode();
+                wrapper.set("x-text-content", jsonNode);
+                return toModel(wrapper, from);
+            }
         }
         return null;
     }
