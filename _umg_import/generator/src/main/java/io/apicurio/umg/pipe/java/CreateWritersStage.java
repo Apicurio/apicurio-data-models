@@ -694,7 +694,8 @@ public class CreateWritersStage extends AbstractJavaStage {
             body.append("    Map<String, ${unionJavaType}> unionMap = node.${getterMethodName}();");
             body.append("    if (unionMap != null && !unionMap.isEmpty()) {");
             body.append("        ObjectNode mapObject = JsonUtil.objectNode();");
-            body.append("        unionMap.forEach((key, union) -> {");
+            body.append("        unionMap.keySet().forEach(key -> {");
+            body.append("            ${unionJavaType} union = unionMap.get(key);");
 
             ut.getNestedTypes().forEach(nestedType -> {
                 String typeName = getTypeName(nestedType);
