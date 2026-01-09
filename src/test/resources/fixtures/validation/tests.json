@@ -125,6 +125,8 @@
     { "name": "[Issues] Issue 804", "test": "openapi/issues/804/formData-params.json" },
     { "name": "[Issues] Issue 88", "test": "openapi/issues/88/response-def-description.json" },
     { "name": "[Issues] Issue 953 - Colon in path", "test": "openapi/issues/953/colon-in-path.json" },
-    { "name": "[Issues] Issue 953 - Colon in path after parameter", "test": "openapi/issues/953/colon-in-path-after-parameter.json" }
+    { "name": "[Issues] Issue 953 - Colon in path after parameter", "test": "openapi/issues/953/colon-in-path-after-parameter.json" },
+    { "name": "[Issues] Issue 953 - RFC 3986 special characters", "test": "openapi/issues/953/rfc3986-special-chars.json" },
+    { "name": "[Issues] Issue 953 - Invalid paths still rejected", "test": "openapi/issues/953/invalid-paths.json" }
 
 ]
