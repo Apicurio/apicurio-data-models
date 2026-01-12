@@ -123,5 +123,11 @@
         "name" : "[AsyncAPI 3] Server Reference",
         "input" : "aai3/server-ref.input.json",
         "expected" : "aai3/server-ref.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 3] Protobuf Schema Reference (Unsupported)",
+        "input" : "oai3/protobuf-schema-ref-unsupported.input.json",
+        "expected" : "oai3/protobuf-schema-ref-unsupported.expected.json",
+        "strict" : false
     }
 ]

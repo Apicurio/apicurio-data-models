@@ -64,11 +64,11 @@ public class ReferenceResolverChain implements IReferenceResolver {
     }
 
     @Override
-    public Node resolveRef(String reference, Node from) {
+    public ResolvedReference resolveRef(String reference, Node from) {
         for (IReferenceResolver resolver : resolvers) {
-            Node resolvedNode = resolver.resolveRef(reference, from);
-            if (resolvedNode != null) {
-                return resolvedNode;
+            ResolvedReference resolvedRef = resolver.resolveRef(reference, from);
+            if (resolvedRef != null) {
+                return resolvedRef;
             }
         }
         return null;

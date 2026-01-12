@@ -24,7 +24,8 @@ public class DereferenceTestCase {
     private String name;
     private String input;
     private String expected;
-    
+    private boolean strict = true; // Default to strict mode for backward compatibility
+
     /**
      * Constructor.
      */
@@ -71,6 +72,20 @@ public class DereferenceTestCase {
      */
     public void setExpected(String expected) {
         this.expected = expected;
+    }
+
+    /**
+     * @return the strict flag
+     */
+    public boolean isStrict() {
+        return strict;
+    }
+
+    /**
+     * @param strict the strict flag to set
+     */
+    public void setStrict(boolean strict) {
+        this.strict = strict;
     }
 
 }

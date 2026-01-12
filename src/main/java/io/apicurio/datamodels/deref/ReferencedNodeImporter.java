@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
@@ -65,6 +66,30 @@ public abstract class ReferencedNodeImporter extends CombinedVisitorAdapter {
 
     public void importNode(Node resolvedNode) {
         resolvedNode.accept(this);
+    }
+
+    /**
+     * Imports a JsonNode (JSON/YAML content that is not OpenAPI/AsyncAPI).
+     * Subclasses should override this method to handle JSON content appropriately.
+     * The default implementation throws an UnsupportedOperationException.
+     *
+     * @param jsonNode the JsonNode to import
+     * @param mediaType the media type of the content (may be null)
+     */
+    public void importJson(JsonNode jsonNode, String mediaType) {
+        throw new UnsupportedOperationException("importJson is not supported by " + getClass().getName());
+    }
+
+    /**
+     * Imports text content (non-JSON content such as Protocol Buffers, GraphQL, etc.).
+     * Subclasses should override this method to handle text content appropriately.
+     * The default implementation throws an UnsupportedOperationException.
+     *
+     * @param textContent the text content to import
+     * @param mediaType the media type of the content (may be null)
+     */
+    public void importText(String textContent, String mediaType) {
+        throw new UnsupportedOperationException("importText is not supported by " + getClass().getName());
     }
 
     public void setPathToImportedNode(Node importedNode, String pathToImportedNode) {

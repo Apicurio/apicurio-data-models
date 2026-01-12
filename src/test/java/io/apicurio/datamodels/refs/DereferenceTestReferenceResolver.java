@@ -35,18 +35,44 @@ public class DereferenceTestReferenceResolver implements IReferenceResolver {
     public static Map<String, JsonNode> refs = new HashMap<>();
 
     @Override
-    public Node resolveRef(String reference, Node from) {
+    public ResolvedReference resolveRef(String reference, Node from) {
         if (refs.containsKey(reference)) {
             JsonNode jsonNode = refs.get(reference);
-            if (jsonNode.isObject()) {
-                return toModel((ObjectNode) jsonNode, from);
+            if (jsonNode.isObject() && jsonNode.has("type") && jsonNode.get("type").isTextual() && jsonNode.get("type").asText().equals("record")) {
+                return ResolvedReference.fromJson(jsonNode, "application/vnd.apache.avro+json");
+            } else if (jsonNode.isObject()) {
+                // Object content - convert to Node
+                Node node = toModel((ObjectNode) jsonNode, from);
+                return ResolvedReference.fromNode(node);
             } else if (jsonNode.isTextual()) {
-                ObjectNode wrapper = JsonNodeFactory.instance.objectNode();
-                wrapper.set("x-text-content", jsonNode);
-                return toModel(wrapper, from);
+                // Text content - return as text with appropriate media type
+                String textContent = jsonNode.asText();
+                String mediaType = detectMediaType(reference, textContent);
+                return ResolvedReference.fromText(textContent, mediaType);
             }
         }
         return null;
+    }
+
+    /**
+     * Detects the media type of content based on the reference URL and content.
+     *
+     * @param reference the reference URL
+     * @param textContent the text content
+     * @return the detected media type
+     */
+    private String detectMediaType(String reference, String textContent) {
+        // Detect based on file extension in reference
+        if (reference.endsWith(".proto")) {
+            return "application/vnd.google.protobuf;version=3";
+        } else if (reference.endsWith(".avsc")) {
+            return "application/vnd.apache.avro+json;version=1.12.0";
+        } else if (reference.endsWith(".graphql") || reference.endsWith(".gql")) {
+            return "application/graphql";
+        }
+
+        // Fallback to plain text
+        return "text/plain";
     }
 
     private Node toModel(ObjectNode jsonNode, Node from) {

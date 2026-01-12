@@ -127,7 +127,7 @@ public class DereferenceTestRunner extends ParentRunner<DereferenceTestCase> {
 
                 // Dereference the document
                 try {
-                    Document dereferencedDoc = Library.dereferenceDocument(srcDoc, true);
+                    Document dereferencedDoc = Library.dereferenceDocument(srcDoc, child.isStrict());
                     Assert.assertNotNull(dereferencedDoc);
                     Assert.assertNotSame(srcDoc, dereferencedDoc);
 

@@ -400,6 +400,68 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         }
     }
 
+    @Override
+    public void importJson(JsonNode jsonNode, String mediaType) {
+        // Handle JSON content that isn't an OpenAPI/AsyncAPI document
+        // This is used for Avro JSON schemas or other JSON-based formats
+        String componentType = "schemas";
+        AsyncApi30Components components = ensureAsyncApi30Components();
+
+        // Determine name hint from reference URL
+        String nameHint = getNameHintFromRef("ImportedSchema");
+
+        // Try to extract a better name from the JSON if it's an Avro schema
+        if (mediaType != null && mediaType.contains("avro")) {
+            String avroName = extractAvroNameFromJson(jsonNode);
+            if (avroName != null) {
+                nameHint = avroName;
+            }
+        }
+
+        String name = generateNodeName(nameHint, getComponentNames(components.getSchemas()));
+
+        // Create a MultiFormatSchema to wrap the JSON content
+        AsyncApi30MultiFormatSchema multiFormatSchema = wrapJsonInMultiFormatSchema(jsonNode, mediaType);
+
+        // Add to components
+        if (components.getSchemas() == null) {
+            components.setSchemas(new java.util.LinkedHashMap<>());
+        }
+        components.getSchemas().put(name, multiFormatSchema);
+        multiFormatSchema.attach(components);
+        setPathToImportedNode(multiFormatSchema, componentType, name);
+    }
+
+    @Override
+    public void importText(String textContent, String mediaType) {
+        // Handle text content (Protobuf, GraphQL, Avro text, etc.)
+        String componentType = "schemas";
+        AsyncApi30Components components = ensureAsyncApi30Components();
+
+        // Determine name hint - try to extract from content based on media type
+        String nameHint = getNameHintFromRef("ImportedSchema");
+
+        if (mediaType != null && mediaType.contains("protobuf")) {
+            String protobufName = extractProtobufNameFromText(textContent);
+            if (protobufName != null) {
+                nameHint = protobufName;
+            }
+        }
+
+        String name = generateNodeName(nameHint, getComponentNames(components.getSchemas()));
+
+        // Create a MultiFormatSchema to wrap the text content
+        AsyncApi30MultiFormatSchema multiFormatSchema = wrapTextInMultiFormatSchema(textContent, mediaType);
+
+        // Add to components
+        if (components.getSchemas() == null) {
+            components.setSchemas(new java.util.LinkedHashMap<>());
+        }
+        components.getSchemas().put(name, multiFormatSchema);
+        multiFormatSchema.attach(components);
+        setPathToImportedNode(multiFormatSchema, componentType, name);
+    }
+
     /**
      * Ensures that the AsyncAPI 3.0 document has a components section, creating it if necessary.
      *
@@ -577,6 +639,98 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
             Library.readNode(schemaJson, schema);
             multiFormatSchema.setSchema(schema);
         }
+
+        return multiFormatSchema;
+    }
+
+    /**
+     * Extracts the name from an Avro schema in JSON format.
+     *
+     * @param jsonNode the Avro schema JSON
+     * @return the name from the schema, or null if not found
+     */
+    private String extractAvroNameFromJson(JsonNode jsonNode) {
+        try {
+            if (JsonUtil.isObject(jsonNode)) {
+                String name = JsonUtil.getStringProperty((ObjectNode) jsonNode, "name");
+                if (!NodeUtil.isNullOrUndefined(name)) {
+                    return name;
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Extracts the name from a Protobuf schema text.
+     *
+     * @param textContent the .proto file content
+     * @return the name from the first message definition, or null if not found
+     */
+    private String extractProtobufNameFromText(String textContent) {
+        try {
+            if (!NodeUtil.isNullOrUndefined(textContent)) {
+                // Simple regex to extract message name from "message MessageName {"
+                List<String[]> matches = RegexUtil.findMatches(textContent, "message\\s+([A-Za-z0-9_]+)\\s*\\{");
+                if (!matches.isEmpty()) {
+                    return matches.get(0)[1];
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Wraps JSON content in an AsyncAPI 3.0 Multi-Format Schema Object.
+     *
+     * @param jsonNode the JSON content to wrap
+     * @param mediaType the media type of the content
+     * @return a MultiFormatSchema containing the wrapped JSON
+     */
+    private AsyncApi30MultiFormatSchema wrapJsonInMultiFormatSchema(JsonNode jsonNode, String mediaType) {
+        AsyncApi30Components components = ensureAsyncApi30Components();
+        AsyncApi30MultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
+
+        // Set the schema format based on media type
+        if (mediaType != null && !mediaType.isEmpty()) {
+            multiFormatSchema.setSchemaFormat(mediaType);
+        } else {
+            multiFormatSchema.setSchemaFormat("application/schema+json");
+        }
+
+        // Wrap the JsonNode in an AnyUnionValueImpl
+        AnyUnionValueImpl schemaValue = new AnyUnionValueImpl(jsonNode);
+        multiFormatSchema.setSchema(schemaValue);
+
+        return multiFormatSchema;
+    }
+
+    /**
+     * Wraps text content in an AsyncAPI 3.0 Multi-Format Schema Object.
+     *
+     * @param textContent the text content to wrap
+     * @param mediaType the media type of the content
+     * @return a MultiFormatSchema containing the wrapped text
+     */
+    private AsyncApi30MultiFormatSchema wrapTextInMultiFormatSchema(String textContent, String mediaType) {
+        AsyncApi30Components components = ensureAsyncApi30Components();
+        AsyncApi30MultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
+
+        // Set the schema format based on media type
+        if (mediaType != null && !mediaType.isEmpty()) {
+            multiFormatSchema.setSchemaFormat(mediaType);
+        } else {
+            multiFormatSchema.setSchemaFormat("text/plain");
+        }
+
+        // Wrap the text in a TextNode and then in an AnyUnionValueImpl
+        JsonNode textNode = JsonUtil.textNode(textContent);
+        AnyUnionValueImpl schemaValue = new AnyUnionValueImpl(textNode);
+        multiFormatSchema.setSchema(schemaValue);
 
         return multiFormatSchema;
     }

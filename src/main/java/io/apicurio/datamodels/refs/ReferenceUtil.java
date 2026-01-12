@@ -70,28 +70,62 @@ public class ReferenceUtil {
 
     /**
      * Resolves a reference from a relative position in the data model.
-     * @param $ref
-     * @param from
-     * @param options
+     * Backward-compatible method that returns a Node. If the resolved reference
+     * is not a Node (e.g., JSON or Text), this method returns null.
+     *
+     * @param $ref the reference to resolve
+     * @param from the node from which to resolve
+     * @param options resolver options
+     * @deprecated Use {@link #resolveRefAsReferenceWithOptions(String, Node, ResolverOptions)} for full access to all content types
      */
+    @Deprecated
     public static Node resolveRefWithOptions(String $ref, Node from, ResolverOptions options) {
+        ResolvedReference resolvedRef = resolveRefAsReferenceWithOptions($ref, from, options);
+        if (resolvedRef != null && resolvedRef.isNode()) {
+            return resolvedRef.asNode();
+        }
+        if (options.contains(ResolverOptionsType.NULL_IF_NOT_FOUND)) {
+            return null;
+        } else {
+            return from;
+        }
+    }
+
+    /**
+     * Resolves a reference from a relative position in the data model, returning a ResolvedReference.
+     * This method supports all content types: Node, JSON, and Text.
+     *
+     * @param $ref the reference to resolve
+     * @param from the node from which to resolve
+     * @param options resolver options
+     * @return a ResolvedReference containing the resolved content, or null if not found
+     */
+    public static ResolvedReference resolveRefAsReferenceWithOptions(String $ref, Node from, ResolverOptions options) {
         IReferenceResolver resolver = ReferenceResolverChain.getInstance();
 
-        Node rval = null;
+        ResolvedReference rval = null;
         if (hasValue($ref)) {
             rval = resolver.resolveRef($ref, from);
         }
 
         // Recursively resolve the reference.  Useful if a $ref refers to another node that is also just a $ref.
         // This tracks $ref values to avoid infinite looping.
-        if (rval != null && options.contains(ResolverOptionsType.RECURSIVE)) {
+        // Note: Recursive resolution only works for Node types
+        if (rval != null && rval.isNode() && options.contains(ResolverOptionsType.RECURSIVE)) {
+            Node node = rval.asNode();
             Set<String> observedRefs = new HashSet<>();
             boolean done = false;
             while (!done) {
                 observedRefs.add($ref);
-                $ref = (String) NodeUtil.getProperty(rval, "$ref");
+                $ref = (String) NodeUtil.getProperty(node, "$ref");
                 if (hasValue($ref) && !observedRefs.contains($ref)) {
                     rval = resolver.resolveRef($ref, from);
+                    if (rval != null && rval.isNode()) {
+                        node = rval.asNode();
+                    } else {
+                        // Can't recursively resolve non-Node types
+                        done = true;
+                    }
                 } else if (observedRefs.contains($ref)) {
                     rval = null;
                     done = true;
@@ -104,14 +138,22 @@ public class ReferenceUtil {
             }
         }
 
-        if (rval != null) {
-            return rval;
-        }
-        if (options.contains(ResolverOptionsType.NULL_IF_NOT_FOUND)) {
+        return rval;
+    }
+
+    /**
+     * Resolves a reference and returns it as a ResolvedReference.
+     * This is the recommended method for new code.
+     *
+     * @param $ref the reference to resolve
+     * @param from the node from which to resolve
+     * @return a ResolvedReference, or null if not found
+     */
+    public static ResolvedReference resolveRefAsReference(String $ref, Node from) {
+        if (!hasValue($ref)) {
             return null;
-        } else {
-            return from;
         }
+        return resolveRefAsReferenceWithOptions($ref, from, ResolverOptions.of(ResolverOptionsType.RECURSIVE, ResolverOptionsType.NULL_IF_NOT_FOUND));
     }
 
     /**
