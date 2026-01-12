@@ -31,7 +31,7 @@ public class LocalReferenceResolver implements IReferenceResolver {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public Node resolveRef(String $ref, Node from) {
+    public ResolvedReference resolveRef(String $ref, Node from) {
         // Only handle internal $refs
         if ($ref == null || $ref.indexOf("#/") != 0) {
             return null;
@@ -55,7 +55,7 @@ public class LocalReferenceResolver implements IReferenceResolver {
         }
 
         if (cnode instanceof Node) {
-            return (Node) cnode;
+            return ResolvedReference.fromNode((Node) cnode);
         } else {
             return null;
         }

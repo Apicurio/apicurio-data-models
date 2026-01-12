@@ -14,6 +14,7 @@ import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.Reference;
 import io.apicurio.datamodels.refs.ReferenceContext;
+import io.apicurio.datamodels.refs.ResolvedReference;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
 public class Dereferencer {
@@ -104,19 +105,35 @@ public class Dereferencer {
         if (resolvedNodes.containsKey(canonicalReference)) {
             newRefValue = resolvedNodes.get(canonicalReference);
         } else {
-            // Resolve the ref to a node.
-            Node resolvedNode = resolver.resolveRef(canonicalReference.getRef(), nodeWithUnresolvedRef);
+            // Resolve the reference.
+            ResolvedReference resolvedRef = resolver.resolveRef(canonicalReference.getRef(), nodeWithUnresolvedRef);
 
             // Cannot be resolved
-            if (resolvedNode == null) {
+            if (resolvedRef == null) {
                 nodeWithUnresolvedRef.setNodeAttribute(DereferenceConstants.KEY_RESOLUTION, DereferenceConstants.VALUE_UNRESOLVEABLE);
                 return false;
             }
 
-            // Node was resolved, insert it into the source document (eg. into the #/components section of the source doc)
+            // Reference was resolved, insert it into the source document (eg. into the #/components section of the source doc)
             inlined = shouldInlineNode(nodeWithUnresolvedRef);
             ReferencedNodeImporter importer = createImporter(doc, nodeWithUnresolvedRef, ref, inlined);
-            importer.importNode(resolvedNode);
+
+            // Import the resolved reference based on its type
+            try {
+                if (resolvedRef.isNode()) {
+                    importer.importNode(resolvedRef.asNode());
+                } else if (resolvedRef.isJson()) {
+                    importer.importJson(resolvedRef.asJson(), resolvedRef.getMediaType());
+                } else if (resolvedRef.isText()) {
+                    importer.importText(resolvedRef.asText(), resolvedRef.getMediaType());
+                }
+            } catch (UnsupportedOperationException e) {
+                // This importer doesn't support this content type (e.g., OpenAPI trying to import Protobuf)
+                // Mark as unresolveable and continue
+                nodeWithUnresolvedRef.setNodeAttribute(DereferenceConstants.KEY_RESOLUTION, DereferenceConstants.VALUE_UNRESOLVEABLE);
+                return false;
+            }
+
             Node importedNode = importer.getImportedNode();
             newRefValue = importer.getPathToImportedNode();
 

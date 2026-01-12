@@ -7,6 +7,7 @@ import {readSeverity} from "./util/tutils";
 import {IValidationSeverityRegistry} from "../src/io/apicurio/datamodels/validation/IValidationSeverityRegistry";
 import {ValidationProblemSeverity} from "../src/io/apicurio/datamodels/validation/ValidationProblemSeverity";
 import {IReferenceResolver} from "../src/io/apicurio/datamodels/refs/IReferenceResolver";
+import {ResolvedReference} from "../src/io/apicurio/datamodels/refs/ResolvedReference";
 import {ReferenceUtil} from "../src/io/apicurio/datamodels/refs/ReferenceUtil";
 import {Node} from "../src/io/apicurio/datamodels/models/Node";
 import {Document} from "../src/io/apicurio/datamodels/models/Document";
@@ -30,15 +31,15 @@ class CustomSeverityRegistry implements IValidationSeverityRegistry {
 }
 
 class ValidationTestReferenceResolver implements IReferenceResolver {
-    
-    public resolveRef(reference: string, from: Node): Node {
+
+    public resolveRef(reference: string, from: Node): ResolvedReference {
         if (!reference) {
             return null;
         }
         if (reference.indexOf("test:") != 0) {
             return null;
         }
-        
+
         let colonIdx: number = reference.indexOf(":");
         let hashIdx: number = reference.indexOf("#");
         let resourceName: string = reference.substring(colonIdx + 1, hashIdx);
@@ -57,15 +58,24 @@ class ValidationTestReferenceResolver implements IReferenceResolver {
         if (!resourceName) {
             throw "Failed to resolve content for reference: " + reference;
         }
-        return this.toModel(resolvedContent, from);
+
+        // Check if this is an Avro JSON schema
+        if (resolvedContent && typeof resolvedContent === "object" &&
+            resolvedContent.type && resolvedContent.type === "record") {
+            return ResolvedReference.fromJson(resolvedContent, "application/vnd.apache.avro+json");
+        }
+
+        // Otherwise convert to Node
+        let node: Node = this.toModel(resolvedContent, from);
+        return ResolvedReference.fromNode(node);
     }
-    
-    public toModel(jsonNode: any, from: Node): Node {
+
+    private toModel(jsonNode: any, from: Node): Node {
         let rval: Node = from.emptyClone();
         rval.attach(from.parent());
         return Library.readNode(jsonNode, rval);
     }
-    
+
 }
 Library.addReferenceResolver(new ValidationTestReferenceResolver());
 

@@ -32,28 +32,43 @@ import io.apicurio.datamodels.models.Node;
 public interface IReferenceResolver {
 
     /**
-     * Resolves a reference to a {@link Node}.
+     * Resolves a reference to a {@link ResolvedReference}.
      *
-     * <p>For references to JSON content, the resolver should return a Node containing
-     * the parsed JSON structure.</p>
+     * <p>The resolver can return three different types of content:</p>
+     * <ul>
+     *   <li><b>Node</b>: Use {@link ResolvedReference#fromNode(Node)} when the resolved content is
+     *       an OpenAPI or AsyncAPI document/component that has been parsed into the data model.</li>
+     *   <li><b>JsonNode</b>: Use {@link ResolvedReference#fromJson(com.fasterxml.jackson.databind.JsonNode)}
+     *       or {@link ResolvedReference#fromJson(com.fasterxml.jackson.databind.JsonNode, String)} when the
+     *       resolved content is JSON or YAML that is not OpenAPI/AsyncAPI (e.g., JSON Schema, Avro JSON format).
+     *       Include the media type when known.</li>
+     *   <li><b>Text</b>: Use {@link ResolvedReference#fromText(String, String)} when the resolved content
+     *       is non-JSON text such as Protocol Buffers (.proto), GraphQL schemas, Avro text format, etc.
+     *       The media type should be provided (e.g., "application/vnd.google.protobuf;version=3").</li>
+     * </ul>
      *
-     * <p>For references to non-JSON content (such as Protocol Buffers .proto files,
-     * Apache Avro .avsc files, or other text-based schema formats), the resolver must
-     * return a Node with the text content stored in an extension element named
-     * "x-text-content". This allows the dereferencer to properly detect and wrap
-     * non-JSON schemas in AsyncAPI 3.0 Multi-Format Schema Objects.</p>
-     *
-     * <p>Example for a .proto file reference:</p>
+     * <p>Example for a Protocol Buffers .proto file reference:</p>
      * <pre>
-     * {
-     *   "x-text-content": "syntax = \"proto3\";\n\nmessage MyMessage {\n  string field = 1;\n}\n"
-     * }
+     * String protoContent = "syntax = \"proto3\";\n\nmessage UserEvent {\n  string userId = 1;\n}\n";
+     * return ResolvedReference.fromText(protoContent, "application/vnd.google.protobuf;version=3");
+     * </pre>
+     *
+     * <p>Example for a JSON Schema reference:</p>
+     * <pre>
+     * JsonNode jsonSchema = // ... parse JSON ...
+     * return ResolvedReference.fromJson(jsonSchema, "application/schema+json");
+     * </pre>
+     *
+     * <p>Example for an OpenAPI component reference:</p>
+     * <pre>
+     * Node node = // ... parse and convert to Node ...
+     * return ResolvedReference.fromNode(node);
      * </pre>
      *
      * @param reference the reference URI to resolve (e.g., "http://example.com/schema.proto")
      * @param from the node containing the reference
-     * @return a Node containing the resolved content, or null if the resolver cannot resolve the reference
+     * @return a ResolvedReference containing the resolved content, or null if the resolver cannot resolve the reference
      */
-    public Node resolveRef(String reference, Node from);
+    public ResolvedReference resolveRef(String reference, Node from);
 
 }

@@ -44,6 +44,7 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceUtil;
+import io.apicurio.datamodels.refs.ResolvedReference;
 
 /**
  * @author eric.wittmann@gmail.com
@@ -221,7 +222,7 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
      * @see io.apicurio.datamodels.core.util.IReferenceResolver#resolveRef(java.lang.String, io.apicurio.datamodels.core.models.Node)
      */
     @Override
-    public Node resolveRef(String reference, Node from) {
+    public ResolvedReference resolveRef(String reference, Node from) {
         try {
             if (reference != null && reference.startsWith("test:")) {
                 int colonIdx = reference.indexOf(":");
@@ -239,7 +240,8 @@ public class ValidationTestRunner extends ParentRunner<ValidationTestCase> imple
                 Assert.assertNotNull("Failed to resolve fragment: " + fragment, resolvedContent);
                 Node emptyClone = from.emptyClone();
                 emptyClone.attach(from.parent());
-                return Library.readNode(resolvedContent, emptyClone);
+                Node node = Library.readNode(resolvedContent, emptyClone);
+                return ResolvedReference.fromNode(node);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

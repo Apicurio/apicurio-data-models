@@ -24,7 +24,7 @@
     },
     "schemas": {
       "UserEvent": {
-        "schemaFormat": "application/vnd.apache.avro+json;version=1.12.0",
+        "schemaFormat": "application/vnd.apache.avro+json",
         "schema": {
           "type": "record",
           "name": "UserEvent",
