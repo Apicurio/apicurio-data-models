@@ -24,7 +24,7 @@
     "@types/filesystem": "0.0.36",
     "@types/jest": "30.0.0",
     "cpx2": "8.0.0",
-    "diff": "8.0.2",
+    "diff": "8.0.3",
     "jest": "30.2.0",
     "mkdirp": "3.0.1",
     "rimraf": "6.1.2",
