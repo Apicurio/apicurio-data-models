@@ -514,6 +514,9 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 } else {
                     importer.addImport(entityType);
                 }
+            } else if (isUnion()) {
+                UnionPropertyType ut = new UnionPropertyType(propertyType);
+                ut.addImportsTo(importer);
             } else if (isUnionList()) {
                 PropertyType unionType = propertyType.getNested().iterator().next();
                 UnionPropertyType ut = new UnionPropertyType(unionType);
@@ -573,6 +576,9 @@ public abstract class AbstractJavaStage extends AbstractStage {
                 } else {
                     return entityType.getName();
                 }
+            } else if (isUnion()) {
+                UnionPropertyType ut = new UnionPropertyType(propertyType);
+                return ut.toJavaTypeString();
             } else if (isUnionList()) {
                 PropertyType unionType = propertyType.getNested().iterator().next();
                 UnionPropertyType ut = new UnionPropertyType(unionType);

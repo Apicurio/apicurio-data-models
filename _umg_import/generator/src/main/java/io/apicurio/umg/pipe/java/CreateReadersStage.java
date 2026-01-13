@@ -724,13 +724,12 @@ public class CreateReadersStage extends AbstractJavaStage {
             ut.addImportsTo(readerClassSource);
 
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", setterMethodName(property));
+            body.addContext("addMethodName", addMethodName(singularize(property.getName())));
             body.addContext("unionJavaType", ut.toJavaTypeString());
 
             body.append("{");
             body.append("    List<JsonNode> array = JsonUtil.consumeAnyArrayProperty(json, \"${propertyName}\");");
             body.append("    if (array != null) {");
-            body.append("        List<${unionJavaType}> items = new ArrayList<>();");
             body.append("        array.forEach(value -> {");
 
             // Sort the nested types - make sure any entity types with union rules come first
@@ -783,7 +782,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                         body.append("if (JsonUtil.${isMethodName}(value)) {");
                         body.append("    ${javaTypeName} pValue = JsonUtil.${toMethodName}(value);");
                         body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}(pValue);");
-                        body.append("    items.add(unionValue);");
+                        body.append("    node.${addMethodName}(unionValue);");
                         body.append("}");
 
                         readerClassSource.addImport(unionValueInterface);
@@ -828,7 +827,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                     body.append("    ObjectNode object = JsonUtil.toObject(value);");
                     body.append("    ${propertyEntityType} model = (${propertyEntityType}) node.${createMethodName}();");
                     body.append("    ${readMethodName}(object, model);");
-                    body.append("    items.add(model);");
+                    body.append("    node.${addMethodName}(model);");
                     body.append("}");
                 } else {
                     warn("UNION LIST property '" + property.getName() + "' not read (unsupported union subtype) for entity: " + entityModel.fullyQualifiedName());
@@ -837,7 +836,6 @@ public class CreateReadersStage extends AbstractJavaStage {
                 }
             }
             body.append("        });");
-            body.append("        node.${setterMethodName}(items);");
             body.append("    }");
             body.append("}");
         }
@@ -854,14 +852,13 @@ public class CreateReadersStage extends AbstractJavaStage {
             ut.addImportsTo(readerClassSource);
 
             body.addContext("propertyName", property.getName());
-            body.addContext("setterMethodName", setterMethodName(property));
+            body.addContext("addMethodName", addMethodName(singularize(property.getName())));
             body.addContext("unionJavaType", ut.toJavaTypeString());
 
             body.append("{");
             body.append("    ObjectNode mapObject = JsonUtil.consumeObjectProperty(json, \"${propertyName}\");");
             body.append("    if (mapObject != null) {");
             body.append("        List<String> keys = JsonUtil.keys(mapObject);");
-            body.append("        Map<String, ${unionJavaType}> items = new java.util.LinkedHashMap<>();");
             body.append("        keys.forEach(key -> {");
             body.append("            JsonNode value = JsonUtil.consumeAnyProperty(mapObject, key);");
             body.append("            if (value != null) {");
@@ -916,7 +913,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                         body.append("if (JsonUtil.${isMethodName}(value)) {");
                         body.append("    ${javaTypeName} pValue = JsonUtil.${toMethodName}(value);");
                         body.append("    ${unionValueInterfaceName} unionValue = new ${unionValueClassName}(pValue);");
-                        body.append("    items.put(key, unionValue);");
+                        body.append("    node.${addMethodName}(key, unionValue);");
                         body.append("}");
 
                         readerClassSource.addImport(unionValueInterface);
@@ -961,7 +958,7 @@ public class CreateReadersStage extends AbstractJavaStage {
                             body.append("    ObjectNode object = JsonUtil.toObject(value);");
                             body.append("    ${propertyEntityType} model = (${propertyEntityType}) node.${createMethodName}();");
                             body.append("    ${readMethodName}(object, model);");
-                            body.append("    items.put(key, model);");
+                            body.append("    node.${addMethodName}(key, model);");
                             body.append("}");
                         }
                     }
@@ -973,7 +970,6 @@ public class CreateReadersStage extends AbstractJavaStage {
             }
             body.append("            }");
             body.append("        });");
-            body.append("        node.${setterMethodName}(items);");
             body.append("    }");
             body.append("}");
         }
