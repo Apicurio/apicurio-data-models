@@ -166,11 +166,8 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             AsyncApi30Components components = ensureAsyncApi30Components();
             String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
-            // AsyncAPI 3.0 schemas are a union type, so we manually add to the map
-            if (components.getSchemas() == null) {
-                components.setSchemas(new java.util.LinkedHashMap<>());
-            }
-            components.getSchemas().put(name, node);
+            // AsyncAPI 3.0 schemas are a union type, use addSchema() method
+            components.addSchema(name, node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -305,25 +302,20 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
 
             String name = generateNodeName(nameHint, getComponentNames(components.getSchemas()));
 
-            // AsyncAPI 3.0 schemas are a union type, so we manually add to the map
-            if (components.getSchemas() == null) {
-                components.setSchemas(new java.util.LinkedHashMap<>());
-            }
-
             // Check if this is a non-JSON schema that needs wrapping
             if (isAvroSchema(node)) {
                 AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "avro");
-                components.getSchemas().put(name, multiFormatSchema);
+                components.addSchema(name, multiFormatSchema);
                 multiFormatSchema.attach(components);
                 setPathToImportedNode(multiFormatSchema, componentType, name);
             } else if (isProtobufSchema(node)) {
                 AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "protobuf");
-                components.getSchemas().put(name, multiFormatSchema);
+                components.addSchema(name, multiFormatSchema);
                 multiFormatSchema.attach(components);
                 setPathToImportedNode(multiFormatSchema, componentType, name);
             } else {
                 // Cast to MultiFormatSchemaSchemaUnion (AsyncApi30Schema implements this)
-                components.getSchemas().put(name, (MultiFormatSchemaSchemaUnion) node);
+                components.addSchema(name, (MultiFormatSchemaSchemaUnion) node);
                 node.attach(components);
                 setPathToImportedNode(node, componentType, name);
             }
@@ -424,10 +416,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         AsyncApi30MultiFormatSchema multiFormatSchema = wrapJsonInMultiFormatSchema(jsonNode, mediaType);
 
         // Add to components
-        if (components.getSchemas() == null) {
-            components.setSchemas(new java.util.LinkedHashMap<>());
-        }
-        components.getSchemas().put(name, multiFormatSchema);
+        components.addSchema(name, multiFormatSchema);
         multiFormatSchema.attach(components);
         setPathToImportedNode(multiFormatSchema, componentType, name);
     }
@@ -454,10 +443,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         AsyncApi30MultiFormatSchema multiFormatSchema = wrapTextInMultiFormatSchema(textContent, mediaType);
 
         // Add to components
-        if (components.getSchemas() == null) {
-            components.setSchemas(new java.util.LinkedHashMap<>());
-        }
-        components.getSchemas().put(name, multiFormatSchema);
+        components.addSchema(name, multiFormatSchema);
         multiFormatSchema.attach(components);
         setPathToImportedNode(multiFormatSchema, componentType, name);
     }
