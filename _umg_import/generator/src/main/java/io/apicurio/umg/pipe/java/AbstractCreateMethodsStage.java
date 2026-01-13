@@ -69,9 +69,12 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
             createSetter(javaEntity, propertyWithOrigin);
             createUnionFactoryMethods(javaEntity, propertyWithOrigin);
         } else if (isUnionList(property) || isUnionMap(property)) {
-            createGetter(javaEntity, propertyWithOrigin);
-            createSetter(javaEntity, propertyWithOrigin);
             createUnionFactoryMethods(javaEntity, propertyWithOrigin);
+            createGetter(javaEntity, propertyWithOrigin);
+            createAddMethod(javaEntity, propertyWithOrigin);
+            createClearMethod(javaEntity, propertyWithOrigin);
+            createRemoveMethod(javaEntity, propertyWithOrigin);
+            createInsertMethod(javaEntity, propertyWithOrigin);
         } else {
             warn("Failed to create methods (not yet implemented) for property '" + property.getName() + "' of entity: " + javaEntity.getQualifiedName());
         }
@@ -242,6 +245,17 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.addParameter("String", "name");
             }
             method.addParameter(primitiveType.getSimpleName(), "value");
+        } else if (type.isUnion()) {
+            JavaType jt = new JavaType(type, _package);
+            String unionJavaType = jt.toJavaTypeString();
+            jt.addImportsTo(javaEntity);
+
+            method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
+            addAnnotations(method);
+            if (property.getType().isMap()) {
+                method.addParameter("String", "name");
+            }
+            method.addParameter(unionJavaType, "value");
         } else {
             warn("Type not supported for 'add' method: " + methodName + " with type: " + property.getType());
             return;
@@ -285,13 +299,23 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
 
         if (property.getType().isList()) {
             PropertyType type = property.getType().getNested().iterator().next();
-            JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
-            if (entityType == null) {
-                error("Could not resolve entity type: " + _package + "::" + type);
+            if (type.isEntityType()) {
+                JavaInterfaceSource entityType = resolveJavaEntityType(_package, type);
+                if (entityType == null) {
+                    error("Could not resolve entity type: " + _package + "::" + type);
+                    return;
+                }
+                javaEntity.addImport(entityType);
+                method.addParameter(entityType.getName(), "value");
+            } else if (type.isUnion()) {
+                JavaType jt = new JavaType(type, _package);
+                String unionJavaType = jt.toJavaTypeString();
+                jt.addImportsTo(javaEntity);
+                method.addParameter(unionJavaType, "value");
+            } else {
+                error("Unsupported type for remove method: " + type);
                 return;
             }
-            javaEntity.addImport(entityType);
-            method.addParameter(entityType.getName(), "value");
         } else {
             method.addParameter("String", "name");
         }
@@ -340,8 +364,19 @@ public abstract class AbstractCreateMethodsStage extends AbstractJavaStage {
                 method.addParameter("String", "name");
             }
             method.addParameter(primitiveType.getSimpleName(), "value");
+        } else if (type.isUnion()) {
+            JavaType jt = new JavaType(type, _package);
+            String unionJavaType = jt.toJavaTypeString();
+            jt.addImportsTo(javaEntity);
+
+            method = ((MethodHolderSource<?>) javaEntity).addMethod().setPublic().setName(methodName).setReturnTypeVoid();
+            addAnnotations(method);
+            if (property.getType().isMap()) {
+                method.addParameter("String", "name");
+            }
+            method.addParameter(unionJavaType, "value");
         } else {
-            warn("Type not supported for 'add' method: " + methodName + " with type: " + property.getType());
+            warn("Type not supported for 'insert' method: " + methodName + " with type: " + property.getType());
             return;
         }
         method.addParameter("int", "atIndex");

@@ -144,6 +144,116 @@ public class UnionMapTest {
         assertTrue(widgets.size() > 0);
     }
 
+    @Test
+    public void testCollectionMethods() throws Exception {
+        // Create a new document to test all collection manipulation methods
+        Umtm10Document document = new org.example.unionmap.v10.Umtm10DocumentImpl();
+        document.setId("collection-methods-test");
+        document.setDescription("Test all collection manipulation methods");
+
+        // Test union map methods (schemas property)
+        // Test add method
+        Umtm10StandardSchema standardSchema = document.createStandardSchema();
+        standardSchema.setType("string");
+        standardSchema.setDescription("A standard schema");
+        document.addSchema("StandardSchema1", standardSchema);
+
+        Umtm10MultiFormatSchema multiFormatSchema = document.createMultiFormatSchema();
+        multiFormatSchema.setSchemaFormat("application/vnd.aai.asyncapi+json;version=2.0.0");
+        document.addSchema("MultiFormatSchema1", multiFormatSchema);
+
+        // Verify schemas were added
+        Map<String, MultiFormatSchemaStandardSchemaUnion> schemas = document.getSchemas();
+        assertNotNull(schemas);
+        assertEquals(2, schemas.size());
+        assertTrue(schemas.containsKey("StandardSchema1"));
+        assertTrue(schemas.containsKey("MultiFormatSchema1"));
+
+        // Test remove method for union maps
+        document.removeSchema("MultiFormatSchema1");
+        assertEquals(1, document.getSchemas().size());
+        assertTrue(document.getSchemas().containsKey("StandardSchema1"));
+
+        // Add it back for further testing
+        document.addSchema("MultiFormatSchema1", multiFormatSchema);
+        assertEquals(2, document.getSchemas().size());
+
+        // Test union list methods (widgets property)
+        // Test add method
+        Umtm10Widget widget = document.createWidget();
+        widget.setName("Widget1");
+        widget.setPrice(99.99);
+        document.addWidget(widget);
+
+        Umtm10Gadget gadget = document.createGadget();
+        gadget.setName("Gadget1");
+        gadget.setBrand("BrandX");
+        document.addWidget(gadget);
+
+        // Verify widgets were added
+        List<?> widgets = document.getWidgets();
+        assertNotNull(widgets);
+        assertEquals(2, widgets.size());
+
+        // Test insert method for union lists
+        Umtm10Widget widget2 = document.createWidget();
+        widget2.setName("Widget2");
+        widget2.setPrice(149.99);
+        document.insertWidget(widget2, 1);
+        assertEquals(3, document.getWidgets().size());
+
+        // Test remove method for union lists
+        document.removeWidget(widget);
+        assertEquals(2, document.getWidgets().size());
+
+        // Test union list of primitives (mixedItems property)
+        // Test add method with union values
+        org.example.unionmap.union.StringUnionValue stringValue =
+            new org.example.unionmap.union.StringUnionValueImpl("test string");
+        document.addMixedItem(stringValue);
+
+        org.example.unionmap.union.BooleanUnionValue boolValue =
+            new org.example.unionmap.union.BooleanUnionValueImpl(true);
+        document.addMixedItem(boolValue);
+
+        // Verify items were added
+        List<?> mixedItems = document.getMixedItems();
+        assertNotNull(mixedItems);
+        assertEquals(2, mixedItems.size());
+
+        // Test insert method
+        org.example.unionmap.union.StringUnionValue stringValue2 =
+            new org.example.unionmap.union.StringUnionValueImpl("inserted string");
+        document.insertMixedItem(stringValue2, 1);
+        assertEquals(3, document.getMixedItems().size());
+
+        // Test remove method
+        document.removeMixedItem(boolValue);
+        assertEquals(2, document.getMixedItems().size());
+
+        // Test clear methods
+        document.clearSchemas();
+        assertNotNull(document.getSchemas());
+        assertEquals(0, document.getSchemas().size());
+
+        document.clearWidgets();
+        assertNotNull(document.getWidgets());
+        assertEquals(0, document.getWidgets().size());
+
+        document.clearMixedItems();
+        assertNotNull(document.getMixedItems());
+        assertEquals(0, document.getMixedItems().size());
+
+        // Verify the document is still valid and can be serialized
+        String json = UnionMapTestLibrary.writeDocument(document);
+        assertNotNull(json);
+
+        // Verify it can be read back
+        Umtm10Document parsedDoc = UnionMapTestLibrary.readDocument(json);
+        assertNotNull(parsedDoc);
+        assertEquals("collection-methods-test", parsedDoc.getId());
+    }
+
     private Umtm10Document doFullTest(String testFile) throws Exception {
         String originalContent = loadTestResource(testFile);
         Umtm10Document inputDocument = UnionMapTestLibrary.readDocument(originalContent);
