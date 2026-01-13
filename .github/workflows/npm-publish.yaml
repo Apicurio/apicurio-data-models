@@ -1,0 +1,119 @@
+name: NPM Publish Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Release version to publish (e.g., 2.3.0)'
+        required: true
+      branch:
+        description: 'Branch/tag to publish from'
+        required: true
+        default: 'main'
+  workflow_call:
+    inputs:
+      release-version:
+        description: 'Release version to publish'
+        required: true
+        type: string
+      branch:
+        description: 'Branch/tag to publish from'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  npm-publish:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Apicurio'
+    steps:
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+
+      - name: Check Java Version
+        run: java -version
+
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: '3.8.5'
+
+
+      - name: Check Maven Version
+        run: mvn --version
+
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+
+      - name: Check Node Version
+        run: node --version
+
+
+      - name: Check NPM Version
+        run: npm --version
+
+
+      - name: Log Metadata
+        run: |
+          echo "Publishing Apicurio Data Models version ${{ inputs.release-version }} to NPM"
+          echo "Publishing from branch/tag: ${{ inputs.branch }}"
+
+
+      - name: Code Checkout
+        run: |
+          git init
+          git config --global user.name "apicurio-ci"
+          git config --global user.email "apicurio.ci@gmail.com"
+          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git fetch
+          git checkout ${{ inputs.branch }}
+          echo "#### Listing files after checkout ####"
+          find .
+
+
+      - name: Create '.npmrc' File
+        uses: filipstefansson/set-npm-token-action@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+
+      - name: Build TypeScript Package
+        run: mvn clean install -Ptranspilation -DskipTests
+
+
+      - name: Publish to NPM
+        run: npm publish ./target/ts/dist/
+
+
+      - name: Slack Notification (Always)
+        if: always()
+        run: |
+          MESSAGE="NPM publish for version ${{ inputs.release-version }} completed with status: ${{ job.status }}"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}
+
+      - name: Slack Notification (Error)
+        if: failure()
+        run: |
+          MESSAGE="NPM publish for version ${{ inputs.release-version }} FAILED!"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_ERROR_WEBHOOK }}

@@ -20,8 +20,6 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     if: github.repository_owner == 'Apicurio'
     steps:
 
@@ -117,35 +115,52 @@ jobs:
           git push
 
 
-      - name: Create '.npmrc' File 
-        uses: filipstefansson/set-npm-token-action@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-
-
-      - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          
-
       - name: Create GitHub Release
         run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.ACCESS_TOKEN }}
 
 
+  maven-publish:
+    needs: release
+    uses: ./.github/workflows/maven-publish.yaml
+    with:
+      release-version: ${{ github.event.inputs.release-version }}
+      branch: ${{ github.event.inputs.branch }}
+    secrets: inherit
+    continue-on-error: true
 
-      - name: Maven Deploy
-        uses: nick-fields/retry@v3
+
+  npm-publish:
+    needs: release
+    uses: ./.github/workflows/npm-publish.yaml
+    with:
+      release-version: ${{ github.event.inputs.release-version }}
+      branch: ${{ github.event.inputs.branch }}
+    secrets: inherit
+    continue-on-error: true
+
+
+  finalize:
+    needs: [release, maven-publish, npm-publish]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
         with:
-          timeout_minutes: 10
-          max_attempts: 5
-          retry_wait_seconds: 120
-          command: mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
+          maven-version: '3.8.5'
 
 
-      - name: Publish to NPM
-        run: npm publish ./target/ts/dist/
+      - name: Code Checkout
+        run: |
+          git init
+          git config --global user.name "apicurio-ci"
+          git config --global user.email "apicurio.ci@gmail.com"
+          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git fetch
+          git checkout ${{ github.event.inputs.branch}}
+          git branch --set-upstream-to=origin/${{ github.event.inputs.branch}}
+          git pull
 
 
       - name: Update Snapshot version ${{ github.event.inputs.snapshot-version}}
@@ -155,25 +170,42 @@ jobs:
       - name: Commit Snapshot Version Change
         run: |
           git add .
-          git restore --staged .npmrc    # can't commit, contains NPM token
           git commit -m"Automated version update: ${{ github.event.inputs.snapshot-version}}"
           git push
+
+
+      - name: Check Publishing Results
+        run: |
+          echo "Release workflow completed"
+          echo "Maven publish status: ${{ needs.maven-publish.result }}"
+          echo "NPM publish status: ${{ needs.npm-publish.result }}"
+          if [[ "${{ needs.maven-publish.result }}" != "success" ]] || [[ "${{ needs.npm-publish.result }}" != "success" ]]; then
+            echo "WARNING: One or more publishing steps failed. You can retry them manually:"
+            echo "  - Maven: https://github.com/${{ github.repository }}/actions/workflows/maven-publish.yaml"
+            echo "  - NPM: https://github.com/${{ github.repository }}/actions/workflows/npm-publish.yaml"
+          fi
 
 
       - name: Slack Notification (Always)
         if: always()
         run: |
-          MESSAGE="'${{ github.workflow }}/${{ github.job }}' job completed with status: ${{ job.status }}"
+          MAVEN_STATUS="${{ needs.maven-publish.result }}"
+          NPM_STATUS="${{ needs.npm-publish.result }}"
+          if [[ "$MAVEN_STATUS" != "success" ]] || [[ "$NPM_STATUS" != "success" ]]; then
+            MESSAGE="Release ${{ github.event.inputs.release-version }} completed with warnings. Maven: $MAVEN_STATUS, NPM: $NPM_STATUS. Manual retry may be needed."
+          else
+            MESSAGE="Release ${{ github.event.inputs.release-version }} completed successfully"
+          fi
           REPO="${{ github.repository }}"
           LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
           PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}
 
-      - name: Slack Notification (Error)
-        if: failure()
+      - name: Slack Notification (Publishing Failures)
+        if: needs.maven-publish.result != 'success' || needs.npm-publish.result != 'success'
         run: |
-          MESSAGE="'${{ github.workflow }}/${{ github.job }}' job FAILED!"
+          MESSAGE="Release ${{ github.event.inputs.release-version }}: Publishing failures detected. Maven: ${{ needs.maven-publish.result }}, NPM: ${{ needs.npm-publish.result }}. Retry at https://github.com/${{ github.repository }}/actions"
           REPO="${{ github.repository }}"
           LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
-          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"warning\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_ERROR_WEBHOOK }}

@@ -1,0 +1,115 @@
+name: Maven Publish Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Release version to publish (e.g., 2.3.0)'
+        required: true
+      branch:
+        description: 'Branch/tag to publish from'
+        required: true
+        default: 'main'
+  workflow_call:
+    inputs:
+      release-version:
+        description: 'Release version to publish'
+        required: true
+        type: string
+      branch:
+        description: 'Branch/tag to publish from'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  maven-publish:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+    if: github.repository_owner == 'Apicurio'
+    steps:
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+
+      - name: Check Java Version
+        run: java -version
+
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: '3.8.5'
+
+
+      - name: Check Maven Version
+        run: mvn --version
+
+
+      - name: Log Metadata
+        run: |
+          echo "Publishing Apicurio Data Models version ${{ inputs.release-version }} to Maven Central"
+          echo "Publishing from branch/tag: ${{ inputs.branch }}"
+
+
+      - name: Set up settings.xml
+        run: |
+          echo "<settings><servers><server><id>central</id><username>${{ secrets.CENTRAL_USERNAME }}</username><password>${{ secrets.CENTRAL_TOKEN }}</password></server></servers><profiles><profile><id>central</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable></properties></profile></profiles></settings>" > /home/runner/.m2/settings.xml
+          cat /home/runner/.m2/settings.xml
+
+
+      - name: Code Checkout
+        run: |
+          git init
+          git config --global user.name "apicurio-ci"
+          git config --global user.email "apicurio.ci@gmail.com"
+          git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git fetch
+          git checkout ${{ inputs.branch }}
+          echo "#### Listing files after checkout ####"
+          find .
+
+
+      - name: Import GPG Key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+
+      - name: Build
+        run: mvn clean install -Ptranspilation -DskipTests
+
+
+      - name: Maven Deploy
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 5
+          retry_wait_seconds: 120
+          command: mvn deploy -Prelease --batch-mode --settings /home/runner/.m2/settings.xml -DskipTests
+
+
+      - name: Slack Notification (Always)
+        if: always()
+        run: |
+          MESSAGE="Maven publish for version ${{ inputs.release-version }} completed with status: ${{ job.status }}"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}
+
+      - name: Slack Notification (Error)
+        if: failure()
+        run: |
+          MESSAGE="Maven publish for version ${{ inputs.release-version }} FAILED!"
+          REPO="${{ github.repository }}"
+          LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
+          PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"${{ job.status }}\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.SLACK_ERROR_WEBHOOK }}
