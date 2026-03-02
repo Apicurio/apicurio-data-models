@@ -18,6 +18,7 @@ public class DeletePathCommand extends AbstractCommand {
     public String _pathName;
 
     public ObjectNode _oldPathItem;
+    public int _oldIndex;
 
     public DeletePathCommand() {
     }
@@ -45,8 +46,9 @@ public class DeletePathCommand extends AbstractCommand {
             return;
         }
 
-        // Save the path item for undo
+        // Save the path item and its index for undo
         this._oldPathItem = Library.writeNode(pathItem);
+        this._oldIndex = paths.getItemNames().indexOf(this._pathName);
 
         // Remove the path item
         paths.removeItem(this._pathName);
@@ -71,7 +73,7 @@ public class DeletePathCommand extends AbstractCommand {
 
         OpenApiPathItem newPathItem = paths.createPathItem();
         Library.readNode(this._oldPathItem, newPathItem);
-        paths.addItem(this._pathName, newPathItem);
+        paths.insertItem(this._pathName, newPathItem, this._oldIndex);
     }
 
 }

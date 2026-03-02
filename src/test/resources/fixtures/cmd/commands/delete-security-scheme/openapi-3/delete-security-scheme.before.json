@@ -11,6 +11,11 @@
         "name": "api_key",
         "in": "header"
       },
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
       "ImplicitOAuth2": {
         "type": "oauth2",
         "flows": {
@@ -25,11 +30,6 @@
       },
       "RefAuth": {
         "$ref": "#/other/Ref"
-      },
-      "JWT": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
   }

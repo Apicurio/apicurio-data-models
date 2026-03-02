@@ -11,6 +11,8 @@ import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +25,7 @@ public class DeleteResponseHeaderCommand extends AbstractCommand {
     public String _headerName;
 
     public ObjectNode _oldHeader;
+    public int _oldIndex;
 
     public DeleteResponseHeaderCommand() {
     }
@@ -50,9 +53,11 @@ public class DeleteResponseHeaderCommand extends AbstractCommand {
             return;
         }
 
-        // Save the header for undo
+        // Save the header and its index for undo
         OpenApiHeader header = headers.get(this._headerName);
         this._oldHeader = Library.writeNode(header);
+        List<String> headerNames = new ArrayList<>(headers.keySet());
+        this._oldIndex = headerNames.indexOf(this._headerName);
 
         // Remove the header
         response.removeHeader(this._headerName);
@@ -75,7 +80,7 @@ public class DeleteResponseHeaderCommand extends AbstractCommand {
 
         OpenApiHeader newHeader = response.createHeader();
         Library.readNode(this._oldHeader, newHeader);
-        response.addHeader(this._headerName, newHeader);
+        response.insertHeader(this._headerName, newHeader, this._oldIndex);
     }
 
 }

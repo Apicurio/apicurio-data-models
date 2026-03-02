@@ -16,6 +16,9 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A command used to delete a single security scheme from a document.
  * @author eric.wittmann@gmail.com
@@ -25,6 +28,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
     public String _schemeName;
 
     public ObjectNode _oldScheme;
+    public int _oldIndex;
 
     public DeleteSecuritySchemeCommand() {
     }
@@ -49,6 +53,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             OpenApi20SecurityScheme scheme = defs.getItem(this._schemeName);
             if (!this.isNullOrUndefined(scheme)) {
                 this._oldScheme = Library.writeNode(scheme);
+                this._oldIndex = defs.getItemNames().indexOf(this._schemeName);
                 defs.removeItem(this._schemeName);
             }
         } else if (ModelTypeUtil.isOpenApi30Model(document)) {
@@ -59,6 +64,8 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             SecurityScheme scheme = components.getSecuritySchemes().get(this._schemeName);
             if (!this.isNullOrUndefined(scheme)) {
                 this._oldScheme = Library.writeNode((Node) scheme);
+                List<String> schemeNames = new ArrayList<>(components.getSecuritySchemes().keySet());
+                this._oldIndex = schemeNames.indexOf(this._schemeName);
                 components.removeSecurityScheme(this._schemeName);
             }
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
@@ -69,6 +76,8 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             SecurityScheme scheme = components.getSecuritySchemes().get(this._schemeName);
             if (!this.isNullOrUndefined(scheme)) {
                 this._oldScheme = Library.writeNode((Node) scheme);
+                List<String> schemeNames = new ArrayList<>(components.getSecuritySchemes().keySet());
+                this._oldIndex = schemeNames.indexOf(this._schemeName);
                 components.removeSecurityScheme(this._schemeName);
             }
         }
@@ -92,7 +101,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             }
             OpenApi20SecurityScheme scheme = defs.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
-            defs.addItem(this._schemeName, scheme);
+            defs.insertItem(this._schemeName, scheme, this._oldIndex);
         } else if (ModelTypeUtil.isOpenApi30Model(document)) {
             OpenApi30Components components = ((OpenApi30Document) document).getComponents();
             if (this.isNullOrUndefined(components)) {
@@ -101,7 +110,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             }
             SecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
-            components.addSecurityScheme(this._schemeName, scheme);
+            components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
             if (this.isNullOrUndefined(components)) {
@@ -110,7 +119,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             }
             SecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
-            components.addSecurityScheme(this._schemeName, scheme);
+            components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
         }
     }
 
