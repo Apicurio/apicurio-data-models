@@ -128,7 +128,6 @@ jobs:
       release-version: ${{ github.event.inputs.release-version }}
       branch: ${{ github.event.inputs.branch }}
     secrets: inherit
-    continue-on-error: true
 
 
   npm-publish:
@@ -138,7 +137,6 @@ jobs:
       release-version: ${{ github.event.inputs.release-version }}
       branch: ${{ github.event.inputs.branch }}
     secrets: inherit
-    continue-on-error: true
 
 
   finalize:
