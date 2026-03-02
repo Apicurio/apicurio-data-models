@@ -1,5 +1,4 @@
 [{
     "__type": "DeleteRequestBodyCommand",
-    "_property": "requestBody",
-    "_parentPath": "/paths[/v2]/put"
+    "_operationPath": "/paths[/v2]/put"
 }]

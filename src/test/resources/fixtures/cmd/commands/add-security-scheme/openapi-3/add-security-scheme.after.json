@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "X-API-Key",
+        "in": "header"
+      }
+    }
+  }
+}

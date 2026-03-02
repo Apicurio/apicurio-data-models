@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "AddMediaTypeCommand",
+        "_parentPath": "/paths[/foo]/get/requestBody",
+        "_mediaTypeName": "application/xml"
+    }
+]

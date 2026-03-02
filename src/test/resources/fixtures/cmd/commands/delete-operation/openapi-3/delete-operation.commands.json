@@ -1,5 +1,5 @@
 [{
     "__type": "DeleteOperationCommand",
-    "_property": "get",
-    "_parentPath": "/paths[/foo]"
+    "_pathItemPath": "/paths[/foo]",
+    "_method": "get"
 }]
