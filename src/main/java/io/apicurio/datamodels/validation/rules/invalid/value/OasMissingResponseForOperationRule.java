@@ -38,9 +38,7 @@ public class OasMissingResponseForOperationRule extends AbstractInvalidPropertyV
     public void visitOperation(Operation node) {
         OpenApiOperation op = (OpenApiOperation) node;
         OpenApiResponses responses = op.getResponses();
-        if (!isDefined(responses)) {
-            this.report(node, "responses", map());
-        } else if (!isDefined(responses.getDefault())) {
+        if (isDefined(responses) && !isDefined(responses.getDefault())) {
             this.reportIfInvalid(responses.getItems().size() > 0, node, "responses", map());
         }
     }

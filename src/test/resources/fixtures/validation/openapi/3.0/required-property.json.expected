@@ -16,7 +16,6 @@
 [FLOW-002] |medium| {/components/securitySchemes[flow-002]/flows/clientCredentials->tokenUrl} :: Client Credentials OAuth Flow is missing a Token URL.
 [FLOW-002] |medium| {/components/securitySchemes[flow-002]/flows/authorizationCode->tokenUrl} :: Auth Code OAuth Flow is missing a Token URL.
 [FLOW-006] |medium| {/components/securitySchemes[flow-006]/flows/implicit->scopes} :: OAuth Flow is missing defined scopes.
-[OP-013] |medium| {/paths[/op-007]/get->responses} :: Operation must have at least one Response.
 [SS-001] |medium| {/components/securitySchemes[ss-001]->type} :: Security Scheme is missing a type.
 [SS-002] |medium| {/components/securitySchemes[ss-002]->name} :: API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).
 [SS-003] |medium| {/components/securitySchemes[ss-003]->in} :: API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).
