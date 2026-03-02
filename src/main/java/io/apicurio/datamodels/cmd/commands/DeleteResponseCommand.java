@@ -21,6 +21,7 @@ public class DeleteResponseCommand extends AbstractCommand {
     public String _statusCode;
 
     public ObjectNode _oldResponse;
+    public int _oldIndex;
 
     public DeleteResponseCommand() {
     }
@@ -53,8 +54,9 @@ public class DeleteResponseCommand extends AbstractCommand {
             return;
         }
 
-        // Save the response for undo
+        // Save the response and its index for undo
         this._oldResponse = Library.writeNode(response);
+        this._oldIndex = responses.getItemNames().indexOf(this._statusCode);
 
         // Remove the response
         responses.removeItem(this._statusCode);
@@ -82,7 +84,7 @@ public class DeleteResponseCommand extends AbstractCommand {
 
         OpenApiResponse newResponse = responses.createResponse();
         Library.readNode(this._oldResponse, newResponse);
-        responses.addItem(this._statusCode, newResponse);
+        responses.insertItem(this._statusCode, newResponse, this._oldIndex);
     }
 
 }

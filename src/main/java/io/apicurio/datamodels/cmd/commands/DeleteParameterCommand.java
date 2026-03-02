@@ -24,6 +24,7 @@ public class DeleteParameterCommand extends AbstractCommand {
     public String _parameterLocation;
 
     public ObjectNode _oldParameter;
+    public int _oldIndex;
 
     public DeleteParameterCommand() {
     }
@@ -53,10 +54,12 @@ public class DeleteParameterCommand extends AbstractCommand {
             return;
         }
 
-        for (OpenApiParameter param : parameters) {
+        for (int idx = 0; idx < parameters.size(); idx++) {
+            OpenApiParameter param = parameters.get(idx);
             if (this._parameterName.equals(param.getName()) &&
                     this._parameterLocation.equals(param.getIn())) {
                 this._oldParameter = Library.writeNode(param);
+                this._oldIndex = idx;
                 parent.removeParameter(param);
                 return;
             }
@@ -80,7 +83,7 @@ public class DeleteParameterCommand extends AbstractCommand {
 
         OpenApiParameter newParameter = parent.createParameter();
         Library.readNode(this._oldParameter, newParameter);
-        parent.addParameter(newParameter);
+        parent.insertParameter(newParameter, this._oldIndex);
     }
 
 }
