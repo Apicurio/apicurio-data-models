@@ -6,9 +6,14 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 
 import java.util.List;
 
@@ -79,7 +84,13 @@ public class AddParameterCommand extends AbstractCommand {
         // Create and set schema with type
         if (!this.isNullOrUndefined(this._parameterType)) {
             OpenApiSchema schema = newParameter.createSchema();
-            schema.setType(this._parameterType);
+            if (ModelTypeUtil.isOpenApi2Model(document)) {
+                ((OpenApi20Schema) schema).setType(this._parameterType);
+            } else if (ModelTypeUtil.isOpenApi30Model(document)) {
+                ((OpenApi30Schema) schema).setType(this._parameterType);
+            } else if (ModelTypeUtil.isOpenApi31Model(document)) {
+                ((OpenApi31Schema) schema).setType(new StringUnionValueImpl(this._parameterType));
+            }
             newParameter.setSchema(schema);
         }
 

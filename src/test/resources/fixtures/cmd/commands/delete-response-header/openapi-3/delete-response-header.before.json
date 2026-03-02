@@ -7,16 +7,16 @@
           "200": {
             "description": "Successful response",
             "headers": {
-              "X-Rate-Limit": {
-                "description": "Rate limit",
-                "schema": {
-                  "type": "integer"
-                }
-              },
               "X-Request-Id": {
                 "description": "Request ID",
                 "schema": {
                   "type": "string"
+                }
+              },
+              "X-Rate-Limit": {
+                "description": "Rate limit",
+                "schema": {
+                  "type": "integer"
                 }
               }
             }

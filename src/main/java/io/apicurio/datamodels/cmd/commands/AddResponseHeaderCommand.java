@@ -5,10 +5,15 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiHeadersParent;
-import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Header;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 
 import java.util.Map;
 
@@ -61,15 +66,27 @@ public class AddResponseHeaderCommand extends AbstractCommand {
         OpenApiHeader header = response.createHeader();
         header.setDescription(this._description);
 
-        // Set schema if provided
+        // Set schema if provided (version-specific: createSchema/setSchema not on base OpenApiHeader)
         if (!this.isNullOrUndefined(this._schemaType) || !this.isNullOrUndefined(this._schemaRef)) {
-            OpenApiSchema schema = header.createSchema();
-            if (!this.isNullOrUndefined(this._schemaRef)) {
-                schema.set$ref(this._schemaRef);
-            } else if (!this.isNullOrUndefined(this._schemaType)) {
-                schema.setType(this._schemaType);
+            if (ModelTypeUtil.isOpenApi30Model(document)) {
+                OpenApi30Header header30 = (OpenApi30Header) header;
+                OpenApi30Schema schema = header30.createSchema();
+                if (!this.isNullOrUndefined(this._schemaRef)) {
+                    schema.set$ref(this._schemaRef);
+                } else if (!this.isNullOrUndefined(this._schemaType)) {
+                    schema.setType(this._schemaType);
+                }
+                header30.setSchema(schema);
+            } else if (ModelTypeUtil.isOpenApi31Model(document)) {
+                OpenApi31Header header31 = (OpenApi31Header) header;
+                OpenApi31Schema schema = header31.createSchema();
+                if (!this.isNullOrUndefined(this._schemaRef)) {
+                    schema.set$ref(this._schemaRef);
+                } else if (!this.isNullOrUndefined(this._schemaType)) {
+                    schema.setType(new StringUnionValueImpl(this._schemaType));
+                }
+                header31.setSchema(schema);
             }
-            header.setSchema(schema);
         }
 
         response.addHeader(this._headerName, header);

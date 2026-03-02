@@ -11,19 +11,16 @@ import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.RegexUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A command used to add a new server to any node that supports servers.
  * @author eric.wittmann@gmail.com
  */
 public class AddServerCommand extends AbstractCommand {
-
-    private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{([^}]+)\\}");
 
     public NodePath _parentPath;
     public String _serverUrl;
@@ -120,9 +117,9 @@ public class AddServerCommand extends AbstractCommand {
      */
     private static List<String> extractVariables(String url) {
         List<String> variables = new ArrayList<>();
-        Matcher matcher = VARIABLE_PATTERN.matcher(url);
-        while (matcher.find()) {
-            variables.add(matcher.group(1));
+        List<String[]> matches = RegexUtil.findMatches(url, "\\{([^}]+)\\}");
+        for (String[] match : matches) {
+            variables.add(match[1]);
         }
         return variables;
     }

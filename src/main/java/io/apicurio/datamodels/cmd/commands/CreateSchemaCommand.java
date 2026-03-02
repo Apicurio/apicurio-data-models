@@ -8,8 +8,11 @@ import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
@@ -86,7 +89,7 @@ public class CreateSchemaCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiSchema newSchema = components.createSchema();
+        OpenApi30Schema newSchema = (OpenApi30Schema) components.createSchema();
         newSchema.setType("object");
         components.addSchema(this._schemaName, newSchema);
     }
@@ -106,8 +109,8 @@ public class CreateSchemaCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiSchema newSchema = components.createSchema();
-        newSchema.setType("object");
+        OpenApi31Schema newSchema = (OpenApi31Schema) components.createSchema();
+        newSchema.setType(new StringUnionValueImpl("object"));
         components.addSchema(this._schemaName, newSchema);
     }
 

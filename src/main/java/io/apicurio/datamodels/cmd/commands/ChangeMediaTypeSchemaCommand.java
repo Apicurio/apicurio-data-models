@@ -6,9 +6,13 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**
  * A command used to set or change the schema on a media type entry.
@@ -53,13 +57,23 @@ public class ChangeMediaTypeSchemaCommand extends AbstractCommand {
             this._hadSchema = true;
         }
 
-        // Create new schema and set properties
+        // Create new schema and set properties (version-specific: set$ref/setType not on base OpenApiSchema)
         if (!this.isNullOrUndefined(this._schemaRef) || !this.isNullOrUndefined(this._schemaType)) {
             OpenApiSchema newSchema = mediaType.createSchema();
-            if (!this.isNullOrUndefined(this._schemaRef)) {
-                newSchema.set$ref(this._schemaRef);
-            } else if (!this.isNullOrUndefined(this._schemaType)) {
-                newSchema.setType(this._schemaType);
+            if (ModelTypeUtil.isOpenApi30Model(document)) {
+                OpenApi30Schema schema30 = (OpenApi30Schema) newSchema;
+                if (!this.isNullOrUndefined(this._schemaRef)) {
+                    schema30.set$ref(this._schemaRef);
+                } else if (!this.isNullOrUndefined(this._schemaType)) {
+                    schema30.setType(this._schemaType);
+                }
+            } else if (ModelTypeUtil.isOpenApi31Model(document)) {
+                OpenApi31Schema schema31 = (OpenApi31Schema) newSchema;
+                if (!this.isNullOrUndefined(this._schemaRef)) {
+                    schema31.set$ref(this._schemaRef);
+                } else if (!this.isNullOrUndefined(this._schemaType)) {
+                    schema31.setType(new StringUnionValueImpl(this._schemaType));
+                }
             }
             mediaType.setSchema(newSchema);
         } else {

@@ -1,6 +1,17 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/foo/{fooId}": {
+      "summary": "Foo Resource",
+      "description": "Foo details",
+      "get": {
+        "tags": [ "tag1", "tag2" ],
+        "summary": "Get Foo",
+        "description": "Returns a single foo.",
+        "operationId": "getFoo",
+        "deprecated": false
+      }
+    },
     "/foo": {
       "summary": "Foo Resources",
       "description": "CRUD for Foos.",
@@ -13,17 +24,6 @@
           "url": "https://example.com"
         },
         "operationId": "listPets",
-        "deprecated": false
-      }
-    },
-    "/foo/{fooId}": {
-      "summary": "Foo Resource",
-      "description": "Foo details",
-      "get": {
-        "tags": [ "tag1", "tag2" ],
-        "summary": "Get Foo",
-        "description": "Returns a single foo.",
-        "operationId": "getFoo",
         "deprecated": false
       }
     }
