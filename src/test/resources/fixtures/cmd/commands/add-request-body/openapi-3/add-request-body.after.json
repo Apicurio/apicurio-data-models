@@ -1,0 +1,17 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "post": {
+        "summary": "Create Foo",
+        "operationId": "createFoo",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {}
+      }
+    }
+  }
+}

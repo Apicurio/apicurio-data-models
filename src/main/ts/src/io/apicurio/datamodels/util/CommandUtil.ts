@@ -4,17 +4,33 @@ import {NodePathUtil} from "../paths/NodePathUtil";
 
 import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
 import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
+import {AddExtensionCommand} from "../cmd/commands/AddExtensionCommand";
+import {AddMediaTypeCommand} from "../cmd/commands/AddMediaTypeCommand";
+import {AddOperationSecurityRequirementCommand} from "../cmd/commands/AddOperationSecurityRequirementCommand";
+import {AddParameterCommand} from "../cmd/commands/AddParameterCommand";
 import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
+import {AddRequestBodyCommand} from "../cmd/commands/AddRequestBodyCommand";
+import {AddResponseCommand} from "../cmd/commands/AddResponseCommand";
 import {AddResponseDefinitionCommand} from "../cmd/commands/AddResponseDefinitionCommand";
+import {AddResponseHeaderCommand} from "../cmd/commands/AddResponseHeaderCommand";
 import {AddSchemaDefinitionCommand} from "../cmd/commands/AddSchemaDefinitionCommand";
 import {AddSecurityRequirementCommand} from "../cmd/commands/AddSecurityRequirementCommand";
+import {AddSecuritySchemeCommand} from "../cmd/commands/AddSecuritySchemeCommand";
+import {AddServerCommand} from "../cmd/commands/AddServerCommand";
+import {AddTagCommand} from "../cmd/commands/AddTagCommand";
 
+import {ChangeContactCommand} from "../cmd/commands/ChangeContactCommand";
 import {ChangeDescriptionCommand} from "../cmd/commands/ChangeDescriptionCommand";
+import {ChangeExtensionCommand} from "../cmd/commands/ChangeExtensionCommand";
+import {ChangeLicenseCommand} from "../cmd/commands/ChangeLicenseCommand";
+import {ChangeMediaTypeSchemaCommand} from "../cmd/commands/ChangeMediaTypeSchemaCommand";
 import {ChangePropertyCommand} from "../cmd/commands/ChangePropertyCommand";
 import {ChangeTitleCommand} from "../cmd/commands/ChangeTitleCommand";
 import {ChangeVersionCommand} from "../cmd/commands/ChangeVersionCommand";
-import {ChangeContactCommand} from "../cmd/commands/ChangeContactCommand";
-import {ChangeLicenseCommand} from "../cmd/commands/ChangeLicenseCommand";
+
+import {CreateOperationCommand} from "../cmd/commands/CreateOperationCommand";
+import {CreatePathCommand} from "../cmd/commands/CreatePathCommand";
+import {CreateSchemaCommand} from "../cmd/commands/CreateSchemaCommand";
 
 import {DeleteAllChildSchemasCommand} from "../cmd/commands/DeleteAllChildSchemasCommand";
 import {DeleteAllExamplesCommand} from "../cmd/commands/DeleteAllExamplesCommand";
@@ -32,6 +48,22 @@ import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
 import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
 import {DeleteMediaTypeCommand} from "../cmd/commands/DeleteMediaTypeCommand";
+import {DeleteOperationCommand} from "../cmd/commands/DeleteOperationCommand";
+import {DeleteOperationSecurityRequirementCommand} from "../cmd/commands/DeleteOperationSecurityRequirementCommand";
+import {DeleteParameterCommand} from "../cmd/commands/DeleteParameterCommand";
+import {DeletePathCommand} from "../cmd/commands/DeletePathCommand";
+import {DeleteRequestBodyCommand} from "../cmd/commands/DeleteRequestBodyCommand";
+import {DeleteResponseCommand} from "../cmd/commands/DeleteResponseCommand";
+import {DeleteResponseHeaderCommand} from "../cmd/commands/DeleteResponseHeaderCommand";
+import {DeleteSchemaCommand} from "../cmd/commands/DeleteSchemaCommand";
+import {DeleteSecurityRequirementCommand} from "../cmd/commands/DeleteSecurityRequirementCommand";
+import {DeleteSecuritySchemeCommand} from "../cmd/commands/DeleteSecuritySchemeCommand";
+import {DeleteServerCommand} from "../cmd/commands/DeleteServerCommand";
+import {DeleteTagCommand} from "../cmd/commands/DeleteTagCommand";
+
+import {EnsureChildNodeCommand} from "../cmd/commands/EnsureChildNodeCommand";
+
+import {RenameTagCommand} from "../cmd/commands/RenameTagCommand";
 
 import {ReplaceOperationCommand} from "../cmd/commands/ReplaceOperationCommand";
 import {ReplacePathItemCommand} from "../cmd/commands/ReplacePathItemCommand";
@@ -41,10 +73,13 @@ import {ReplaceSecurityRequirementCommand} from "../cmd/commands/ReplaceSecurity
 
 import {SetPropertyCommand} from "../cmd/commands/SetPropertyCommand";
 
+import {UpdateNodeCommand} from "../cmd/commands/UpdateNodeCommand";
+import {UpdateSecuritySchemeCommand} from "../cmd/commands/UpdateSecuritySchemeCommand";
+
 
 const pathKeys: string[] = [
     "_mediaTypePath", "_responsePath", "_responsesPath", "_parentPath", "_schemaPath", "_parameterPath", "_operationPath",
-    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath"
+    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath", "_pathItemPath"
 ];
 const pathListKeys: string[] = [ "_references" ];
 const cmdListKeys: string[] = [ "_commands" ];
@@ -54,17 +89,33 @@ type Supplier = () => ICommand;
 const commandSuppliers: { [key: string]: Supplier } = {
     "AddChannelItemCommand": () => { return new AddChannelItemCommand(); },
     "AddExampleCommand": () => { return new AddExampleCommand(); },
+    "AddExtensionCommand": () => { return new AddExtensionCommand(); },
+    "AddMediaTypeCommand": () => { return new AddMediaTypeCommand(); },
+    "AddOperationSecurityRequirementCommand": () => { return new AddOperationSecurityRequirementCommand(); },
+    "AddParameterCommand": () => { return new AddParameterCommand(); },
     "AddPathItemCommand": () => { return new AddPathItemCommand(); },
+    "AddRequestBodyCommand": () => { return new AddRequestBodyCommand(); },
+    "AddResponseCommand": () => { return new AddResponseCommand(); },
     "AddResponseDefinitionCommand": () => { return new AddResponseDefinitionCommand(); },
+    "AddResponseHeaderCommand": () => { return new AddResponseHeaderCommand(); },
     "AddSchemaDefinitionCommand": () => { return new AddSchemaDefinitionCommand(); },
     "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
+    "AddSecuritySchemeCommand": () => { return new AddSecuritySchemeCommand(); },
+    "AddServerCommand": () => { return new AddServerCommand(); },
+    "AddTagCommand": () => { return new AddTagCommand(); },
 
+    "ChangeContactCommand": () => { return new ChangeContactCommand(); },
     "ChangeDescriptionCommand": () => { return new ChangeDescriptionCommand(); },
+    "ChangeExtensionCommand": () => { return new ChangeExtensionCommand(); },
+    "ChangeLicenseCommand": () => { return new ChangeLicenseCommand(); },
+    "ChangeMediaTypeSchemaCommand": () => { return new ChangeMediaTypeSchemaCommand(); },
     "ChangePropertyCommand": () => { return new ChangePropertyCommand(); },
     "ChangeTitleCommand": () => { return new ChangeTitleCommand(); },
     "ChangeVersionCommand": () => { return new ChangeVersionCommand(); },
-    "ChangeContactCommand": () => { return new ChangeContactCommand(); },
-    "ChangeLicenseCommand": () => { return new ChangeLicenseCommand(); },
+
+    "CreateOperationCommand": () => { return new CreateOperationCommand(); },
+    "CreatePathCommand": () => { return new CreatePathCommand(); },
+    "CreateSchemaCommand": () => { return new CreateSchemaCommand(); },
 
     "DeleteAllChildSchemasCommand": () => { return new DeleteAllChildSchemasCommand(); },
     "DeleteAllExamplesCommand": () => { return new DeleteAllExamplesCommand(); },
@@ -82,6 +133,22 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },
     "DeleteMediaTypeCommand": () => { return new DeleteMediaTypeCommand(); },
+    "DeleteOperationCommand": () => { return new DeleteOperationCommand(); },
+    "DeleteOperationSecurityRequirementCommand": () => { return new DeleteOperationSecurityRequirementCommand(); },
+    "DeleteParameterCommand": () => { return new DeleteParameterCommand(); },
+    "DeletePathCommand": () => { return new DeletePathCommand(); },
+    "DeleteRequestBodyCommand": () => { return new DeleteRequestBodyCommand(); },
+    "DeleteResponseCommand": () => { return new DeleteResponseCommand(); },
+    "DeleteResponseHeaderCommand": () => { return new DeleteResponseHeaderCommand(); },
+    "DeleteSchemaCommand": () => { return new DeleteSchemaCommand(); },
+    "DeleteSecurityRequirementCommand": () => { return new DeleteSecurityRequirementCommand(); },
+    "DeleteSecuritySchemeCommand": () => { return new DeleteSecuritySchemeCommand(); },
+    "DeleteServerCommand": () => { return new DeleteServerCommand(); },
+    "DeleteTagCommand": () => { return new DeleteTagCommand(); },
+
+    "EnsureChildNodeCommand": () => { return new EnsureChildNodeCommand(); },
+
+    "RenameTagCommand": () => { return new RenameTagCommand(); },
 
     "ReplaceOperationCommand": () => { return new ReplaceOperationCommand(); },
     "ReplacePathItemCommand": () => { return new ReplacePathItemCommand(); },
@@ -90,6 +157,9 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "ReplaceSecurityRequirementCommand": () => { return new ReplaceSecurityRequirementCommand(); },
 
     "SetPropertyCommand": () => { return new SetPropertyCommand(); },
+
+    "UpdateNodeCommand": () => { return new UpdateNodeCommand(); },
+    "UpdateSecuritySchemeCommand": () => { return new UpdateSecuritySchemeCommand(); },
 };
 
 export class CommandUtil {

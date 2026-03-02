@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "AddTagCommand",
+        "_tagName": "newTag",
+        "_tagDescription": "A new tag."
+    }
+]

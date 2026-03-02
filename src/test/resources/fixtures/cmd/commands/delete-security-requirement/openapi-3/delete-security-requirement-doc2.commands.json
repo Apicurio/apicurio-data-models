@@ -1,12 +1,4 @@
 [{
     "__type": "DeleteSecurityRequirementCommand",
-    "_parentPath": "/",
-    "_requirement": {
-        "Auth1": [],
-        "Auth2": [
-            "s1",
-            "s2",
-            "s3"
-        ]
-    }
+    "_index": 1
 }]
