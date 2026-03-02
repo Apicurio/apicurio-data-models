@@ -25,7 +25,7 @@ public class OasMediaTypeExamplesMutualExclusivityRule extends ValidationRule {
     @Override
     public void visitMediaType(OpenApiMediaType node) {
         OpenApiExamplesParent examplesParent = (OpenApiExamplesParent) node;
-        this.reportIf(hasValue(node.getExample()) && !examplesParent.getExamples().isEmpty(), node, "example", map());
+        this.reportIf(hasValue(node.getExample()) && examplesParent.getExamples() != null && !examplesParent.getExamples().isEmpty(), node, "example", map());
     }
 
 }
