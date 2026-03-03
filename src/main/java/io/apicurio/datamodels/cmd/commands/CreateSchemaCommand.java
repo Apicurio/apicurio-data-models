@@ -2,6 +2,10 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -15,6 +19,7 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
 import java.util.Map;
 
@@ -52,6 +57,8 @@ public class CreateSchemaCommand extends AbstractCommand {
             executeForOpenApi30((OpenApi30Document) document);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             executeForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            executeForAsyncApi2((AsyncApiDocument) document);
         }
     }
 
@@ -114,6 +121,27 @@ public class CreateSchemaCommand extends AbstractCommand {
         components.addSchema(this._schemaName, newSchema);
     }
 
+    @SuppressWarnings("unchecked")
+    private void executeForAsyncApi2(AsyncApiDocument doc) {
+        AsyncApiComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = doc.createComponents();
+            doc.setComponents(components);
+            this._nullParent = true;
+        }
+
+        // Check if schema already exists
+        Map<String, ? extends Schema> schemas = (Map<String, ? extends Schema>) NodeUtil.getNodeProperty(components, "schemas");
+        if (!this.isNullOrUndefined(schemas) && schemas.containsKey(this._schemaName)) {
+            this._schemaExisted = true;
+            return;
+        }
+
+        AsyncApiSchema newSchema = (AsyncApiSchema) NodeUtil.invokeMethod(components, "createSchema");
+        newSchema.setType("object");
+        NodeUtil.invokeMethod(components, "addSchema", this._schemaName, newSchema);
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -152,6 +180,16 @@ public class CreateSchemaCommand extends AbstractCommand {
                 OpenApi31Components components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     components.removeSchema(this._schemaName);
+                }
+            }
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (this._nullParent) {
+                doc.setComponents(null);
+            } else {
+                AsyncApiComponents components = doc.getComponents();
+                if (!this.isNullOrUndefined(components)) {
+                    NodeUtil.invokeMethod(components, "removeSchema", this._schemaName);
                 }
             }
         }

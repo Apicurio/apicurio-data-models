@@ -1,0 +1,10 @@
+[
+    {
+        "__type": "AddSecuritySchemeCommand",
+        "_schemeName": "ApiKeyAuth",
+        "_schemeObj": {
+            "type": "apiKey",
+            "in": "header"
+        }
+    }
+]

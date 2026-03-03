@@ -17,6 +17,7 @@ import io.apicurio.datamodels.cmd.commands.AddSchemaDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecuritySchemeCommand;
 import io.apicurio.datamodels.cmd.commands.AddServerCommand;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.cmd.commands.AddTagCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
@@ -308,6 +309,19 @@ public class CommandFactory {
 
     public static ICommand createDeleteServerCommand(OpenApiServersParent parent, String serverUrl) {
         return new DeleteServerCommand(parent, serverUrl);
+    }
+
+    public static ICommand createAddServerCommand(AsyncApiDocument document, String serverName,
+                                                  String serverUrl, String serverDescription) {
+        return new AddServerCommand(document, serverName, serverUrl, serverDescription);
+    }
+
+    public static ICommand createDeleteServerCommand(AsyncApiDocument document, String serverName) {
+        return new DeleteServerCommand(document, serverName);
+    }
+
+    public static ICommand createDeleteAllServersCommand(AsyncApiDocument document) {
+        return new DeleteAllServersCommand(document);
     }
 
     // --- Path commands ---

@@ -1,0 +1,17 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Asyncapi test",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "newName",
+      "description": "A tag to rename."
+    },
+    {
+      "name": "other",
+      "description": "Another tag."
+    }
+  ]
+}

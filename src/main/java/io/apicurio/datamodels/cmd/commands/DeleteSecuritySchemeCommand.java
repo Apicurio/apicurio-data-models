@@ -6,6 +6,8 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
@@ -80,6 +82,18 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
                 this._oldIndex = schemeNames.indexOf(this._schemeName);
                 components.removeSecurityScheme(this._schemeName);
             }
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getSecuritySchemes())) {
+                return;
+            }
+            SecurityScheme scheme = components.getSecuritySchemes().get(this._schemeName);
+            if (!this.isNullOrUndefined(scheme)) {
+                this._oldScheme = Library.writeNode((Node) scheme);
+                List<String> schemeNames = new ArrayList<>(components.getSecuritySchemes().keySet());
+                this._oldIndex = schemeNames.indexOf(this._schemeName);
+                components.removeSecurityScheme(this._schemeName);
+            }
         }
     }
 
@@ -116,6 +130,15 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
             if (this.isNullOrUndefined(components)) {
                 components = ((OpenApi31Document) document).createComponents();
                 ((OpenApi31Document) document).setComponents(components);
+            }
+            SecurityScheme scheme = components.createSecurityScheme();
+            Library.readNode(this._oldScheme, scheme);
+            components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (this.isNullOrUndefined(components)) {
+                components = ((AsyncApiDocument) document).createComponents();
+                ((AsyncApiDocument) document).setComponents(components);
             }
             SecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);

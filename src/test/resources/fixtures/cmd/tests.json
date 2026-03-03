@@ -124,5 +124,20 @@
     { "name": "[OpenAPI 3] {Delete Security Requirement} - Delete Security Req Doc2", "test": "commands/delete-security-requirement/openapi-3/delete-security-requirement-doc2" },
     { "name": "[OpenAPI 3] {Delete Security Requirement} - Delete Security Req Op", "test": "commands/delete-security-requirement/openapi-3/delete-security-requirement-op" },
     { "name": "[OpenAPI 3] {Update Node} - Update Node", "test": "commands/update-node/openapi-3/update-node" },
-    { "name": "[OpenAPI 3] {Ensure Child Node} - Ensure Child Node", "test": "commands/ensure-child-node/openapi-3/ensure-child-node" }
+    { "name": "[OpenAPI 3] {Ensure Child Node} - Ensure Child Node", "test": "commands/ensure-child-node/openapi-3/ensure-child-node" },
+
+    { "name": "[AsyncAPI 2] {Add Security Scheme} - Add Security Scheme", "test": "commands/add-security-scheme/asyncapi-2/add-security-scheme" },
+    { "name": "[AsyncAPI 2] {Delete Security Scheme} - Delete Security Scheme", "test": "commands/delete-security-scheme/asyncapi-2/delete-security-scheme" },
+    { "name": "[AsyncAPI 2] {Update Security Scheme} - Update Security Scheme", "test": "commands/update-security-scheme/asyncapi-2/update-security-scheme" },
+    { "name": "[AsyncAPI 2] {Add Tag} - Add Tag", "test": "commands/add-tag/asyncapi-2/add-tag" },
+    { "name": "[AsyncAPI 2] {Delete Tag} - Delete Tag", "test": "commands/delete-tag/asyncapi-2/delete-tag" },
+    { "name": "[AsyncAPI 2] {Delete All Tags} - Delete All Tags", "test": "commands/delete-all-tags/asyncapi-2/delete-all-tags" },
+    { "name": "[AsyncAPI 2] {Rename Tag} - Rename Tag", "test": "commands/rename-tag-definition/asyncapi-2/rename-tag-definition" },
+    { "name": "[AsyncAPI 2] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/asyncapi-2/add-definition" },
+    { "name": "[AsyncAPI 2] {Delete Schema Definition} - Delete Schema Definition", "test": "commands/delete-schema-definition/asyncapi-2/delete-schema-definition" },
+    { "name": "[AsyncAPI 2] {Create Schema} - Create Schema", "test": "commands/create-schema/asyncapi-2/create-schema" },
+    { "name": "[AsyncAPI 2] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/asyncapi-2/replace-schema-definition" },
+    { "name": "[AsyncAPI 2] {Add Server} - Add Server", "test": "commands/add-server/asyncapi-2/add-server" },
+    { "name": "[AsyncAPI 2] {Delete Server} - Delete Server", "test": "commands/delete-server/asyncapi-2/delete-server" },
+    { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" }
 ]

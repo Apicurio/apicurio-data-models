@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiTag;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
 import java.util.List;
 
@@ -37,7 +40,14 @@ public class DeleteTagCommand extends AbstractCommand {
         this._oldTag = null;
         this._tagIndex = -1;
 
-        OpenApiDocument doc = (OpenApiDocument) document;
+        if (ModelTypeUtil.isOpenApiModel(document)) {
+            executeForOpenApi((OpenApiDocument) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            executeForAsyncApi2(document);
+        }
+    }
+
+    private void executeForOpenApi(OpenApiDocument doc) {
         List<OpenApiTag> tags = (List<OpenApiTag>) doc.getTags();
         if (this.isNullOrUndefined(tags)) {
             return;
@@ -55,6 +65,25 @@ public class DeleteTagCommand extends AbstractCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private void executeForAsyncApi2(Document document) {
+        List<? extends Tag> tags = (List<? extends Tag>) NodeUtil.getNodeProperty(document, "tags");
+        if (this.isNullOrUndefined(tags)) {
+            return;
+        }
+
+        int idx = 0;
+        for (Tag tag : tags) {
+            if (this._tagName.equals(tag.getName())) {
+                this._oldTag = Library.writeNode(tag);
+                this._tagIndex = idx;
+                NodeUtil.invokeMethod(document, "removeTag", tag);
+                return;
+            }
+            idx++;
+        }
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -65,10 +94,23 @@ public class DeleteTagCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiDocument doc = (OpenApiDocument) document;
+        if (ModelTypeUtil.isOpenApiModel(document)) {
+            undoForOpenApi((OpenApiDocument) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            undoForAsyncApi2(document);
+        }
+    }
+
+    private void undoForOpenApi(OpenApiDocument doc) {
         OpenApiTag newTag = doc.createTag();
         Library.readNode(this._oldTag, newTag);
         doc.insertTag(newTag, this._tagIndex);
+    }
+
+    private void undoForAsyncApi2(Document document) {
+        Tag newTag = (Tag) NodeUtil.invokeMethod(document, "createTag");
+        Library.readNode(this._oldTag, newTag);
+        NodeUtil.invokeMethod(document, "insertTag", newTag, this._tagIndex);
     }
 
 }

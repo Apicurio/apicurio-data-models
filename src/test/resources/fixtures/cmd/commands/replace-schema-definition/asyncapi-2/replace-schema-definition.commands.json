@@ -1,5 +1,5 @@
 [{
-    "__type": "ReplaceSchemaDefinitionCommand_Aai20",
+    "__type": "ReplaceSchemaDefinitionCommand",
     "_nodePath": "/components/schemas[MySchema2]",
     "_new": {
         "type": "object",

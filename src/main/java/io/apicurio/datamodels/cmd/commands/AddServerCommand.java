@@ -1,8 +1,12 @@
 package io.apicurio.datamodels.cmd.commands;
 
+import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiServers;
 import io.apicurio.datamodels.models.openapi.OpenApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Server;
@@ -11,6 +15,7 @@ import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.util.RegexUtil;
 
 import java.util.ArrayList;
@@ -25,14 +30,24 @@ public class AddServerCommand extends AbstractCommand {
     public NodePath _parentPath;
     public String _serverUrl;
     public String _serverDescription;
+    public String _serverName;
 
     public boolean _serverCreated;
+    public boolean _nullServersParent;
 
     public AddServerCommand() {
     }
 
     public AddServerCommand(OpenApiServersParent parent, String serverUrl, String serverDescription) {
         this._parentPath = NodePathUtil.createNodePath((Node) parent);
+        this._serverUrl = serverUrl;
+        this._serverDescription = serverDescription;
+    }
+
+    public AddServerCommand(AsyncApiDocument document, String serverName, String serverUrl,
+                            String serverDescription) {
+        this._parentPath = Library.createNodePath(document);
+        this._serverName = serverName;
         this._serverUrl = serverUrl;
         this._serverDescription = serverDescription;
     }
@@ -44,7 +59,16 @@ public class AddServerCommand extends AbstractCommand {
     public void execute(Document document) {
         LoggerUtil.info("[AddServerCommand] Executing.");
         this._serverCreated = false;
+        this._nullServersParent = false;
 
+        if (ModelTypeUtil.isAsyncApiModel(document)) {
+            executeForAsyncApi((AsyncApiDocument) document);
+        } else {
+            executeForOpenApi(document);
+        }
+    }
+
+    private void executeForOpenApi(Document document) {
         OpenApiServersParent parent = (OpenApiServersParent) NodePathUtil.resolveNodePath(this._parentPath, document);
         if (this.isNullOrUndefined(parent)) {
             return;
@@ -83,6 +107,36 @@ public class AddServerCommand extends AbstractCommand {
         this._serverCreated = true;
     }
 
+    private void executeForAsyncApi(AsyncApiDocument doc) {
+        AsyncApiServers servers = doc.getServers();
+        if (this.isNullOrUndefined(servers)) {
+            servers = doc.createServers();
+            doc.setServers(servers);
+            this._nullServersParent = true;
+        }
+
+        // Check if server with this name already exists
+        if (!this.isNullOrUndefined(servers.getItem(this._serverName))) {
+            return;
+        }
+
+        // Create new server
+        AsyncApiServer newServer = servers.createServer();
+        NodeUtil.setProperty(newServer, "url", this._serverUrl);
+        if (!this.isNullOrUndefined(this._serverDescription) && !this._serverDescription.isEmpty()) {
+            newServer.setDescription(this._serverDescription);
+        }
+
+        // Extract and create server variables
+        List<String> variableNames = extractVariables(this._serverUrl);
+        for (String variableName : variableNames) {
+            newServer.addVariable(variableName, newServer.createServerVariable());
+        }
+
+        servers.addItem(this._serverName, newServer);
+        this._serverCreated = true;
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -93,6 +147,14 @@ public class AddServerCommand extends AbstractCommand {
             return;
         }
 
+        if (ModelTypeUtil.isAsyncApiModel(document)) {
+            undoForAsyncApi((AsyncApiDocument) document);
+        } else {
+            undoForOpenApi(document);
+        }
+    }
+
+    private void undoForOpenApi(Document document) {
         OpenApiServersParent parent = (OpenApiServersParent) NodePathUtil.resolveNodePath(this._parentPath, document);
         if (this.isNullOrUndefined(parent)) {
             return;
@@ -107,6 +169,17 @@ public class AddServerCommand extends AbstractCommand {
             if (this._serverUrl.equals(server.getUrl())) {
                 parent.removeServer(server);
                 return;
+            }
+        }
+    }
+
+    private void undoForAsyncApi(AsyncApiDocument doc) {
+        if (this._nullServersParent) {
+            doc.setServers(null);
+        } else {
+            AsyncApiServers servers = doc.getServers();
+            if (!this.isNullOrUndefined(servers)) {
+                servers.removeItem(this._serverName);
             }
         }
     }

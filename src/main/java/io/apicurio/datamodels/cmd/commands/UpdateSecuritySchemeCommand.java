@@ -6,6 +6,8 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
@@ -90,6 +92,12 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
                 return null;
             }
             return components.getSecuritySchemes().get(this._schemeName);
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getSecuritySchemes())) {
+                return null;
+            }
+            return components.getSecuritySchemes().get(this._schemeName);
         }
         return null;
     }
@@ -107,6 +115,11 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
             }
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
+            if (!this.isNullOrUndefined(components)) {
+                components.removeSecurityScheme(this._schemeName);
+            }
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
             if (!this.isNullOrUndefined(components)) {
                 components.removeSecurityScheme(this._schemeName);
             }
@@ -129,6 +142,11 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
             SecurityScheme newScheme = components.createSecurityScheme();
             Library.readNode(this._newSchemeObj, newScheme);
             components.addSecurityScheme(this._schemeName, newScheme);
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            SecurityScheme newScheme = components.createSecurityScheme();
+            Library.readNode(this._newSchemeObj, newScheme);
+            components.addSecurityScheme(this._schemeName, newScheme);
         }
     }
 
@@ -145,6 +163,11 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
             components.addSecurityScheme(this._schemeName, oldScheme);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
+            SecurityScheme oldScheme = components.createSecurityScheme();
+            Library.readNode(this._oldSchemeObj, oldScheme);
+            components.addSecurityScheme(this._schemeName, oldScheme);
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
             SecurityScheme oldScheme = components.createSecurityScheme();
             Library.readNode(this._oldSchemeObj, oldScheme);
             components.addSecurityScheme(this._schemeName, oldScheme);
