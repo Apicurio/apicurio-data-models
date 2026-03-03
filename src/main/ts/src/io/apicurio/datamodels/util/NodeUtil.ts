@@ -122,4 +122,19 @@ export class NodeUtil {
         return NodeUtil.join(delim, values);
     }
 
+    /**
+     * Invokes a method on the target object by name, passing the given arguments.
+     * @param target the object on which to invoke the method
+     * @param methodName the name of the method to invoke
+     * @param args the arguments to pass to the method
+     * @returns the return value of the method
+     */
+    public static invokeMethod(target: any, methodName: string, ...args: any[]): any {
+        const method = target[methodName];
+        if (typeof method === "function") {
+            return method.apply(target, args);
+        }
+        throw new Error(`Method '${methodName}' not found on ${target.constructor?.name || target}`);
+    }
+
 }

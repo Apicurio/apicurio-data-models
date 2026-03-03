@@ -1,0 +1,6 @@
+[
+    {
+        "__type": "DeleteTagCommand",
+        "_tagName": "tag1"
+    }
+]

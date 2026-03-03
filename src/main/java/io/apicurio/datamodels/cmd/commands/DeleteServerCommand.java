@@ -5,11 +5,15 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiServers;
 import io.apicurio.datamodels.models.openapi.OpenApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 
 import java.util.List;
 
@@ -21,6 +25,7 @@ public class DeleteServerCommand extends AbstractCommand {
 
     public NodePath _parentPath;
     public String _serverUrl;
+    public String _serverName;
 
     public ObjectNode _oldServer;
     public int _serverIndex;
@@ -33,6 +38,11 @@ public class DeleteServerCommand extends AbstractCommand {
         this._serverUrl = serverUrl;
     }
 
+    public DeleteServerCommand(AsyncApiDocument document, String serverName) {
+        this._parentPath = Library.createNodePath(document);
+        this._serverName = serverName;
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(Document)
      */
@@ -42,6 +52,14 @@ public class DeleteServerCommand extends AbstractCommand {
         this._oldServer = null;
         this._serverIndex = -1;
 
+        if (ModelTypeUtil.isAsyncApiModel(document)) {
+            executeForAsyncApi((AsyncApiDocument) document);
+        } else {
+            executeForOpenApi(document);
+        }
+    }
+
+    private void executeForOpenApi(Document document) {
         OpenApiServersParent parent = (OpenApiServersParent) NodePathUtil.resolveNodePath(this._parentPath, document);
         if (this.isNullOrUndefined(parent)) {
             return;
@@ -64,13 +82,41 @@ public class DeleteServerCommand extends AbstractCommand {
         }
     }
 
+    private void executeForAsyncApi(AsyncApiDocument doc) {
+        AsyncApiServers servers = doc.getServers();
+        if (this.isNullOrUndefined(servers)) {
+            return;
+        }
+
+        AsyncApiServer server = servers.getItem(this._serverName);
+        if (this.isNullOrUndefined(server)) {
+            return;
+        }
+
+        this._oldServer = Library.writeNode(server);
+        this._serverIndex = servers.getItemNames().indexOf(this._serverName);
+        servers.removeItem(this._serverName);
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
     @Override
     public void undo(Document document) {
         LoggerUtil.info("[DeleteServerCommand] Reverting.");
-        if (this._serverIndex < 0 || this.isNullOrUndefined(this._oldServer)) {
+        if (this.isNullOrUndefined(this._oldServer)) {
+            return;
+        }
+
+        if (ModelTypeUtil.isAsyncApiModel(document)) {
+            undoForAsyncApi((AsyncApiDocument) document);
+        } else {
+            undoForOpenApi(document);
+        }
+    }
+
+    private void undoForOpenApi(Document document) {
+        if (this._serverIndex < 0) {
             return;
         }
 
@@ -82,6 +128,18 @@ public class DeleteServerCommand extends AbstractCommand {
         OpenApiServer newServer = parent.createServer();
         Library.readNode(this._oldServer, newServer);
         parent.insertServer(newServer, this._serverIndex);
+    }
+
+    private void undoForAsyncApi(AsyncApiDocument doc) {
+        AsyncApiServers servers = doc.getServers();
+        if (this.isNullOrUndefined(servers)) {
+            servers = doc.createServers();
+            doc.setServers(servers);
+        }
+
+        AsyncApiServer newServer = servers.createServer();
+        Library.readNode(this._oldServer, newServer);
+        servers.insertItem(this._serverName, newServer, this._serverIndex);
     }
 
 }

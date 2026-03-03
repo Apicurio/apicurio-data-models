@@ -55,6 +55,30 @@ public class NodeUtil {
     }
 
     /**
+     * Invokes a method on the given target by name, matching on parameter count.
+     * Useful for calling methods on generated interfaces where the parameter types
+     * vary by version but the method signature is otherwise identical.
+     * @param target the object to invoke the method on
+     * @param methodName the name of the method
+     * @param args the arguments to pass
+     * @return the return value of the method (or null for void methods)
+     */
+    public static Object invokeMethod(Object target, String methodName, Object... args) {
+        try {
+            Method method = Arrays.stream(target.getClass().getMethods())
+                    .filter(m -> m.getName().equals(methodName) && m.getParameterCount() == args.length)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Could not find method " + methodName
+                            + " with " + args.length + " parameter(s) on " + target.getClass().getSimpleName()));
+            return method.invoke(target, args);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e.getCause());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Returns the value for a given node property.
      * @param node
      * @param propertyName

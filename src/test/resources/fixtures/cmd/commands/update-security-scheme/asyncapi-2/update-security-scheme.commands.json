@@ -1,0 +1,10 @@
+[{
+    "__type": "UpdateSecuritySchemeCommand",
+    "_schemeName": "BasicAuth",
+    "_newSchemeObj": {
+        "type": "http",
+        "description": "Updated basic auth.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+    }
+}]

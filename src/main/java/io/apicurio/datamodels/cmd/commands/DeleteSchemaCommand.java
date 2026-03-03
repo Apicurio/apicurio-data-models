@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
@@ -14,7 +17,9 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +57,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
             executeForOpenApi30((OpenApi30Document) document);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             executeForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            executeForAsyncApi2((AsyncApiDocument) document);
         }
     }
 
@@ -106,6 +113,24 @@ public class DeleteSchemaCommand extends AbstractCommand {
         components.removeSchema(this._schemaName);
     }
 
+    @SuppressWarnings("unchecked")
+    private void executeForAsyncApi2(AsyncApiDocument doc) {
+        AsyncApiComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            return;
+        }
+
+        Map<String, ? extends Schema> schemas = (Map<String, ? extends Schema>) NodeUtil.getNodeProperty(components, "schemas");
+        if (this.isNullOrUndefined(schemas) || !schemas.containsKey(this._schemaName)) {
+            return;
+        }
+
+        Schema schema = schemas.get(this._schemaName);
+        this._schemaIndex = new ArrayList<>(schemas.keySet()).indexOf(this._schemaName);
+        this._oldSchema = Library.writeNode(schema);
+        NodeUtil.invokeMethod(components, "removeSchema", this._schemaName);
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -122,6 +147,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
             undoForOpenApi30((OpenApi30Document) document);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             undoForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            undoForAsyncApi2((AsyncApiDocument) document);
         }
     }
 
@@ -159,6 +186,18 @@ public class DeleteSchemaCommand extends AbstractCommand {
         OpenApiSchema newSchema = components.createSchema();
         Library.readNode(this._oldSchema, newSchema);
         components.insertSchema(this._schemaName, newSchema, this._schemaIndex);
+    }
+
+    private void undoForAsyncApi2(AsyncApiDocument doc) {
+        AsyncApiComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = doc.createComponents();
+            doc.setComponents(components);
+        }
+
+        Schema newSchema = (Schema) NodeUtil.invokeMethod(components, "createSchema");
+        Library.readNode(this._oldSchema, newSchema);
+        NodeUtil.invokeMethod(components, "insertSchema", this._schemaName, newSchema, this._schemaIndex);
     }
 
 }

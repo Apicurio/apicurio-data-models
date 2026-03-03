@@ -9,44 +9,51 @@ import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
 /**
  * A command used to replace a definition schema with a newer version.
  * @author eric.wittmann@gmail.com
  */
-public class ReplaceSchemaDefinitionCommand extends AbstractReplaceNodeCommand<OpenApiSchema> {
+public class ReplaceSchemaDefinitionCommand extends AbstractReplaceNodeCommand<Schema> {
 
     public ReplaceSchemaDefinitionCommand() {
     }
 
-    public ReplaceSchemaDefinitionCommand(OpenApiSchema old, OpenApiSchema replacement) {
+    public ReplaceSchemaDefinitionCommand(Schema old, Schema replacement) {
         super(old, replacement);
     }
 
     @Override
-    protected void replaceNode(Node parent, OpenApiSchema newNode) {
+    protected void replaceNode(Node parent, Schema newNode) {
         String definitionName = this._nodePath.getLastSegment().getValue();
         if (ModelTypeUtil.isOpenApi2Model(parent)) {
             OpenApi20Definitions definitions = (OpenApi20Definitions) parent;
             definitions.addItem(definitionName, (OpenApi20Schema) newNode);
+        } else if (ModelTypeUtil.isAsyncApi2Model(parent)) {
+            NodeUtil.invokeMethod(parent, "addSchema", definitionName, newNode);
         } else {
             OpenApiComponents components = (OpenApiComponents) parent;
-            components.addSchema(definitionName, newNode);
+            components.addSchema(definitionName, (OpenApiSchema) newNode);
         }
     }
 
     @Override
-    protected OpenApiSchema readNode(Node parent, ObjectNode node) {
+    protected Schema readNode(Node parent, ObjectNode node) {
         if (ModelTypeUtil.isOpenApi2Model(parent)) {
             OpenApi20Definitions definitions = (OpenApi20Definitions) parent;
             OpenApi20Schema definition = definitions.createSchema();
             Library.readNode(node, definition);
             return definition;
+        } else if (ModelTypeUtil.isAsyncApi2Model(parent)) {
+            Schema schema = (Schema) NodeUtil.invokeMethod(parent, "createSchema");
+            Library.readNode(node, schema);
+            return schema;
         } else {
             OpenApiComponents components = (OpenApiComponents) parent;
             Schema schema = components.createSchema();
             Library.readNode(node, schema);
-            return (OpenApiSchema) schema;
+            return schema;
         }
     }
 

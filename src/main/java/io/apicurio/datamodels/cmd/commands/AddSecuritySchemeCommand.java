@@ -5,6 +5,8 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
@@ -52,6 +54,8 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             executeForOpenApi30((OpenApi30Document) document);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             executeForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            executeForAsyncApi((AsyncApiDocument) document);
         }
     }
 
@@ -114,6 +118,26 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
         this._schemeCreated = true;
     }
 
+    private void executeForAsyncApi(AsyncApiDocument doc) {
+        AsyncApiComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = doc.createComponents();
+            doc.setComponents(components);
+            this._nullParent = true;
+        }
+
+        // Check if scheme already exists
+        if (!this.isNullOrUndefined(components.getSecuritySchemes()) &&
+                components.getSecuritySchemes().containsKey(this._schemeName)) {
+            return;
+        }
+
+        SecurityScheme newScheme = components.createSecurityScheme();
+        Library.readNode(this._schemeObj, newScheme);
+        components.addSecurityScheme(this._schemeName, newScheme);
+        this._schemeCreated = true;
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -150,6 +174,16 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
                 doc.setComponents(null);
             } else {
                 OpenApi31Components components = doc.getComponents();
+                if (!this.isNullOrUndefined(components)) {
+                    components.removeSecurityScheme(this._schemeName);
+                }
+            }
+        } else if (ModelTypeUtil.isAsyncApiModel(document)) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (this._nullParent) {
+                doc.setComponents(null);
+            } else {
+                AsyncApiComponents components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     components.removeSecurityScheme(this._schemeName);
                 }

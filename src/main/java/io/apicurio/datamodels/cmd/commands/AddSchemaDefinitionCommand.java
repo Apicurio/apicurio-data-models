@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
@@ -14,6 +16,9 @@ import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
+
+import java.util.Map;
 
 /**
  * A command used to add a new definition in a document.  Source for the new
@@ -46,19 +51,17 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         LoggerUtil.info("[AddSchemaDefinitionCommand] Executing.");
         this._helper = createHelper(document);
 
-        OpenApiDocument doc = (OpenApiDocument) document;
-
         // Do nothing if the definition already exists.
-        if (this._helper.defExists(doc)) {
+        if (this._helper.defExists(document)) {
             LoggerUtil.info("[AddSchemaDefinitionCommand] Definition with name %s already exists.", this._newDefinitionName);
             this._defExisted = true;
             return;
         }
 
-        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(doc);
+        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(document);
 
-        OpenApiSchema definition = this._helper.createSchemaDefinition(doc);
-        this._helper.addDefinition(doc, definition);
+        Schema definition = this._helper.createSchemaDefinition(document);
+        this._helper.addDefinition(document, definition);
     }
 
     /**
@@ -71,9 +74,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiDocument doc = (OpenApiDocument) document;
-
-        this._helper.removeDefinition(doc);
+        this._helper.removeDefinition(document);
     }
 
     private AddSchemaDefinitionCommandHelper createHelper(Document document) {
@@ -86,25 +87,28 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         if (ModelTypeUtil.isOpenApi31Model(document)) {
             return new OpenApi31Helper();
         }
+        if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            return new AsyncApi2Helper();
+        }
         throw new RuntimeException("Unsupported model type: " + document.root().modelType());
     }
 
     private interface AddSchemaDefinitionCommandHelper {
-        boolean defExists(OpenApiDocument document);
+        boolean defExists(Document document);
 
-        boolean prepareDocumentForDef(OpenApiDocument document);
+        boolean prepareDocumentForDef(Document document);
 
-        OpenApiSchema createSchemaDefinition(OpenApiDocument document);
+        Schema createSchemaDefinition(Document document);
 
-        void addDefinition(OpenApiDocument document, OpenApiSchema definition);
+        void addDefinition(Document document, Schema definition);
 
-        void removeDefinition(OpenApiDocument document);
+        void removeDefinition(Document document);
     }
 
     private class OpenApi20Helper implements AddSchemaDefinitionCommandHelper {
 
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             if (isNullOrUndefined(doc20.getDefinitions())) {
                 return false;
@@ -113,7 +117,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             if (isNullOrUndefined(doc20.getDefinitions())) {
                 doc20.setDefinitions(doc20.createDefinitions());
@@ -123,7 +127,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiSchema createSchemaDefinition(OpenApiDocument document) {
+        public Schema createSchemaDefinition(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             OpenApi20Schema definition = doc20.getDefinitions().createSchema();
             Library.readNode(_newDefinitionObj, definition);
@@ -131,14 +135,14 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiSchema definition) {
+        public void addDefinition(Document document, Schema definition) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             OpenApi20Schema def20 = (OpenApi20Schema) definition;
             doc20.getDefinitions().addItem(_newDefinitionName, def20);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             if (_nullDefinitionsParent) {
                 doc20.setDefinitions(null);
@@ -150,7 +154,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
 
     private class OpenApi30Helper implements AddSchemaDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 return false;
@@ -159,7 +163,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 doc30.setComponents(doc30.createComponents());
@@ -169,7 +173,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiSchema createSchemaDefinition(OpenApiDocument document) {
+        public Schema createSchemaDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             OpenApi30Schema definition = (OpenApi30Schema) doc30.getComponents().createSchema();
             Library.readNode(_newDefinitionObj, definition);
@@ -177,13 +181,13 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiSchema definition) {
+        public void addDefinition(Document document, Schema definition) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
-            doc30.getComponents().addSchema(_newDefinitionName, definition);
+            doc30.getComponents().addSchema(_newDefinitionName, (OpenApiSchema) definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (_nullDefinitionsParent) {
                 doc30.setComponents(null);
@@ -195,7 +199,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
 
     private class OpenApi31Helper implements AddSchemaDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 return false;
@@ -204,7 +208,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 doc31.setComponents(doc31.createComponents());
@@ -214,7 +218,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiSchema createSchemaDefinition(OpenApiDocument document) {
+        public Schema createSchemaDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             OpenApi31Schema definition = (OpenApi31Schema) doc31.getComponents().createSchema();
             Library.readNode(_newDefinitionObj, definition);
@@ -222,18 +226,68 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiSchema definition) {
+        public void addDefinition(Document document, Schema definition) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
-            doc31.getComponents().addSchema(_newDefinitionName, definition);
+            doc31.getComponents().addSchema(_newDefinitionName, (OpenApiSchema) definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (_nullDefinitionsParent) {
                 doc31.setComponents(null);
             } else {
                 doc31.getComponents().removeSchema(_newDefinitionName);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private class AsyncApi2Helper implements AddSchemaDefinitionCommandHelper {
+        @Override
+        public boolean defExists(Document document) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (isNullOrUndefined(components)) {
+                return false;
+            }
+            Map<String, ?> schemas = (Map<String, ?>) NodeUtil.getNodeProperty(components, "schemas");
+            return !isNullOrUndefined(schemas) && schemas.containsKey(_newDefinitionName);
+        }
+
+        @Override
+        public boolean prepareDocumentForDef(Document document) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                doc.setComponents(doc.createComponents());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Schema createSchemaDefinition(Document document) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            Schema definition = (Schema) NodeUtil.invokeMethod(components, "createSchema");
+            Library.readNode(_newDefinitionObj, definition);
+            return definition;
+        }
+
+        @Override
+        public void addDefinition(Document document, Schema definition) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            NodeUtil.invokeMethod(components, "addSchema", _newDefinitionName, definition);
+        }
+
+        @Override
+        public void removeDefinition(Document document) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (_nullDefinitionsParent) {
+                doc.setComponents(null);
+            } else {
+                AsyncApiComponents components = doc.getComponents();
+                if (!isNullOrUndefined(components)) {
+                    NodeUtil.invokeMethod(components, "removeSchema", _newDefinitionName);
+                }
             }
         }
     }

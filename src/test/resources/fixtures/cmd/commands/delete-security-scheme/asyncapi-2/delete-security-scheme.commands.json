@@ -1,4 +1,4 @@
 [{
-    "__type": "DeleteSecuritySchemeCommand_Aai20",
+    "__type": "DeleteSecuritySchemeCommand",
     "_schemeName": "myScheme"
 }]

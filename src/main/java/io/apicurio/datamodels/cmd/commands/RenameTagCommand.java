@@ -2,9 +2,12 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiTag;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
 import java.util.List;
 
@@ -35,7 +38,14 @@ public class RenameTagCommand extends AbstractCommand {
         LoggerUtil.info("[RenameTagCommand] Executing.");
         this._tagRenamed = false;
 
-        OpenApiDocument doc = (OpenApiDocument) document;
+        if (ModelTypeUtil.isOpenApiModel(document)) {
+            executeForOpenApi((OpenApiDocument) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            executeForAsyncApi2(document);
+        }
+    }
+
+    private void executeForOpenApi(OpenApiDocument doc) {
         List<OpenApiTag> tags = (List<OpenApiTag>) doc.getTags();
         if (this.isNullOrUndefined(tags)) {
             return;
@@ -58,6 +68,30 @@ public class RenameTagCommand extends AbstractCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private void executeForAsyncApi2(Document document) {
+        List<? extends Tag> tags = (List<? extends Tag>) NodeUtil.getNodeProperty(document, "tags");
+        if (this.isNullOrUndefined(tags)) {
+            return;
+        }
+
+        // Check if new name already exists
+        for (Tag tag : tags) {
+            if (this._newName.equals(tag.getName())) {
+                return;
+            }
+        }
+
+        // Find and rename the tag
+        for (Tag tag : tags) {
+            if (this._oldName.equals(tag.getName())) {
+                tag.setName(this._newName);
+                this._tagRenamed = true;
+                return;
+            }
+        }
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -68,13 +102,35 @@ public class RenameTagCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiDocument doc = (OpenApiDocument) document;
+        if (ModelTypeUtil.isOpenApiModel(document)) {
+            undoForOpenApi((OpenApiDocument) document);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            undoForAsyncApi2(document);
+        }
+    }
+
+    private void undoForOpenApi(OpenApiDocument doc) {
         List<OpenApiTag> tags = (List<OpenApiTag>) doc.getTags();
         if (this.isNullOrUndefined(tags)) {
             return;
         }
 
         for (OpenApiTag tag : tags) {
+            if (this._newName.equals(tag.getName())) {
+                tag.setName(this._oldName);
+                return;
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void undoForAsyncApi2(Document document) {
+        List<? extends Tag> tags = (List<? extends Tag>) NodeUtil.getNodeProperty(document, "tags");
+        if (this.isNullOrUndefined(tags)) {
+            return;
+        }
+
+        for (Tag tag : tags) {
             if (this._newName.equals(tag.getName())) {
                 tag.setName(this._oldName);
                 return;
