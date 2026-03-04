@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM"],
     "declaration": true,
     "stripInternal": true,
     "experimentalDecorators": true,
@@ -8,20 +11,13 @@
     "noFallthroughCasesInSwitch": true,
     "preserveConstEnums": true,
     "removeComments": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "rootDir": ".",
-    "sourceMap": true,
-    "inlineSources": true,
-    "target": "es5",
-    "lib": ["es2015", "dom"],
+    "esModuleInterop": true,
     "skipLibCheck": true
   },
   "files": [
     "index.ts"
   ],
   "exclude": [
-    "node_modules", "tests"
+    "node_modules", "tests", "dist"
   ]
 }

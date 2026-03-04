@@ -99,7 +99,7 @@ jobs:
 
 
       - name: Publish to NPM
-        run: npm publish ./target/ts/dist/
+        run: npm publish ./target/ts/
 
 
       - name: Slack Notification (Always)
