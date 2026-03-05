@@ -1,0 +1,3 @@
+[SCPS-001] |medium| {/securityDefinitions[invalid_oauth]/scopes->scopes} :: 'scope with spaces' is not a valid scope name.
+[SCPS-001] |medium| {/securityDefinitions[invalid_oauth]/scopes->scopes} :: 'scope"quoted' is not a valid scope name.
+[SCPS-001] |medium| {/securityDefinitions[invalid_oauth]/scopes->scopes} :: 'scope\slashed' is not a valid scope name.
