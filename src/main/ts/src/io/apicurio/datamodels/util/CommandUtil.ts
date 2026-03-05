@@ -172,6 +172,34 @@ export class CommandUtil {
         return supplier();
     }
 
+    /**
+     * Marshalls a command into a plain JSON object for storage or transmission.
+     * The resulting object includes a `__type` field identifying the command class name,
+     * followed by all fields. NodePath fields are serialized as strings, and nested
+     * command lists are recursively marshalled.
+     * @param command the command to serialize
+     * @return the JSON representation of the command
+     */
+    public static marshall(command: ICommand): object {
+        let result: any = {
+            "__type": command.type()
+        };
+        Object.keys(command).filter(key => key !== "__type").forEach(key => {
+            let value: any = command[key];
+            if (value !== undefined) {
+                if (pathKeys.indexOf(key) !== -1 && value) {
+                    value = (value as NodePath).toString();
+                } else if (pathListKeys.indexOf(key) !== -1 && value) {
+                    value = (value as NodePath[]).map(np => np.toString());
+                } else if (cmdListKeys.indexOf(key) !== -1 && value) {
+                    value = (value as ICommand[]).map(cmd => CommandUtil.marshall(cmd));
+                }
+            }
+            result[key] = value;
+        });
+        return result;
+    }
+
     public static unmarshall(from: object): ICommand {
         let type: string = from["__type"];
         if (!type) {
