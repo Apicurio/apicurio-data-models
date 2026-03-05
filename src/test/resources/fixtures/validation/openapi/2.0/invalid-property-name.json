@@ -684,6 +684,26 @@
             "xml":{
                 "name":"##default"
             }
+        },
+        "Pet+Foo":{
+            "properties":{
+                "id":{
+                    "type":"integer",
+                    "format":"int64"
+                }
+            }
+        }
+    },
+    "parameters":{
+        "Some$Parameter":{
+            "name":"id",
+            "in":"query",
+            "type":"integer"
+        }
+    },
+    "responses":{
+        "The Response":{
+            "description":"A response with an invalid name"
         }
     },
     "externalDocs":{

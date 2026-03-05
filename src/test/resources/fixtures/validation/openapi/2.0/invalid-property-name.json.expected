@@ -19,3 +19,6 @@
 [PATH-009] |medium| {/paths[/pathstest26/{var}/]->null} :: Path template "/pathstest26/{var}/" is semantically identical to at least one other path.
 [PATH-009] |medium| {/paths[/pathstest27/{var1}]->null} :: Path template "/pathstest27/{var1}" is semantically identical to at least one other path.
 [PATH-009] |medium| {/paths[/pathstest27/{var2}/]->null} :: Path template "/pathstest27/{var2}/" is semantically identical to at least one other path.
+[PDEF-001] |medium| {/parameters[Some$Parameter]->name} :: Parameter Definition Name is not valid.
+[RDEF-001] |medium| {/responses[The Response]->name} :: Response Definition Name is not valid.
+[SDEF-001] |medium| {/definitions[Pet+Foo]->name} :: Schema Definition Name is not valid.
