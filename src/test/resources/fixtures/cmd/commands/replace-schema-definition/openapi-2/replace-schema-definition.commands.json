@@ -16,6 +16,5 @@
             }
         },
         "discriminator": "petType"
-    },
-    "_defName": "Person"
+    }
 }]

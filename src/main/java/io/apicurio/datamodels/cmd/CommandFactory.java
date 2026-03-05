@@ -101,6 +101,15 @@ public class CommandFactory {
         return CommandUtil.unmarshall(from);
     }
 
+    /**
+     * Marshalls a command into a JSON object for storage or transmission.
+     * @param command the command to serialize
+     * @return the JSON representation of the command
+     */
+    public static ObjectNode marshall(ICommand command) {
+        return CommandUtil.marshall(command);
+    }
+
     public static ICommand createAddHeaderExampleCommand(OpenApiHeader header, JsonNode example,
                                                          String exampleName, String exampleSummary, String exampleDescription) {
         return new AddExampleCommand((OpenApiExamplesParent) header, example, exampleName, exampleSummary, exampleDescription);

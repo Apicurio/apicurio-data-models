@@ -3,6 +3,5 @@
     "_nodePath": "/components/responses[NotFound]",
     "_new": {
         "description": "The replaced content."
-    },
-    "_defName": "NotFound"
+    }
 }]

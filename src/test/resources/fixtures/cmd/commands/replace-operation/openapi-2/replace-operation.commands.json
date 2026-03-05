@@ -1,8 +1,6 @@
 [
     {
         "__type": "ReplaceOperationCommand",
-        "_method": "get",
-        "_path": "/pets",
         "_nodePath": "/paths[/pets]/get",
         "_new": {
             "summary": "Do A Thing",
