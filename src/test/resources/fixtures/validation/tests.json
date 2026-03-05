@@ -88,6 +88,7 @@
 	{ "name": "[OpenAPI 2.0] Info [Invalid Property Value]", "test": "openapi/2.0/info-invalid-property-format.json" },
 	{ "name": "[OpenAPI 2.0] Info [Required Properties]", "test": "openapi/2.0/info-required-properties.json" },
 	{ "name": "[OpenAPI 2.0] Invalid Property Name", "test": "openapi/2.0/invalid-property-name.json" },
+	{ "name": "[OpenAPI 2.0] Invalid Scope Name", "test": "openapi/2.0/invalid-scope-name.json" },
 	{ "name": "[OpenAPI 2.0] Invalid Reference [All]", "test": "openapi/2.0/invalid-reference.json" },
 	{ "name": "[OpenAPI 2.0] Mutually Exclusive [All]", "test": "openapi/2.0/mutually-exclusive.json" },
 	{ "name": "[OpenAPI 2.0] Operation ID", "test": "openapi/2.0/operation-id.json", "severity": "high" },

@@ -33,7 +33,11 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 public abstract class OasInvalidPropertyNameRule extends ValidationRule {
 
     private static final String DEFINITION_NAME_MATCH_REGEX = "^[a-zA-Z0-9\\.\\-_]+$";
-    
+    // RFC 6749 Section 3.3: scope-token = 1*NQCHAR where NQCHAR = %x21 / %x23-5B / %x5D-7E
+    // This allows all printable ASCII characters except space (%x20), double-quote (%x22),
+    // and backslash (%x5C).
+    private static final String SCOPE_NAME_MATCH_REGEX = "^[\\x21\\x23-\\x5B\\x5D-\\x7E]+$";
+
     /**
      * Constructor.
      * @param ruleInfo
@@ -47,17 +51,17 @@ public abstract class OasInvalidPropertyNameRule extends ValidationRule {
      * @param name
      */
     protected boolean isValidDefinitionName(String name) {
-        // TODO should this be different for OAS 2.0 vs. 3.x??  Only 3.x dictates the format to some extent (I think).
         return RegexUtil.matches(name, DEFINITION_NAME_MATCH_REGEX);
     }
 
     /**
-     * Returns true if the scope name is valid.
+     * Returns true if the scope name is valid per RFC 6749 Section 3.3.
+     * Scope tokens must consist of printable ASCII characters excluding
+     * space, double-quote, and backslash.
      * @param scope
      */
     protected boolean isValidScopeName(String scope) {
-        // TODO implement some reasonable rules for this
-        return true;
+        return RegexUtil.matches(scope, SCOPE_NAME_MATCH_REGEX);
     }
 
     /**
