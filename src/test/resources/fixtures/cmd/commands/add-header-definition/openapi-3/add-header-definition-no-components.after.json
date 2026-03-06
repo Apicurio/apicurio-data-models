@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "headers": {
+      "X-Request-Id": {
+        "description": "A unique identifier for the request",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    }
+  }
+}
