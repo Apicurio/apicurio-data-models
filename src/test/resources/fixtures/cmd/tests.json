@@ -112,6 +112,8 @@
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Document", "test": "commands/delete-server/openapi-3/delete-server-document" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Operation", "test": "commands/delete-server/openapi-3/delete-server-operation" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Path Item", "test": "commands/delete-server/openapi-3/delete-server-pathItem" },
+    { "name": "[OpenAPI 3] {Add Server Variable} - Add Server Variable", "test": "commands/add-server-variable/openapi-3/add-server-variable" },
+    { "name": "[OpenAPI 3] {Delete Server Variable} - Delete Server Variable", "test": "commands/delete-server-variable/openapi-3/delete-server-variable" },
     { "name": "[OpenAPI 3] {Create Path} - Create Path", "test": "commands/create-path/openapi-3/create-path" },
     { "name": "[OpenAPI 3] {Delete Path} - Delete Path", "test": "commands/delete-path/openapi-3/delete-path" },
     { "name": "[OpenAPI 3] {Create Operation} - Create Operation", "test": "commands/create-operation/openapi-3/create-operation" },

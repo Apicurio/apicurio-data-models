@@ -21,6 +21,7 @@ import {AddSchemaPropertyCommand} from "../cmd/commands/AddSchemaPropertyCommand
 import {AddSecurityRequirementCommand} from "../cmd/commands/AddSecurityRequirementCommand";
 import {AddSecuritySchemeCommand} from "../cmd/commands/AddSecuritySchemeCommand";
 import {AddServerCommand} from "../cmd/commands/AddServerCommand";
+import {AddServerVariableCommand} from "../cmd/commands/AddServerVariableCommand";
 import {AddTagCommand} from "../cmd/commands/AddTagCommand";
 
 import {ChangeContactCommand} from "../cmd/commands/ChangeContactCommand";
@@ -65,6 +66,7 @@ import {DeleteSchemaPropertyCommand} from "../cmd/commands/DeleteSchemaPropertyC
 import {DeleteSecurityRequirementCommand} from "../cmd/commands/DeleteSecurityRequirementCommand";
 import {DeleteSecuritySchemeCommand} from "../cmd/commands/DeleteSecuritySchemeCommand";
 import {DeleteServerCommand} from "../cmd/commands/DeleteServerCommand";
+import {DeleteServerVariableCommand} from "../cmd/commands/DeleteServerVariableCommand";
 import {DeleteTagCommand} from "../cmd/commands/DeleteTagCommand";
 
 import {EnsureChildNodeCommand} from "../cmd/commands/EnsureChildNodeCommand";
@@ -85,7 +87,7 @@ import {UpdateSecuritySchemeCommand} from "../cmd/commands/UpdateSecuritySchemeC
 
 const pathKeys: string[] = [
     "_mediaTypePath", "_responsePath", "_responsesPath", "_parentPath", "_schemaPath", "_parameterPath", "_operationPath",
-    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath", "_pathItemPath"
+    "_propPath", "_propertyPath", "_paramPath", "_nodePath", "_headerPath", "_messagePath", "_pathItemPath", "_serverPath"
 ];
 const pathListKeys: string[] = [ "_references" ];
 const cmdListKeys: string[] = [ "_commands" ];
@@ -112,6 +114,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
     "AddSecuritySchemeCommand": () => { return new AddSecuritySchemeCommand(); },
     "AddServerCommand": () => { return new AddServerCommand(); },
+    "AddServerVariableCommand": () => { return new AddServerVariableCommand(); },
     "AddTagCommand": () => { return new AddTagCommand(); },
 
     "ChangeContactCommand": () => { return new ChangeContactCommand(); },
@@ -156,6 +159,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteSecurityRequirementCommand": () => { return new DeleteSecurityRequirementCommand(); },
     "DeleteSecuritySchemeCommand": () => { return new DeleteSecuritySchemeCommand(); },
     "DeleteServerCommand": () => { return new DeleteServerCommand(); },
+    "DeleteServerVariableCommand": () => { return new DeleteServerVariableCommand(); },
     "DeleteTagCommand": () => { return new DeleteTagCommand(); },
 
     "EnsureChildNodeCommand": () => { return new EnsureChildNodeCommand(); },
