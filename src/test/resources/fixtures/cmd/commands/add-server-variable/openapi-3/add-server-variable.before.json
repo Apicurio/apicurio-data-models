@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{environment}.api.example.com/{version}",
+      "description": "Main API server",
+      "variables": {
+        "environment": {
+          "default": "production",
+          "description": "The deployment environment",
+          "enum": [
+            "production",
+            "staging",
+            "development"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {}
+}

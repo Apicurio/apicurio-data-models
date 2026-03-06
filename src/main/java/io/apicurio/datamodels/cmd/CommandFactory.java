@@ -20,6 +20,7 @@ import io.apicurio.datamodels.cmd.commands.AddSchemaPropertyCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecuritySchemeCommand;
 import io.apicurio.datamodels.cmd.commands.AddServerCommand;
+import io.apicurio.datamodels.cmd.commands.AddServerVariableCommand;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.cmd.commands.AddTagCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
@@ -61,6 +62,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteSchemaPropertyCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteSecuritySchemeCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteServerCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteServerVariableCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteTagCommand;
 import io.apicurio.datamodels.cmd.commands.EnsureChildNodeCommand;
 import io.apicurio.datamodels.cmd.commands.RenameTagCommand;
@@ -90,11 +92,14 @@ import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.OpenApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Operation;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.util.CommandUtil;
+
+import java.util.List;
 
 public class CommandFactory {
 
@@ -382,6 +387,19 @@ public class CommandFactory {
 
     public static ICommand createDeleteAllServersCommand(AsyncApiDocument document) {
         return new DeleteAllServersCommand(document);
+    }
+
+    // --- Server Variable commands ---
+
+    public static ICommand createAddServerVariableCommand(OpenApiServer server,
+                                                          String variableName, String defaultValue,
+                                                          String description, List<String> enumValues) {
+        return new AddServerVariableCommand(server, variableName, defaultValue, description, enumValues);
+    }
+
+    public static ICommand createDeleteServerVariableCommand(OpenApiServer server,
+                                                             String variableName) {
+        return new DeleteServerVariableCommand(server, variableName);
     }
 
     // --- Path commands ---
