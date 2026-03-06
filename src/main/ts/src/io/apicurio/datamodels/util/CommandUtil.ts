@@ -14,6 +14,7 @@ import {AddResponseCommand} from "../cmd/commands/AddResponseCommand";
 import {AddResponseDefinitionCommand} from "../cmd/commands/AddResponseDefinitionCommand";
 import {AddResponseHeaderCommand} from "../cmd/commands/AddResponseHeaderCommand";
 import {AddSchemaDefinitionCommand} from "../cmd/commands/AddSchemaDefinitionCommand";
+import {AddSchemaPropertyCommand} from "../cmd/commands/AddSchemaPropertyCommand";
 import {AddSecurityRequirementCommand} from "../cmd/commands/AddSecurityRequirementCommand";
 import {AddSecuritySchemeCommand} from "../cmd/commands/AddSecuritySchemeCommand";
 import {AddServerCommand} from "../cmd/commands/AddServerCommand";
@@ -99,6 +100,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddResponseDefinitionCommand": () => { return new AddResponseDefinitionCommand(); },
     "AddResponseHeaderCommand": () => { return new AddResponseHeaderCommand(); },
     "AddSchemaDefinitionCommand": () => { return new AddSchemaDefinitionCommand(); },
+    "AddSchemaPropertyCommand": () => { return new AddSchemaPropertyCommand(); },
     "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
     "AddSecuritySchemeCommand": () => { return new AddSecuritySchemeCommand(); },
     "AddServerCommand": () => { return new AddServerCommand(); },
