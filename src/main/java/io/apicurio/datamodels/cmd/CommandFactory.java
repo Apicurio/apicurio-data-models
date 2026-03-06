@@ -36,6 +36,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllHeadersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllOperationsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllParametersCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllPropertiesCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteSchemaPropertyCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllResponsesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllSecurityRequirementsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllSecuritySchemesCommand;
@@ -229,6 +230,17 @@ public class CommandFactory {
 
     public static ICommand createDeleteAllPropertiesCommand(Schema schema) {
         return new DeleteAllPropertiesCommand(schema);
+    }
+
+    /**
+     * Creates a command to delete a single property from a schema definition.
+     * @param schemaDefinitionName the name of the schema definition
+     * @param propertyName the name of the property to delete
+     * @return the command
+     */
+    public static ICommand createDeleteSchemaPropertyCommand(String schemaDefinitionName,
+            String propertyName) {
+        return new DeleteSchemaPropertyCommand(schemaDefinitionName, propertyName);
     }
 
     public static ICommand createDeleteAllResponsesCommand(OpenApiOperation operation) {

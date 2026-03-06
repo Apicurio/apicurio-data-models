@@ -139,5 +139,8 @@
     { "name": "[AsyncAPI 2] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/asyncapi-2/replace-schema-definition" },
     { "name": "[AsyncAPI 2] {Add Server} - Add Server", "test": "commands/add-server/asyncapi-2/add-server" },
     { "name": "[AsyncAPI 2] {Delete Server} - Delete Server", "test": "commands/delete-server/asyncapi-2/delete-server" },
-    { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" }
+    { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" },
+
+    { "name": "[OpenAPI 2] {Delete Schema Property} - Delete Property", "test": "commands/delete-schema-property/openapi-2/delete-schema-property" },
+    { "name": "[OpenAPI 3] {Delete Schema Property} - Delete Property", "test": "commands/delete-schema-property/openapi-3/delete-schema-property" }
 ]

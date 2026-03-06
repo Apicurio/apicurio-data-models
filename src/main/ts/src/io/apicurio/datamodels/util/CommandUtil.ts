@@ -39,6 +39,7 @@ import {DeleteAllHeadersCommand} from "../cmd/commands/DeleteAllHeadersCommand";
 import {DeleteAllOperationsCommand} from "../cmd/commands/DeleteAllOperationsCommand";
 import {DeleteAllParametersCommand} from "../cmd/commands/DeleteAllParametersCommand";
 import {DeleteAllPropertiesCommand} from "../cmd/commands/DeleteAllPropertiesCommand";
+import {DeleteSchemaPropertyCommand} from "../cmd/commands/DeleteSchemaPropertyCommand";
 import {DeleteAllResponsesCommand} from "../cmd/commands/DeleteAllResponsesCommand";
 import {DeleteAllSecurityRequirementsCommand} from "../cmd/commands/DeleteAllSecurityRequirementsCommand";
 import {DeleteAllSecuritySchemesCommand} from "../cmd/commands/DeleteAllSecuritySchemesCommand";
@@ -124,6 +125,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteAllOperationsCommand": () => { return new DeleteAllOperationsCommand(); },
     "DeleteAllParametersCommand": () => { return new DeleteAllParametersCommand(); },
     "DeleteAllPropertiesCommand": () => { return new DeleteAllPropertiesCommand(); },
+    "DeleteSchemaPropertyCommand": () => { return new DeleteSchemaPropertyCommand(); },
     "DeleteAllResponsesCommand": () => { return new DeleteAllResponsesCommand(); },
     "DeleteAllSecurityRequirementsCommand": () => { return new DeleteAllSecurityRequirementsCommand(); },
     "DeleteAllSecuritySchemesCommand": () => { return new DeleteAllSecuritySchemesCommand(); },

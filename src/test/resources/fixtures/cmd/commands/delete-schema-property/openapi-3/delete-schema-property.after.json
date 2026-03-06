@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "MySchema1": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "MySchema2": {
+        "type": "string",
+        "format": "email"
+      }
+    }
+  }
+}

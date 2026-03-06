@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteSchemaPropertyCommand",
+    "_schemaDefinitionName": "MySchema1",
+    "_propertyName": "age"
+}]
