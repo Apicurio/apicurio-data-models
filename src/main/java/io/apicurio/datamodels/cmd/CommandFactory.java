@@ -8,6 +8,7 @@ import io.apicurio.datamodels.cmd.commands.AddExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.AddMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.AddOperationSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddParameterCommand;
+import io.apicurio.datamodels.cmd.commands.AddParameterDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddRequestBodyCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseCommand;
@@ -126,6 +127,10 @@ public class CommandFactory {
 
     public static ICommand createAddResponseDefinitionCommand(String definitionName, ObjectNode from) {
         return new AddResponseDefinitionCommand(definitionName, from);
+    }
+
+    public static ICommand createAddParameterDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddParameterDefinitionCommand(definitionName, from);
     }
 
     public static ICommand createAddSchemaDefinitionCommand(String definitionName, ObjectNode from) {

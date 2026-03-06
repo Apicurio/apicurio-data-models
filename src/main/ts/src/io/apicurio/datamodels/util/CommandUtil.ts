@@ -8,6 +8,7 @@ import {AddExtensionCommand} from "../cmd/commands/AddExtensionCommand";
 import {AddMediaTypeCommand} from "../cmd/commands/AddMediaTypeCommand";
 import {AddOperationSecurityRequirementCommand} from "../cmd/commands/AddOperationSecurityRequirementCommand";
 import {AddParameterCommand} from "../cmd/commands/AddParameterCommand";
+import {AddParameterDefinitionCommand} from "../cmd/commands/AddParameterDefinitionCommand";
 import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
 import {AddRequestBodyCommand} from "../cmd/commands/AddRequestBodyCommand";
 import {AddResponseCommand} from "../cmd/commands/AddResponseCommand";
@@ -94,6 +95,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddMediaTypeCommand": () => { return new AddMediaTypeCommand(); },
     "AddOperationSecurityRequirementCommand": () => { return new AddOperationSecurityRequirementCommand(); },
     "AddParameterCommand": () => { return new AddParameterCommand(); },
+    "AddParameterDefinitionCommand": () => { return new AddParameterDefinitionCommand(); },
     "AddPathItemCommand": () => { return new AddPathItemCommand(); },
     "AddRequestBodyCommand": () => { return new AddRequestBodyCommand(); },
     "AddResponseCommand": () => { return new AddResponseCommand(); },
