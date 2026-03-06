@@ -76,6 +76,8 @@
     { "name": "[OpenAPI 3] {Add Schema Property} - Add Property", "test": "commands/add-schema-property/openapi-3/add-schema-property" },
     { "name": "[OpenAPI 2] {Add Parameter Definition} - Add Parameter Definition", "test": "commands/add-parameter-definition/openapi-2/add-parameter-definition" },
     { "name": "[OpenAPI 3] {Add Parameter Definition} - Add Parameter Definition", "test": "commands/add-parameter-definition/openapi-3/add-parameter-definition" },
+    { "name": "[OpenAPI 3] {Add Header Definition} - Add Header Definition", "test": "commands/add-header-definition/openapi-3/add-header-definition" },
+    { "name": "[OpenAPI 3] {Add Header Definition} - Add Header Definition (no components)", "test": "commands/add-header-definition/openapi-3/add-header-definition-no-components" },
     { "name": "[OpenAPI 2] {Delete Parameter Definition} - Delete Parameter Definition", "test": "commands/delete-parameter-definition/openapi-2/delete-parameter-definition" },
     { "name": "[OpenAPI 3] {Delete Parameter Definition} - Delete Parameter Definition", "test": "commands/delete-parameter-definition/openapi-3/delete-parameter-definition" },
     { "name": "[OpenAPI 2] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openapi-2/add-definition" },
