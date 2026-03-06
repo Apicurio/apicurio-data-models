@@ -1,0 +1,10 @@
+{
+  "swagger" : "2.0",
+  "parameters" : {
+    "limitParam": {
+      "name": "limit",
+      "in": "query",
+      "type": "integer"
+    }
+  }
+}
