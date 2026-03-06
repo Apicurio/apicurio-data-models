@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "examples": {
+      "frogExample": {
+        "summary": "A frog example",
+        "value": {
+          "name": "Frog",
+          "color": "green"
+        }
+      },
+      "catExample": {
+        "summary": "A cat example",
+        "value": {
+          "name": "Cat",
+          "color": "black"
+        }
+      }
+    }
+  }
+}
