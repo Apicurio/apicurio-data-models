@@ -6,6 +6,7 @@ import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddExtensionCommand;
+import io.apicurio.datamodels.cmd.commands.AddHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.AddOperationSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddParameterCommand;
@@ -144,6 +145,16 @@ public class CommandFactory {
      */
     public static ICommand createAddExampleDefinitionCommand(String definitionName, ObjectNode from) {
         return new AddExampleDefinitionCommand(definitionName, from);
+    }
+  
+    /**
+     * Creates a command to add a header definition to the document.
+     * @param definitionName the name of the header definition
+     * @param from the source object for the header definition
+     * @return the command
+     */
+    public static ICommand createAddHeaderDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddHeaderDefinitionCommand(definitionName, from);
     }
 
     /**
