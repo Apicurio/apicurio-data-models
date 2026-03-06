@@ -32,6 +32,8 @@ import {CreateOperationCommand} from "../cmd/commands/CreateOperationCommand";
 import {CreatePathCommand} from "../cmd/commands/CreatePathCommand";
 import {CreateSchemaCommand} from "../cmd/commands/CreateSchemaCommand";
 
+import {AddSchemaPropertyCommand} from "../cmd/commands/AddSchemaPropertyCommand";
+
 import {DeleteAllChildSchemasCommand} from "../cmd/commands/DeleteAllChildSchemasCommand";
 import {DeleteAllExamplesCommand} from "../cmd/commands/DeleteAllExamplesCommand";
 import {DeleteAllExtensionsCommand} from "../cmd/commands/DeleteAllExtensionsCommand";
@@ -103,6 +105,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
     "AddSecuritySchemeCommand": () => { return new AddSecuritySchemeCommand(); },
     "AddServerCommand": () => { return new AddServerCommand(); },
+    "AddSchemaPropertyCommand": () => { return new AddSchemaPropertyCommand(); },
     "AddTagCommand": () => { return new AddTagCommand(); },
 
     "ChangeContactCommand": () => { return new ChangeContactCommand(); },

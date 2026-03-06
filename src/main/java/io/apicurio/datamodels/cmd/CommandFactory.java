@@ -18,6 +18,7 @@ import io.apicurio.datamodels.cmd.commands.AddSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecuritySchemeCommand;
 import io.apicurio.datamodels.cmd.commands.AddServerCommand;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.cmd.commands.AddSchemaPropertyCommand;
 import io.apicurio.datamodels.cmd.commands.AddTagCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeContactCommand;
 import io.apicurio.datamodels.cmd.commands.ChangeDescriptionCommand;
@@ -230,6 +231,18 @@ public class CommandFactory {
 
     public static ICommand createDeleteAllPropertiesCommand(Schema schema) {
         return new DeleteAllPropertiesCommand(schema);
+    }
+
+    /**
+     * Creates a command to add a single property to a schema definition.
+     * @param schemaDefinitionName the name of the schema definition
+     * @param propertyName the name of the property to add
+     * @param propertySchema the schema of the property to add
+     * @return the command
+     */
+    public static ICommand createAddSchemaPropertyCommand(String schemaDefinitionName,
+            String propertyName, ObjectNode propertySchema) {
+        return new AddSchemaPropertyCommand(schemaDefinitionName, propertyName, propertySchema);
     }
 
     /**
