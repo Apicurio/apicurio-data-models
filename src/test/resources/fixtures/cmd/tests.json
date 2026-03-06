@@ -84,6 +84,7 @@
     { "name": "[OpenAPI 3] {Add Header Definition} - Add Header Definition (no components)", "test": "commands/add-header-definition/openapi-3/add-header-definition-no-components" },
     { "name": "[OpenAPI 2] {Delete Parameter Definition} - Delete Parameter Definition", "test": "commands/delete-parameter-definition/openapi-2/delete-parameter-definition" },
     { "name": "[OpenAPI 3] {Delete Parameter Definition} - Delete Parameter Definition", "test": "commands/delete-parameter-definition/openapi-3/delete-parameter-definition" },
+    { "name": "[OpenAPI 3] {Add Example Definition} - Add Example Definition", "test": "commands/add-example-definition/openapi-3/add-example-definition" },
     { "name": "[OpenAPI 2] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openapi-2/add-definition" },
     { "name": "[OpenAPI 2] {Add Schema Definition} - Clone Definition", "test": "commands/add-definition/openapi-2/clone-definition" },
     { "name": "[OpenAPI 3] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openapi-3/add-definition" },

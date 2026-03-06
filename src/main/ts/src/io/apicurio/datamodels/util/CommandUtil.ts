@@ -4,6 +4,7 @@ import {NodePathUtil} from "../paths/NodePathUtil";
 
 import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
 import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
+import {AddExampleDefinitionCommand} from "../cmd/commands/AddExampleDefinitionCommand";
 import {AddExtensionCommand} from "../cmd/commands/AddExtensionCommand";
 import {AddHeaderDefinitionCommand} from "../cmd/commands/AddHeaderDefinitionCommand";
 import {AddMediaTypeCommand} from "../cmd/commands/AddMediaTypeCommand";
@@ -94,6 +95,7 @@ type Supplier = () => ICommand;
 const commandSuppliers: { [key: string]: Supplier } = {
     "AddChannelItemCommand": () => { return new AddChannelItemCommand(); },
     "AddExampleCommand": () => { return new AddExampleCommand(); },
+    "AddExampleDefinitionCommand": () => { return new AddExampleDefinitionCommand(); },
     "AddExtensionCommand": () => { return new AddExtensionCommand(); },
     "AddHeaderDefinitionCommand": () => { return new AddHeaderDefinitionCommand(); },
     "AddMediaTypeCommand": () => { return new AddMediaTypeCommand(); },

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
+import io.apicurio.datamodels.cmd.commands.AddExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.AddHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddMediaTypeCommand;
@@ -136,6 +137,16 @@ public class CommandFactory {
         return new AddParameterDefinitionCommand(definitionName, from);
     }
 
+    /**
+     * Creates a command to add a new reusable example definition to the document.
+     * @param definitionName the name of the example definition
+     * @param from the source object for the example definition
+     * @return the command
+     */
+    public static ICommand createAddExampleDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddExampleDefinitionCommand(definitionName, from);
+    }
+  
     /**
      * Creates a command to add a header definition to the document.
      * @param definitionName the name of the header definition
