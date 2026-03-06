@@ -1,0 +1,4 @@
+[{
+    "__type": "DeleteHeaderDefinitionCommand",
+    "_definitionName": "X-Request-Id"
+}]
