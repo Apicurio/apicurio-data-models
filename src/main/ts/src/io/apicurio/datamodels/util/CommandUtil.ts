@@ -8,12 +8,14 @@ import {AddExtensionCommand} from "../cmd/commands/AddExtensionCommand";
 import {AddMediaTypeCommand} from "../cmd/commands/AddMediaTypeCommand";
 import {AddOperationSecurityRequirementCommand} from "../cmd/commands/AddOperationSecurityRequirementCommand";
 import {AddParameterCommand} from "../cmd/commands/AddParameterCommand";
+import {AddParameterDefinitionCommand} from "../cmd/commands/AddParameterDefinitionCommand";
 import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
 import {AddRequestBodyCommand} from "../cmd/commands/AddRequestBodyCommand";
 import {AddResponseCommand} from "../cmd/commands/AddResponseCommand";
 import {AddResponseDefinitionCommand} from "../cmd/commands/AddResponseDefinitionCommand";
 import {AddResponseHeaderCommand} from "../cmd/commands/AddResponseHeaderCommand";
 import {AddSchemaDefinitionCommand} from "../cmd/commands/AddSchemaDefinitionCommand";
+import {AddSchemaPropertyCommand} from "../cmd/commands/AddSchemaPropertyCommand";
 import {AddSecurityRequirementCommand} from "../cmd/commands/AddSecurityRequirementCommand";
 import {AddSecuritySchemeCommand} from "../cmd/commands/AddSecuritySchemeCommand";
 import {AddServerCommand} from "../cmd/commands/AddServerCommand";
@@ -96,12 +98,14 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddMediaTypeCommand": () => { return new AddMediaTypeCommand(); },
     "AddOperationSecurityRequirementCommand": () => { return new AddOperationSecurityRequirementCommand(); },
     "AddParameterCommand": () => { return new AddParameterCommand(); },
+    "AddParameterDefinitionCommand": () => { return new AddParameterDefinitionCommand(); },
     "AddPathItemCommand": () => { return new AddPathItemCommand(); },
     "AddRequestBodyCommand": () => { return new AddRequestBodyCommand(); },
     "AddResponseCommand": () => { return new AddResponseCommand(); },
     "AddResponseDefinitionCommand": () => { return new AddResponseDefinitionCommand(); },
     "AddResponseHeaderCommand": () => { return new AddResponseHeaderCommand(); },
     "AddSchemaDefinitionCommand": () => { return new AddSchemaDefinitionCommand(); },
+    "AddSchemaPropertyCommand": () => { return new AddSchemaPropertyCommand(); },
     "AddSecurityRequirementCommand": () => { return new AddSecurityRequirementCommand(); },
     "AddSecuritySchemeCommand": () => { return new AddSecuritySchemeCommand(); },
     "AddServerCommand": () => { return new AddServerCommand(); },

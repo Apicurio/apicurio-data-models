@@ -8,12 +8,14 @@ import io.apicurio.datamodels.cmd.commands.AddExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.AddMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.AddOperationSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddParameterCommand;
+import io.apicurio.datamodels.cmd.commands.AddParameterDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddRequestBodyCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseHeaderCommand;
 import io.apicurio.datamodels.cmd.commands.AddSchemaDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.AddSchemaPropertyCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddSecuritySchemeCommand;
 import io.apicurio.datamodels.cmd.commands.AddServerCommand;
@@ -129,8 +131,24 @@ public class CommandFactory {
         return new AddResponseDefinitionCommand(definitionName, from);
     }
 
+    public static ICommand createAddParameterDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddParameterDefinitionCommand(definitionName, from);
+    }
+
     public static ICommand createAddSchemaDefinitionCommand(String definitionName, ObjectNode from) {
         return new AddSchemaDefinitionCommand(definitionName, from);
+    }
+
+    /**
+     * Creates a command to add a new property to a schema definition.
+     * @param schemaDefinitionName the name of the schema definition
+     * @param propertyName the name of the property to add
+     * @param propertySchema the JSON schema for the property
+     * @return the command
+     */
+    public static ICommand createAddSchemaPropertyCommand(String schemaDefinitionName,
+            String propertyName, ObjectNode propertySchema) {
+        return new AddSchemaPropertyCommand(schemaDefinitionName, propertyName, propertySchema);
     }
 
     public static ICommand createAddDocumentSecurityRequirementCommand(
