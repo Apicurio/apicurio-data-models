@@ -1,7 +1,5 @@
 [{
     "__type": "RenameSchemaDefinitionCommand",
-    "_oldName": "User",
-    "_newName": "Dude",
-    "_references": [],
-    "_messageReferences": []
+    "_oldName": "OldName",
+    "_newName": "NewName"
 }]
