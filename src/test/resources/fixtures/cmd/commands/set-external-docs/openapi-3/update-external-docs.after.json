@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Sample Pet Store App",
+    "description": "This is a sample server for a pet store.",
+    "version": "1.0.1"
+  },
+  "externalDocs": {
+    "description": "Updated documentation link",
+    "url": "https://example.com/new-docs"
+  },
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List all pets",
+        "operationId": "listPets",
+        "responses": {
+          "200": {
+            "description": "A list of pets."
+          }
+        }
+      }
+    }
+  }
+}
