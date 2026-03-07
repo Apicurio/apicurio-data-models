@@ -53,6 +53,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteOperationCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteOperationSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteParameterCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteParameterDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteRequestBodyDefinitionCommand;
@@ -190,6 +191,15 @@ public class CommandFactory {
      */
     public static ICommand createDeleteRequestBodyDefinitionCommand(String definitionName) {
         return new DeleteRequestBodyDefinitionCommand(definitionName);
+    }
+
+    /**
+     * Creates a command to delete a reusable example definition.
+     * @param definitionName the name of the example definition to delete
+     * @return the command
+     */
+    public static ICommand createDeleteExampleDefinitionCommand(String definitionName) {
+        return new DeleteExampleDefinitionCommand(definitionName);
     }
 
     public static ICommand createAddSchemaDefinitionCommand(String definitionName, ObjectNode from) {

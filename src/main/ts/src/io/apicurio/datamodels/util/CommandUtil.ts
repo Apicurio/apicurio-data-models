@@ -56,6 +56,7 @@ import {DeleteMediaTypeCommand} from "../cmd/commands/DeleteMediaTypeCommand";
 import {DeleteOperationCommand} from "../cmd/commands/DeleteOperationCommand";
 import {DeleteOperationSecurityRequirementCommand} from "../cmd/commands/DeleteOperationSecurityRequirementCommand";
 import {DeleteParameterCommand} from "../cmd/commands/DeleteParameterCommand";
+import {DeleteExampleDefinitionCommand} from "../cmd/commands/DeleteExampleDefinitionCommand";
 import {DeleteHeaderDefinitionCommand} from "../cmd/commands/DeleteHeaderDefinitionCommand";
 import {DeleteParameterDefinitionCommand} from "../cmd/commands/DeleteParameterDefinitionCommand";
 import {DeleteRequestBodyDefinitionCommand} from "../cmd/commands/DeleteRequestBodyDefinitionCommand";
@@ -152,6 +153,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteOperationCommand": () => { return new DeleteOperationCommand(); },
     "DeleteOperationSecurityRequirementCommand": () => { return new DeleteOperationSecurityRequirementCommand(); },
     "DeleteParameterCommand": () => { return new DeleteParameterCommand(); },
+    "DeleteExampleDefinitionCommand": () => { return new DeleteExampleDefinitionCommand(); },
     "DeleteHeaderDefinitionCommand": () => { return new DeleteHeaderDefinitionCommand(); },
     "DeleteParameterDefinitionCommand": () => { return new DeleteParameterDefinitionCommand(); },
     "DeletePathCommand": () => { return new DeletePathCommand(); },
