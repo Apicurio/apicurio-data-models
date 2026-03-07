@@ -83,6 +83,7 @@ import {ReplaceResponseDefinitionCommand} from "../cmd/commands/ReplaceResponseD
 import {ReplaceSchemaDefinitionCommand} from "../cmd/commands/ReplaceSchemaDefinitionCommand";
 import {ReplaceSecurityRequirementCommand} from "../cmd/commands/ReplaceSecurityRequirementCommand";
 
+import {SetExternalDocsCommand} from "../cmd/commands/SetExternalDocsCommand";
 import {SetPropertyCommand} from "../cmd/commands/SetPropertyCommand";
 
 import {UpdateNodeCommand} from "../cmd/commands/UpdateNodeCommand";
@@ -180,6 +181,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "ReplaceSchemaDefinitionCommand": () => { return new ReplaceSchemaDefinitionCommand(); },
     "ReplaceSecurityRequirementCommand": () => { return new ReplaceSecurityRequirementCommand(); },
 
+    "SetExternalDocsCommand": () => { return new SetExternalDocsCommand(); },
     "SetPropertyCommand": () => { return new SetPropertyCommand(); },
 
     "UpdateNodeCommand": () => { return new UpdateNodeCommand(); },

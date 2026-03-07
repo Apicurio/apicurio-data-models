@@ -76,6 +76,7 @@ import io.apicurio.datamodels.cmd.commands.ReplacePathItemCommand;
 import io.apicurio.datamodels.cmd.commands.ReplaceResponseDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.ReplaceSchemaDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.ReplaceSecurityRequirementCommand;
+import io.apicurio.datamodels.cmd.commands.SetExternalDocsCommand;
 import io.apicurio.datamodels.cmd.commands.UpdateNodeCommand;
 import io.apicurio.datamodels.cmd.commands.UpdateSecuritySchemeCommand;
 import io.apicurio.datamodels.models.Extensible;
@@ -272,6 +273,17 @@ public class CommandFactory {
 
     public static ICommand createChangeLicenseCommand(String name, String url) {
         return new ChangeLicenseCommand(name, url);
+    }
+
+    /**
+     * Creates a command to set external documentation on a node.
+     * @param parent the parent node (Document, Tag, Operation, or Schema)
+     * @param url the external documentation URL
+     * @param description an optional description
+     * @return the command
+     */
+    public static ICommand createSetExternalDocsCommand(Node parent, String url, String description) {
+        return new SetExternalDocsCommand(parent, url, description);
     }
 
     public static ICommand createDeleteLicenseCommand(Info info) {
