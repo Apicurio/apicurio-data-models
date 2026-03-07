@@ -58,6 +58,7 @@ import {DeleteOperationSecurityRequirementCommand} from "../cmd/commands/DeleteO
 import {DeleteParameterCommand} from "../cmd/commands/DeleteParameterCommand";
 import {DeleteHeaderDefinitionCommand} from "../cmd/commands/DeleteHeaderDefinitionCommand";
 import {DeleteParameterDefinitionCommand} from "../cmd/commands/DeleteParameterDefinitionCommand";
+import {DeleteRequestBodyDefinitionCommand} from "../cmd/commands/DeleteRequestBodyDefinitionCommand";
 import {DeletePathCommand} from "../cmd/commands/DeletePathCommand";
 import {DeleteRequestBodyCommand} from "../cmd/commands/DeleteRequestBodyCommand";
 import {DeleteResponseCommand} from "../cmd/commands/DeleteResponseCommand";
@@ -154,6 +155,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteParameterDefinitionCommand": () => { return new DeleteParameterDefinitionCommand(); },
     "DeletePathCommand": () => { return new DeletePathCommand(); },
     "DeleteRequestBodyCommand": () => { return new DeleteRequestBodyCommand(); },
+    "DeleteRequestBodyDefinitionCommand": () => { return new DeleteRequestBodyDefinitionCommand(); },
     "DeleteResponseCommand": () => { return new DeleteResponseCommand(); },
     "DeleteResponseHeaderCommand": () => { return new DeleteResponseHeaderCommand(); },
     "DeleteSchemaCommand": () => { return new DeleteSchemaCommand(); },

@@ -55,6 +55,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteOperationSecurityRequirementCom
 import io.apicurio.datamodels.cmd.commands.DeleteParameterCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteParameterDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteRequestBodyDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.DeletePathCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteRequestBodyCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteResponseCommand;
@@ -179,6 +180,15 @@ public class CommandFactory {
      */
     public static ICommand createDeleteHeaderDefinitionCommand(String definitionName) {
         return new DeleteHeaderDefinitionCommand(definitionName);
+    }
+
+    /**
+     * Creates a command to delete a reusable request body definition.
+     * @param definitionName the name of the request body definition to delete
+     * @return the command
+     */
+    public static ICommand createDeleteRequestBodyDefinitionCommand(String definitionName) {
+        return new DeleteRequestBodyDefinitionCommand(definitionName);
     }
 
     public static ICommand createAddSchemaDefinitionCommand(String definitionName, ObjectNode from) {
