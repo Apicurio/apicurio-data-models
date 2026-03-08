@@ -1,0 +1,22 @@
+[
+    {
+        "__type": "AddRequestBodyDefinitionCommand",
+        "_newDefinitionName" : "PetBody",
+        "_newDefinitionObj" : {
+            "description": "A request body containing pet information",
+            "required": false,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "petName": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+]
