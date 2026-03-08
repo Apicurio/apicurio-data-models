@@ -15,6 +15,7 @@ import io.apicurio.datamodels.cmd.commands.AddParameterCommand;
 import io.apicurio.datamodels.cmd.commands.AddParameterDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddPathItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddRequestBodyCommand;
+import io.apicurio.datamodels.cmd.commands.AddRequestBodyDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddResponseHeaderCommand;
@@ -187,6 +188,16 @@ public class CommandFactory {
      */
     public static ICommand createDeleteHeaderDefinitionCommand(String definitionName) {
         return new DeleteHeaderDefinitionCommand(definitionName);
+    }
+
+    /**
+     * Creates a command to add a request body definition to the document.
+     * @param definitionName the name of the request body definition
+     * @param from the source object for the request body definition
+     * @return the command
+     */
+    public static ICommand createAddRequestBodyDefinitionCommand(String definitionName, ObjectNode from) {
+        return new AddRequestBodyDefinitionCommand(definitionName, from);
     }
 
     /**

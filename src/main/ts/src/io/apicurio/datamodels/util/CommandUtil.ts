@@ -15,6 +15,7 @@ import {AddParameterCommand} from "../cmd/commands/AddParameterCommand";
 import {AddParameterDefinitionCommand} from "../cmd/commands/AddParameterDefinitionCommand";
 import {AddPathItemCommand} from "../cmd/commands/AddPathItemCommand";
 import {AddRequestBodyCommand} from "../cmd/commands/AddRequestBodyCommand";
+import {AddRequestBodyDefinitionCommand} from "../cmd/commands/AddRequestBodyDefinitionCommand";
 import {AddResponseCommand} from "../cmd/commands/AddResponseCommand";
 import {AddResponseDefinitionCommand} from "../cmd/commands/AddResponseDefinitionCommand";
 import {AddResponseHeaderCommand} from "../cmd/commands/AddResponseHeaderCommand";
@@ -117,6 +118,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddParameterDefinitionCommand": () => { return new AddParameterDefinitionCommand(); },
     "AddPathItemCommand": () => { return new AddPathItemCommand(); },
     "AddRequestBodyCommand": () => { return new AddRequestBodyCommand(); },
+    "AddRequestBodyDefinitionCommand": () => { return new AddRequestBodyDefinitionCommand(); },
     "AddResponseCommand": () => { return new AddResponseCommand(); },
     "AddResponseDefinitionCommand": () => { return new AddResponseDefinitionCommand(); },
     "AddResponseHeaderCommand": () => { return new AddResponseHeaderCommand(); },
