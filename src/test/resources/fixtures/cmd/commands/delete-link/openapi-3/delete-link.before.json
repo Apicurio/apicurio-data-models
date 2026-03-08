@@ -1,0 +1,26 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "summary": "Get Foo",
+        "operationId": "getFoo",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "links": {
+              "GetFooById": {
+                "operationId": "getFooById",
+                "description": "Get foo by ID"
+              },
+              "GetBarById": {
+                "operationId": "getBarById",
+                "description": "Get bar by ID"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

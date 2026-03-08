@@ -7,6 +7,7 @@ import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.AddExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.AddHeaderDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.AddLinkCommand;
 import io.apicurio.datamodels.cmd.commands.AddMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.AddOperationSecurityRequirementCommand;
 import io.apicurio.datamodels.cmd.commands.AddParameterCommand;
@@ -49,6 +50,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteAllTagsCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteContactCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteExtensionCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteLicenseCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteLinkCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteMediaTypeCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteOperationCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteOperationSecurityRequirementCommand;
@@ -534,6 +536,29 @@ public class CommandFactory {
     public static ICommand createDeleteResponseHeaderCommand(OpenApiHeadersParent response,
                                                              String headerName) {
         return new DeleteResponseHeaderCommand(response, headerName);
+    }
+
+    // --- Link commands ---
+
+    /**
+     * Creates a command to add a link to a response or components.
+     * @param parent the parent node (response or components)
+     * @param linkName the name of the link
+     * @param from the link definition as a JSON object
+     * @return the command
+     */
+    public static ICommand createAddLinkCommand(Node parent, String linkName, ObjectNode from) {
+        return new AddLinkCommand(parent, linkName, from);
+    }
+
+    /**
+     * Creates a command to delete a link from a response or components.
+     * @param parent the parent node (response or components)
+     * @param linkName the name of the link to delete
+     * @return the command
+     */
+    public static ICommand createDeleteLinkCommand(Node parent, String linkName) {
+        return new DeleteLinkCommand(parent, linkName);
     }
 
     // --- Media type commands ---
