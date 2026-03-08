@@ -7,6 +7,7 @@ import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
 import {AddExampleDefinitionCommand} from "../cmd/commands/AddExampleDefinitionCommand";
 import {AddExtensionCommand} from "../cmd/commands/AddExtensionCommand";
 import {AddHeaderDefinitionCommand} from "../cmd/commands/AddHeaderDefinitionCommand";
+import {AddLinkCommand} from "../cmd/commands/AddLinkCommand";
 import {AddMediaTypeCommand} from "../cmd/commands/AddMediaTypeCommand";
 import {AddOperationSecurityRequirementCommand} from "../cmd/commands/AddOperationSecurityRequirementCommand";
 import {AddParameterCommand} from "../cmd/commands/AddParameterCommand";
@@ -52,6 +53,7 @@ import {DeleteAllTagsCommand} from "../cmd/commands/DeleteAllTagsCommand";
 import {DeleteContactCommand} from "../cmd/commands/DeleteContactCommand";
 import {DeleteExtensionCommand} from "../cmd/commands/DeleteExtensionCommand";
 import {DeleteLicenseCommand} from "../cmd/commands/DeleteLicenseCommand";
+import {DeleteLinkCommand} from "../cmd/commands/DeleteLinkCommand";
 import {DeleteMediaTypeCommand} from "../cmd/commands/DeleteMediaTypeCommand";
 import {DeleteOperationCommand} from "../cmd/commands/DeleteOperationCommand";
 import {DeleteOperationSecurityRequirementCommand} from "../cmd/commands/DeleteOperationSecurityRequirementCommand";
@@ -105,6 +107,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "AddExampleDefinitionCommand": () => { return new AddExampleDefinitionCommand(); },
     "AddExtensionCommand": () => { return new AddExtensionCommand(); },
     "AddHeaderDefinitionCommand": () => { return new AddHeaderDefinitionCommand(); },
+    "AddLinkCommand": () => { return new AddLinkCommand(); },
     "AddMediaTypeCommand": () => { return new AddMediaTypeCommand(); },
     "AddOperationSecurityRequirementCommand": () => { return new AddOperationSecurityRequirementCommand(); },
     "AddParameterCommand": () => { return new AddParameterCommand(); },
@@ -150,6 +153,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "DeleteContactCommand": () => { return new DeleteContactCommand(); },
     "DeleteExtensionCommand": () => { return new DeleteExtensionCommand(); },
     "DeleteLicenseCommand": () => { return new DeleteLicenseCommand(); },
+    "DeleteLinkCommand": () => { return new DeleteLinkCommand(); },
     "DeleteMediaTypeCommand": () => { return new DeleteMediaTypeCommand(); },
     "DeleteOperationCommand": () => { return new DeleteOperationCommand(); },
     "DeleteOperationSecurityRequirementCommand": () => { return new DeleteOperationSecurityRequirementCommand(); },

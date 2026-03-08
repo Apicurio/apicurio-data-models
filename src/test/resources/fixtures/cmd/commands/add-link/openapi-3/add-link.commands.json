@@ -1,0 +1,11 @@
+[
+    {
+        "__type": "AddLinkCommand",
+        "_parentPath": "/paths[/foo]/get/responses[200]",
+        "_linkName": "GetFooById",
+        "_from": {
+            "operationId": "getFooById",
+            "description": "The `id` value returned in the response can be used as the `fooId` parameter in `GET /foo/{fooId}`."
+        }
+    }
+]

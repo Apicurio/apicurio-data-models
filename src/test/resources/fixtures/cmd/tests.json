@@ -133,6 +133,8 @@
     { "name": "[OpenAPI 3] {Delete Response} - Delete Response", "test": "commands/delete-response/openapi-3/delete-response" },
     { "name": "[OpenAPI 3] {Add Response Header} - Add Response Header", "test": "commands/add-response-header/openapi-3/add-response-header" },
     { "name": "[OpenAPI 3] {Delete Response Header} - Delete Response Header", "test": "commands/delete-response-header/openapi-3/delete-response-header" },
+    { "name": "[OpenAPI 3] {Add Link} - Add Link", "test": "commands/add-link/openapi-3/add-link" },
+    { "name": "[OpenAPI 3] {Delete Link} - Delete Link", "test": "commands/delete-link/openapi-3/delete-link" },
     { "name": "[OpenAPI 3] {Add Media Type} - Add Media Type", "test": "commands/add-media-type/openapi-3/add-media-type" },
     { "name": "[OpenAPI 3] {Change Media Type Schema} - Change Media Type Schema", "test": "commands/change-media-type-schema/openapi-3/change-media-type-schema" },
     { "name": "[OpenAPI 3] {Create Schema} - Create Schema", "test": "commands/create-schema/openapi-3/create-schema" },
