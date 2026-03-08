@@ -1,0 +1,19 @@
+[
+    {
+        "__type": "AddCallbackCommand",
+        "_parentPath": "/paths[/foo]/get",
+        "_callbackName": "onFooEvent",
+        "_from": {
+            "{$request.body#/callbackUrl}": {
+                "post": {
+                    "summary": "Foo Event Callback",
+                    "responses": {
+                        "200": {
+                            "description": "Callback processed"
+                        }
+                    }
+                }
+            }
+        }
+    }
+]

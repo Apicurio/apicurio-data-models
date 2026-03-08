@@ -2,6 +2,7 @@ import {ICommand} from '../cmd/ICommand';
 import {NodePath} from '../paths/NodePath';
 import {NodePathUtil} from "../paths/NodePathUtil";
 
+import {AddCallbackCommand} from "../cmd/commands/AddCallbackCommand";
 import {AddChannelItemCommand} from "../cmd/commands/AddChannelItemCommand";
 import {AddExampleCommand} from "../cmd/commands/AddExampleCommand";
 import {AddExampleDefinitionCommand} from "../cmd/commands/AddExampleDefinitionCommand";
@@ -38,6 +39,7 @@ import {CreateOperationCommand} from "../cmd/commands/CreateOperationCommand";
 import {CreatePathCommand} from "../cmd/commands/CreatePathCommand";
 import {CreateSchemaCommand} from "../cmd/commands/CreateSchemaCommand";
 
+import {DeleteCallbackCommand} from "../cmd/commands/DeleteCallbackCommand";
 import {DeleteAllChildSchemasCommand} from "../cmd/commands/DeleteAllChildSchemasCommand";
 import {DeleteAllExamplesCommand} from "../cmd/commands/DeleteAllExamplesCommand";
 import {DeleteAllExtensionsCommand} from "../cmd/commands/DeleteAllExtensionsCommand";
@@ -102,6 +104,7 @@ const cmdListKeys: string[] = [ "_commands" ];
 type Supplier = () => ICommand;
 
 const commandSuppliers: { [key: string]: Supplier } = {
+    "AddCallbackCommand": () => { return new AddCallbackCommand(); },
     "AddChannelItemCommand": () => { return new AddChannelItemCommand(); },
     "AddExampleCommand": () => { return new AddExampleCommand(); },
     "AddExampleDefinitionCommand": () => { return new AddExampleDefinitionCommand(); },
@@ -138,6 +141,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "CreatePathCommand": () => { return new CreatePathCommand(); },
     "CreateSchemaCommand": () => { return new CreateSchemaCommand(); },
 
+    "DeleteCallbackCommand": () => { return new DeleteCallbackCommand(); },
     "DeleteAllChildSchemasCommand": () => { return new DeleteAllChildSchemasCommand(); },
     "DeleteAllExamplesCommand": () => { return new DeleteAllExamplesCommand(); },
     "DeleteAllExtensionsCommand": () => { return new DeleteAllExtensionsCommand(); },

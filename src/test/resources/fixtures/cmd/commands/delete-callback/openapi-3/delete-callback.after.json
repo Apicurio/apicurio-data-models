@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "summary": "Get Foo",
+        "operationId": "getFoo",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        },
+        "callbacks": {
+          "onBarEvent": {
+            "{$request.body#/barUrl}": {
+              "post": {
+                "summary": "Bar Event Callback",
+                "responses": {
+                  "200": {
+                    "description": "Callback processed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

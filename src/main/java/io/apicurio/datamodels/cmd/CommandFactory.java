@@ -2,6 +2,7 @@ package io.apicurio.datamodels.cmd;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.apicurio.datamodels.cmd.commands.AddCallbackCommand;
 import io.apicurio.datamodels.cmd.commands.AddChannelItemCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleCommand;
 import io.apicurio.datamodels.cmd.commands.AddExampleDefinitionCommand;
@@ -36,6 +37,7 @@ import io.apicurio.datamodels.cmd.commands.ChangeVersionCommand;
 import io.apicurio.datamodels.cmd.commands.CreateOperationCommand;
 import io.apicurio.datamodels.cmd.commands.CreatePathCommand;
 import io.apicurio.datamodels.cmd.commands.CreateSchemaCommand;
+import io.apicurio.datamodels.cmd.commands.DeleteCallbackCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllChildSchemasCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllExamplesCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteAllHeadersCommand;
@@ -559,6 +561,29 @@ public class CommandFactory {
      */
     public static ICommand createDeleteLinkCommand(Node parent, String linkName) {
         return new DeleteLinkCommand(parent, linkName);
+    }
+
+    // --- Callback commands ---
+
+    /**
+     * Creates a command to add a callback to an operation or components.
+     * @param parent the parent node (operation or components)
+     * @param callbackName the name of the callback
+     * @param from the callback definition as a JSON object
+     * @return the command
+     */
+    public static ICommand createAddCallbackCommand(Node parent, String callbackName, ObjectNode from) {
+        return new AddCallbackCommand(parent, callbackName, from);
+    }
+
+    /**
+     * Creates a command to delete a callback from an operation or components.
+     * @param parent the parent node (operation or components)
+     * @param callbackName the name of the callback to delete
+     * @return the command
+     */
+    public static ICommand createDeleteCallbackCommand(Node parent, String callbackName) {
+        return new DeleteCallbackCommand(parent, callbackName);
     }
 
     // --- Media type commands ---
