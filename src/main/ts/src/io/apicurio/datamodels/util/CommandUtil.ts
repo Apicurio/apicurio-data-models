@@ -81,6 +81,7 @@ import {EnsureChildNodeCommand} from "../cmd/commands/EnsureChildNodeCommand";
 
 import {RefactorExampleDefinitionCommand} from "../cmd/commands/RefactorExampleDefinitionCommand";
 import {RefactorHeaderDefinitionCommand} from "../cmd/commands/RefactorHeaderDefinitionCommand";
+import {RefactorLinkDefinitionCommand} from "../cmd/commands/RefactorLinkDefinitionCommand";
 import {RefactorParameterDefinitionCommand} from "../cmd/commands/RefactorParameterDefinitionCommand";
 import {RefactorRequestBodyDefinitionCommand} from "../cmd/commands/RefactorRequestBodyDefinitionCommand";
 import {RefactorResponseDefinitionCommand} from "../cmd/commands/RefactorResponseDefinitionCommand";
@@ -189,6 +190,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
 
     "RefactorExampleDefinitionCommand": () => { return new RefactorExampleDefinitionCommand(); },
     "RefactorHeaderDefinitionCommand": () => { return new RefactorHeaderDefinitionCommand(); },
+    "RefactorLinkDefinitionCommand": () => { return new RefactorLinkDefinitionCommand(); },
     "RefactorParameterDefinitionCommand": () => { return new RefactorParameterDefinitionCommand(); },
     "RefactorRequestBodyDefinitionCommand": () => { return new RefactorRequestBodyDefinitionCommand(); },
     "RefactorResponseDefinitionCommand": () => { return new RefactorResponseDefinitionCommand(); },
