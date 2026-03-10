@@ -120,6 +120,7 @@
     { "name": "[OpenAPI 3] {Refactor Response Definition} - Refactor Response Definition", "test": "commands/refactor-response-definition/openapi-3/refactor-response-definition" },
     { "name": "[OpenAPI 2] {Refactor Parameter Definition} - Refactor Parameter Definition", "test": "commands/refactor-parameter-definition/openapi-2/refactor-parameter-definition" },
     { "name": "[OpenAPI 3] {Refactor Parameter Definition} - Refactor Parameter Definition", "test": "commands/refactor-parameter-definition/openapi-3/refactor-parameter-definition" },
+    { "name": "[OpenAPI 3] {Refactor Header Definition} - Refactor Header Definition", "test": "commands/refactor-header-definition/openapi-3/refactor-header-definition" },
     { "name": "[OpenAPI 3] {Add Server} - Add Server", "test": "commands/add-server/openapi-3/add-server" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Document", "test": "commands/delete-server/openapi-3/delete-server-document" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Operation", "test": "commands/delete-server/openapi-3/delete-server-operation" },
