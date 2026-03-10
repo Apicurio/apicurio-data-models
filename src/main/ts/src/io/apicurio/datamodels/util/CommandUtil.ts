@@ -79,6 +79,7 @@ import {DeleteTagCommand} from "../cmd/commands/DeleteTagCommand";
 
 import {EnsureChildNodeCommand} from "../cmd/commands/EnsureChildNodeCommand";
 
+import {RefactorExampleDefinitionCommand} from "../cmd/commands/RefactorExampleDefinitionCommand";
 import {RefactorHeaderDefinitionCommand} from "../cmd/commands/RefactorHeaderDefinitionCommand";
 import {RefactorParameterDefinitionCommand} from "../cmd/commands/RefactorParameterDefinitionCommand";
 import {RefactorResponseDefinitionCommand} from "../cmd/commands/RefactorResponseDefinitionCommand";
@@ -185,6 +186,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
 
     "EnsureChildNodeCommand": () => { return new EnsureChildNodeCommand(); },
 
+    "RefactorExampleDefinitionCommand": () => { return new RefactorExampleDefinitionCommand(); },
     "RefactorHeaderDefinitionCommand": () => { return new RefactorHeaderDefinitionCommand(); },
     "RefactorParameterDefinitionCommand": () => { return new RefactorParameterDefinitionCommand(); },
     "RefactorResponseDefinitionCommand": () => { return new RefactorResponseDefinitionCommand(); },
