@@ -1,0 +1,54 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/widgets": {
+      "get": {
+        "summary": "List widgets",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LimitParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/gadgets": {
+      "get": {
+        "summary": "List gadgets",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LimitParam"
+          },
+          {
+            "$ref": "#/parameters/OffsetParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "LimitParam": {
+      "name": "limit",
+      "in": "query",
+      "type": "integer"
+    },
+    "OffsetParam": {
+      "name": "offset",
+      "in": "query",
+      "type": "integer"
+    }
+  }
+}
