@@ -74,7 +74,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteServerCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteServerVariableCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteTagCommand;
 import io.apicurio.datamodels.cmd.commands.EnsureChildNodeCommand;
-import io.apicurio.datamodels.cmd.commands.RenameSchemaDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.RefactorSchemaDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RenameTagCommand;
 import io.apicurio.datamodels.cmd.commands.ReplaceOperationCommand;
 import io.apicurio.datamodels.cmd.commands.ReplacePathItemCommand;
@@ -434,8 +434,8 @@ public class CommandFactory {
         return new RenameTagCommand(oldName, newName);
     }
 
-    public static ICommand createRenameSchemaDefinitionCommand(String oldName, String newName) {
-        return new RenameSchemaDefinitionCommand(oldName, newName);
+    public static ICommand createRefactorSchemaDefinitionCommand(String oldName, String newName) {
+        return new RefactorSchemaDefinitionCommand(oldName, newName);
     }
 
     // --- Server commands ---

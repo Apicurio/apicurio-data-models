@@ -18,17 +18,17 @@ import io.apicurio.datamodels.util.ModelTypeUtil;
  * A command used to rename a schema definition and update all $ref references.
  * @author eric.wittmann@gmail.com
  */
-public class RenameSchemaDefinitionCommand extends AbstractCommand {
+public class RefactorSchemaDefinitionCommand extends AbstractCommand {
 
     public String _oldName;
     public String _newName;
 
     public boolean _schemaRenamed;
 
-    public RenameSchemaDefinitionCommand() {
+    public RefactorSchemaDefinitionCommand() {
     }
 
-    public RenameSchemaDefinitionCommand(String oldName, String newName) {
+    public RefactorSchemaDefinitionCommand(String oldName, String newName) {
         this._oldName = oldName;
         this._newName = newName;
     }
@@ -38,7 +38,7 @@ public class RenameSchemaDefinitionCommand extends AbstractCommand {
      */
     @Override
     public void execute(Document document) {
-        LoggerUtil.info("[RenameSchemaDefinitionCommand] Executing.");
+        LoggerUtil.info("[RefactorSchemaDefinitionCommand] Executing.");
         this._schemaRenamed = false;
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
@@ -63,7 +63,7 @@ public class RenameSchemaDefinitionCommand extends AbstractCommand {
      */
     @Override
     public void undo(Document document) {
-        LoggerUtil.info("[RenameSchemaDefinitionCommand] Reverting.");
+        LoggerUtil.info("[RefactorSchemaDefinitionCommand] Reverting.");
         if (!this._schemaRenamed) {
             return;
         }

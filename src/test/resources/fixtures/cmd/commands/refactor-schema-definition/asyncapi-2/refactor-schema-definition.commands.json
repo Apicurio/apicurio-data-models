@@ -1,5 +1,5 @@
 [{
-    "__type": "RenameSchemaDefinitionCommand_Aai20",
+    "__type": "RefactorSchemaDefinitionCommand_Aai20",
     "_oldName": "Person",
     "_newName": "RealPerson",
     "_references": [],
