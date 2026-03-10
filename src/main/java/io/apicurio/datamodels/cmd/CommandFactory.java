@@ -77,6 +77,7 @@ import io.apicurio.datamodels.cmd.commands.EnsureChildNodeCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorParameterDefinitionCommand;
+import io.apicurio.datamodels.cmd.commands.RefactorRequestBodyDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorResponseDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorSchemaDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RenameTagCommand;
@@ -456,6 +457,10 @@ public class CommandFactory {
 
     public static ICommand createRefactorExampleDefinitionCommand(String oldName, String newName) {
         return new RefactorExampleDefinitionCommand(oldName, newName);
+    }
+
+    public static ICommand createRefactorRequestBodyDefinitionCommand(String oldName, String newName) {
+        return new RefactorRequestBodyDefinitionCommand(oldName, newName);
     }
 
     // --- Server commands ---

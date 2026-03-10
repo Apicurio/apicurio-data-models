@@ -82,6 +82,7 @@ import {EnsureChildNodeCommand} from "../cmd/commands/EnsureChildNodeCommand";
 import {RefactorExampleDefinitionCommand} from "../cmd/commands/RefactorExampleDefinitionCommand";
 import {RefactorHeaderDefinitionCommand} from "../cmd/commands/RefactorHeaderDefinitionCommand";
 import {RefactorParameterDefinitionCommand} from "../cmd/commands/RefactorParameterDefinitionCommand";
+import {RefactorRequestBodyDefinitionCommand} from "../cmd/commands/RefactorRequestBodyDefinitionCommand";
 import {RefactorResponseDefinitionCommand} from "../cmd/commands/RefactorResponseDefinitionCommand";
 import {RefactorSchemaDefinitionCommand} from "../cmd/commands/RefactorSchemaDefinitionCommand";
 import {RenameTagCommand} from "../cmd/commands/RenameTagCommand";
@@ -189,6 +190,7 @@ const commandSuppliers: { [key: string]: Supplier } = {
     "RefactorExampleDefinitionCommand": () => { return new RefactorExampleDefinitionCommand(); },
     "RefactorHeaderDefinitionCommand": () => { return new RefactorHeaderDefinitionCommand(); },
     "RefactorParameterDefinitionCommand": () => { return new RefactorParameterDefinitionCommand(); },
+    "RefactorRequestBodyDefinitionCommand": () => { return new RefactorRequestBodyDefinitionCommand(); },
     "RefactorResponseDefinitionCommand": () => { return new RefactorResponseDefinitionCommand(); },
     "RefactorSchemaDefinitionCommand": () => { return new RefactorSchemaDefinitionCommand(); },
     "RenameTagCommand": () => { return new RenameTagCommand(); },
