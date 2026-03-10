@@ -124,6 +124,7 @@
     { "name": "[OpenAPI 3] {Refactor Example Definition} - Refactor Example Definition", "test": "commands/refactor-example-definition/openapi-3/refactor-example-definition" },
     { "name": "[OpenAPI 3] {Refactor Request Body Definition} - Refactor Request Body Definition", "test": "commands/refactor-request-body-definition/openapi-3/refactor-request-body-definition" },
     { "name": "[OpenAPI 3] {Refactor Link Definition} - Refactor Link Definition", "test": "commands/refactor-link-definition/openapi-3/refactor-link-definition" },
+    { "name": "[OpenAPI 3] {Refactor Callback Definition} - Refactor Callback Definition", "test": "commands/refactor-callback-definition/openapi-3/refactor-callback-definition" },
     { "name": "[OpenAPI 3] {Add Server} - Add Server", "test": "commands/add-server/openapi-3/add-server" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Document", "test": "commands/delete-server/openapi-3/delete-server-document" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Operation", "test": "commands/delete-server/openapi-3/delete-server-operation" },

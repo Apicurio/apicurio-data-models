@@ -74,6 +74,7 @@ import io.apicurio.datamodels.cmd.commands.DeleteServerCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteServerVariableCommand;
 import io.apicurio.datamodels.cmd.commands.DeleteTagCommand;
 import io.apicurio.datamodels.cmd.commands.EnsureChildNodeCommand;
+import io.apicurio.datamodels.cmd.commands.RefactorCallbackDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorExampleDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorHeaderDefinitionCommand;
 import io.apicurio.datamodels.cmd.commands.RefactorLinkDefinitionCommand;
@@ -454,6 +455,10 @@ public class CommandFactory {
 
     public static ICommand createRefactorHeaderDefinitionCommand(String oldName, String newName) {
         return new RefactorHeaderDefinitionCommand(oldName, newName);
+    }
+
+    public static ICommand createRefactorCallbackDefinitionCommand(String oldName, String newName) {
+        return new RefactorCallbackDefinitionCommand(oldName, newName);
     }
 
     public static ICommand createRefactorExampleDefinitionCommand(String oldName, String newName) {
