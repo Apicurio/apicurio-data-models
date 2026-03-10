@@ -9,29 +9,29 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.deref.AllReferenceableNodeVisitor;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v20.OpenApi20Response;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**
- * A command used to rename a schema definition and update all $ref references.
+ * A command used to rename a response definition and update all $ref references.
  * @author eric.wittmann@gmail.com
  */
-public class RefactorSchemaDefinitionCommand extends AbstractCommand {
+public class RefactorResponseDefinitionCommand extends AbstractCommand {
 
     public String _oldName;
     public String _newName;
 
-    public boolean _schemaRenamed;
+    public boolean _responseRenamed;
 
-    public RefactorSchemaDefinitionCommand() {
+    public RefactorResponseDefinitionCommand() {
     }
 
-    public RefactorSchemaDefinitionCommand(String oldName, String newName) {
+    public RefactorResponseDefinitionCommand(String oldName, String newName) {
         this._oldName = oldName;
         this._newName = newName;
     }
@@ -41,8 +41,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
      */
     @Override
     public void execute(Document document) {
-        LoggerUtil.info("[RefactorSchemaDefinitionCommand] Executing.");
-        this._schemaRenamed = false;
+        LoggerUtil.info("[RefactorResponseDefinitionCommand] Executing.");
+        this._responseRenamed = false;
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
             renameInOas20((OpenApi20Document) document, _oldName, _newName);
@@ -54,7 +54,7 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
             return;
         }
 
-        if (this._schemaRenamed) {
+        if (this._responseRenamed) {
             String oldRef = getRefPrefix(document) + _oldName;
             String newRef = getRefPrefix(document) + _newName;
             updateRefs(document, oldRef, newRef);
@@ -66,8 +66,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
      */
     @Override
     public void undo(Document document) {
-        LoggerUtil.info("[RefactorSchemaDefinitionCommand] Reverting.");
-        if (!this._schemaRenamed) {
+        LoggerUtil.info("[RefactorResponseDefinitionCommand] Reverting.");
+        if (!this._responseRenamed) {
             return;
         }
 
@@ -85,61 +85,61 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
     }
 
     private void renameInOas20(OpenApi20Document doc, String fromName, String toName) {
-        if (isNullOrUndefined(doc.getDefinitions())) {
+        if (isNullOrUndefined(doc.getResponses())) {
             return;
         }
-        OpenApi20Schema schema = (OpenApi20Schema) doc.getDefinitions().getItem(fromName);
-        if (isNullOrUndefined(schema)) {
+        OpenApi20Response response = (OpenApi20Response) doc.getResponses().getItem(fromName);
+        if (isNullOrUndefined(response)) {
             return;
         }
-        if (!isNullOrUndefined(doc.getDefinitions().getItem(toName))) {
+        if (!isNullOrUndefined(doc.getResponses().getItem(toName))) {
             return;
         }
-        int index = doc.getDefinitions().getItemNames().indexOf(fromName);
-        doc.getDefinitions().removeItem(fromName);
-        doc.getDefinitions().insertItem(toName, schema, index);
-        this._schemaRenamed = true;
+        int index = doc.getResponses().getItemNames().indexOf(fromName);
+        doc.getResponses().removeItem(fromName);
+        doc.getResponses().insertItem(toName, response, index);
+        this._responseRenamed = true;
     }
 
     private void renameInOas30(OpenApi30Document doc, String fromName, String toName) {
         if (isNullOrUndefined(doc.getComponents())) {
             return;
         }
-        OpenApiSchema schema = (OpenApiSchema) doc.getComponents().getSchemas().get(fromName);
-        if (isNullOrUndefined(schema)) {
+        OpenApiResponse response = doc.getComponents().getResponses().get(fromName);
+        if (isNullOrUndefined(response)) {
             return;
         }
-        if (!isNullOrUndefined(doc.getComponents().getSchemas().get(toName))) {
+        if (!isNullOrUndefined(doc.getComponents().getResponses().get(toName))) {
             return;
         }
-        int index = indexOfKey(doc.getComponents().getSchemas(), fromName);
-        doc.getComponents().removeSchema(fromName);
-        doc.getComponents().insertSchema(toName, schema, index);
-        this._schemaRenamed = true;
+        int index = indexOfKey(doc.getComponents().getResponses(), fromName);
+        doc.getComponents().removeResponse(fromName);
+        doc.getComponents().insertResponse(toName, response, index);
+        this._responseRenamed = true;
     }
 
     private void renameInOas31(OpenApi31Document doc, String fromName, String toName) {
         if (isNullOrUndefined(doc.getComponents())) {
             return;
         }
-        OpenApiSchema schema = (OpenApiSchema) doc.getComponents().getSchemas().get(fromName);
-        if (isNullOrUndefined(schema)) {
+        OpenApiResponse response = doc.getComponents().getResponses().get(fromName);
+        if (isNullOrUndefined(response)) {
             return;
         }
-        if (!isNullOrUndefined(doc.getComponents().getSchemas().get(toName))) {
+        if (!isNullOrUndefined(doc.getComponents().getResponses().get(toName))) {
             return;
         }
-        int index = indexOfKey(doc.getComponents().getSchemas(), fromName);
-        doc.getComponents().removeSchema(fromName);
-        doc.getComponents().insertSchema(toName, schema, index);
-        this._schemaRenamed = true;
+        int index = indexOfKey(doc.getComponents().getResponses(), fromName);
+        doc.getComponents().removeResponse(fromName);
+        doc.getComponents().insertResponse(toName, response, index);
+        this._responseRenamed = true;
     }
 
     private String getRefPrefix(Document document) {
         if (ModelTypeUtil.isOpenApi2Model(document)) {
-            return "#/definitions/";
+            return "#/responses/";
         }
-        return "#/components/schemas/";
+        return "#/components/responses/";
     }
 
     private void updateRefs(Document document, String oldRef, String newRef) {

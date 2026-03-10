@@ -1,0 +1,41 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/widgets": {
+      "get": {
+        "summary": "List widgets",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundResponse"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a widget",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundResponse"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "NotFoundResponse": {
+      "description": "The requested resource was not found."
+    },
+    "ErrorResponse": {
+      "description": "An unexpected error occurred."
+    }
+  }
+}

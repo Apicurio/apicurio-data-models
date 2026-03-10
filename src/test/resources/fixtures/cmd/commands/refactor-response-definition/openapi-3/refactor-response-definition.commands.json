@@ -1,0 +1,5 @@
+[{
+    "__type": "RefactorResponseDefinitionCommand",
+    "_oldName": "NotFoundResponse",
+    "_newName": "ResourceNotFoundResponse"
+}]

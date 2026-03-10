@@ -116,6 +116,8 @@
     { "name": "[OpenAPI 3] {Rename Tag} - Rename Tag", "test": "commands/rename-tag/openapi-3/rename-tag" },
     { "name": "[OpenAPI 2] {Refactor Schema Definition} - Refactor Schema Definition", "test": "commands/refactor-schema-definition/openapi-2/refactor-schema-definition" },
     { "name": "[OpenAPI 3] {Refactor Schema Definition} - Refactor Schema Definition", "test": "commands/refactor-schema-definition/openapi-3/refactor-schema-definition" },
+    { "name": "[OpenAPI 2] {Refactor Response Definition} - Refactor Response Definition", "test": "commands/refactor-response-definition/openapi-2/refactor-response-definition" },
+    { "name": "[OpenAPI 3] {Refactor Response Definition} - Refactor Response Definition", "test": "commands/refactor-response-definition/openapi-3/refactor-response-definition" },
     { "name": "[OpenAPI 3] {Add Server} - Add Server", "test": "commands/add-server/openapi-3/add-server" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Document", "test": "commands/delete-server/openapi-3/delete-server-document" },
     { "name": "[OpenAPI 3] {Delete Server} - Delete Server Operation", "test": "commands/delete-server/openapi-3/delete-server-operation" },
