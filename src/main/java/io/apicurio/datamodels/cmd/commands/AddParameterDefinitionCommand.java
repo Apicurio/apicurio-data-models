@@ -3,7 +3,10 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -46,19 +49,17 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         LoggerUtil.info("[AddParameterDefinitionCommand] Executing.");
         this._helper = createHelper(document);
 
-        OpenApiDocument doc = (OpenApiDocument) document;
-
         // Do nothing if the definition already exists.
-        if (this._helper.defExists(doc)) {
+        if (this._helper.defExists(document)) {
             LoggerUtil.info("[AddParameterDefinitionCommand] Definition with name %s already exists.", this._newDefinitionName);
             this._defExisted = true;
             return;
         }
 
-        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(doc);
+        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(document);
 
-        OpenApiParameter definition = this._helper.createParameterDefinition(doc);
-        this._helper.addDefinition(doc, definition);
+        Parameter definition = this._helper.createParameterDefinition(document);
+        this._helper.addDefinition(document, definition);
     }
 
     /**
@@ -73,8 +74,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
 
         this._helper = createHelper(document);
 
-        OpenApiDocument doc = (OpenApiDocument) document;
-        this._helper.removeDefinition(doc);
+        this._helper.removeDefinition(document);
     }
 
     private AddParameterDefinitionCommandHelper createHelper(Document document) {
@@ -87,22 +87,25 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         if (ModelTypeUtil.isOpenApi31Model(document)) {
             return new OpenApi31Helper();
         }
+        if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            return new AsyncApi2Helper();
+        }
         throw new RuntimeException("Unsupported model type: " + document.root().modelType());
     }
 
     private interface AddParameterDefinitionCommandHelper {
 
-        boolean defExists(OpenApiDocument document);
-        boolean prepareDocumentForDef(OpenApiDocument document);
-        OpenApiParameter createParameterDefinition(OpenApiDocument document);
-        void addDefinition(OpenApiDocument document, OpenApiParameter definition);
-        void removeDefinition(OpenApiDocument document);
+        boolean defExists(Document document);
+        boolean prepareDocumentForDef(Document document);
+        Parameter createParameterDefinition(Document document);
+        void addDefinition(Document document, Parameter definition);
+        void removeDefinition(Document document);
 
     }
 
     private class OpenApi20Helper implements AddParameterDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi20Document doc = (OpenApi20Document) document;
             if (!isNullOrUndefined(doc.getParameters())) {
                 return !isNullOrUndefined(doc.getParameters().getItem(_newDefinitionName));
@@ -111,7 +114,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             if (isNullOrUndefined(doc20.getParameters())) {
                 doc20.setParameters(doc20.createParameterDefinitions());
@@ -121,7 +124,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiParameter createParameterDefinition(OpenApiDocument document) {
+        public Parameter createParameterDefinition(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             OpenApi20Parameter definition = doc20.getParameters().createParameter();
             Library.readNode(_newDefinitionObj, definition);
@@ -129,14 +132,14 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiParameter definition) {
+        public void addDefinition(Document document, Parameter definition) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             OpenApi20Parameter def20 = (OpenApi20Parameter) definition;
             doc20.getParameters().addItem(_newDefinitionName, def20);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
             if (_nullDefinitionsParent) {
                 doc20.setParameters(null);
@@ -148,7 +151,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
 
     private class OpenApi30Helper implements AddParameterDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 return false;
@@ -157,7 +160,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 doc30.setComponents(doc30.createComponents());
@@ -167,7 +170,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiParameter createParameterDefinition(OpenApiDocument document) {
+        public Parameter createParameterDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             OpenApi30Parameter definition = (OpenApi30Parameter) doc30.getComponents().createParameter();
             Library.readNode(_newDefinitionObj, definition);
@@ -175,13 +178,13 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiParameter definition) {
+        public void addDefinition(Document document, Parameter definition) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             doc30.getComponents().addParameter(_newDefinitionName, definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (_nullDefinitionsParent) {
                 doc30.setComponents(null);
@@ -193,7 +196,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
 
     private class OpenApi31Helper implements AddParameterDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 return false;
@@ -202,7 +205,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 doc31.setComponents(doc31.createComponents());
@@ -212,7 +215,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiParameter createParameterDefinition(OpenApiDocument document) {
+        public Parameter createParameterDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             OpenApi31Parameter definition = (OpenApi31Parameter) doc31.getComponents().createParameter();
             Library.readNode(_newDefinitionObj, definition);
@@ -220,18 +223,66 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiParameter definition) {
+        public void addDefinition(Document document, Parameter definition) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             doc31.getComponents().addParameter(_newDefinitionName, definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (_nullDefinitionsParent) {
                 doc31.setComponents(null);
             } else {
                 doc31.getComponents().removeParameter(_newDefinitionName);
+            }
+        }
+    }
+
+    private class AsyncApi2Helper implements AddParameterDefinitionCommandHelper {
+        @Override
+        public boolean defExists(Document document) {
+            Components components = ((AsyncApiDocument) document).getComponents();
+            if (isNullOrUndefined(components)) {
+                return false;
+            }
+            return !isNullOrUndefined(components.getParameters().get(_newDefinitionName));
+        }
+
+        @Override
+        public boolean prepareDocumentForDef(Document document) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                doc.setComponents(doc.createComponents());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Parameter createParameterDefinition(Document document) {
+            Components components = ((AsyncApiDocument) document).getComponents();
+            Parameter definition = components.createParameter();
+            Library.readNode(_newDefinitionObj, definition);
+            return definition;
+        }
+
+        @Override
+        public void addDefinition(Document document, Parameter definition) {
+            Components components = ((AsyncApiDocument) document).getComponents();
+            components.addParameter(_newDefinitionName, definition);
+        }
+
+        @Override
+        public void removeDefinition(Document document) {
+            AsyncApiDocument doc = (AsyncApiDocument) document;
+            if (_nullDefinitionsParent) {
+                doc.setComponents(null);
+            } else {
+                Components components = doc.getComponents();
+                if (!isNullOrUndefined(components)) {
+                    components.removeParameter(_newDefinitionName);
+                }
             }
         }
     }

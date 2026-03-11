@@ -3,8 +3,12 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
+import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
@@ -80,6 +84,18 @@ public class DeleteParameterDefinitionCommand extends AbstractCommand {
                 this._oldIndex = paramNames.indexOf(this._definitionName);
                 components.removeParameter(this._definitionName);
             }
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getParameters())) {
+                return;
+            }
+            Parameter param = components.getParameters().get(this._definitionName);
+            if (!this.isNullOrUndefined(param)) {
+                this._oldDefinition = Library.writeNode((Node) param);
+                List<String> paramNames = new ArrayList<>(components.getParameters().keySet());
+                this._oldIndex = paramNames.indexOf(this._definitionName);
+                components.removeParameter(this._definitionName);
+            }
         }
     }
 
@@ -117,6 +133,15 @@ public class DeleteParameterDefinitionCommand extends AbstractCommand {
                 ((OpenApi31Document) document).setComponents(components);
             }
             OpenApi31Parameter param = (OpenApi31Parameter) components.createParameter();
+            Library.readNode(this._oldDefinition, param);
+            components.insertParameter(this._definitionName, param, this._oldIndex);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            if (this.isNullOrUndefined(components)) {
+                components = ((AsyncApiDocument) document).createComponents();
+                ((AsyncApiDocument) document).setComponents(components);
+            }
+            Parameter param = components.createParameter();
             Library.readNode(this._oldDefinition, param);
             components.insertParameter(this._definitionName, param, this._oldIndex);
         }

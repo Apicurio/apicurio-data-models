@@ -1,7 +1,5 @@
 [{
-    "__type": "RefactorSchemaDefinitionCommand_Aai20",
-    "_oldName": "Person",
-    "_newName": "RealPerson",
-    "_references": [],
-    "_messageReferences": []
+    "__type": "RefactorSchemaDefinitionCommand",
+    "_oldName": "OldName",
+    "_newName": "NewName"
 }]

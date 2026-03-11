@@ -7,9 +7,11 @@ import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.VisitorUtil;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.deref.AllReferenceableNodeVisitor;
+import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Referenceable;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
@@ -50,6 +52,8 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _oldName, _newName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _oldName, _newName);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            renameInAsyncApi2((AsyncApiDocument) document, _oldName, _newName);
         } else {
             return;
         }
@@ -77,6 +81,8 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _newName, _oldName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _newName, _oldName);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            renameInAsyncApi2((AsyncApiDocument) document, _newName, _oldName);
         }
 
         String oldRef = getRefPrefix(document) + _oldName;
@@ -132,6 +138,24 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
         int index = indexOfKey(doc.getComponents().getParameters(), fromName);
         doc.getComponents().removeParameter(fromName);
         doc.getComponents().insertParameter(toName, parameter, index);
+        this._parameterRenamed = true;
+    }
+
+    private void renameInAsyncApi2(AsyncApiDocument doc, String fromName, String toName) {
+        Components components = doc.getComponents();
+        if (isNullOrUndefined(components)) {
+            return;
+        }
+        Parameter parameter = components.getParameters().get(fromName);
+        if (isNullOrUndefined(parameter)) {
+            return;
+        }
+        if (!isNullOrUndefined(components.getParameters().get(toName))) {
+            return;
+        }
+        int index = indexOfKey(components.getParameters(), fromName);
+        components.removeParameter(fromName);
+        components.insertParameter(toName, parameter, index);
         this._parameterRenamed = true;
     }
 

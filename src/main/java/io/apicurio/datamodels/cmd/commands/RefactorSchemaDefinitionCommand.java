@@ -9,6 +9,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.deref.AllReferenceableNodeVisitor;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Referenceable;
+import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
@@ -16,6 +19,7 @@ import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.util.NodeUtil;
 
 /**
  * A command used to rename a schema definition and update all $ref references.
@@ -50,6 +54,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _oldName, _newName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _oldName, _newName);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            renameInAsyncApi2((AsyncApiDocument) document, _oldName, _newName);
         } else {
             return;
         }
@@ -77,6 +83,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _newName, _oldName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _newName, _oldName);
+        } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
+            renameInAsyncApi2((AsyncApiDocument) document, _newName, _oldName);
         }
 
         String oldRef = getRefPrefix(document) + _oldName;
@@ -132,6 +140,29 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
         int index = indexOfKey(doc.getComponents().getSchemas(), fromName);
         doc.getComponents().removeSchema(fromName);
         doc.getComponents().insertSchema(toName, schema, index);
+        this._schemaRenamed = true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void renameInAsyncApi2(AsyncApiDocument doc, String fromName, String toName) {
+        AsyncApiComponents components = doc.getComponents();
+        if (isNullOrUndefined(components)) {
+            return;
+        }
+        Map<String, ? extends Schema> schemas = (Map<String, ? extends Schema>) NodeUtil.getNodeProperty(components, "schemas");
+        if (isNullOrUndefined(schemas)) {
+            return;
+        }
+        Schema schema = schemas.get(fromName);
+        if (isNullOrUndefined(schema)) {
+            return;
+        }
+        if (!isNullOrUndefined(schemas.get(toName))) {
+            return;
+        }
+        int index = new ArrayList<>(schemas.keySet()).indexOf(fromName);
+        NodeUtil.invokeMethod(components, "removeSchema", fromName);
+        NodeUtil.invokeMethod(components, "insertSchema", toName, schema, index);
         this._schemaRenamed = true;
     }
 
