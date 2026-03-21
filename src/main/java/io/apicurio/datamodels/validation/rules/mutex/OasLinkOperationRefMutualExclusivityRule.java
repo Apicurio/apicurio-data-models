@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.mutex;
 
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -35,11 +36,12 @@ public class OasLinkOperationRefMutualExclusivityRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
-        this.reportIf(hasValue(node.getOperationRef()) && hasValue(node.getOperationId()), node, "operationId", map());
+    public void visitLink(Link node) {
+        OpenApiLink oaiLink = (OpenApiLink) node;
+        this.reportIf(hasValue(oaiLink.getOperationRef()) && hasValue(oaiLink.getOperationId()), node, "operationId", map());
     }
 
 }

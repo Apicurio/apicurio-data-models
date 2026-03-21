@@ -7,6 +7,8 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
@@ -122,7 +124,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
                 components = ((OpenApi30Document) document).createComponents();
                 ((OpenApi30Document) document).setComponents(components);
             }
-            SecurityScheme scheme = components.createSecurityScheme();
+            OpenApiSecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
             components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
@@ -131,7 +133,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
                 components = ((OpenApi31Document) document).createComponents();
                 ((OpenApi31Document) document).setComponents(components);
             }
-            SecurityScheme scheme = components.createSecurityScheme();
+            OpenApiSecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
             components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
         } else if (ModelTypeUtil.isAsyncApiModel(document)) {
@@ -140,7 +142,7 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
                 components = ((AsyncApiDocument) document).createComponents();
                 ((AsyncApiDocument) document).setComponents(components);
             }
-            SecurityScheme scheme = components.createSecurityScheme();
+            AsyncApiSecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
             components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
         }

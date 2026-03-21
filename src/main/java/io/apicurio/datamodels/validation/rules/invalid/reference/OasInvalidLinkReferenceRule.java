@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.openapi.OpenApiLink;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -36,10 +36,10 @@ public class OasInvalidLinkReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
+    public void visitLink(Link node) {
         String ref = ((Referenceable) node).get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());

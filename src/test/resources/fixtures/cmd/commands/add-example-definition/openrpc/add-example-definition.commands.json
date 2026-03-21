@@ -1,0 +1,14 @@
+[
+    {
+        "__type": "AddExampleDefinitionCommand",
+        "_newDefinitionName" : "catExample",
+        "_newDefinitionObj" : {
+            "name": "catExample",
+            "summary": "A cat example",
+            "value": {
+                "name": "Cat",
+                "color": "black"
+            }
+        }
+    }
+]

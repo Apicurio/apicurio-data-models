@@ -7,6 +7,9 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
@@ -59,6 +62,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
             executeForOpenApi31((OpenApi31Document) document);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             executeForAsyncApi2((AsyncApiDocument) document);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            executeForOpenRpc((OpenRpcDocument) document);
         }
     }
 
@@ -131,6 +136,23 @@ public class DeleteSchemaCommand extends AbstractCommand {
         NodeUtil.invokeMethod(components, "removeSchema", this._schemaName);
     }
 
+    private void executeForOpenRpc(OpenRpcDocument doc) {
+        OpenRpcComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            return;
+        }
+
+        Map<String, OpenRpcSchema> schemas = components.getSchemas();
+        if (this.isNullOrUndefined(schemas) || !schemas.containsKey(this._schemaName)) {
+            return;
+        }
+
+        OpenRpcSchema schema = schemas.get(this._schemaName);
+        this._schemaIndex = new ArrayList<>(schemas.keySet()).indexOf(this._schemaName);
+        this._oldSchema = Library.writeNode(schema);
+        components.removeSchema(this._schemaName);
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -149,6 +171,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
             undoForOpenApi31((OpenApi31Document) document);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             undoForAsyncApi2((AsyncApiDocument) document);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            undoForOpenRpc((OpenRpcDocument) document);
         }
     }
 
@@ -198,6 +222,18 @@ public class DeleteSchemaCommand extends AbstractCommand {
         Schema newSchema = (Schema) NodeUtil.invokeMethod(components, "createSchema");
         Library.readNode(this._oldSchema, newSchema);
         NodeUtil.invokeMethod(components, "insertSchema", this._schemaName, newSchema, this._schemaIndex);
+    }
+
+    private void undoForOpenRpc(OpenRpcDocument doc) {
+        OpenRpcComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = doc.createComponents();
+            doc.setComponents(components);
+        }
+
+        OpenRpcSchema newSchema = components.createSchema();
+        Library.readNode(this._oldSchema, newSchema);
+        components.insertSchema(this._schemaName, newSchema, this._schemaIndex);
     }
 
 }

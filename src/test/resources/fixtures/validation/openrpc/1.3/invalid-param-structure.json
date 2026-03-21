@@ -1,0 +1,19 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "methods": [
+    {
+      "name": "foo",
+      "params": [
+        {
+          "name": "arg",
+          "schema": { "type": "string" }
+        }
+      ],
+      "paramStructure": "invalid-value"
+    }
+  ]
+}

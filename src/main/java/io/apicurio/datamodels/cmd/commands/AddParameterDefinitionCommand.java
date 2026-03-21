@@ -3,10 +3,11 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -180,7 +181,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         @Override
         public void addDefinition(Document document, Parameter definition) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
-            doc30.getComponents().addParameter(_newDefinitionName, definition);
+            doc30.getComponents().addParameter(_newDefinitionName, (OpenApiParameter) definition);
         }
 
         @Override
@@ -225,7 +226,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
         @Override
         public void addDefinition(Document document, Parameter definition) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
-            doc31.getComponents().addParameter(_newDefinitionName, definition);
+            doc31.getComponents().addParameter(_newDefinitionName, (OpenApiParameter) definition);
         }
 
         @Override
@@ -242,7 +243,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
     private class AsyncApi2Helper implements AddParameterDefinitionCommandHelper {
         @Override
         public boolean defExists(Document document) {
-            Components components = ((AsyncApiDocument) document).getComponents();
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
             if (isNullOrUndefined(components)) {
                 return false;
             }
@@ -261,16 +262,16 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
 
         @Override
         public Parameter createParameterDefinition(Document document) {
-            Components components = ((AsyncApiDocument) document).getComponents();
-            Parameter definition = components.createParameter();
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            AsyncApiParameter definition = components.createParameter();
             Library.readNode(_newDefinitionObj, definition);
             return definition;
         }
 
         @Override
         public void addDefinition(Document document, Parameter definition) {
-            Components components = ((AsyncApiDocument) document).getComponents();
-            components.addParameter(_newDefinitionName, definition);
+            AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
+            components.addParameter(_newDefinitionName, (AsyncApiParameter) definition);
         }
 
         @Override
@@ -279,7 +280,7 @@ public class AddParameterDefinitionCommand extends AbstractCommand {
             if (_nullDefinitionsParent) {
                 doc.setComponents(null);
             } else {
-                Components components = doc.getComponents();
+                AsyncApiComponents components = doc.getComponents();
                 if (!isNullOrUndefined(components)) {
                     components.removeParameter(_newDefinitionName);
                 }

@@ -52,13 +52,11 @@ public class AaInvalidComponentKeyNameRule extends OasInvalidPropertyNameRule {
      */
     @Override
     public void visitComponents(Components node) {
-        // Validate common component keys
-        validateMapKeys(node.getParameters(), node, "parameters");
-        validateMapKeys(node.getSecuritySchemes(), node, "securitySchemes");
-
         // Validate AsyncAPI-specific component keys
         if (node instanceof AsyncApiComponents) {
             AsyncApiComponents asyncApiComponents = (AsyncApiComponents) node;
+            validateMapKeys(asyncApiComponents.getParameters(), node, "parameters");
+            validateMapKeys(asyncApiComponents.getSecuritySchemes(), node, "securitySchemes");
             validateMapKeys(asyncApiComponents.getMessages(), node, "messages");
             validateMapKeys(asyncApiComponents.getCorrelationIds(), node, "correlationIds");
             validateMapKeys(asyncApiComponents.getMessageTraits(), node, "messageTraits");

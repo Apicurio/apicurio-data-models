@@ -6,6 +6,8 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
@@ -168,21 +170,21 @@ public class DeleteAllSecuritySchemesCommand extends AbstractCommand {
                 components = ((OpenApi30Document) document).createComponents();
                 ((OpenApi30Document) document).setComponents(components);
             }
-            components.addSecurityScheme(name, scheme);
+            components.addSecurityScheme(name, (OpenApiSecurityScheme) scheme);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
             if (components == null) {
                 components = ((OpenApi31Document) document).createComponents();
                 ((OpenApi31Document) document).setComponents(components);
             }
-            components.addSecurityScheme(name, scheme);
+            components.addSecurityScheme(name, (OpenApiSecurityScheme) scheme);
         } else if (ModelTypeUtil.isAsyncApiModel(document)) {
             AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
             if (components == null) {
                 components = ((AsyncApiDocument) document).createComponents();
                 ((AsyncApiDocument) document).setComponents(components);
             }
-            components.addSecurityScheme(name, scheme);
+            components.addSecurityScheme(name, (AsyncApiSecurityScheme) scheme);
         }
     }
 }

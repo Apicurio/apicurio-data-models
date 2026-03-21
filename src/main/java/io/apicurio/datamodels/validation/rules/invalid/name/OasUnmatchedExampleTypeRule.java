@@ -21,9 +21,9 @@ import java.util.List;
 
 import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.VisitorUtil;
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Example;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Operation;
@@ -55,10 +55,10 @@ public class OasUnmatchedExampleTypeRule extends OasInvalidPropertyNameRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.openapi.OpenApiExample)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.Example)
      */
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         OpenApi20Example example20 = (OpenApi20Example) node;
         OpenApi20Document doc = (OpenApi20Document) example20.root();
         List<String> produces = doc.getProduces();

@@ -1,0 +1,18 @@
+[INF-001] |medium| {/info->title} :: API is missing a title.
+[INF-002] |medium| {/info->version} :: API is missing a version.
+[LIC-001] |medium| {/info/license->name} :: License is missing a name.
+[SRV-001] |medium| {/servers[0]->url} :: Server is missing a template URL.
+[ORPC-005] |medium| {/servers[0]/variables[port]->default} :: Server Variable is missing a default value.
+[ED-001] |medium| {/externalDocs->url} :: External Documentation is missing a URL.
+[TAG-001] |medium| {/methods[0]/tags[0]->name} :: Tag is missing a name.
+[ORPC-006] |medium| {/methods[0]->name} :: Method is missing a name.
+[ORPC-007] |medium| {/methods[0]->params} :: Method is missing the 'params' property.
+[ORPC-008] |medium| {/methods[1]/params[0]->name} :: Content Descriptor is missing a name.
+[ORPC-008] |medium| {/methods[1]/result->name} :: Content Descriptor is missing a name.
+[ORPC-009] |medium| {/methods[1]/params[0]->schema} :: Content Descriptor is missing a schema.
+[ORPC-009] |medium| {/methods[1]/result->schema} :: Content Descriptor is missing a schema.
+[ORPC-010] |medium| {/methods[1]/errors[0]->code} :: Error is missing a code.
+[ORPC-011] |medium| {/methods[1]/errors[0]->message} :: Error is missing a message.
+[ORPC-012] |medium| {/methods[1]/examples[0]->name} :: Example Pairing is missing a name.
+[ORPC-013] |medium| {/methods[1]/examples[0]->params} :: Example Pairing is missing the 'params' property.
+[ORPC-014] |medium| {/methods[1]/links[0]->name} :: Link is missing a name.

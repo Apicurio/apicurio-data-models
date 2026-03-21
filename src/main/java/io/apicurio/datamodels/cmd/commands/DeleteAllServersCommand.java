@@ -116,7 +116,7 @@ public class DeleteAllServersCommand extends AbstractCommand {
         }
 
         for (ObjectNode oldServer : this._oldServers) {
-            OpenApiServer server = parent.createServer();
+            OpenApiServer server = (OpenApiServer) parent.createServer();
             Library.readNode(oldServer, server);
             parent.addServer(server);
         }

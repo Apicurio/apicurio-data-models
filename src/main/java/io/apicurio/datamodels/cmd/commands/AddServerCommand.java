@@ -4,6 +4,7 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.Server;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServers;
@@ -75,17 +76,17 @@ public class AddServerCommand extends AbstractCommand {
         }
 
         // Check if server already exists
-        List<? extends OpenApiServer> existingServers = (List<? extends OpenApiServer>) parent.getServers();
+        List<Server> existingServers = parent.getServers();
         if (!this.isNullOrUndefined(existingServers)) {
-            for (OpenApiServer server : existingServers) {
-                if (this._serverUrl.equals(server.getUrl())) {
+            for (Server server : existingServers) {
+                if (this._serverUrl.equals(((OpenApiServer) server).getUrl())) {
                     return;
                 }
             }
         }
 
         // Create new server
-        OpenApiServer newServer = parent.createServer();
+        OpenApiServer newServer = (OpenApiServer) parent.createServer();
         newServer.setUrl(this._serverUrl);
         if (!this.isNullOrUndefined(this._serverDescription) && !this._serverDescription.isEmpty()) {
             newServer.setDescription(this._serverDescription);
@@ -160,13 +161,13 @@ public class AddServerCommand extends AbstractCommand {
             return;
         }
 
-        List<? extends OpenApiServer> servers = (List<? extends OpenApiServer>) parent.getServers();
+        List<Server> servers = parent.getServers();
         if (this.isNullOrUndefined(servers)) {
             return;
         }
 
-        for (OpenApiServer server : servers) {
-            if (this._serverUrl.equals(server.getUrl())) {
+        for (Server server : servers) {
+            if (this._serverUrl.equals(((OpenApiServer) server).getUrl())) {
                 parent.removeServer(server);
                 return;
             }

@@ -16,6 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
@@ -36,12 +37,13 @@ public class OasInvalidLinkOperationReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
-        if (hasValue(node.getOperationRef())) {
-            this.reportIfInvalid(ReferenceUtil.canResolveRef(node.getOperationRef(), node), node, "operationRef", map());
+    public void visitLink(Link node) {
+        OpenApiLink oaiLink = (OpenApiLink) node;
+        if (hasValue(oaiLink.getOperationRef())) {
+            this.reportIfInvalid(ReferenceUtil.canResolveRef(oaiLink.getOperationRef(), node), node, "operationRef", map());
         }
     }
 

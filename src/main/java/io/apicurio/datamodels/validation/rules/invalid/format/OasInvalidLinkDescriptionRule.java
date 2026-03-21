@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
-import io.apicurio.datamodels.models.openapi.OpenApiLink;
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -35,10 +35,10 @@ public class OasInvalidLinkDescriptionRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
+    public void visitLink(Link node) {
         if (hasValue(node.getDescription())) {
             this.reportIfInvalid(isValidCommonMark(node.getDescription()), node, "description", map());
         }

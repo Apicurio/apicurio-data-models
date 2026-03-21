@@ -6,6 +6,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcExample;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
@@ -66,6 +69,18 @@ public class DeleteExampleDefinitionCommand extends AbstractCommand {
                 this._oldIndex = exampleNames.indexOf(this._definitionName);
                 components.removeExample(this._definitionName);
             }
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            OpenRpcComponents components = ((OpenRpcDocument) document).getComponents();
+            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getExamples())) {
+                return;
+            }
+            OpenRpcExample example = components.getExamples().get(this._definitionName);
+            if (!this.isNullOrUndefined(example)) {
+                this._oldDefinition = Library.writeNode((Node) example);
+                List<String> exampleNames = new ArrayList<>(components.getExamples().keySet());
+                this._oldIndex = exampleNames.indexOf(this._definitionName);
+                components.removeExample(this._definitionName);
+            }
         }
     }
 
@@ -95,6 +110,16 @@ public class DeleteExampleDefinitionCommand extends AbstractCommand {
                 ((OpenApi31Document) document).setComponents(components);
             }
             OpenApiExample example = components.createExample();
+            Library.readNode(this._oldDefinition, example);
+            components.insertExample(this._definitionName, example, this._oldIndex);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            OpenRpcComponents components = doc.getComponents();
+            if (this.isNullOrUndefined(components)) {
+                components = doc.createComponents();
+                doc.setComponents(components);
+            }
+            OpenRpcExample example = components.createExample();
             Library.readNode(this._oldDefinition, example);
             components.insertExample(this._definitionName, example, this._oldIndex);
         }

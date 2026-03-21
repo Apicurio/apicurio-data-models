@@ -134,5 +134,15 @@
     { "name": "[OpenAPI 3] Simplest", "test": "openapi/3.0/simple/simplest.json" },
     { "name": "[OpenAPI 3] Extra Properties", "test": "openapi/3.0/extra-properties/extra-properties.json", "extraProperties": 3 },
 
-    { "name": "[OpenAPI 3.1] All Of Self Ref", "test": "openapi/3.1/recursive/allof-self-ref.json" }
+    { "name": "[OpenAPI 3.1] All Of Self Ref", "test": "openapi/3.1/recursive/allof-self-ref.json" },
+
+    { "name": "[OpenRPC 1.3] Simplest", "test": "openrpc/1.3/simple/simplest.json" },
+    { "name": "[OpenRPC 1.3] Simple Info", "test": "openrpc/1.3/simple/simple-info.json" },
+    { "name": "[OpenRPC 1.3] Simple Info With Extensions", "test": "openrpc/1.3/simple/simple-info-extensions.json" },
+    { "name": "[OpenRPC 1.3] Complete Petstore", "test": "openrpc/1.3/complete/petstore.json" },
+
+    { "name": "[OpenRPC 1.4] Simplest", "test": "openrpc/1.4/simple/simplest.json" },
+    { "name": "[OpenRPC 1.4] Simple Info", "test": "openrpc/1.4/simple/simple-info.json" },
+    { "name": "[OpenRPC 1.4] Simple Info With Extensions", "test": "openrpc/1.4/simple/simple-info-extensions.json" },
+    { "name": "[OpenRPC 1.4] Complete Petstore", "test": "openrpc/1.4/complete/petstore.json" }
 ]

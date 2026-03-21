@@ -14,6 +14,7 @@ public class ModelTypeDetector {
      * - asyncapi
      * - openapi
      * - swagger
+     * - openrpc
      *
      * Based on which property is defined, and the value of that property, the correct model
      * type is determined and returned.
@@ -61,6 +62,17 @@ public class ModelTypeDetector {
                 return ModelType.OPENAPI20;
             } else {
                 throw new RuntimeException("Unknown/unsupported OpenAPI/Swagger version: " + swagger);
+            }
+        }
+
+        String openrpc = JsonUtil.getStringProperty(json, "openrpc");
+        if (openrpc != null) {
+            if (openrpc.startsWith("1.3")) {
+                return ModelType.OPENRPC13;
+            } else if (openrpc.startsWith("1.4")) {
+                return ModelType.OPENRPC14;
+            } else {
+                throw new RuntimeException("Unknown/unsupported OpenRPC version: " + openrpc);
             }
         }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Example;
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
@@ -13,6 +15,8 @@ import io.apicurio.datamodels.models.openapi.OpenApiComponents;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiRequestBody;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
@@ -69,14 +73,14 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         String componentType = "examples";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
             OpenApiComponents components = ensureOpenApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedExample"), getComponentNames(components.getExamples()));
-            components.addExample(name, node);
+            components.addExample(name, (OpenApiExample) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -97,14 +101,14 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitLink(OpenApiLink node) {
+    public void visitLink(Link node) {
         String componentType = "links";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
             OpenApiComponents components = ensureOpenApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedLink"), getComponentNames(components.getLinks()));
-            components.addLink(name, node);
+            components.addLink(name, (OpenApiLink) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -118,7 +122,7 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             OpenApiComponents components = ensureOpenApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
-            components.addParameter(name, node);
+            components.addParameter(name, (OpenApiParameter) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -176,7 +180,7 @@ public class OpenApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             OpenApiComponents components = ensureOpenApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
-            components.addSecurityScheme(name, node);
+            components.addSecurityScheme(name, (OpenApiSecurityScheme) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }

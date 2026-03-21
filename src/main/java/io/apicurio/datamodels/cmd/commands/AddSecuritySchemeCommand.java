@@ -5,6 +5,8 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -92,7 +94,7 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             return;
         }
 
-        SecurityScheme newScheme = components.createSecurityScheme();
+        OpenApiSecurityScheme newScheme = components.createSecurityScheme();
         Library.readNode(this._schemeObj, newScheme);
         components.addSecurityScheme(this._schemeName, newScheme);
         this._schemeCreated = true;
@@ -112,7 +114,7 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             return;
         }
 
-        SecurityScheme newScheme = components.createSecurityScheme();
+        OpenApiSecurityScheme newScheme = components.createSecurityScheme();
         Library.readNode(this._schemeObj, newScheme);
         components.addSecurityScheme(this._schemeName, newScheme);
         this._schemeCreated = true;
@@ -132,7 +134,7 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             return;
         }
 
-        SecurityScheme newScheme = components.createSecurityScheme();
+        AsyncApiSecurityScheme newScheme = components.createSecurityScheme();
         Library.readNode(this._schemeObj, newScheme);
         components.addSecurityScheme(this._schemeName, newScheme);
         this._schemeCreated = true;

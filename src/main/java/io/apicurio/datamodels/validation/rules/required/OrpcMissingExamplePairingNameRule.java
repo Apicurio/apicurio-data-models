@@ -16,28 +16,26 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
-import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.openrpc.OpenRpcExamplePairing;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: AAD-002
- * Validates that AsyncAPI documents have the required 'info' property.
- *
+ * Implements the Missing Example Pairing Name validation rule.
  * @author eric.wittmann@gmail.com
  */
-public class AaMissingApiInformationRule extends RequiredPropertyValidationRule {
+public class OrpcMissingExamplePairingNameRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaMissingApiInformationRule(ValidationRuleMetaData ruleInfo) {
+    public OrpcMissingExamplePairingNameRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitDocument(Document node) {
-        this.requireProperty(node, "info", map());
+    public void visitExamplePairing(OpenRpcExamplePairing node) {
+        this.requireProperty(node, "name", map());
     }
 
 }

@@ -18,6 +18,7 @@ package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.VisitorUtil;
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.visitors.OperationFinder;
@@ -36,12 +37,13 @@ public class OasInvalidLinkOperationIdRule extends AbstractInvalidPropertyValueR
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
-        if (hasValue(node.getOperationId())) {
-            OperationFinder finder = new OperationFinder(node.getOperationId());
+    public void visitLink(Link node) {
+        OpenApiLink oaiLink = (OpenApiLink) node;
+        if (hasValue(oaiLink.getOperationId())) {
+            OperationFinder finder = new OperationFinder(oaiLink.getOperationId());
             VisitorUtil.visitTree(node.root(), finder, TraverserDirection.down);
             this.reportIfInvalid(finder.isFound(), node, "operationId", map());
         }

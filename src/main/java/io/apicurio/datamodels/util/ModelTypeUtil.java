@@ -33,6 +33,10 @@ public class ModelTypeUtil {
                 return "3.0.3";
             case OPENAPI31:
                 return "3.1.0";
+            case OPENRPC13:
+                return "1.3.2";
+            case OPENRPC14:
+                return "1.4.0";
         }
         return "unknown";
     }
@@ -119,6 +123,16 @@ public class ModelTypeUtil {
     public static boolean isOpenApi31Model(Node node) {
         switch (node.root().modelType()) {
             case OPENAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isOpenRpcModel(Node node) {
+        switch (node.root().modelType()) {
+            case OPENRPC13:
+            case OPENRPC14:
                 return true;
             default:
                 return false;

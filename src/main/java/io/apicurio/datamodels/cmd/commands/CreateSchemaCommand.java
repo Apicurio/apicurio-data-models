@@ -6,6 +6,9 @@ import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSchema;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -59,6 +62,8 @@ public class CreateSchemaCommand extends AbstractCommand {
             executeForOpenApi31((OpenApi31Document) document);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             executeForAsyncApi2((AsyncApiDocument) document);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            executeForOpenRpc((OpenRpcDocument) document);
         }
     }
 
@@ -142,6 +147,26 @@ public class CreateSchemaCommand extends AbstractCommand {
         NodeUtil.invokeMethod(components, "addSchema", this._schemaName, newSchema);
     }
 
+    private void executeForOpenRpc(OpenRpcDocument doc) {
+        OpenRpcComponents components = doc.getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = doc.createComponents();
+            doc.setComponents(components);
+            this._nullParent = true;
+        }
+
+        // Check if schema already exists
+        Map<String, OpenRpcSchema> schemas = components.getSchemas();
+        if (!this.isNullOrUndefined(schemas) && schemas.containsKey(this._schemaName)) {
+            this._schemaExisted = true;
+            return;
+        }
+
+        OpenRpcSchema newSchema = components.createSchema();
+        newSchema.setType("object");
+        components.addSchema(this._schemaName, newSchema);
+    }
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
@@ -190,6 +215,16 @@ public class CreateSchemaCommand extends AbstractCommand {
                 AsyncApiComponents components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     NodeUtil.invokeMethod(components, "removeSchema", this._schemaName);
+                }
+            }
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (this._nullParent) {
+                doc.setComponents(null);
+            } else {
+                OpenRpcComponents components = doc.getComponents();
+                if (!this.isNullOrUndefined(components)) {
+                    components.removeSchema(this._schemaName);
                 }
             }
         }

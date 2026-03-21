@@ -28,7 +28,7 @@ import io.apicurio.datamodels.models.SecurityRequirement;
 import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.Tag;
-import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiOAuthFlow;
 import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
@@ -277,7 +277,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
             OpenApi30Server server30 = (OpenApi30Server) operation30.createServer();
             operation30.addServer(server30);
 
-            server30.setUrl(this.doc30.getServers().get(0).getUrl());
+            server30.setUrl(((OpenApi30Server) this.doc30.getServers().get(0)).getUrl());
             if (op.getSchemes().size() == 1) {
                 server30.setUrl(server30.getUrl().replace("{scheme}", op.getSchemes().get(0)));
                 server30.removeVariable("scheme");
@@ -620,7 +620,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         // Examples are processed as part of "transformResponse"
     }
 

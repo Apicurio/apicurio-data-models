@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.openapi.OpenApiDocument;
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcExample;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Example;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
@@ -15,8 +18,8 @@ import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**
  * A command used to add a new example definition in a document.  Source for the new
- * definition must be provided.  This source will be converted to an openapi
- * example definition object and then added to the data model.
+ * definition must be provided.  This source will be converted to an example
+ * definition object and then added to the data model.
  * @author eric.wittmann@gmail.com
  */
 public class AddExampleDefinitionCommand extends AbstractCommand {
@@ -44,19 +47,17 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         LoggerUtil.info("[AddExampleDefinitionCommand] Executing.");
         this._helper = createHelper(document);
 
-        OpenApiDocument doc = (OpenApiDocument) document;
-
         // Do nothing if the definition already exists.
-        if (this._helper.defExists(doc)) {
+        if (this._helper.defExists(document)) {
             LoggerUtil.info("[AddExampleDefinitionCommand] Definition with name %s already exists.", this._newDefinitionName);
             this._defExisted = true;
             return;
         }
 
-        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(doc);
+        this._nullDefinitionsParent = this._helper.prepareDocumentForDef(document);
 
-        OpenApiExample definition = this._helper.createExampleDefinition(doc);
-        this._helper.addDefinition(doc, definition);
+        Example definition = this._helper.createExampleDefinition(document);
+        this._helper.addDefinition(document, definition);
     }
 
     /**
@@ -70,9 +71,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         this._helper = createHelper(document);
-
-        OpenApiDocument doc = (OpenApiDocument) document;
-        this._helper.removeDefinition(doc);
+        this._helper.removeDefinition(document);
     }
 
     private AddExampleDefinitionCommandHelper createHelper(Document document) {
@@ -82,22 +81,25 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         if (ModelTypeUtil.isOpenApi31Model(document)) {
             return new OpenApi31Helper();
         }
+        if (ModelTypeUtil.isOpenRpcModel(document)) {
+            return new OpenRpcHelper();
+        }
         throw new RuntimeException("Unsupported model type: " + document.root().modelType());
     }
 
     private interface AddExampleDefinitionCommandHelper {
 
-        boolean defExists(OpenApiDocument document);
-        boolean prepareDocumentForDef(OpenApiDocument document);
-        OpenApiExample createExampleDefinition(OpenApiDocument document);
-        void addDefinition(OpenApiDocument document, OpenApiExample definition);
-        void removeDefinition(OpenApiDocument document);
+        boolean defExists(Document document);
+        boolean prepareDocumentForDef(Document document);
+        Example createExampleDefinition(Document document);
+        void addDefinition(Document document, Example definition);
+        void removeDefinition(Document document);
 
     }
 
     private class OpenApi30Helper implements AddExampleDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 return false;
@@ -106,7 +108,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (isNullOrUndefined(doc30.getComponents())) {
                 doc30.setComponents(doc30.createComponents());
@@ -116,7 +118,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiExample createExampleDefinition(OpenApiDocument document) {
+        public Example createExampleDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             OpenApi30Example definition = (OpenApi30Example) doc30.getComponents().createExample();
             Library.readNode(_newDefinitionObj, definition);
@@ -124,13 +126,13 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiExample definition) {
+        public void addDefinition(Document document, Example definition) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
-            doc30.getComponents().addExample(_newDefinitionName, definition);
+            doc30.getComponents().addExample(_newDefinitionName, (OpenApiExample) definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi30Document doc30 = (OpenApi30Document) document;
             if (_nullDefinitionsParent) {
                 doc30.setComponents(null);
@@ -142,7 +144,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
 
     private class OpenApi31Helper implements AddExampleDefinitionCommandHelper {
         @Override
-        public boolean defExists(OpenApiDocument document) {
+        public boolean defExists(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 return false;
@@ -151,7 +153,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public boolean prepareDocumentForDef(OpenApiDocument document) {
+        public boolean prepareDocumentForDef(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (isNullOrUndefined(doc31.getComponents())) {
                 doc31.setComponents(doc31.createComponents());
@@ -161,7 +163,7 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public OpenApiExample createExampleDefinition(OpenApiDocument document) {
+        public Example createExampleDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             OpenApi31Example definition = (OpenApi31Example) doc31.getComponents().createExample();
             Library.readNode(_newDefinitionObj, definition);
@@ -169,18 +171,63 @@ public class AddExampleDefinitionCommand extends AbstractCommand {
         }
 
         @Override
-        public void addDefinition(OpenApiDocument document, OpenApiExample definition) {
+        public void addDefinition(Document document, Example definition) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
-            doc31.getComponents().addExample(_newDefinitionName, definition);
+            doc31.getComponents().addExample(_newDefinitionName, (OpenApiExample) definition);
         }
 
         @Override
-        public void removeDefinition(OpenApiDocument document) {
+        public void removeDefinition(Document document) {
             OpenApi31Document doc31 = (OpenApi31Document) document;
             if (_nullDefinitionsParent) {
                 doc31.setComponents(null);
             } else {
                 doc31.getComponents().removeExample(_newDefinitionName);
+            }
+        }
+    }
+
+    private class OpenRpcHelper implements AddExampleDefinitionCommandHelper {
+        @Override
+        public boolean defExists(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                return false;
+            }
+            return !isNullOrUndefined(doc.getComponents().getExamples().get(_newDefinitionName));
+        }
+
+        @Override
+        public boolean prepareDocumentForDef(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                doc.setComponents(doc.createComponents());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Example createExampleDefinition(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            OpenRpcExample definition = doc.getComponents().createExample();
+            Library.readNode(_newDefinitionObj, definition);
+            return definition;
+        }
+
+        @Override
+        public void addDefinition(Document document, Example definition) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            doc.getComponents().addExample(_newDefinitionName, (OpenRpcExample) definition);
+        }
+
+        @Override
+        public void removeDefinition(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (_nullDefinitionsParent) {
+                doc.setComponents(null);
+            } else {
+                doc.getComponents().removeExample(_newDefinitionName);
             }
         }
     }
