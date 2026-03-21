@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.name;
 
-import io.apicurio.datamodels.models.openapi.OpenApiLink;
+import io.apicurio.datamodels.models.Link;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -34,10 +34,10 @@ public class OasInvalidLinkDefinitionNameRule extends OasInvalidPropertyNameRule
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.openapi.OpenApiLink)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitLink(io.apicurio.datamodels.models.Link)
      */
     @Override
-    public void visitLink(OpenApiLink node) {
+    public void visitLink(Link node) {
         if (isDefinition(node)) {
             String name = getDefinitionName(node);
             this.reportIfInvalid(isValidDefinitionName(name), node, "name", map());

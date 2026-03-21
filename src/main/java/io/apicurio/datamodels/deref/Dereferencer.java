@@ -172,6 +172,8 @@ public class Dereferencer {
             return new OpenApi2NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         } else if (ModelTypeUtil.isOpenApi3Model(doc)) {
             return new OpenApi3NodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
+        } else if (ModelTypeUtil.isOpenRpcModel(doc)) {
+            return new OpenRpcNodeImporter(doc, nodeWithUnresolvedRef, ref, shouldInline);
         }
         throw new RuntimeException("Unsupported model type: " + doc.root().modelType());
     }

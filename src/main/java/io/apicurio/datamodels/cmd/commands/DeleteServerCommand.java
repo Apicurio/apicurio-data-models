@@ -5,6 +5,7 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
+import io.apicurio.datamodels.models.Server;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServer;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServers;
@@ -65,14 +66,14 @@ public class DeleteServerCommand extends AbstractCommand {
             return;
         }
 
-        List<? extends OpenApiServer> servers = (List<? extends OpenApiServer>) parent.getServers();
+        List<Server> servers = parent.getServers();
         if (this.isNullOrUndefined(servers)) {
             return;
         }
 
         int idx = 0;
-        for (OpenApiServer server : servers) {
-            if (this._serverUrl.equals(server.getUrl())) {
+        for (Server server : servers) {
+            if (this._serverUrl.equals(((OpenApiServer) server).getUrl())) {
                 this._oldServer = Library.writeNode(server);
                 this._serverIndex = idx;
                 parent.removeServer(server);
@@ -125,7 +126,7 @@ public class DeleteServerCommand extends AbstractCommand {
             return;
         }
 
-        OpenApiServer newServer = parent.createServer();
+        OpenApiServer newServer = (OpenApiServer) parent.createServer();
         Library.readNode(this._oldServer, newServer);
         parent.insertServer(newServer, this._serverIndex);
     }

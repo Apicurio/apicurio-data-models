@@ -14,6 +14,8 @@ import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
 import io.apicurio.datamodels.models.Server;
 import io.apicurio.datamodels.models.ServerVariable;
 import io.apicurio.datamodels.models.Tag;
@@ -251,7 +253,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             AsyncApi30Components components = ensureAsyncApi30Components();
             String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
-            components.addParameter(name, node);
+            components.addParameter(name, (AsyncApiParameter) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -330,7 +332,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         } else {
             AsyncApi30Components components = ensureAsyncApi30Components();
             String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
-            components.addSecurityScheme(name, node);
+            components.addSecurityScheme(name, (AsyncApiSecurityScheme) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }

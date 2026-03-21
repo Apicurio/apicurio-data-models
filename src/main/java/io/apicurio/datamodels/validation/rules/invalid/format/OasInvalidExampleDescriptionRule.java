@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Example;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Example;
 import io.apicurio.datamodels.validation.ValidationRule;
@@ -38,7 +38,7 @@ public class OasInvalidExampleDescriptionRule extends ValidationRule {
     }
 
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         if (node.root().modelType() == ModelType.OPENAPI30) {
             OpenApi30Example example30 = (OpenApi30Example) node;
             if (hasValue(example30.getDescription())) {

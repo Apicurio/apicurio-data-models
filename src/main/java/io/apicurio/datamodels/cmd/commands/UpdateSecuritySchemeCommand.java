@@ -7,6 +7,8 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
@@ -134,17 +136,17 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
             defs.addItem(this._schemeName, newScheme);
         } else if (ModelTypeUtil.isOpenApi30Model(document)) {
             OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            SecurityScheme newScheme = components.createSecurityScheme();
+            OpenApiSecurityScheme newScheme = components.createSecurityScheme();
             Library.readNode(this._newSchemeObj, newScheme);
             components.addSecurityScheme(this._schemeName, newScheme);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            SecurityScheme newScheme = components.createSecurityScheme();
+            OpenApiSecurityScheme newScheme = components.createSecurityScheme();
             Library.readNode(this._newSchemeObj, newScheme);
             components.addSecurityScheme(this._schemeName, newScheme);
         } else if (ModelTypeUtil.isAsyncApiModel(document)) {
             AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
-            SecurityScheme newScheme = components.createSecurityScheme();
+            AsyncApiSecurityScheme newScheme = components.createSecurityScheme();
             Library.readNode(this._newSchemeObj, newScheme);
             components.addSecurityScheme(this._schemeName, newScheme);
         }
@@ -158,17 +160,17 @@ public class UpdateSecuritySchemeCommand extends AbstractCommand {
             defs.addItem(this._schemeName, oldScheme);
         } else if (ModelTypeUtil.isOpenApi30Model(document)) {
             OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            SecurityScheme oldScheme = components.createSecurityScheme();
+            OpenApiSecurityScheme oldScheme = components.createSecurityScheme();
             Library.readNode(this._oldSchemeObj, oldScheme);
             components.addSecurityScheme(this._schemeName, oldScheme);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            SecurityScheme oldScheme = components.createSecurityScheme();
+            OpenApiSecurityScheme oldScheme = components.createSecurityScheme();
             Library.readNode(this._oldSchemeObj, oldScheme);
             components.addSecurityScheme(this._schemeName, oldScheme);
         } else if (ModelTypeUtil.isAsyncApiModel(document)) {
             AsyncApiComponents components = ((AsyncApiDocument) document).getComponents();
-            SecurityScheme oldScheme = components.createSecurityScheme();
+            AsyncApiSecurityScheme oldScheme = components.createSecurityScheme();
             Library.readNode(this._oldSchemeObj, oldScheme);
             components.addSecurityScheme(this._schemeName, oldScheme);
         }

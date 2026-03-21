@@ -11,6 +11,7 @@ import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.Tag;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.openapi.OpenApiExternalDocumentation;
+import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
@@ -97,7 +98,7 @@ public class SetExternalDocsCommand extends AbstractCommand {
 
         @Override
         public void visitSchema(Schema node) {
-            externalDocs = node.getExternalDocs();
+            externalDocs = ((OpenApiSchema) node).getExternalDocs();
         }
 
         @Override
@@ -124,8 +125,9 @@ public class SetExternalDocsCommand extends AbstractCommand {
 
         @Override
         public void visitSchema(Schema node) {
-            externalDocs = node.createExternalDocumentation();
-            node.setExternalDocs(externalDocs);
+            OpenApiSchema oaiSchema = (OpenApiSchema) node;
+            externalDocs = oaiSchema.createExternalDocumentation();
+            oaiSchema.setExternalDocs((OpenApiExternalDocumentation) externalDocs);
         }
 
         @Override
@@ -159,7 +161,7 @@ public class SetExternalDocsCommand extends AbstractCommand {
 
         @Override
         public void visitSchema(Schema node) {
-            node.setExternalDocs(value);
+            ((OpenApiSchema) node).setExternalDocs((OpenApiExternalDocumentation) value);
         }
 
         @Override

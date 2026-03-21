@@ -14,27 +14,34 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.validation.rules.required;
+package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Example;
+import io.apicurio.datamodels.models.Referenceable;
+import io.apicurio.datamodels.refs.ReferenceUtil;
+import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
+ * Implements the Invalid Example Reference rule for OpenRPC.
  * @author eric.wittmann@gmail.com
  */
-public class OasMissingApiInformationRule extends RequiredPropertyValidationRule {
+public class OrpcInvalidExampleReferenceRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasMissingApiInformationRule(ValidationRuleMetaData ruleInfo) {
+    public OrpcInvalidExampleReferenceRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitDocument(Document node) {
-        this.requireProperty(node, "info", map());
+    public void visitExample(Example node) {
+        String ref = ((Referenceable) node).get$ref();
+        if (hasValue(ref)) {
+            this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
+        }
     }
 
 }

@@ -3,12 +3,12 @@ package io.apicurio.datamodels.cmd.commands;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
-import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
@@ -141,7 +141,7 @@ public class DeleteParameterDefinitionCommand extends AbstractCommand {
                 components = ((AsyncApiDocument) document).createComponents();
                 ((AsyncApiDocument) document).setComponents(components);
             }
-            Parameter param = components.createParameter();
+            AsyncApiParameter param = components.createParameter();
             Library.readNode(this._oldDefinition, param);
             components.insertParameter(this._definitionName, param, this._oldIndex);
         }

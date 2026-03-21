@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.openapi.OpenApiExample;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -37,10 +37,10 @@ public class OasInvalidExampleReferenceRule extends ValidationRule {
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.openapi.OpenApiExample)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.Example)
      */
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         String ref = ((Referenceable) node).get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());

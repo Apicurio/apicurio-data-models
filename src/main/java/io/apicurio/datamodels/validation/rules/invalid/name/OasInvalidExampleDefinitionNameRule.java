@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.name;
 
-import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -34,10 +34,10 @@ public class OasInvalidExampleDefinitionNameRule extends OasInvalidPropertyNameR
     }
 
     /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.openapi.OpenApiExample)
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitExample(io.apicurio.datamodels.models.Example)
      */
     @Override
-    public void visitExample(OpenApiExample node) {
+    public void visitExample(Example node) {
         if (isDefinition(node)) {
             String name = getDefinitionName(node);
             this.reportIfInvalid(isValidDefinitionName(name), node, "name", map());

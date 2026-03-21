@@ -7,9 +7,11 @@ import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.VisitorUtil;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.deref.AllReferenceableNodeVisitor;
-import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
@@ -111,7 +113,7 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
         if (isNullOrUndefined(doc.getComponents())) {
             return;
         }
-        Parameter parameter = doc.getComponents().getParameters().get(fromName);
+        OpenApiParameter parameter = doc.getComponents().getParameters().get(fromName);
         if (isNullOrUndefined(parameter)) {
             return;
         }
@@ -128,7 +130,7 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
         if (isNullOrUndefined(doc.getComponents())) {
             return;
         }
-        Parameter parameter = doc.getComponents().getParameters().get(fromName);
+        OpenApiParameter parameter = doc.getComponents().getParameters().get(fromName);
         if (isNullOrUndefined(parameter)) {
             return;
         }
@@ -142,11 +144,11 @@ public class RefactorParameterDefinitionCommand extends AbstractCommand {
     }
 
     private void renameInAsyncApi2(AsyncApiDocument doc, String fromName, String toName) {
-        Components components = doc.getComponents();
+        AsyncApiComponents components = doc.getComponents();
         if (isNullOrUndefined(components)) {
             return;
         }
-        Parameter parameter = components.getParameters().get(fromName);
+        AsyncApiParameter parameter = components.getParameters().get(fromName);
         if (isNullOrUndefined(parameter)) {
             return;
         }
