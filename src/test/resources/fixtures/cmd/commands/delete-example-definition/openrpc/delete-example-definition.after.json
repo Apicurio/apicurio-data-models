@@ -1,0 +1,19 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "examples": {
+      "ExampleToKeep": {
+        "name": "ExampleToKeep",
+        "summary": "An example to keep",
+        "value": {
+          "name": "Keeper",
+          "color": "blue"
+        }
+      }
+    }
+  }
+}

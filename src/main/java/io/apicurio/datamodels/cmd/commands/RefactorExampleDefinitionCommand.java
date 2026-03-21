@@ -10,6 +10,8 @@ import io.apicurio.datamodels.deref.AllReferenceableNodeVisitor;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcExample;
 import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -46,6 +48,8 @@ public class RefactorExampleDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _oldName, _newName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _oldName, _newName);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            renameInOpenRpc((OpenRpcDocument) document, _oldName, _newName);
         } else {
             return;
         }
@@ -71,6 +75,8 @@ public class RefactorExampleDefinitionCommand extends AbstractCommand {
             renameInOas30((OpenApi30Document) document, _newName, _oldName);
         } else if (ModelTypeUtil.isOpenApi31Model(document)) {
             renameInOas31((OpenApi31Document) document, _newName, _oldName);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            renameInOpenRpc((OpenRpcDocument) document, _newName, _oldName);
         }
 
         String oldRef = "#/components/examples/" + _oldName;
@@ -100,6 +106,23 @@ public class RefactorExampleDefinitionCommand extends AbstractCommand {
             return;
         }
         OpenApiExample example = doc.getComponents().getExamples().get(fromName);
+        if (isNullOrUndefined(example)) {
+            return;
+        }
+        if (!isNullOrUndefined(doc.getComponents().getExamples().get(toName))) {
+            return;
+        }
+        int index = indexOfKey(doc.getComponents().getExamples(), fromName);
+        doc.getComponents().removeExample(fromName);
+        doc.getComponents().insertExample(toName, example, index);
+        this._exampleRenamed = true;
+    }
+
+    private void renameInOpenRpc(OpenRpcDocument doc, String fromName, String toName) {
+        if (isNullOrUndefined(doc.getComponents())) {
+            return;
+        }
+        OpenRpcExample example = doc.getComponents().getExamples().get(fromName);
         if (isNullOrUndefined(example)) {
             return;
         }

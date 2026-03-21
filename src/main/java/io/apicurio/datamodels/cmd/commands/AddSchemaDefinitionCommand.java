@@ -7,6 +7,9 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
@@ -89,6 +92,9 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         }
         if (ModelTypeUtil.isAsyncApi2Model(document)) {
             return new AsyncApi2Helper();
+        }
+        if (ModelTypeUtil.isOpenRpcModel(document)) {
+            return new OpenRpcHelper();
         }
         throw new RuntimeException("Unsupported model type: " + document.root().modelType());
     }
@@ -238,6 +244,51 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
                 doc31.setComponents(null);
             } else {
                 doc31.getComponents().removeSchema(_newDefinitionName);
+            }
+        }
+    }
+
+    private class OpenRpcHelper implements AddSchemaDefinitionCommandHelper {
+        @Override
+        public boolean defExists(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                return false;
+            }
+            return !isNullOrUndefined(doc.getComponents().getSchemas().get(_newDefinitionName));
+        }
+
+        @Override
+        public boolean prepareDocumentForDef(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (isNullOrUndefined(doc.getComponents())) {
+                doc.setComponents(doc.createComponents());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Schema createSchemaDefinition(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            OpenRpcSchema definition = doc.getComponents().createSchema();
+            Library.readNode(_newDefinitionObj, definition);
+            return definition;
+        }
+
+        @Override
+        public void addDefinition(Document document, Schema definition) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            doc.getComponents().addSchema(_newDefinitionName, (OpenRpcSchema) definition);
+        }
+
+        @Override
+        public void removeDefinition(Document document) {
+            OpenRpcDocument doc = (OpenRpcDocument) document;
+            if (_nullDefinitionsParent) {
+                doc.setComponents(null);
+            } else {
+                doc.getComponents().removeSchema(_newDefinitionName);
             }
         }
     }

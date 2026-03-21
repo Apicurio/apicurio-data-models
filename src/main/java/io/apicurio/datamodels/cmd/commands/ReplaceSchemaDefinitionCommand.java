@@ -6,6 +6,8 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.OpenApiComponents;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
 import io.apicurio.datamodels.util.ModelTypeUtil;
@@ -32,6 +34,9 @@ public class ReplaceSchemaDefinitionCommand extends AbstractReplaceNodeCommand<S
             definitions.addItem(definitionName, (OpenApi20Schema) newNode);
         } else if (ModelTypeUtil.isAsyncApi2Model(parent)) {
             NodeUtil.invokeMethod(parent, "addSchema", definitionName, newNode);
+        } else if (ModelTypeUtil.isOpenRpcModel(parent)) {
+            OpenRpcComponents components = (OpenRpcComponents) parent;
+            components.addSchema(definitionName, (OpenRpcSchema) newNode);
         } else {
             OpenApiComponents components = (OpenApiComponents) parent;
             components.addSchema(definitionName, (OpenApiSchema) newNode);
@@ -47,6 +52,11 @@ public class ReplaceSchemaDefinitionCommand extends AbstractReplaceNodeCommand<S
             return definition;
         } else if (ModelTypeUtil.isAsyncApi2Model(parent)) {
             Schema schema = (Schema) NodeUtil.invokeMethod(parent, "createSchema");
+            Library.readNode(node, schema);
+            return schema;
+        } else if (ModelTypeUtil.isOpenRpcModel(parent)) {
+            OpenRpcComponents components = (OpenRpcComponents) parent;
+            OpenRpcSchema schema = components.createSchema();
             Library.readNode(node, schema);
             return schema;
         } else {

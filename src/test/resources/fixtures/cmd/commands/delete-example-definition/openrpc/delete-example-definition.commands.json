@@ -1,0 +1,4 @@
+[{
+    "__type": "DeleteExampleDefinitionCommand",
+    "_definitionName": "ExampleToDelete"
+}]

@@ -179,5 +179,14 @@
     { "name": "[AsyncAPI 2] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/asyncapi-2/replace-schema-definition" },
     { "name": "[AsyncAPI 2] {Add Server} - Add Server", "test": "commands/add-server/asyncapi-2/add-server" },
     { "name": "[AsyncAPI 2] {Delete Server} - Delete Server", "test": "commands/delete-server/asyncapi-2/delete-server" },
-    { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" }
+    { "name": "[AsyncAPI 2] {Delete All Servers} - Delete All Servers", "test": "commands/delete-all-servers/asyncapi-2/delete-all-servers" },
+
+    { "name": "[OpenRPC] {Add Example Definition} - Add Example Definition", "test": "commands/add-example-definition/openrpc/add-example-definition" },
+    { "name": "[OpenRPC] {Delete Example Definition} - Delete Example Definition", "test": "commands/delete-example-definition/openrpc/delete-example-definition" },
+    { "name": "[OpenRPC] {Refactor Example Definition} - Refactor Example Definition", "test": "commands/refactor-example-definition/openrpc/refactor-example-definition" },
+    { "name": "[OpenRPC] {Add Schema Definition} - Add Definition", "test": "commands/add-definition/openrpc/add-definition" },
+    { "name": "[OpenRPC] {Create Schema} - Create Schema", "test": "commands/create-schema/openrpc/create-schema" },
+    { "name": "[OpenRPC] {Delete Schema} - Delete Schema", "test": "commands/delete-schema/openrpc/delete-schema" },
+    { "name": "[OpenRPC] {Refactor Schema Definition} - Refactor Schema Definition", "test": "commands/refactor-schema-definition/openrpc/refactor-schema-definition" },
+    { "name": "[OpenRPC] {Replace Schema Definition} - Replace Schema Definition", "test": "commands/replace-schema-definition/openrpc/replace-schema-definition" }
 ]

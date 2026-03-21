@@ -12,6 +12,8 @@ import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
+import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
@@ -56,6 +58,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
             renameInOas31((OpenApi31Document) document, _oldName, _newName);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             renameInAsyncApi2((AsyncApiDocument) document, _oldName, _newName);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            renameInOpenRpc((OpenRpcDocument) document, _oldName, _newName);
         } else {
             return;
         }
@@ -85,6 +89,8 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
             renameInOas31((OpenApi31Document) document, _newName, _oldName);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             renameInAsyncApi2((AsyncApiDocument) document, _newName, _oldName);
+        } else if (ModelTypeUtil.isOpenRpcModel(document)) {
+            renameInOpenRpc((OpenRpcDocument) document, _newName, _oldName);
         }
 
         String oldRef = getRefPrefix(document) + _oldName;
@@ -163,6 +169,23 @@ public class RefactorSchemaDefinitionCommand extends AbstractCommand {
         int index = new ArrayList<>(schemas.keySet()).indexOf(fromName);
         NodeUtil.invokeMethod(components, "removeSchema", fromName);
         NodeUtil.invokeMethod(components, "insertSchema", toName, schema, index);
+        this._schemaRenamed = true;
+    }
+
+    private void renameInOpenRpc(OpenRpcDocument doc, String fromName, String toName) {
+        if (isNullOrUndefined(doc.getComponents())) {
+            return;
+        }
+        OpenRpcSchema schema = doc.getComponents().getSchemas().get(fromName);
+        if (isNullOrUndefined(schema)) {
+            return;
+        }
+        if (!isNullOrUndefined(doc.getComponents().getSchemas().get(toName))) {
+            return;
+        }
+        int index = indexOfKey(doc.getComponents().getSchemas(), fromName);
+        doc.getComponents().removeSchema(fromName);
+        doc.getComponents().insertSchema(toName, schema, index);
         this._schemaRenamed = true;
     }
 
