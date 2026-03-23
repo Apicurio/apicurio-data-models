@@ -244,7 +244,7 @@
                                 <specification>${project.basedir}/src/main/resources/specs/openapi.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/asyncapi.yaml</specification>
                                 <specification>${project.basedir}/src/main/resources/specs/openrpc.yaml</specification>
-<!--                                 <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>-->
+                                <specification>${project.basedir}/src/main/resources/specs/json-schema.yaml</specification>
                             </specifications>
                             <testSubDir>fixtures</testSubDir>
                             <rootNamespace>io.apicurio.datamodels.models</rootNamespace>

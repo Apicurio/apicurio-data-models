@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/boolean-schemas-draft7",
+    "$comment": "Tests boolean values in all schema-accepting positions for Draft 7",
+    "title": "Boolean Schema Coverage",
+    "description": "Exercises all boolean|JSchema union types in Draft 7",
+    "type": "object",
+    "definitions": {
+        "alwaysTrue": true,
+        "alwaysFalse": false,
+        "normalSchema": {
+            "type": "string"
+        }
+    },
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "anything": true,
+        "nothing": false
+    },
+    "patternProperties": {
+        "^x-": true,
+        "^y-": false
+    },
+    "additionalProperties": false,
+    "additionalItems": true,
+    "not": true,
+    "contains": false,
+    "propertyNames": true,
+    "if": true,
+    "then": false,
+    "else": true,
+    "allOf": [
+        true,
+        {
+            "type": "object"
+        },
+        false
+    ],
+    "anyOf": [
+        false,
+        {
+            "type": "string"
+        }
+    ],
+    "oneOf": [
+        true,
+        {
+            "type": "number"
+        }
+    ],
+    "items": false
+}

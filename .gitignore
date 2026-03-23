@@ -14,3 +14,5 @@ website
 jsweet_extension/io/apicurio/JacksonAdapter.class
 # Serena MCP
 .serena/
+# Working data
+/schema-samples/

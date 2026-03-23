@@ -27,6 +27,16 @@ public class ModelTypeUtil {
                 return "2.6.0";
             case ASYNCAPI30:
                 return "3.0.0";
+            case JSDRAFT4:
+                return "draft-4";
+            case JSDRAFT6:
+                return "draft-6";
+            case JSDRAFT7:
+                return "draft-7";
+            case JS201909:
+                return "2019-09";
+            case JS202012:
+                return "2020-12";
             case OPENAPI20:
                 return "2.0";
             case OPENAPI30:
@@ -123,6 +133,19 @@ public class ModelTypeUtil {
     public static boolean isOpenApi31Model(Node node) {
         switch (node.root().modelType()) {
             case OPENAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isJsonSchemaModel(Node node) {
+        switch (node.root().modelType()) {
+            case JSDRAFT4:
+            case JSDRAFT6:
+            case JSDRAFT7:
+            case JS201909:
+            case JS202012:
                 return true;
             default:
                 return false;

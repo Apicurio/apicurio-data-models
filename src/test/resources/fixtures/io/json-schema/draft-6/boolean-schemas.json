@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "https://example.com/boolean-schemas-draft6",
+    "title": "Boolean Schema Coverage",
+    "description": "Tests boolean values in all schema-accepting positions for Draft 6",
+    "type": "object",
+    "definitions": {
+        "alwaysTrue": true,
+        "alwaysFalse": false,
+        "normalSchema": {
+            "type": "string"
+        }
+    },
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "anything": true,
+        "nothing": false
+    },
+    "patternProperties": {
+        "^x-": true,
+        "^y-": false
+    },
+    "additionalProperties": false,
+    "additionalItems": true,
+    "not": false,
+    "contains": true,
+    "propertyNames": false,
+    "allOf": [
+        true,
+        {
+            "type": "object"
+        },
+        false
+    ],
+    "anyOf": [
+        false,
+        {
+            "type": "string"
+        }
+    ],
+    "oneOf": [
+        true,
+        {
+            "type": "number"
+        }
+    ],
+    "items": false
+}

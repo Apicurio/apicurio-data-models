@@ -8,11 +8,11 @@ import io.apicurio.datamodels.models.License;
 
 /**
  * A command used to delete the license.
- * 
+ *
  * @author eric.wittmann@gmail.com
  */
 public class DeleteLicenseCommand extends DeleteNodeCommand<License> {
-    
+
     public DeleteLicenseCommand() {
     }
 
@@ -25,7 +25,8 @@ public class DeleteLicenseCommand extends DeleteNodeCommand<License> {
      */
     @Override
     protected License readNode(Document doc, ObjectNode node) {
-        License license = doc.getInfo().createLicense();
+        Info info = (Info) io.apicurio.datamodels.util.NodeUtil.getProperty(doc, "info");
+        License license = info.createLicense();
         Library.readNode(node, license);
         return license;
     }

@@ -76,6 +76,23 @@ public class ModelTypeDetector {
             }
         }
 
+        String schema = JsonUtil.getStringProperty(json, "$schema");
+        if (schema != null) {
+            if (schema.contains("draft-04")) {
+                return ModelType.JSDRAFT4;
+            } else if (schema.contains("draft-06")) {
+                return ModelType.JSDRAFT6;
+            } else if (schema.contains("draft-07")) {
+                return ModelType.JSDRAFT7;
+            } else if (schema.contains("2019-09")) {
+                return ModelType.JS201909;
+            } else if (schema.contains("2020-12")) {
+                return ModelType.JS202012;
+            } else {
+                throw new RuntimeException("Unknown/unsupported JSON Schema version: " + schema);
+            }
+        }
+
         throw new RuntimeException("Unknown/unsupported data model type or version.");
     }
 }

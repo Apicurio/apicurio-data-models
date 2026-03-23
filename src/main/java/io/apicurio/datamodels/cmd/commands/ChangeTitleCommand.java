@@ -2,7 +2,9 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 
 /**
@@ -10,18 +12,18 @@ import io.apicurio.datamodels.util.NodeUtil;
  * @author eric.wittmann@gmail.com
  */
 public class ChangeTitleCommand extends AbstractCommand {
-    
+
     public String _newTitle;
 
     public String _oldTitle;
     public boolean _nullInfo;
-    
+
     /**
      * Constructor.
      */
     public ChangeTitleCommand() {
     }
-    
+
     /**
      * Constructor.
      * @param newTitle
@@ -29,27 +31,37 @@ public class ChangeTitleCommand extends AbstractCommand {
     public ChangeTitleCommand(String newTitle) {
         this._newTitle = newTitle;
     }
-    
+
     @Override
     public void execute(Document document) {
         LoggerUtil.info("[ChangeTitleCommand] Executing.");
-        if (NodeUtil.isNullOrUndefined(document.getInfo())) {
-            document.setInfo(document.createInfo());
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
+        Info info = (Info) NodeUtil.getProperty(document, "info");
+        if (NodeUtil.isNullOrUndefined(info)) {
+            Info newInfo = (Info) NodeUtil.invokeMethod(document, "createInfo");
+            NodeUtil.setProperty(document, "info", newInfo);
             this._nullInfo = true;
             this._oldTitle = null;
+            info = newInfo;
         } else {
-            this._oldTitle = document.getInfo().getTitle();
+            this._oldTitle = info.getTitle();
         }
-        document.getInfo().setTitle(this._newTitle);
+        info.setTitle(this._newTitle);
     }
-    
+
     @Override
     public void undo(Document document) {
         LoggerUtil.info("[ChangeTitleCommand] Reverting.");
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
         if (this._nullInfo) {
-            document.setInfo(null);
+            NodeUtil.setProperty(document, "info", null);
         } else {
-            document.getInfo().setTitle(this._oldTitle);
+            Info info = (Info) NodeUtil.getProperty(document, "info");
+            info.setTitle(this._oldTitle);
         }
     }
 

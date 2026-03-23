@@ -70,6 +70,14 @@ public class JacksonAdapter extends PrinterAdapter {
                     return true;
                 }
                 break;
+            case "com.fasterxml.jackson.databind.node.ArrayNode":
+                if ("add".equals(targetMethodName)) {
+                    printMacroName(targetMethodName);
+                    print(invocation.getTargetExpression().toString());
+                    print(".push(").print(invocation.getArgument(0)).print(")");
+                    return true;
+                }
+                break;
             case "java.util.List":
             case "java.util.Set":
                 if ("of".equals(targetMethodName)) {
