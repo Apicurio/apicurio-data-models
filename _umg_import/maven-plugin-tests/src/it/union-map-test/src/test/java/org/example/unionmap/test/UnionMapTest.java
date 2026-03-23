@@ -129,6 +129,16 @@ public class UnionMapTest {
     }
 
     @Test
+    public void testUnionListFlags() throws Exception {
+        Umtm10Document document = doFullTest("union-list-flags.json");
+        assertEquals("union-list-flags", document.getId());
+
+        List<?> flags = document.getFlags();
+        assertNotNull(flags);
+        assertEquals(4, flags.size());
+    }
+
+    @Test
     public void testFullComplex() throws Exception {
         Umtm10Document document = doFullTest("complex.json");
         assertEquals("complex", document.getId());

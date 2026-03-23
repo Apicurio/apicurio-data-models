@@ -28,6 +28,8 @@ entities:
             propertyName: price
       - name: mixedItems
         type: '[string|boolean]'
+      - name: flags
+        type: '[boolean|Widget]'
     propertyOrder:
       - $this
 
