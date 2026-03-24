@@ -30,6 +30,7 @@ public class LibraryTest {
         String expected = """
 {
     "$id": "http://example.com/draft2020-12/my-schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "string"
 }""";
 
@@ -46,6 +47,7 @@ public class LibraryTest {
 
         String expected = """
 {
+    "openapi": "3.0.3",
     "info": {
         "title": "My API",
         "version": "1.0"
