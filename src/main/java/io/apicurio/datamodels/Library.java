@@ -70,12 +70,21 @@ public class Library {
     }
 
     /**
-     * Creates a new, empty document of the given type.
-     * @param type
+     * Creates a new, empty document of the given type.  The returned document will have
+     * the appropriate specification version property already set (e.g. "openapi", "swagger",
+     * "asyncapi", "openrpc").
+     * @param type the model type to create
+     * @return a new, empty document
      */
     public static Document createDocument(ModelType type) {
         ModelReader reader = ModelReaderFactory.createModelReader(type);
-        return (Document) reader.readRoot(JsonUtil.objectNode());
+        ObjectNode json = JsonUtil.objectNode();
+        String versionProp = ModelTypeUtil.getVersionPropertyName(type);
+        String version = ModelTypeUtil.getVersion(type);
+        if (versionProp != null) {
+            JsonUtil.setStringProperty(json, versionProp, version);
+        }
+        return (Document) reader.readRoot(json);
     }
 
     /**

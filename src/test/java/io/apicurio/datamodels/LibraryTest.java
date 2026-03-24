@@ -1,9 +1,10 @@
 package io.apicurio.datamodels;
 
+import io.apicurio.datamodels.models.ModelType;
+import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openrpc.v14.OpenRpc14Document;
 import org.junit.Assert;
 import org.junit.Test;
-
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
 
 public class LibraryTest {
 
@@ -15,6 +16,30 @@ public class LibraryTest {
     public void testReadDocumentFromJSONString() {
         OpenApi30Document document = (OpenApi30Document) Library.readDocumentFromJSONString(EMPTY_OPENAPI);
         Assert.assertEquals("3.0.1", document.getOpenapi());
+    }
+
+    @Test
+    public void testCreateOpenApi30() {
+        OpenApi30Document document = (OpenApi30Document) Library.createDocument(ModelType.OPENAPI30);
+        document.setInfo(document.createInfo());
+        document.getInfo().setTitle("My API");
+        document.getInfo().setVersion("1.0");
+
+        Assert.assertEquals("3.0.3", document.getOpenapi());
+        Assert.assertEquals("My API", document.getInfo().getTitle());
+        Assert.assertEquals("1.0", document.getInfo().getVersion());
+    }
+
+    @Test
+    public void testCreateOpenRpc14() {
+        OpenRpc14Document document = (OpenRpc14Document) Library.createDocument(ModelType.OPENRPC14);
+        document.setInfo(document.createInfo());
+        document.getInfo().setTitle("My RPC API");
+        document.getInfo().setVersion("1.0");
+
+        Assert.assertEquals("1.4.0", document.getOpenrpc());
+        Assert.assertEquals("My RPC API", document.getInfo().getTitle());
+        Assert.assertEquals("1.0", document.getInfo().getVersion());
     }
 
 }
