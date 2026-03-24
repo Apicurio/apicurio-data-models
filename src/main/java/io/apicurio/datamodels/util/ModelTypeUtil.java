@@ -51,6 +51,35 @@ public class ModelTypeUtil {
         return "unknown";
     }
 
+    /**
+     * Returns the JSON property name used to store the specification version
+     * for the given model type (e.g. "openapi", "asyncapi", "swagger", "openrpc").
+     * @param type the model type
+     * @return the version property name
+     */
+    public static String getVersionPropertyName(ModelType type) {
+        switch (type) {
+            case OPENAPI20:
+                return "swagger";
+            case OPENAPI30:
+            case OPENAPI31:
+                return "openapi";
+            case ASYNCAPI20:
+            case ASYNCAPI21:
+            case ASYNCAPI22:
+            case ASYNCAPI23:
+            case ASYNCAPI24:
+            case ASYNCAPI25:
+            case ASYNCAPI26:
+            case ASYNCAPI30:
+                return "asyncapi";
+            case OPENRPC13:
+            case OPENRPC14:
+                return "openrpc";
+        }
+        return null;
+    }
+
     public static boolean isOpenApiModel(Node node) {
         switch (node.root().modelType()) {
             case OPENAPI20:
