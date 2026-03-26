@@ -27,6 +27,16 @@ public class ModelTypeUtil {
                 return "2.6.0";
             case ASYNCAPI30:
                 return "3.0.0";
+            case JSDRAFT4:
+                return "http://json-schema.org/draft-04/schema#";
+            case JSDRAFT6:
+                return "http://json-schema.org/draft-06/schema#";
+            case JSDRAFT7:
+                return "http://json-schema.org/draft-07/schema#";
+            case JS201909:
+                return "https://json-schema.org/draft/2019-09/schema";
+            case JS202012:
+                return "https://json-schema.org/draft/2020-12/schema";
             case OPENAPI20:
                 return "2.0";
             case OPENAPI30:
@@ -38,7 +48,7 @@ public class ModelTypeUtil {
             case OPENRPC14:
                 return "1.4.0";
         }
-        return "unknown";
+        throw new RuntimeException("Unsupported model type: " + type.name());
     }
 
     /**
@@ -66,8 +76,14 @@ public class ModelTypeUtil {
             case OPENRPC13:
             case OPENRPC14:
                 return "openrpc";
+            case JSDRAFT4:
+            case JSDRAFT6:
+            case JSDRAFT7:
+            case JS201909:
+            case JS202012:
+                return "$schema";
         }
-        return null;
+        throw new RuntimeException("Unsupported model type: " + type.name());
     }
 
     public static boolean isOpenApiModel(Node node) {
@@ -152,6 +168,19 @@ public class ModelTypeUtil {
     public static boolean isOpenApi31Model(Node node) {
         switch (node.root().modelType()) {
             case OPENAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isJsonSchemaModel(Node node) {
+        switch (node.root().modelType()) {
+            case JSDRAFT4:
+            case JSDRAFT6:
+            case JSDRAFT7:
+            case JS201909:
+            case JS202012:
                 return true;
             default:
                 return false;

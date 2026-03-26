@@ -2,7 +2,9 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 
 /**
@@ -10,18 +12,18 @@ import io.apicurio.datamodels.util.NodeUtil;
  * @author eric.wittmann@gmail.com
  */
 public class ChangeDescriptionCommand extends AbstractCommand {
-    
+
     public String _newDescription;
 
     public String _oldDescription;
     public boolean _nullInfo;
-    
+
     /**
      * Constructor.
      */
     public ChangeDescriptionCommand() {
     }
-    
+
     /**
      * Constructor.
      * @param newDescription
@@ -29,27 +31,37 @@ public class ChangeDescriptionCommand extends AbstractCommand {
     public ChangeDescriptionCommand(String newDescription) {
         this._newDescription = newDescription;
     }
-    
+
     @Override
     public void execute(Document document) {
         LoggerUtil.info("[ChangeDescriptionCommand] Executing.");
-        if (NodeUtil.isNullOrUndefined(document.getInfo())) {
-            document.setInfo(document.createInfo());
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
+        Info info = (Info) NodeUtil.getProperty(document, "info");
+        if (NodeUtil.isNullOrUndefined(info)) {
+            Info newInfo = (Info) NodeUtil.invokeMethod(document, "createInfo");
+            NodeUtil.setProperty(document, "info", newInfo);
             this._nullInfo = true;
             this._oldDescription = null;
+            info = newInfo;
         } else {
-            this._oldDescription = document.getInfo().getDescription();
+            this._oldDescription = info.getDescription();
         }
-        document.getInfo().setDescription(this._newDescription);
+        info.setDescription(this._newDescription);
     }
-    
+
     @Override
     public void undo(Document document) {
         LoggerUtil.info("[ChangeDescriptionCommand] Reverting.");
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
         if (this._nullInfo) {
-            document.setInfo(null);
+            NodeUtil.setProperty(document, "info", null);
         } else {
-            document.getInfo().setDescription(this._oldDescription);
+            Info info = (Info) NodeUtil.getProperty(document, "info");
+            info.setDescription(this._oldDescription);
         }
     }
 

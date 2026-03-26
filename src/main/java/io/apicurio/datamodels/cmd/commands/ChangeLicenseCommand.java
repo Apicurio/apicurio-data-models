@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 
 /**
@@ -18,7 +20,7 @@ public class ChangeLicenseCommand extends AbstractCommand {
 
     public ObjectNode _oldLicense;
     public boolean _nullInfo;
-    
+
     public ChangeLicenseCommand() {
     }
 
@@ -26,44 +28,54 @@ public class ChangeLicenseCommand extends AbstractCommand {
         this._newLicenseName = name;
         this._newLicenseUrl = url;
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#execute(Document)
      */
     @Override
     public void execute(Document document) {
         LoggerUtil.info("[ChangeLicenseCommand] Executing.");
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
         this._oldLicense = null;
         this._nullInfo = false;
 
-        if (this.isNullOrUndefined(document.getInfo())) {
+        Info info = (Info) NodeUtil.getProperty(document, "info");
+        if (this.isNullOrUndefined(info)) {
             this._nullInfo = true;
-            document.setInfo(document.createInfo());
+            Info newInfo = (Info) NodeUtil.invokeMethod(document, "createInfo");
+            NodeUtil.setProperty(document, "info", newInfo);
             this._oldLicense = null;
+            info = newInfo;
         } else {
             this._oldLicense = null;
-            if (!this.isNullOrUndefined(document.getInfo().getLicense())) {
-                this._oldLicense = Library.writeNode(document.getInfo().getLicense());
+            if (!this.isNullOrUndefined(info.getLicense())) {
+                this._oldLicense = Library.writeNode(info.getLicense());
             }
         }
-        document.getInfo().setLicense(document.getInfo().createLicense());
-        document.getInfo().getLicense().setName(this._newLicenseName);
-        document.getInfo().getLicense().setUrl(this._newLicenseUrl);
+        info.setLicense(info.createLicense());
+        info.getLicense().setName(this._newLicenseName);
+        info.getLicense().setUrl(this._newLicenseUrl);
     }
-    
+
     /**
      * @see io.apicurio.datamodels.cmd.ICommand#undo(Document)
      */
     @Override
     public void undo(Document document) {
         LoggerUtil.info("[ChangeLicenseCommand] Reverting.");
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
+        Info info = (Info) NodeUtil.getProperty(document, "info");
         if (this._nullInfo) {
-            document.setInfo(null);
+            NodeUtil.setProperty(document, "info", null);
         } else if (NodeUtil.isDefined(this._oldLicense)) {
-            document.getInfo().setLicense(document.getInfo().createLicense());
-            Library.readNode(this._oldLicense, document.getInfo().getLicense());
+            info.setLicense(info.createLicense());
+            Library.readNode(this._oldLicense, info.getLicense());
         } else {
-            document.getInfo().setLicense(null);
+            info.setLicense(null);
         }
     }
 

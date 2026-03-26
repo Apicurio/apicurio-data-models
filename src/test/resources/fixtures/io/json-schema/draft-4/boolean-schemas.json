@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Boolean Schema Coverage",
+    "description": "Tests boolean values in all schema-accepting positions for Draft 4",
+    "type": "object",
+    "definitions": {
+        "alwaysTrue": true,
+        "alwaysFalse": false,
+        "normalSchema": {
+            "type": "string"
+        }
+    },
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "anything": true,
+        "nothing": false
+    },
+    "patternProperties": {
+        "^x-": true,
+        "^y-": false
+    },
+    "additionalProperties": false,
+    "additionalItems": true,
+    "not": true,
+    "allOf": [
+        true,
+        {
+            "type": "object"
+        },
+        false
+    ],
+    "anyOf": [
+        false,
+        {
+            "type": "string"
+        }
+    ],
+    "oneOf": [
+        true,
+        {
+            "type": "number"
+        }
+    ],
+    "items": true
+}

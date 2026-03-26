@@ -33,6 +33,11 @@ import io.apicurio.datamodels.models.asyncapi.v30.visitors.AsyncApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20Traverser;
 import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v31.visitors.OpenApi31Traverser;
+import io.apicurio.datamodels.models.jsonschema.draft4.visitors.JSDraft4Traverser;
+import io.apicurio.datamodels.models.jsonschema.draft6.visitors.JSDraft6Traverser;
+import io.apicurio.datamodels.models.jsonschema.draft7.visitors.JSDraft7Traverser;
+import io.apicurio.datamodels.models.jsonschema.v201909.visitors.JS201909Traverser;
+import io.apicurio.datamodels.models.jsonschema.v202012.visitors.JS202012Traverser;
 import io.apicurio.datamodels.models.openrpc.v13.visitors.OpenRpc13Traverser;
 import io.apicurio.datamodels.models.openrpc.v14.visitors.OpenRpc14Traverser;
 import io.apicurio.datamodels.models.union.Union;
@@ -93,6 +98,21 @@ public class VisitorUtil {
                     break;
                 case OPENRPC14:
                     traverser = new OpenRpc14Traverser(visitor);
+                    break;
+                case JSDRAFT4:
+                    traverser = new JSDraft4Traverser(visitor);
+                    break;
+                case JSDRAFT6:
+                    traverser = new JSDraft6Traverser(visitor);
+                    break;
+                case JSDRAFT7:
+                    traverser = new JSDraft7Traverser(visitor);
+                    break;
+                case JS201909:
+                    traverser = new JS201909Traverser(visitor);
+                    break;
+                case JS202012:
+                    traverser = new JS202012Traverser(visitor);
                     break;
             }
         }

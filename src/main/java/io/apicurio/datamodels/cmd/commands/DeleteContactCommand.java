@@ -11,20 +11,21 @@ import io.apicurio.datamodels.models.Info;
  * @author eric.wittmann@gmail.com
  */
 public class DeleteContactCommand extends DeleteNodeCommand<Contact> {
-    
+
     public DeleteContactCommand() {
     }
 
     public DeleteContactCommand(Info info) {
         super("contact", info);
     }
-    
+
     /**
      * @see DeleteNodeCommand#readNode(Document, ObjectNode)
      */
     @Override
     protected Contact readNode(Document doc, ObjectNode node) {
-        Contact contact = doc.getInfo().createContact();
+        Info info = (Info) io.apicurio.datamodels.util.NodeUtil.getProperty(doc, "info");
+        Contact contact = info.createContact();
         Library.readNode(node, contact);
         return contact;
     }

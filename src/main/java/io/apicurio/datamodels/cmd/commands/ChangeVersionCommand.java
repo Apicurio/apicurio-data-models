@@ -2,7 +2,9 @@ package io.apicurio.datamodels.cmd.commands;
 
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.util.LoggerUtil;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 
 /**
@@ -10,18 +12,18 @@ import io.apicurio.datamodels.util.NodeUtil;
  * @author eric.wittmann@gmail.com
  */
 public class ChangeVersionCommand extends AbstractCommand {
-    
+
     public String _newVersion;
 
     public String _oldVersion;
     public boolean _nullInfo;
-    
+
     /**
      * Constructor.
      */
     public ChangeVersionCommand() {
     }
-    
+
     /**
      * Constructor.
      * @param newVersion
@@ -29,27 +31,37 @@ public class ChangeVersionCommand extends AbstractCommand {
     public ChangeVersionCommand(String newVersion) {
         this._newVersion = newVersion;
     }
-    
+
     @Override
     public void execute(Document document) {
         LoggerUtil.info("[ChangeVersionCommand] Executing.");
-        if (NodeUtil.isNullOrUndefined(document.getInfo())) {
-            document.setInfo(document.createInfo());
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
+        Info info = (Info) NodeUtil.getProperty(document, "info");
+        if (NodeUtil.isNullOrUndefined(info)) {
+            Info newInfo = (Info) NodeUtil.invokeMethod(document, "createInfo");
+            NodeUtil.setProperty(document, "info", newInfo);
             this._nullInfo = true;
             this._oldVersion = null;
+            info = newInfo;
         } else {
-            this._oldVersion = document.getInfo().getVersion();
+            this._oldVersion = info.getVersion();
         }
-        document.getInfo().setVersion(this._newVersion);
+        info.setVersion(this._newVersion);
     }
 
     @Override
     public void undo(Document document) {
         LoggerUtil.info("[ChangeVersionCommand] Reverting.");
+        if (ModelTypeUtil.isJsonSchemaModel(document)) {
+            return;
+        }
         if (this._nullInfo) {
-            document.setInfo(null);
+            NodeUtil.setProperty(document, "info", null);
         } else {
-            document.getInfo().setVersion(this._oldVersion);
+            Info info = (Info) NodeUtil.getProperty(document, "info");
+            info.setVersion(this._oldVersion);
         }
     }
 
