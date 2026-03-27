@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.example.unionmap.Node;
+import org.example.unionmap.UmtmGadget;
+import org.example.unionmap.UmtmMultiFormatSchema;
+import org.example.unionmap.UmtmStandardSchema;
+import org.example.unionmap.UmtmWidget;
 import org.example.unionmap.union.MultiFormatSchemaStandardSchemaUnion;
 import org.example.unionmap.v10.Umtm10Document;
-import org.example.unionmap.v10.Umtm10Gadget;
-import org.example.unionmap.v10.Umtm10MultiFormatSchema;
-import org.example.unionmap.v10.Umtm10StandardSchema;
-import org.example.unionmap.v10.Umtm10Widget;
 import org.example.unionmap.v10.visitors.Umtm10Traverser;
 import org.example.unionmap.visitors.AllNodeVisitor;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UnionMapTest {
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testReaderSimple() throws Exception {
@@ -89,9 +89,9 @@ public class UnionMapTest {
         assertTrue("Expected 'MultiFormatSchema1' to be a MultiFormatSchema", s2.isMultiFormatSchema());
         assertTrue("Expected 'StandardSchema2' to be a StandardSchema", s3.isStandardSchema());
 
-        Umtm10StandardSchema ss1 = s1.asStandardSchema();
-        Umtm10MultiFormatSchema mfs2 = s2.asMultiFormatSchema();
-        Umtm10StandardSchema ss3 = s3.asStandardSchema();
+        UmtmStandardSchema ss1 = s1.asStandardSchema();
+        UmtmMultiFormatSchema mfs2 = s2.asMultiFormatSchema();
+        UmtmStandardSchema ss3 = s3.asStandardSchema();
 
         assertNotNull(ss1);
         assertNotNull(mfs2);
@@ -163,12 +163,12 @@ public class UnionMapTest {
 
         // Test union map methods (schemas property)
         // Test add method
-        Umtm10StandardSchema standardSchema = document.createStandardSchema();
+        UmtmStandardSchema standardSchema = document.createStandardSchema();
         standardSchema.setType("string");
         standardSchema.setDescription("A standard schema");
         document.addSchema("StandardSchema1", standardSchema);
 
-        Umtm10MultiFormatSchema multiFormatSchema = document.createMultiFormatSchema();
+        UmtmMultiFormatSchema multiFormatSchema = document.createMultiFormatSchema();
         multiFormatSchema.setSchemaFormat("application/vnd.aai.asyncapi+json;version=2.0.0");
         document.addSchema("MultiFormatSchema1", multiFormatSchema);
 
@@ -190,12 +190,12 @@ public class UnionMapTest {
 
         // Test union list methods (widgets property)
         // Test add method
-        Umtm10Widget widget = document.createWidget();
+        UmtmWidget widget = document.createWidget();
         widget.setName("Widget1");
         widget.setPrice(99.99);
         document.addWidget(widget);
 
-        Umtm10Gadget gadget = document.createGadget();
+        UmtmGadget gadget = document.createGadget();
         gadget.setName("Gadget1");
         gadget.setBrand("BrandX");
         document.addWidget(gadget);
@@ -206,7 +206,7 @@ public class UnionMapTest {
         assertEquals(2, widgets.size());
 
         // Test insert method for union lists
-        Umtm10Widget widget2 = document.createWidget();
+        UmtmWidget widget2 = document.createWidget();
         widget2.setName("Widget2");
         widget2.setPrice(149.99);
         document.insertWidget(widget2, 1);
@@ -219,11 +219,11 @@ public class UnionMapTest {
         // Test union list of primitives (mixedItems property)
         // Test add method with union values
         org.example.unionmap.union.StringUnionValue stringValue =
-            new org.example.unionmap.union.StringUnionValueImpl("test string");
+                new org.example.unionmap.union.StringUnionValueImpl("test string");
         document.addMixedItem(stringValue);
 
         org.example.unionmap.union.BooleanUnionValue boolValue =
-            new org.example.unionmap.union.BooleanUnionValueImpl(true);
+                new org.example.unionmap.union.BooleanUnionValueImpl(true);
         document.addMixedItem(boolValue);
 
         // Verify items were added
@@ -233,7 +233,7 @@ public class UnionMapTest {
 
         // Test insert method
         org.example.unionmap.union.StringUnionValue stringValue2 =
-            new org.example.unionmap.union.StringUnionValueImpl("inserted string");
+                new org.example.unionmap.union.StringUnionValueImpl("inserted string");
         document.insertMixedItem(stringValue2, 1);
         assertEquals(3, document.getMixedItems().size());
 

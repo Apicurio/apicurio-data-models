@@ -4,7 +4,9 @@ versions:
   - version: 2.0
     url: https://example.com/MultiSpec/versions/2.0.md
 prefix: Mlti20
-namespace: org.example.multi.v20
+namespace: org.example.multi.v2x.v20
+majorVersionPrefix: Mlti2x
+majorVersionNamespace: org.example.multi.v2x
 
 traits:
   - name: Named

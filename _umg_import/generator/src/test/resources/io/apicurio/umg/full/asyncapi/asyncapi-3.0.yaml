@@ -4,7 +4,9 @@ versions:
   - version: 3.0.0
     url: https://www.asyncapi.com/docs/reference/specification/v3.0.0
 prefix: AsyncApi30
-namespace: io.apicurio.datamodels.models.asyncapi.v30
+namespace: io.apicurio.datamodels.models.asyncapi.v3x.v30
+majorVersionPrefix: AsyncApi3x
+majorVersionNamespace: io.apicurio.datamodels.models.asyncapi.v3x
 
 traits:
   - name: Extensible

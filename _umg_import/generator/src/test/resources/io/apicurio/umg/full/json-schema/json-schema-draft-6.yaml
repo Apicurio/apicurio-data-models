@@ -4,7 +4,9 @@ versions:
   - version: draft-6
     url: https://tools.ietf.org/html/draft-wright-json-schema-validation-01
 prefix: JSDraft6
-namespace: io.apicurio.datamodels.models.jsonschema.draft6
+namespace: io.apicurio.datamodels.models.jsonschema.draft.draft6
+majorVersionPrefix: JSDraft
+majorVersionNamespace: io.apicurio.datamodels.models.jsonschema.draft
 
 traits:
   - name: Referenceable

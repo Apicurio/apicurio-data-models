@@ -60,6 +60,10 @@ public class SpecificationIndex {
             specIndex.put(SpecificationVersionId.create(specVer), spec);
             prefixToNS.put(specVer.getPrefix(), specVer.getNamespace());
             nsToPrefix.put(specVer.getNamespace(), specVer.getPrefix());
+            if (specVer.getMajorVersionPrefix() != null && specVer.getMajorVersionNamespace() != null) {
+                prefixToNS.putIfAbsent(specVer.getMajorVersionPrefix(), specVer.getMajorVersionNamespace());
+                nsToPrefix.putIfAbsent(specVer.getMajorVersionNamespace(), specVer.getMajorVersionPrefix());
+            }
             specVer.getTraits().forEach(trait -> indexTrait(specVer, trait));
             specVer.getEntities().forEach(entity -> indexEntity(specVer, entity));
         });

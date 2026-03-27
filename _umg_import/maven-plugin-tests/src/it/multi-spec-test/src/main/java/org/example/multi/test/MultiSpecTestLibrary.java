@@ -2,14 +2,14 @@ package org.example.multi.test;
 
 import org.example.multi.MltiDocument;
 import org.example.multi.util.JsonUtil;
-import org.example.multi.v10.Mlti10Document;
-import org.example.multi.v10.Mlti10DocumentImpl;
-import org.example.multi.v10.io.Mlti10ModelReader;
-import org.example.multi.v10.io.Mlti10ModelWriter;
-import org.example.multi.v20.Mlti20Document;
-import org.example.multi.v20.Mlti20DocumentImpl;
-import org.example.multi.v20.io.Mlti20ModelReader;
-import org.example.multi.v20.io.Mlti20ModelWriter;
+import org.example.multi.v1x.v10.Mlti10Document;
+import org.example.multi.v1x.v10.Mlti10DocumentImpl;
+import org.example.multi.v1x.v10.io.Mlti10ModelReader;
+import org.example.multi.v1x.v10.io.Mlti10ModelWriter;
+import org.example.multi.v2x.v20.Mlti20Document;
+import org.example.multi.v2x.v20.Mlti20DocumentImpl;
+import org.example.multi.v2x.v20.io.Mlti20ModelReader;
+import org.example.multi.v2x.v20.io.Mlti20ModelWriter;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

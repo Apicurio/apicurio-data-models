@@ -4,7 +4,9 @@ versions:
   - version: 2.6.0
     url: https://www.asyncapi.com/docs/reference/specification/v2.6.0
 prefix: AsyncApi26
-namespace: io.apicurio.datamodels.models.asyncapi.v26
+namespace: io.apicurio.datamodels.models.asyncapi.v2x.v26
+majorVersionPrefix: AsyncApi2x
+majorVersionNamespace: io.apicurio.datamodels.models.asyncapi.v2x
 
 traits:
   - name: Extensible

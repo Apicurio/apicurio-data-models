@@ -4,7 +4,9 @@ versions:
   - version: 1.0
     url: https://example.com/SecondSpec/versions/1.0.md
 prefix: Scnd10
-namespace: org.example.multil.scnd.v10
+namespace: org.example.multil.scnd.v1x.v10
+majorVersionPrefix: Scnd1x
+majorVersionNamespace: org.example.multil.scnd.v1x
 
 traits:
   - name: Named

@@ -4,7 +4,9 @@ versions:
   - version: 1.0
     url: https://example.com/ParentTrait/versions/1.0.md
 prefix: Pt10
-namespace: org.example.pt.v10
+namespace: org.example.pt.v1x.v10
+majorVersionPrefix: Pt1x
+majorVersionNamespace: org.example.pt.v1x
 
 traits:
   - name: FooParent

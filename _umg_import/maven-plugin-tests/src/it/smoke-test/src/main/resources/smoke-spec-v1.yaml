@@ -3,7 +3,7 @@ version: 1.0
 versions:
   - version: 1.0
     url: https://example.com/Smoke/versions/1.0.md
-prefix: Smoke
+prefix: Smoke10
 namespace: org.example.smoke.v10
 
 entities:

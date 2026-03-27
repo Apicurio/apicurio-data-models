@@ -295,6 +295,7 @@ public class CreateWritersStage extends AbstractJavaStage {
 
                 writerClassSource.addImport(Map.class);
                 writerClassSource.addImport(entityTypeJavaModel);
+                writerClassSource.addImport(commonEntityTypeJavaModel);
 
                 body.addContext("mapValueJavaType", entityTypeJavaModel.getName());
                 body.addContext("getterMethodName", getterMethodName(property));

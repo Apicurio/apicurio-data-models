@@ -4,7 +4,9 @@ versions:
   - version: 1.4.0
     url: https://spec.open-rpc.org/#openrpc-specification
 prefix: OpenRpc14
-namespace: io.apicurio.datamodels.models.openrpc.v14
+namespace: io.apicurio.datamodels.models.openrpc.v1x.v14
+majorVersionPrefix: OpenRpc1x
+majorVersionNamespace: io.apicurio.datamodels.models.openrpc.v1x
 
 traits:
   - name: Extensible
