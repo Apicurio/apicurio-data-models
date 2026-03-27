@@ -1,10 +1,10 @@
 package org.example.pt.test;
 
 import org.example.pt.util.JsonUtil;
-import org.example.pt.v10.Pt10Document;
-import org.example.pt.v10.Pt10DocumentImpl;
-import org.example.pt.v10.io.Pt10ModelReader;
-import org.example.pt.v10.io.Pt10ModelWriter;
+import org.example.pt.v1x.v10.Pt10Document;
+import org.example.pt.v1x.v10.Pt10DocumentImpl;
+import org.example.pt.v1x.v10.io.Pt10ModelReader;
+import org.example.pt.v1x.v10.io.Pt10ModelWriter;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

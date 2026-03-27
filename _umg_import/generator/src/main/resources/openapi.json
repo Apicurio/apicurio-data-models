@@ -188,6 +188,14 @@
                     "namespace": {
                         "description": "",
                         "type": "string"
+                    },
+                    "majorVersionPrefix": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "majorVersionNamespace": {
+                        "description": "",
+                        "type": "string"
                     }
                 },
                 "example": {

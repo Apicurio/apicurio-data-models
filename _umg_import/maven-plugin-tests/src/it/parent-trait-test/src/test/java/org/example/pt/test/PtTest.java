@@ -2,7 +2,7 @@ package org.example.pt.test;
 
 import org.example.pt.PtFoo;
 import org.example.pt.PtFooParent;
-import org.example.pt.v10.Pt10Document;
+import org.example.pt.v1x.v10.Pt10Document;
 import org.junit.Assert;
 import org.junit.Test;
 

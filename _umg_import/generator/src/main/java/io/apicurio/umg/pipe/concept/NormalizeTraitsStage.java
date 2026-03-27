@@ -63,8 +63,11 @@ public class NormalizeTraitsStage extends AbstractStage {
     }
 
     /**
-     * A trait needs a parent trait if there are multiple traits with the same name in the
-     * namespace hierarchy.
+     * A trait needs a parent trait if there are multiple child subtrees containing
+     * a trait with the same name.  Additionally, a parent trait is created at any
+     * namespace that has a registered prefix (spec-level or major-version-level namespace)
+     * even if only one child subtree contains the trait.  This ensures that spec-level
+     * interfaces are always generated even when a spec has only one major version.
      *
      * @param namespaceModel
      * @param traitName
@@ -72,11 +75,37 @@ public class NormalizeTraitsStage extends AbstractStage {
     private boolean needsParentTrait(NamespaceModel namespaceModel, String traitName) {
         int count = 0;
         for (NamespaceModel childNamespace : namespaceModel.getChildren().values()) {
-            if (childNamespace.containsTrait(traitName)) {
+            if (containsTraitRecursive(childNamespace, traitName)) {
                 count++;
             }
         }
-        return count > 1;
+        if (count > 1) {
+            return true;
+        }
+        if (count == 1 && hasRegisteredPrefix(namespaceModel)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the given namespace has a registered prefix in the specification index,
+     * indicating it is a spec-level or major-version-level namespace.
+     */
+    private boolean hasRegisteredPrefix(NamespaceModel namespaceModel) {
+        return getState().getSpecIndex().getNsToPrefix().containsKey(namespaceModel.fullName());
+    }
+
+    private boolean containsTraitRecursive(NamespaceModel namespace, String traitName) {
+        if (namespace.containsTrait(traitName)) {
+            return true;
+        }
+        for (NamespaceModel child : namespace.getChildren().values()) {
+            if (containsTraitRecursive(child, traitName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

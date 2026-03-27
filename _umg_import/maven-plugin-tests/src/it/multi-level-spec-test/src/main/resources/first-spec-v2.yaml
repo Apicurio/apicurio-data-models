@@ -4,7 +4,9 @@ versions:
   - version: 2.0
     url: https://example.com/FirstSpec/versions/2.0.md
 prefix: Frst20
-namespace: org.example.multil.frst.v20
+namespace: org.example.multil.frst.v2x.v20
+majorVersionPrefix: Frst2x
+majorVersionNamespace: org.example.multil.frst.v2x
 
 traits:
   - name: Named

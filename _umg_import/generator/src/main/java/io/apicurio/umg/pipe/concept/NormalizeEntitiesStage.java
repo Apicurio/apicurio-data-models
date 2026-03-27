@@ -57,8 +57,12 @@ public class NormalizeEntitiesStage extends AbstractStage {
     }
 
     /**
-     * A entity needs a parent entity if there are multiple entities with the same name in the
-     * namespace hierarchy.
+     * An entity needs a parent entity if there are multiple child subtrees containing
+     * an entity with the same name.  Additionally, a parent entity is created at any
+     * namespace that has a registered prefix (spec-level or major-version-level namespace)
+     * even if only one child subtree contains the entity.  This ensures that spec-level
+     * interfaces are always generated (e.g. OpenRpcDocument) even when a spec has only
+     * one major version.
      *
      * @param namespaceModel
      * @param entityName
@@ -66,11 +70,37 @@ public class NormalizeEntitiesStage extends AbstractStage {
     private boolean needsParentEntity(NamespaceModel namespaceModel, String entityName) {
         int count = 0;
         for (NamespaceModel childNamespace : namespaceModel.getChildren().values()) {
-            if (childNamespace.containsEntity(entityName)) {
+            if (containsEntityRecursive(childNamespace, entityName)) {
                 count++;
             }
         }
-        return count > 1;
+        if (count > 1) {
+            return true;
+        }
+        if (count == 1 && hasRegisteredPrefix(namespaceModel)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the given namespace has a registered prefix in the specification index,
+     * indicating it is a spec-level or major-version-level namespace.
+     */
+    private boolean hasRegisteredPrefix(NamespaceModel namespaceModel) {
+        return getState().getSpecIndex().getNsToPrefix().containsKey(namespaceModel.fullName());
+    }
+
+    private boolean containsEntityRecursive(NamespaceModel namespace, String entityName) {
+        if (namespace.containsEntity(entityName)) {
+            return true;
+        }
+        for (NamespaceModel child : namespace.getChildren().values()) {
+            if (containsEntityRecursive(child, entityName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

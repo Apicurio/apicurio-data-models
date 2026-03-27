@@ -1,6 +1,8 @@
 package io.apicurio.umg.pipe.java;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
@@ -27,18 +29,22 @@ public class CreateUnionValueMethodsStage extends AbstractJavaStage {
     protected void doProcess() {
         getState().getConceptIndex().findEntities("").stream().filter(entity -> entity.isLeaf()).forEach(entity -> {
             Collection<PropertyModelWithOrigin> entityProperties = getState().getConceptIndex().getAllEntityProperties(entity);
-            entityProperties.stream().map(property -> property.getProperty()).filter(property ->
-                isUnion(property) || isUnionList(property) || isUnionMap(property)
-            ).forEach(property -> {
-                createUnionValueMethods(property, entity);
+            entityProperties.stream().filter(pwo ->
+                isUnion(pwo.getProperty()) || isUnionList(pwo.getProperty()) || isUnionMap(pwo.getProperty())
+            ).forEach(pwo -> {
+                createUnionValueMethods(pwo.getProperty(), entity, pwo.getOrigin().getNamespace());
             });
         });
     }
 
     /**
      * @param property
+     * @param origin the leaf entity being processed
+     * @param propertyOriginNamespace the namespace of the entity/trait that owns the property
+     *        (may differ from origin's namespace if the property was normalized to a parent)
      */
-    private void createUnionValueMethods(PropertyModel property, EntityModel origin) {
+    private void createUnionValueMethods(PropertyModel property, EntityModel origin,
+            NamespaceModel propertyOriginNamespace) {
         // Extract the actual union type: for simple unions it's the property type itself,
         // for union maps/lists it's the nested type
         PropertyType actualUnionType = property.getType();
@@ -53,30 +59,48 @@ public class CreateUnionValueMethodsStage extends AbstractJavaStage {
 
         unionType.getNestedTypes().forEach(nestedType -> {
             JavaType nestedJT = new JavaType(nestedType, origin.getNamespace());
-            JavaClassSource unionValueImplSource = null;
-            String unionValueTypeName = null;
 
             // For primitives, find the appropriate union value (wrapper) impl class
-            // For entities, find the entity implementation class(es)
+            // For entities, find ALL leaf entity implementation classes
             // For entity collections (maps/lists), find the appropriate union value (wrapper) class
 
             if (nestedJT.isPrimitive() || nestedJT.isPrimitiveList() || nestedJT.isPrimitiveMap()) {
-                unionValueTypeName = getTypeName(nestedType);
+                String unionValueTypeName = getTypeName(nestedType);
                 String unionValueImplFQN = getUnionTypeFQN(unionValueTypeName + "UnionValueImpl");
-                unionValueImplSource = getState().getJavaIndex().lookupClass(unionValueImplFQN);
+                JavaClassSource unionValueImplSource = getState().getJavaIndex().lookupClass(unionValueImplFQN);
+                if (unionValueImplSource == null) {
+                    throw new RuntimeException("[CreateUnionValueMethodsStage] Union type value not supported: " + nestedType);
+                }
+                createUnionImplMethods(unionType, unionValueImplSource, unionValueTypeName, false, origin.getNamespace());
             } else if (nestedJT.isEntity()) {
-                unionValueTypeName = nestedType.getSimpleType();
-                unionValueImplSource = resolveJavaEntityImpl(origin.getNamespace().fullName(), unionValueTypeName);
+                // The union interface may have been applied to a common parent entity interface
+                // (via ApplyUnionTypesStage after property normalization), which means ALL leaf
+                // entity impl classes under that namespace inherit it and need the method
+                // implementations.  Scope the search to the property origin's namespace to avoid
+                // generating methods on entities from other specs that happen to share the same name.
+                String entityName = nestedType.getSimpleType();
+                String scopeNs = propertyOriginNamespace.fullName();
+                List<EntityModel> leafEntities = getState().getConceptIndex().findEntities("").stream()
+                        .filter(e -> e.isLeaf() && e.getName().equals(entityName)
+                                && e.getNamespace().fullName().startsWith(scopeNs))
+                        .collect(Collectors.toList());
+                for (EntityModel leafEntity : leafEntities) {
+                    JavaClassSource implSource = resolveJavaEntityImpl(leafEntity);
+                    if (implSource != null) {
+                        createUnionImplMethods(unionType, implSource, entityName, true, leafEntity.getNamespace());
+                    }
+                }
             } else if (nestedJT.isEntityList()) {
-                unionValueTypeName = getTypeName(nestedType);
+                String unionValueTypeName = getTypeName(nestedType);
                 String unionValueFQN = getUnionTypeFQN(unionValueTypeName + "UnionValueImpl");
-                unionValueImplSource = getState().getJavaIndex().lookupClass(unionValueFQN);
-            }
-            if (unionValueImplSource == null) {
+                JavaClassSource unionValueImplSource = getState().getJavaIndex().lookupClass(unionValueFQN);
+                if (unionValueImplSource == null) {
+                    throw new RuntimeException("[CreateUnionValueMethodsStage] Union type value not supported: " + nestedType);
+                }
+                createUnionImplMethods(unionType, unionValueImplSource, unionValueTypeName, false, origin.getNamespace());
+            } else {
                 throw new RuntimeException("[CreateUnionValueMethodsStage] Union type value not supported: " + nestedType);
             }
-
-            createUnionImplMethods(unionType, unionValueImplSource, unionValueTypeName, nestedJT.isEntity(), origin.getNamespace());
         });
     }
 
