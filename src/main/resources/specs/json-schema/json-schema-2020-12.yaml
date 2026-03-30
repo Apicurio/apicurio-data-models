@@ -4,7 +4,9 @@ versions:
   - version: 2020-12
     url: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-01
 prefix: JS202012
-namespace: io.apicurio.datamodels.models.jsonschema.v202012
+namespace: io.apicurio.datamodels.models.jsonschema.modern.v202012
+majorVersionPrefix: JSModern
+majorVersionNamespace: io.apicurio.datamodels.models.jsonschema.modern
 
 traits:
   - name: Referenceable

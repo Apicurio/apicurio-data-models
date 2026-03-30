@@ -4,7 +4,9 @@ versions:
   - version: 2019-09
     url: https://tools.ietf.org/html/draft-handrews-json-schema-validation-02
 prefix: JS201909
-namespace: io.apicurio.datamodels.models.jsonschema.v201909
+namespace: io.apicurio.datamodels.models.jsonschema.modern.v201909
+majorVersionPrefix: JSModern
+majorVersionNamespace: io.apicurio.datamodels.models.jsonschema.modern
 
 traits:
   - name: Referenceable

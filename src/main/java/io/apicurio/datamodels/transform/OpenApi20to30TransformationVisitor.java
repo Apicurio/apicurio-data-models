@@ -1,19 +1,12 @@
 package io.apicurio.datamodels.transform;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.TraverserDirection;
 import io.apicurio.datamodels.models.Contact;
 import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.ExternalDocumentation;
 import io.apicurio.datamodels.models.Info;
@@ -28,63 +21,63 @@ import io.apicurio.datamodels.models.SecurityRequirement;
 import io.apicurio.datamodels.models.SecurityRequirementsParent;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.Tag;
-import io.apicurio.datamodels.models.Example;
+import io.apicurio.datamodels.models.openapi.OpenApiDefinitions;
 import io.apicurio.datamodels.models.openapi.OpenApiHeader;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
 import io.apicurio.datamodels.models.openapi.OpenApiOAuthFlow;
+import io.apicurio.datamodels.models.openapi.OpenApiParameterDefinitions;
 import io.apicurio.datamodels.models.openapi.OpenApiParametersParent;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiPaths;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
+import io.apicurio.datamodels.models.openapi.OpenApiResponseDefinitions;
 import io.apicurio.datamodels.models.openapi.OpenApiResponses;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.OpenApiScopes;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityDefinitions;
 import io.apicurio.datamodels.models.openapi.OpenApiTag;
 import io.apicurio.datamodels.models.openapi.OpenApiXML;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Contact;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ExternalDocumentation;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Header;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Info;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20License;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Operation;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ParameterDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20PathItem;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Paths;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Response;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ResponseDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Responses;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Scopes;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityRequirement;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20XML;
-import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20Visitor;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Contact;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Discriminator;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30ExternalDocumentation;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Info;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30License;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30MediaType;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30OAuthFlows;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30PathItem;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Paths;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30RequestBody;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Response;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Responses;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30SecurityRequirement;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Server;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30ServerVariable;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30XML;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Contact;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20ExternalDocumentation;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Header;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Info;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20License;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Operation;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Parameter;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20PathItem;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Paths;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Response;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Responses;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20SecurityRequirement;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20XML;
+import io.apicurio.datamodels.models.openapi.v2x.v20.visitors.OpenApi20Visitor;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xMediaType;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Components;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Contact;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Discriminator;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30ExternalDocumentation;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Header;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Info;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30License;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30MediaType;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30OAuthFlows;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30PathItem;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Paths;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30RequestBody;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Response;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Responses;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30SecurityRequirement;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Server;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30ServerVariable;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30XML;
 import io.apicurio.datamodels.models.union.BooleanUnionValue;
 import io.apicurio.datamodels.models.union.BooleanUnionValueImpl;
 import io.apicurio.datamodels.models.util.JsonUtil;
@@ -96,6 +89,13 @@ import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.visitors.ConsumesProducesFinder;
 import io.apicurio.datamodels.visitors.OperationFinder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A visitor used to transform an OpenAPI 2.0 document into an OpenAPI 3.0.x document.
@@ -162,9 +162,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(doc20, this.doc30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitInfo(Info)
-     */
     @Override
     public void visitInfo(Info node) {
         OpenApi20Info info20 = (OpenApi20Info) node;
@@ -180,9 +177,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(info20, info30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitContact(Contact)
-     */
     @Override
     public void visitContact(Contact node) {
         OpenApi30Info info30 = (OpenApi30Info) this.lookup(node.parent());
@@ -196,9 +190,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(node, contact30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitLicense(License)
-     */
     @Override
     public void visitLicense(License node) {
         OpenApi30Info info30 = (OpenApi30Info) this.lookup(node.parent());
@@ -235,14 +226,11 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(pathItem20, pathItem30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitOperation(Operation)
-     */
     @Override
     public void visitOperation(Operation node) {
         OpenApi20Operation op = (OpenApi20Operation) node;
         OpenApi30PathItem pathItem30 = (OpenApi30PathItem) this.lookup(node.parent());
-        OpenApi30Operation operation30 = pathItem30.createOperation();
+        OpenApi30Operation operation30 = (OpenApi30Operation) pathItem30.createOperation();
 
         String operationType = node.parentPropertyName();
         if (operationType.equals("get")) {
@@ -297,9 +285,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(op, operation30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitParameter(Parameter)
-     */
     @Override
     public void visitParameter(Parameter node) {
         if (isParameterDefinition(node)) {
@@ -311,7 +296,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         if (NodeUtil.equals(param20.getIn(), "body")) {
             OpenApi30Operation operation30 = (OpenApi30Operation) this.lookup(this.findParentOperation(param20));
             if (!NodeUtil.isNullOrUndefined(operation30)) {
-                OpenApi30RequestBody body30 = operation30.createRequestBody();
+                OpenApi30RequestBody body30 = (OpenApi30RequestBody) operation30.createRequestBody();
                 operation30.setRequestBody(body30);
 
                 body30.setDescription(param20.getDescription());
@@ -340,9 +325,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 }
                 consumes.forEach(ct -> {
                     if (this.isFormDataMimeType(ct)) {
-                        OpenApi30RequestBody body30 = operation30.getRequestBody();
+                        OpenApi30RequestBody body30 = (OpenApi30RequestBody) operation30.getRequestBody();
                         if (NodeUtil.isNullOrUndefined(body30)) {
-                            body30 = operation30.createRequestBody();
+                            body30 = (OpenApi30RequestBody) operation30.createRequestBody();
                             operation30.setRequestBody(body30);
                             body30.setRequired(true);
                         }
@@ -362,7 +347,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                             schema30.setType("object");
                         }
 
-                        OpenApi30Schema property30 = schema30.createSchema();
+                        OpenApi30Schema property30 = (OpenApi30Schema) schema30.createSchema();
                         schema30.addProperty(param20.getName(), property30);
                         property30.setDescription(param20.getDescription());
                         this.toSchema(param20, property30, false);
@@ -380,7 +365,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
                 if (!NodeUtil.isNullOrUndefined(paramDef) && NodeUtil.equals(paramDef.getIn(), "body")) {
                     OpenApi30Operation parent30 = (OpenApi30Operation) this.lookup(this.findParentOperation(param20));
                     if (!NodeUtil.isNullOrUndefined(parent30)) {
-                        OpenApi30RequestBody body30 = parent30.createRequestBody();
+                        OpenApi30RequestBody body30 = (OpenApi30RequestBody) parent30.createRequestBody();
                         parent30.setRequestBody(body30);
 
                         String newRef = param20.get$ref().replace("#/parameters/", "#/components/requestBodies/");
@@ -470,9 +455,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         }
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitExternalDocumentation(ExternalDocumentation) 
-     */
     @Override
     public void visitExternalDocumentation(ExternalDocumentation node) {
         Node parent30 = this.lookup(node.parent());
@@ -556,9 +538,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
         if (!NodeUtil.isNullOrUndefined(node.getSchema())) {
             List<String> produces = this.findProduces(node);
-            OpenApi20Schema schema = node.getSchema();
+            OpenApi20Schema schema = (OpenApi20Schema) node.getSchema();
             produces.forEach( ct -> {
-                OpenApi30MediaType mediaType30 = response30.createMediaType();
+                OpenApi30MediaType mediaType30 = (OpenApi30MediaType) response30.createMediaType();
                 response30.addContent(ct, mediaType30);
 
                 OpenApi30Schema schema30 = (OpenApi30Schema) mediaType30.createSchema();
@@ -581,9 +563,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         }
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(Schema)
-     */
     @Override
     public void visitSchema(Schema node) {
         if (isSchemaDefinition(node)) {
@@ -613,7 +592,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         parent30.addHeader(headerName, header30);
 
         header30.setDescription(header20.getDescription());
-        header30.setSchema(this.toSchema(node, header30.createSchema(), false));
+        header30.setSchema(this.toSchema(node, (OpenApi30Schema) header30.createSchema(), false));
 
         this.copyExtensions(header20, header30);
         this.mapNode(node, header30);
@@ -625,9 +604,9 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         OpenApi30Schema parent30 = this.findItemsParent(node);
-        OpenApi30Schema items30 = parent30.createSchema();
+        OpenApi30Schema items30 = (OpenApi30Schema) parent30.createSchema();
         parent30.setItems(items30);
 
         this.toSchema(node, items30, false);
@@ -635,9 +614,6 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         this.mapNode(node, items30);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitTag(Tag)
-     */
     @Override
     public void visitTag(Tag node) {
         OpenApi30Document parent30 = this.doc30;
@@ -649,13 +625,10 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     @Override
-    public void visitSecurityDefinitions(OpenApi20SecurityDefinitions node) {
+    public void visitSecurityDefinitions(OpenApiSecurityDefinitions node) {
         // OpenAPI 3 has no "Security Definitions" wrapper entity.
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSecurityScheme(SecurityScheme)
-     */
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
         String name = node.mapPropertyName();
@@ -670,7 +643,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         scheme30.setIn(scheme.getIn());
 
         if (NodeUtil.equals(scheme.getType(), "oauth2")) {
-            OpenApi30OAuthFlows flows30 = scheme30.createOAuthFlows();
+            OpenApi30OAuthFlows flows30 = (OpenApi30OAuthFlows) scheme30.createOAuthFlows();
             if (NodeUtil.equals(scheme.getFlow(), "implicit")) {
                 scheme30.setFlows(flows30);
                 flows30.setImplicit(flows30.createOAuthFlow());
@@ -722,7 +695,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     @Override
-    public void visitScopes(OpenApi20Scopes node) {
+    public void visitScopes(OpenApiScopes node) {
         // Note: scopes are handled during the processing of the security scheme.  See `visitSecurityScheme` for details.
     }
 
@@ -764,7 +737,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         String name = node.mapPropertyName();
 
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(ps20.parent());
-        OpenApi30Schema property30 = parent30.createSchema();
+        OpenApi30Schema property30 = (OpenApi30Schema) parent30.createSchema();
         parent30.addProperty(name, property30);
 
         this.toSchema(ps20, property30, true);
@@ -775,7 +748,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
     public void visitAdditionalPropertiesSchema(OpenApiSchema node) {
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(node.parent());
-        OpenApi30Schema additionalProps30 = parent30.createSchema();
+        OpenApi30Schema additionalProps30 = (OpenApi30Schema) parent30.createSchema();
         parent30.setAdditionalProperties(additionalProps30);
 
         this.toSchema(node, additionalProps30, true);
@@ -786,7 +759,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
     public void visitAllOfSchema(OpenApiSchema node) {
         OpenApi30Schema parent30 =  (OpenApi30Schema) this.lookup(node.parent());
-        OpenApi30Schema allOf30 = parent30.createSchema();
+        OpenApi30Schema allOf30 = (OpenApi30Schema) parent30.createSchema();
         parent30.addAllOf(allOf30);
 
         this.toSchema(node, allOf30, true);
@@ -797,13 +770,13 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
 
     public void visitItemsSchema(OpenApiSchema node) {
         OpenApi30Schema parent30 = (OpenApi30Schema) this.lookup(node.parent());
-        OpenApi30Schema items30 = parent30.getItems();
+        OpenApi30Schema items30 = (OpenApi30Schema) parent30.getItems();
 
         // Note: OpenAPI 3+ does not support an array of Schemas for the "items" property.  So this
         // part of the transformation is potentially lossy.  We'll keep the first schema and drop the
         // rest (if any).
         if (items30 == null) {
-            items30 = parent30.createSchema();
+            items30 = (OpenApi30Schema) parent30.createSchema();
             parent30.setItems(items30);
         }
 
@@ -814,17 +787,17 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
     }
 
     @Override
-    public void visitDefinitions(OpenApi20Definitions node) {
+    public void visitDefinitions(OpenApiDefinitions node) {
         // Note: there is no "definitions" entity in 3.0, so nothing to do here.
     }
 
     @Override
-    public void visitParameterDefinitions(OpenApi20ParameterDefinitions node) {
+    public void visitParameterDefinitions(OpenApiParameterDefinitions node) {
         // Note: there is no "parameters definitions" entity in 3.0, so nothing to do here.
     }
 
     @Override
-    public void visitResponseDefinitions(OpenApi20ResponseDefinitions node) {
+    public void visitResponseDefinitions(OpenApiResponseDefinitions node) {
         // Note: there is no "responses definitions" entity in 3.0, so nothing to do here.
     }
 
@@ -858,7 +831,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         if (NodeUtil.isNullOrUndefined(this.doc30.getComponents())) {
             this.doc30.setComponents(this.doc30.createComponents());
         }
-        return this.doc30.getComponents();
+        return (OpenApi30Components) this.doc30.getComponents();
     }
 
     // from : OpenApi20ParameterBase | OpenApi20Header | OpenApi20Items | OpenApi20Schema | OpenApi20SchemaDefinition
@@ -931,7 +904,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
             schema30.setRequired(schema20.getRequired());
 
             if (!NodeUtil.isNullOrUndefined(schema20.getDiscriminator())) {
-                OpenApi30Discriminator discriminator30 = schema30.createDiscriminator();
+                OpenApi30Discriminator discriminator30 = (OpenApi30Discriminator) schema30.createDiscriminator();
                 schema30.setDiscriminator(discriminator30);
                 discriminator30.setPropertyName(schema20.getDiscriminator());
             }
@@ -940,7 +913,7 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
         return schema30;
     }
 
-    private OpenApi30Schema findItemsParent(OpenApi20Items node) {
+    private OpenApi30Schema findItemsParent(OpenApiItems node) {
         OpenApi30Schema itemsParent = (OpenApi30Schema) node.getNodeAttribute("_transformation_items-parent");
         if (NodeUtil.isNullOrUndefined(itemsParent)) {
             itemsParent = (OpenApi30Schema) this.lookup(node.parent());
@@ -1053,16 +1026,16 @@ public class OpenApi20to30TransformationVisitor implements OpenApi20Visitor, Tra
             // First, figure out which of the media types is the largest (has the most content)
             int largest = 0;
             OpenApi30MediaType srcMt = null;
-            Collection<OpenApi30MediaType> mediaTypes = NodeUtil.getMapValues(response.getContent());
-            for (OpenApi30MediaType mt : mediaTypes) {
+            Collection<OpenApi3xMediaType> mediaTypes = NodeUtil.getMapValues(response.getContent());
+            for (OpenApi3xMediaType mt : mediaTypes) {
                 int size = JsonUtil.stringify(Library.writeNode(mt.getSchema())).length();
                 if (size > largest) {
                     largest = size;
-                    srcMt = mt;
+                    srcMt = (OpenApi30MediaType) mt;
                 }
             }
             // Now clone the contents of the largest media type into all the others.
-            for (OpenApi30MediaType mt : mediaTypes) {
+            for (OpenApi3xMediaType mt : mediaTypes) {
                 if (srcMt != mt) {
                     ObjectNode src = Library.writeNode(srcMt.getSchema());
                     Library.readNode(src, mt.getSchema());

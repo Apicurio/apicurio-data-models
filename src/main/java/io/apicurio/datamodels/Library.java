@@ -16,11 +16,7 @@
 
 package io.apicurio.datamodels;
 
-import java.util.List;
-import java.util.function.UnaryOperator;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.apicurio.datamodels.deref.Dereferencer;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.ModelType;
@@ -31,9 +27,8 @@ import io.apicurio.datamodels.models.io.ModelReader;
 import io.apicurio.datamodels.models.io.ModelReaderFactory;
 import io.apicurio.datamodels.models.io.ModelWriter;
 import io.apicurio.datamodels.models.io.ModelWriterFactory;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
@@ -48,6 +43,9 @@ import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
 import io.apicurio.datamodels.validation.IValidationSeverityRegistry;
 import io.apicurio.datamodels.validation.ValidationProblem;
 import io.apicurio.datamodels.validation.ValidationVisitor;
+
+import java.util.List;
+import java.util.function.UnaryOperator;
 
 /**
  * The most common entry points into using the data models library.  Provides convenience methods
@@ -133,7 +131,8 @@ public class Library {
      * Call this to do a "partial read" on a given node.  You must pass the JSON data for the node
      * type and an empty instance of the node class.  For example, you could read just an
      * Operation by passing the JSON data for the operation along with an instance of e.g.
-     * {@link OpenApi30Operation} and this will read the data and store it in the instance.
+     * {@link io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Operation} and this will read
+     * the data and store it in the instance.
      * @param json
      * @param node
      */

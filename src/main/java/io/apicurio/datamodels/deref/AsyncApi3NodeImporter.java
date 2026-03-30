@@ -2,43 +2,44 @@ package io.apicurio.datamodels.deref;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.Extensible;
 import io.apicurio.datamodels.models.ExternalDocumentation;
-import io.apicurio.datamodels.models.union.AnyUnionValueImpl;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.SecurityScheme;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
 import io.apicurio.datamodels.models.Server;
 import io.apicurio.datamodels.models.ServerVariable;
 import io.apicurio.datamodels.models.Tag;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelBindings;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiCorrelationID;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessageBindings;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessageTrait;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiMultiFormatSchema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationBindings;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReply;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReplyAddress;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationTrait;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiServerBindings;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Components;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Document;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30ExternalDocumentation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30MultiFormatSchema;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Schema;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30ServerVariable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Tag;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xChannel;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xComponents;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xDocument;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xExternalDocumentation;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xMultiFormatSchema;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xOperation;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xOperationReply;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xOperationReplyAddress;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xSchema;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xServer;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xServerVariable;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xTag;
+import io.apicurio.datamodels.models.union.AnyUnionValueImpl;
 import io.apicurio.datamodels.models.union.MultiFormatSchemaSchemaUnion;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -46,10 +47,11 @@ import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.util.RegexUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Node importer for AsyncAPI 3.0 documents. Handles dereferencing and importing external
- * references into the AsyncAPI 3.0 components section.
+ * Node importer for AsyncAPI 3.x documents. Handles dereferencing and importing external
+ * references into the AsyncAPI 3.x components section.
  */
 public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
 
@@ -68,7 +70,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedChannelBinding"), getComponentNames(components.getChannelBindings()));
             components.addChannelBinding(name, node);
             node.attach(components);
@@ -77,14 +79,14 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
+    public void visitChannel(AsyncApiChannel node) {
         String componentType = "channels";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedChannel"), getComponentNames(components.getChannels()));
-            components.addChannel(name, node);
+            components.addChannel(name, (AsyncApi3xChannel) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -96,7 +98,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedCorrelationID"), getComponentNames(components.getCorrelationIds()));
             components.addCorrelationId(name, node);
             node.attach(components);
@@ -110,9 +112,10 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
-            String name = generateNodeName(getNameHintFromRef("ImportedExternalDocs"), getComponentNames(components.getExternalDocs()));
-            components.addExternalDoc(name, (AsyncApi30ExternalDocumentation) node);
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
+            Map<String, ?> externalDocs = ((AsyncApi3xComponents) components).getExternalDocs();
+            String name = generateNodeName(getNameHintFromRef("ImportedExternalDocs"), getComponentNames(externalDocs));
+            ((AsyncApi3xComponents) components).addExternalDoc(name, (AsyncApi3xExternalDocumentation) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -124,7 +127,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedMessage"), getComponentNames(components.getMessages()));
             components.addMessage(name, node);
             node.attach(components);
@@ -138,7 +141,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedMessageBinding"), getComponentNames(components.getMessageBindings()));
             components.addMessageBinding(name, node);
             node.attach(components);
@@ -152,7 +155,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedMessageTrait"), getComponentNames(components.getMessageTraits()));
             components.addMessageTrait(name, node);
             node.attach(components);
@@ -161,15 +164,15 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitMultiFormatSchema(AsyncApi30MultiFormatSchema node) {
+    public void visitMultiFormatSchema(AsyncApiMultiFormatSchema node) {
         String componentType = "schemas";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedSchema"), getComponentNames(components.getSchemas()));
             // AsyncAPI 3.0 schemas are a union type, use addSchema() method
-            components.addSchema(name, node);
+            components.addSchema(name, (AsyncApi3xMultiFormatSchema) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -181,9 +184,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedOperation"), getComponentNames(components.getOperations()));
-            components.addOperation(name, (AsyncApi30Operation) node);
+            components.addOperation(name, (AsyncApi3xOperation) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -195,7 +198,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedOperationBinding"), getComponentNames(components.getOperationBindings()));
             components.addOperationBinding(name, node);
             node.attach(components);
@@ -204,28 +207,28 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitOperationReply(AsyncApi30OperationReply node) {
+    public void visitOperationReply(AsyncApiOperationReply node) {
         String componentType = "replies";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedReply"), getComponentNames(components.getReplies()));
-            components.addReply(name, node);
+            components.addReply(name, (AsyncApi3xOperationReply) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
     }
 
     @Override
-    public void visitOperationReplyAddress(AsyncApi30OperationReplyAddress node) {
+    public void visitOperationReplyAddress(AsyncApiOperationReplyAddress node) {
         String componentType = "replyAddresses";
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedReplyAddress"), getComponentNames(components.getReplyAddresses()));
-            components.addReplyAddress(name, node);
+            components.addReplyAddress(name, (AsyncApi3xOperationReplyAddress) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -237,7 +240,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedOperationTrait"), getComponentNames(components.getOperationTraits()));
             components.addOperationTrait(name, node);
             node.attach(components);
@@ -251,7 +254,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedParameter"), getComponentNames(components.getParameters()));
             components.addParameter(name, (AsyncApiParameter) node);
             node.attach(components);
@@ -266,16 +269,16 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             // Check if this is a non-JSON schema that needs wrapping
             if (isAvroSchema(node)) {
-                AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "avro");
+                AsyncApi3xMultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "avro");
                 inlineComponent(componentType, multiFormatSchema);
             } else if (isProtobufSchema(node)) {
-                AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "protobuf");
+                AsyncApi3xMultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "protobuf");
                 inlineComponent(componentType, multiFormatSchema);
             } else {
                 inlineComponent(componentType, node);
             }
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
 
             // Determine the best name hint for this schema
             String nameHint;
@@ -306,17 +309,17 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
 
             // Check if this is a non-JSON schema that needs wrapping
             if (isAvroSchema(node)) {
-                AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "avro");
+                AsyncApi3xMultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "avro");
                 components.addSchema(name, multiFormatSchema);
                 multiFormatSchema.attach(components);
                 setPathToImportedNode(multiFormatSchema, componentType, name);
             } else if (isProtobufSchema(node)) {
-                AsyncApi30MultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "protobuf");
+                AsyncApi3xMultiFormatSchema multiFormatSchema = wrapInMultiFormatSchema(node, "protobuf");
                 components.addSchema(name, multiFormatSchema);
                 multiFormatSchema.attach(components);
                 setPathToImportedNode(multiFormatSchema, componentType, name);
             } else {
-                // Cast to MultiFormatSchemaSchemaUnion (AsyncApi30Schema implements this)
+                // Cast to MultiFormatSchemaSchemaUnion (AsyncApi3xSchema implements this)
                 components.addSchema(name, (MultiFormatSchemaSchemaUnion) node);
                 node.attach(components);
                 setPathToImportedNode(node, componentType, name);
@@ -330,7 +333,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedSecurityScheme"), getComponentNames(components.getSecuritySchemes()));
             components.addSecurityScheme(name, (AsyncApiSecurityScheme) node);
             node.attach(components);
@@ -344,9 +347,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedServer"), getComponentNames(components.getServers()));
-            components.addServer(name, (AsyncApi30Server) node);
+            components.addServer(name, (AsyncApi3xServer) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -358,7 +361,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedServerBinding"), getComponentNames(components.getServerBindings()));
             components.addServerBinding(name, node);
             node.attach(components);
@@ -372,9 +375,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedServerVariable"), getComponentNames(components.getServerVariables()));
-            components.addServerVariable(name, (AsyncApi30ServerVariable) node);
+            components.addServerVariable(name, (AsyncApi3xServerVariable) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -386,9 +389,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         if (shouldInline()) {
             inlineComponent(componentType, node);
         } else {
-            AsyncApi30Components components = ensureAsyncApi30Components();
+            AsyncApi3xComponents components = ensureAsyncApiComponents();
             String name = generateNodeName(getNameHintFromRef("ImportedTag"), getComponentNames(components.getTags()));
-            components.addTag(name, (AsyncApi30Tag) node);
+            components.addTag(name, (AsyncApi3xTag) node);
             node.attach(components);
             setPathToImportedNode(node, componentType, name);
         }
@@ -399,7 +402,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         // Handle JSON content that isn't an OpenAPI/AsyncAPI document
         // This is used for Avro JSON schemas or other JSON-based formats
         String componentType = "schemas";
-        AsyncApi30Components components = ensureAsyncApi30Components();
+        AsyncApi3xComponents components = ensureAsyncApiComponents();
 
         // Determine name hint from reference URL
         String nameHint = getNameHintFromRef("ImportedSchema");
@@ -415,7 +418,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         String name = generateNodeName(nameHint, getComponentNames(components.getSchemas()));
 
         // Create a MultiFormatSchema to wrap the JSON content
-        AsyncApi30MultiFormatSchema multiFormatSchema = wrapJsonInMultiFormatSchema(jsonNode, mediaType);
+        AsyncApi3xMultiFormatSchema multiFormatSchema = wrapJsonInMultiFormatSchema(jsonNode, mediaType);
 
         // Add to components
         components.addSchema(name, multiFormatSchema);
@@ -427,7 +430,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     public void importText(String textContent, String mediaType) {
         // Handle text content (Protobuf, GraphQL, Avro text, etc.)
         String componentType = "schemas";
-        AsyncApi30Components components = ensureAsyncApi30Components();
+        AsyncApi3xComponents components = ensureAsyncApiComponents();
 
         // Determine name hint - try to extract from content based on media type
         String nameHint = getNameHintFromRef("ImportedSchema");
@@ -442,7 +445,7 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
         String name = generateNodeName(nameHint, getComponentNames(components.getSchemas()));
 
         // Create a MultiFormatSchema to wrap the text content
-        AsyncApi30MultiFormatSchema multiFormatSchema = wrapTextInMultiFormatSchema(textContent, mediaType);
+        AsyncApi3xMultiFormatSchema multiFormatSchema = wrapTextInMultiFormatSchema(textContent, mediaType);
 
         // Add to components
         components.addSchema(name, multiFormatSchema);
@@ -453,14 +456,14 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
     /**
      * Ensures that the AsyncAPI 3.0 document has a components section, creating it if necessary.
      *
-     * @return the AsyncApi30Components object
+     * @return the AsyncApi3xComponents object
      */
-    private AsyncApi30Components ensureAsyncApi30Components() {
-        AsyncApi30Document doc = (AsyncApi30Document) getDoc();
+    private AsyncApi3xComponents ensureAsyncApiComponents() {
+        AsyncApi3xDocument doc = (AsyncApi3xDocument) getDoc();
         if (doc.getComponents() == null) {
             doc.setComponents(doc.createComponents());
         }
-        return (AsyncApi30Components) doc.getComponents();
+        return (AsyncApi3xComponents) doc.getComponents();
     }
 
     /**
@@ -582,9 +585,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
      * @param schemaType the type of schema ("avro", "protobuf", etc.)
      * @return a MultiFormatSchema containing the wrapped schema
      */
-    private AsyncApi30MultiFormatSchema wrapInMultiFormatSchema(Schema schemaNode, String schemaType) {
-        AsyncApi30Components components = ensureAsyncApi30Components();
-        AsyncApi30MultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
+    private AsyncApi3xMultiFormatSchema wrapInMultiFormatSchema(Schema schemaNode, String schemaType) {
+        AsyncApi3xComponents components = ensureAsyncApiComponents();
+        AsyncApi3xMultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
 
         // Set the schema format based on the type
         switch (schemaType) {
@@ -615,15 +618,15 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
             } else {
                 // Fallback to normal schema handling
                 ObjectNode schemaJson = Library.writeNode(schemaNode);
-                AsyncApi30Schema schema = components.createSchema();
+                AsyncApi3xSchema schema = components.createSchema();
                 Library.readNode(schemaJson, schema);
                 multiFormatSchema.setSchema(schema);
             }
         } else {
             // Convert the schema node to JSON and set it as the schema property
             ObjectNode schemaJson = Library.writeNode(schemaNode);
-            // Set the schema by creating an AsyncApi30Schema and populating it from the JSON
-            AsyncApi30Schema schema = components.createSchema();
+            // Set the schema by creating an AsyncApi3xSchema and populating it from the JSON
+            AsyncApi3xSchema schema = components.createSchema();
             Library.readNode(schemaJson, schema);
             multiFormatSchema.setSchema(schema);
         }
@@ -679,9 +682,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
      * @param mediaType the media type of the content
      * @return a MultiFormatSchema containing the wrapped JSON
      */
-    private AsyncApi30MultiFormatSchema wrapJsonInMultiFormatSchema(JsonNode jsonNode, String mediaType) {
-        AsyncApi30Components components = ensureAsyncApi30Components();
-        AsyncApi30MultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
+    private AsyncApi3xMultiFormatSchema wrapJsonInMultiFormatSchema(JsonNode jsonNode, String mediaType) {
+        AsyncApi3xComponents components = ensureAsyncApiComponents();
+        AsyncApi3xMultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
 
         // Set the schema format based on media type
         if (mediaType != null && !mediaType.isEmpty()) {
@@ -704,9 +707,9 @@ public class AsyncApi3NodeImporter extends ReferencedNodeImporter {
      * @param mediaType the media type of the content
      * @return a MultiFormatSchema containing the wrapped text
      */
-    private AsyncApi30MultiFormatSchema wrapTextInMultiFormatSchema(String textContent, String mediaType) {
-        AsyncApi30Components components = ensureAsyncApi30Components();
-        AsyncApi30MultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
+    private AsyncApi3xMultiFormatSchema wrapTextInMultiFormatSchema(String textContent, String mediaType) {
+        AsyncApi3xComponents components = ensureAsyncApiComponents();
+        AsyncApi3xMultiFormatSchema multiFormatSchema = components.createMultiFormatSchema();
 
         // Set the schema format based on media type
         if (mediaType != null && !mediaType.isEmpty()) {

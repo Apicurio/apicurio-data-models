@@ -18,7 +18,7 @@ package io.apicurio.datamodels.validation.rules.invalid.name;
 
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.openapi.OpenApiEncoding;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30MediaType;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30MediaType;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**

@@ -16,12 +16,12 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: CHAN-001
- * Validates that AsyncAPI 3.0 Channel entities have the required 'address' property.
+ * Validates that AsyncAPI 3.x Channel entities have the required 'address' property.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -36,7 +36,7 @@ public class AaMissingChannelAddressRule extends RequiredPropertyValidationRule 
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
+    public void visitChannel(AsyncApiChannel node) {
         this.requireProperty(node, "address", map());
     }
 

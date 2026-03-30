@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.validation.rules.mutex;
 
 import io.apicurio.datamodels.models.Example;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Example;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Example;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

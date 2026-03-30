@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import io.apicurio.datamodels.models.Schema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringStringListUnion;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;

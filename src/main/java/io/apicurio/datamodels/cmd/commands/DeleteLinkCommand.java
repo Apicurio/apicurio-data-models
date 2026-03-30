@@ -6,12 +6,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Link;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Response;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Link;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Response;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xLink;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xResponse;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -53,31 +50,20 @@ public class DeleteLinkCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Response) {
-            OpenApi30Response response30 = (OpenApi30Response) parent;
-            Map<String, OpenApi30Link> links = response30.getLinks();
+        if (parent instanceof OpenApi3xResponse) {
+            OpenApi3xResponse response3x = (OpenApi3xResponse) parent;
+            Map<String, OpenApi3xLink> links = response3x.getLinks();
             if (this.isNullOrUndefined(links) || !links.containsKey(this._linkName)) {
                 return;
             }
-            OpenApi30Link link = links.get(this._linkName);
+            OpenApi3xLink link = links.get(this._linkName);
             this._oldLink = Library.writeNode(link);
             List<String> linkNames = new ArrayList<>(links.keySet());
             this._oldIndex = linkNames.indexOf(this._linkName);
-            response30.removeLink(this._linkName);
-        } else if (parent instanceof OpenApi31Response) {
-            OpenApi31Response response31 = (OpenApi31Response) parent;
-            Map<String, OpenApi31Link> links = response31.getLinks();
-            if (this.isNullOrUndefined(links) || !links.containsKey(this._linkName)) {
-                return;
-            }
-            OpenApi31Link link = links.get(this._linkName);
-            this._oldLink = Library.writeNode(link);
-            List<String> linkNames = new ArrayList<>(links.keySet());
-            this._oldIndex = linkNames.indexOf(this._linkName);
-            response31.removeLink(this._linkName);
-        } else if (parent instanceof OpenApi30Components) {
-            OpenApi30Components components30 = (OpenApi30Components) parent;
-            Map<String, OpenApiLink> links = components30.getLinks();
+            response3x.removeLink(this._linkName);
+        } else if (parent instanceof OpenApi3xComponents) {
+            OpenApi3xComponents components3x = (OpenApi3xComponents) parent;
+            Map<String, OpenApiLink> links = components3x.getLinks();
             if (this.isNullOrUndefined(links) || !links.containsKey(this._linkName)) {
                 return;
             }
@@ -85,18 +71,7 @@ public class DeleteLinkCommand extends AbstractCommand {
             this._oldLink = Library.writeNode(link);
             List<String> linkNames = new ArrayList<>(links.keySet());
             this._oldIndex = linkNames.indexOf(this._linkName);
-            components30.removeLink(this._linkName);
-        } else if (parent instanceof OpenApi31Components) {
-            OpenApi31Components components31 = (OpenApi31Components) parent;
-            Map<String, OpenApiLink> links = components31.getLinks();
-            if (this.isNullOrUndefined(links) || !links.containsKey(this._linkName)) {
-                return;
-            }
-            OpenApiLink link = links.get(this._linkName);
-            this._oldLink = Library.writeNode(link);
-            List<String> linkNames = new ArrayList<>(links.keySet());
-            this._oldIndex = linkNames.indexOf(this._linkName);
-            components31.removeLink(this._linkName);
+            components3x.removeLink(this._linkName);
         }
     }
 
@@ -115,26 +90,16 @@ public class DeleteLinkCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Response) {
-            OpenApi30Response response30 = (OpenApi30Response) parent;
-            OpenApi30Link link = response30.createLink();
+        if (parent instanceof OpenApi3xResponse) {
+            OpenApi3xResponse response3x = (OpenApi3xResponse) parent;
+            OpenApi3xLink link = response3x.createLink();
             Library.readNode(this._oldLink, link);
-            response30.insertLink(this._linkName, link, this._oldIndex);
-        } else if (parent instanceof OpenApi31Response) {
-            OpenApi31Response response31 = (OpenApi31Response) parent;
-            OpenApi31Link link = response31.createLink();
+            response3x.insertLink(this._linkName, link, this._oldIndex);
+        } else if (parent instanceof OpenApi3xComponents) {
+            OpenApi3xComponents components3x = (OpenApi3xComponents) parent;
+            OpenApiLink link = components3x.createLink();
             Library.readNode(this._oldLink, link);
-            response31.insertLink(this._linkName, link, this._oldIndex);
-        } else if (parent instanceof OpenApi30Components) {
-            OpenApi30Components components30 = (OpenApi30Components) parent;
-            OpenApiLink link = components30.createLink();
-            Library.readNode(this._oldLink, link);
-            components30.insertLink(this._linkName, link, this._oldIndex);
-        } else if (parent instanceof OpenApi31Components) {
-            OpenApi31Components components31 = (OpenApi31Components) parent;
-            OpenApiLink link = components31.createLink();
-            Library.readNode(this._oldLink, link);
-            components31.insertLink(this._linkName, link, this._oldIndex);
+            components3x.insertLink(this._linkName, link, this._oldIndex);
         }
     }
 

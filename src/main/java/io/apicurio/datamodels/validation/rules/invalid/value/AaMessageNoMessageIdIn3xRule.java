@@ -16,33 +16,38 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: CHAN-008
- * Validates that the 'messages' property only exists in AsyncAPI 3.0 channels.
- * In AsyncAPI 2.x, channels use subscribe/publish operations instead of messages.
+ * Rule: AAM-013
+ * Validates that messages do not use messageId in AsyncAPI 3.x.
+ * The messageId property was removed from messages in AsyncAPI 3.x,
+ * so it should not be used.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaChannelMessagesOnlyIn30Rule extends ValidationRule {
+public class AaMessageNoMessageIdIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
+     *
      * @param ruleInfo
      */
-    public AaChannelMessagesOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaMessageNoMessageIdIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitChannelItem(AsyncApiChannelItem node) {
-        // In AsyncAPI 2.x, channels should not have a messages property
-        // This would appear as an extra property if someone incorrectly added it
-        if (node.getExtraProperty("messages") != null) {
-            this.reportIf(true, node, "messages", map());
+    public void visitMessage(AsyncApiMessage node) {
+        // Check if this is AsyncAPI 3.x (where messageId was removed)
+        if (ModelTypeUtil.isAsyncApi3Model(node)) {
+            // Check if the message has a messageId property
+            if (hasValue(node.getExtraProperty("messageId"))) {
+                this.reportIf(true, node, "messageId", map());
+            }
         }
     }
 

@@ -26,7 +26,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 /**
  * Rule: AAED-002
  * Validates that external documentation references point to valid external docs in components.
- * In AsyncAPI 3.0, external documentation can be referenced using $ref.
+ * In AsyncAPI 3.x, external documentation can be referenced using $ref.
  *
  * @author eric.wittmann@gmail.com
  */

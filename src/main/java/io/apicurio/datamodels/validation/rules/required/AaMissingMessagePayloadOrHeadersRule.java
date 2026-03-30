@@ -18,14 +18,9 @@ package io.apicurio.datamodels.validation.rules.required;
 
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Message;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Message;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Message;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Message;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Message;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Message;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Message;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.AsyncApi2xMessage;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xMessage;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -58,30 +53,12 @@ public class AaMissingMessagePayloadOrHeadersRule extends ValidationRule {
         Object payload = null;
         Object headers = null;
 
-        if (node instanceof AsyncApi20Message) {
-            payload = ((AsyncApi20Message) node).getPayload();
-            headers = ((AsyncApi20Message) node).getHeaders();
-        } else if (node instanceof AsyncApi21Message) {
-            payload = ((AsyncApi21Message) node).getPayload();
-            headers = ((AsyncApi21Message) node).getHeaders();
-        } else if (node instanceof AsyncApi22Message) {
-            payload = ((AsyncApi22Message) node).getPayload();
-            headers = ((AsyncApi22Message) node).getHeaders();
-        } else if (node instanceof AsyncApi23Message) {
-            payload = ((AsyncApi23Message) node).getPayload();
-            headers = ((AsyncApi23Message) node).getHeaders();
-        } else if (node instanceof AsyncApi24Message) {
-            payload = ((AsyncApi24Message) node).getPayload();
-            headers = ((AsyncApi24Message) node).getHeaders();
-        } else if (node instanceof AsyncApi25Message) {
-            payload = ((AsyncApi25Message) node).getPayload();
-            headers = ((AsyncApi25Message) node).getHeaders();
-        } else if (node instanceof AsyncApi26Message) {
-            payload = ((AsyncApi26Message) node).getPayload();
-            headers = ((AsyncApi26Message) node).getHeaders();
-        } else if (node instanceof AsyncApi30Message) {
-            payload = ((AsyncApi30Message) node).getPayload();
-            headers = ((AsyncApi30Message) node).getHeaders();
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            payload = ((AsyncApi2xMessage) node).getPayload();
+            headers = ((AsyncApi2xMessage) node).getHeaders();
+        } else if (ModelTypeUtil.isAsyncApi3Model(node)) {
+            payload = ((AsyncApi3xMessage) node).getPayload();
+            headers = ((AsyncApi3xMessage) node).getHeaders();
         }
 
         // Message should have at least one of payload or headers

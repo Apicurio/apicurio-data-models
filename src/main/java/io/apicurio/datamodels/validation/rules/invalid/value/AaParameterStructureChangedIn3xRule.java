@@ -16,33 +16,38 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Info;
+import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: INF-005
- * Validates that the 'tags' property in Info only appears in AsyncAPI 3.0 documents.
- * The 'tags' property is not valid in AsyncAPI 2.x Info objects.
- *
+ * Implements the Parameter Structure Changed in 3.x rule for AsyncAPI.
+ * In AsyncAPI 3.x, parameters no longer have a schema property.
+ * Instead, they have direct properties like enum, default, and examples.
  * @author eric.wittmann@gmail.com
  */
-public class AaInfoTagsOnlyIn30Rule extends ValidationRule {
+public class AaParameterStructureChangedIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaInfoTagsOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaParameterStructureChangedIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
+    /**
+     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitParameter(io.apicurio.datamodels.models.Parameter)
+     */
     @Override
-    public void visitInfo(Info node) {
-        if (ModelTypeUtil.isAsyncApi2Model(node)) {
-            // Check if 'tags' property exists in Info (as an extra property)
-            this.reportIfInvalid(!hasValue(node.getExtraProperty("tags")), node, "tags", map());
+    public void visitParameter(Parameter node) {
+        if (ModelTypeUtil.isAsyncApi3Model(node)) {
+            // In AsyncAPI 3.x, parameters should not have a schema property
+            Object schema = node.getExtraProperty("schema");
+            if (hasValue(schema)) {
+                this.reportIfInvalid(false, node, "schema", map());
+            }
         }
     }
 

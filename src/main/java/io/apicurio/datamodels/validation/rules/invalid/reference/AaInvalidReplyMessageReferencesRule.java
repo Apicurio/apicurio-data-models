@@ -16,18 +16,16 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import java.util.List;
-
-import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Reference;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReply;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReference;
 import io.apicurio.datamodels.refs.ReferenceUtil;
-import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
+import java.util.List;
+
 /**
- * Implements the Invalid Reply Message References rule for AsyncAPI 3.0.
+ * Implements the Invalid Reply Message References rule for AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidReplyMessageReferencesRule extends ValidationRule {
@@ -40,14 +38,11 @@ public class AaInvalidReplyMessageReferencesRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReply(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply)
-     */
     @Override
-    public void visitOperationReply(AsyncApi30OperationReply node) {
-        List<AsyncApi30Reference> messages = node.getMessages();
+    public void visitOperationReply(AsyncApiOperationReply node) {
+        List<AsyncApiReference> messages = node.getMessages();
         if (hasValue(messages)) {
-            for (AsyncApi30Reference messageRef : messages) {
+            for (AsyncApiReference messageRef : messages) {
                 if (hasValue(messageRef)) {
                     String ref = messageRef.get$ref();
                     if (hasValue(ref)) {

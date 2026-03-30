@@ -16,33 +16,37 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Info;
+import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: INF-006
- * Validates that the 'externalDocs' property in Info only appears in AsyncAPI 3.0 documents.
- * The 'externalDocs' property is not valid in AsyncAPI 2.x Info objects.
+ * Rule: AASS-002
+ * Validates that the 'scopes' property is only used in security schemes in AsyncAPI 3.x.
+ * In AsyncAPI 2.x, scopes are defined within individual OAuth flows, not at the security scheme level.
+ * In AsyncAPI 3.x, scopes can be defined directly on the security scheme.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaInfoExternalDocsOnlyIn30Rule extends ValidationRule {
+public class AaSecuritySchemeScopesOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
+     *
      * @param ruleInfo
      */
-    public AaInfoExternalDocsOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaSecuritySchemeScopesOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitInfo(Info node) {
-        if (ModelTypeUtil.isAsyncApi2Model(node)) {
-            // Check if 'externalDocs' property exists in Info (as an extra property)
-            this.reportIfInvalid(!hasValue(node.getExtraProperty("externalDocs")), node, "externalDocs", map());
+    public void visitSecurityScheme(SecurityScheme node) {
+        if (!ModelTypeUtil.isAsyncApi3Model(node)) {
+            Object scopes = node.getExtraProperty("scopes");
+            if (hasValue(scopes)) {
+                this.reportIf(true, node, "scopes", map("version", ModelTypeUtil.getVersion(node.root().modelType())));
+            }
         }
     }
 

@@ -19,8 +19,8 @@ package io.apicurio.datamodels.validation.rules.invalid.reference;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Reference;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xOperation;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xReference;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
@@ -62,11 +62,11 @@ public class AaInvalidMessageReferenceRule extends ValidationRule {
     @Override
     public void visitOperation(Operation node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            AsyncApi30Operation op = (AsyncApi30Operation) node;
-            List<AsyncApi30Reference> messages = op.getMessages();
+            AsyncApi3xOperation op = (AsyncApi3xOperation) node;
+            List<AsyncApi3xReference> messages = op.getMessages();
             if (hasValue(messages)) {
                 for (int i = 0; i < messages.size(); i++) {
-                    AsyncApi30Reference message = messages.get(i);
+                    AsyncApi3xReference message = messages.get(i);
                     String ref = message.get$ref();
                     if (hasValue(ref)) {
                         this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, message), message, "$ref", map());

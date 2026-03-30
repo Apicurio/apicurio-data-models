@@ -16,15 +16,15 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: CHAN-002
  * Validates that Channel description is in valid CommonMark format if provided.
- * Applies to both AsyncAPI 2.x (AsyncApiChannelItem) and 3.0 (AsyncApi30Channel).
+ * Applies to both AsyncAPI 2.x (AsyncApiChannelItem) and 3.x (AsyncApi3xChannel).
  *
  * @author eric.wittmann@gmail.com
  */
@@ -46,7 +46,7 @@ public class AaInvalidChannelDescriptionRule extends ValidationRule {
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
+    public void visitChannel(AsyncApiChannel node) {
         if (hasValue(node.getDescription())) {
             this.reportIfInvalid(isValidCommonMark(node.getDescription()), node, "description", map());
         }

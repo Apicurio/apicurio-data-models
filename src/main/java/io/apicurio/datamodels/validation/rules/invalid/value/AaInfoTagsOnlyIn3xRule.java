@@ -16,38 +16,33 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Validates that the operation $ref property is only used in AsyncAPI 3.0.
- * Operations gained the Referenceable trait in AsyncAPI 3.0.
+ * Rule: INF-005
+ * Validates that the 'tags' property in Info only appears in AsyncAPI 3.x documents.
+ * The 'tags' property is not valid in AsyncAPI 2.x Info objects.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class AaOperationReferenceableOnlyIn30Rule extends ValidationRule {
+public class AaInfoTagsOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaOperationReferenceableOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaInfoTagsOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitOperation(io.apicurio.datamodels.models.Operation)
-     */
     @Override
-    public void visitOperation(Operation node) {
-        // Check if this is AsyncAPI 2.x
+    public void visitInfo(Info node) {
         if (ModelTypeUtil.isAsyncApi2Model(node)) {
-            // In 2.x, the $ref property doesn't exist on operations,
-            // but it might be present as an extra property
-            if (node.getExtraProperty("$ref") != null) {
-                this.reportIf(true, node, "$ref", map());
-            }
+            // Check if 'tags' property exists in Info (as an extra property)
+            this.reportIfInvalid(!hasValue(node.getExtraProperty("tags")), node, "tags", map());
         }
     }
 

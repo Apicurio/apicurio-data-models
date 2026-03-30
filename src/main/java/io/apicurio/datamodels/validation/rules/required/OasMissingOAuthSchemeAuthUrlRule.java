@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.validation.rules.required;
 
 import io.apicurio.datamodels.models.SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20SecurityScheme;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**

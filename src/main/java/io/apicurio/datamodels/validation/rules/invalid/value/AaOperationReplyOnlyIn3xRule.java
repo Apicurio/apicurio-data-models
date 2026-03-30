@@ -16,39 +16,37 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiMessageTrait;
+import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: AAMTRT-004
- * Validates that message traits do not use messageId in AsyncAPI 3.0.
- * The messageId property was removed from message traits in AsyncAPI 3.0,
- * so it should not be used.
- *
+ * Validates that the operation reply property is only used in AsyncAPI 3.x.
+ * The reply property was introduced in AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
-public class AaMessageTraitNoMessageIdIn30Rule extends ValidationRule {
+public class AaOperationReplyOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
-     *
      * @param ruleInfo
      */
-    public AaMessageTraitNoMessageIdIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaOperationReplyOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
+    /**
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitOperation(io.apicurio.datamodels.models.Operation)
+     */
     @Override
-    public void visitMessageTrait(AsyncApiMessageTrait node) {
-        ModelType modelType = node.root().modelType();
-
-        // Check if this is AsyncAPI 3.0 (where messageId was removed)
-        if (modelType == ModelType.ASYNCAPI30) {
-            // Check if the message trait has a messageId property
-            if (hasValue(node.getExtraProperty("messageId"))) {
-                this.reportIf(true, node, "messageId", map());
+    public void visitOperation(Operation node) {
+        // Check if this is AsyncAPI 2.x
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            // In 2.x, the reply property doesn't exist on operations,
+            // but it might be present as an extra property
+            if (node.getExtraProperty("reply") != null) {
+                this.reportIf(true, node, "reply", map());
             }
         }
     }

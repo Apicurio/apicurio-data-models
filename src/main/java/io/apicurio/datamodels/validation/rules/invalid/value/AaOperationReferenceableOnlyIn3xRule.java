@@ -16,39 +16,37 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: AAD-007
- * Validates that the 'operations' property only appears in AsyncAPI 3.0 documents.
- * The 'operations' property is not valid in AsyncAPI 2.x versions.
- *
+ * Validates that the operation $ref property is only used in AsyncAPI 3.x.
+ * Operations gained the Referenceable trait in AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
-public class AaOperationsOnlyIn30Rule extends ValidationRule {
+public class AaOperationReferenceableOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaOperationsOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaOperationReferenceableOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
+    /**
+     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitOperation(io.apicurio.datamodels.models.Operation)
+     */
     @Override
-    public void visitDocument(Document node) {
-        if (ModelTypeUtil.isAsyncApiModel(node)) {
-            // Check if 'operations' property exists (as an extra property)
-            if (node.getExtraProperty("operations") != null) {
-                // If operations exists, document must be AsyncAPI 3.0
-                boolean isAsyncApi30 = node.root().modelType() == ModelType.ASYNCAPI30;
-                this.reportIfInvalid(isAsyncApi30, node, "operations",
-                    map("version", ((AsyncApiDocument) node).getAsyncapi()));
+    public void visitOperation(Operation node) {
+        // Check if this is AsyncAPI 2.x
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            // In 2.x, the $ref property doesn't exist on operations,
+            // but it might be present as an extra property
+            if (node.getExtraProperty("$ref") != null) {
+                this.reportIf(true, node, "$ref", map());
             }
         }
     }

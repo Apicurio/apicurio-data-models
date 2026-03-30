@@ -18,13 +18,13 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.asyncapi.AsyncApiMessage;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Message;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Message;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Message;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Message;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Message;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Message;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v20.AsyncApi20Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v21.AsyncApi21Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v22.AsyncApi22Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v23.AsyncApi23Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v24.AsyncApi24Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v25.AsyncApi25Message;
+import io.apicurio.datamodels.models.asyncapi.v2x.v26.AsyncApi26Message;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

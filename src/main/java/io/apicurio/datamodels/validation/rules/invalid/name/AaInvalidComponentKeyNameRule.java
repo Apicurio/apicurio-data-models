@@ -18,14 +18,9 @@ package io.apicurio.datamodels.validation.rules.invalid.name;
 
 import io.apicurio.datamodels.models.Components;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Components;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Components;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Components;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Components;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Components;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Components;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Components;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Components;
+import io.apicurio.datamodels.models.asyncapi.v2x.AsyncApi2xComponents;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xComponents;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 import java.util.Map;
@@ -53,7 +48,7 @@ public class AaInvalidComponentKeyNameRule extends OasInvalidPropertyNameRule {
     @Override
     public void visitComponents(Components node) {
         // Validate AsyncAPI-specific component keys
-        if (node instanceof AsyncApiComponents) {
+        if (ModelTypeUtil.isAsyncApiModel(node)) {
             AsyncApiComponents asyncApiComponents = (AsyncApiComponents) node;
             validateMapKeys(asyncApiComponents.getParameters(), node, "parameters");
             validateMapKeys(asyncApiComponents.getSecuritySchemes(), node, "securitySchemes");
@@ -68,34 +63,22 @@ public class AaInvalidComponentKeyNameRule extends OasInvalidPropertyNameRule {
         }
 
         // Validate AsyncAPI 2.x-specific component keys
-        if (node instanceof AsyncApi20Components) {
-            validateMapKeys(((AsyncApi20Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi21Components) {
-            validateMapKeys(((AsyncApi21Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi22Components) {
-            validateMapKeys(((AsyncApi22Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi23Components) {
-            validateMapKeys(((AsyncApi23Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi24Components) {
-            validateMapKeys(((AsyncApi24Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi25Components) {
-            validateMapKeys(((AsyncApi25Components) node).getSchemas(), node, "schemas");
-        } else if (node instanceof AsyncApi26Components) {
-            validateMapKeys(((AsyncApi26Components) node).getSchemas(), node, "schemas");
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            validateMapKeys(((AsyncApi2xComponents) node).getSchemas(), node, "schemas");
         }
 
-        // Validate AsyncAPI 3.0-specific component keys
-        if (node instanceof AsyncApi30Components) {
-            AsyncApi30Components asyncApi30Components = (AsyncApi30Components) node;
-            validateMapKeys(asyncApi30Components.getSchemas(), node, "schemas");
-            validateMapKeys(asyncApi30Components.getServers(), node, "servers");
-            validateMapKeys(asyncApi30Components.getChannels(), node, "channels");
-            validateMapKeys(asyncApi30Components.getOperations(), node, "operations");
-            validateMapKeys(asyncApi30Components.getServerVariables(), node, "serverVariables");
-            validateMapKeys(asyncApi30Components.getReplies(), node, "replies");
-            validateMapKeys(asyncApi30Components.getReplyAddresses(), node, "replyAddresses");
-            validateMapKeys(asyncApi30Components.getExternalDocs(), node, "externalDocs");
-            validateMapKeys(asyncApi30Components.getTags(), node, "tags");
+        // Validate AsyncAPI 3.x-specific component keys
+        if (ModelTypeUtil.isAsyncApi3Model(node)) {
+            AsyncApi3xComponents asyncApi3xComponents = (AsyncApi3xComponents) node;
+            validateMapKeys(asyncApi3xComponents.getSchemas(), node, "schemas");
+            validateMapKeys(asyncApi3xComponents.getServers(), node, "servers");
+            validateMapKeys(asyncApi3xComponents.getChannels(), node, "channels");
+            validateMapKeys(asyncApi3xComponents.getOperations(), node, "operations");
+            validateMapKeys(asyncApi3xComponents.getServerVariables(), node, "serverVariables");
+            validateMapKeys(asyncApi3xComponents.getReplies(), node, "replies");
+            validateMapKeys(asyncApi3xComponents.getReplyAddresses(), node, "replyAddresses");
+            validateMapKeys(asyncApi3xComponents.getExternalDocs(), node, "externalDocs");
+            validateMapKeys(asyncApi3xComponents.getTags(), node, "tags");
         }
     }
 

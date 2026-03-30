@@ -16,15 +16,15 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
+import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: SRV-005
- * Validates that a Server has a 'host' property in AsyncAPI 3.0.
- * In AsyncAPI 3.0, the 'host' property replaces the 'url' property used in 2.x.
+ * Validates that a Server has a 'host' property in AsyncAPI 3.x.
+ * In AsyncAPI 3.x, the 'host' property replaces the 'url' property used in 2.x.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -42,7 +42,7 @@ public class AaMissingServerHostRule extends RequiredPropertyValidationRule {
     @Override
     public void visitServer(Server node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            if (hasValue(((AsyncApi30Server) node).get$ref())) {
+            if (hasValue(((Referenceable) node).get$ref())) {
                 return;
             }
             this.requireProperty(node, "host", map());

@@ -17,13 +17,13 @@
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Server;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Server;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Server;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Server;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Server;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Server;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v20.AsyncApi20Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v21.AsyncApi21Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v22.AsyncApi22Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v23.AsyncApi23Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v24.AsyncApi24Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v25.AsyncApi25Server;
+import io.apicurio.datamodels.models.asyncapi.v2x.v26.AsyncApi26Server;
 import io.apicurio.datamodels.models.openapi.OpenApiServer;
 import io.apicurio.datamodels.models.openrpc.OpenRpcServer;
 import io.apicurio.datamodels.util.ModelTypeUtil;

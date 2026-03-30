@@ -16,14 +16,14 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Reference;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReply;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xReference;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Reply Channel Reference rule for AsyncAPI 3.0.
+ * Implements the Invalid Reply Channel Reference rule for AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidReplyChannelReferenceRule extends ValidationRule {
@@ -36,12 +36,9 @@ public class AaInvalidReplyChannelReferenceRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReply(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply)
-     */
     @Override
-    public void visitOperationReply(AsyncApi30OperationReply node) {
-        AsyncApi30Reference channelRef = node.getChannel();
+    public void visitOperationReply(AsyncApiOperationReply node) {
+        AsyncApi3xReference channelRef = (AsyncApi3xReference) node.getChannel();
         if (hasValue(channelRef)) {
             String ref = channelRef.get$ref();
             if (hasValue(ref)) {

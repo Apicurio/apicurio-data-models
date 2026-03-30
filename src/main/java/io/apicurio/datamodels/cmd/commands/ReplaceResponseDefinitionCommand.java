@@ -5,8 +5,8 @@ import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiComponents;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Response;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ResponseDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Response;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20ResponseDefinitions;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**
@@ -38,7 +38,7 @@ public class ReplaceResponseDefinitionCommand extends AbstractReplaceNodeCommand
     protected OpenApiResponse readNode(Node parent, ObjectNode node) {
         if (ModelTypeUtil.isOpenApi2Model(parent)) {
             OpenApi20ResponseDefinitions responseDefinitions = (OpenApi20ResponseDefinitions) parent;
-            OpenApi20Response response = responseDefinitions.createResponse();
+            OpenApi20Response response = (OpenApi20Response) responseDefinitions.createResponse();
             Library.readNode(node, response);
             return response;
         } else {

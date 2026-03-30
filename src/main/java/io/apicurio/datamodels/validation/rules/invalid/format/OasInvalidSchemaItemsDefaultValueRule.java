@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -35,7 +35,7 @@ public class OasInvalidSchemaItemsDefaultValueRule extends ValidationRule {
     }
 
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         if (hasValue(node.getDefault())) {
             this.reportIfInvalid(isValidForType(node.getDefault(), node), node, "default", map());
         }

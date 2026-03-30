@@ -6,12 +6,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiRequestBody;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
 import io.apicurio.datamodels.util.LoggerUtil;
-import io.apicurio.datamodels.util.ModelTypeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,30 +39,16 @@ public class DeleteRequestBodyDefinitionCommand extends AbstractCommand {
         LoggerUtil.info("[DeleteRequestBodyDefinitionCommand] Executing.");
         this._oldDefinition = null;
 
-        if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getRequestBodies())) {
-                return;
-            }
-            OpenApiRequestBody requestBody = components.getRequestBodies().get(this._definitionName);
-            if (!this.isNullOrUndefined(requestBody)) {
-                this._oldDefinition = Library.writeNode((Node) requestBody);
-                List<String> requestBodyNames = new ArrayList<>(components.getRequestBodies().keySet());
-                this._oldIndex = requestBodyNames.indexOf(this._definitionName);
-                components.removeRequestBody(this._definitionName);
-            }
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getRequestBodies())) {
-                return;
-            }
-            OpenApiRequestBody requestBody = components.getRequestBodies().get(this._definitionName);
-            if (!this.isNullOrUndefined(requestBody)) {
-                this._oldDefinition = Library.writeNode((Node) requestBody);
-                List<String> requestBodyNames = new ArrayList<>(components.getRequestBodies().keySet());
-                this._oldIndex = requestBodyNames.indexOf(this._definitionName);
-                components.removeRequestBody(this._definitionName);
-            }
+        OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
+        if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getRequestBodies())) {
+            return;
+        }
+        OpenApiRequestBody requestBody = components.getRequestBodies().get(this._definitionName);
+        if (!this.isNullOrUndefined(requestBody)) {
+            this._oldDefinition = Library.writeNode((Node) requestBody);
+            List<String> requestBodyNames = new ArrayList<>(components.getRequestBodies().keySet());
+            this._oldIndex = requestBodyNames.indexOf(this._definitionName);
+            components.removeRequestBody(this._definitionName);
         }
     }
 
@@ -79,25 +62,14 @@ public class DeleteRequestBodyDefinitionCommand extends AbstractCommand {
             return;
         }
 
-        if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi30Document) document).createComponents();
-                ((OpenApi30Document) document).setComponents(components);
-            }
-            OpenApiRequestBody requestBody = components.createRequestBody();
-            Library.readNode(this._oldDefinition, requestBody);
-            components.insertRequestBody(this._definitionName, requestBody, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi31Document) document).createComponents();
-                ((OpenApi31Document) document).setComponents(components);
-            }
-            OpenApiRequestBody requestBody = components.createRequestBody();
-            Library.readNode(this._oldDefinition, requestBody);
-            components.insertRequestBody(this._definitionName, requestBody, this._oldIndex);
+        OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
+        if (this.isNullOrUndefined(components)) {
+            components = ((OpenApi3xDocument) document).createComponents();
+            ((OpenApi3xDocument) document).setComponents(components);
         }
+        OpenApiRequestBody requestBody = components.createRequestBody();
+        Library.readNode(this._oldDefinition, requestBody);
+        components.insertRequestBody(this._definitionName, requestBody, this._oldIndex);
     }
 
 }

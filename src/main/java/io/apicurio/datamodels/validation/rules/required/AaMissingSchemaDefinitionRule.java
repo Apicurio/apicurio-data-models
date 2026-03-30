@@ -16,12 +16,12 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
+import io.apicurio.datamodels.models.asyncapi.AsyncApiMultiFormatSchema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30MultiFormatSchema;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Missing Schema Definition rule for AsyncAPI 3.0 MultiFormatSchema.
+ * Implements the Missing Schema Definition rule for AsyncAPI 3.x MultiFormatSchema.
  * Rule: AAMFS-002
  * A multi-format schema must have a schema property defined (unless it has a $ref).
  * @author eric.wittmann@gmail.com
@@ -36,11 +36,8 @@ public class AaMissingSchemaDefinitionRule extends RequiredPropertyValidationRul
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitMultiFormatSchema(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30MultiFormatSchema)
-     */
     @Override
-    public void visitMultiFormatSchema(AsyncApi30MultiFormatSchema node) {
+    public void visitMultiFormatSchema(AsyncApiMultiFormatSchema node) {
         // Skip if it's a reference
         if (node instanceof AsyncApiReferenceable && hasValue(((AsyncApiReferenceable) node).get$ref())) {
             return;

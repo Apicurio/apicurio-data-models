@@ -23,8 +23,8 @@ import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Parameter Location Value rule for AsyncAPI 3.0.
- * In AsyncAPI 3.0, parameter location must be a valid runtime expression.
+ * Implements the Invalid Parameter Location Value rule for AsyncAPI 3.x.
+ * In AsyncAPI 3.x, parameter location must be a valid runtime expression.
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidParameterLocationValueRule extends ValidationRule {

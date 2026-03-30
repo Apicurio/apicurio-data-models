@@ -18,8 +18,8 @@ package io.apicurio.datamodels.validation.rules.mutex;
 
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.openapi.OpenApiParameter;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Parameter;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Parameter;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;

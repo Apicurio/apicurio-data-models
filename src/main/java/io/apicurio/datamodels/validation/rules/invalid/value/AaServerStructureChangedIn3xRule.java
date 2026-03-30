@@ -23,21 +23,21 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: SRV-012
- * Validates that AsyncAPI 3.0 servers use the new structure.
+ * Validates that AsyncAPI 3.x servers use the new structure.
  * In AsyncAPI 2.x, servers used a single 'url' property.
- * In AsyncAPI 3.0, this was replaced with separate 'host', 'pathname', and 'protocol' properties.
- * This rule detects when the old 'url' property is used in a 3.0 document.
+ * In AsyncAPI 3.x, this was replaced with separate 'host', 'pathname', and 'protocol' properties.
+ * This rule detects when the old 'url' property is used in a 3.x document.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaServerStructureChangedIn30Rule extends ValidationRule {
+public class AaServerStructureChangedIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      *
      * @param ruleInfo
      */
-    public AaServerStructureChangedIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaServerStructureChangedIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 

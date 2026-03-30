@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.models.ServerVariable;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Server;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Server;
 import io.apicurio.datamodels.util.NodeUtil;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

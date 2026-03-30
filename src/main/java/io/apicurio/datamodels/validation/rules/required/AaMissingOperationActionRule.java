@@ -22,7 +22,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: AAO-001
- * Validates that AsyncAPI 3.0 Operation has a required 'action' property.
+ * Validates that AsyncAPI 3.x Operation has a required 'action' property.
  *
  * @author eric.wittmann@gmail.com
  */

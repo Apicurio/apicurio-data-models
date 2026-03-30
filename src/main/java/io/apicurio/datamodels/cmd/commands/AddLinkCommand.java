@@ -6,12 +6,15 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiLink;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Link;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Response;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Link;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Response;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xLink;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xResponse;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Components;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Link;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Response;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Components;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Link;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Response;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -50,41 +53,23 @@ public class AddLinkCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Response) {
-            OpenApi30Response response30 = (OpenApi30Response) parent;
-            if (!this.isNullOrUndefined(response30.getLinks()) && response30.getLinks().containsKey(this._linkName)) {
+        if (parent instanceof OpenApi3xResponse) {
+            OpenApi3xResponse response3x = (OpenApi3xResponse) parent;
+            if (!this.isNullOrUndefined(response3x.getLinks()) && response3x.getLinks().containsKey(this._linkName)) {
                 return;
             }
-            OpenApi30Link link = response30.createLink();
+            OpenApi3xLink link = response3x.createLink();
             Library.readNode(this._from, link);
-            response30.addLink(this._linkName, link);
+            response3x.addLink(this._linkName, link);
             this._created = true;
-        } else if (parent instanceof OpenApi31Response) {
-            OpenApi31Response response31 = (OpenApi31Response) parent;
-            if (!this.isNullOrUndefined(response31.getLinks()) && response31.getLinks().containsKey(this._linkName)) {
+        } else if (parent instanceof OpenApi3xComponents) {
+            OpenApi3xComponents components3x = (OpenApi3xComponents) parent;
+            if (!this.isNullOrUndefined(components3x.getLinks()) && components3x.getLinks().containsKey(this._linkName)) {
                 return;
             }
-            OpenApi31Link link = response31.createLink();
+            OpenApiLink link = components3x.createLink();
             Library.readNode(this._from, link);
-            response31.addLink(this._linkName, link);
-            this._created = true;
-        } else if (parent instanceof OpenApi30Components) {
-            OpenApi30Components components30 = (OpenApi30Components) parent;
-            if (!this.isNullOrUndefined(components30.getLinks()) && components30.getLinks().containsKey(this._linkName)) {
-                return;
-            }
-            OpenApiLink link = components30.createLink();
-            Library.readNode(this._from, link);
-            components30.addLink(this._linkName, link);
-            this._created = true;
-        } else if (parent instanceof OpenApi31Components) {
-            OpenApi31Components components31 = (OpenApi31Components) parent;
-            if (!this.isNullOrUndefined(components31.getLinks()) && components31.getLinks().containsKey(this._linkName)) {
-                return;
-            }
-            OpenApiLink link = components31.createLink();
-            Library.readNode(this._from, link);
-            components31.addLink(this._linkName, link);
+            components3x.addLink(this._linkName, link);
             this._created = true;
         }
     }
@@ -104,14 +89,10 @@ public class AddLinkCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Response) {
-            ((OpenApi30Response) parent).removeLink(this._linkName);
-        } else if (parent instanceof OpenApi31Response) {
-            ((OpenApi31Response) parent).removeLink(this._linkName);
-        } else if (parent instanceof OpenApi30Components) {
-            ((OpenApi30Components) parent).removeLink(this._linkName);
-        } else if (parent instanceof OpenApi31Components) {
-            ((OpenApi31Components) parent).removeLink(this._linkName);
+        if (parent instanceof OpenApi3xResponse) {
+            ((OpenApi3xResponse) parent).removeLink(this._linkName);
+        } else if (parent instanceof OpenApi3xComponents) {
+            ((OpenApi3xComponents) parent).removeLink(this._linkName);
         }
     }
 

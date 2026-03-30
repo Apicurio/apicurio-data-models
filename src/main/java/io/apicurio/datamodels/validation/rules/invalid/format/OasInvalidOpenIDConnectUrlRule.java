@@ -19,8 +19,8 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31SecurityScheme;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

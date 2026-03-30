@@ -16,10 +16,10 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.name;
 
-import java.util.List;
-
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Scopes;
+import io.apicurio.datamodels.models.openapi.OpenApiScopes;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.List;
 
 /**
  * Implements the Invalid Scope Name Rule.
@@ -36,7 +36,7 @@ public class OasInvalidScopeNameRule extends OasInvalidPropertyNameRule {
     }
 
     @Override
-    public void visitScopes(OpenApi20Scopes node) {
+    public void visitScopes(OpenApiScopes node) {
         List<String> scopeNames = node.getItemNames();
         scopeNames.forEach(scope -> {
             this.reportIfInvalid(isValidScopeName(scope), node, "scopes", map("scope", scope));

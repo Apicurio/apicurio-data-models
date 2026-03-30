@@ -17,13 +17,13 @@
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReply;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Reply Reference rule for AsyncAPI 3.0.
+ * Implements the Invalid Reply Reference rule for AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidReplyReferenceRule extends ValidationRule {
@@ -36,11 +36,8 @@ public class AaInvalidReplyReferenceRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReply(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReply)
-     */
     @Override
-    public void visitOperationReply(AsyncApi30OperationReply node) {
+    public void visitOperationReply(AsyncApiOperationReply node) {
         String ref = ((Referenceable) node).get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
