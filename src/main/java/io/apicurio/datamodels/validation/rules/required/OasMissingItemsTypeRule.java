@@ -16,7 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.required;
 
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Items;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -32,11 +33,8 @@ public class OasMissingItemsTypeRule extends RequiredPropertyValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitItems(io.apicurio.datamodels.models.openapi.v20.OpenApi20Items)
-     */
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         this.requireProperty(node, "type", map());
     }
 

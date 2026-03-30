@@ -26,7 +26,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
  * Rule: AAFLOW-001
  * Validates that OAuth flows use the correct property name for scopes based on AsyncAPI version.
  * In AsyncAPI 2.x, OAuth flows use the 'scopes' property.
- * In AsyncAPI 3.0, OAuth flows use the 'availableScopes' property.
+ * In AsyncAPI 3.x, OAuth flows use the 'availableScopes' property.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -54,8 +54,8 @@ public class AaOAuthFlowScopesVsAvailableScopesRule extends ValidationRule {
                 }
             }
 
-            // In AsyncAPI 3.0, should use 'availableScopes', not 'scopes'
-            if (modelType == ModelType.ASYNCAPI30) {
+            // In AsyncAPI 3.x, should use 'availableScopes', not 'scopes'
+            if (ModelTypeUtil.isAsyncApi3Model(node)) {
                 Object scopes = node.getExtraProperty("scopes");
                 if (hasValue(scopes)) {
                     this.reportIf(true, node, "scopes", map());

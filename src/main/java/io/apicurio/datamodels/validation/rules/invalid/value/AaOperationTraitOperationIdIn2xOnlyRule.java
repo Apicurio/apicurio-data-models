@@ -22,8 +22,8 @@ import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Validates that operation traits in AsyncAPI 3.0 do not have the operationId property.
- * The operationId property was removed from operation traits in AsyncAPI 3.0.
+ * Validates that operation traits in AsyncAPI 3.x do not have the operationId property.
+ * The operationId property was removed from operation traits in AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
 public class AaOperationTraitOperationIdIn2xOnlyRule extends ValidationRule {
@@ -41,7 +41,7 @@ public class AaOperationTraitOperationIdIn2xOnlyRule extends ValidationRule {
      */
     @Override
     public void visitOperationTrait(AsyncApiOperationTrait node) {
-        // Check if this is AsyncAPI 3.0
+        // Check if this is AsyncAPI 3.x
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
             // In 3.0, the operationId property doesn't exist on operation traits,
             // but it might be present as an extra property

@@ -7,8 +7,8 @@ import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSchema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Schema;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 

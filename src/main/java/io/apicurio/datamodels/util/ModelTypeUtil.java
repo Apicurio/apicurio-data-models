@@ -27,6 +27,8 @@ public class ModelTypeUtil {
                 return "2.6.0";
             case ASYNCAPI30:
                 return "3.0.0";
+            case ASYNCAPI31:
+                return "3.1.0";
             case JSDRAFT4:
                 return "http://json-schema.org/draft-04/schema#";
             case JSDRAFT6:
@@ -72,6 +74,7 @@ public class ModelTypeUtil {
             case ASYNCAPI25:
             case ASYNCAPI26:
             case ASYNCAPI30:
+            case ASYNCAPI31:
                 return "asyncapi";
             case OPENRPC13:
             case OPENRPC14:
@@ -107,6 +110,7 @@ public class ModelTypeUtil {
             case ASYNCAPI25:
             case ASYNCAPI26:
             case ASYNCAPI30:
+            case ASYNCAPI31:
                 return true;
             default:
                 return false;
@@ -131,6 +135,25 @@ public class ModelTypeUtil {
     public static boolean isAsyncApi3Model(Node node) {
         switch (node.root().modelType()) {
             case ASYNCAPI30:
+            case ASYNCAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isAsyncApi30Model(Node node) {
+        switch (node.root().modelType()) {
+            case ASYNCAPI30:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isAsyncApi31Model(Node node) {
+        switch (node.root().modelType()) {
+            case ASYNCAPI31:
                 return true;
             default:
                 return false;

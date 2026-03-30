@@ -4,7 +4,9 @@ versions:
   - version: draft-4
     url: https://tools.ietf.org/html/draft-zyp-json-schema-04
 prefix: JSDraft4
-namespace: io.apicurio.datamodels.models.jsonschema.draft4
+namespace: io.apicurio.datamodels.models.jsonschema.draft.draft4
+majorVersionPrefix: JSDraft
+majorVersionNamespace: io.apicurio.datamodels.models.jsonschema.draft
 
 traits:
   - name: Referenceable

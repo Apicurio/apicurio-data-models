@@ -21,8 +21,8 @@ import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiRequestBody;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.OpenApiResponses;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
 /**

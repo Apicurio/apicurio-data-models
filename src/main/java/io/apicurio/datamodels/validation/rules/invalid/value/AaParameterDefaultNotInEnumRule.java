@@ -17,7 +17,7 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Parameter;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Parameter;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xParameter;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -25,7 +25,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 import java.util.List;
 
 /**
- * Implements the Parameter Default Not in Enum rule for AsyncAPI 3.0.
+ * Implements the Parameter Default Not in Enum rule for AsyncAPI 3.x.
  * Validates that if a parameter has both a default value and an enum,
  * the default value must be one of the enum values.
  * @author eric.wittmann@gmail.com
@@ -46,7 +46,7 @@ public class AaParameterDefaultNotInEnumRule extends ValidationRule {
     @Override
     public void visitParameter(Parameter node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            AsyncApi30Parameter parameter = (AsyncApi30Parameter) node;
+            AsyncApi3xParameter parameter = (AsyncApi3xParameter) node;
             String defaultValue = parameter.getDefault();
             List<String> enumValues = parameter.getEnum();
 

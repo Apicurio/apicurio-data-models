@@ -16,37 +16,38 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Parameter;
+import io.apicurio.datamodels.models.Document;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Parameter Structure Changed in 3.0 rule for AsyncAPI.
- * In AsyncAPI 3.0, parameters no longer have a schema property.
- * Instead, they have direct properties like enum, default, and examples.
+ * Rule: AAD-007
+ * Validates that the 'operations' property only appears in AsyncAPI 3.x documents.
+ * The 'operations' property is not valid in AsyncAPI 2.x versions.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class AaParameterStructureChangedIn30Rule extends ValidationRule {
+public class AaOperationsOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public AaParameterStructureChangedIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaOperationsOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitParameter(io.apicurio.datamodels.models.Parameter)
-     */
     @Override
-    public void visitParameter(Parameter node) {
-        if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            // In AsyncAPI 3.0, parameters should not have a schema property
-            Object schema = node.getExtraProperty("schema");
-            if (hasValue(schema)) {
-                this.reportIfInvalid(false, node, "schema", map());
+    public void visitDocument(Document node) {
+        if (ModelTypeUtil.isAsyncApiModel(node)) {
+            // Check if 'operations' property exists (as an extra property)
+            if (node.getExtraProperty("operations") != null) {
+                // If operations exists, document must be AsyncAPI 3.x
+                boolean isAsyncApi3x = ModelTypeUtil.isAsyncApi3Model(node);
+                this.reportIfInvalid(isAsyncApi3x, node, "operations",
+                    map("version", ((AsyncApiDocument) node).getAsyncapi()));
             }
         }
     }

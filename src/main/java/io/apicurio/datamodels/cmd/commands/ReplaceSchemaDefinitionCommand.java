@@ -8,8 +8,8 @@ import io.apicurio.datamodels.models.openapi.OpenApiComponents;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
 import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Definitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Schema;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
 
@@ -47,7 +47,7 @@ public class ReplaceSchemaDefinitionCommand extends AbstractReplaceNodeCommand<S
     protected Schema readNode(Node parent, ObjectNode node) {
         if (ModelTypeUtil.isOpenApi2Model(parent)) {
             OpenApi20Definitions definitions = (OpenApi20Definitions) parent;
-            OpenApi20Schema definition = definitions.createSchema();
+            OpenApi20Schema definition = (OpenApi20Schema) definitions.createSchema();
             Library.readNode(node, definition);
             return definition;
         } else if (ModelTypeUtil.isAsyncApi2Model(parent)) {

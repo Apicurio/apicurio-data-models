@@ -16,7 +16,7 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -33,11 +33,8 @@ public class OasUnknownArrayTypeRule extends AbstractInvalidPropertyValueRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitItems(io.apicurio.datamodels.models.openapi.v20.OpenApi20Items)
-     */
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         if (hasValue(node.getType())) {
             this.reportIfInvalid(isValidEnumItem(node.getType(), array("string", "number", "integer", "boolean", "array")),
                     node, "type", map());

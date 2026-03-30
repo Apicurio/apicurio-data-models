@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30RequestBody;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Operation;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31RequestBody;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xOperation;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xRequestBody;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Operation;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -26,7 +25,7 @@ public class DeleteRequestBodyCommand extends AbstractCommand {
     public DeleteRequestBodyCommand() {
     }
 
-    public DeleteRequestBodyCommand(OpenApi30Operation operation) {
+    public DeleteRequestBodyCommand(OpenApi3xOperation operation) {
         this._operationPath = NodePathUtil.createNodePath(operation);
     }
 
@@ -56,8 +55,8 @@ public class DeleteRequestBodyCommand extends AbstractCommand {
         this._oldRequestBody = Library.writeNode((io.apicurio.datamodels.models.Node) requestBody);
 
         // Remove the request body
-        if (operation instanceof OpenApi30Operation) {
-            ((OpenApi30Operation) operation).setRequestBody(null);
+        if (operation instanceof OpenApi3xOperation) {
+            ((OpenApi3xOperation) operation).setRequestBody(null);
         } else if (operation instanceof OpenApi31Operation) {
             ((OpenApi31Operation) operation).setRequestBody(null);
         }
@@ -78,17 +77,10 @@ public class DeleteRequestBodyCommand extends AbstractCommand {
             return;
         }
 
-        if (operation instanceof OpenApi30Operation) {
-            OpenApi30Operation op30 = (OpenApi30Operation) operation;
-            OpenApi30RequestBody requestBody = op30.createRequestBody();
-            Library.readNode(this._oldRequestBody, requestBody);
-            op30.setRequestBody(requestBody);
-        } else if (operation instanceof OpenApi31Operation) {
-            OpenApi31Operation op31 = (OpenApi31Operation) operation;
-            OpenApi31RequestBody requestBody = op31.createRequestBody();
-            Library.readNode(this._oldRequestBody, requestBody);
-            op31.setRequestBody(requestBody);
-        }
+        OpenApi3xOperation op3x = (OpenApi3xOperation) operation;
+        OpenApi3xRequestBody requestBody = op3x.createRequestBody();
+        Library.readNode(this._oldRequestBody, requestBody);
+        op3x.setRequestBody(requestBody);
     }
 
 }

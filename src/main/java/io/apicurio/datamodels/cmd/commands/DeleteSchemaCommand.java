@@ -7,17 +7,14 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
+import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
 import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
-import io.apicurio.datamodels.models.openapi.OpenApiSchema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
@@ -56,10 +53,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
             executeForOpenApi20((OpenApi20Document) document);
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            executeForOpenApi30((OpenApi30Document) document);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            executeForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            executeForOpenApi3((OpenApi3xDocument) document);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             executeForAsyncApi2((AsyncApiDocument) document);
         } else if (ModelTypeUtil.isOpenRpcModel(document)) {
@@ -68,12 +63,12 @@ public class DeleteSchemaCommand extends AbstractCommand {
     }
 
     private void executeForOpenApi20(OpenApi20Document doc) {
-        OpenApi20Definitions definitions = doc.getDefinitions();
+        OpenApi2xDefinitions definitions = doc.getDefinitions();
         if (this.isNullOrUndefined(definitions)) {
             return;
         }
 
-        OpenApi20Schema schema = definitions.getItem(this._schemaName);
+        OpenApiSchema schema = definitions.getItem(this._schemaName);
         if (this.isNullOrUndefined(schema)) {
             return;
         }
@@ -84,25 +79,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
         definitions.removeItem(this._schemaName);
     }
 
-    private void executeForOpenApi30(OpenApi30Document doc) {
-        OpenApi30Components components = doc.getComponents();
-        if (this.isNullOrUndefined(components)) {
-            return;
-        }
-
-        Map<String, OpenApiSchema> schemas = (Map<String, OpenApiSchema>) components.getSchemas();
-        if (this.isNullOrUndefined(schemas) || !schemas.containsKey(this._schemaName)) {
-            return;
-        }
-
-        OpenApiSchema schema = schemas.get(this._schemaName);
-        this._schemaIndex = indexOf(schemas.keySet(), this._schemaName);
-        this._oldSchema = Library.writeNode(schema);
-        components.removeSchema(this._schemaName);
-    }
-
-    private void executeForOpenApi31(OpenApi31Document doc) {
-        OpenApi31Components components = doc.getComponents();
+    private void executeForOpenApi3(OpenApi3xDocument doc) {
+        OpenApi3xComponents components = doc.getComponents();
         if (this.isNullOrUndefined(components)) {
             return;
         }
@@ -165,10 +143,8 @@ public class DeleteSchemaCommand extends AbstractCommand {
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
             undoForOpenApi20((OpenApi20Document) document);
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            undoForOpenApi30((OpenApi30Document) document);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            undoForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            undoForOpenApi3((OpenApi3xDocument) document);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {
             undoForAsyncApi2((AsyncApiDocument) document);
         } else if (ModelTypeUtil.isOpenRpcModel(document)) {
@@ -177,31 +153,19 @@ public class DeleteSchemaCommand extends AbstractCommand {
     }
 
     private void undoForOpenApi20(OpenApi20Document doc) {
-        OpenApi20Definitions definitions = doc.getDefinitions();
+        OpenApi2xDefinitions definitions = doc.getDefinitions();
         if (this.isNullOrUndefined(definitions)) {
             definitions = doc.createDefinitions();
             doc.setDefinitions(definitions);
         }
 
-        OpenApi20Schema newSchema = definitions.createSchema();
+        OpenApiSchema newSchema = definitions.createSchema();
         Library.readNode(this._oldSchema, newSchema);
         definitions.insertItem(this._schemaName, newSchema, this._schemaIndex);
     }
 
-    private void undoForOpenApi30(OpenApi30Document doc) {
-        OpenApi30Components components = doc.getComponents();
-        if (this.isNullOrUndefined(components)) {
-            components = doc.createComponents();
-            doc.setComponents(components);
-        }
-
-        OpenApiSchema newSchema = components.createSchema();
-        Library.readNode(this._oldSchema, newSchema);
-        components.insertSchema(this._schemaName, newSchema, this._schemaIndex);
-    }
-
-    private void undoForOpenApi31(OpenApi31Document doc) {
-        OpenApi31Components components = doc.getComponents();
+    private void undoForOpenApi3(OpenApi3xDocument doc) {
+        OpenApi3xComponents components = doc.getComponents();
         if (this.isNullOrUndefined(components)) {
             components = doc.createComponents();
             doc.setComponents(components);

@@ -17,7 +17,6 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -49,7 +48,7 @@ public class AaOperationMessageVsMessagesRule extends ValidationRule {
             }
         }
 
-        // AsyncAPI 3.0 should use 'messages', not 'message'
+        // AsyncAPI 3.x should use 'messages', not 'message'
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
             if (node.getExtraProperty("message") != null) {
                 this.reportIf(true, node, "message", map());

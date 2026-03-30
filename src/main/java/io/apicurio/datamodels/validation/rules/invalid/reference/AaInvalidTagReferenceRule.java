@@ -26,7 +26,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 /**
  * Rule: AATAG-001
  * Validates that tag references point to valid tags in components.
- * In AsyncAPI 3.0, tags can be referenced using $ref.
+ * In AsyncAPI 3.x, tags can be referenced using $ref.
  *
  * @author eric.wittmann@gmail.com
  */

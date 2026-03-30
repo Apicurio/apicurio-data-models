@@ -26,7 +26,7 @@ import io.apicurio.datamodels.models.Info;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
 import io.apicurio.datamodels.models.visitors.AllNodeVisitor;
 import io.apicurio.datamodels.paths.NodePath;
 

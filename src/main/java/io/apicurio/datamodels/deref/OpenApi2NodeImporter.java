@@ -7,16 +7,17 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.Schema;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ParameterDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Response;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ResponseDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Definitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Items;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Parameter;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20ParameterDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Response;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20ResponseDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Schema;
 
 public class OpenApi2NodeImporter extends ReferencedNodeImporter {
 
@@ -25,7 +26,7 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
     }
 
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         // Note: there is no place in #/components to store items, so we will inline them.
         ObjectNode json = Library.writeNode(node);
         Library.readNode(json, getNodeWithUnresolvedRef());
@@ -39,9 +40,9 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
             inlineDefinition(collection, node);
         } else {
             OpenApi20Document doc = (OpenApi20Document) getDoc();
-            OpenApi20ParameterDefinitions params = doc.getParameters();
+            OpenApi20ParameterDefinitions params = (OpenApi20ParameterDefinitions) doc.getParameters();
             if (params == null) {
-                params = doc.createParameterDefinitions();
+                params = (OpenApi20ParameterDefinitions) doc.createParameterDefinitions();
                 doc.setParameters(params);
             }
             String name = generateNodeName(getNameHintFromRef("ImportedParameter"), params.getItemNames());
@@ -66,9 +67,9 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
             inlineDefinition(collection, node);
         } else {
             OpenApi20Document doc = (OpenApi20Document) getDoc();
-            OpenApi20ResponseDefinitions responses = doc.getResponses();
+            OpenApi20ResponseDefinitions responses = (OpenApi20ResponseDefinitions) doc.getResponses();
             if (responses == null) {
-                responses = doc.createResponseDefinitions();
+                responses = (OpenApi20ResponseDefinitions) doc.createResponseDefinitions();
                 doc.setResponses(responses);
             }
             String name = generateNodeName(getNameHintFromRef("ImportedResponse"), responses.getItemNames());
@@ -85,9 +86,9 @@ public class OpenApi2NodeImporter extends ReferencedNodeImporter {
             inlineDefinition(collection, node);
         } else {
             OpenApi20Document doc = (OpenApi20Document) getDoc();
-            OpenApi20Definitions definitions = doc.getDefinitions();
+            OpenApi20Definitions definitions = (OpenApi20Definitions) doc.getDefinitions();
             if (definitions == null) {
-                definitions = doc.createDefinitions();
+                definitions = (OpenApi20Definitions) doc.createDefinitions();
                 doc.setDefinitions(definitions);
             }
             String name = generateNodeName(getNameHintFromRef("ImportedSchema"), definitions.getItemNames());

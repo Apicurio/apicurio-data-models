@@ -6,19 +6,19 @@ import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSchema;
+import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xDocument;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xSchema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
 import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
-import io.apicurio.datamodels.models.openapi.OpenApiSchema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
@@ -68,7 +68,7 @@ public class CreateSchemaCommand extends AbstractCommand {
     }
 
     private void executeForOpenApi20(OpenApi20Document doc) {
-        OpenApi20Definitions definitions = doc.getDefinitions();
+        OpenApi2xDefinitions definitions = doc.getDefinitions();
         if (this.isNullOrUndefined(definitions)) {
             definitions = doc.createDefinitions();
             doc.setDefinitions(definitions);
@@ -81,13 +81,13 @@ public class CreateSchemaCommand extends AbstractCommand {
             return;
         }
 
-        OpenApi20Schema newSchema = definitions.createSchema();
+        OpenApi2xSchema newSchema = (OpenApi2xSchema) definitions.createSchema();
         newSchema.setType("object");
         definitions.addItem(this._schemaName, newSchema);
     }
 
     private void executeForOpenApi30(OpenApi30Document doc) {
-        OpenApi30Components components = doc.getComponents();
+        OpenApi3xComponents components = doc.getComponents();
         if (this.isNullOrUndefined(components)) {
             components = doc.createComponents();
             doc.setComponents(components);
@@ -107,7 +107,7 @@ public class CreateSchemaCommand extends AbstractCommand {
     }
 
     private void executeForOpenApi31(OpenApi31Document doc) {
-        OpenApi31Components components = doc.getComponents();
+        OpenApi3xComponents components = doc.getComponents();
         if (this.isNullOrUndefined(components)) {
             components = doc.createComponents();
             doc.setComponents(components);
@@ -178,11 +178,11 @@ public class CreateSchemaCommand extends AbstractCommand {
         }
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
-            OpenApi20Document doc = (OpenApi20Document) document;
+            OpenApi2xDocument doc = (OpenApi2xDocument) document;
             if (this._nullParent) {
                 doc.setDefinitions(null);
             } else {
-                OpenApi20Definitions definitions = doc.getDefinitions();
+                OpenApi2xDefinitions definitions = doc.getDefinitions();
                 if (!this.isNullOrUndefined(definitions)) {
                     definitions.removeItem(this._schemaName);
                 }
@@ -192,7 +192,7 @@ public class CreateSchemaCommand extends AbstractCommand {
             if (this._nullParent) {
                 doc.setComponents(null);
             } else {
-                OpenApi30Components components = doc.getComponents();
+                OpenApi3xComponents components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     components.removeSchema(this._schemaName);
                 }
@@ -202,7 +202,7 @@ public class CreateSchemaCommand extends AbstractCommand {
             if (this._nullParent) {
                 doc.setComponents(null);
             } else {
-                OpenApi31Components components = doc.getComponents();
+                OpenApi3xComponents components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     components.removeSchema(this._schemaName);
                 }

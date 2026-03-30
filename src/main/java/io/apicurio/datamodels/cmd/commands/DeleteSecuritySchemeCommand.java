@@ -7,16 +7,13 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
 import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xSecurityDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
@@ -50,30 +47,18 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
         this._oldScheme = null;
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
-            OpenApi20SecurityDefinitions defs = ((OpenApi20Document) document).getSecurityDefinitions();
+            OpenApi2xSecurityDefinitions defs = ((OpenApi20Document) document).getSecurityDefinitions();
             if (this.isNullOrUndefined(defs)) {
                 return;
             }
-            OpenApi20SecurityScheme scheme = defs.getItem(this._schemeName);
+            OpenApiSecurityScheme scheme = defs.getItem(this._schemeName);
             if (!this.isNullOrUndefined(scheme)) {
                 this._oldScheme = Library.writeNode(scheme);
                 this._oldIndex = defs.getItemNames().indexOf(this._schemeName);
                 defs.removeItem(this._schemeName);
             }
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getSecuritySchemes())) {
-                return;
-            }
-            SecurityScheme scheme = components.getSecuritySchemes().get(this._schemeName);
-            if (!this.isNullOrUndefined(scheme)) {
-                this._oldScheme = Library.writeNode((Node) scheme);
-                List<String> schemeNames = new ArrayList<>(components.getSecuritySchemes().keySet());
-                this._oldIndex = schemeNames.indexOf(this._schemeName);
-                components.removeSecurityScheme(this._schemeName);
-            }
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getSecuritySchemes())) {
                 return;
             }
@@ -110,28 +95,19 @@ public class DeleteSecuritySchemeCommand extends AbstractCommand {
         }
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
-            OpenApi20SecurityDefinitions defs = ((OpenApi20Document) document).getSecurityDefinitions();
+            OpenApi2xSecurityDefinitions defs = ((OpenApi20Document) document).getSecurityDefinitions();
             if (this.isNullOrUndefined(defs)) {
                 defs = ((OpenApi20Document) document).createSecurityDefinitions();
                 ((OpenApi20Document) document).setSecurityDefinitions(defs);
             }
-            OpenApi20SecurityScheme scheme = defs.createSecurityScheme();
+            OpenApiSecurityScheme scheme = defs.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);
             defs.insertItem(this._schemeName, scheme, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi30Document) document).createComponents();
-                ((OpenApi30Document) document).setComponents(components);
-            }
-            OpenApiSecurityScheme scheme = components.createSecurityScheme();
-            Library.readNode(this._oldScheme, scheme);
-            components.insertSecurityScheme(this._schemeName, scheme, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi31Document) document).createComponents();
-                ((OpenApi31Document) document).setComponents(components);
+                components = ((OpenApi3xDocument) document).createComponents();
+                ((OpenApi3xDocument) document).setComponents(components);
             }
             OpenApiSecurityScheme scheme = components.createSecurityScheme();
             Library.readNode(this._oldScheme, scheme);

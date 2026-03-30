@@ -17,8 +17,8 @@
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Referenceable;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -26,7 +26,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 /**
  * Rule: CHAN-003
  * Validates that Channel $ref property points to a valid channel definition in components.
- * Applies to both AsyncAPI 2.x (AsyncApiChannelItem) and 3.0 (AsyncApi30Channel).
+ * Applies to both AsyncAPI 2.x (AsyncApiChannelItem) and 3.x (AsyncApi3xChannel).
  *
  * @author eric.wittmann@gmail.com
  */
@@ -51,8 +51,8 @@ public class AaInvalidChannelReferenceRule extends ValidationRule {
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
-        String ref = node.get$ref();
+    public void visitChannel(AsyncApiChannel node) {
+        String ref = ((Referenceable) node).get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
         }

@@ -4,18 +4,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
-import io.apicurio.datamodels.models.SecurityScheme;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
-import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xSecurityDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.OpenApi2xSecurityScheme;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
@@ -52,17 +49,15 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
 
         if (ModelTypeUtil.isOpenApi2Model(document)) {
             executeForOpenApi20((OpenApi20Document) document);
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            executeForOpenApi30((OpenApi30Document) document);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            executeForOpenApi31((OpenApi31Document) document);
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            executeForOpenApi3((OpenApi3xDocument) document);
         } else if (ModelTypeUtil.isAsyncApiModel(document)) {
             executeForAsyncApi((AsyncApiDocument) document);
         }
     }
 
     private void executeForOpenApi20(OpenApi20Document doc) {
-        OpenApi20SecurityDefinitions definitions = doc.getSecurityDefinitions();
+        OpenApi2xSecurityDefinitions definitions = doc.getSecurityDefinitions();
         if (this.isNullOrUndefined(definitions)) {
             definitions = doc.createSecurityDefinitions();
             doc.setSecurityDefinitions(definitions);
@@ -74,34 +69,14 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             return;
         }
 
-        OpenApi20SecurityScheme newScheme = definitions.createSecurityScheme();
+        OpenApi2xSecurityScheme newScheme = (OpenApi2xSecurityScheme) definitions.createSecurityScheme();
         Library.readNode(this._schemeObj, newScheme);
         definitions.addItem(this._schemeName, newScheme);
         this._schemeCreated = true;
     }
 
-    private void executeForOpenApi30(OpenApi30Document doc) {
-        OpenApi30Components components = doc.getComponents();
-        if (this.isNullOrUndefined(components)) {
-            components = doc.createComponents();
-            doc.setComponents(components);
-            this._nullParent = true;
-        }
-
-        // Check if scheme already exists
-        if (!this.isNullOrUndefined(components.getSecuritySchemes()) &&
-                components.getSecuritySchemes().containsKey(this._schemeName)) {
-            return;
-        }
-
-        OpenApiSecurityScheme newScheme = components.createSecurityScheme();
-        Library.readNode(this._schemeObj, newScheme);
-        components.addSecurityScheme(this._schemeName, newScheme);
-        this._schemeCreated = true;
-    }
-
-    private void executeForOpenApi31(OpenApi31Document doc) {
-        OpenApi31Components components = doc.getComponents();
+    private void executeForOpenApi3(OpenApi3xDocument doc) {
+        OpenApi3xComponents components = doc.getComponents();
         if (this.isNullOrUndefined(components)) {
             components = doc.createComponents();
             doc.setComponents(components);
@@ -155,27 +130,17 @@ public class AddSecuritySchemeCommand extends AbstractCommand {
             if (this._nullParent) {
                 doc.setSecurityDefinitions(null);
             } else {
-                OpenApi20SecurityDefinitions definitions = doc.getSecurityDefinitions();
+                OpenApi2xSecurityDefinitions definitions = doc.getSecurityDefinitions();
                 if (!this.isNullOrUndefined(definitions)) {
                     definitions.removeItem(this._schemeName);
                 }
             }
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Document doc = (OpenApi30Document) document;
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xDocument doc = (OpenApi3xDocument) document;
             if (this._nullParent) {
                 doc.setComponents(null);
             } else {
-                OpenApi30Components components = doc.getComponents();
-                if (!this.isNullOrUndefined(components)) {
-                    components.removeSecurityScheme(this._schemeName);
-                }
-            }
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Document doc = (OpenApi31Document) document;
-            if (this._nullParent) {
-                doc.setComponents(null);
-            } else {
-                OpenApi31Components components = doc.getComponents();
+                OpenApi3xComponents components = doc.getComponents();
                 if (!this.isNullOrUndefined(components)) {
                     components.removeSecurityScheme(this._schemeName);
                 }

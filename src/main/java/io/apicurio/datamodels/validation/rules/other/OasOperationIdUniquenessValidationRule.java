@@ -16,24 +16,17 @@
 
 package io.apicurio.datamodels.validation.rules.other;
 
+import io.apicurio.datamodels.models.Operation;
+import io.apicurio.datamodels.models.asyncapi.v2x.AsyncApi2xOperation;
+import io.apicurio.datamodels.models.openapi.OpenApiOperation;
+import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.validation.ValidationRule;
+import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.asyncapi.AsyncApiOperation;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Operation;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Operation;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Operation;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Operation;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24Operation;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25Operation;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26Operation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
-import io.apicurio.datamodels.models.openapi.OpenApiOperation;
-import io.apicurio.datamodels.validation.ValidationRule;
-import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Implements the Operation ID Uniqueness validation rule for both OpenAPI and AsyncAPI.
@@ -75,22 +68,11 @@ public class OasOperationIdUniquenessValidationRule extends ValidationRule {
      * Gets the operation ID from an operation node (works for both OpenAPI and AsyncAPI 2.x).
      */
     private String getOperationId(Operation node) {
-        if (node instanceof OpenApiOperation) {
+        if (ModelTypeUtil.isOpenApiModel(node)) {
             return ((OpenApiOperation) node).getOperationId();
-        } else if (node instanceof AsyncApi20Operation) {
-            return ((AsyncApi20Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi21Operation) {
-            return ((AsyncApi21Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi22Operation) {
-            return ((AsyncApi22Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi23Operation) {
-            return ((AsyncApi23Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi24Operation) {
-            return ((AsyncApi24Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi25Operation) {
-            return ((AsyncApi25Operation) node).getOperationId();
-        } else if (node instanceof AsyncApi26Operation) {
-            return ((AsyncApi26Operation) node).getOperationId();
+        }
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            return ((AsyncApi2xOperation) node).getOperationId();
         }
         return null;
     }

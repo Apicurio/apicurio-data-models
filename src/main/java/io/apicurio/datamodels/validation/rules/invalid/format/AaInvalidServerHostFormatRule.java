@@ -17,14 +17,14 @@
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xServer;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: SRV-006
- * Validates that a Server's host property in AsyncAPI 3.0 is a valid hostname or IP address.
+ * Validates that a Server's host property in AsyncAPI 3.x is a valid hostname or IP address.
  * The host should not contain protocol schemes (http://, https://, etc.).
  *
  * @author eric.wittmann@gmail.com
@@ -59,7 +59,7 @@ public class AaInvalidServerHostFormatRule extends ValidationRule {
     @Override
     public void visitServer(Server node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            String host = ((AsyncApi30Server) node).getHost();
+            String host = ((AsyncApi3xServer) node).getHost();
             if (hasValue(host)) {
                 this.reportIfInvalid(isValidHost(host), node, "host", map());
             }

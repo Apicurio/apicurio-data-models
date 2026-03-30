@@ -17,14 +17,14 @@
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Server;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Server;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xServer;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: SRV-007
- * Validates that a Server's pathname property in AsyncAPI 3.0 begins with '/' if provided.
+ * Validates that a Server's pathname property in AsyncAPI 3.x begins with '/' if provided.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -53,7 +53,7 @@ public class AaInvalidServerPathnameFormatRule extends ValidationRule {
     @Override
     public void visitServer(Server node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            String pathname = ((AsyncApi30Server) node).getPathname();
+            String pathname = ((AsyncApi3xServer) node).getPathname();
             if (hasValue(pathname)) {
                 this.reportIfInvalid(isValidPathname(pathname), node, "pathname", map());
             }

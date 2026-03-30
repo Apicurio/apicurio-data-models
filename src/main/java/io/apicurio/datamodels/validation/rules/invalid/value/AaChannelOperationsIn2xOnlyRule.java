@@ -16,14 +16,14 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: CHAN-009
  * Validates that subscribe/publish operations only exist in AsyncAPI 2.x channels.
- * In AsyncAPI 3.0, channels no longer have subscribe/publish operations.
+ * In AsyncAPI 3.x, channels no longer have subscribe/publish operations.
  *
  * @author eric.wittmann@gmail.com
  */
@@ -38,8 +38,8 @@ public class AaChannelOperationsIn2xOnlyRule extends ValidationRule {
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
-        // In AsyncAPI 3.0, channels should not have subscribe/publish operations
+    public void visitChannel(AsyncApiChannel node) {
+        // In AsyncAPI 3.x, channels should not have subscribe/publish operations
         // These would appear as extra properties if someone incorrectly added them
         if (node.getExtraProperty("subscribe") != null) {
             this.reportIf(true, node, "subscribe", map("property", "subscribe"));

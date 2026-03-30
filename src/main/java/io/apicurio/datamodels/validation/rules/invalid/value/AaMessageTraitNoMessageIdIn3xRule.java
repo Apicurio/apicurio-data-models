@@ -16,40 +16,37 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.SecurityScheme;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiMessageTrait;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Rule: AASS-002
- * Validates that the 'scopes' property is only used in security schemes in AsyncAPI 3.0.
- * In AsyncAPI 2.x, scopes are defined within individual OAuth flows, not at the security scheme level.
- * In AsyncAPI 3.0, scopes can be defined directly on the security scheme.
+ * Rule: AAMTRT-004
+ * Validates that message traits do not use messageId in AsyncAPI 3.x.
+ * The messageId property was removed from message traits in AsyncAPI 3.x,
+ * so it should not be used.
  *
  * @author eric.wittmann@gmail.com
  */
-public class AaSecuritySchemeScopesOnlyIn30Rule extends ValidationRule {
+public class AaMessageTraitNoMessageIdIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      *
      * @param ruleInfo
      */
-    public AaSecuritySchemeScopesOnlyIn30Rule(ValidationRuleMetaData ruleInfo) {
+    public AaMessageTraitNoMessageIdIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
     @Override
-    public void visitSecurityScheme(SecurityScheme node) {
-        if (ModelTypeUtil.isAsyncApiModel(node)) {
-            ModelType modelType = node.root().modelType();
-            if (modelType != ModelType.ASYNCAPI30) {
-                Object scopes = node.getExtraProperty("scopes");
-                if (hasValue(scopes)) {
-                    this.reportIf(true, node, "scopes", map("version", ModelTypeUtil.getVersion(modelType)));
-                }
+    public void visitMessageTrait(AsyncApiMessageTrait node) {
+        // Check if this is AsyncAPI 3.x (where messageId was removed)
+        if (ModelTypeUtil.isAsyncApi3Model(node)) {
+            // Check if the message trait has a messageId property
+            if (hasValue(node.getExtraProperty("messageId"))) {
+                this.reportIf(true, node, "messageId", map());
             }
         }
     }

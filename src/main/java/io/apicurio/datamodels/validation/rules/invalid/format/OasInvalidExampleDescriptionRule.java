@@ -18,8 +18,8 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 
 import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Example;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Example;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Example;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Example;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

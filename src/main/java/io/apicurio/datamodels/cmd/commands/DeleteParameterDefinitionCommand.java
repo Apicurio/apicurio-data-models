@@ -9,14 +9,11 @@ import io.apicurio.datamodels.models.Parameter;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiParameter;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Parameter;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Parameter;
+import io.apicurio.datamodels.models.openapi.OpenApiParameter;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xParameter;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
@@ -54,30 +51,18 @@ public class DeleteParameterDefinitionCommand extends AbstractCommand {
             if (this.isNullOrUndefined(doc.getParameters())) {
                 return;
             }
-            OpenApi20Parameter param = doc.getParameters().getItem(this._definitionName);
+            OpenApiParameter param = doc.getParameters().getItem(this._definitionName);
             if (!this.isNullOrUndefined(param)) {
                 this._oldDefinition = Library.writeNode(param);
                 this._oldIndex = doc.getParameters().getItemNames().indexOf(this._definitionName);
                 doc.getParameters().removeItem(this._definitionName);
             }
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getParameters())) {
                 return;
             }
-            OpenApi30Parameter param = (OpenApi30Parameter) components.getParameters().get(this._definitionName);
-            if (!this.isNullOrUndefined(param)) {
-                this._oldDefinition = Library.writeNode((Node) param);
-                List<String> paramNames = new ArrayList<>(components.getParameters().keySet());
-                this._oldIndex = paramNames.indexOf(this._definitionName);
-                components.removeParameter(this._definitionName);
-            }
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getParameters())) {
-                return;
-            }
-            OpenApi31Parameter param = (OpenApi31Parameter) components.getParameters().get(this._definitionName);
+            OpenApi3xParameter param = (OpenApi3xParameter) components.getParameters().get(this._definitionName);
             if (!this.isNullOrUndefined(param)) {
                 this._oldDefinition = Library.writeNode((Node) param);
                 List<String> paramNames = new ArrayList<>(components.getParameters().keySet());
@@ -114,25 +99,16 @@ public class DeleteParameterDefinitionCommand extends AbstractCommand {
             if (this.isNullOrUndefined(doc.getParameters())) {
                 doc.setParameters(doc.createParameterDefinitions());
             }
-            OpenApi20Parameter param = doc.getParameters().createParameter();
+            OpenApiParameter param = doc.getParameters().createParameter();
             Library.readNode(this._oldDefinition, param);
             doc.getParameters().insertItem(this._definitionName, param, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
+        } else if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi30Document) document).createComponents();
-                ((OpenApi30Document) document).setComponents(components);
+                components = ((OpenApi3xDocument) document).createComponents();
+                ((OpenApi3xDocument) document).setComponents(components);
             }
-            OpenApi30Parameter param = (OpenApi30Parameter) components.createParameter();
-            Library.readNode(this._oldDefinition, param);
-            components.insertParameter(this._definitionName, param, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi31Document) document).createComponents();
-                ((OpenApi31Document) document).setComponents(components);
-            }
-            OpenApi31Parameter param = (OpenApi31Parameter) components.createParameter();
+            OpenApi3xParameter param = (OpenApi3xParameter) components.createParameter();
             Library.readNode(this._oldDefinition, param);
             components.insertParameter(this._definitionName, param, this._oldIndex);
         } else if (ModelTypeUtil.isAsyncApi2Model(document)) {

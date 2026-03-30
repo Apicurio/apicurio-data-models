@@ -21,12 +21,12 @@ import java.util.List;
 import io.apicurio.datamodels.Library;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30Visitor;
-import io.apicurio.datamodels.models.openapi.v30.visitors.OpenApi30VisitorAdapter;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.visitors.OpenApi30Visitor;
+import io.apicurio.datamodels.models.openapi.v3x.v30.visitors.OpenApi30VisitorAdapter;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.union.StringListUnionValueImpl;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
 import io.apicurio.datamodels.paths.NodePathUtil;
@@ -52,9 +52,6 @@ public class OpenApi30to31TransformationVisitor extends OpenApi30VisitorAdapter 
         return this.doc31;
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.Visitor#visitSchema(Schema)
-     */
     @Override
     public void visitSchema(Schema node) {
         mapSchema((OpenApi30Schema) node, findMatchingNode(node));

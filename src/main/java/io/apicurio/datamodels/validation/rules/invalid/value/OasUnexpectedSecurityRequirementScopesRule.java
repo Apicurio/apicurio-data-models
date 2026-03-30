@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.apicurio.datamodels.models.SecurityRequirement;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Scopes;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityScheme;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Scopes;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20SecurityDefinitions;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20SecurityScheme;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
@@ -66,12 +66,12 @@ public class OasUnexpectedSecurityRequirementScopesRule extends AbstractInvalidP
     public void visitSecurityRequirement(SecurityRequirement node) {
         List<String> snames = node.getItemNames();
         snames.forEach( sname -> {
-            OpenApi20SecurityDefinitions sdefs = ((OpenApi20Document) node.root()).getSecurityDefinitions();
+            OpenApi20SecurityDefinitions sdefs = (OpenApi20SecurityDefinitions) ((OpenApi20Document) node.root()).getSecurityDefinitions();
             if (hasValue(sdefs)) {
-                OpenApi20SecurityScheme scheme = sdefs.getItem(sname);
+                OpenApi20SecurityScheme scheme = (OpenApi20SecurityScheme) sdefs.getItem(sname);
                 if (hasValue(scheme)) {
                     if (equals(scheme.getType(), "oauth2")) {
-                        OpenApi20Scopes definedScopes = scheme.getScopes();
+                        OpenApi20Scopes definedScopes = (OpenApi20Scopes) scheme.getScopes();
                         List<String> requiredScopes = node.getItem(sname);
                         this.reportIfInvalid(isValidScopes(requiredScopes, definedScopes), node, null, map("sname", sname));
                     }

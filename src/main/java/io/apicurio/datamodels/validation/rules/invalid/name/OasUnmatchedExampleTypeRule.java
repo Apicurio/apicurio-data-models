@@ -24,9 +24,9 @@ import io.apicurio.datamodels.VisitorUtil;
 import io.apicurio.datamodels.models.Example;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Example;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Operation;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Example;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Operation;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 import io.apicurio.datamodels.visitors.OperationFinder;
 

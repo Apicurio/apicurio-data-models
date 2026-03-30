@@ -1,11 +1,11 @@
 package io.apicurio.datamodels;
 
 import io.apicurio.datamodels.models.ModelType;
-import io.apicurio.datamodels.models.jsonschema.v202012.JS202012Document;
+import io.apicurio.datamodels.models.jsonschema.modern.v202012.JS202012Document;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
 import io.apicurio.datamodels.models.union.StringUnionValueImpl;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openrpc.v14.OpenRpc14Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openrpc.v1x.v14.OpenRpc14Document;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -58,6 +58,7 @@ public class LibraryTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
     public void testCreateOpenApi30() {
         OpenApi30Document document = (OpenApi30Document) Library.createDocument(ModelType.OPENAPI30);
         document.setInfo(document.createInfo());

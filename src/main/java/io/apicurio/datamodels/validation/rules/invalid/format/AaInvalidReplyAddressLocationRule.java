@@ -16,12 +16,12 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReplyAddress;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Reply Address Location rule for AsyncAPI 3.0.
+ * Implements the Invalid Reply Address Location rule for AsyncAPI 3.x.
  * Validates that the location property contains a valid runtime expression.
  * @author eric.wittmann@gmail.com
  */
@@ -35,11 +35,8 @@ public class AaInvalidReplyAddressLocationRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReplyAddress(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress)
-     */
     @Override
-    public void visitOperationReplyAddress(AsyncApi30OperationReplyAddress node) {
+    public void visitOperationReplyAddress(AsyncApiOperationReplyAddress node) {
         String location = node.getLocation();
         if (hasValue(location)) {
             // Runtime expressions must start with $

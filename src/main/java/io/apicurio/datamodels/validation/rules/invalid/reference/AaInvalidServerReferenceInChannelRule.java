@@ -16,21 +16,19 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
-import java.util.List;
-
+import io.apicurio.datamodels.models.asyncapi.AsyncApiChannel;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v24.AsyncApi24ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v25.AsyncApi25ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v26.AsyncApi26ChannelItem;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Channel;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Reference;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiReference;
+import io.apicurio.datamodels.models.asyncapi.v2x.v22.AsyncApi22ChannelItem;
+import io.apicurio.datamodels.models.asyncapi.v2x.v23.AsyncApi23ChannelItem;
+import io.apicurio.datamodels.models.asyncapi.v2x.v24.AsyncApi24ChannelItem;
+import io.apicurio.datamodels.models.asyncapi.v2x.v25.AsyncApi25ChannelItem;
+import io.apicurio.datamodels.models.asyncapi.v2x.v26.AsyncApi26ChannelItem;
 import io.apicurio.datamodels.refs.ReferenceUtil;
-import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
+
+import java.util.List;
 
 /**
  * Rule: CHAN-004
@@ -70,10 +68,10 @@ public class AaInvalidServerReferenceInChannelRule extends ValidationRule {
     }
 
     @Override
-    public void visitChannel(AsyncApi30Channel node) {
-        List<AsyncApi30Reference> servers = node.getServers();
+    public void visitChannel(AsyncApiChannel node) {
+        List<AsyncApiReference> servers = node.getServers();
         if (servers != null) {
-            for (AsyncApi30Reference serverRef : servers) {
+            for (AsyncApiReference serverRef : servers) {
                 String ref = serverRef.get$ref();
                 if (hasValue(ref)) {
                     this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "servers",

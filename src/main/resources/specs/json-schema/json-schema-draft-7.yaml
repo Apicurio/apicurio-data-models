@@ -4,7 +4,9 @@ versions:
   - version: draft-7
     url: https://tools.ietf.org/html/draft-handrews-json-schema-validation-01
 prefix: JSDraft7
-namespace: io.apicurio.datamodels.models.jsonschema.draft7
+namespace: io.apicurio.datamodels.models.jsonschema.draft.draft7
+majorVersionPrefix: JSDraft
+majorVersionNamespace: io.apicurio.datamodels.models.jsonschema.draft
 
 traits:
   - name: Referenceable

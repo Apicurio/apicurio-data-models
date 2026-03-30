@@ -22,7 +22,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: AAO-002
- * Validates that AsyncAPI 3.0 Operation has a required 'channel' reference.
+ * Validates that AsyncAPI 3.x Operation has a required 'channel' reference.
  *
  * @author eric.wittmann@gmail.com
  */

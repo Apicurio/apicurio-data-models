@@ -17,13 +17,13 @@
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
 import io.apicurio.datamodels.models.Referenceable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress;
+import io.apicurio.datamodels.models.asyncapi.AsyncApiOperationReplyAddress;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Reply Address Reference rule for AsyncAPI 3.0.
+ * Implements the Invalid Reply Address Reference rule for AsyncAPI 3.x.
  * @author eric.wittmann@gmail.com
  */
 public class AaInvalidReplyAddressReferenceRule extends ValidationRule {
@@ -36,12 +36,9 @@ public class AaInvalidReplyAddressReferenceRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOperationReplyAddress(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30OperationReplyAddress)
-     */
     @Override
-    public void visitOperationReplyAddress(AsyncApi30OperationReplyAddress node) {
-        String ref = node.get$ref();
+    public void visitOperationReplyAddress(AsyncApiOperationReplyAddress node) {
+        String ref = ((Referenceable) node).get$ref();
         if (hasValue(ref)) {
             this.reportIfInvalid(ReferenceUtil.canResolveRef(ref, node), node, "$ref", map());
         }

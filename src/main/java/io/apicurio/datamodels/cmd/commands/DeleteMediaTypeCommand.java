@@ -10,10 +10,10 @@ import io.apicurio.datamodels.models.openapi.OpenApiHeader;
 import io.apicurio.datamodels.models.openapi.OpenApiMediaType;
 import io.apicurio.datamodels.models.openapi.OpenApiRequestBody;
 import io.apicurio.datamodels.models.openapi.OpenApiResponse;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Header;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30MediaType;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Parameter;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Response;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xHeader;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xMediaType;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xParameter;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xResponse;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
@@ -90,7 +90,7 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         @Override
         public void visitParameter(Parameter node) {
-            OpenApi30Parameter param = (OpenApi30Parameter) node;
+            OpenApi3xParameter param = (OpenApi3xParameter) node;
             index = AbstractCommand.indexOf(param.getContent().keySet(), this.mediaTypeName);
             param.removeContent(this.mediaTypeName);
         }
@@ -103,14 +103,14 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         @Override
         public void visitResponse(OpenApiResponse node) {
-            OpenApi30Response response = (OpenApi30Response) node;
+            OpenApi3xResponse response = (OpenApi3xResponse) node;
             index = AbstractCommand.indexOf(response.getContent().keySet(), this.mediaTypeName);
             response.removeContent(this.mediaTypeName);
         }
 
         @Override
         public void visitHeader(OpenApiHeader node) {
-            OpenApi30Header header = (OpenApi30Header) node;
+            OpenApi3xHeader header = (OpenApi3xHeader) node;
             index = AbstractCommand.indexOf(header.getContent().keySet(), this.mediaTypeName);
             header.removeContent(this.mediaTypeName);
         }
@@ -129,8 +129,8 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         @Override
         public void visitParameter(Parameter node) {
-            OpenApi30Parameter param = (OpenApi30Parameter) node;
-            OpenApi30MediaType mediaType = param.createMediaType();
+            OpenApi3xParameter param = (OpenApi3xParameter) node;
+            OpenApi3xMediaType mediaType = param.createMediaType();
             Library.readNode(this.oldMediaType, mediaType);
             if (this.oldMediaTypeIndex > -1) {
                 param.insertContent(this.mediaTypeName, mediaType, this.oldMediaTypeIndex);
@@ -152,8 +152,8 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         @Override
         public void visitResponse(OpenApiResponse node) {
-            OpenApi30Response response = (OpenApi30Response) node;
-            OpenApi30MediaType mediaType = response.createMediaType();
+            OpenApi3xResponse response = (OpenApi3xResponse) node;
+            OpenApi3xMediaType mediaType = response.createMediaType();
             Library.readNode(this.oldMediaType, mediaType);
             if (this.oldMediaTypeIndex > -1) {
                 response.insertContent(this.mediaTypeName, mediaType, this.oldMediaTypeIndex);
@@ -164,8 +164,8 @@ public class DeleteMediaTypeCommand extends AbstractCommand {
 
         @Override
         public void visitHeader(OpenApiHeader node) {
-            OpenApi30Header header = (OpenApi30Header) node;
-            OpenApi30MediaType mediaType = header.createMediaType();
+            OpenApi3xHeader header = (OpenApi3xHeader) node;
+            OpenApi3xMediaType mediaType = header.createMediaType();
             Library.readNode(this.oldMediaType, mediaType);
             if (this.oldMediaTypeIndex > -1) {
                 header.insertContent(this.mediaTypeName, mediaType, this.oldMediaTypeIndex);

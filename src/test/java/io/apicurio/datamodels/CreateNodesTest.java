@@ -3,7 +3,7 @@ package io.apicurio.datamodels;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import org.junit.Assert;

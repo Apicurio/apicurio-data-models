@@ -16,33 +16,33 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
-import io.apicurio.datamodels.models.Parameter;
-import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Parameter;
+import io.apicurio.datamodels.models.Info;
+import io.apicurio.datamodels.util.ModelTypeUtil;
+import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Unknown Parameter Format rule.
+ * Rule: INF-006
+ * Validates that the 'externalDocs' property in Info only appears in AsyncAPI 3.x documents.
+ * The 'externalDocs' property is not valid in AsyncAPI 2.x Info objects.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class OasUnknownParamFormatRule extends AbstractInvalidPropertyValueRule {
+public class AaInfoExternalDocsOnlyIn3xRule extends ValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasUnknownParamFormatRule(ValidationRuleMetaData ruleInfo) {
+    public AaInfoExternalDocsOnlyIn3xRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter#visitParameter(io.apicurio.datamodels.models.Parameter)
-     */
     @Override
-    public void visitParameter(Parameter node) {
-        OpenApi20Parameter param = (OpenApi20Parameter) node;
-        if (hasValue(param.getFormat())) {
-            this.reportIfInvalid(isValidEnumItem(param.getFormat(), array("int32", "int64", "float", "double", "byte", "binary", "date", "date-time", "password")),
-                    node, "format", map());
+    public void visitInfo(Info node) {
+        if (ModelTypeUtil.isAsyncApi2Model(node)) {
+            // Check if 'externalDocs' property exists in Info (as an extra property)
+            this.reportIfInvalid(!hasValue(node.getExtraProperty("externalDocs")), node, "externalDocs", map());
         }
     }
 

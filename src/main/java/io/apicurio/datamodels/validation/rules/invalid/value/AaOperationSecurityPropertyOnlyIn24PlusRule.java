@@ -17,10 +17,10 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.asyncapi.v20.AsyncApi20Operation;
-import io.apicurio.datamodels.models.asyncapi.v21.AsyncApi21Operation;
-import io.apicurio.datamodels.models.asyncapi.v22.AsyncApi22Operation;
-import io.apicurio.datamodels.models.asyncapi.v23.AsyncApi23Operation;
+import io.apicurio.datamodels.models.asyncapi.v2x.v20.AsyncApi20Operation;
+import io.apicurio.datamodels.models.asyncapi.v2x.v21.AsyncApi21Operation;
+import io.apicurio.datamodels.models.asyncapi.v2x.v22.AsyncApi22Operation;
+import io.apicurio.datamodels.models.asyncapi.v2x.v23.AsyncApi23Operation;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 

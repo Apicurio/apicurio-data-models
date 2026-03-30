@@ -6,13 +6,11 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiExample;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
 import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcExample;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 
@@ -45,20 +43,8 @@ public class DeleteExampleDefinitionCommand extends AbstractCommand {
         LoggerUtil.info("[DeleteExampleDefinitionCommand] Executing.");
         this._oldDefinition = null;
 
-        if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
-            if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getExamples())) {
-                return;
-            }
-            OpenApiExample example = components.getExamples().get(this._definitionName);
-            if (!this.isNullOrUndefined(example)) {
-                this._oldDefinition = Library.writeNode((Node) example);
-                List<String> exampleNames = new ArrayList<>(components.getExamples().keySet());
-                this._oldIndex = exampleNames.indexOf(this._definitionName);
-                components.removeExample(this._definitionName);
-            }
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
+        if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components) || this.isNullOrUndefined(components.getExamples())) {
                 return;
             }
@@ -94,20 +80,11 @@ public class DeleteExampleDefinitionCommand extends AbstractCommand {
             return;
         }
 
-        if (ModelTypeUtil.isOpenApi30Model(document)) {
-            OpenApi30Components components = ((OpenApi30Document) document).getComponents();
+        if (ModelTypeUtil.isOpenApi3Model(document)) {
+            OpenApi3xComponents components = ((OpenApi3xDocument) document).getComponents();
             if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi30Document) document).createComponents();
-                ((OpenApi30Document) document).setComponents(components);
-            }
-            OpenApiExample example = components.createExample();
-            Library.readNode(this._oldDefinition, example);
-            components.insertExample(this._definitionName, example, this._oldIndex);
-        } else if (ModelTypeUtil.isOpenApi31Model(document)) {
-            OpenApi31Components components = ((OpenApi31Document) document).getComponents();
-            if (this.isNullOrUndefined(components)) {
-                components = ((OpenApi31Document) document).createComponents();
-                ((OpenApi31Document) document).setComponents(components);
+                components = ((OpenApi3xDocument) document).createComponents();
+                ((OpenApi3xDocument) document).setComponents(components);
             }
             OpenApiExample example = components.createExample();
             Library.readNode(this._oldDefinition, example);

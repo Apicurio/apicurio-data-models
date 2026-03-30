@@ -17,14 +17,14 @@
 package io.apicurio.datamodels.validation.rules.invalid.value;
 
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30Operation;
+import io.apicurio.datamodels.models.asyncapi.v3x.AsyncApi3xOperation;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
  * Rule: AAO-004
- * Validates that AsyncAPI 3.0 Operation action is either "send" or "receive".
+ * Validates that AsyncAPI 3.x Operation action is either "send" or "receive".
  *
  * @author eric.wittmann@gmail.com
  */
@@ -41,7 +41,7 @@ public class AaInvalidOperationActionValueRule extends ValidationRule {
     @Override
     public void visitOperation(Operation node) {
         if (ModelTypeUtil.isAsyncApi3Model(node)) {
-            AsyncApi30Operation op = (AsyncApi30Operation) node;
+            AsyncApi3xOperation op = (AsyncApi3xOperation) node;
             if (hasValue(op.getAction())) {
                 String action = op.getAction();
                 boolean isValid = "send".equals(action) || "receive".equals(action);

@@ -5,9 +5,9 @@ import io.apicurio.datamodels.models.Referenceable;
 import io.apicurio.datamodels.models.Server;
 import io.apicurio.datamodels.models.ServerVariable;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiChannelItem;
+import io.apicurio.datamodels.models.openapi.OpenApiItems;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
 import io.apicurio.datamodels.models.openapi.OpenApiResponses;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Items;
 
 /**
  * Determines if a Node being dereferenced should be inlined or imported.  Certain types of
@@ -42,7 +42,7 @@ public class InlineOrImportVisitor extends AllReferenceableNodeVisitor {
      */
 
     @Override
-    public void visitItems(OpenApi20Items node) {
+    public void visitItems(OpenApiItems node) {
         this.inline = true;
     }
 

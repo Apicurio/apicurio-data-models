@@ -16,8 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.reference;
 
+import io.apicurio.datamodels.models.asyncapi.AsyncApiMultiFormatSchema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiReferenceable;
-import io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30MultiFormatSchema;
 import io.apicurio.datamodels.refs.ReferenceUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
@@ -39,11 +39,8 @@ public class AaInvalidMultiFormatSchemaReferenceRule extends ValidationRule {
         super(ruleInfo);
     }
 
-    /**
-     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitMultiFormatSchema(io.apicurio.datamodels.models.asyncapi.v30.AsyncApi30MultiFormatSchema)
-     */
     @Override
-    public void visitMultiFormatSchema(AsyncApi30MultiFormatSchema node) {
+    public void visitMultiFormatSchema(AsyncApiMultiFormatSchema node) {
         if (node instanceof AsyncApiReferenceable) {
             String ref = ((AsyncApiReferenceable) node).get$ref();
             if (hasValue(ref)) {

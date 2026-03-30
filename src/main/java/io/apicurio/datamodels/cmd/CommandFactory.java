@@ -112,8 +112,8 @@ import io.apicurio.datamodels.models.openapi.OpenApiResponse;
 import io.apicurio.datamodels.models.openapi.OpenApiSchema;
 import io.apicurio.datamodels.models.openapi.OpenApiServer;
 import io.apicurio.datamodels.models.openapi.OpenApiServersParent;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Operation;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Operation;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Operation;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.util.CommandUtil;
 

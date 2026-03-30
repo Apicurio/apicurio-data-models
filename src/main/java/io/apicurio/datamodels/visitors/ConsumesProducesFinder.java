@@ -20,9 +20,9 @@ import java.util.List;
 
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Operation;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Operation;
-import io.apicurio.datamodels.models.openapi.v20.visitors.OpenApi20VisitorAdapter;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Operation;
+import io.apicurio.datamodels.models.openapi.v2x.v20.visitors.OpenApi20VisitorAdapter;
 import io.apicurio.datamodels.util.NodeUtil;
 
 /**

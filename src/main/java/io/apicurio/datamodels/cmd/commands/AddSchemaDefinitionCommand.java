@@ -7,16 +7,15 @@ import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Schema;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiComponents;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiDocument;
-import io.apicurio.datamodels.models.openrpc.OpenRpcComponents;
+import io.apicurio.datamodels.models.openapi.OpenApiSchema;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Schema;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Schema;
 import io.apicurio.datamodels.models.openrpc.OpenRpcDocument;
 import io.apicurio.datamodels.models.openrpc.OpenRpcSchema;
-import io.apicurio.datamodels.models.openapi.OpenApiSchema;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Schema;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Schema;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Schema;
 import io.apicurio.datamodels.util.LoggerUtil;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.NodeUtil;
@@ -135,7 +134,7 @@ public class AddSchemaDefinitionCommand extends AbstractCommand {
         @Override
         public Schema createSchemaDefinition(Document document) {
             OpenApi20Document doc20 = (OpenApi20Document) document;
-            OpenApi20Schema definition = doc20.getDefinitions().createSchema();
+            OpenApiSchema definition = doc20.getDefinitions().createSchema();
             Library.readNode(_newDefinitionObj, definition);
             return definition;
         }

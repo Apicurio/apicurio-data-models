@@ -23,9 +23,9 @@ import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.SecurityRequirement;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.openapi.OpenApiDocument;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Document;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Document;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Document;
+import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
+import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**

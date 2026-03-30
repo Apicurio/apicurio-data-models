@@ -6,12 +6,9 @@ import io.apicurio.datamodels.cmd.AbstractCommand;
 import io.apicurio.datamodels.models.Document;
 import io.apicurio.datamodels.models.Node;
 import io.apicurio.datamodels.models.openapi.OpenApiCallback;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Callback;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Components;
-import io.apicurio.datamodels.models.openapi.v30.OpenApi30Operation;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Callback;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Components;
-import io.apicurio.datamodels.models.openapi.v31.OpenApi31Operation;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xCallback;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xComponents;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xOperation;
 import io.apicurio.datamodels.paths.NodePath;
 import io.apicurio.datamodels.paths.NodePathUtil;
 import io.apicurio.datamodels.util.LoggerUtil;
@@ -53,31 +50,20 @@ public class DeleteCallbackCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Operation) {
-            OpenApi30Operation operation30 = (OpenApi30Operation) parent;
-            Map<String, OpenApi30Callback> callbacks = operation30.getCallbacks();
+        if (parent instanceof OpenApi3xOperation) {
+            OpenApi3xOperation operation3x = (OpenApi3xOperation) parent;
+            Map<String, OpenApi3xCallback> callbacks = operation3x.getCallbacks();
             if (this.isNullOrUndefined(callbacks) || !callbacks.containsKey(this._callbackName)) {
                 return;
             }
-            OpenApi30Callback callback = callbacks.get(this._callbackName);
+            OpenApi3xCallback callback = callbacks.get(this._callbackName);
             this._oldCallback = Library.writeNode(callback);
             List<String> callbackNames = new ArrayList<>(callbacks.keySet());
             this._oldIndex = callbackNames.indexOf(this._callbackName);
-            operation30.removeCallback(this._callbackName);
-        } else if (parent instanceof OpenApi31Operation) {
-            OpenApi31Operation operation31 = (OpenApi31Operation) parent;
-            Map<String, OpenApi31Callback> callbacks = operation31.getCallbacks();
-            if (this.isNullOrUndefined(callbacks) || !callbacks.containsKey(this._callbackName)) {
-                return;
-            }
-            OpenApi31Callback callback = callbacks.get(this._callbackName);
-            this._oldCallback = Library.writeNode(callback);
-            List<String> callbackNames = new ArrayList<>(callbacks.keySet());
-            this._oldIndex = callbackNames.indexOf(this._callbackName);
-            operation31.removeCallback(this._callbackName);
-        } else if (parent instanceof OpenApi30Components) {
-            OpenApi30Components components30 = (OpenApi30Components) parent;
-            Map<String, OpenApiCallback> callbacks = components30.getCallbacks();
+            operation3x.removeCallback(this._callbackName);
+        } else if (parent instanceof OpenApi3xComponents) {
+            OpenApi3xComponents components3x = (OpenApi3xComponents) parent;
+            Map<String, OpenApiCallback> callbacks = components3x.getCallbacks();
             if (this.isNullOrUndefined(callbacks) || !callbacks.containsKey(this._callbackName)) {
                 return;
             }
@@ -85,18 +71,7 @@ public class DeleteCallbackCommand extends AbstractCommand {
             this._oldCallback = Library.writeNode(callback);
             List<String> callbackNames = new ArrayList<>(callbacks.keySet());
             this._oldIndex = callbackNames.indexOf(this._callbackName);
-            components30.removeCallback(this._callbackName);
-        } else if (parent instanceof OpenApi31Components) {
-            OpenApi31Components components31 = (OpenApi31Components) parent;
-            Map<String, OpenApiCallback> callbacks = components31.getCallbacks();
-            if (this.isNullOrUndefined(callbacks) || !callbacks.containsKey(this._callbackName)) {
-                return;
-            }
-            OpenApiCallback callback = callbacks.get(this._callbackName);
-            this._oldCallback = Library.writeNode(callback);
-            List<String> callbackNames = new ArrayList<>(callbacks.keySet());
-            this._oldIndex = callbackNames.indexOf(this._callbackName);
-            components31.removeCallback(this._callbackName);
+            components3x.removeCallback(this._callbackName);
         }
     }
 
@@ -115,26 +90,16 @@ public class DeleteCallbackCommand extends AbstractCommand {
             return;
         }
 
-        if (parent instanceof OpenApi30Operation) {
-            OpenApi30Operation operation30 = (OpenApi30Operation) parent;
-            OpenApi30Callback callback = operation30.createCallback();
+        if (parent instanceof OpenApi3xOperation) {
+            OpenApi3xOperation operation3x = (OpenApi3xOperation) parent;
+            OpenApi3xCallback callback = operation3x.createCallback();
             Library.readNode(this._oldCallback, callback);
-            operation30.insertCallback(this._callbackName, callback, this._oldIndex);
-        } else if (parent instanceof OpenApi31Operation) {
-            OpenApi31Operation operation31 = (OpenApi31Operation) parent;
-            OpenApi31Callback callback = operation31.createCallback();
+            operation3x.insertCallback(this._callbackName, callback, this._oldIndex);
+        } else if (parent instanceof OpenApi3xComponents) {
+            OpenApi3xComponents components3x = (OpenApi3xComponents) parent;
+            OpenApiCallback callback = components3x.createCallback();
             Library.readNode(this._oldCallback, callback);
-            operation31.insertCallback(this._callbackName, callback, this._oldIndex);
-        } else if (parent instanceof OpenApi30Components) {
-            OpenApi30Components components30 = (OpenApi30Components) parent;
-            OpenApiCallback callback = components30.createCallback();
-            Library.readNode(this._oldCallback, callback);
-            components30.insertCallback(this._callbackName, callback, this._oldIndex);
-        } else if (parent instanceof OpenApi31Components) {
-            OpenApi31Components components31 = (OpenApi31Components) parent;
-            OpenApiCallback callback = components31.createCallback();
-            Library.readNode(this._oldCallback, callback);
-            components31.insertCallback(this._callbackName, callback, this._oldIndex);
+            components3x.insertCallback(this._callbackName, callback, this._oldIndex);
         }
     }
 

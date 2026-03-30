@@ -24,7 +24,7 @@ import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 /**
  * Rule: AAD-003
  * Validates that AsyncAPI 2.x documents have the required 'channels' property.
- * Note: In AsyncAPI 3.0, channels are optional.
+ * Note: In AsyncAPI 3.x, channels are optional.
  *
  * @author eric.wittmann@gmail.com
  */

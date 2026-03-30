@@ -1,10 +1,10 @@
 package io.apicurio.datamodels.deref;
 
 import io.apicurio.datamodels.models.Components;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20Definitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ParameterDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20ResponseDefinitions;
-import io.apicurio.datamodels.models.openapi.v20.OpenApi20SecurityDefinitions;
+import io.apicurio.datamodels.models.openapi.OpenApiDefinitions;
+import io.apicurio.datamodels.models.openapi.OpenApiParameterDefinitions;
+import io.apicurio.datamodels.models.openapi.OpenApiResponseDefinitions;
+import io.apicurio.datamodels.models.openapi.OpenApiSecurityDefinitions;
 import io.apicurio.datamodels.models.visitors.CombinedVisitorAdapter;
 
 /**
@@ -28,22 +28,22 @@ public class IsDefinitionParentVisitor extends CombinedVisitorAdapter {
     }
 
     @Override
-    public void visitDefinitions(OpenApi20Definitions node) {
+    public void visitDefinitions(OpenApiDefinitions node) {
         this._isDefinitionParent = true;
     }
 
     @Override
-    public void visitParameterDefinitions(OpenApi20ParameterDefinitions node) {
+    public void visitParameterDefinitions(OpenApiParameterDefinitions node) {
         this._isDefinitionParent = true;
     }
 
     @Override
-    public void visitResponseDefinitions(OpenApi20ResponseDefinitions node) {
+    public void visitResponseDefinitions(OpenApiResponseDefinitions node) {
         this._isDefinitionParent = true;
     }
 
     @Override
-    public void visitSecurityDefinitions(OpenApi20SecurityDefinitions node) {
+    public void visitSecurityDefinitions(OpenApiSecurityDefinitions node) {
         this._isDefinitionParent = true;
     }
 
