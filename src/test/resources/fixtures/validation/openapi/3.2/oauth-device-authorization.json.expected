@@ -1,0 +1,4 @@
+[FLOW-007] |medium| {/components/securitySchemes[MissingDeviceAuthUrl]/flows/deviceAuthorization->deviceAuthorizationUrl} :: Device Authorization OAuth Flow is missing a Device Authorization URL.
+[FLOW-002] |medium| {/components/securitySchemes[MissingTokenUrl]/flows/deviceAuthorization->tokenUrl} :: Device Authorization OAuth Flow is missing a Token URL.
+[FLOW-007] |medium| {/components/securitySchemes[MissingBoth]/flows/deviceAuthorization->deviceAuthorizationUrl} :: Device Authorization OAuth Flow is missing a Device Authorization URL.
+[FLOW-002] |medium| {/components/securitySchemes[MissingBoth]/flows/deviceAuthorization->tokenUrl} :: Device Authorization OAuth Flow is missing a Token URL.

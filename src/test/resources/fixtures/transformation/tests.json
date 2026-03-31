@@ -276,6 +276,27 @@
         "expected" : "oai20-oai31/petstore.expected.json"
     },
     {
+        "name" : "[OpenAPI 31->32] Simple",
+        "input" : "oai31-oai32/simple.input.json",
+        "fromType": "OPENAPI31",
+        "toType": "OPENAPI32",
+        "expected" : "oai31-oai32/simple.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 30->32] Tenant Management",
+        "input" : "oai30-oai32/tenant-management.input.json",
+        "fromType": "OPENAPI30",
+        "toType": "OPENAPI32",
+        "expected" : "oai30-oai32/tenant-management.expected.json"
+    },
+    {
+        "name" : "[OpenAPI 20->32] Pet Store",
+        "input" : "oai20-oai32/petstore.input.json",
+        "fromType": "OPENAPI20",
+        "toType": "OPENAPI32",
+        "expected" : "oai20-oai32/petstore.expected.json"
+    },
+    {
         "name" : "[AsyncAPI 24->25] Streetlights",
         "input" : "aai24-aai25/streetlights.input.json",
         "fromType": "ASYNCAPI24",

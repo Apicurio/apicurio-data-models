@@ -7,4 +7,4 @@ versions:
   - $ref: ./openapi/openapi-2.0.yaml
   - $ref: ./openapi/openapi-3.0.yaml
   - $ref: ./openapi/openapi-3.1.yaml
-  
+  - $ref: ./openapi/openapi-3.2.yaml

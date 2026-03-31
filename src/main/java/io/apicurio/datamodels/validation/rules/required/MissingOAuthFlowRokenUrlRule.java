@@ -47,5 +47,8 @@ public class MissingOAuthFlowRokenUrlRule extends RequiredPropertyValidationRule
         if ("authorizationCode".equals(flowType)) {
             this.requireProperty(node, "tokenUrl", map("flowType", "Auth Code"));
         }
+        if ("deviceAuthorization".equals(flowType)) {
+            this.requireProperty(node, "tokenUrl", map("flowType", "Device Authorization"));
+        }
     }
 }

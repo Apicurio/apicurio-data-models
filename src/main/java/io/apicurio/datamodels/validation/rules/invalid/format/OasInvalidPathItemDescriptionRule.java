@@ -16,10 +16,8 @@
 
 package io.apicurio.datamodels.validation.rules.invalid.format;
 
-import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.openapi.OpenApiPathItem;
-import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30PathItem;
-import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31PathItem;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xPathItem;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -39,12 +37,7 @@ public class OasInvalidPathItemDescriptionRule extends ValidationRule {
 
     @Override
     public void visitPathItem(OpenApiPathItem node) {
-        String description = null;
-        if (node.root().modelType() == ModelType.OPENAPI30) {
-            description = ((OpenApi30PathItem) node).getDescription();
-        } else {
-            description = ((OpenApi31PathItem) node).getDescription();
-        }
+        String description = ((OpenApi3xPathItem) node).getDescription();
         if (hasValue(description)) {
             this.reportIfInvalid(isValidCommonMark(description), node, "description", map());
         }

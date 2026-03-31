@@ -29,6 +29,7 @@ import io.apicurio.datamodels.models.io.ModelWriter;
 import io.apicurio.datamodels.models.io.ModelWriterFactory;
 import io.apicurio.datamodels.models.openapi.v2x.v20.OpenApi20Document;
 import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30Document;
+import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31Document;
 import io.apicurio.datamodels.models.util.JsonUtil;
 import io.apicurio.datamodels.models.visitors.Visitor;
 import io.apicurio.datamodels.paths.NodePath;
@@ -37,6 +38,7 @@ import io.apicurio.datamodels.refs.IReferenceResolver;
 import io.apicurio.datamodels.refs.ReferenceResolverChain;
 import io.apicurio.datamodels.transform.OpenApi20to30TransformationVisitor;
 import io.apicurio.datamodels.transform.OpenApi30to31TransformationVisitor;
+import io.apicurio.datamodels.transform.OpenApi31to32TransformationVisitor;
 import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.util.ValidationUtil;
 import io.apicurio.datamodels.validation.DefaultSeverityRegistry;
@@ -210,10 +212,19 @@ public class Library {
     }
 
     /**
+     * Ordered list of OpenAPI model types, from oldest to newest. Used to automatically
+     * chain single-step transformations when converting across multiple versions.
+     */
+    private static final List<ModelType> OPENAPI_VERSION_ORDER = List.of(
+            ModelType.OPENAPI20, ModelType.OPENAPI30, ModelType.OPENAPI31, ModelType.OPENAPI32
+    );
+
+    /**
      * Transforms from older versions of specs to newer versions.  Currently supports:
      *
-     *  - OpenAPI 2.0 document into a 3.0 document
-     *  - OpenAPI 3.0 document into a 3.1 document
+     *  - OpenAPI 2.0 to any later OpenAPI version (via chaining)
+     *  - OpenAPI 3.0 to any later OpenAPI version (via chaining)
+     *  - OpenAPI 3.1 to 3.2
      *  - AsyncAPI early version to any later version
      * @param source
      * @param toType
@@ -224,25 +235,15 @@ public class Library {
             return source;
         }
 
-        if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI30) {
-            // Transform from OpenApi20 to OpenApi30
-            OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
-            OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
-            VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
-            return transformer.getResult();
-        }
-
-        if (source.root().modelType() == ModelType.OPENAPI30 && toType == ModelType.OPENAPI31) {
-            // Transform from OpenApi30 to OpenApi31
-            OpenApi30to31TransformationVisitor transformer = new OpenApi30to31TransformationVisitor((OpenApi30Document) source);
-            VisitorUtil.visitTree(source, transformer, TraverserDirection.down);
-            return transformer.getResult();
-        }
-
-        if (source.root().modelType() == ModelType.OPENAPI20 && toType == ModelType.OPENAPI31) {
-            // Transform to 3.0 first, then from 3.0 to 3.1
-            Document doc30 = Library.transformDocument(source, ModelType.OPENAPI30);
-            return Library.transformDocument(doc30, toType);
+        // Handle OpenAPI transformations by chaining single-step transforms.
+        int fromIdx = OPENAPI_VERSION_ORDER.indexOf(source.root().modelType());
+        int toIdx = OPENAPI_VERSION_ORDER.indexOf(toType);
+        if (fromIdx >= 0 && toIdx > fromIdx) {
+            Document current = source;
+            for (int i = fromIdx; i < toIdx; i++) {
+                current = transformOpenApiOneStep(current, OPENAPI_VERSION_ORDER.get(i), OPENAPI_VERSION_ORDER.get(i + 1));
+            }
+            return current;
         }
 
         if (ModelTypeUtil.isAsyncApiModel(source)) {
@@ -257,6 +258,35 @@ public class Library {
         }
 
         throw new RuntimeException("Transformation not supported.");
+    }
+
+    /**
+     * Performs a single-step OpenAPI transformation between adjacent versions.
+     * @param source
+     * @param fromType
+     * @param toType
+     */
+    private static Document transformOpenApiOneStep(Document source, ModelType fromType, ModelType toType) {
+        if (fromType == ModelType.OPENAPI20 && toType == ModelType.OPENAPI30) {
+            OpenApi20Document clone = (OpenApi20Document) cloneDocument(source);
+            OpenApi20to30TransformationVisitor transformer = new OpenApi20to30TransformationVisitor();
+            VisitorUtil.visitTree(clone, transformer, TraverserDirection.down);
+            return transformer.getResult();
+        }
+
+        if (fromType == ModelType.OPENAPI30 && toType == ModelType.OPENAPI31) {
+            OpenApi30to31TransformationVisitor transformer = new OpenApi30to31TransformationVisitor((OpenApi30Document) source);
+            VisitorUtil.visitTree(source, transformer, TraverserDirection.down);
+            return transformer.getResult();
+        }
+
+        if (fromType == ModelType.OPENAPI31 && toType == ModelType.OPENAPI32) {
+            OpenApi31to32TransformationVisitor transformer = new OpenApi31to32TransformationVisitor((OpenApi31Document) source);
+            VisitorUtil.visitTree(source, transformer, TraverserDirection.down);
+            return transformer.getResult();
+        }
+
+        throw new RuntimeException("No single-step transformation from " + fromType + " to " + toType);
     }
 
     /**

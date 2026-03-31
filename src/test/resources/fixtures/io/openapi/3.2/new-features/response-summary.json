@@ -1,0 +1,29 @@
+{
+  "openapi": "3.2.0",
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List pets",
+        "responses": {
+          "200": {
+            "summary": "Successful response",
+            "description": "A list of pets was returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "summary": "Not found"
+          }
+        }
+      }
+    }
+  }
+}
