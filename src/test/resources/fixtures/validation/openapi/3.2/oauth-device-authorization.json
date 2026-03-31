@@ -1,0 +1,56 @@
+{
+    "openapi": "3.2.0",
+    "info": {
+        "title": "OAuth Device Authorization Flow Test",
+        "version": "1.0.0"
+    },
+    "paths": {},
+    "components": {
+        "securitySchemes": {
+            "ValidDeviceAuth": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "deviceAuthorizationUrl": "https://example.com/device/authorize",
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "MissingDeviceAuthUrl": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "MissingTokenUrl": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "deviceAuthorizationUrl": "https://example.com/device/authorize",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "MissingBoth": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

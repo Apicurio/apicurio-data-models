@@ -1,0 +1,3 @@
+[PATH-003] |medium| {/paths[/pets]->additionalOperations} :: Additional operations key "get" conflicts with a fixed HTTP method field.
+[PATH-003] |medium| {/paths[/pets]->additionalOperations} :: Additional operations key "POST" conflicts with a fixed HTTP method field.
+[PATH-003] |medium| {/paths[/pets]->additionalOperations} :: Additional operations key "Query" conflicts with a fixed HTTP method field.

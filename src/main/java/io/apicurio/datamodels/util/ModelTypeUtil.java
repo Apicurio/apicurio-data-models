@@ -45,6 +45,8 @@ public class ModelTypeUtil {
                 return "3.0.3";
             case OPENAPI31:
                 return "3.1.0";
+            case OPENAPI32:
+                return "3.2.0";
             case OPENRPC13:
                 return "1.3.2";
             case OPENRPC14:
@@ -65,6 +67,7 @@ public class ModelTypeUtil {
                 return "swagger";
             case OPENAPI30:
             case OPENAPI31:
+            case OPENAPI32:
                 return "openapi";
             case ASYNCAPI20:
             case ASYNCAPI21:
@@ -94,6 +97,7 @@ public class ModelTypeUtil {
             case OPENAPI20:
             case OPENAPI30:
             case OPENAPI31:
+            case OPENAPI32:
                 return true;
             default:
                 return false;
@@ -164,6 +168,7 @@ public class ModelTypeUtil {
         switch (node.root().modelType()) {
             case OPENAPI30:
             case OPENAPI31:
+            case OPENAPI32:
                 return true;
             default:
                 return false;
@@ -191,6 +196,15 @@ public class ModelTypeUtil {
     public static boolean isOpenApi31Model(Node node) {
         switch (node.root().modelType()) {
             case OPENAPI31:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isOpenApi32Model(Node node) {
+        switch (node.root().modelType()) {
+            case OPENAPI32:
                 return true;
             default:
                 return false;

@@ -1,0 +1,56 @@
+{
+  "openapi": "3.2.0",
+  "components": {
+    "securitySchemes": {
+      "BASIC": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "DeprecatedApiKey": {
+        "type": "apiKey",
+        "name": "X-API-Key",
+        "in": "header",
+        "deprecated": true
+      },
+      "OAuth2WithDevice": {
+        "type": "oauth2",
+        "oauth2MetadataUrl": "https://auth.example.com/.well-known/oauth-authorization-server",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://auth.example.com/authorize",
+            "scopes": {
+              "read": "Read access",
+              "write": "Write access"
+            }
+          },
+          "clientCredentials": {
+            "tokenUrl": "https://auth.example.com/token",
+            "scopes": {
+              "admin": "Admin access"
+            }
+          },
+          "authorizationCode": {
+            "authorizationUrl": "https://auth.example.com/authorize",
+            "tokenUrl": "https://auth.example.com/token",
+            "refreshUrl": "https://auth.example.com/refresh",
+            "scopes": {
+              "read": "Read access",
+              "write": "Write access"
+            }
+          },
+          "deviceAuthorization": {
+            "deviceAuthorizationUrl": "https://auth.example.com/device",
+            "tokenUrl": "https://auth.example.com/token",
+            "scopes": {
+              "read": "Read access"
+            }
+          }
+        }
+      },
+      "OpenIDConnect": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "https://auth.example.com/.well-known/openid-configuration"
+      }
+    }
+  }
+}

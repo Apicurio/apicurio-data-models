@@ -19,8 +19,10 @@ package io.apicurio.datamodels.validation.rules.invalid.format;
 import io.apicurio.datamodels.models.ModelType;
 import io.apicurio.datamodels.models.SecurityScheme;
 import io.apicurio.datamodels.models.asyncapi.AsyncApiSecurityScheme;
+import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xSecurityScheme;
 import io.apicurio.datamodels.models.openapi.v3x.v30.OpenApi30SecurityScheme;
 import io.apicurio.datamodels.models.openapi.v3x.v31.OpenApi31SecurityScheme;
+import io.apicurio.datamodels.util.ModelTypeUtil;
 import io.apicurio.datamodels.validation.ValidationRule;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
@@ -40,13 +42,8 @@ public class OasInvalidOpenIDConnectUrlRule extends ValidationRule {
 
     @Override
     public void visitSecurityScheme(SecurityScheme node) {
-        if (node.root().modelType() == ModelType.OPENAPI30) {
-            OpenApi30SecurityScheme scheme = (OpenApi30SecurityScheme) node;
-            if (hasValue(scheme.getOpenIdConnectUrl())) {
-                this.reportIfInvalid(isValidUrl(scheme.getOpenIdConnectUrl()), scheme, "openIdConnectUrl", map());
-            }
-        } else if (node.root().modelType() == ModelType.OPENAPI31) {
-            OpenApi31SecurityScheme scheme = (OpenApi31SecurityScheme) node;
+        if (ModelTypeUtil.isOpenApi3Model(node)) {
+            OpenApi3xSecurityScheme scheme = (OpenApi3xSecurityScheme) node;
             if (hasValue(scheme.getOpenIdConnectUrl())) {
                 this.reportIfInvalid(isValidUrl(scheme.getOpenIdConnectUrl()), scheme, "openIdConnectUrl", map());
             }

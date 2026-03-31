@@ -1,0 +1,31 @@
+{
+  "openapi" : "3.2.0",
+  "tags" : [
+    {
+      "name": "pets",
+      "summary": "Pet operations",
+      "description": "Operations for managing pets",
+      "kind": "nav"
+    },
+    {
+      "name": "dogs",
+      "summary": "Dog-specific operations",
+      "description": "Operations for managing dogs",
+      "parent": "pets",
+      "kind": "nav"
+    },
+    {
+      "name": "cats",
+      "description": "Operations for managing cats",
+      "parent": "pets"
+    },
+    {
+      "name": "admin",
+      "description": "Administrative operations",
+      "externalDocs": {
+        "description": "Admin docs",
+        "url": "http://example.com/admin-docs"
+      }
+    }
+  ]
+}

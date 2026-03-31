@@ -1,0 +1,34 @@
+{
+    "openapi": "3.2.0",
+    "info": {
+        "title": "Tag Parent Validation Test",
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "Animals",
+            "summary": "All animal-related operations"
+        },
+        {
+            "name": "Dogs",
+            "summary": "Dog operations",
+            "parent": "Animals"
+        },
+        {
+            "name": "InvalidParent",
+            "summary": "References a non-existent parent tag",
+            "parent": "NonExistentTag"
+        },
+        {
+            "name": "CycleA",
+            "summary": "Part of a circular reference",
+            "parent": "CycleB"
+        },
+        {
+            "name": "CycleB",
+            "summary": "Part of a circular reference",
+            "parent": "CycleA"
+        }
+    ],
+    "paths": {}
+}

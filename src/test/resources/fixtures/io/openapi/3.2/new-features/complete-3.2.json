@@ -1,0 +1,203 @@
+{
+  "openapi": "3.2.0",
+  "$self": "https://api.example.com/openapi.json",
+  "info": {
+    "title": "Complete 3.2 API",
+    "summary": "An API exercising all new 3.2 features",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com",
+      "name": "production",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "tags": ["pets"],
+        "summary": "List all pets",
+        "operationId": "listPets",
+        "responses": {
+          "200": {
+            "summary": "Pet list",
+            "description": "A list of pets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "query": {
+        "tags": ["pets"],
+        "summary": "Query pets",
+        "operationId": "queryPets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "species": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "summary": "Query results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Stream events",
+        "operationId": "streamEvents",
+        "responses": {
+          "200": {
+            "summary": "Event stream",
+            "content": {
+              "text/event-stream": {
+                "itemSchema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pet": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Dog"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "species",
+          "mapping": {
+            "cat": "#/components/schemas/Cat"
+          },
+          "defaultMapping": "#/components/schemas/Dog"
+        }
+      },
+      "Cat": {
+        "type": "object",
+        "properties": {
+          "species": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "xml": {
+              "nodeType": "element"
+            }
+          }
+        }
+      },
+      "Dog": {
+        "type": "object",
+        "properties": {
+          "species": {
+            "type": "string"
+          },
+          "breed": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OldKey": {
+        "type": "apiKey",
+        "name": "X-Old-Key",
+        "in": "header",
+        "deprecated": true
+      },
+      "OAuth2": {
+        "type": "oauth2",
+        "oauth2MetadataUrl": "https://auth.example.com/.well-known/oauth-authorization-server",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://auth.example.com/authorize",
+            "tokenUrl": "https://auth.example.com/token",
+            "scopes": {
+              "read": "Read access"
+            }
+          },
+          "deviceAuthorization": {
+            "deviceAuthorizationUrl": "https://auth.example.com/device",
+            "tokenUrl": "https://auth.example.com/token",
+            "scopes": {
+              "read": "Read access"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "CatExample": {
+        "summary": "A cat",
+        "dataValue": {
+          "species": "cat",
+          "name": "Whiskers"
+        }
+      },
+      "DogSerialized": {
+        "summary": "A dog in XML",
+        "serializedValue": "<dog><species>dog</species><breed>labrador</breed></dog>"
+      }
+    },
+    "mediaTypes": {
+      "PetJson": {
+        "schema": {
+          "$ref": "#/components/schemas/Pet"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "pets",
+      "summary": "Pet operations",
+      "description": "All pet-related operations",
+      "kind": "nav"
+    }
+  ]
+}

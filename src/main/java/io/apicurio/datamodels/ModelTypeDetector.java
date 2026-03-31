@@ -53,6 +53,8 @@ public class ModelTypeDetector {
                 return ModelType.OPENAPI30;
             } else if (openapi.startsWith("3.1")) {
                 return ModelType.OPENAPI31;
+            } else if (openapi.startsWith("3.2")) {
+                return ModelType.OPENAPI32;
             } else {
                 throw new RuntimeException("Unknown/unsupported OpenAPI version: " + openapi);
             }

@@ -1,14 +1,10 @@
-name: OpenAPI 3.1
-version: 3.1
+name: OpenAPI 3.2
+version: 3.2
 versions:
-  - version: 3.1.0
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
-  - version: 3.1.1
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.1.md
-  - version: 3.1.2
-    url: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.2.md
-prefix: OpenApi31
-namespace: io.apicurio.datamodels.models.openapi.v3x.v31
+  - version: 3.2.0
+    url: https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.2.0.md
+prefix: OpenApi32
+namespace: io.apicurio.datamodels.models.openapi.v3x.v32
 majorVersionPrefix: OpenApi3x
 majorVersionNamespace: io.apicurio.datamodels.models.openapi.v3x
 
@@ -56,6 +52,8 @@ entities:
       - SecurityRequirementsParent
     properties:
       - name: openapi
+        type: string
+      - name: $self
         type: string
       - name: jsonSchemaDialect
         type: string
@@ -135,6 +133,8 @@ entities:
     properties:
       - name: url
         type: string
+      - name: name
+        type: string
       - name: description
         type: string
       - name: variables
@@ -181,6 +181,8 @@ entities:
         type: '{Callback}'
       - name: pathItems
         type: '{PathItem}'
+      - name: mediaTypes
+        type: '{MediaType}'
     propertyOrder:
       - $this
       - $Extensible
@@ -222,6 +224,10 @@ entities:
         type: Operation
       - name: trace
         type: Operation
+      - name: query
+        type: Operation
+      - name: additionalOperations
+        type: '{Operation}'
       - name: servers
         type: '[Server]'
       - name: parameters
@@ -338,6 +344,8 @@ entities:
     properties:
       - name: schema
         type: Schema
+      - name: itemSchema
+        type: Schema
       - name: example
         type: any
       - name: examples
@@ -387,6 +395,8 @@ entities:
       - Referenceable
       - HeadersParent
     properties:
+      - name: summary
+        type: string
       - name: description
         type: string
       - name: headers
@@ -423,6 +433,10 @@ entities:
         type: string
       - name: value
         type: any
+      - name: dataValue
+        type: any
+      - name: serializedValue
+        type: string
       - name: externalValue
         type: string
     propertyOrder:
@@ -491,7 +505,13 @@ entities:
     properties:
       - name: name
         type: string
+      - name: summary
+        type: string
       - name: description
+        type: string
+      - name: parent
+        type: string
+      - name: kind
         type: string
       - name: externalDocs
         type: ExternalDocumentation
@@ -585,6 +605,8 @@ entities:
         type: string
       - name: mapping
         type: '{string}'
+      - name: defaultMapping
+        type: string
     propertyOrder:
       - $this
 
@@ -602,6 +624,8 @@ entities:
         type: boolean
       - name: wrapped
         type: boolean
+      - name: nodeType
+        type: string
     propertyOrder:
       - $this
       - $Extensible
@@ -627,6 +651,10 @@ entities:
         type: OAuthFlows
       - name: openIdConnectUrl
         type: string
+      - name: oauth2MetadataUrl
+        type: string
+      - name: deprecated
+        type: boolean
     propertyOrder:
       - $Referenceable
       - $this
@@ -644,6 +672,8 @@ entities:
         type: OAuthFlow
       - name: authorizationCode
         type: OAuthFlow
+      - name: deviceAuthorization
+        type: OAuthFlow
     propertyOrder:
       - $this
       - $Extensible
@@ -655,6 +685,8 @@ entities:
       - name: authorizationUrl
         type: string
       - name: tokenUrl
+        type: string
+      - name: deviceAuthorizationUrl
         type: string
       - name: refreshUrl
         type: string

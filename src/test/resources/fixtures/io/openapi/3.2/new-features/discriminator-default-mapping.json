@@ -1,0 +1,61 @@
+{
+  "openapi": "3.2.0",
+  "components": {
+    "schemas": {
+      "Pet": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Dog"
+          },
+          {
+            "$ref": "#/components/schemas/Lizard"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "pet_type",
+          "mapping": {
+            "cat": "#/components/schemas/Cat",
+            "dog": "#/components/schemas/Dog"
+          },
+          "defaultMapping": "#/components/schemas/Lizard"
+        }
+      },
+      "Cat": {
+        "type": "object",
+        "properties": {
+          "pet_type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Dog": {
+        "type": "object",
+        "properties": {
+          "pet_type": {
+            "type": "string"
+          },
+          "breed": {
+            "type": "string"
+          }
+        }
+      },
+      "Lizard": {
+        "type": "object",
+        "properties": {
+          "pet_type": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

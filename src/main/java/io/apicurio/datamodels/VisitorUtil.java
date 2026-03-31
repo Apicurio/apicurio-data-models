@@ -38,6 +38,7 @@ import io.apicurio.datamodels.models.jsonschema.modern.v202012.visitors.JS202012
 import io.apicurio.datamodels.models.openapi.v2x.v20.visitors.OpenApi20Traverser;
 import io.apicurio.datamodels.models.openapi.v3x.v30.visitors.OpenApi30Traverser;
 import io.apicurio.datamodels.models.openapi.v3x.v31.visitors.OpenApi31Traverser;
+import io.apicurio.datamodels.models.openapi.v3x.v32.visitors.OpenApi32Traverser;
 import io.apicurio.datamodels.models.openrpc.v1x.v13.visitors.OpenRpc13Traverser;
 import io.apicurio.datamodels.models.openrpc.v1x.v14.visitors.OpenRpc14Traverser;
 import io.apicurio.datamodels.models.union.Union;
@@ -92,6 +93,9 @@ public class VisitorUtil {
                     break;
                 case OPENAPI31:
                     traverser = new OpenApi31Traverser(visitor);
+                    break;
+                case OPENAPI32:
+                    traverser = new OpenApi32Traverser(visitor);
                     break;
                 case OPENRPC13:
                     traverser = new OpenRpc13Traverser(visitor);

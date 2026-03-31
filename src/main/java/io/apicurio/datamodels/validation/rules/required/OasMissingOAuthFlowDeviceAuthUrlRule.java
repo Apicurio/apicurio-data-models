@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat
+ * Copyright 2024 Red Hat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,35 @@
  * limitations under the License.
  */
 
-package io.apicurio.datamodels.validation.rules.invalid.format;
+package io.apicurio.datamodels.validation.rules.required;
 
-import io.apicurio.datamodels.models.Example;
-import io.apicurio.datamodels.models.openapi.v3x.OpenApi3xExample;
-import io.apicurio.datamodels.validation.ValidationRule;
+import io.apicurio.datamodels.models.OAuthFlow;
 import io.apicurio.datamodels.validation.ValidationRuleMetaData;
 
 /**
- * Implements the Invalid Example Description Rule
+ * Validates that the Device Authorization OAuth flow has a deviceAuthorizationUrl.
+ *
  * @author eric.wittmann@gmail.com
  */
-public class OasInvalidExampleDescriptionRule extends ValidationRule {
+public class OasMissingOAuthFlowDeviceAuthUrlRule extends RequiredPropertyValidationRule {
 
     /**
      * Constructor.
      * @param ruleInfo
      */
-    public OasInvalidExampleDescriptionRule(ValidationRuleMetaData ruleInfo) {
+    public OasMissingOAuthFlowDeviceAuthUrlRule(ValidationRuleMetaData ruleInfo) {
         super(ruleInfo);
     }
 
+    /**
+     * @see io.apicurio.datamodels.models.visitors.AllNodeVisitor#visitOAuthFlow(io.apicurio.datamodels.models.OAuthFlow)
+     */
     @Override
-    public void visitExample(Example node) {
-        OpenApi3xExample example3x = (OpenApi3xExample) node;
-        if (hasValue(example3x.getDescription())) {
-            this.reportIfInvalid(isValidCommonMark(example3x.getDescription()), example3x, "description", map());
+    public void visitOAuthFlow(OAuthFlow node) {
+        String flowType = getMappedNodeName(node);
+        if ("deviceAuthorization".equals(flowType)) {
+            this.requireProperty(node, "deviceAuthorizationUrl", map());
         }
     }
+
 }

@@ -1,0 +1,49 @@
+{
+  "openapi": "3.2.0",
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "xml": {
+              "name": "title",
+              "nodeType": "element"
+            }
+          },
+          "isbn": {
+            "type": "string",
+            "xml": {
+              "name": "isbn",
+              "nodeType": "attribute"
+            }
+          },
+          "content": {
+            "type": "string",
+            "xml": {
+              "nodeType": "text"
+            }
+          },
+          "rawData": {
+            "type": "string",
+            "xml": {
+              "nodeType": "cdata"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "xml": {
+              "nodeType": "none"
+            }
+          }
+        },
+        "xml": {
+          "name": "book",
+          "namespace": "http://example.com/schema/books",
+          "prefix": "bk"
+        }
+      }
+    }
+  }
+}
