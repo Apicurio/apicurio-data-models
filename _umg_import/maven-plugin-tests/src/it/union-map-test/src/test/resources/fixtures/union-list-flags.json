@@ -1,0 +1,16 @@
+{
+    "id": "union-list-flags",
+    "description": "Test document with union list of boolean and Widget",
+    "flags": [
+        true,
+        {
+            "name": "Widget 1",
+            "price": 9.99
+        },
+        false,
+        {
+            "name": "Widget 2",
+            "price": 24.99
+        }
+    ]
+}

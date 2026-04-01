@@ -1,0 +1,89 @@
+name: Multi-Spec Test API 2.0
+version: 2.0
+versions:
+  - version: 2.0
+    url: https://example.com/MultiSpec/versions/2.0.md
+prefix: Mlti20
+namespace: org.example.multi.v2x.v20
+majorVersionPrefix: Mlti2x
+majorVersionNamespace: org.example.multi.v2x
+
+traits:
+  - name: Named
+    properties:
+      - name: name
+        type: string
+  - name: Described
+    properties:
+      - name: description
+        type: string
+      - name: summary
+        type: string
+
+entities:
+  - name: Document
+    root: true
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: version
+        type: string
+      - name: id
+        type: string
+      - name: widgets
+        type: '[Widget]'
+      - name: servers
+        type: '[Server]'
+      - name: tags
+        type: '[Tag]'
+      - name: properties
+        type: Properties
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
+
+  - name: Widget
+    traits:
+      - Named
+    properties:
+      - name: widgetId
+        type: string
+      - name: size
+        type: string
+    propertyOrder:
+      - $Named
+      - $this
+
+  - name: Server
+    traits:
+      - Named
+    properties:
+      - name: url
+        type: string
+    propertyOrder:
+      - $Named
+      - $this
+
+  - name: Tag
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: value
+        type: string
+      - name: documentation
+        type: string
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
+
+  - name: Properties
+    properties:
+      - name: '*'
+        type: string
+    propertyOrder:
+      - $this
+

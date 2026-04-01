@@ -1,0 +1,6 @@
+name: Union Testing Model
+prefix: Utm
+namespace: org.example.union
+versions:
+  - $ref: ./union-spec-v1.yaml
+  

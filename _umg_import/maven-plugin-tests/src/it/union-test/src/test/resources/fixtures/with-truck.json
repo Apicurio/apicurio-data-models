@@ -1,0 +1,12 @@
+{
+    "id": "with-truck",
+    "description": "Vehicle test: truck",
+    "unionProp1": "foo",
+    "unionProp2": "bar",
+    "vehicle": {
+        "vehicleType": "truck",
+        "make": "Rivian",
+        "model": "R1T",
+        "bedLength": 6.1
+    }
+}

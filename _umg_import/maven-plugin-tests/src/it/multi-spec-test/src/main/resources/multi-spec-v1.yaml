@@ -1,0 +1,73 @@
+name: Multi-Spec Test API 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/MultiSpec/versions/1.0.md
+prefix: Mlti10
+namespace: org.example.multi.v1x.v10
+majorVersionPrefix: Mlti1x
+majorVersionNamespace: org.example.multi.v1x
+
+traits:
+  - name: Named
+    properties:
+      - name: name
+        type: string
+  - name: Described
+    properties:
+      - name: description
+        type: string
+
+entities:
+  - name: Document
+    root: true
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: version
+        type: string
+      - name: id
+        type: string
+      - name: widgets
+        type: '[Widget]'
+      - name: tags
+        type: '[Tag]'
+      - name: properties
+        type: Properties
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
+
+  - name: Widget
+    traits:
+      - Named
+    properties:
+      - name: widgetId
+        type: string
+      - name: size
+        type: string
+    propertyOrder:
+      - $Named
+      - $this
+
+  - name: Tag
+    traits:
+      - Named
+      - Described
+    properties:
+      - name: value
+        type: string
+    propertyOrder:
+      - $Named
+      - $Described
+      - $this
+
+  - name: Properties
+    properties:
+      - name: '*'
+        type: string
+    propertyOrder:
+      - $this
+

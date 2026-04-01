@@ -1,0 +1,7 @@
+{
+    "id": "implicit-2",
+    "description": "Implicit test #2",
+    "implicit": {
+        "implicitId": "some-value"
+    }
+}

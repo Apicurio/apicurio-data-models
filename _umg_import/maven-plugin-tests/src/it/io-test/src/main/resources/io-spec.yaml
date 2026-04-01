@@ -1,0 +1,6 @@
+name: IO Testing Model
+prefix: Iot
+namespace: org.example.io
+versions:
+  - $ref: ./io-spec-v1.yaml
+  

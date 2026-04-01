@@ -1,0 +1,15 @@
+/bin/
+target/
+.idea/
+.vscode/
+.generated
+.ts
+.js
+.jsweet
+.project
+.settings
+.classpath
+website
+.serena/
+PROJECT_INDEX.md
+PROJECT_INDEX.json

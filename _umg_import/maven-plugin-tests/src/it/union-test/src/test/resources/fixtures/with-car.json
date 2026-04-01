@@ -1,0 +1,12 @@
+{
+    "id": "with-car",
+    "description": "Vehicle test: car",
+    "unionProp1": "foo",
+    "unionProp2": "bar",
+    "vehicle": {
+        "vehicleType": "car",
+        "make": "Honda",
+        "model": "Accord",
+        "color": "Silver"
+    }
+}
