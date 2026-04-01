@@ -1,0 +1,20 @@
+[{
+    "__type": "ReplaceSchemaDefinitionCommand",
+    "_nodePath": "/definitions[Person]",
+    "_new": {
+        "required": [
+            "name",
+            "petType"
+        ],
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "petType": {
+                "type": "string"
+            }
+        },
+        "discriminator": "petType"
+    }
+}]

@@ -1,0 +1,11 @@
+[    
+  {
+    "__type": "DeleteSecurityRequirementCommand",
+    "_parentPath" : "/servers/production",
+    "_requirement": {
+      "oauth2Scheme": [
+        "read:pets"
+      ]
+    }
+  }
+]

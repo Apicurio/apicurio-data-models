@@ -1,0 +1,11 @@
+[{
+    "__type": "SetExtensionCommand",
+    "_parentPath": "/paths[/pet/{petId}]/get",
+    "_name": "x-existing-extension",
+    "_value": {
+        "foo": "bar",
+        "hello": [
+            "world"
+        ]
+    }
+}]

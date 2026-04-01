@@ -1,0 +1,36 @@
+{
+  "openapi": "3.2.0",
+  "components": {
+    "examples": {
+      "ClassicExample": {
+        "summary": "A classic example using value",
+        "description": "This uses the traditional value field.",
+        "value": {
+          "name": "Fido",
+          "type": "dog"
+        }
+      },
+      "DataValueExample": {
+        "summary": "A structured data example",
+        "description": "This uses the new dataValue field.",
+        "dataValue": {
+          "name": "Whiskers",
+          "type": "cat",
+          "age": 3
+        }
+      },
+      "SerializedValueExample": {
+        "summary": "A serialized wire example",
+        "description": "This uses the new serializedValue field for non-JSON formats.",
+        "serializedValue": "<pet><name>Buddy</name><type>dog</type></pet>"
+      },
+      "ExternalExample": {
+        "summary": "An external example",
+        "externalValue": "http://example.com/examples/pet.json"
+      },
+      "RefExample": {
+        "$ref": "#/components/examples/ClassicExample"
+      }
+    }
+  }
+}

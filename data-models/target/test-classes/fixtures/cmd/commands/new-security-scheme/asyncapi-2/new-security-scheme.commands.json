@@ -1,0 +1,8 @@
+[{
+    "__type": "NewSecuritySchemeCommand_Aai20",
+    "_scheme": {
+        "type": "http",
+        "scheme": "basic"
+    },
+    "_schemeName": "myScheme"
+}]

@@ -1,0 +1,11 @@
+{
+  "asyncapi" : "2.0.0",
+  "info" : {
+    "description": "This is a very simple AsyncAPI file."
+  },
+  "channels": {
+    "/example": {
+      "description": "Example channel"
+    }
+  }
+}

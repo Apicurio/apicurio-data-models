@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "AddPathItemCommand",
+        "_newPathItemName": "/newPath",
+        "_newPathItemObj": {}
+    }
+]

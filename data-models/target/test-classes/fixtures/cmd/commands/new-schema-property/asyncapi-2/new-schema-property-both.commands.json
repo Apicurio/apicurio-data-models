@@ -1,0 +1,15 @@
+[{
+    "__type": "NewSchemaPropertyCommand_Aai20",
+    "_schemaPath": "/components/schemas[MySchema1]",
+    "_propertyName": "newProperty",
+    "_description": "Hello 3.0 world.",
+    "_newType": {
+        "type": "array",
+        "of": {
+            "type": "string",
+            "of": null,
+            "as": "date-time"
+        },
+        "required": true
+    }
+}]

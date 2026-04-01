@@ -1,0 +1,2 @@
+[SRV-005] |medium| {/servers[production]->host} :: Server is missing a host.
+[SRV-012] |medium| {/servers[production]->url} :: In AsyncAPI 3.0, use 'host', 'pathname', and 'protocol' instead of 'url'.

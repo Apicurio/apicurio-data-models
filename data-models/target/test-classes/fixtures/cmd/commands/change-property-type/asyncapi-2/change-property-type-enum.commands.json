@@ -1,0 +1,11 @@
+[
+    {
+        "__type": "ChangePropertyTypeCommand_Aai20",
+        "_propPath": "/components/schemas[Group]/properties[type]",
+        "_propName": "type",
+        "_newType": {
+            "type" :"string",
+            "enum" :["type1", "type2"]
+        }
+    }
+]

@@ -1,0 +1,15 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Delete All Schemas API",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "SampleDataType": {
+                "description": "",
+                "type": "object"
+            }
+        }
+    }
+}

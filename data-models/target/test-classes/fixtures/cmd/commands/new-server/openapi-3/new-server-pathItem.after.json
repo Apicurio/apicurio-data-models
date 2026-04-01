@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "requestBody": {
+          "required": true
+        }
+      },
+      "servers": [
+        {
+          "url": "https://development.gigantic-server.com/v1",
+          "description": "Development server"
+        }
+      ]
+    }
+  }
+}

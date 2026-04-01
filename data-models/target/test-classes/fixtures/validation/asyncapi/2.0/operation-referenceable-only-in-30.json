@@ -1,0 +1,14 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "subscribe": {
+        "$ref": "#/components/operations/signupOperation"
+      }
+    }
+  }
+}

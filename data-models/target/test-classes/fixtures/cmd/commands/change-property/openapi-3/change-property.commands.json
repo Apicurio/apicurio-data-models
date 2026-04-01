@@ -1,0 +1,8 @@
+[
+    {
+        "__type": "ChangePropertyCommand",
+        "_nodePath" : "/info",
+        "_property" : "termsOfService",
+        "_newValue" : "http://example.com/updated-terms/"
+    }
+]

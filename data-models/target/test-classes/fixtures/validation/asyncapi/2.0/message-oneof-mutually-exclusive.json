@@ -1,0 +1,52 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/events": {
+      "publish": {
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/UserCreated"
+            },
+            {
+              "$ref": "#/components/messages/UserDeleted"
+            }
+          ],
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "UserCreated": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "event": {
+              "type": "string",
+              "const": "created"
+            }
+          }
+        }
+      },
+      "UserDeleted": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "event": {
+              "type": "string",
+              "const": "deleted"
+            }
+          }
+        }
+      }
+    }
+  }
+}

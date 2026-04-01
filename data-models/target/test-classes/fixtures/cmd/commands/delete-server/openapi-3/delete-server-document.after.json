@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "username to fetch",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://development.gigantic-server.com/v1",
+      "description": "Development server"
+    },
+    {
+      "url": "https://staging.gigantic-server.com/v1",
+      "description": "Staging server"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  {
+    "__type": "DeleteChannelCommand",
+    "_channel": "toRemove"
+  }
+]

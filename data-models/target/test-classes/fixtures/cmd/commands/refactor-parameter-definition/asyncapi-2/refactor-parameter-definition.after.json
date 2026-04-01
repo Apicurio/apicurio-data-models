@@ -1,0 +1,32 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test AsyncAPI",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "widgets/created": {
+      "parameters": {
+        "widgetId": {
+          "$ref": "#/components/parameters/PageSizeParam"
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "PageSizeParam": {
+        "description": "Limit the number of results",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "OffsetParam": {
+        "description": "Offset for pagination",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

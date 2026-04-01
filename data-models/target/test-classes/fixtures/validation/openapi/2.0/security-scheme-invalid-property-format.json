@@ -1,0 +1,31 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server Petstore server via JSON.",
+    "version": "1.0.0",
+    "title": "Swagger Petstore (JSON)"
+  },
+  "paths": {
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "totally not a URL",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "petstore_auth_accessCode": {
+      "type": "oauth2",
+      "authorizationUrl": "still not a URL",
+      "tokenUrl": "also not a URL",
+      "flow": "accessCode",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    }
+  }
+}

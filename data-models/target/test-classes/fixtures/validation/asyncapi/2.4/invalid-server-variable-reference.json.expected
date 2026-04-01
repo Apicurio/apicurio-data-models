@@ -1,0 +1,1 @@
+[SVAR-005] |medium| {/servers[production]/variables[environment]->$ref} :: Server variable $ref must point to valid server variable in components.

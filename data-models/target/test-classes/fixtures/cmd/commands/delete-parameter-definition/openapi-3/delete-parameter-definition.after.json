@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "parameters": {
+      "limitParam": {
+        "name": "limit",
+        "in": "query",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

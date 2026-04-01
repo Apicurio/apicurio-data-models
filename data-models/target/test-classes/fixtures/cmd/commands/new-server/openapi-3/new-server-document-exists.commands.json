@@ -1,0 +1,8 @@
+[{
+    "__type": "NewServerCommand",
+    "_server": {
+        "url": "https://development.gigantic-server.com/v1",
+        "description": "Development server"
+    },
+    "_parentPath": null
+}]

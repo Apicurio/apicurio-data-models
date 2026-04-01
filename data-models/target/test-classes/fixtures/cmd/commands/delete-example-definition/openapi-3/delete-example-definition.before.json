@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "examples": {
+      "ExampleToKeep": {
+        "summary": "An example to keep",
+        "value": {
+          "name": "Keeper",
+          "color": "blue"
+        }
+      },
+      "ExampleToDelete": {
+        "summary": "An example to delete",
+        "value": {
+          "name": "Goner",
+          "color": "red"
+        }
+      }
+    }
+  }
+}

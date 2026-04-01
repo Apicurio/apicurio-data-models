@@ -1,0 +1,27 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Person": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "newProperty": {
+          "description": "Hello world."
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "example": {
+        "name": "Puma",
+        "id": 1
+      }
+    }
+  }
+}

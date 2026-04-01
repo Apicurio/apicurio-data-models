@@ -1,0 +1,26 @@
+{
+  "swagger": "2.0",
+  "responses": {
+    "NotFound": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "application/x-yaml": {
+          "schema": {
+            "$ref": "#/components/schemas/CustomType"
+          }
+        }
+      },
+      "description": "Response used when some server data could not be found!"
+    },
+    "Error": {
+      "description": "An error occurred."
+    }
+  }
+}

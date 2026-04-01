@@ -1,0 +1,6 @@
+[{
+    "__type": "DeleteMediaTypeCommand",
+    "_mediaTypeName": "application/json",
+    "_mediaTypePath": "/paths[/foo]/get/responses[200]/content[application/json]",
+    "_parentPath": "/paths[/foo]/get/responses[200]"
+}]

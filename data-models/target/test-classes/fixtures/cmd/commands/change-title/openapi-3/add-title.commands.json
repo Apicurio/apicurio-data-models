@@ -1,0 +1,6 @@
+[
+	{
+		"__type": "ChangeTitleCommand",
+		"_newTitle": "Sample Pet Store App"
+	}
+]

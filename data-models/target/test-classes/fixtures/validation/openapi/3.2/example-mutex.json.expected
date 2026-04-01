@@ -1,0 +1,3 @@
+[EX-005] |medium| {/components/examples[InvalidDataValueAndValue]->dataValue} :: Example "dataValue" and "value" are mutually exclusive.
+[EX-006] |medium| {/components/examples[InvalidSerializedAndValue]->serializedValue} :: Example "serializedValue" and "value" are mutually exclusive.
+[EX-006] |medium| {/components/examples[InvalidSerializedAndExternal]->serializedValue} :: Example "serializedValue" and "externalValue" are mutually exclusive.

@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/widgets": {
+      "post": {
+        "summary": "Create a widget",
+        "operationId": "createWidget",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "links": {
+              "GetCreatedWidget": {
+                "$ref": "#/components/links/FetchWidgetById"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/widgets/{widgetId}": {
+      "get": {
+        "summary": "Get a widget",
+        "operationId": "getWidget",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "links": {
+              "self": {
+                "$ref": "#/components/links/FetchWidgetById"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "links": {
+      "FetchWidgetById": {
+        "operationId": "getWidget",
+        "description": "Fetch a widget by its ID."
+      },
+      "ListWidgets": {
+        "operationId": "listWidgets",
+        "description": "List all widgets."
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+--no-fonts
+-classpath
+'/home/ewittman/git/apicurio/apicurio-data-models/generator/target/apicurio-unified-model-generator-3.0.0-SNAPSHOT.jar:/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar:/home/ewittman/.m2/repository/commons-beanutils/commons-beanutils-core/1.8.3/commons-beanutils-core-1.8.3.jar:/home/ewittman/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-collections4/4.5.0/commons-collections4-4.5.0.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.21.2/jackson-dataformat-yaml-2.21.2.jar:/home/ewittman/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar:/home/ewittman/.m2/repository/org/modeshape/modeshape-common/5.4.1.Final/modeshape-common-5.4.1.Final.jar:/home/ewittman/.m2/repository/com/h2database/h2/1.4.191/h2-1.4.191.jar:/home/ewittman/.m2/repository/org/jboss/forge/roaster/roaster-api/2.28.0.Final/roaster-api-2.28.0.Final.jar:/home/ewittman/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-plugin-api/3.9.14/maven-plugin-api-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-model/3.9.14/maven-model-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-artifact/3.9.14/maven-artifact-3.9.14.jar:/home/ewittman/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-utils/3.6.0/plexus-utils-3.6.0.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-core/3.9.14/maven-core-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-settings/3.9.14/maven-settings-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-settings-builder/3.9.14/maven-settings-builder-3.9.14.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-sec-dispatcher/2.0/plexus-sec-dispatcher-2.0.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-cipher/2.0/plexus-cipher-2.0.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-builder-support/3.9.14/maven-builder-support-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-repository-metadata/3.9.14/maven-repository-metadata-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-model-builder/3.9.14/maven-model-builder-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/maven-resolver-provider/3.9.14/maven-resolver-provider-3.9.14.jar:/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-impl/1.9.27/maven-resolver-impl-1.9.27.jar:/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-named-locks/1.9.27/maven-resolver-named-locks-1.9.27.jar:/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-api/1.9.27/maven-resolver-api-1.9.27.jar:/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-spi/1.9.27/maven-resolver-spi-1.9.27.jar:/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-util/1.9.27/maven-resolver-util-1.9.27.jar:/home/ewittman/.m2/repository/org/apache/maven/shared/maven-shared-utils/3.4.2/maven-shared-utils-3.4.2.jar:/home/ewittman/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.jar:/home/ewittman/.m2/repository/org/ow2/asm/asm/9.9.1/asm-9.9.1.jar:/home/ewittman/.m2/repository/com/google/inject/guice/5.1.0/guice-5.1.0-classes.jar:/home/ewittman/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/ewittman/.m2/repository/com/google/guava/guava/33.5.0-jre/guava-33.5.0-jre.jar:/home/ewittman/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/home/ewittman/.m2/repository/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.jar:/home/ewittman/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.29/plexus-interpolation-1.29.jar:/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-component-annotations/2.2.0/plexus-component-annotations-2.2.0.jar:/home/ewittman/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/home/ewittman/.m2/repository/org/apache/maven/plugin-tools/maven-plugin-annotations/3.15.2/maven-plugin-annotations-3.15.2.jar'
+-encoding
+'UTF-8'
+-protected
+--release
+17
+-sourcepath
+'/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/src/main/java:/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2026 <a href="https://www.redhat.com">Red Hat</a>. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-Xdoclint:none
+-doctitle
+'apicurio-unified-model-generator-maven-plugin 3.0.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'apicurio-unified-model-generator-maven-plugin 3.0.0-SNAPSHOT API'
+io.apicurio.umg.maven
+/home/ewittman/git/apicurio/apicurio-data-models/generator/target/apicurio-unified-model-generator-3.0.0-SNAPSHOT.jar = 1775065346261
+/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar = 1762288049000
+/home/ewittman/.m2/repository/commons-beanutils/commons-beanutils-core/1.8.3/commons-beanutils-core-1.8.3.jar = 1751210449478
+/home/ewittman/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar = 1751210449823
+/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar = 1762978088000
+/home/ewittman/.m2/repository/org/apache/commons/commons-collections4/4.5.0/commons-collections4-4.5.0.jar = 1751210504647
+/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar = 1774024207000
+/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar = 1774024973000
+/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar = 1768776434000
+/home/ewittman/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.21.2/jackson-dataformat-yaml-2.21.2.jar = 1774025920000
+/home/ewittman/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar = 1756642824000
+/home/ewittman/.m2/repository/org/modeshape/modeshape-common/5.4.1.Final/modeshape-common-5.4.1.Final.jar = 1751210533953
+/home/ewittman/.m2/repository/com/h2database/h2/1.4.191/h2-1.4.191.jar = 1751210444734
+/home/ewittman/.m2/repository/org/jboss/forge/roaster/roaster-api/2.28.0.Final/roaster-api-2.28.0.Final.jar = 1751210527922
+/home/ewittman/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar = 1755531844000
+/home/ewittman/.m2/repository/org/apache/maven/maven-plugin-api/3.9.14/maven-plugin-api-3.9.14.jar = 1773053758000
+/home/ewittman/.m2/repository/org/apache/maven/maven-model/3.9.14/maven-model-3.9.14.jar = 1773053748000
+/home/ewittman/.m2/repository/org/apache/maven/maven-artifact/3.9.14/maven-artifact-3.9.14.jar = 1773053754000
+/home/ewittman/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.jar = 1770493853000
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-utils/3.6.0/plexus-utils-3.6.0.jar = 1751210521490
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.jar = 1754068092151
+/home/ewittman/.m2/repository/org/apache/maven/maven-core/3.9.14/maven-core-3.9.14.jar = 1773053804000
+/home/ewittman/.m2/repository/org/apache/maven/maven-settings/3.9.14/maven-settings-3.9.14.jar = 1773053774000
+/home/ewittman/.m2/repository/org/apache/maven/maven-settings-builder/3.9.14/maven-settings-builder-3.9.14.jar = 1773053778000
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-sec-dispatcher/2.0/plexus-sec-dispatcher-2.0.jar = 1751210521198
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-cipher/2.0/plexus-cipher-2.0.jar = 1751210520808
+/home/ewittman/.m2/repository/org/apache/maven/maven-builder-support/3.9.14/maven-builder-support-3.9.14.jar = 1773053763000
+/home/ewittman/.m2/repository/org/apache/maven/maven-repository-metadata/3.9.14/maven-repository-metadata-3.9.14.jar = 1773053782000
+/home/ewittman/.m2/repository/org/apache/maven/maven-model-builder/3.9.14/maven-model-builder-3.9.14.jar = 1773053770000
+/home/ewittman/.m2/repository/org/apache/maven/maven-resolver-provider/3.9.14/maven-resolver-provider-3.9.14.jar = 1773053788000
+/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-impl/1.9.27/maven-resolver-impl-1.9.27.jar = 1771602683000
+/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-named-locks/1.9.27/maven-resolver-named-locks-1.9.27.jar = 1771602654000
+/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-api/1.9.27/maven-resolver-api-1.9.27.jar = 1771602618000
+/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-spi/1.9.27/maven-resolver-spi-1.9.27.jar = 1771602624000
+/home/ewittman/.m2/repository/org/apache/maven/resolver/maven-resolver-util/1.9.27/maven-resolver-util-1.9.27.jar = 1771602636000
+/home/ewittman/.m2/repository/org/apache/maven/shared/maven-shared-utils/3.4.2/maven-shared-utils-3.4.2.jar = 1751210516400
+/home/ewittman/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.jar = 1770493853000
+/home/ewittman/.m2/repository/org/ow2/asm/asm/9.9.1/asm-9.9.1.jar = 1765034212000
+/home/ewittman/.m2/repository/com/google/inject/guice/5.1.0/guice-5.1.0-classes.jar = 1754068092166
+/home/ewittman/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar = 1751210432809
+/home/ewittman/.m2/repository/com/google/guava/guava/33.5.0-jre/guava-33.5.0-jre.jar = 1758140376000
+/home/ewittman/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar = 1751210532407
+/home/ewittman/.m2/repository/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.jar = 1751210441598
+/home/ewittman/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar = 1751210501919
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.29/plexus-interpolation-1.29.jar = 1762537600000
+/home/ewittman/.m2/repository/org/codehaus/plexus/plexus-component-annotations/2.2.0/plexus-component-annotations-2.2.0.jar = 1751210520969
+/home/ewittman/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar = 1751210541143
+/home/ewittman/.m2/repository/org/apache/maven/plugin-tools/maven-plugin-annotations/3.15.2/maven-plugin-annotations-3.15.2.jar = 1762786913534
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/src/main/java = 1775064791037
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/generated-sources/annotations = 1775065347593
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/element-list = 1775065349292
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/overview-tree.html = 1775065349305
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/allclasses-index.html = 1775065349309
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/allpackages-index.html = 1775065349310
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/module-search-index.js = 1775065349312
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/package-search-index.js = 1775065349312
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/type-search-index.js = 1775065349312
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/member-search-index.js = 1775065349312
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/tag-search-index.js = 1775065349312
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/index-all.html = 1775065349314
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/search.html = 1775065349315
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/index.html = 1775065349316
+/home/ewittman/git/apicurio/apicurio-data-models/generator-maven-plugin/target/reports/apidocs/help-doc.html = 1775065349318

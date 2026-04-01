@@ -1,0 +1,4 @@
+[{
+    "__type": "DeleteSchemaDefinitionCommand",
+    "_definitionName": "Order"
+}]

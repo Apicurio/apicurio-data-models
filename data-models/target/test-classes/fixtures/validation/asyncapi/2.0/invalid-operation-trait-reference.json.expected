@@ -1,0 +1,1 @@
+[AAO-006] |medium| {/channels[user/signup]/subscribe/traits[0]->$ref} :: Operation trait reference must point to a valid operation trait definition.

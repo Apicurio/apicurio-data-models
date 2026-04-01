@@ -1,0 +1,42 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "methods": [
+    {
+      "name": "getWidget",
+      "params": [
+        {
+          "name": "id",
+          "schema": { "type": "integer" }
+        }
+      ],
+      "result": {
+        "name": "widget",
+        "schema": { "$ref": "#/components/schemas/OldName" }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "OldName": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "OtherSchema": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "$ref": "#/components/schemas/OldName"
+          }
+        }
+      }
+    }
+  }
+}

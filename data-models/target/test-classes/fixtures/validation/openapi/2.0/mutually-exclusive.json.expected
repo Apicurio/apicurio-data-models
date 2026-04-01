@@ -1,0 +1,1 @@
+[PATH-002] |medium| {/paths[/pet]/post->in} :: Operation may not have both Body and Form Data parameters.

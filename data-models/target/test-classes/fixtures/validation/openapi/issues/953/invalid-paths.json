@@ -1,0 +1,110 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Test that invalid paths are still properly rejected",
+    "version": "1.0.0",
+    "title": "Invalid Path Templates Test"
+  },
+  "host": "api.example.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/valid/{id}": {
+      "get": {
+        "summary": "Valid path for comparison",
+        "operationId": "validPath",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/{id}/no-leading-slash": {
+      "get": {
+        "summary": "Invalid - missing leading slash",
+        "operationId": "noLeadingSlash",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/users/{invalid param}/test": {
+      "get": {
+        "summary": "Invalid - space in parameter name",
+        "operationId": "invalidParam",
+        "parameters": [
+          {
+            "name": "invalid param",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/items/{{nested}}": {
+      "get": {
+        "summary": "Invalid - nested braces",
+        "operationId": "nestedBraces",
+        "parameters": [
+          {
+            "name": "{nested}",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/data/{incomplete": {
+      "get": {
+        "summary": "Invalid - unclosed parameter",
+        "operationId": "incompleteParam",
+        "parameters": [
+          {
+            "name": "incomplete",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}

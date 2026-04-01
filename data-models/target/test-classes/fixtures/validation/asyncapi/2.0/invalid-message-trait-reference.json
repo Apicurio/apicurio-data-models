@@ -1,0 +1,23 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "publish": {
+        "message": {
+          "payload": {
+            "type": "object"
+          },
+          "traits": [
+            {
+              "$ref": "#/components/messageTraits/nonExistentTrait"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

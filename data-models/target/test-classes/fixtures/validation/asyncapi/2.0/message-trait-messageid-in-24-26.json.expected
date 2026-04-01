@@ -1,0 +1,2 @@
+[AAM-001] |medium| {/channels[test]/publish/message->null} :: Message should have either payload or headers defined.
+[AAMTRT-002] |medium| {/channels[test]/publish/message/traits[0]->messageId} :: The 'messageId' property is only allowed for message traits in AsyncAPI 2.4-2.6.

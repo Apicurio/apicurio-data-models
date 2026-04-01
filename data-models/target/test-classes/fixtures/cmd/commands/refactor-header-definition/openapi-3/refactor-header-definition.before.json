@@ -1,0 +1,55 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/widgets": {
+      "get": {
+        "summary": "List widgets",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "headers": {
+              "X-Rate-Limit": {
+                "$ref": "#/components/headers/X-Rate-Limit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gadgets": {
+      "get": {
+        "summary": "List gadgets",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "headers": {
+              "X-Rate-Limit": {
+                "$ref": "#/components/headers/X-Rate-Limit"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "headers": {
+      "X-Rate-Limit": {
+        "description": "The number of requests remaining.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "X-Request-Id": {
+        "description": "A unique request identifier.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

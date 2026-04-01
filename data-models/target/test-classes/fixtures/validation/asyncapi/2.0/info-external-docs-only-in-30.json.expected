@@ -1,0 +1,1 @@
+[INF-006] |medium| {/info->externalDocs} :: The 'externalDocs' property is only allowed in AsyncAPI 3.0, not in 2.x.

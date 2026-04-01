@@ -1,0 +1,1 @@
+[AAREPLY-002] |medium| {/operations[signupOperation]/reply->messages} :: Reply message references must point to valid messages.

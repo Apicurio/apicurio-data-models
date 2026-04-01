@@ -1,0 +1,12 @@
+{
+  "asyncapi" : "2.0.0",
+  "info" : {
+    "title": "AsyncAPI 2.0 App",
+    "description": "This is a very simple AsyncAPI file.",
+    "version": "1.0.1",
+    "extra-property-1": "value",
+    "extra-property-2": 17,
+    "extra-property-3": [ 1, 2, 3, 4 ]
+  },
+  "extra-root-property": true
+}

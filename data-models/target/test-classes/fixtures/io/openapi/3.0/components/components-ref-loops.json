@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.2",
+  "components": {
+    "responses": {
+      "PetResponse1": {
+        "$ref": "#/components/PetResponse2"
+      },
+      "PetResponse2": {
+        "$ref": "#/components/PetResponse1"
+      }
+    }
+  }
+}

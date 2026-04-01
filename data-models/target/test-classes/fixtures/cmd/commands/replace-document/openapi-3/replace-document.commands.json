@@ -1,0 +1,139 @@
+[{
+    "__type": "ReplaceDocumentCommand",
+    "_nodePath": "/",
+    "_new": {
+        "openapi": "3.0.2",
+        "info": {
+            "title": "Marvel API",
+            "version": "1.0.0"
+        },
+        "paths": {
+            "/avengers": {
+                "summary": "Path used to manage the list of Avengers.",
+                "description": "The REST endpoint/path used to list and create zero or more `Avenger` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+                "get": {
+                    "summary": "List All Avengers",
+                    "description": "Gets a list of all `Avenger` entities.",
+                    "operationId": "getAvengers",
+                    "responses": {
+                        "200": {
+                            "description": "Successful response - returns an array of `Avenger` entities.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/Avenger"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "post": {
+                    "summary": "Create a Avenger",
+                    "description": "Creates a new instance of a `Avenger`.",
+                    "operationId": "createAvenger",
+                    "requestBody": {
+                        "description": "A new `Avenger` to be created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Avenger"
+                                }
+                            }
+                        },
+                        "required": true
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Successful response."
+                        }
+                    }
+                }
+            },
+            "/avengers/{avengerId}": {
+                "summary": "Path used to manage a single Avenger.",
+                "description": "The REST endpoint/path used to get, update, and delete single instances of an `Avenger`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+                "get": {
+                    "summary": "Get a Avenger",
+                    "description": "Gets the details of a single instance of a `Avenger`.",
+                    "operationId": "getAvenger",
+                    "responses": {
+                        "200": {
+                            "description": "Successful response - returns a single `Avenger`.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Avenger"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "put": {
+                    "summary": "Update a Avenger",
+                    "description": "Updates an existing `Avenger`.",
+                    "operationId": "updateAvenger",
+                    "requestBody": {
+                        "description": "Updated `Avenger` information.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Avenger"
+                                }
+                            }
+                        },
+                        "required": true
+                    },
+                    "responses": {
+                        "202": {
+                            "description": "Successful response."
+                        }
+                    }
+                },
+                "delete": {
+                    "summary": "Delete a Avenger",
+                    "description": "Deletes an existing `Avenger`.",
+                    "operationId": "deleteAvenger",
+                    "responses": {
+                        "204": {
+                            "description": "Successful response."
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "avengerId",
+                        "in": "path",
+                        "description": "A unique identifier for a `Avenger`.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "components": {
+            "schemas": {
+                "Avenger": {
+                    "title": "Root Type for Avenger",
+                    "description": "The root of the Avenger type's schema.",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    },
+                    "example": "{\n    \"name\": \"Captain America\",\n    \"description\": \"Super soldier.\"\n}"
+                }
+            }
+        }
+    }
+}]

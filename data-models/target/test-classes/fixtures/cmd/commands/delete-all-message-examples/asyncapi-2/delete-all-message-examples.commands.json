@@ -1,0 +1,4 @@
+[{
+  "__type": "DeleteAllMessageExamplesCommand_Aai20",
+  "_parentPath": "/channels[myChannel]/subscribe"
+}]

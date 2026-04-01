@@ -1,0 +1,15 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userSignup": {
+      "subscribe": {
+        "operationId": "onUserSignup",
+        "description": "Invalid description with control character: \u0000"
+      }
+    }
+  }
+}

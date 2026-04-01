@@ -1,0 +1,4 @@
+[{
+    "__type": "DeletePathCommand",
+    "_pathName": "/foo"
+}]

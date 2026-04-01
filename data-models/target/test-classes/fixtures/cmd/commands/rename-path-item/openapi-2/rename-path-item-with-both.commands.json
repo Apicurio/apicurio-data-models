@@ -1,0 +1,6 @@
+[{
+    "__type": "RenamePathItemCommand",
+    "_oldPath": "/examples/{exampleId}",
+    "_newPath": "/samples/{sampleId}",
+    "_alsoRenameSubpaths": true
+}]

@@ -1,0 +1,21 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Person": {
+      "type": "object",
+      "discriminator": "petType",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "petType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "petType"
+      ]
+    }
+  }
+}

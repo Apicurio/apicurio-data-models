@@ -1,0 +1,1 @@
+[SRV-006] |medium| {/servers[production]->host} :: Server host must be a valid hostname or IP address.

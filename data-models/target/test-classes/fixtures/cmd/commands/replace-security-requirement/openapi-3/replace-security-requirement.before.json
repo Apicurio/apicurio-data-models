@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    },
+    {
+      "BasicAuth": [],
+      "MyOAuth": [ "read", "write" ]
+    },
+    {
+      "Auth1": [],
+      "Auth2": [ "s1", "s2", "s3" ]
+    }
+  ]
+}

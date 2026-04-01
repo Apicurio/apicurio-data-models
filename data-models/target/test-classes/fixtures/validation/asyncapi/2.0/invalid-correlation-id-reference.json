@@ -1,0 +1,22 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "publish": {
+        "message": {
+          "payload": {
+            "type": "object"
+          },
+          "correlationId": {
+            "$ref": "#/components/correlationIds/nonExistentCorrelationId",
+            "location": "$message.header#/correlationId"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+[AAM-006] |medium| {/channels[user/signup]/publish/message->traits} :: Message trait references must point to valid message traits.

@@ -1,0 +1,16 @@
+{
+  "asyncapi" : "2.0.0",
+  "info" : {
+    "title": "AsyncAPI 2.0 App",
+    "description": "This is a very simple AsyncAPI file.",
+    "version": "1.0.1",
+    "x-vendor-property-1": "foo-bar",
+    "x-vendor-property-2": true,
+    "x-vendor-property-3": {
+    	"sub-property-1": 17,
+    	"sub-property-2": false,
+    	"sub-property-3": "value"
+    },
+    "x-vendor-property-3": 12345
+  }
+}

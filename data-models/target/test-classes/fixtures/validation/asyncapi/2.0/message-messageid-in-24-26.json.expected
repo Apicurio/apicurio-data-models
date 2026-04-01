@@ -1,0 +1,1 @@
+[AAM-014] |medium| {/channels[test]/publish/message->messageId} :: The 'messageId' property is only allowed for messages in AsyncAPI 2.4-2.6.

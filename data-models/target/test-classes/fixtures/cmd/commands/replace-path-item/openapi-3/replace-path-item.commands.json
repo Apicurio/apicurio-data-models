@@ -1,0 +1,18 @@
+[{
+    "__type": "ReplacePathItemCommand",
+    "_nodePath": "/paths[/foo]",
+    "_new": {
+        "summary": "The Foo Resource",
+        "description": "Operations for Foos.",
+        "put": {
+            "tags": [
+                "tag1",
+                "tag3"
+            ],
+            "summary": "Update Pet",
+            "description": "Updates a pet.",
+            "operationId": "updatePet",
+            "deprecated": false
+        }
+    }
+}]

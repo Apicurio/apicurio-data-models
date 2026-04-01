@@ -1,0 +1,86 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Security Requirements Test",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/hello": {
+            "get": {
+                "summary": "Returns a greeting",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Hello, World!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/protected": {
+            "post": {
+                "summary": "Protected endpoint with OAuth2",
+                "security": [
+                    {
+                        "OAuth2": ["read", "write"]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/openid": {
+            "get": {
+                "summary": "Endpoint with OpenID Connect",
+                "security": [
+                    {
+                        "OpenIDConnect": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "HTTPBearer": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "OAuth2": {
+                "type": "oauth2",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://example.com/oauth/token",
+                        "scopes": {
+                            "read": "Read access",
+                            "write": "Write access"
+                        }
+                    }
+                }
+            },
+            "OpenIDConnect": {
+                "type": "openIdConnect",
+                "openIdConnectUrl": "https://example.com/.well-known/openid-configuration"
+            }
+        }
+    }
+}

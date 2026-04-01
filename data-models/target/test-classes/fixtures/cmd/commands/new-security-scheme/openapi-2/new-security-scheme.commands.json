@@ -1,0 +1,9 @@
+[{
+    "__type": "NewSecuritySchemeCommand",
+    "_scheme": {
+        "type": "apiKey",
+        "name": "key",
+        "in": "header"
+    },
+    "_schemeName": "new_scheme"
+}]

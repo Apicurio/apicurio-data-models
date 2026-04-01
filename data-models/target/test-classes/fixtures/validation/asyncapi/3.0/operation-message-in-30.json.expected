@@ -1,0 +1,1 @@
+[AAO-012] |medium| {/operations[signupOperation]->message} :: Operation uses incorrect message property for version: AsyncAPI 2.x uses 'message', 3.0 uses 'messages'.

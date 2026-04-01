@@ -1,0 +1,6 @@
+[
+    {
+        "__type": "DeleteAllTagsCommand_Aai20",
+        "_nodePath": "/channels[myChannel]/subscribe"
+    }
+]

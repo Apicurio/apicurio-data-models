@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteAllParameterExamplesCommand",
+    "_oldExamples": {},
+    "_parameterPath": "/paths[/test]/parameters[0]"
+}]

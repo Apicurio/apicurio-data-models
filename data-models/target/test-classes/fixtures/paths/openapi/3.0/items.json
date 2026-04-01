@@ -1,0 +1,27 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Temporary API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "components": {
+        "schemas": {
+            "ItemsTest1": {
+                "description": "",
+                "type": "array",
+                "items": {
+                    "format": "date",
+                    "type": "string"
+                }
+            },
+            "ItemsTest2": {
+                "description": "",
+                "type": "array",
+                "items": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

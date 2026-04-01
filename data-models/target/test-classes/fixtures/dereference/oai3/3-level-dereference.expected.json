@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "X",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/": {}
+  },
+  "components": {
+    "schemas": {
+      "CalendarEvent": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/JSEvent"
+          }
+        ]
+      },
+      "JSEvent": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/JSCalendar"
+          }
+        ]
+      },
+      "JSCalendar": {
+        "type": "object"
+      }
+    }
+  }
+}

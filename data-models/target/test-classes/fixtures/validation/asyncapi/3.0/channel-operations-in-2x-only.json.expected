@@ -1,0 +1,2 @@
+[CHAN-009] |medium| {/channels[userSignup]->subscribe} :: The 'subscribe' operation is only allowed in AsyncAPI 2.x, not in 3.0.
+[CHAN-009] |medium| {/channels[userSignup]->publish} :: The 'publish' operation is only allowed in AsyncAPI 2.x, not in 3.0.

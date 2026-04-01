@@ -1,0 +1,6 @@
+[
+	{
+		"__type": "ChangeDescriptionCommand",
+		"_newDescription": "A description we added."
+	}
+]

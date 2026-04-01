@@ -1,0 +1,26 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userStatus": {
+      "address": "user/status",
+      "parameters": {
+        "status": {
+          "enum": ["active", "inactive", "pending"],
+          "default": "deleted"
+        }
+      }
+    }
+  },
+  "operations": {
+    "sendStatus": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/userStatus"
+      }
+    }
+  }
+}

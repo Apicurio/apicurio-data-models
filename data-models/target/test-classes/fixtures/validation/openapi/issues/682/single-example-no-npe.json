@@ -1,0 +1,48 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Test",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/test": {
+      "get": {
+        "operationId": "test",
+        "parameters": [
+          {
+            "name": "PARAM",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "myparam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Rate-Limit": {
+                "description": "Rate limit",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 100
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "key": "value"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

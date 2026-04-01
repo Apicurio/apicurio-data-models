@@ -1,0 +1,16 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "summary": "Foo Resource",
+      "description": "CRUD for Foos.",
+      "get": {
+        "summary": "Do A Thing",
+        "description": "Totally does a thing",
+        "operationId": "doAThing",
+        "deprecated": true
+      },
+      "post":{}
+    }
+  }
+}

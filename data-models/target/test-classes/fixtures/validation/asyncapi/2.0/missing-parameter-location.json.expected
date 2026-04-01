@@ -1,0 +1,1 @@
+[AAPARAM-001] |medium| {/channels[user/{userId}]/parameters[userId]->location} :: Parameter is missing the 'location' property.

@@ -1,0 +1,5 @@
+[{
+    "__type": "RenameChannelItemCommand",
+    "_oldChannelName": "user/signedin",
+    "_newChannelName": "takenName"
+}]

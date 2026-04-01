@@ -1,0 +1,27 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "examples": {
+      "frogExample": {
+        "name": "frogExample",
+        "summary": "A frog example",
+        "value": {
+          "name": "Frog",
+          "color": "green"
+        }
+      },
+      "catExample": {
+        "name": "catExample",
+        "summary": "A cat example",
+        "value": {
+          "name": "Cat",
+          "color": "black"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[INF-001] |medium| {/info->title} :: API is missing a title.
+[INF-002] |medium| {/info->version} :: API is missing a version.
+[LIC-001] |medium| {/info/license->name} :: License is missing a name.
+[TAG-001] |medium| {/tags[0]->name} :: Tag is missing a name.
+[SRV-001] |medium| {/servers[production]->url} :: Server is missing a template URL.
+[SRV-004] |medium| {/servers[production]->protocol} :: Server is missing a protocol.
+[SS-003] |medium| {/components/securitySchemes[apiKey]->in} :: API Key Security Scheme must describe where the Key can be found (e.g. header, query param, etc).
+[SS-002] |medium| {/components/securitySchemes[httpApiKey]->name} :: API Key Security Scheme is missing a parameter name (e.g. name of a header or query param).
+[SS-019] |medium| {/components/securitySchemes[http]->scheme} :: HTTP Security Scheme is missing a scheme (Basic, Digest, etc).
+[SS-001] |medium| {/components/securitySchemes[userPassword]->type} :: Security Scheme is missing a type.
+[SS-020] |medium| {/components/securitySchemes[supportedOauthFlows]->flows} :: OAuth Security Scheme does not define any OAuth flows.
+[SS-021] |medium| {/components/securitySchemes[openIdConnectWellKnown]->openIdConnectUrl} :: OpenID Connect Security Scheme is missing a Connect URL.

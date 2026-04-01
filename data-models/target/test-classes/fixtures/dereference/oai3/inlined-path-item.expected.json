@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "My Test API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "paths": {
+        "/widgets": {
+            "summary": "Path used to manage the list of widgets.",
+            "description": "The REST endpoint/path used to list and create zero or more `Widget` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Widget"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Widget` entities."
+                    }
+                },
+                "operationId": "getWidgets",
+                "summary": "List All Widgets",
+                "description": "Gets a list of all `Widget` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Widget` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Widget"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createWidget",
+                "summary": "Create a Widget",
+                "description": "Creates a new instance of a `Widget`."
+            }
+        },
+        "/widgets/{widgetId}": {
+            "summary": "Path used to manage a single Widget.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Widget`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Widget"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Widget`."
+                    }
+                },
+                "operationId": "getWidget",
+                "summary": "Get a Widget",
+                "description": "Gets the details of a single instance of a `Widget`."
+            },
+            "parameters": [
+                {
+                    "name": "widgetId",
+                    "description": "A unique identifier for a `Widget`.",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "Widget": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

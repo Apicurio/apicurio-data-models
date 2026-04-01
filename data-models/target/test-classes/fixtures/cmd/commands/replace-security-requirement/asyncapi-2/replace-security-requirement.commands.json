@@ -1,0 +1,16 @@
+[    
+  {
+    "__type": "ReplaceSecurityRequirementCommand",
+    "_parentPath" : "/servers/production",
+    "_oldRequirement" : {
+      "oauth2Scheme": [
+          "write:pets"
+      ]
+    },
+    "_newRequirement": {
+      "oauth2Scheme": [
+        "read:pets"
+      ]
+    }
+  }
+]

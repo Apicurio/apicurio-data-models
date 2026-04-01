@@ -1,0 +1,5 @@
+[{
+  "__type": "AddMessageExampleCommand_Aai20",
+  "_newExampleValue": "{ \"foo\": \"string\", \"bar\": true }",
+  "_parentPath": "/channels[myChannel]/subscribe"
+}]

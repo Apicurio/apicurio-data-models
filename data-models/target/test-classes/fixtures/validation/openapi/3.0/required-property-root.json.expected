@@ -1,0 +1,2 @@
+[R-002] |medium| {/->info} :: API is missing the 'info' property.
+[R-003] |medium| {/->paths} :: API is missing the 'paths' property.

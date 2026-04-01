@@ -1,0 +1,42 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/widgets/{id}": {
+      "put": {
+        "operationId": "updateWidget",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/Widget"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "Widget": {
+      "name": "body",
+      "in": "body",
+      "description": "the body of the POST operation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

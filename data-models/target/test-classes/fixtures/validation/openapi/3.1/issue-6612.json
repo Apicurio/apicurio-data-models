@@ -1,0 +1,275 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Person Service",
+    "description": "API for managing persons.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "persons",
+      "description": "Endpoints for Persons"
+    }
+  ],
+  "paths": {
+    "/v1/persons": {
+      "post": {
+        "tags": [
+          "persons"
+        ],
+        "summary": "Create a new person",
+        "operationId": "create",
+        "description": "Create a new person with personal and party details.",
+        "requestBody": {
+          "required": true,
+          "description": "The person to create.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            },
+            "description": "Person created successfully",
+            "headers": {
+              "Location": {
+                "description": "The URI of the newly created person",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/500-InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/persons/{guid}": {
+      "get": {
+        "tags": [
+          "persons"
+        ],
+        "operationId": "get",
+        "summary": "Get a person by GUID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Guid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500-InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/persons/{guid}/contacts/{contactGuid}": {
+      "put": {
+        "tags": [
+          "persons"
+        ],
+        "operationId": "updateContact",
+        "summary": "Update a contact by person guid and contact guid",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Guid"
+          },
+          {
+            "$ref": "#/components/parameters/ContactGuid"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The contact data to update.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contact updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/500-InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the person was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the last update to the person"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "object"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Surname": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Guid": {
+        "name": "guid",
+        "in": "path",
+        "required": true,
+        "description": "The GUID of the person",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "ContactGuid": {
+        "name": "contactGuid",
+        "in": "path",
+        "required": true,
+        "description": "The GUID of a contact",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "AddressGuid": {
+        "name": "addressGuid",
+        "in": "path",
+        "required": true,
+        "description": "The GUID of the address",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "responses": {
+      "400-BadRequest": {
+        "description": "The request was invalid or not well-formatted.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "401-Unauthorized": {
+        "description": "The request does not have a valid access token or it is expired.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "404-NotFound": {
+        "description": "The resource you were trying to reach is not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "500-InternalServerError": {
+        "description": "Internal server error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    }
+  }
+}

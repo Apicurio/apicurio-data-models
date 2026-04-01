@@ -1,0 +1,1 @@
+[PAR-018] |medium| {/channels[user/{userId}]/parameters[userId]->$ref} :: Parameter Reference must refer to a valid Parameter Definition.

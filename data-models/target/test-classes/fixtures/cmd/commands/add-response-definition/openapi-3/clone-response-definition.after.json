@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "Error":{
+        "description": "The error response."
+      },
+      "NotFound": {
+        "description": "The cloned response."
+      }
+    }
+  }
+}

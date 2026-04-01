@@ -1,0 +1,8 @@
+{
+  "openrpc" : "1.4.0",
+  "info" : {
+    "title": "OpenRPC 1.4 App",
+    "description": "This is a very simple OpenRPC file.",
+    "version": "1.0.0"
+  }
+}

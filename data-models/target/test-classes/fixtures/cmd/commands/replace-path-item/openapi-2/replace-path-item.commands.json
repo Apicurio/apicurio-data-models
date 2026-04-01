@@ -1,0 +1,17 @@
+[
+	{
+		"__type": "ReplacePathItemCommand",
+		"_nodePath": "/paths[/pets]",
+		"_new": {
+			"put": {
+				"summary": "Update Pet",
+				"description": "Updates the pet.",
+				"operationId": "updatePet",
+				"consumes": [
+					"application/json"
+				],
+				"deprecated": false
+			}
+		}
+	}
+]

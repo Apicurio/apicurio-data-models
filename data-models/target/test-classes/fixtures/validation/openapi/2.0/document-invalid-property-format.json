@@ -1,0 +1,12 @@
+{
+  "swagger": "2.0",
+  "host": "http://petstore.swagger.io",
+  "basePath": "foo/bar",
+  "info": {
+    "description": "Test",
+    "version": "1.0.0",
+    "title": "Invalid Property Format Test"
+  },
+  "paths": {
+  }
+}

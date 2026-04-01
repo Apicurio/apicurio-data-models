@@ -1,0 +1,18 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "AsyncAPI 2.0 App (Updated)",
+    "description": "This is a very simple AsyncAPI file.",
+    "version": "1.0.2",
+    "termsOfService": "http://www.example.org/terms",
+    "contact": {
+      "name": "Example Contact",
+      "url": "http://www.example.org/contact",
+      "email": "user.name@example.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  }
+}

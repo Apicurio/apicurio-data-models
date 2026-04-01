@@ -1,0 +1,1 @@
+[AATRT-002] |medium| {/channels[user/signup]/subscribe/traits[0]->security} :: The 'security' property is only allowed for operation traits in AsyncAPI 2.4 and later.

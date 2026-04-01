@@ -1,0 +1,19 @@
+{
+  "asyncapi": "2.0.0",
+  "channels": {
+    "999testtest99": {
+      "publish": {
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/AddressChanged"
+            },
+            {
+              "$ref": "#/components/messages/PhoneNumberChanged"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

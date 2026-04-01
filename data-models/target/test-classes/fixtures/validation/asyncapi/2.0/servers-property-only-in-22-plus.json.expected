@@ -1,0 +1,1 @@
+[CHAN-006] |medium| {/channels[/user/signup]->servers} :: The 'servers' property is only allowed in AsyncAPI 2.2 and later.

@@ -1,0 +1,1 @@
+[CHAN-008] |medium| {/channels[userSignup]->messages} :: The 'messages' property is only allowed in AsyncAPI 3.0, not in 2.x.

@@ -1,0 +1,85 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "TopicMultiEvent-oneOf",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "999testtest99": {
+      "publish": {
+        "summary": "All updates about the user",
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/EmailChanged"
+            },
+            {
+              "$ref": "#/components/messages/PhoneNumberChanged"
+            },
+            {
+              "$ref": "#/components/messages/AddressChanged"
+            }
+          ]
+        }
+      },
+      "subscribe": {
+        "summary": "Telecom updates about the user",
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/EmailChanged"
+            },
+            {
+              "$ref": "#/components/messages/PhoneNumberChanged"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "AddressChanged": {
+        "name": "AddressChanged",
+        "title": "adrChanged",
+        "payload": {
+          "$ref": "#/components/schemas/Address"
+        }
+      },
+      "PhoneNumberChanged": {
+        "name": "PhoneNumberChanged",
+        "payload": {
+          "$ref": "#/components/schemas/PhoneNumber"
+        }
+      },
+      "EmailChanged": {
+        "name": "EmailChanged",
+        "summary": "summCustom",
+        "payload": {
+          "$ref": "#/components/schemas/Email"
+        }
+      },
+      "MyMessage": {
+        "name": "MyMessage",
+        "description": "MyMessage description",
+        "payload": {
+          "$ref": "#/components/schemas/Email"
+        }
+      },
+      "testMessages": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "toDelete": {
+        "description": "Message definition to delete"
+      }
+    }
+  }
+}

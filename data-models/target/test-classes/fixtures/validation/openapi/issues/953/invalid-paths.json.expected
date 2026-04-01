@@ -1,0 +1,6 @@
+[PAR-007] |medium| {/paths[/data/{incomplete]/get/parameters[0]->name} :: Path Parameter "incomplete" not found in path template.
+[PAR-007] |medium| {/paths[/items/{{nested}}]/get/parameters[0]->name} :: Path Parameter "{nested}" not found in path template.
+[PAR-007] |medium| {/paths[/users/{invalid param}/test]/get/parameters[0]->name} :: Path Parameter "invalid param" not found in path template.
+[PATH-005] |medium| {/paths[/data/{incomplete]->null} :: Path template "/data/{incomplete" is not valid.
+[PATH-005] |medium| {/paths[/items/{{nested}}]->null} :: Path template "/items/{{nested}}" is not valid.
+[PATH-005] |medium| {/paths[/users/{invalid param}/test]->null} :: Path template "/users/{invalid param}/test" is not valid.

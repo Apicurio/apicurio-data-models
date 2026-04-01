@@ -1,0 +1,7 @@
+[
+  {
+    "__type": "RenameMessageTraitDefinitionCommand",
+    "_oldName": "comonHeaders",
+    "_newName": "commonHeaders"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "MySchema1" : {
+        "type": "string"
+      },
+      "MySchema2": {
+        "type": "string",
+        "format": "email"
+      },
+      "RefSchema":{
+        "$ref": "#/other/Ref"
+      }
+    }
+  }
+}

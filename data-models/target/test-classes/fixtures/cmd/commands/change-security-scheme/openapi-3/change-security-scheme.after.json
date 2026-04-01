@@ -1,0 +1,29 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "securitySchemes": {
+      "BASIC": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "APIKey": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      },
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "ImplicitOAuth2": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "RefAuth": {
+        "$ref": "#/other/Ref"
+      }
+    }
+  }
+}

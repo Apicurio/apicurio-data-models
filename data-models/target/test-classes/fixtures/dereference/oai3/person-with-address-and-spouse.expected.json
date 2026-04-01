@@ -1,0 +1,81 @@
+{
+    "openapi": "3.0.2",
+    "components": {
+        "schemas": {
+            "Widget": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "$ref": "#/components/schemas/PersonWithAddressAndSpouse"
+                    }
+                }
+            },
+            "PersonWithAddressAndSpouse": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "age": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/Address"
+                    },
+                    "spouse": {
+                        "$ref": "#/components/schemas/Person"
+                    }
+                },
+                "example": {
+                    "name": "John",
+                    "age": 48,
+                    "address": "12345 Main St"
+                }
+            },
+            "Address": {
+                "type": "object",
+                "properties": {
+                    "street": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "zip": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Person": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "age": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "John",
+                    "age": 48,
+                    "address": "12345 Main St"
+                }
+            }
+        }
+    }
+}

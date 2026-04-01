@@ -1,0 +1,9 @@
+{
+  "swagger": "2.0",
+  "responses": {
+    "ExistingResponse": {
+      "description": "The existing response."
+    },
+    "NewResponse" : {}
+  }
+}

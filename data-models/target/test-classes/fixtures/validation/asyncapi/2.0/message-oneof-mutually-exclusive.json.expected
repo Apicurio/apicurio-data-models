@@ -1,0 +1,1 @@
+[AAM-009] |medium| {/channels[user/events]/publish/message->oneOf} :: Message "oneOf" and "payload" are mutually exclusive.

@@ -1,0 +1,16 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "publish": {
+        "message": {
+          "description": "This is an invalid description with a bad link [test]("
+        }
+      }
+    }
+  }
+}

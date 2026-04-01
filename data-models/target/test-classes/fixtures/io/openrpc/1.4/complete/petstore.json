@@ -1,0 +1,204 @@
+{
+  "openrpc": "1.4.0",
+  "info": {
+    "title": "Petstore",
+    "description": "A sample JSON-RPC API for managing pets",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Petstore Support",
+      "url": "https://petstore.example.com/support",
+      "email": "support@petstore.example.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "termsOfService": "https://petstore.example.com/tos"
+  },
+  "servers": [
+    {
+      "name": "Production",
+      "url": "https://api.petstore.example.com/rpc",
+      "summary": "Production server",
+      "description": "The main production JSON-RPC server",
+      "variables": {
+        "version": {
+          "default": "v1",
+          "description": "API version",
+          "enum": ["v1", "v2"]
+        }
+      }
+    }
+  ],
+  "methods": [
+    {
+      "name": "listPets",
+      "summary": "List all pets",
+      "description": "Returns all pets from the system that the user has access to",
+      "tags": [
+        {
+          "name": "pets",
+          "description": "Pet operations"
+        }
+      ],
+      "params": [
+        {
+          "name": "limit",
+          "description": "How many items to return at one time (max 100)",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      ],
+      "result": {
+        "name": "pets",
+        "description": "A list of pets",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Pet"
+          }
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/NotFound"
+        }
+      ],
+      "examples": [
+        {
+          "name": "listPetsExample",
+          "summary": "Example of listing pets",
+          "params": [
+            {
+              "name": "limitExample",
+              "value": 10
+            }
+          ],
+          "result": {
+            "name": "petsResult",
+            "value": [
+              {
+                "id": 1,
+                "name": "Fido",
+                "tag": "dog"
+              },
+              {
+                "id": 2,
+                "name": "Whiskers",
+                "tag": "cat"
+              }
+            ]
+          }
+        }
+      ],
+      "links": [
+        {
+          "name": "getPetById",
+          "description": "The id value returned can be used to fetch the pet",
+          "method": "getPet",
+          "params": {
+            "petId": "$result.0.id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "getPet",
+      "summary": "Get a pet by ID",
+      "description": "Returns a single pet",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "petId",
+          "description": "The ID of the pet to retrieve",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "pet",
+        "description": "A single pet",
+        "schema": {
+          "$ref": "#/components/schemas/Pet"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/NotFound"
+        }
+      ]
+    },
+    {
+      "name": "createPet",
+      "summary": "Create a new pet",
+      "description": "Creates a new pet in the store",
+      "params": [
+        {
+          "name": "name",
+          "description": "The name of the pet",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "tag",
+          "description": "The tag of the pet",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "pet",
+        "description": "The created pet",
+        "schema": {
+          "$ref": "#/components/schemas/Pet"
+        }
+      },
+      "errors": [
+        {
+          "code": -32602,
+          "message": "Invalid params"
+        }
+      ],
+      "x-custom-extension": "custom-value"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "errors": {
+      "NotFound": {
+        "code": -32001,
+        "message": "Resource not found"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find more info here",
+    "url": "https://petstore.example.com/docs"
+  }
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "__type": "AddOneOfInMessageCommand",
+    "_parentPath": "/channels[999testtest99]/publish/message",
+    "_newOneOf":
+          {
+            "$ref": "#/components/messages/PhoneNumberChanged"
+          }
+  }
+]

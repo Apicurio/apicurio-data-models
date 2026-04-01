@@ -1,0 +1,17 @@
+{
+  "swagger" : "2.0",
+  "host": "petstore.swagger.io",
+  "basePath": "/v2",
+  "schemes": [ "http" ],
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "deprecated": false,
+        "schemes": [ "ws", "wss" ]
+      }
+    }
+  }
+}

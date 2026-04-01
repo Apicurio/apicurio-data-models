@@ -1,0 +1,33 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Param Examples (Unit Tests)",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/test": {
+            "parameters": [
+                {
+                    "name": "qparam1",
+                    "description": "",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "query",
+                    "required": true,
+                    "examples": {
+                        "bar": {
+                            "summary": "Bar Example",
+                            "description": "The bar example!",
+                            "value": {
+                                "property1": "hello",
+                                "property2": "world",
+                                "property3": true
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

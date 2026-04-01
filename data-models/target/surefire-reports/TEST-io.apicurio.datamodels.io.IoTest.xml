@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="io.apicurio.datamodels.io.IoTest" time="0.3" tests="216" errors="0" skipped="0" failures="0" flakes="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/test-classes:/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/classes:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-core/6.3.0/jsweet-core-6.3.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-transpiler/3.1.0/jsweet-transpiler-3.1.0.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-text/1.3/commons-text-1.3.jar:/home/ewittman/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/ewittman/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/ewittman/.m2/repository/com/martiansoftware/jsap/2.1/jsap-2.1.jar:/home/ewittman/.m2/repository/org/jsweet/ext/typescript.java-ts.core/2.0.3/typescript.java-ts.core-2.0.3.jar:/home/ewittman/.m2/repository/com/eclipsesource/minimal-json/minimal-json/0.9.4/minimal-json-0.9.4.jar:/home/ewittman/.m2/repository/org/tukaani/xz/1.8/xz-1.8.jar:/home/ewittman/.m2/repository/org/jsweet/ext/sourcemap-builder/1.0.0/sourcemap-builder-1.0.0.jar:/home/ewittman/.m2/repository/org/osgi/org.osgi.core/4.3.0/org.osgi.core-4.3.0.jar:/home/ewittman/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ewittman/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar:/home/ewittman/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/home/ewittman/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/home/ewittman/.sdkman/candidates/java/25.0.2-tem/lib"/>
+    <property name="sun.java.command" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire/surefirebooter-20260401134248317_3.jar /home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire 2026-04-01T13-42-48_288-jvmRun1 surefire-20260401134248317_1tmp surefire_0-20260401134248317_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/test-classes:/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/classes:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-core/6.3.0/jsweet-core-6.3.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-transpiler/3.1.0/jsweet-transpiler-3.1.0.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-text/1.3/commons-text-1.3.jar:/home/ewittman/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/ewittman/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/ewittman/.m2/repository/com/martiansoftware/jsap/2.1/jsap-2.1.jar:/home/ewittman/.m2/repository/org/jsweet/ext/typescript.java-ts.core/2.0.3/typescript.java-ts.core-2.0.3.jar:/home/ewittman/.m2/repository/com/eclipsesource/minimal-json/minimal-json/0.9.4/minimal-json-0.9.4.jar:/home/ewittman/.m2/repository/org/tukaani/xz/1.8/xz-1.8.jar:/home/ewittman/.m2/repository/org/jsweet/ext/sourcemap-builder/1.0.0/sourcemap-builder-1.0.0.jar:/home/ewittman/.m2/repository/org/osgi/org.osgi.core/4.3.0/org.osgi.core-4.3.0.jar:/home/ewittman/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ewittman/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar:/home/ewittman/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/home/ewittman/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ewittman"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-01-20"/>
+    <property name="java.home" value="/home/ewittman/.sdkman/candidates/java/25.0.2-tem"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire/surefirebooter-20260401134248317_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="25.0.2+10-LTS"/>
+    <property name="user.name" value="ewittman"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.19.9-200.fc43.x86_64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-25.0.2+10"/>
+    <property name="localRepository" value="/home/ewittman/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="25.0.2"/>
+    <property name="user.dir" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="25.0.2+10-LTS"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="[AsyncAPI 2] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 2] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 2] Simple Info With Extra Properties" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 2] Simple Info With Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 3] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 3] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 3] Simple Info With Extra Properties" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 3] Simple Info With Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 2] Complete anyof" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[AsyncAPI 2] Complete application-headers" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete Info" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete correlation-id" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 2] Complete gitter-streaming" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[AsyncAPI 2] Complete not" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete oneof" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete rpc-client" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete rpc-server" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 2] Complete slack-rtm" classname="io.apicurio.datamodels.io.IoTest" time="0.007"/>
+  <testcase name="[AsyncAPI 2] Complete streetlights" classname="io.apicurio.datamodels.io.IoTest" time="0.008"/>
+  <testcase name="[AsyncAPI 3] Adeo Kafka Request" classname="io.apicurio.datamodels.io.IoTest" time="0.024"/>
+  <testcase name="[AsyncAPI 3] AnyOf" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 3] App Headers" classname="io.apicurio.datamodels.io.IoTest" time="0.003"/>
+  <testcase name="[AsyncAPI 3] Correlation ID" classname="io.apicurio.datamodels.io.IoTest" time="0.003"/>
+  <testcase name="[AsyncAPI 3] Gitter Streaming" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[AsyncAPI 3] Mercure" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 3] Not" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 3] OneOf" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 3] Operation Security" classname="io.apicurio.datamodels.io.IoTest" time="0.003"/>
+  <testcase name="[AsyncAPI 3] RPC Client" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 3] RPC Server" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[AsyncAPI 3] Simple" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[AsyncAPI 3] Slack RTM" classname="io.apicurio.datamodels.io.IoTest" time="0.013"/>
+  <testcase name="[AsyncAPI 3] Streetlights Kafka" classname="io.apicurio.datamodels.io.IoTest" time="0.006"/>
+  <testcase name="[AsyncAPI 3] Streetlights MQTT" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[AsyncAPI 3] Streetlights OpSec" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[AsyncAPI 3] Websocket Gemini" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[OpenAPI 2] Simple - External Docs" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Simple - Info + Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Simple - Info" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Simple - - Security" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Simple - Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Extra Properties" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Full - Meerkat" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[OpenAPI 2] Full - Apistrat" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 2] Complete - Security Defs" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Complete - Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Full - Trade Gov" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Full - Pet Store" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[OpenAPI 2] Full - Hairmare.ch" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Full - Weatherbit" classname="io.apicurio.datamodels.io.IoTest" time="0.008"/>
+  <testcase name="[OpenAPI 2] JSON Schema - BASIC" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] JSON Schema - fstab" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] JSON Schema - Products" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] JSON Schema - Primitive" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - Additional Props" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - AllOf" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - Composition" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Schema - Example" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Schema - External Docs" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - MetaData" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - Polymorphism" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Schema - XML" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Schema - Example [1]" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Parameters - Array Param" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Parameters - Spec Example 1" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - All Ops" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Default Response" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Empty" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - External Docs" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Get + Params" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Get + Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Get" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - Path + Params" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - $ref" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - Response + Examples" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Response + Headers" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Response + $ref" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - Response + Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Responses + Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Paths - Responses" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Security" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Paths - Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 2] Responses - Spec Examples [All]" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Responses - Spec Example 1" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 2] Security Definitions" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Complete - Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Callbacks" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Empty" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Examples" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Headers" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Links" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Parameters" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Ref Loops" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Request Bodies" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Responses" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Schemas Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Components - Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Components - Security Schemes" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - All Operations" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - Empty" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Callbacks" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - GET Parameters" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Request Body Content" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 3] Paths - GET Request Body Example" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - GET Request Body" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Response Content" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - GET Response Headers" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - GET Response Links" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Responses" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Security Anon" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - GET Security" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET Servers" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - GET" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - Parameters" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - Ref" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Paths - Servers" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Paths - Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Discriminator" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Additional Properties" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Simple External Docs" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Simple Info + Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Simple Security" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Simple Servers" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Simple Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3] Extra Properties" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3.1] All Of Self Ref" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[OpenAPI 3.2] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Simple Tags" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 3.2] Simple Servers" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Simple Self" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenAPI 3.2] Simple Security" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Paths - All Operations" classname="io.apicurio.datamodels.io.IoTest" time="0.003"/>
+  <testcase name="[OpenAPI 3.2] Paths - Query Operation" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[OpenAPI 3.2] Paths - Additional Operations" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Components - Media Types" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 3.2] Item Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 3.2] Discriminator Default Mapping" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] XML Node Type" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Security Scheme Enhancements" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[OpenAPI 3.2] Example Enhancements" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Response Summary" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenAPI 3.2] Complete 3.2" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenRPC 1.3] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenRPC 1.3] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenRPC 1.3] Simple Info With Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenRPC 1.3] Complete Petstore" classname="io.apicurio.datamodels.io.IoTest" time="0.006"/>
+  <testcase name="[OpenRPC 1.4] Simplest" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenRPC 1.4] Simple Info" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[OpenRPC 1.4] Simple Info With Extensions" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[OpenRPC 1.4] Complete Petstore" classname="io.apicurio.datamodels.io.IoTest" time="0.01"/>
+  <testcase name="[JSON Schema Draft-4] Meta Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[JSON Schema Draft-4] Test Suite Integer" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore Babelrc" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore Bower" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore CoffeeLint" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore CSScomb" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore HTMLHint" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore Kustomization" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore SARIF 1.0" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore TSD" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore Web Manifest Combined" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-4] SchemaStore Web Manifest" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] VSCode Launch" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-4] Boolean Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-6] Meta Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[JSON Schema Draft-6] Hyper Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-6] Hyper Schema Links" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-6] Test Suite Integer" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-6] Boolean Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] GeoJSON" classname="io.apicurio.datamodels.io.IoTest" time="0.007"/>
+  <testcase name="[JSON Schema Draft-7] GeoJSON Feature" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] GeoJSON Feature Collection" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] GeoJSON Point" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-7] GeoJSON Polygon" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Chrome Manifest" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Container Structure Test" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Dependabot 2.0" classname="io.apicurio.datamodels.io.IoTest" time="0.004"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore ESLintrc" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Jekyll" classname="io.apicurio.datamodels.io.IoTest" time="0.003"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore JSDoc" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Lerna" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Nodemon" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema Draft-7] SchemaStore Pubspec" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] Meta Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema Draft-7] Boolean Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.005"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Applicator" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Content" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Core" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Format" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Test Suite Dependent Required" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Test Suite Ignore Ref Sibling" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2019-09] Test Suite Integer" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Meta Data" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2019-09] Meta Schema Validation" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2019-09] Boolean Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema" classname="io.apicurio.datamodels.io.IoTest" time="0.002"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Applicator" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Content" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Core" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Format Annotation" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Format Assertion" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Unevaluated" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Test Suite Format Assertion True" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Test Suite Integer" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Test Suite Nested Prefix Items" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2020-12] Test Suite Ref and Defs" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] SchemaStore YAMLLint" classname="io.apicurio.datamodels.io.IoTest" time="0.006"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Meta Data" classname="io.apicurio.datamodels.io.IoTest" time="0.0"/>
+  <testcase name="[JSON Schema 2020-12] Meta Schema Validation" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+  <testcase name="[JSON Schema 2020-12] Boolean Schemas" classname="io.apicurio.datamodels.io.IoTest" time="0.001"/>
+</testsuite>

@@ -1,0 +1,27 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/{userId}": {
+      "parameters": {
+        "userId": {
+          "description": "This is a \u0000 bad description with control characters",
+          "location": "$message.payload#/userId",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "publish": {
+        "message": {
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "swagger": "2.0",
+  "parameters": {
+    "BodyParam": {
+      "name": "mybody",
+      "in": "body",
+      "description": "a re-usable request body parameter",
+      "schema": {
+        "type": "integer",
+        "format": "int32"
+      }
+    },
+    "QueryParam": {
+      "name": "limit",
+      "in": "query",
+      "description": "max records to return",
+      "required": true,
+      "type": "integer",
+      "format": "int32"
+    }
+  }
+}

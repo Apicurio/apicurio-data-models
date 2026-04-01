@@ -1,0 +1,29 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title": "Sample Pet Store App",
+    "description": "This is a sample server for a pet store.",
+    "termsOfService": "http://example.com/terms/",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.example.com/support",
+      "email": "support@example.com",
+      "extra-object-property": {
+        "sub-prop-1": 17,
+        "sub-object": {
+          "one": 1,
+          "two": 2,
+          "three": "three"
+        }
+      },
+      "x-not-an-extra-property": "Instead, this is a valid extension property."
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.1",
+    "extra-property-1": "foo",
+    "extra-property-2": true
+  }
+}

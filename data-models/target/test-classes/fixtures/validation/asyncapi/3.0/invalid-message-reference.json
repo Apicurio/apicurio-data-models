@@ -1,0 +1,25 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userSignup": {
+      "address": "/user/signup"
+    }
+  },
+  "operations": {
+    "sendUserSignup": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/userSignup"
+      },
+      "messages": [
+        {
+          "$ref": "#/components/messages/nonExistentMessage"
+        }
+      ]
+    }
+  }
+}

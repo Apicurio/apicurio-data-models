@@ -1,0 +1,26 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/{userId}": {
+      "parameters": {
+        "userId": {
+          "description": "The ID of the user",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "publish": {
+        "message": {
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

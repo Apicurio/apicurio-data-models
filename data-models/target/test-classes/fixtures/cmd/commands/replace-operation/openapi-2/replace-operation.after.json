@@ -1,0 +1,15 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "Do A Thing",
+        "description": "Totally does a thing",
+        "operationId": "doAThing",
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  }
+}

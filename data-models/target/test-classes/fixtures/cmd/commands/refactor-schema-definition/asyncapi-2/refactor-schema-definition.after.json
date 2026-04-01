@@ -1,0 +1,39 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test AsyncAPI",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "widgets/created": {
+      "publish": {
+        "message": {
+          "$ref": "#/components/schemas/NewName"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OtherSchema": {
+        "type": "object",
+        "properties": {
+          "widget": {
+            "$ref": "#/components/schemas/NewName"
+          }
+        }
+      },
+      "NewName": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

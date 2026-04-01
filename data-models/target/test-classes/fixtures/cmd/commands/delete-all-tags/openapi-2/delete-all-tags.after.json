@@ -1,0 +1,15 @@
+{
+    "swagger":"2.0",
+    "info":{
+        "description":"This is a sample server Petstore server via JSON.",
+        "version":"1.0.0",
+        "title":"Swagger Petstore (JSON)"
+    },
+    "host":"petstore.swagger.io",
+    "basePath":"/v2",
+    "schemes":[
+        "http"
+    ],
+    "paths":{
+    }
+}

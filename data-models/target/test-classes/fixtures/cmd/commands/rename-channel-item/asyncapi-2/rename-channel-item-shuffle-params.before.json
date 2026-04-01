@@ -1,0 +1,27 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "empty aai",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "{someSource}/user/{userId}/signedin/{shouldBeRenamed}/{byeBye}": {
+      "parameters": {
+        "userId": {
+          "description": "shuffled1"
+        },
+        "someSource": {
+          "description": "shuffled2"
+        },
+        "shouldBeRenamed": {
+          "description": "should be renamed"
+        },
+        "byeBye": {
+          "description": "should be deleted"
+        }
+      }
+    }
+  },
+  "components": {
+  }
+}

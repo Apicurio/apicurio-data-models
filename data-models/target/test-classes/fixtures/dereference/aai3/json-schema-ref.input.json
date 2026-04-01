@@ -1,0 +1,26 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userEvents": {
+      "address": "user/events",
+      "messages": {
+        "userCreated": {
+          "$ref": "#/components/messages/UserCreatedMessage"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "UserCreatedMessage": {
+        "payload": {
+          "$ref": "http://www.example.com/schemas/json.json#/components/schemas/User"
+        }
+      }
+    }
+  }
+}

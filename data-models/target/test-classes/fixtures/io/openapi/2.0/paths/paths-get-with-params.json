@@ -1,0 +1,59 @@
+{
+  "swagger" : "2.0",
+  "paths" : {
+    "/pets": {
+      "get": {
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "operationId": "listPets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http", "https"
+        ],
+        "parameters" : [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "token to be passed as a header",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "csv"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "user to add to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "allowEmptyValue": false
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "ID of the object to fetch",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "$ref": "#/parameters/qinfo"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+[AAFLOW-001] |medium| {/components/securitySchemes[oauth2]/flows/implicit->scopes} :: OAuth flow uses incorrect scopes property: AsyncAPI 2.x uses 'scopes', 3.0 uses 'availableScopes'.

@@ -1,0 +1,5 @@
+[{
+    "__type": "RefactorRequestBodyDefinitionCommand",
+    "_oldName": "WidgetBody",
+    "_newName": "CreateWidgetBody"
+}]

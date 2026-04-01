@@ -1,0 +1,1 @@
+[INF-005] |medium| {/info->tags} :: The 'tags' property is only allowed in AsyncAPI 3.0, not in 2.x.

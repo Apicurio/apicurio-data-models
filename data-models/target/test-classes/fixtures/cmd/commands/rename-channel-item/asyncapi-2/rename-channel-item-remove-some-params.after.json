@@ -1,0 +1,15 @@
+{
+    "asyncapi": "2.0.0",
+    "info": {
+        "title": "empty aai",
+        "version": "1.0.0"
+    },
+    "channels": {
+        "user/signedin": {
+            "parameters": {
+                "dummy": {}
+            }}
+    },
+    "components": {
+    }
+}

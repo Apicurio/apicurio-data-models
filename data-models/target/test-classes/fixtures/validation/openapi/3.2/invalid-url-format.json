@@ -1,0 +1,60 @@
+{
+    "openapi": "3.2.0",
+    "info": {
+        "title": "Invalid URL Format Test",
+        "version": "1.0.0"
+    },
+    "paths": {},
+    "components": {
+        "securitySchemes": {
+            "ValidOAuth2Metadata": {
+                "type": "oauth2",
+                "oauth2MetadataUrl": "https://example.com/.well-known/oauth-authorization-server",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "InvalidOAuth2Metadata": {
+                "type": "oauth2",
+                "oauth2MetadataUrl": "not a valid url",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "InvalidDeviceAuthUrl": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "deviceAuthorizationUrl": "not a valid url",
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            },
+            "ValidDeviceAuthUrl": {
+                "type": "oauth2",
+                "flows": {
+                    "deviceAuthorization": {
+                        "deviceAuthorizationUrl": "https://example.com/device/authorize",
+                        "tokenUrl": "https://example.com/token",
+                        "scopes": {
+                            "read": "Read access"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

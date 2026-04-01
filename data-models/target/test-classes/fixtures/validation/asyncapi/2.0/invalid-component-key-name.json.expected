@@ -1,0 +1,3 @@
+[COMP-001] |medium| {/components->schemas[Invalid Schema]} :: Component key "Invalid Schema" does not match the required pattern ^[a-zA-Z0-9\.\-_]+$
+[COMP-001] |medium| {/components->messages[Invalid:Message]} :: Component key "Invalid:Message" does not match the required pattern ^[a-zA-Z0-9\.\-_]+$
+[COMP-001] |medium| {/components->securitySchemes[invalid scheme]} :: Component key "invalid scheme" does not match the required pattern ^[a-zA-Z0-9\.\-_]+$

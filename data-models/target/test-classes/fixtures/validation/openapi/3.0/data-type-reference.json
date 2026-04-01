@@ -1,0 +1,78 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Simple Data Type Reference Test",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "responses": {
+                    "404": {
+                        "$ref": "#/components/responses/ExternalNotFoundRef"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Widget": {
+                "title": "Root Type for Widget",
+                "description": "The widget.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "Foo"
+                }
+            },
+            "WidgetRef": {
+                "$ref": "#/components/schemas/Widget"
+            },
+            "ExternalWidgetRef": {
+                "$ref": "test:_external-types.json#/components/schemas/Widget"
+            },
+            "WidgetRefRef": {
+                "$ref": "#/components/schemas/WidgetRef"
+            },
+            "RefConsumer": {
+                "title": "Root Type for RefConsumer",
+                "description": "Uses all the data types in several properties.",
+                "type": "object",
+                "properties": {
+                    "widget": {
+                        "$ref": "#/components/schemas/Widget"
+                    },
+                    "widget-ref": {
+                        "$ref": "#/components/schemas/WidgetRef"
+                    },
+                    "external-widget-ref": {
+                        "$ref": "#/components/schemas/ExternalWidgetRef"
+                    },
+                    "widget-ref-ref": {
+                        "$ref": "#/components/schemas/WidgetRefRef"
+                    }
+                },
+                "example": {}
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "description": "Re-usable 404 response."
+            },
+            "ExternalNotFoundRef": {
+                "$ref": "test:_external-types.json#/components/responses/NotFound"
+            },
+            "NotFoundRef": {
+                "$ref": "#/components/responses/NotFound"
+            },
+            "NotFoundRefRef": {
+                "$ref": "#/components/responses/NotFoundRef"
+            }
+        }
+    }
+}

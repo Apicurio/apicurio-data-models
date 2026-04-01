@@ -1,0 +1,83 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Issue 804",
+        "version": "1.0.0",
+        "description": "This is a simple 2.0 API definition."
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/widgets": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response - returns an array of `Widget` entities.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Widget"
+                            }
+                        }
+                    }
+                },
+                "operationId": "getWidgets",
+                "summary": "List All Widgets",
+                "description": "Gets a list of all `Widget` entities."
+            }
+        },
+        "/widgets/{widgetId}": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "formData1",
+                        "description": "",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created."
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "widgetId",
+                    "description": "A unique identifier for a `Widget`.",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Widget": {
+            "title": "Root Type for Widget",
+            "description": "A very simple, generic data type.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the widget.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the widget.",
+                    "type": "string"
+                }
+            },
+            "example": "{\n    \"name\": \"My Widget\",\n    \"description\": \"Just a little widget for your review.\"\n}"
+        }
+    }
+}

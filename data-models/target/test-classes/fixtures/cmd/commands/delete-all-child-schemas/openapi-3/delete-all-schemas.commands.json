@@ -1,0 +1,5 @@
+[{
+    "__type": "DeleteAllChildSchemasCommand",
+    "_schemaPath": "/components/schemas[SampleDataType]",
+    "_childSchemaType": "anyOf"
+}]

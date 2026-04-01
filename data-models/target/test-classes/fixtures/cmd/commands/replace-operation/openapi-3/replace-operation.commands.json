@@ -1,0 +1,12 @@
+[
+    {
+        "__type": "ReplaceOperationCommand",
+        "_nodePath": "/paths[/foo]/get",
+        "_new": {
+            "summary": "Do A Thing",
+            "description": "Totally does a thing",
+            "operationId": "doAThing",
+            "deprecated": true
+        }
+    }
+]

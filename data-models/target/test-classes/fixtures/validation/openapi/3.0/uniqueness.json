@@ -1,0 +1,59 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "description": "A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification"
+  },
+  "paths": {
+    "/foo": {
+      "get": {
+        "operationId": "fooId",
+        "description": "Returns all pets from the system that the user has access to",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/bar": {
+      "get": {
+        "operationId": "fooId",
+        "description": "Does something totally great.",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    },
+    "/baz": {
+      "get": {
+        "operationId": "fooName",
+        "description": "Does something totally great.",
+        "responses": {
+          "default": {
+            "description": "..."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+  },
+  "tags": [
+    {
+      "name": "MyTag",
+      "description": "Desc of my tag."
+    },
+    {
+      "name": "MyOtherTag",
+      "description": "Something here."
+    },
+    {
+      "name": "MyTag",
+      "description": "Oh no, violation of tag-003"
+    }
+  ]
+}

@@ -1,0 +1,1371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="io.apicurio.datamodels.cmd.CommandTest" time="0.284" tests="187" errors="0" skipped="0" failures="0" flakes="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/test-classes:/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/classes:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-core/6.3.0/jsweet-core-6.3.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-transpiler/3.1.0/jsweet-transpiler-3.1.0.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-text/1.3/commons-text-1.3.jar:/home/ewittman/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/ewittman/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/ewittman/.m2/repository/com/martiansoftware/jsap/2.1/jsap-2.1.jar:/home/ewittman/.m2/repository/org/jsweet/ext/typescript.java-ts.core/2.0.3/typescript.java-ts.core-2.0.3.jar:/home/ewittman/.m2/repository/com/eclipsesource/minimal-json/minimal-json/0.9.4/minimal-json-0.9.4.jar:/home/ewittman/.m2/repository/org/tukaani/xz/1.8/xz-1.8.jar:/home/ewittman/.m2/repository/org/jsweet/ext/sourcemap-builder/1.0.0/sourcemap-builder-1.0.0.jar:/home/ewittman/.m2/repository/org/osgi/org.osgi.core/4.3.0/org.osgi.core-4.3.0.jar:/home/ewittman/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ewittman/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar:/home/ewittman/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/home/ewittman/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/home/ewittman/.sdkman/candidates/java/25.0.2-tem/lib"/>
+    <property name="sun.java.command" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire/surefirebooter-20260401134248317_3.jar /home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire 2026-04-01T13-42-48_288-jvmRun1 surefire-20260401134248317_1tmp surefire_0-20260401134248317_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/test-classes:/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/classes:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar:/home/ewittman/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-lang3/3.20.0/commons-lang3-3.20.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-core/6.3.0/jsweet-core-6.3.0.jar:/home/ewittman/.m2/repository/org/jsweet/jsweet-transpiler/3.1.0/jsweet-transpiler-3.1.0.jar:/home/ewittman/.m2/repository/org/apache/commons/commons-text/1.3/commons-text-1.3.jar:/home/ewittman/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/ewittman/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/ewittman/.m2/repository/com/martiansoftware/jsap/2.1/jsap-2.1.jar:/home/ewittman/.m2/repository/org/jsweet/ext/typescript.java-ts.core/2.0.3/typescript.java-ts.core-2.0.3.jar:/home/ewittman/.m2/repository/com/eclipsesource/minimal-json/minimal-json/0.9.4/minimal-json-0.9.4.jar:/home/ewittman/.m2/repository/org/tukaani/xz/1.8/xz-1.8.jar:/home/ewittman/.m2/repository/org/jsweet/ext/sourcemap-builder/1.0.0/sourcemap-builder-1.0.0.jar:/home/ewittman/.m2/repository/org/osgi/org.osgi.core/4.3.0/org.osgi.core-4.3.0.jar:/home/ewittman/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ewittman/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/ewittman/.m2/repository/commons-io/commons-io/2.21.0/commons-io-2.21.0.jar:/home/ewittman/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/home/ewittman/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ewittman"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-01-20"/>
+    <property name="java.home" value="/home/ewittman/.sdkman/candidates/java/25.0.2-tem"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models/target/surefire/surefirebooter-20260401134248317_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="25.0.2+10-LTS"/>
+    <property name="user.name" value="ewittman"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.19.9-200.fc43.x86_64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-25.0.2+10"/>
+    <property name="localRepository" value="/home/ewittman/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="25.0.2"/>
+    <property name="user.dir" value="/home/ewittman/git/apicurio/apicurio-data-models/data-models"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="25.0.2+10-LTS"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="[OpenAPI 2] {Change Property} - Add Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.017">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Property} - Add Property
+|INFO| [ChangePropertyCommand] Executing.
+|INFO| [ChangePropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Property} - Change Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Property} - Change Property
+|INFO| [ChangePropertyCommand] Executing.
+|INFO| [ChangePropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Property} - Add Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Property} - Add Property
+|INFO| [ChangePropertyCommand] Executing.
+|INFO| [ChangePropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Property} - Change Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Property} - Change Property
+|INFO| [ChangePropertyCommand] Executing.
+|INFO| [ChangePropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Change Property} - Change $ref" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.007">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Change Property} - Change $ref
+|INFO| [ChangePropertyCommand] Executing.
+|INFO| [ChangePropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Description} - Add Description" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Description} - Add Description
+|INFO| [ChangeDescriptionCommand] Executing.
+|INFO| [ChangeDescriptionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Description} - Change Description" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Description} - Change Description
+|INFO| [ChangeDescriptionCommand] Executing.
+|INFO| [ChangeDescriptionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Description} - Add Description" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Description} - Add Description
+|INFO| [ChangeDescriptionCommand] Executing.
+|INFO| [ChangeDescriptionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Description} - Change Description" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Description} - Change Description
+|INFO| [ChangeDescriptionCommand] Executing.
+|INFO| [ChangeDescriptionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Title} - Add Title" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Title} - Add Title
+|INFO| [ChangeTitleCommand] Executing.
+|INFO| [ChangeTitleCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Title} - Change Title" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Title} - Change Title
+|INFO| [ChangeTitleCommand] Executing.
+|INFO| [ChangeTitleCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Title} - Add Title" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Title} - Add Title
+|INFO| [ChangeTitleCommand] Executing.
+|INFO| [ChangeTitleCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Title} - Change Title" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Title} - Change Title
+|INFO| [ChangeTitleCommand] Executing.
+|INFO| [ChangeTitleCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Version} - Add Version" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Version} - Add Version
+|INFO| [ChangeVersionCommand] Executing.
+|INFO| [ChangeVersionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Version} - Change Version" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Version} - Change Version
+|INFO| [ChangeVersionCommand] Executing.
+|INFO| [ChangeVersionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Version} - Add Version" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Version} - Add Version
+|INFO| [ChangeVersionCommand] Executing.
+|INFO| [ChangeVersionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Version} - Change Version" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Version} - Change Version
+|INFO| [ChangeVersionCommand] Executing.
+|INFO| [ChangeVersionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Contact Info} - Add Contact Info" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Contact Info} - Add Contact Info
+|INFO| [ChangeContactCommand] Executing.
+|INFO| [ChangeContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change Contact Info} - Update Contact Info" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change Contact Info} - Update Contact Info
+|INFO| [ChangeContactCommand] Executing.
+|INFO| [ChangeContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Contact Info} - Add Contact Info" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Contact Info} - Add Contact Info
+|INFO| [ChangeContactCommand] Executing.
+|INFO| [ChangeContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Contact Info} - Update Contact Info" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Contact Info} - Update Contact Info
+|INFO| [ChangeContactCommand] Executing.
+|INFO| [ChangeContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change License} - Add License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change License} - Add License
+|INFO| [ChangeLicenseCommand] Executing.
+|INFO| [ChangeLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Change License} - Change License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Change License} - Change License
+|INFO| [ChangeLicenseCommand] Executing.
+|INFO| [ChangeLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change License} - Add License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change License} - Add License
+|INFO| [ChangeLicenseCommand] Executing.
+|INFO| [ChangeLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change License} - Change License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change License} - Change License
+|INFO| [ChangeLicenseCommand] Executing.
+|INFO| [ChangeLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Set External Docs} - Set External Docs" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.003">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Set External Docs} - Set External Docs
+|INFO| [SetExternalDocsCommand] Executing.
+|INFO| [SetExternalDocsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Set External Docs} - Update External Docs" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Set External Docs} - Update External Docs
+|INFO| [SetExternalDocsCommand] Executing.
+|INFO| [SetExternalDocsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete License} - Delete License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.02">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete License} - Delete License
+|INFO| [DeleteLicenseCommand] Executing.
+|INFO| [DeleteLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete License} - Delete License" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete License} - Delete License
+|INFO| [DeleteLicenseCommand] Executing.
+|INFO| [DeleteLicenseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete Contact} - Delete Contact" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.007">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete Contact} - Delete Contact
+|INFO| [DeleteContactCommand] Executing.
+|INFO| [DeleteContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Contact} - Delete Contact NA" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Contact} - Delete Contact NA
+|INFO| [DeleteContactCommand] Executing.
+|INFO| [DeleteContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Contact} - Delete Contact" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Contact} - Delete Contact
+|INFO| [DeleteContactCommand] Executing.
+|INFO| [DeleteContactCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete Extension} - Delete Extension" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.003">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete Extension} - Delete Extension
+|INFO| [DeleteExtensionCommand] Executing.
+|INFO| [DeleteExtensionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Extension} - Delete Extension" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.007">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Extension} - Delete Extension
+|INFO| [DeleteExtensionCommand] Executing.
+|INFO| [DeleteExtensionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Media Type} - Delete Media Type Request Body" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Media Type} - Delete Media Type Request Body
+|INFO| [DeleteMediaTypeCommand] Executing.
+|INFO| [DeleteMediaTypeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Media Type} - Delete Media Type Response" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Media Type} - Delete Media Type Response
+|INFO| [DeleteMediaTypeCommand] Executing.
+|INFO| [DeleteMediaTypeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Child Schemas} - All Of" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Child Schemas} - All Of
+|INFO| [DeleteAllChildSchemasCommand] Executing.
+|INFO| [DeleteAllChildSchemasCommand] Reverting.
+]]></system-out>
+    <system-err><![CDATA[|WARN| Failed to set property 'anyOf' on Node 'OpenApi30SchemaImpl': Could not find setter setAnyOf
+]]></system-err>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Examples} - Delete All Examples" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Examples} - Delete All Examples
+|INFO| [DeleteAllExamplesCommand] Executing.
+|INFO| [DeleteAllExamplesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Extensions} - Delete All Extensions" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Extensions} - Delete All Extensions
+|INFO| [DeleteAllExtensionsCommand] Executing.
+|INFO| [DeleteAllExtensionsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Headers} - Delete All Headers Response" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Headers} - Delete All Headers Response
+|INFO| [DeleteAllHeadersCommand] Executing.
+|INFO| [DeleteAllHeaders] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Operations} - Delete All Operations" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.012">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Operations} - Delete All Operations
+|INFO| [DeleteAllOperationsCommand] Executing.
+|INFO| [DeleteAllOperationsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Operations} - Delete All Operations" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.004">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Operations} - Delete All Operations
+|INFO| [DeleteAllOperationsCommand] Executing.
+|INFO| [DeleteAllOperationsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Params} - Delete All Params" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.012">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Params} - Delete All Params
+|INFO| [DeleteAllParameters] Executing.
+|INFO| [DeleteAllParameters] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Params} - Delete All Params" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Params} - Delete All Params
+|INFO| [DeleteAllParameters] Executing.
+|INFO| [DeleteAllParameters] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Properties} - Delete All Properties" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.011">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Properties} - Delete All Properties
+|INFO| [DeleteAllPropertiesCommand] Executing.
+|INFO| [DeleteAllPropertiesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Properties} - Delete All Properties" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.003">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Properties} - Delete All Properties
+|INFO| [DeleteAllPropertiesCommand] Executing.
+|INFO| [DeleteAllPropertiesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete All Properties} - Delete All Properties" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.008">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete All Properties} - Delete All Properties
+|INFO| [DeleteAllPropertiesCommand] Executing.
+|INFO| [DeleteAllPropertiesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Responses} - Delete All Responses" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.006">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Responses} - Delete All Responses
+|INFO| [DeleteAllResponsesCommand] Executing.
+|INFO| [DeleteAllResponsesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Responses} - Delete All Responses" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.005">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Responses} - Delete All Responses
+|INFO| [DeleteAllResponsesCommand] Executing.
+|INFO| [DeleteAllResponsesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Security Requirements} - Delete All Security Requirements" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Security Requirements} - Delete All Security Requirements
+|INFO| [DeleteAllSecurityRequirementsCommand] Executing.
+|INFO| [DeleteAllSecurityRequirementsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements Op" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements Op
+|INFO| [DeleteAllSecurityRequirementsCommand] Executing.
+|INFO| [DeleteAllSecurityRequirementsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Security Requirements} - Delete All Security Requirements
+|INFO| [DeleteAllSecurityRequirementsCommand] Executing.
+|INFO| [DeleteAllSecurityRequirementsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.004">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete All Security Requirements} - Delete All Security Requirements
+|INFO| [DeleteAllSecurityRequirementsCommand] Executing.
+|INFO| [DeleteAllSecurityRequirementsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Security Schemes} - Delete All Security Schemes" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Security Schemes} - Delete All Security Schemes
+|INFO| [DeleteAllSecuritySchemesCommand] Executing.
+|INFO| [DeleteAllSecuritySchemesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Security Schemes} - Delete All Security Schemes" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Security Schemes} - Delete All Security Schemes
+|INFO| [DeleteAllSecuritySchemesCommand] Executing.
+|INFO| [DeleteAllSecuritySchemesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete All Security Schemes} - Delete All Security Schemes
+|INFO| [DeleteAllSecuritySchemesCommand] Executing.
+|INFO| [DeleteAllSecuritySchemesCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete All Tags} - Delete All Tags" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete All Tags} - Delete All Tags
+|INFO| [DeleteAllTagsCommand] Executing.
+|INFO| [DeleteAllTagsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Tags} - Delete All Tags" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Tags} - Delete All Tags
+|INFO| [DeleteAllTagsCommand] Executing.
+|INFO| [DeleteAllTagsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Servers} - Delete All Servers Document" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Servers} - Delete All Servers Document
+|INFO| [DeleteAllServersCommand] Executing.
+|INFO| [DeleteAllServersCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Servers} - Delete All Servers Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Servers} - Delete All Servers Operation
+|INFO| [DeleteAllServersCommand] Executing.
+|INFO| [DeleteAllServersCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete All Servers} - Delete All Servers Path Item
+|INFO| [DeleteAllServersCommand] Executing.
+|INFO| [DeleteAllServersCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Example Exists" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Example Exists
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Example First" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Example First
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Example" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Example
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Param Example" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Param Example
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Param Example Multi" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Param Example Multi
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example} - Add Param Example Exists" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example} - Add Param Example Exists
+|INFO| [AddExampleCommand_30] Executing.
+|INFO| [AddExampleCommand_30] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Path Item} - Add Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Path Item} - Add Path Item
+|INFO| [AddPathItemCommand] Executing.
+|INFO| [AddPathItemCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Path Item} - Clone Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Path Item} - Clone Path Item
+|INFO| [AddPathItemCommand] Executing.
+|INFO| [AddPathItemCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Path Item} - Add Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Path Item} - Add Path Item
+|INFO| [AddPathItemCommand] Executing.
+|INFO| [AddPathItemCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Path Item} - Clone Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Path Item} - Clone Path Item
+|INFO| [AddPathItemCommand] Executing.
+|INFO| [AddPathItemCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Response Definition} - Add Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Response Definition} - Add Response Definition
+|INFO| [AddResponseDefinitionCommand] Executing.
+|INFO| [AddResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Response Definition} - Clone Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Response Definition} - Clone Response Definition
+|INFO| [AddResponseDefinitionCommand] Executing.
+|INFO| [AddResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Response Definition} - Add Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Response Definition} - Add Response Definition
+|INFO| [AddResponseDefinitionCommand] Executing.
+|INFO| [AddResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Response Definition} - Clone Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Response Definition} - Clone Response Definition
+|INFO| [AddResponseDefinitionCommand] Executing.
+|INFO| [AddResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Schema Property} - Add Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Schema Property} - Add Property
+|INFO| [AddSchemaPropertyCommand] Executing.
+|INFO| [AddSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Schema Property} - Add Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Schema Property} - Add Property
+|INFO| [AddSchemaPropertyCommand] Executing.
+|INFO| [AddSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete Schema Property} - Delete Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete Schema Property} - Delete Property
+|INFO| [DeleteSchemaPropertyCommand] Executing.
+|INFO| [DeleteSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Schema Property} - Delete Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Schema Property} - Delete Property
+|INFO| [DeleteSchemaPropertyCommand] Executing.
+|INFO| [DeleteSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Schema Property} - Delete Required Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Schema Property} - Delete Required Property
+|INFO| [DeleteSchemaPropertyCommand] Executing.
+|INFO| [DeleteSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Schema Property} - Delete Nonexistent Property" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Schema Property} - Delete Nonexistent Property
+|INFO| [DeleteSchemaPropertyCommand] Executing.
+|INFO| [DeleteSchemaPropertyCommand] Property 'status' not found on schema 'User'.
+|INFO| [DeleteSchemaPropertyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Parameter Definition} - Add Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Parameter Definition} - Add Parameter Definition
+|INFO| [AddParameterDefinitionCommand] Executing.
+|INFO| [AddParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Parameter Definition} - Add Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Parameter Definition} - Add Parameter Definition
+|INFO| [AddParameterDefinitionCommand] Executing.
+|INFO| [AddParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Add Parameter Definition} - Add Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Add Parameter Definition} - Add Parameter Definition
+|INFO| [AddParameterDefinitionCommand] Executing.
+|INFO| [AddParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Header Definition} - Add Header Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Header Definition} - Add Header Definition
+|INFO| [AddHeaderDefinitionCommand] Executing.
+|INFO| [AddHeaderDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Header Definition} - Add Header Definition (no components)" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Header Definition} - Add Header Definition (no components)
+|INFO| [AddHeaderDefinitionCommand] Executing.
+|INFO| [AddHeaderDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Delete Parameter Definition} - Delete Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Delete Parameter Definition} - Delete Parameter Definition
+|INFO| [DeleteParameterDefinitionCommand] Executing.
+|INFO| [DeleteParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Parameter Definition} - Delete Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Parameter Definition} - Delete Parameter Definition
+|INFO| [DeleteParameterDefinitionCommand] Executing.
+|INFO| [DeleteParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete Parameter Definition} - Delete Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete Parameter Definition} - Delete Parameter Definition
+|INFO| [DeleteParameterDefinitionCommand] Executing.
+|INFO| [DeleteParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Header Definition} - Delete Header Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Header Definition} - Delete Header Definition
+|INFO| [DeleteHeaderDefinitionCommand] Executing.
+|INFO| [DeleteHeaderDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Request Body Definition} - Delete Request Body Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Request Body Definition} - Delete Request Body Definition
+|INFO| [DeleteRequestBodyDefinitionCommand] Executing.
+|INFO| [DeleteRequestBodyDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Request Body Definition} - Add Request Body Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Request Body Definition} - Add Request Body Definition
+|INFO| [AddRequestBodyDefinitionCommand] Executing.
+|INFO| [AddRequestBodyDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Example Definition} - Add Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Example Definition} - Add Example Definition
+|INFO| [AddExampleDefinitionCommand] Executing.
+|INFO| [AddExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Example Definition} - Delete Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Example Definition} - Delete Example Definition
+|INFO| [DeleteExampleDefinitionCommand] Executing.
+|INFO| [DeleteExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Schema Definition} - Add Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Schema Definition} - Add Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Schema Definition} - Clone Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Schema Definition} - Clone Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Schema Definition} - Add Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Schema Definition} - Add Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Schema Definition} - Clone Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Schema Definition} - Clone Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Add Security Requirement} - Add Security Req" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Add Security Requirement} - Add Security Req
+|INFO| [AddSecurityRequirementCommand] Executing.
+|INFO| [AddSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Security Requirement} - Add Security Req Doc2" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Security Requirement} - Add Security Req Doc2
+|INFO| [AddSecurityRequirementCommand] Executing.
+|INFO| [AddSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Security Requirement} - Add Security Req Op" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Security Requirement} - Add Security Req Op
+|INFO| [AddSecurityRequirementCommand] Executing.
+|INFO| [AddSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Security Requirement} - Add Security Req" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Security Requirement} - Add Security Req
+|INFO| [AddSecurityRequirementCommand] Executing.
+|INFO| [AddSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Replace Operation} - Replace Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Replace Operation} - Replace Operation
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Replace Operation} - Replace Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Replace Operation} - Replace Operation
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Replace Path Item} - Replace Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Replace Path Item} - Replace Path Item
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Replace Path Item} - Replace Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Replace Path Item} - Replace Path Item
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Replace Schema Definition} - Replace Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Replace Schema Definition} - Replace Schema Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Replace Schema Definition} - Replace Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Replace Schema Definition} - Replace Schema Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Replace Response Definition} - Replace Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Replace Response Definition} - Replace Response Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Replace Response Definition} - Replace Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Replace Response Definition} - Replace Response Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Replace Security Requirement} - Replace Security Requirement" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Replace Security Requirement} - Replace Security Requirement
+|INFO| [ReplaceSecurityRequirementCommand] Executing.
+|INFO| [ReplaceSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Extension} - Add Extension" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Extension} - Add Extension
+|INFO| [AddExtensionCommand] Executing.
+|INFO| [AddExtensionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Extension} - Change Extension" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Extension} - Change Extension
+|INFO| [ChangeExtensionCommand] Executing.
+|INFO| [ChangeExtensionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Tag} - Add Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Tag} - Add Tag
+|INFO| [AddTagCommand] Executing.
+|INFO| [AddTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Tag} - Delete Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Tag} - Delete Tag
+|INFO| [DeleteTagCommand] Executing.
+|INFO| [DeleteTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Rename Tag} - Rename Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Rename Tag} - Rename Tag
+|INFO| [RenameTagCommand] Executing.
+|INFO| [RenameTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Refactor Schema Definition} - Refactor Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Refactor Schema Definition} - Refactor Schema Definition
+|INFO| [RefactorSchemaDefinitionCommand] Executing.
+|INFO| [RefactorSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Schema Definition} - Refactor Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Schema Definition} - Refactor Schema Definition
+|INFO| [RefactorSchemaDefinitionCommand] Executing.
+|INFO| [RefactorSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Refactor Schema Definition} - Refactor Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.004">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Refactor Schema Definition} - Refactor Schema Definition
+|INFO| [RefactorSchemaDefinitionCommand] Executing.
+|INFO| [RefactorSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Refactor Response Definition} - Refactor Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Refactor Response Definition} - Refactor Response Definition
+|INFO| [RefactorResponseDefinitionCommand] Executing.
+|INFO| [RefactorResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Response Definition} - Refactor Response Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Response Definition} - Refactor Response Definition
+|INFO| [RefactorResponseDefinitionCommand] Executing.
+|INFO| [RefactorResponseDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 2] {Refactor Parameter Definition} - Refactor Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 2] {Refactor Parameter Definition} - Refactor Parameter Definition
+|INFO| [RefactorParameterDefinitionCommand] Executing.
+|INFO| [RefactorParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Parameter Definition} - Refactor Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Parameter Definition} - Refactor Parameter Definition
+|INFO| [RefactorParameterDefinitionCommand] Executing.
+|INFO| [RefactorParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Refactor Parameter Definition} - Refactor Parameter Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Refactor Parameter Definition} - Refactor Parameter Definition
+|INFO| [RefactorParameterDefinitionCommand] Executing.
+|INFO| [RefactorParameterDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Header Definition} - Refactor Header Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Header Definition} - Refactor Header Definition
+|INFO| [RefactorHeaderDefinitionCommand] Executing.
+|INFO| [RefactorHeaderDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Example Definition} - Refactor Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Example Definition} - Refactor Example Definition
+|INFO| [RefactorExampleDefinitionCommand] Executing.
+|INFO| [RefactorExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Request Body Definition} - Refactor Request Body Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Request Body Definition} - Refactor Request Body Definition
+|INFO| [RefactorRequestBodyDefinitionCommand] Executing.
+|INFO| [RefactorRequestBodyDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Link Definition} - Refactor Link Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Link Definition} - Refactor Link Definition
+|INFO| [RefactorLinkDefinitionCommand] Executing.
+|INFO| [RefactorLinkDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Refactor Callback Definition} - Refactor Callback Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.003">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Refactor Callback Definition} - Refactor Callback Definition
+|INFO| [RefactorCallbackDefinitionCommand] Executing.
+|INFO| [RefactorCallbackDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Server} - Add Server" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Server} - Add Server
+|INFO| [AddServerCommand] Executing.
+|INFO| [AddServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Server} - Delete Server Document" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Server} - Delete Server Document
+|INFO| [DeleteServerCommand] Executing.
+|INFO| [DeleteServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Server} - Delete Server Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Server} - Delete Server Operation
+|INFO| [DeleteServerCommand] Executing.
+|INFO| [DeleteServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Server} - Delete Server Path Item" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Server} - Delete Server Path Item
+|INFO| [DeleteServerCommand] Executing.
+|INFO| [DeleteServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Server Variable} - Add Server Variable" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Server Variable} - Add Server Variable
+|INFO| [AddServerVariableCommand] Executing.
+|INFO| [AddServerVariableCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Server Variable} - Delete Server Variable" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Server Variable} - Delete Server Variable
+|INFO| [DeleteServerVariableCommand] Executing.
+|INFO| [DeleteServerVariableCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Create Path} - Create Path" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Create Path} - Create Path
+|INFO| [CreatePathCommand] Executing.
+|INFO| [CreatePathCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Path} - Delete Path" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Path} - Delete Path
+|INFO| [DeletePathCommand] Executing.
+|INFO| [DeletePathCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Create Operation} - Create Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Create Operation} - Create Operation
+|INFO| [CreateOperationCommand] Executing.
+|INFO| [CreateOperationCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Operation} - Delete Operation" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Operation} - Delete Operation
+|INFO| [DeleteOperationCommand] Executing.
+|INFO| [DeleteOperationCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Parameter} - Add Parameter" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Parameter} - Add Parameter
+|INFO| [AddParameterCommand] Executing.
+|INFO| [AddParameterCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Parameter} - Delete Parameter" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Parameter} - Delete Parameter
+|INFO| [DeleteParameterCommand] Executing.
+|INFO| [DeleteParameterCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Request Body} - Add Request Body" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Request Body} - Add Request Body
+|INFO| [AddRequestBodyCommand] Executing.
+|INFO| [AddRequestBodyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Request Body} - Delete Request Body" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.003">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Request Body} - Delete Request Body
+|INFO| [DeleteRequestBodyCommand] Executing.
+|INFO| [DeleteRequestBodyCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Response} - Add Response" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Response} - Add Response
+|INFO| [AddResponseCommand] Executing.
+|INFO| [AddResponseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Response} - Delete Response" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Response} - Delete Response
+|INFO| [DeleteResponseCommand] Executing.
+|INFO| [DeleteResponseCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Response Header} - Add Response Header" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Response Header} - Add Response Header
+|INFO| [AddResponseHeaderCommand] Executing.
+|INFO| [AddResponseHeaderCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Response Header} - Delete Response Header" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Response Header} - Delete Response Header
+|INFO| [DeleteResponseHeaderCommand] Executing.
+|INFO| [DeleteResponseHeaderCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Link} - Add Link" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Link} - Add Link
+|INFO| [AddLinkCommand] Executing.
+|INFO| [AddLinkCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Link} - Delete Link" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Link} - Delete Link
+|INFO| [DeleteLinkCommand] Executing.
+|INFO| [DeleteLinkCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Callback} - Add Callback" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Callback} - Add Callback
+|INFO| [AddCallbackCommand] Executing.
+|INFO| [AddCallbackCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Callback} - Delete Callback" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Callback} - Delete Callback
+|INFO| [DeleteCallbackCommand] Executing.
+|INFO| [DeleteCallbackCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Media Type} - Add Media Type" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Media Type} - Add Media Type
+|INFO| [AddMediaTypeCommand] Executing.
+|INFO| [AddMediaTypeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Change Media Type Schema} - Change Media Type Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Change Media Type Schema} - Change Media Type Schema
+|INFO| [ChangeMediaTypeSchemaCommand] Executing.
+|INFO| [ChangeMediaTypeSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Create Schema} - Create Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Create Schema} - Create Schema
+|INFO| [CreateSchemaCommand] Executing.
+|INFO| [CreateSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Schema} - Delete Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Schema} - Delete Schema
+|INFO| [DeleteSchemaCommand] Executing.
+|INFO| [DeleteSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Security Scheme} - Add Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Security Scheme} - Add Security Scheme
+|INFO| [AddSecuritySchemeCommand] Executing.
+|INFO| [AddSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Update Security Scheme} - Update Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Update Security Scheme} - Update Security Scheme
+|INFO| [UpdateSecuritySchemeCommand] Executing.
+|INFO| [UpdateSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Security Scheme} - Delete Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Security Scheme} - Delete Security Scheme
+|INFO| [DeleteSecuritySchemeCommand] Executing.
+|INFO| [DeleteSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Add Operation Security Requirement} - Add Op Security Req" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Add Operation Security Requirement} - Add Op Security Req
+|INFO| [AddOperationSecurityRequirementCommand] Executing.
+|INFO| [AddOperationSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Operation Security Requirement} - Delete Op Security Req" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Operation Security Requirement} - Delete Op Security Req
+|INFO| [DeleteOperationSecurityRequirementCommand] Executing.
+|INFO| [DeleteOperationSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Security Requirement} - Delete Security Req" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Security Requirement} - Delete Security Req
+|INFO| [DeleteSecurityRequirementCommand] Executing.
+|INFO| [DeleteSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Security Requirement} - Delete Security Req Doc2" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Security Requirement} - Delete Security Req Doc2
+|INFO| [DeleteSecurityRequirementCommand] Executing.
+|INFO| [DeleteSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Delete Security Requirement} - Delete Security Req Op" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Delete Security Requirement} - Delete Security Req Op
+|INFO| [DeleteOperationSecurityRequirementCommand] Executing.
+|INFO| [DeleteOperationSecurityRequirementCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Update Node} - Update Node" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Update Node} - Update Node
+|INFO| [UpdateNodeCommand] Executing.
+|INFO| [UpdateNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenAPI 3] {Ensure Child Node} - Ensure Child Node" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenAPI 3] {Ensure Child Node} - Ensure Child Node
+|INFO| [EnsureChildNodeCommand] Executing.
+|INFO| [EnsureChildNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Add Security Scheme} - Add Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Add Security Scheme} - Add Security Scheme
+|INFO| [AddSecuritySchemeCommand] Executing.
+|INFO| [AddSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete Security Scheme} - Delete Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete Security Scheme} - Delete Security Scheme
+|INFO| [DeleteSecuritySchemeCommand] Executing.
+|INFO| [DeleteSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Update Security Scheme} - Update Security Scheme" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Update Security Scheme} - Update Security Scheme
+|INFO| [UpdateSecuritySchemeCommand] Executing.
+|INFO| [UpdateSecuritySchemeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Add Tag} - Add Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Add Tag} - Add Tag
+|INFO| [AddTagCommand] Executing.
+|INFO| [AddTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete Tag} - Delete Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.002">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete Tag} - Delete Tag
+|INFO| [DeleteTagCommand] Executing.
+|INFO| [DeleteTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete All Tags} - Delete All Tags" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete All Tags} - Delete All Tags
+|INFO| [DeleteAllTagsCommand] Executing.
+|INFO| [DeleteAllTagsCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Rename Tag} - Rename Tag" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Rename Tag} - Rename Tag
+|INFO| [RenameTagCommand] Executing.
+|INFO| [RenameTagCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Add Schema Definition} - Add Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Add Schema Definition} - Add Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete Schema Definition} - Delete Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete Schema Definition} - Delete Schema Definition
+|INFO| [DeleteSchemaCommand] Executing.
+|INFO| [DeleteSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Create Schema} - Create Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Create Schema} - Create Schema
+|INFO| [CreateSchemaCommand] Executing.
+|INFO| [CreateSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Replace Schema Definition} - Replace Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Replace Schema Definition} - Replace Schema Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Add Server} - Add Server" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Add Server} - Add Server
+|INFO| [AddServerCommand] Executing.
+|INFO| [AddServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete Server} - Delete Server" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete Server} - Delete Server
+|INFO| [DeleteServerCommand] Executing.
+|INFO| [DeleteServerCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[AsyncAPI 2] {Delete All Servers} - Delete All Servers" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [AsyncAPI 2] {Delete All Servers} - Delete All Servers
+|INFO| [DeleteAllServersCommand] Executing.
+|INFO| [DeleteAllServersCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Add Example Definition} - Add Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.006">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Add Example Definition} - Add Example Definition
+|INFO| [AddExampleDefinitionCommand] Executing.
+|INFO| [AddExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Delete Example Definition} - Delete Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Delete Example Definition} - Delete Example Definition
+|INFO| [DeleteExampleDefinitionCommand] Executing.
+|INFO| [DeleteExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Refactor Example Definition} - Refactor Example Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.004">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Refactor Example Definition} - Refactor Example Definition
+|INFO| [RefactorExampleDefinitionCommand] Executing.
+|INFO| [RefactorExampleDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Add Schema Definition} - Add Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Add Schema Definition} - Add Definition
+|INFO| [AddSchemaDefinitionCommand] Executing.
+|INFO| [AddSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Create Schema} - Create Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Create Schema} - Create Schema
+|INFO| [CreateSchemaCommand] Executing.
+|INFO| [CreateSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Delete Schema} - Delete Schema" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Delete Schema} - Delete Schema
+|INFO| [DeleteSchemaCommand] Executing.
+|INFO| [DeleteSchemaCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Refactor Schema Definition} - Refactor Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.001">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Refactor Schema Definition} - Refactor Schema Definition
+|INFO| [RefactorSchemaDefinitionCommand] Executing.
+|INFO| [RefactorSchemaDefinitionCommand] Reverting.
+]]></system-out>
+  </testcase>
+  <testcase name="[OpenRPC] {Replace Schema Definition} - Replace Schema Definition" classname="io.apicurio.datamodels.cmd.CommandTest" time="0.0">
+    <system-out><![CDATA[|INFO| ------------------------
+|INFO| [CommandTestRunner] Running Test: [OpenRPC] {Replace Schema Definition} - Replace Schema Definition
+|INFO| [ReplaceNodeCommand] Executing.
+|INFO| [ReplaceNodeCommand] Reverting.
+]]></system-out>
+  </testcase>
+</testsuite>

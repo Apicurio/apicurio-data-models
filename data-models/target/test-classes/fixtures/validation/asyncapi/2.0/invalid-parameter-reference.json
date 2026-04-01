@@ -1,0 +1,23 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/{userId}": {
+      "parameters": {
+        "userId": {
+          "$ref": "#/components/parameters/NonExistentParameter"
+        }
+      },
+      "publish": {
+        "message": {
+          "payload": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

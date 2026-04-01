@@ -1,0 +1,2 @@
+[ORPC-002] |medium| {/->info} :: API is missing the 'info' property.
+[ORPC-003] |medium| {/->methods} :: API is missing the 'methods' property.

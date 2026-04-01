@@ -1,0 +1,28 @@
+[
+	{
+		"__type": "AggregateCommand",
+		"name": "test-aggregate-3.0",
+		"info": null,
+		"_commands": [
+			{
+				"__type": "ChangeDescriptionCommand",
+				"_newDescription": "A new description for the API."
+			},
+			{
+				"__type": "ChangeDescriptionCommand",
+				"_newDescription": "Final description value."
+			},
+			{
+				"__type": "ChangeContactCommand",
+				"_newName": "NAME",
+				"_newEmail": "EMAIL@gmail.com",
+				"_newUrl": "http://url.com"
+			},
+			{
+				"__type": "DeleteContactCommand",
+				"_property": "contact",
+				"_parentPath": "/info"
+			}
+		]
+	}
+]

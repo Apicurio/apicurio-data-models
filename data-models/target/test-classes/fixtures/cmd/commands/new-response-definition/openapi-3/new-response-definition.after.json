@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "responses": {
+      "MyResponse1" : {
+        "description": "Hello world..."
+      },
+      "MyResponse2":{
+      },
+      "NewResponse" : {
+      }
+    }
+  }
+}

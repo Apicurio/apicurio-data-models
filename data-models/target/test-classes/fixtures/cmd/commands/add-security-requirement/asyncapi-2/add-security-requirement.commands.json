@@ -1,0 +1,10 @@
+[    {
+        "__type": "AddSecurityRequirementCommand",
+        "_parentPath" : "/servers/production",
+        "_requirement" : {
+            "oauth2Scheme": [
+                "write:pets"
+            ]
+        }
+    }
+]

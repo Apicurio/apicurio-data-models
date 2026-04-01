@@ -1,0 +1,1 @@
+[AAM-004] |medium| {/channels[user/signup]/publish/message->schemaFormat} :: Schema format must be valid (e.g., \"application/vnd.aai.asyncapi;version=2.0.0\").

@@ -1,0 +1,1 @@
+[AAO-002] |medium| {/operations[onUserSignup]->channel} :: Operation is missing a required 'channel' reference.

@@ -1,0 +1,10 @@
+[{
+    "__type": "NewExtensionCommand",
+    "_parentPath" : "/",
+    "_name" : "x-object",
+    "_value" : {
+        "property1": 17,
+        "property2": true,
+        "property3": "hello world"
+    }
+}]

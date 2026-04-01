@@ -1,0 +1,10 @@
+[
+    {
+        "__type" : "ChangeParameterTypeCommand",
+        "_paramPath" : "/paths[/pets]/get/parameters[1]",
+        "_newType" : {
+          "type": "#/definitions/User",
+          "required": false
+        }
+    }
+]

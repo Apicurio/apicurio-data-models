@@ -1,0 +1,1 @@
+[AAPARAM-005] |medium| {/channels[userStatus]/parameters[status]->default} :: Parameter default value must be one of the enum values.

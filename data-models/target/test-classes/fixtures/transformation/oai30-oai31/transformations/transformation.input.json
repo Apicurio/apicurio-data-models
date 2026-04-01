@@ -1,0 +1,38 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Simple Data Type Reference Test",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "nullable": true,
+                                    "items": {
+                                        "properties": {
+                                            "exclusiveMax": {
+                                                "maximum": 100,
+                                                "exclusiveMaximum": true
+                                            },
+                                            "exclusiveMin": {
+                                                "minimum": 0,
+                                                "exclusiveMinimum": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

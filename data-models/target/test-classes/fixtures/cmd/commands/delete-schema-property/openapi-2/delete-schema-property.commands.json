@@ -1,0 +1,7 @@
+[
+    {
+        "__type": "DeleteSchemaPropertyCommand",
+        "_schemaDefinitionName": "User",
+        "_propertyName": "age"
+    }
+]

@@ -1,0 +1,265 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Test RFC 3986 compliant special characters in path templates",
+    "version": "1.0.0",
+    "title": "RFC 3986 Path Characters Test"
+  },
+  "host": "api.example.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/resources/{id}:action": {
+      "post": {
+        "summary": "Custom method with colon (Google Cloud style)",
+        "operationId": "customAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/files/{id}/download~draft": {
+      "get": {
+        "summary": "Path with tilde character",
+        "operationId": "downloadDraft",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/items(beta)": {
+      "get": {
+        "summary": "Path with parentheses",
+        "operationId": "getBetaItems",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/data/{type}/query;format=json": {
+      "get": {
+        "summary": "Path with semicolon (matrix parameters style)",
+        "operationId": "queryData",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/search/{query}/filter='active'": {
+      "get": {
+        "summary": "Path with single quotes",
+        "operationId": "searchWithFilter",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tags/{id}+metadata": {
+      "get": {
+        "summary": "Path with plus sign",
+        "operationId": "getTagWithMetadata",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/users@admin/{id}": {
+      "get": {
+        "summary": "Path with at sign",
+        "operationId": "getAdminUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/items!important": {
+      "get": {
+        "summary": "Path with exclamation mark",
+        "operationId": "getImportantItems",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/price$usd/{id}": {
+      "get": {
+        "summary": "Path with dollar sign",
+        "operationId": "getPriceUsd",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/groups/{id}&members": {
+      "get": {
+        "summary": "Path with ampersand",
+        "operationId": "getGroupMembers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/resources/{id}:action:subaction": {
+      "post": {
+        "summary": "Multiple colons in path",
+        "operationId": "nestedAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/categories/{id},related": {
+      "get": {
+        "summary": "Path with comma",
+        "operationId": "getCategoryRelated",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/calc/{value}*multiplier": {
+      "get": {
+        "summary": "Path with asterisk as fixed text",
+        "operationId": "multiply",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/values/{id}=default": {
+      "get": {
+        "summary": "Path with equals sign",
+        "operationId": "getValueDefault",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}

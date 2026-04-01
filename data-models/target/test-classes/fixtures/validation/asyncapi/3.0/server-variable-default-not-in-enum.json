@@ -1,0 +1,23 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "production": {
+      "host": "{environment}.example.com:{port}",
+      "protocol": "https",
+      "variables": {
+        "environment": {
+          "enum": ["dev", "staging", "prod"],
+          "default": "production"
+        },
+        "port": {
+          "enum": ["443", "8443"],
+          "default": "443"
+        }
+      }
+    }
+  }
+}

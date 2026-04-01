@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: io.apicurio.datamodels.transform.TransformTest
+-------------------------------------------------------------------------------
+Tests run: 58, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.120 s -- in io.apicurio.datamodels.transform.TransformTest

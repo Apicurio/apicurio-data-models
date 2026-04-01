@@ -1,0 +1,2 @@
+[UNKNOWN-001] |medium| {/info/license->unknown-license-property} :: An unexpected property "unknown-license-property" was found.  Extension properties should begin with "x-".
+[UNKNOWN-001] |medium| {/components/schemas[Error]->unexpected-property-datatype} :: An unexpected property "unexpected-property-datatype" was found.  Extension properties should begin with "x-".

@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "$/components/schemas/Foo"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

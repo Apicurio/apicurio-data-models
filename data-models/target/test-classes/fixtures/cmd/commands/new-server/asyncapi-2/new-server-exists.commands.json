@@ -1,0 +1,9 @@
+[{
+    "__type": "NewServerCommand_Aai20",
+    "_serverName": "my_server",
+    "_server": {
+        "url": "kafka2.prod.example.com",
+        "description": "my newer event railgun",
+        "protocol": "kafka"
+    }
+}]

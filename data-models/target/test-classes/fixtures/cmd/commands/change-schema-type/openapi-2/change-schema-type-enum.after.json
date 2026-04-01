@@ -1,0 +1,14 @@
+{
+	"swagger": "2.0",
+	"definitions": {
+		"Person": {
+			"type": "string",
+			"enum": [
+				"option1",
+				"option2",
+				"option3",
+				"option4"
+			]
+		}
+	}
+}

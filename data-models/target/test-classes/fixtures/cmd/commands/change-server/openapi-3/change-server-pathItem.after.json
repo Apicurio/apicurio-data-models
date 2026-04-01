@@ -1,0 +1,36 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/foo": {
+      "get": {
+        "requestBody": {
+          "required": true
+        }
+      },
+      "servers": [
+        {
+          "url": "https://development.gigantic-server.com/v1",
+          "description": "Development server"
+        },
+        {
+          "url": "https://staging.gigantic-server.com/v1",
+          "description": "Changed description!",
+          "variables": {
+            "variable-1": {
+              "default": "var-1-default",
+              "description": "Variable one."
+            },
+            "variable-2": {
+              "default": "var-2-default",
+              "description": "Variable two."
+            }
+          }
+        },
+        {
+          "url": "https://production.gigantic-server.com/v1",
+          "description": "Production server"
+        }
+      ]
+    }
+  }
+}

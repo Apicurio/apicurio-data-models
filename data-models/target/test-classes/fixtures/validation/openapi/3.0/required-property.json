@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "license": {
+    }
+  },
+  "servers": [
+    {
+      "description": "srv-001"
+    },
+    {
+      "url": "https://{username}.gigantic-server.com/",
+      "description": "svar-001",
+      "variables": {
+        "username": {
+          "description": "this value is assigned by the service provider, in this example `gigantic-server.com`"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/op-007": {
+      "summary": "Foo Resource",
+      "description": "CRUD for Foos.",
+      "get": {
+        "tags": [ "tag1", "tag2" ],
+        "summary": "List Pets",
+        "description": "Returns all pets from the system that the user has access to",
+        "externalDocs": {
+          "description": "Find more info here",
+          "url": "https://example.com"
+        },
+        "operationId": "listPets",
+        "deprecated": false
+      }
+    },
+    "/par-001": {
+      "parameters": [
+        {
+          "in": "query",
+          "description": "username to fetch",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/par-002": {
+      "parameters": [
+        {
+          "name": "Foo",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/res-001": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/disc-001"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "disc-001": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ed-001"
+          },
+          {
+            "$ref": "#/components/schemas/ed-001"
+          }
+        ],
+        "discriminator": {
+          "mapping": {
+            "dog": "#/components/schemas/Dog",
+            "monster": "https://gigantic-server.com/schemas/Monster/schema.json"
+          }
+        }
+      },
+      "ed-001": {
+        "type": "string",
+        "externalDocs": {
+          "description": "More info"
+        }
+      }
+    },
+    "securitySchemes": {
+      "flow-001": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "tokenUrl": "http://www.tokens.io/token",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          },
+          "authorizationCode": {
+            "tokenUrl": "http://www.tokens.io/token",
+            "scopes": {
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "flow-002": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://www.tokens.io/auth",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          },
+          "authorizationCode": {
+            "authorizationUrl": "http://www.tokens.io/auth",
+            "scopes": {
+              "read:pets": "read your pets"
+            }
+          },
+          "clientCredentials": {
+            "authorizationUrl": "http://www.tokens.io/auth",
+            "scopes": {
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "flow-006": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "tokenUrl": "http://www.tokens.io/token",
+            "authorizationUrl": "http://www.tokens.io/auth"
+          }
+        }
+      },
+      "ss-001": {},
+      "ss-002": {
+        "type": "apiKey",
+        "in": "header"
+      },
+      "ss-003": {
+        "type": "apiKey",
+        "name": "api_key"
+      },
+      "ss-019": {
+        "type": "http"
+      },
+      "ss-020": {
+        "type": "oauth2"
+      },
+      "ss-021": {
+        "type": "openIdConnect"
+      }
+    },
+    "requestBodies": {
+      "rb-002": {
+        "description": "The request body."
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "tag-001"
+    }
+  ]
+}

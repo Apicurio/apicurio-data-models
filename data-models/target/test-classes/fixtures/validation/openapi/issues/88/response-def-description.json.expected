@@ -1,0 +1,1 @@
+[RDEF-002] |medium| {/components/responses[MyResponse]->description} :: Response Definition 'MyResponse' is missing a description.

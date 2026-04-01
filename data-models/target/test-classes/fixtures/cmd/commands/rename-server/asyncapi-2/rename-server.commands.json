@@ -1,0 +1,5 @@
+[{
+    "__type": "RenameServerCommand_Aai20",
+    "_oldServerName": "my_server",
+    "_newServerName": "my_renamed_server"
+}]

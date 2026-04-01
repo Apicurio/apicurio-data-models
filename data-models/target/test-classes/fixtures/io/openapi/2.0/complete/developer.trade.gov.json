@@ -1,0 +1,108 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Trade.gov Market Research Library",
+    "description": "This API provides metadata for country and industry reports that are produced by ITAu2019s trade experts and are available in ITAu2019s online market research library. ",
+    "termsOfService": "http://developer.trade.gov/tos.html",
+    "version": "1.0"
+  },
+  "host": "api.trade.gov",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/market_research_library/search": {
+      "get": {
+        "summary": "Market Research Library Search",
+        "description": "This API provides metadata for country and industry reports that are produced by ITAs trade experts and are available in ITAs online market research library.",
+        "operationId": "research",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "Returns market research reports for a match in the description or title fields.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "description": "Returns office locations based on ISO alpha-2 country codes.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Returns market research reports for a specific industry.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size parameter allows you to configure the maximum amount of hits to be returned.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset parameter defines the offset from the first result you want to fetch.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Research"
+          }
+        },
+        "tags": [
+          "Trade",
+          " Commerce",
+          " Reports",
+          " Research"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Research": {
+      "properties": {
+        "id": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "countries": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "expiration_date": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "industry": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "report_type": {
+          "description": "Foo bar.",
+          "type": "string"
+        },
+        "title": {
+          "description": "Foo bar.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

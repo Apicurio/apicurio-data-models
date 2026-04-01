@@ -1,0 +1,22 @@
+{
+  "asyncapi": "2.0.0",
+  "info": {
+    "title": "Operation Trait example",
+    "version": "1.0.0"
+  },
+  "components": {
+    "messages": {
+      "testMessages": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

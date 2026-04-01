@@ -1,0 +1,39 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "Operation ID Uniqueness Test",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "user/signup": {
+      "subscribe": {
+        "operationId": "userSignup",
+        "message": {
+          "$ref": "#/components/messages/UserSignup"
+        }
+      }
+    },
+    "user/login": {
+      "publish": {
+        "operationId": "userSignup",
+        "message": {
+          "$ref": "#/components/messages/UserLogin"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "UserSignup": {
+        "payload": {
+          "type": "object"
+        }
+      },
+      "UserLogin": {
+        "payload": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
