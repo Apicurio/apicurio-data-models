@@ -1,0 +1,6 @@
+name: Smoke Testing Model
+prefix: Smoke
+namespace: org.example.smoke
+versions:
+  - $ref: ./smoke-spec-v1.yaml
+  

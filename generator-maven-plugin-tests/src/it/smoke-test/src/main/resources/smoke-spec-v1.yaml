@@ -1,0 +1,28 @@
+name: SmokeAPI 1.0
+version: 1.0
+versions:
+  - version: 1.0
+    url: https://example.com/Smoke/versions/1.0.md
+prefix: Smoke10
+namespace: org.example.smoke.v10
+
+entities:
+  - name: Document
+    root: true
+    properties:
+      - name: id
+        type: string
+      - name: large
+        type: boolean
+      - name: docs
+        type: Documentation
+    propertyOrder:
+      - $this
+  - name: Documentation
+    properties:
+      - name: description
+        type: string
+      - name: url
+        type: string
+    propertyOrder:
+      - $this

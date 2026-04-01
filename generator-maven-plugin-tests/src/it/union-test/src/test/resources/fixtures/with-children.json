@@ -1,0 +1,20 @@
+{
+    "id": "with-children",
+    "description": "Kids!",
+    "unionProp1": "foo",
+    "unionProp2": "bar",
+    "unionProp3": {
+        "name": "prop3-child",
+        "origin": "json"
+    },
+    "unionProp4": [
+        {
+            "name": "prop4-child-idx1",
+            "origin": "json2"
+        },
+        {
+            "name": "prop4-child-idx2",
+            "origin": "json3"
+        }
+    ]
+}

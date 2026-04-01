@@ -1,0 +1,7 @@
+{
+    "id": "simple",
+    "description": "Oh yeah",
+    "unionProp1": "foo",
+    "unionProp2": "bar",
+    "unionProp3": true
+}

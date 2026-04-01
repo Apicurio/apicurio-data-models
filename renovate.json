@@ -9,8 +9,8 @@
   "dependencyDashboard": true,
   "rangeStrategy": "bump",
   "ignorePaths": [
-    "jsweet_extension/**",
-    "dependencies/**"
+    "data-models/jsweet_extension/**",
+    "data-models/dependencies/**"
   ],
   "prConcurrentLimit": 5,
   "prHourlyLimit": 5,
@@ -49,7 +49,7 @@
     {
       "groupName": "Dependencies: Typescript",
       "matchFileNames": [
-        "src/main/ts/**"
+        "data-models/src/main/ts/**"
       ],
       "enabled": true,
       "matchUpdateTypes": [
@@ -59,7 +59,7 @@
     {
       "groupName": "Dependencies: Typescript (Major)",
       "matchFileNames": [
-        "src/main/ts/**"
+        "data-models/src/main/ts/**"
       ],
       "enabled": true,
       "matchUpdateTypes": [
