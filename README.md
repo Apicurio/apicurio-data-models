@@ -1,18 +1,29 @@
 [![Verify Build Workflow](https://github.com/Apicurio/apicurio-data-models/actions/workflows/verify.yaml/badge.svg)](https://github.com/Apicurio/apicurio-data-models/actions/workflows/verify.yaml?query=branch%3Amain)
 [![Automated Release Notes by gren](https://img.shields.io/badge/%F0%9F%A4%96-release%20notes-00B2EE.svg)](https://github-tools.github.io/github-release-notes/)
 
-# Apicurio Data Models Library (Java & Typescript)
+# Apicurio Data Models (Java & Typescript)
 
 ## What is it?
-This project is a library (Java and JavaScript compatible) to implement data models for OpenAPI and AsyncAPI.
+This project is a library (Java and JavaScript compatible) to implement data models for OpenAPI and
+AsyncAPI.
 
-You can use this library to read an OpenAPI or AsyncAPI document, resulting in an instance of a data model. 
-The data model can then be read or manipulated. It can also be validated.
+You can use this library to read an OpenAPI or AsyncAPI document, resulting in an instance of a data
+model. The data model can then be read or manipulated. It can also be validated.
 
-The data model can be accessed directly, but there is also a robust visitor pattern available for more 
+The data model can be accessed directly, but there is also a robust visitor pattern available for more
 advanced analysis or transformation of the model.
 
 This project is licensed under the [Apache License 2.0](LICENSE).
+
+## Project Structure
+This is a multi-module Maven project containing the following modules:
+
+| Module | Description |
+|---|---|
+| `generator` | Core code generator that produces unified Java data models from specification meta-models |
+| `generator-maven-plugin` | Maven plugin wrapper for the code generator |
+| `generator-maven-plugin-tests` | Integration tests for the Maven plugin (optional, behind `plugin-tests` profile) |
+| `data-models` | The data models library itself (Java + TypeScript via JSweet transpilation) |
 
 ## Usage
 For details on how to use the library, see the documentation included with the library on
@@ -22,7 +33,7 @@ npmjs.com:
 
 This documentation can also be found in this repository here:
 
-  [./src/main/ts/module/README.md](https://github.com/Apicurio/apicurio-data-models/blob/master/src/main/ts/module/README.md)
+  [./data-models/src/main/ts/README.md](https://github.com/Apicurio/apicurio-data-models/blob/main/data-models/src/main/ts/README.md)
 
 ## Project Goals
 
@@ -50,12 +61,13 @@ project as a dependency in your projects without worrying about conflicts or dep
 ## Project Status
 Currently, the data model fully supports the following formats:
 
-* OpenAPI 2.0
-* OpenAPI 3.0.x, 3.1.x
-* AsyncAPI 2.0, 2.1, 2.2, 2.3, 2.4, 2.5
+* OpenAPI 2.0, 3.0.x, 3.1.x, 3.2.x
+* AsyncAPI 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.0, 3.1
+* OpenRPC 1.3, 1.4
+* JSON Schema Draft 4, Draft 6, Draft 7, 2019-09, 2020-12
 
-Barring oversights or bugs, the full OpenAPI/AsyncAPI document can be read and written successfully.  In 
-addition, the visitor pattern has been fully implemented (along with both up and down traversing).
+Barring oversights or bugs, the full document can be read and written successfully. In addition, the
+visitor pattern has been fully implemented (along with both up and down traversing).
 
 Validation of the OpenAPI/AsyncAPI specification exists, with all of the rules outlined in the spec having 
 been implemented.
@@ -63,28 +75,26 @@ been implemented.
 Please refer to the github repository's Issues and other resources for more information on the
 current status of the project.
 
-## OpenAPI Versions
-One of the design goals of this library is to simultaneously support multiple versions of the OpenAPI
-specification.  At the time of this writing, there are multiple versions of the OpenAPI specification:
+## Supported Specification Versions
 
-* [OpenAPI Version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)
-* [OpenAPI Version 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)
-* [OpenAPI Version 3.1.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md)
+One of the design goals of this library is to simultaneously support multiple versions of various API
+specifications. As new versions are released, the library will be updated to include support for them.
 
-All of these versions are supported by the library.  As new versions of the specification are 
-released, the library will be updated to include support for them.
+### OpenAPI
+* [OpenAPI 2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)
+* [OpenAPI 3.0.x](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)
+* [OpenAPI 3.1.x](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md)
+* [OpenAPI 3.2.x](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.2.0.md)
 
-## AsyncAPI Versions
-As of the time of this writing, the AsyncAPI specification is in the process of releasing version 2.0.0.
-This will be the first version of AsyncAPI supported by this library.  As other versions are released,
-the library will be updated to support them.  There are currently no plans to support older versions.
+### AsyncAPI
+* [AsyncAPI 2.0 - 2.6](https://www.asyncapi.com/docs/reference/specification/v2.6.0)
+* [AsyncAPI 3.0 - 3.1](https://www.asyncapi.com/docs/reference/specification/v3.0.0)
 
-* [AsyncAPI Version 2.0.0](https://github.com/asyncapi/spec/blob/v2.0.0/versions/2.0.0/asyncapi.md)
-* [AsyncAPI Version 2.1.0](https://github.com/asyncapi/spec/blob/v2.1.0/spec/asyncapi.md)
-* [AsyncAPI Version 2.2.0](https://github.com/asyncapi/spec/blob/v2.2.0/spec/asyncapi.md)
-* [AsyncAPI Version 2.3.0](https://github.com/asyncapi/spec/blob/v2.3.0/spec/asyncapi.md)
-* [AsyncAPI Version 2.4.0](https://github.com/asyncapi/spec/blob/v2.4.0/spec/asyncapi.md)
-* [AsyncAPI Version 2.5.0](https://github.com/asyncapi/spec/blob/v2.5.0/spec/asyncapi.md)
+### OpenRPC
+* [OpenRPC 1.3 - 1.4](https://spec.open-rpc.org/)
+
+### JSON Schema
+* Draft 4, Draft 6, Draft 7, 2019-09, 2020-12
 
 ## Building the Library
 This section explains how to build, package, test, and publish the library.  If you are a developer
@@ -93,9 +103,9 @@ looking to make changes, this is a great place to start.
 ### Pre-Requisites
 In order to build the library you will need to install the following tools:
 
-* Java 11+
+* Java 17+
 * Maven 3.8+
-* Node.js 16+
+* Node.js 20+ (only needed for the `transpilation` profile)
 
 ### Clone and Configure
 The first thing to do (obviously) is clone the repository.  Once you've cloned the git repository,
