@@ -1,7 +1,0 @@
-[
-    {
-        "__type": "AddResponseDefinitionCommand",
-        "_newDefinitionName" : "NotFound",
-        "_newDefinitionObj" : {}
-    }
-]

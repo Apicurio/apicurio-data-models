@@ -1,9 +1,0 @@
-{
-  "swagger": "2.0",
-  "definitions": {
-    "Person": {
-      "type": "string",
-      "format": "date-time"
-    }
-  }
-}

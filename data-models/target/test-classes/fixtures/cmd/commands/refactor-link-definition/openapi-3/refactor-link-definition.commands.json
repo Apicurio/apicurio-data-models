@@ -1,5 +1,0 @@
-[{
-    "__type": "RefactorLinkDefinitionCommand",
-    "_oldName": "GetWidgetById",
-    "_newName": "FetchWidgetById"
-}]

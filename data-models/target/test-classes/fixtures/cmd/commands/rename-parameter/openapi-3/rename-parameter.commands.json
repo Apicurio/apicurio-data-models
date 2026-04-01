@@ -1,7 +1,0 @@
-[{
-    "__type": "RenameParameterCommand",
-    "_oldParamName": "freeForm",
-    "_newParamName": "newParamName",
-    "_paramIn": "query",
-    "_parentPath": "/paths[/foo]/get"
-}]

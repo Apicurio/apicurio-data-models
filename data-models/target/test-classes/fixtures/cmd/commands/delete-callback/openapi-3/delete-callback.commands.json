@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteCallbackCommand",
-    "_parentPath": "/paths[/foo]/get",
-    "_callbackName": "onFooEvent"
-}]

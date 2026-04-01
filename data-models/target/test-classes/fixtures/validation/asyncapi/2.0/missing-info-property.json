@@ -1,8 +1,0 @@
-{
-  "asyncapi": "2.0.0",
-  "channels": {
-    "/user/signedup": {
-      "description": "User signed up event"
-    }
-  }
-}

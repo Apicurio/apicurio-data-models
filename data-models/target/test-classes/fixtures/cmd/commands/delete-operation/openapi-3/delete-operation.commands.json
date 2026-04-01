@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteOperationCommand",
-    "_pathItemPath": "/paths[/foo]",
-    "_method": "get"
-}]

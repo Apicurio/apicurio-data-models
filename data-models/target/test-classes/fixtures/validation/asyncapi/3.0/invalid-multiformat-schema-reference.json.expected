@@ -1,1 +1,0 @@
-[AAMFS-003] |medium| {/components/messages[UserSignup]/payload->$ref} :: Multi-format schema $ref must point to valid schema.

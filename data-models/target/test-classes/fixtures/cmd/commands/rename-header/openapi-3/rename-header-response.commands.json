@@ -1,6 +1,0 @@
-[{
-    "__type": "RenameHeaderCommand",
-    "_parentPath": "/paths[/foo]/get/responses[200]",
-    "_oldHeaderName": "X-RateLimit-Limit",
-    "_newHeaderName": "X-RateLimit-Remaining"
-}]

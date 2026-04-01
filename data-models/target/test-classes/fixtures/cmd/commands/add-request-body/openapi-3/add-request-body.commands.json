@@ -1,6 +1,0 @@
-[
-    {
-        "__type": "AddRequestBodyCommand",
-        "_operationPath": "/paths[/foo]/post"
-    }
-]

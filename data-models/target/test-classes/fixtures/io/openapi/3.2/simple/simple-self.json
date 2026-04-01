@@ -1,8 +1,0 @@
-{
-  "openapi": "3.2.0",
-  "$self": "https://example.com/api/openapi.json",
-  "info": {
-    "title": "Self-referencing API",
-    "version": "1.0.0"
-  }
-}

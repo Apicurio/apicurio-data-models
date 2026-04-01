@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteServerCommand",
-    "_serverUrl": "https://production.gigantic-server.com/v1",
-    "_parentPath": "/paths[/foo]"
-}]

@@ -1,1 +1,0 @@
-[SRV-007] |medium| {/servers[production]->pathname} :: Server pathname must begin with '/'.

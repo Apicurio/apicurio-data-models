@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteServerVariableCommand",
-    "_serverPath": "/servers[0]",
-    "_variableName": "environment"
-}]

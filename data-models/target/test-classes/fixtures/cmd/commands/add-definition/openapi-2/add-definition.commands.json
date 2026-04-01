@@ -1,7 +1,0 @@
-[
-    {
-        "__type": "AddSchemaDefinitionCommand",
-        "_newDefinitionName" : "Empty",
-        "_newDefinitionObj" : {}
-    }
-]

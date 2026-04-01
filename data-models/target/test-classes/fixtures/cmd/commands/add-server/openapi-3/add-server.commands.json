@@ -1,8 +1,0 @@
-[
-    {
-        "__type": "AddServerCommand",
-        "_parentPath": "/",
-        "_serverUrl": "https://api.example.com",
-        "_serverDescription": "Production server"
-    }
-]

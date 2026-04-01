@@ -1,9 +1,0 @@
-[{
-    "__type": "UpdateNodeCommand",
-    "_nodePath": "/info",
-    "_newContent": {
-        "title": "New Title",
-        "description": "New description.",
-        "version": "2.0.0"
-    }
-}]

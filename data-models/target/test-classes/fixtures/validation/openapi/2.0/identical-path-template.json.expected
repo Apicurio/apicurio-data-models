@@ -1,6 +1,0 @@
-[PATH-009] |medium| {/paths[/pathstest25]->null} :: Path template "/pathstest25" is semantically identical to at least one other path.
-[PATH-009] |medium| {/paths[/pathstest25/]->null} :: Path template "/pathstest25/" is semantically identical to at least one other path.
-[PATH-009] |medium| {/paths[/pathstest26/{var}]->null} :: Path template "/pathstest26/{var}" is semantically identical to at least one other path.
-[PATH-009] |medium| {/paths[/pathstest26/{var}/]->null} :: Path template "/pathstest26/{var}/" is semantically identical to at least one other path.
-[PATH-009] |medium| {/paths[/pathstest27/{var1}]->null} :: Path template "/pathstest27/{var1}" is semantically identical to at least one other path.
-[PATH-009] |medium| {/paths[/pathstest27/{var2}/]->null} :: Path template "/pathstest27/{var2}/" is semantically identical to at least one other path.

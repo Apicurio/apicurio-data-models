@@ -1,4 +1,0 @@
-[XML-002] |medium| {/components/schemas[MutexNodeTypeAndWrapped]/properties[items]/xml->wrapped} :: XML Wrapped elements can only be used for "array" properties.
-[XML-004] |medium| {/components/schemas[InvalidNodeType]/properties[data]/xml->nodeType} :: XML nodeType "invalid" is not valid (must be one of: element, attribute, text, cdata, none).
-[XML-003] |medium| {/components/schemas[MutexNodeTypeAndAttribute]/properties[id]/xml->attribute} :: XML "attribute" must not be used when "nodeType" is present.
-[XML-003] |medium| {/components/schemas[MutexNodeTypeAndWrapped]/properties[items]/xml->wrapped} :: XML "wrapped" must not be used when "nodeType" is present.

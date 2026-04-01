@@ -1,9 +1,0 @@
-[
-    {
-        "__type": "AddServerCommand",
-        "_parentPath": "/",
-        "_serverName": "new_server",
-        "_serverUrl": "kafka2.prod.example.com",
-        "_serverDescription": "New server"
-    }
-]

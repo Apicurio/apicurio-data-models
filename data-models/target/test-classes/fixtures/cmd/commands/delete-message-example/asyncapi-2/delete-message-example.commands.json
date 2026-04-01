@@ -1,5 +1,0 @@
-[{
-  "__type": "DeleteMessageExampleCommand_Aai20",
-  "_exampleValue": "{ \"foo\": \"string\", \"bar\": true }",
-  "_parentPath": "/channels[myChannel]/subscribe"
-}]

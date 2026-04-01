@@ -1,8 +1,0 @@
-[
-    {
-        "__type": "ChangeExtensionCommand",
-        "_parentPath": "/paths[/foo]/get",
-        "_name": "x-custom-ext",
-        "_newValue": "new-value"
-    }
-]

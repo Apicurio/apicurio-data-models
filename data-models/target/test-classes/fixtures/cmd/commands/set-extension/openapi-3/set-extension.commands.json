@@ -1,9 +1,0 @@
-[{
-    "__type": "SetExtensionCommand",
-    "_parentPath": "/paths[/foo]/get",
-    "_name": "x-operation-extension",
-    "_value": {
-        "property1": "foo",
-        "property2": "bar"
-    }
-}]

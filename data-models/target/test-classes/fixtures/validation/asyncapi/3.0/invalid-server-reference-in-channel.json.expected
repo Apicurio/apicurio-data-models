@@ -1,1 +1,0 @@
-[CHAN-004] |medium| {/channels[userSignup]->servers} :: Server reference '#/servers/nonExistentServer' must point to a valid Server.

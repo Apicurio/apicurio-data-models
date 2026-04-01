@@ -1,7 +1,0 @@
-[{
-    "__type": "ReplaceResponseDefinitionCommand",
-    "_nodePath": "/responses[NotFound]",
-    "_new": {
-        "description": "The replaced content."
-    }
-}]

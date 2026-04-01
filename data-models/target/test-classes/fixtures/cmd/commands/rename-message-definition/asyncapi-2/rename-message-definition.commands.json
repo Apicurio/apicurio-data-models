@@ -1,7 +1,0 @@
-[
-  {
-    "__type": "RenameMessageDefinitionCommand",
-    "_oldName": "comonMessage",
-    "_newName": "commonMessage"
-  }
-]

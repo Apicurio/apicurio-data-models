@@ -1,2 +1,0 @@
-[R-004] |medium| {/->host} :: Host not properly formatted - only the host name (and optionally port) should be specified.
-[R-005] |medium| {/->basePath} :: Base Path should being with a '/' character.

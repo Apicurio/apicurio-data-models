@@ -1,7 +1,0 @@
-[
-	{
-		"__type": "DeleteChildSchemaCommand",
-		"_schemaPath": "/components/schemas[SampleDataType]/anyOf[2]",
-		"_parentPath": "/components/schemas[SampleDataType]"
-	}
-]

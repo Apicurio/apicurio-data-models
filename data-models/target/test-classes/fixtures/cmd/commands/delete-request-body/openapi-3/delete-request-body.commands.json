@@ -1,4 +1,0 @@
-[{
-    "__type": "DeleteRequestBodyCommand",
-    "_operationPath": "/paths[/v2]/put"
-}]

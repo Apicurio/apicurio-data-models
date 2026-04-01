@@ -1,6 +1,0 @@
-[{
-    "__type": "DeleteParameterCommand",
-    "_parentPath": "/paths[/foo]/get",
-    "_parameterName": "freeForm",
-    "_parameterLocation": "query"
-}]

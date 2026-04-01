@@ -1,8 +1,0 @@
-[
-    {
-        "__type": "SetExternalDocsCommand",
-        "_parentPath": "/",
-        "_newUrl": "https://example.com/docs",
-        "_newDescription": "Find more info here"
-    }
-]

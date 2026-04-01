@@ -1,4 +1,0 @@
-[{
-    "__type": "DeletePathCommand",
-    "_path": "/pet/findByStatus"
-}]

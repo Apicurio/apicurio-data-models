@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteLinkCommand",
-    "_parentPath": "/paths[/foo]/get/responses[200]",
-    "_linkName": "GetFooById"
-}]

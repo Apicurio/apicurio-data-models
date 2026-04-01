@@ -1,1 +1,0 @@
-[AAMFS-002] |medium| {/components/messages[UserSignup]/payload->schema} :: Multi-format schema must have a schema property defined.

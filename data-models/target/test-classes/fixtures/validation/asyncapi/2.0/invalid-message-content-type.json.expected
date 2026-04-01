@@ -1,1 +1,0 @@
-[AAM-003] |medium| {/channels[user/signup]/publish/message->contentType} :: Message content type must be a valid MIME type.

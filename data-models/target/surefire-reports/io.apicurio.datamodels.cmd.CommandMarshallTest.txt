@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: io.apicurio.datamodels.cmd.CommandMarshallTest
--------------------------------------------------------------------------------
-Tests run: 187, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.177 s -- in io.apicurio.datamodels.cmd.CommandMarshallTest

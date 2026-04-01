@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteOperationSecurityRequirementCommand",
-    "_operationPath": "/paths[/foo]/get",
-    "_index": 0
-}]

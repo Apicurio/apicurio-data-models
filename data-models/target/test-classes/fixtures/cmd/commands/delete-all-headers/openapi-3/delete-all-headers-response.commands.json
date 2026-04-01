@@ -1,4 +1,0 @@
-[{
-    "__type": "DeleteAllHeadersCommand",
-    "_parentPath": "/paths[/foo]/get/responses[200]"
-}]

@@ -1,5 +1,0 @@
-[{
-    "__type": "RefactorSchemaDefinitionCommand",
-    "_oldName": "OldName",
-    "_newName": "NewName"
-}]

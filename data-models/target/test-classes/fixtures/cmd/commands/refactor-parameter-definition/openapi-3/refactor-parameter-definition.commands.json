@@ -1,5 +1,0 @@
-[{
-    "__type": "RefactorParameterDefinitionCommand",
-    "_oldName": "LimitParam",
-    "_newName": "PageSizeParam"
-}]

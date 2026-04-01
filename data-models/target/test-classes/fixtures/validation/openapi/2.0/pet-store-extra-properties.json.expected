@@ -1,3 +1,0 @@
-[UNKNOWN-001] |medium| {/info->extra-info-property} :: An unexpected property "extra-info-property" was found.  Extension properties should begin with "x-".
-[UNKNOWN-001] |medium| {/info/license->extra-license-property-1} :: An unexpected property "extra-license-property-1" was found.  Extension properties should begin with "x-".
-[UNKNOWN-001] |medium| {/info/license->extra-license-property-2} :: An unexpected property "extra-license-property-2" was found.  Extension properties should begin with "x-".

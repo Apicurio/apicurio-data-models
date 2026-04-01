@@ -1,4 +1,0 @@
-[TAG-003] |medium| {/tags[0]->MyTag} :: Duplicate tag 'MyTag' found (every tag must have a unique name).
-[TAG-003] |medium| {/tags[2]->MyTag} :: Duplicate tag 'MyTag' found (every tag must have a unique name).
-[OP-003] |medium| {/paths[/foo]/get->operationId} :: Duplicate operationId 'fooId' found (operation IDs must be unique across all operations in the API).
-[OP-003] |medium| {/paths[/bar]/get->operationId} :: Duplicate operationId 'fooId' found (operation IDs must be unique across all operations in the API).

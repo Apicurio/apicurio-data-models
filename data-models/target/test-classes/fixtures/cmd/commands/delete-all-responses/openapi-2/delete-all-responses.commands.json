@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteAllResponsesCommand",
-    "_property": "responses",
-    "_parentPath": "/paths[/pet]/put"
-}]

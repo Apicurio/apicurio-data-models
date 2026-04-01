@@ -1,3 +1,0 @@
-[TAG-004] |medium| {/tags[2]->parent} :: Tag parent "NonExistentTag" does not reference an existing tag name.
-[TAG-005] |medium| {/tags[3]->parent} :: Tag "CycleA" has a circular parent reference.
-[TAG-005] |medium| {/tags[4]->parent} :: Tag "CycleB" has a circular parent reference.

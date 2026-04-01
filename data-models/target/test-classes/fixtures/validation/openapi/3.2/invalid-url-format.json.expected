@@ -1,2 +1,0 @@
-[SS-022] |medium| {/components/securitySchemes[InvalidOAuth2Metadata]->oauth2MetadataUrl} :: OAuth2 Metadata URL is an incorrect format.
-[FLOW-008] |medium| {/components/securitySchemes[InvalidDeviceAuthUrl]/flows/deviceAuthorization->deviceAuthorizationUrl} :: OAuth Device Authorization URL is an incorrect format.

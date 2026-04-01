@@ -1,1 +1,0 @@
-[AAPARAM-002] |medium| {/channels[user/{userId}]/parameters[userId]->schema} :: Parameter is missing the 'schema' property.

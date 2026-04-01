@@ -1,1 +1,0 @@
-[AACID-002] |medium| {/channels[user/signedup]/subscribe/message/correlationId->location} :: Correlation ID location must be a valid runtime expression.

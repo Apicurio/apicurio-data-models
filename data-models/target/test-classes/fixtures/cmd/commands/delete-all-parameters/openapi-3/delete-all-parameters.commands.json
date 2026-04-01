@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteAllParametersCommand",
-    "_parentPath": "/paths[/foo]/get",
-    "_paramType": "query"
-}]

@@ -1,1 +1,0 @@
-[AAO-008] |medium| {/channels[user/signup]/subscribe/message->$ref} :: Message references must point to valid messages.

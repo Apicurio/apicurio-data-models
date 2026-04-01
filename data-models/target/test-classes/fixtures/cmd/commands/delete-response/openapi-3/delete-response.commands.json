@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteResponseCommand",
-    "_operationPath": "/paths[/foo]/get",
-    "_statusCode": "200"
-}]

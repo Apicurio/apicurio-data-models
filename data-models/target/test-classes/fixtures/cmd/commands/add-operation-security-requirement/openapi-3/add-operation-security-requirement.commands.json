@@ -1,9 +1,0 @@
-[
-    {
-        "__type": "AddOperationSecurityRequirementCommand",
-        "_operationPath": "/paths[/foo]/get",
-        "_requirement": {
-            "BearerAuth": []
-        }
-    }
-]

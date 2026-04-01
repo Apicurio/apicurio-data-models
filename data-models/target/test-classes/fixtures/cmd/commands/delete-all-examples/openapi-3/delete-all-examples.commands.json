@@ -1,5 +1,0 @@
-[{
-    "__type": "DeleteAllExamplesCommand",
-    "_oldExamples": {},
-    "_parentPath": "/paths[/]/get/responses[500]/content[application/json]"
-}]

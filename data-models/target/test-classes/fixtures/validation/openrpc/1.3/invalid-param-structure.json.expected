@@ -1,1 +1,0 @@
-[ORPC-015] |medium| {/methods[0]->paramStructure} :: Method paramStructure 'invalid-value' is invalid. Must be one of: by-name, by-position, either.

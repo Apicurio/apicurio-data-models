@@ -1,8 +1,0 @@
-[
-    {
-        "__type": "AddResponseCommand",
-        "_operationPath": "/paths[/foo]/get",
-        "_statusCode": "404",
-        "_description": "Not found"
-    }
-]

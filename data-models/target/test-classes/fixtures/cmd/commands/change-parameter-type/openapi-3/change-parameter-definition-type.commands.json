@@ -1,9 +1,0 @@
-[
-    {
-        "__type": "ChangeParameterDefinitionTypeCommand",
-        "_paramPath" : "/components/parameters[Param1]",
-        "_newType" : {
-          "type": "string"
-        }
-    }
-]

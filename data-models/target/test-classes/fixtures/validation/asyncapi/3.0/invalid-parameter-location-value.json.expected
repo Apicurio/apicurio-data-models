@@ -1,1 +1,0 @@
-[AAPARAM-006] |medium| {/channels[userStatus]/parameters[userId]->location} :: Parameter location must be a valid runtime expression.

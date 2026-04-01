@@ -1,7 +1,0 @@
-[
-  {
-    "__type": "DeleteOneOfMessageCommand",
-    "_oneOfIdc": 0,
-    "_parentPath": "/channels[999testtest99]/publish/message"
-  }
-]

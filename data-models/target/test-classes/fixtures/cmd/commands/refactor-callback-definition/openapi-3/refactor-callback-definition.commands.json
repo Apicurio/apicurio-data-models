@@ -1,5 +1,0 @@
-[{
-    "__type": "RefactorCallbackDefinitionCommand",
-    "_oldName": "WidgetEvent",
-    "_newName": "OnWidgetCreated"
-}]

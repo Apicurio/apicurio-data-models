@@ -1,8 +1,0 @@
-[
-    {
-        "__type": "ChangePropertyCommand",
-        "_nodePath" : "/",
-        "_property" : "host",
-        "_newValue" : "example.org"
-    }
-]

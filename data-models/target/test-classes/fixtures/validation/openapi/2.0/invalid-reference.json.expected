@@ -1,5 +1,0 @@
-[PAR-018] |medium| {/paths[/pet]/put/parameters[1]->$ref} :: Parameter Reference must refer to a valid Parameter Definition.
-[SCH-001] |medium| {/paths[/pet]/post/parameters[0]/schema->$ref} :: Schema Reference must refer to a valid Schema Definition.
-[SCH-001] |medium| {/paths[/pet/findByStatus]/get/responses[200]/schema/items->$ref} :: Schema Reference must refer to a valid Schema Definition.
-[SREQ-001] |medium| {/paths[/pet/findByStatus]/get/security[0]->null} :: Security Requirement 'petstore_auth_notfound' must refer to a valid Security Scheme.
-[RES-002] |medium| {/paths[/pet/findByTags]/get/responses[404]->$ref} :: Response Reference must refer to a valid Response Definition.

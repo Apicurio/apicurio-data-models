@@ -1,9 +1,0 @@
-{
-  "swagger" : "2.0",
-  "definitions" : {
-    "Sample": {
-      "type": "string",
-      "format": "email"
-    }
-  }
-}

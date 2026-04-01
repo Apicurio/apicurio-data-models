@@ -1,9 +1,0 @@
-[FLOW-006] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/implicit->scopes} :: OAuth Flow is missing defined scopes.
-[FLOW-001] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/implicit->authorizationUrl} :: Implicit OAuth Flow is missing an Authorization URL.
-[FLOW-006] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/password->scopes} :: OAuth Flow is missing defined scopes.
-[FLOW-002] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/password->tokenUrl} :: Password OAuth Flow is missing a Token URL.
-[FLOW-006] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/clientCredentials->scopes} :: OAuth Flow is missing defined scopes.
-[FLOW-002] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/clientCredentials->tokenUrl} :: Client Credentials OAuth Flow is missing a Token URL.
-[FLOW-006] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/authorizationCode->scopes} :: OAuth Flow is missing defined scopes.
-[FLOW-001] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/authorizationCode->authorizationUrl} :: Auth Code OAuth Flow is missing an Authorization URL.
-[FLOW-002] |medium| {/components/securitySchemes[supportedOauthFlows]/flows/authorizationCode->tokenUrl} :: Auth Code OAuth Flow is missing a Token URL.

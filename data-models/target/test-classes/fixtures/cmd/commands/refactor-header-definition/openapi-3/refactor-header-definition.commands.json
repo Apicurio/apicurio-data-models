@@ -1,5 +1,0 @@
-[{
-    "__type": "RefactorHeaderDefinitionCommand",
-    "_oldName": "X-Rate-Limit",
-    "_newName": "X-RateLimit-Remaining"
-}]

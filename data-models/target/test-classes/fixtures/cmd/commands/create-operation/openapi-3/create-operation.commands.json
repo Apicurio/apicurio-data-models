@@ -1,7 +1,0 @@
-[
-    {
-        "__type": "CreateOperationCommand",
-        "_pathItemPath": "/paths[/foo]",
-        "_method": "put"
-    }
-]
