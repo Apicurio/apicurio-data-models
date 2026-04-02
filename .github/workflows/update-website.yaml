@@ -24,7 +24,13 @@ jobs:
           git pull
 
       - name: Fetch required Details
-        run: echo "RELEASE_VERSION=$(curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest | jq '.name' | sed 's/"//g')" >> $GITHUB_ENV
+        run: |
+          RELEASE_VERSION=$(curl -sf https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest | jq -r '.name')
+          if [ -z "$RELEASE_VERSION" ] || [ "$RELEASE_VERSION" = "null" ]; then
+            echo "ERROR: Failed to fetch latest release version"
+            exit 1
+          fi
+          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
 
       - name: Updating Project Website for Release ${{ env.RELEASE_VERSION }}
         run: |
@@ -32,9 +38,13 @@ jobs:
           echo "********** Replacing Existing Latest Release JSON File **********"
           cd _data/datamodels
           rm latestRelease.json
-          touch latestRelease.json && curl https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
-          
-          echo "********** Saving a copy in the archieve **********"
+          curl -sf https://api.github.com/repos/apicurio/apicurio-data-models/releases/latest > latestRelease.json
+          if [ ! -s latestRelease.json ]; then
+            echo "ERROR: Failed to fetch latest release data"
+            exit 1
+          fi
+
+          echo "********** Saving a copy in the archive **********"
 
           cp latestRelease.json releases/${RELEASE_VERSION}.json
 

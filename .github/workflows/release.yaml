@@ -63,18 +63,14 @@ jobs:
 
       - name: Log Metadata
         run: |
-          echo "Releasing Apicurio Data Models version ${{ github.event.inputs.release-version }} from branch ${{ github.event.inputs.branch }}"
-          echo "Next Snapshot version will be ${{ github.event.inputs.snapshot-version }}"
+          echo "Releasing Apicurio Data Models version ${{ inputs.release-version }} from branch ${{ inputs.branch }}"
+          echo "Next Snapshot version will be ${{ inputs.snapshot-version }}"
 
 
       - name: Set up settings.xml
         run: |
           echo "<settings><servers><server><id>central</id><username>${{ secrets.CENTRAL_USERNAME }}</username><password>${{ secrets.CENTRAL_TOKEN }}</password></server></servers><profiles><profile><id>central</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable></properties></profile></profiles></settings>" > /home/runner/.m2/settings.xml
           cat /home/runner/.m2/settings.xml
-
-
-      - name: Set up Gren
-        run: npm install github-release-notes -g
 
 
       - name: Cache Dependencies
@@ -93,15 +89,15 @@ jobs:
           git config --global user.email "apicurio.ci@gmail.com"
           git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git fetch
-          git checkout ${{ github.event.inputs.branch}}
-          git branch --set-upstream-to=origin/${{ github.event.inputs.branch}}
+          git checkout ${{ inputs.branch}}
+          git branch --set-upstream-to=origin/${{ inputs.branch}}
           git pull
           echo "#### Listing files after clone ####"
           find .
 
 
-      - name: Update Release Version ${{ github.event.inputs.release-version}}
-        run: mvn versions:set -DnewVersion=${{ github.event.inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+      - name: Update Release Version ${{ inputs.release-version}}
+        run: mvn versions:set -DnewVersion=${{ inputs.release-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
 
 
       - name: Verify Build
@@ -113,20 +109,20 @@ jobs:
       - name: Commit Release Version Change
         run: |
           git add .
-          git commit -m "Automated version update: ${{ github.event.inputs.release-version}}"
+          git commit -m "Automated version update: ${{ inputs.release-version}}"
           git push
 
 
       - name: Create GitHub Release
-        run: ./.github/scripts/create-github-release.sh ${{ github.event.inputs.release-version}} ${{ github.event.inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.ACCESS_TOKEN }}
+        run: ./.github/scripts/create-github-release.sh ${{ inputs.release-version}} ${{ inputs.branch}} $GITHUB_REPOSITORY ${{ secrets.ACCESS_TOKEN }}
 
 
   maven-publish:
     needs: release
     uses: ./.github/workflows/maven-publish.yaml
     with:
-      release-version: ${{ github.event.inputs.release-version }}
-      branch: ${{ github.event.inputs.branch }}
+      release-version: ${{ inputs.release-version }}
+      branch: ${{ inputs.branch }}
     secrets: inherit
 
 
@@ -134,15 +130,15 @@ jobs:
     needs: release
     uses: ./.github/workflows/npm-publish.yaml
     with:
-      release-version: ${{ github.event.inputs.release-version }}
-      branch: ${{ github.event.inputs.branch }}
+      release-version: ${{ inputs.release-version }}
+      branch: ${{ inputs.branch }}
     secrets: inherit
 
 
   finalize:
     needs: [release, maven-publish, npm-publish]
     runs-on: ubuntu-latest
-    if: always()
+    if: always() && needs.release.result == 'success'
     steps:
 
       - name: Set up Maven
@@ -158,19 +154,19 @@ jobs:
           git config --global user.email "apicurio.ci@gmail.com"
           git remote add origin "https://apicurio-ci:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git fetch
-          git checkout ${{ github.event.inputs.branch}}
-          git branch --set-upstream-to=origin/${{ github.event.inputs.branch}}
+          git checkout ${{ inputs.branch}}
+          git branch --set-upstream-to=origin/${{ inputs.branch}}
           git pull
 
 
-      - name: Update Snapshot version ${{ github.event.inputs.snapshot-version}}
-        run: mvn versions:set -DnewVersion=${{ github.event.inputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
+      - name: Update Snapshot version ${{ inputs.snapshot-version}}
+        run: mvn versions:set -DnewVersion=${{ inputs.snapshot-version}} -DgenerateBackupPoms=false -DprocessAllModules=true
 
 
       - name: Commit Snapshot Version Change
         run: |
           git add .
-          git commit -m"Automated version update: ${{ github.event.inputs.snapshot-version}}"
+          git commit -m"Automated version update: ${{ inputs.snapshot-version}}"
           git push
 
 
@@ -192,9 +188,9 @@ jobs:
           MAVEN_STATUS="${{ needs.maven-publish.result }}"
           NPM_STATUS="${{ needs.npm-publish.result }}"
           if [[ "$MAVEN_STATUS" != "success" ]] || [[ "$NPM_STATUS" != "success" ]]; then
-            MESSAGE="Release ${{ github.event.inputs.release-version }} completed with warnings. Maven: $MAVEN_STATUS, NPM: $NPM_STATUS. Manual retry may be needed."
+            MESSAGE="Release ${{ inputs.release-version }} completed with warnings. Maven: $MAVEN_STATUS, NPM: $NPM_STATUS. Manual retry may be needed."
           else
-            MESSAGE="Release ${{ github.event.inputs.release-version }} completed successfully"
+            MESSAGE="Release ${{ inputs.release-version }} completed successfully"
           fi
           REPO="${{ github.repository }}"
           LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
@@ -204,7 +200,7 @@ jobs:
       - name: Slack Notification (Publishing Failures)
         if: needs.maven-publish.result != 'success' || needs.npm-publish.result != 'success'
         run: |
-          MESSAGE="Release ${{ github.event.inputs.release-version }}: Publishing failures detected. Maven: ${{ needs.maven-publish.result }}, NPM: ${{ needs.npm-publish.result }}. Retry at https://github.com/${{ github.repository }}/actions"
+          MESSAGE="Release ${{ inputs.release-version }}: Publishing failures detected. Maven: ${{ needs.maven-publish.result }}, NPM: ${{ needs.npm-publish.result }}. Retry at https://github.com/${{ github.repository }}/actions"
           REPO="${{ github.repository }}"
           LINK="https://github.com/$REPO/actions/runs/${{ github.run_id }}"
           PAYLOAD="{\"workflow\": \"${{ github.workflow }}\", \"status\": \"warning\", \"message\": \"$MESSAGE\", \"link\": \"$LINK\", \"repository\": \"$REPO\"}"
