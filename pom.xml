@@ -74,7 +74,7 @@
         <version.commons-collections4>4.5.0</version.commons-collections4>
         <version.roaster>2.31.0.Final</version.roaster>
         <version.modeshape-common>5.4.1.Final</version.modeshape-common>
-        <version.lombok>1.18.44</version.lombok>
+        <version.lombok>1.18.46</version.lombok>
         <version.rgxgen>3.1</version.rgxgen>
         <version.apicurio-codegen-maven-plugin>1.2.11.Final</version.apicurio-codegen-maven-plugin>
 
